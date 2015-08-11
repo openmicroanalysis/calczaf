@@ -1,0 +1,12 @@
+[stage]
+PictureSnap mode= 0
+Number of calibration points= 2
+Number of Z calibration points= 0
+Screen reference point1 (twips)=7860,5760
+Screen reference point2 (twips)=0,0
+Stage reference point1=50.16,50.7
+Stage reference point2=50.56,50.3
+
+X_Polarity=-1
+Y_Polarity=-1
+Stage_Units=mm
