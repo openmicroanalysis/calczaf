@@ -450,9 +450,10 @@ Screen.MousePointer = vbHourglass
 Set MtDb = OpenDatabase(MatrixMDBFile$, MatrixDatabaseNonExclusiveAccess%, dbReadOnly)
 
 ' Try to find requested emitter, matrix, etc
-SQLQ$ = "SELECT Matrix.BeamTakeOff, Matrix.BeamEnergy, Matrix.EmittingElement, Matrix.EmittingXray, Matrix.MatrixElement, Matrix.MatrixNumber FROM Matrix WHERE BeamTakeOff = " & Format$(tTakeoff!)
-SQLQ$ = SQLQ$ & " AND BeamEnergy = " & Format$(tKilovolt!) & " AND EmittingElement = " & Format$(tEmitter%)
-SQLQ$ = SQLQ$ & " AND EmittingXray = " & Format$(tXray%) & " AND MatrixElement = " & Format$(tMatrix%)
+SQLQ$ = "SELECT Matrix.BeamTakeOff, Matrix.BeamEnergy, Matrix.EmittingElement, Matrix.EmittingXray, Matrix.MatrixElement, Matrix.MatrixNumber FROM Matrix WHERE"
+SQLQ$ = SQLQ$ & " BeamTakeOff = " & Format$(tTakeoff!) & " AND BeamEnergy = " & Format$(tKilovolt!) & " AND"
+SQLQ$ = SQLQ$ & " EmittingElement = " & Format$(tEmitter%) & " AND EmittingXray = " & Format$(tXray%) & " AND"
+SQLQ$ = SQLQ$ & " MatrixElement = " & Format$(tMatrix%)
 Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
 
 ' If record not found, return notfound

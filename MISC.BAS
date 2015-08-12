@@ -852,7 +852,7 @@ Exit Sub
 End Sub
 
 Sub MiscReplaceString(astring As String, achar As String, bchar As String)
-' Replace all occurances of "achar$" with "bchar$" in a string
+' Replace all occurances of "achar$" with "bchar$" in a string (obsolete, use Replace$ function instead)
 
 ierror = False
 On Error GoTo MiscReplaceStringError
@@ -891,7 +891,7 @@ Exit Sub
 End Sub
 
 Sub MiscReplaceStringA(astring As String, achar As String, bchar As String)
-' Replace all occurances of "achar$" with "bchar$" in a string
+' Replace all occurances of "achar$" with "bchar$" in a string (obsolete, use Replace$ function instead)
 
 ierror = False
 On Error GoTo MiscReplaceStringAError
@@ -1598,7 +1598,7 @@ Exit Function
 End Function
 
 Function MiscReplaceStringSub(astring As String, bstring As String, cstring As String) As String
-' Replace all occurances of bstring$ with cstring$ in astring$ (need not be same length)
+' Replace all occurances of bstring$ with cstring$ in astring$ (need not be same length) (obsolete, use Replace$ function instead)
 
 ierror = False
 On Error GoTo MiscReplaceStringSubError
@@ -1944,9 +1944,9 @@ tcomment$ = vbNullString
 End If
 
 ' Replace all nulls, tabs and quotes with spaces
-Call MiscReplaceStringA(bstring$, vbNullChar, VbSpace$)
-Call MiscReplaceStringA(bstring$, vbTab, VbSpace$)
-Call MiscReplaceStringA(bstring$, VbDquote$, VbSpace$)
+bstring$ = Replace$(bstring$, vbNullChar, VbSpace$)
+bstring$ = Replace$(bstring$, vbTab, VbSpace$)
+bstring$ = Replace$(bstring$, VbDquote$, VbSpace$)
 
 ' Return string
 astring$ = Trim$(bstring$)

@@ -22,8 +22,8 @@ Dim i As Integer
 ' Note that "CorrectionFlag%" is handled different (dimensioned 0 to MAXCORRECTION%) (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
 For i% = 0 To MAXCORRECTION%
 FormGETZAFALL.Option6(i%).Caption = corstring(i%)
-If i% = CorrectionFlag% Then FormGETZAFALL.Option6(i%).Value = True
 Next i%
+FormGETZAFALL.Option6(CorrectionFlag%).Value = True
 
 ' Load empirical alpha flag
 If EmpiricalAlphaFlag% = 1 Then
@@ -50,6 +50,9 @@ Else
 FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbUnchecked
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
 End If
+
+Call GetZAFAllSetEnables(CorrectionFlag%)
+If ierror Then Exit Sub
 
 Exit Sub
 
@@ -196,6 +199,55 @@ Exit Sub
 ' Errors
 GetZAFAllOptionsError:
 MsgBox Error$, vbOKOnly + vbCritical, "GetZAFAllOptions"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub GetZAFAllSetEnables(Index As Integer)
+' Set form enables based on selection
+
+ierror = False
+On Error GoTo GetZAFAllSetEnablesError
+
+' Set enabled property on Empirical alpha factors
+If Index% < 1 Or Index% > 4 Then
+FormGETZAFALL.CheckEmpiricalAlphaFlag.Enabled = False
+FormGETZAFALL.CheckUsePenepmaKratios.Enabled = False
+FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
+
+FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
+
+Else
+FormGETZAFALL.CheckEmpiricalAlphaFlag.Enabled = True
+FormGETZAFALL.CheckUsePenepmaKratios.Enabled = True
+FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
+
+If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked Then
+FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
+Else
+FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
+End If
+
+If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
+FormGETZAFALL.TextPenepmaKratioLimit.Enabled = True
+End If
+End If
+
+' Set enabled property for CommandOptions
+If Index% <= 4 Then
+FormGETZAFALL.CommandOptions.Enabled = True
+FormGETZAFALL.CommandMACs.Enabled = True
+Else
+FormGETZAFALL.CommandOptions.Enabled = False
+FormGETZAFALL.CommandMACs.Enabled = False
+End If
+
+Exit Sub
+
+' Errors
+GetZAFAllSetEnablesError:
+MsgBox Error$, vbOKOnly + vbCritical, "GetZAFAllSetEnables"
 ierror = True
 Exit Sub
 

@@ -213,15 +213,6 @@ Begin VB.Form FormGETZAFALL
       End
       Begin VB.OptionButton Option6 
          Caption         =   "Option6"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   255
          Index           =   1
          Left            =   120
@@ -233,15 +224,6 @@ Begin VB.Form FormGETZAFALL
       End
       Begin VB.OptionButton Option6 
          Caption         =   "Option6"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   255
          Index           =   2
          Left            =   120
@@ -382,40 +364,8 @@ End Sub
 
 Private Sub Option6_Click(Index As Integer)
 If Not DebugMode Then On Error Resume Next
-
-' Set enabled property on Empirical alpha factors
-If Index% < 1 Or Index% > 4 Then
-FormGETZAFALL.CheckEmpiricalAlphaFlag.Enabled = False
-FormGETZAFALL.CheckUsePenepmaKratios.Enabled = False
-FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
-
-FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
-
-Else
-FormGETZAFALL.CheckEmpiricalAlphaFlag.Enabled = True
-FormGETZAFALL.CheckUsePenepmaKratios.Enabled = True
-FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
-
-If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked Then
-FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
-Else
-FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
-End If
-
-If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
-FormGETZAFALL.TextPenepmaKratioLimit.Enabled = True
-End If
-End If
-
-' Set enabled property for CommandOptions
-If Index% <= 4 Then
-FormGETZAFALL.CommandOptions.Enabled = True
-FormGETZAFALL.CommandMACs.Enabled = True
-Else
-FormGETZAFALL.CommandOptions.Enabled = False
-FormGETZAFALL.CommandMACs.Enabled = False
-End If
-
+Call GetZAFAllSetEnables(Index%)
+If ierror Then Exit Sub
 End Sub
 
 Private Sub TextPenepmaKratioLimit_GotFocus()

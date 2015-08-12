@@ -90,8 +90,7 @@ If Trim$(astring$) <> "BEGIN Items" Then GoTo ImageLoadPaletteNotFCFile
 Line Input #Temp1FileNumber%, astring$
 
 ' Replace "=" with space to parse correctly
-Call MiscReplaceString(astring$, "=", " ")
-If ierror Then Exit Sub
+astring$ = Replace$(astring$, "=", " ")
 
 ' Check for interpolation text
 Call MiscParseStringToString$(astring$, bstring$)
@@ -109,8 +108,7 @@ Do Until k% = BIT8&
 Line Input #Temp1FileNumber%, astring$
 
 ' Replace "=" with space to parse correctly
-Call MiscReplaceString(astring$, "=", " ")
-If ierror Then Exit Sub
+astring$ = Replace$(astring$, "=", " ")
 
 ' Read "Item" string
 Call MiscParseStringToString$(astring$, bstring$)
@@ -144,8 +142,7 @@ Line Input #Temp1FileNumber%, astring$
 If Trim$(astring$) = "END Items" Then Exit Do
 
 ' Replace "=" with space to parse correctly
-Call MiscReplaceString(astring$, "=", " ")
-If ierror Then Exit Sub
+astring$ = Replace$(astring$, "=", " ")
 
 ' Read "Item" string
 Call MiscParseStringToString$(astring$, bstring$)

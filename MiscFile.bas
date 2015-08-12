@@ -33,7 +33,7 @@ Private Const FOF_NOCONFIRMATION As Long = &H10
 Private Const FOF_SIMPLEPROGRESS As Long = &H100
 'Private Const FOF_ALLOWUNDO As Long = &H40
 
-Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" (ByVal nSize As Long, ByVal lpBuffer As String) As Long
+Private Declare Function GetTempPath Lib "Kernel32" Alias "GetTempPathA" (ByVal nSize As Long, ByVal lpBuffer As String) As Long
 Private Declare Function SHFileOperation Lib "shell32" Alias "SHFileOperationA" (lpFileOp As SHFILEOPSTRUCT) As Long
 Private Declare Function SHGetPathFromIDList Lib "shell32" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
 Private Declare Function SHGetSpecialFolderLocation Lib "shell32" (ByVal hwndOwner As Long, ByVal nFolder As Long, pidl As Long) As Long
@@ -146,26 +146,16 @@ On Error GoTo MiscModifyStringToFilenameError
 If Trim$(astring$) = vbNullString Then GoTo MiscModifyStringToFilenameNoString
 
 ' Replace invalid characters
-Call MiscReplaceString(astring$, "\", "_")
-If ierror Then Exit Sub
-Call MiscReplaceString(astring$, "/", "_")
-If ierror Then Exit Sub
-Call MiscReplaceString(astring$, VbDquote$, "'")
-If ierror Then Exit Sub
-Call MiscReplaceString(astring$, ":", ";")
-If ierror Then Exit Sub
-Call MiscReplaceString(astring$, "&", "+")
-If ierror Then Exit Sub
-Call MiscReplaceString(astring$, "*", "-")
-If ierror Then Exit Sub
-Call MiscReplaceString(astring$, "|", "-")
-If ierror Then Exit Sub
-Call MiscReplaceString(astring$, ">", "-")
-If ierror Then Exit Sub
-Call MiscReplaceString(astring$, "<", "-")
-If ierror Then Exit Sub
-Call MiscReplaceString(astring$, "?", "!")
-If ierror Then Exit Sub
+astring$ = Replace$(astring$, "\", "_")
+astring$ = Replace$(astring$, "/", "_")
+astring$ = Replace$(astring$, VbDquote$, "'")
+astring$ = Replace$(astring$, ":", ";")
+astring$ = Replace$(astring$, "&", "+")
+astring$ = Replace$(astring$, "*", "-")
+astring$ = Replace$(astring$, "|", "-")
+astring$ = Replace$(astring$, ">", "-")
+astring$ = Replace$(astring$, "<", "-")
+astring$ = Replace$(astring$, "?", "!")
 
 Exit Sub
 
@@ -183,17 +173,17 @@ Exit Sub
 
 End Sub
 
-Sub MiscChangePath(tpath As String)
+Sub MiscChangePath(tPath As String)
 ' Routine to change the path
 
 ierror = False
 On Error GoTo MiscChangePathError
 
-If Trim$(tpath$) = vbNullString Then Exit Sub
+If Trim$(tPath$) = vbNullString Then Exit Sub
 
-If Left$(Trim$(tpath$), 2) <> "\\" Then ChDrive tpath$
-If MiscGetPathOnly$(tpath$) <> vbNullString Then
-ChDir MiscGetPathOnly$(tpath$)
+If Left$(Trim$(tPath$), 2) <> "\\" Then ChDrive tPath$
+If MiscGetPathOnly$(tPath$) <> vbNullString Then
+ChDir MiscGetPathOnly$(tPath$)
 End If
 
 Exit Sub
@@ -290,8 +280,7 @@ astring$ = Trim$(astring$)
 If astring$ = vbNullString Then GoTo MiscGetNumberofColumnsEmpty
 
 ' Replace tabs with spaces (bug in VB if tabs with no spaces)
-Call MiscReplaceString(astring$, vbTab, VbSpace$)
-If ierror Then Exit Function
+astring$ = Replace$(astring$, vbTab, VbSpace$)
 
 ' Write string to temp file
 Open ProgramPath$ & "MODAL.TMP" For Output As #Temp1FileNumber%

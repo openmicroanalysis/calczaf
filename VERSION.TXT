@@ -2,6 +2,36 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/10/15	Re-arrange Acquire! buttons. (von der Handt).
+
+	Fix Combine Lines code (von der Handt)
+
+08/09/15	Copy Standard Assignments button to Acquire! (remove ratemeter window) (von der Handt).
+
+	Fix ZAFMip overflow eror on epoxy.
+	
+	Fix standard assignment combo order (Goemann).
+
+08/07/15	Move JTA x-ray files to CITZAF folder. Modify conversion code in CalcZAF to use new path.
+
+07/30/15	Fix problem with scale bar in Imaging if "Do not set Conditions" checkbox is checked (Seward).
+
+	Modify code to improve sample memory allocations (Chouinard, Seward, etc).
+
+07/28/15	New matrix.mdb.
+
+07/23/15	Improve EDS during wavescan acquisitions.
+v. 10.9.7
+
+07/22/15	Minor improvements to Reed fluorescence. Utilize VB Replace$ function.
+
+07/20/15	Add new 52.5 degree takeoff binaries to matrix database.
+v. 10.9.6
+
+	Minor bugs fixes in EMSA output and Automate! confirm dialog (Carpenter).
+
+07/19/15	Fix .ELM file parsing bug (Roberts).
+
 07/14/15	Minor tweak to add <cr> buttons to description fields.
 
 07/11/15	Add code for CL dark spectrum acquisition. Add intensity display options for EDS and CL spectra.

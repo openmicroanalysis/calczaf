@@ -253,7 +253,7 @@ Dim kmax As Integer, nmax As Integer, npts As Integer
 Dim temp As Single
 Dim astring As String
 
-Dim syme As String, symx As String, symA As String
+Dim syme As String, symx As String, symm As String
 Dim rec1 As Integer, rec2 As Integer
 Dim stddev As Single
 Dim alph1 As Single, alph2 As Single, alph3 As Single, alph4 As Single
@@ -292,9 +292,9 @@ Next m%
 For ibin% = 1 To 2
 
 ' Init labels for each binary
-syme$ = vbNullString
-symx$ = vbNullString
-symA$ = vbNullString
+syme$ = vbNullString            ' emitting element
+symx$ = vbNullString            ' emitting x-ray
+symm$ = vbNullString            ' matrix element
 rec1% = 0
 rec2% = 0
 
@@ -337,7 +337,7 @@ End If
 If syme$ = vbNullString Then
 syme$ = eout$(m%)
 symx$ = xout$(m%)
-symA$ = eout$(m% + 1)
+symm$ = eout$(m% + 1)
 rec1% = zout%(m%)
 rec2% = zout%(m% + 1)
 End If
@@ -419,7 +419,7 @@ Call IOWriteLog("Xray  Matrix   Alpha1  Alpha2  Alpha3  Alpha4 %AvgDev   *from P
 Else
 Call IOWriteLog("Xray  Matrix   Alpha1  Alpha2  Alpha3  Alpha4 %AvgDev")
 End If
-msg$ = syme$ & " " & symx$ & " in " & symA$ & "  "
+msg$ = syme$ & " " & symx$ & " in " & symm$ & "  "
 msg$ = msg$ & Format$(Format$(alph1!, f84$), a80$) & Format$(Format$(alph2!, f84$), a80$) & Format$(Format$(alph3!, f84$), a80$) & Format$(Format$(alph4!, f84$), a80$) & MiscAutoFormat$(stddev!)
 Call IOWriteLog(msg$)
 End If

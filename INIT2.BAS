@@ -313,7 +313,9 @@ ierror = False
 On Error GoTo InitSampleError
 
 Dim i As Integer, j As Integer, k As Integer
+Dim amsg As String
 
+amsg$ = "Dimensioning raw data sample arrays..."
 ReDim sample(1).OnPeakCounts(1 To MAXROW%, 1 To MAXCHAN%) As Single ' data arrays
 ReDim sample(1).HiPeakCounts(1 To MAXROW%, 1 To MAXCHAN%) As Single
 ReDim sample(1).LoPeakCounts(1 To MAXROW%, 1 To MAXCHAN%) As Single
@@ -322,10 +324,26 @@ ReDim sample(1).OnCountTimes(1 To MAXROW%, 1 To MAXCHAN%) As Single ' data array
 ReDim sample(1).HiCountTimes(1 To MAXROW%, 1 To MAXCHAN%) As Single
 ReDim sample(1).LoCountTimes(1 To MAXROW%, 1 To MAXCHAN%) As Single
 
+' Dimension corrected data arrays (allocated in DataGetMDBSample to get around 64K limit for user defined type)
+amsg$ = "Dimensioning corrected data sample arrays..."
+'ReDim sample(1).CorData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
+'ReDim sample(1).BgdData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
+'ReDim sample(1).ErrData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
+    
+'ReDim sample(1).OnTimeData(1 To MAXROW%, 1 To MAXCHAN1%) As Single      ' for aggregate intensity calculations
+'ReDim sample(1).HiTimeData(1 To MAXROW%, 1 To MAXCHAN1%) As Single      ' for aggregate intensity calculations
+'ReDim sample(1).LoTimeData(1 To MAXROW%, 1 To MAXCHAN1%) As Single      ' for aggregate intensity calculations
+
+'ReDim sample(1).OnBeamData(1 To MAXROW%, 1 To MAXCHAN1%) As Single      ' for aggregate intensity calculations (average aggregate beam)
+'ReDim sample(1).OnBeamDataArray(1 To MAXROW%, 1 To MAXCHAN1%) As Single      ' for aggregate intensity calculations (average aggregate beam)
+'ReDim sample(1).AggregateNumChannels(1 To MAXROW%, 1 To MAXCHAN1%) As Integer      ' for aggregate intensity calculations (number of aggregate channels)
+
+amsg$ = "Dimensioning TDI sample arrays..."
 ReDim sample(1).VolCountTimesStart(1 To MAXROW%, 1 To MAXCHAN%) As Variant  ' volatile time arrays
 ReDim sample(1).VolCountTimesStop(1 To MAXROW%, 1 To MAXCHAN%) As Variant
 ReDim sample(1).VolCountTimesDelay(1 To MAXROW%, 1 To MAXCHAN%) As Single
 
+amsg$ = "Dimensioning beam current sample arrays..."
 ReDim sample(1).OnBeamCountsArray(1 To MAXROW%, 1 To MAXCHAN%) As Single    ' multiple conditions
 ReDim sample(1).AbBeamCountsArray(1 To MAXROW%, 1 To MAXCHAN%) As Single    ' multiple conditions
 ReDim sample(1).OnBeamCountsArray2(1 To MAXROW%, 1 To MAXCHAN%) As Single    ' multiple conditions
@@ -334,10 +352,12 @@ ReDim sample(1).AbBeamCountsArray2(1 To MAXROW%, 1 To MAXCHAN%) As Single    ' m
 ReDim sample(1).UnknownCountFactors(1 To MAXROW%, 1 To MAXCHAN%) As Single
 ReDim sample(1).UnknownMaxCounts(1 To MAXROW%, 1 To MAXCHAN%) As Long
 
+amsg$ = "Dimensioning MAN sample arrays..."
 ReDim sample(1).MANStdAssigns(1 To MAXMAN%, 1 To MAXCHAN%) As Integer
 ReDim sample(1).MANLinearFitOrders(1 To MAXCHAN%) As Integer
 ReDim sample(1).MANAbsCorFlags(1 To MAXCHAN%) As Integer
 
+amsg$ = "Dimensioning interference sample arrays..."
 ReDim sample(1).StdAssignsIntfElements(1 To MAXINTF%, 1 To MAXCHAN%) As String         ' interfering element
 ReDim sample(1).StdAssignsIntfXrays(1 To MAXINTF%, 1 To MAXCHAN%) As String            ' interfering x-ray (for channel ID only)
 ReDim sample(1).StdAssignsIntfStds(1 To MAXINTF%, 1 To MAXCHAN%) As Integer            ' interference standard
@@ -345,6 +365,15 @@ ReDim sample(1).StdAssignsIntfOrders(1 To MAXINTF%, 1 To MAXCHAN%) As Integer   
 
 ReDim sample(1).StagePositions(1 To MAXROW%, 1 To MAXAXES%) As Single
 
+' Integrated intensity arrays (allocated in DataGetMDBSample to avoid 64K limit)
+amsg$ = "Dimensioning integrated intensity sample arrays..."
+'ReDim sample(1).IntegratedPoints(1 To MAXROW%, 1 To MAXCHAN%) As Integer
+'ReDim sample(1).IntegratedPeakIntensities(1 To MAXROW%, 1 To MAXCHAN%) As Single
+'ReDim sample(1).IntegratedPositions(1 To MAXROW%, 1 To MAXCHAN%, 1 To n%) As Single
+'ReDim sample(1).IntegratedIntensities(1 To MAXROW%, 1 To MAXCHAN%, 1 To n%) As Single
+'ReDim sample(1).IntegratedCountTimes(1 To MAXROW%, 1 To MAXCHAN%, 1 To n%) As Single
+
+amsg$ = "Dimensioning background fit sample arrays..."
 ReDim sample(1).BackgroundExponentialBase(1 To MAXCHAN%) As Single
 ReDim sample(1).BackgroundSlopeCoefficients(1 To 2, 1 To MAXCHAN%) As Single    ' 1 = High, 2 = Low
 ReDim sample(1).BackgroundPolynomialPositions(1 To MAXCOEFF%, 1 To MAXCHAN%) As Single
@@ -352,6 +381,7 @@ ReDim sample(1).BackgroundPolynomialCoefficients(1 To MAXCOEFF%, 1 To MAXCHAN%) 
 ReDim sample(1).BackgroundPolynomialNominalBeam(1 To MAXCHAN%) As Single
 
 ' Multi-point background positions (same for all lines in sample)
+amsg$ = "Dimensioning MPB sample arrays..."
 ReDim sample(1).MultiPointAcquirePositionsHi(1 To MAXCHAN%, 1 To MAXMULTI%) As Single
 ReDim sample(1).MultiPointAcquirePositionsLo(1 To MAXCHAN%, 1 To MAXMULTI%) As Single
 
@@ -369,6 +399,7 @@ ReDim sample(1).MultiPointProcessManualFlagHi(1 To MAXROW%, 1 To MAXCHAN%, 1 To 
 ReDim sample(1).MultiPointProcessManualFlagLo(1 To MAXROW%, 1 To MAXCHAN%, 1 To MAXMULTI%) As Integer  ' manual override flag (-1 = never use, 0 = automatic, 1 = always use)
 
 ' Init boundary secondary fluorescence arrays
+amsg$ = "Dimensioning secondary fluorescence sample arrays..."
 ReDim sample(1).SecondaryFluorescenceBoundaryDistance(1 To MAXROW%) As Single
 
 ReDim sample(1).SecondaryFluorescenceBoundaryKratiosDATFile(1 To MAXCHAN%) As String
@@ -379,13 +410,15 @@ ReDim sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3(1 To MAXCHAN%) 
 ReDim sample(1).SecondaryFluorescenceBoundaryKratios(1 To MAXROW%, 1 To MAXCHAN%) As Single
 
 ' EDS spectra elements
+amsg$ = "Dimensioning EDS sample arrays..."
 sample(1).EDSSpectraFlag% = False
 sample(1).EDSSpectraUseFlag% = False
 
 ReDim sample(1).EDSUnknownCountFactors(1 To MAXROW%) As Single
   
-ReDim sample(1).EDSSpectraIntensities(1 To MAXROW%, 1 To MAXSPECTRA%) As Long
-ReDim sample(1).EDSSpectraStrobes(1 To MAXROW%, 1 To MAXSTROBE%) As Long    ' only for Oxford EDS
+' Allocated in DataEDSSpectraGetData to avoid 64K limit
+'ReDim sample(1).EDSSpectraIntensities(1 To MAXROW%, 1 To MAXSPECTRA%) As Long
+'ReDim sample(1).EDSSpectraStrobes(1 To MAXROW%, 1 To MAXSTROBE%) As Long    ' only for Oxford EDS
 
 ReDim sample(1).EDSSpectraElapsedTime(1 To MAXROW%) As Single    ' real time
 ReDim sample(1).EDSSpectraDeadTime(1 To MAXROW%) As Single       ' dead time (in percentage)
@@ -428,8 +461,12 @@ ReDim sample(1).EDSSpectraKLineCCoefficient(1 To MAXROW%) As Single         ' us
 'ReDim sample(1).EDSSpectraTailHeightAdjustmentPercentage(1 To MAXROW%) As Single
 'ReDim sample(1).EDSSpectraAPWindowThickness(1 To MAXROW%) As Single
 
-ReDim sample(1).CLSpectraIntensities(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Long
-ReDim sample(1).CLSpectraDarkIntensities(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Long
+amsg$ = "Dimensioning CL sample arrays..."
+
+' Allocated in DataCLSpectraGetData to avoid 64K limit
+'ReDim sample(1).CLSpectraIntensities(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Long
+'ReDim sample(1).CLSpectraDarkIntensities(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Long
+
 ReDim sample(1).CLSpectraNumberofChannels(1 To MAXROW%) As Integer
 ReDim sample(1).CLSpectraStartEnergy(1 To MAXROW%) As Single
 ReDim sample(1).CLSpectraEndEnergy(1 To MAXROW%) As Single
@@ -440,6 +477,7 @@ ReDim sample(1).CLUnknownCountFactors(1 To MAXROW%) As Single
 ReDim sample(1).CLDarkSpectraCountTimeFraction(1 To MAXROW%) As Single
 
 ' Calculated, not stored in data file
+amsg$ = "Initializing sample parameters..."
 sample(1).LastElm% = 0
 sample(1).LastChan% = 0
 sample(1).AllMANBgdFlag = False
@@ -548,38 +586,17 @@ For k% = 1 To MAXAXES%
 sample(1).StagePositions!(j%, k%) = 0#
 Next k%
 
-' Dynamically allocated in DataGetMDBSample (to get around 64K limit for user defined type)
-'For i% = 1 To MAXCHAN%
-'sample(1).IntegratedPoints%(j%, i%) = 0
-'Next i%
-
-' Dynamically allocated in DataGetMDBSample (to get around 64K limit for user defined type)
-'For i% = 1 To MAXCHAN%
-'For n% = 1 To 1
-'sample(1).IntegratedPositions!(j%, i%, n%) = 0#
-'sample(1).IntegratedIntensities!(j%, i%, n%) = 0#
-'sample(1).IntegratedCountTimes!(j%, i%, n%) = 0#
-'Next n%
-'Next i%
-
 Next j%
 
 ' Initialize the element arrays
+amsg$ = "Initializing sample element parameters..."
 For i% = 1 To MAXCHAN%
 Call InitElement(i%, sample())
 If ierror Then Exit Sub
 Next i%
 
-' Dynamically allocated in DataGetMDBSample (to get around 64K limit for user defined type)
-'For i% = 1 To MAXCHAN1%
-'For j% = 1 To MAXROW%
-'sample(1).CorData!(j%, i%) = 0#
-'sample(1).BgdData!(j%, i%) = 0#
-'sample(1).ErrData!(j%, i%) = 0#
-'Next j%
-'Next i%
-
 ' Reset condition orders too
+amsg$ = "Initializing misc sample parameters..."
 For k% = 1 To MAXCOND%
 sample(1).ConditionOrders%(k%) = 1
 Next k%
@@ -609,7 +626,7 @@ sample(1).PTCDoNotNormalizeSpecifiedFlag = False
 Exit Sub
 
 InitSampleError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitSample"
+MsgBox Error$ & ", " & amsg$, vbOKOnly + vbCritical, "InitSample"
 ierror = True
 Exit Sub
 

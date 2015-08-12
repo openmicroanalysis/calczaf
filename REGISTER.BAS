@@ -20,10 +20,6 @@ FormREGISTER.Show vbModal
 Screen.MousePointer = tmousepointer% ' restore original mouse pointer
 If ierror Then Exit Sub
 
-' Convert globals and write to file
-Call RegisterToFile
-If ierror Then Exit Sub
-
 Exit Sub
 
 ' Errors
@@ -229,13 +225,10 @@ Exit Sub
 End Sub
 
 Sub RegisterLoad2()
-' Simple registration (for unicode problems)
+' Simple registration (for Japanese Windows OS or other Unicode problems)
 
 ierror = False
 On Error GoTo RegisterLoad2Error
-
-Dim astring As String * 188
-Dim bstring As String * 188
 
 Dim valid As Long
 
@@ -243,21 +236,10 @@ Dim lpAppName As String
 Dim lpKeyName As String
 Dim lpFileName As String
 Dim lpString As String
+Dim lpDefault As String
 
-' Open x-ray line file and read first two records
-Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = 188
-Get #XLineFileNumber%, 1, astring$
-Get #XLineFileNumber%, 2, bstring$
-Close #XLineFileNumber%
-
-' Check last byte in first record (if registered it should be a ASCII 170)
-If Mid$(astring, 188, 1) <> Chr$(170) Then  ' only use ChrW$ for 0 to 127 ASCII
-FormREGISTER.TextName.Text = MDBUserName$      ' use for early installations
-FormREGISTER.TextInstitution.Text = MDBFileTitle$     ' use for early installations
-
-' Allow user to change
-Call RegisterNow
-If ierror Then Exit Sub
+Dim lpReturnString As String * MAXINTEGER%
+Dim nSize As Long
 
 ' Check for existing PROBEWIN.INI
 If Dir$(ProbeWinINIFile$) = vbNullString Then
@@ -269,14 +251,42 @@ End If
 ' Use Windows API function to read PROBEWIN.INI
 lpFileName$ = ProbeWinINIFile$
 
+' Get strings
+nSize& = Len(lpReturnString$)
+lpAppName$ = "General"
+lpKeyName$ = "RegistrationName"
+lpDefault$ = vbNullString
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+If valid& > 0 Then
+RegistrationName$ = Left$(lpReturnString$, valid&)
+End If
+
+nSize& = Len(lpReturnString$)
+lpAppName$ = "General"
+lpKeyName$ = "RegistrationInstitution"
+lpDefault$ = vbNullString
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+If valid& > 0 Then
+RegistrationName$ = Left$(lpReturnString$, valid&)
+End If
+
+' Check registration
+If Trim$(RegistrationName$) = vbNullString And Trim$(RegistrationInstitution$) = vbNullString Then
+FormREGISTER.TextName.Text = MDBUserName$      ' use for early installations
+FormREGISTER.TextInstitution.Text = MDBFileTitle$     ' use for early installations
+
+' Allow user to change
+Call RegisterNow
+If ierror Then Exit Sub
+
 ' Save to INI file
 lpAppName$ = "General"
-lpKeyName$ = "UserName"
+lpKeyName$ = "RegistrationName"
 lpString$ = RegistrationName$
 valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, lpString$, lpFileName$)
 
 lpAppName$ = "General"
-lpKeyName$ = "Title"
+lpKeyName$ = "RegistrationInstitution"
 lpString$ = RegistrationInstitution$
 valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, lpString$, lpFileName$)
 

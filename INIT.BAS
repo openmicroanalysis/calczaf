@@ -2979,7 +2979,7 @@ If Not UseSimpleRegistrationFlag Then
 Call RegisterLoad
 If ierror Then Exit Sub
 
- ' If Japanese NT is present (for example) do not use hash method
+ ' If Japanese OS is present (for example) do not use hash method
 Else
 Call RegisterLoad2
 If ierror Then Exit Sub
@@ -4420,7 +4420,7 @@ Exit Sub
 
 ' Errors
 InitUserDataError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitUserData"
+MsgBox Error$ & ", " & amsg$, vbOKOnly + vbCritical, "InitUserData"
 ierror = True
 Exit Sub
 
@@ -4820,14 +4820,10 @@ astring$ = bstring$(tlinecount%)
 astring$ = Trim$(astring$)
 
 ' Remove duplicate delimiters (spaces)
-astring$ = MiscReplaceStringSub(astring$, "  ", " ")
-If ierror Then Exit Sub
-astring$ = MiscReplaceStringSub(astring$, "  ", " ")
-If ierror Then Exit Sub
-astring$ = MiscReplaceStringSub(astring$, "  ", " ")
-If ierror Then Exit Sub
-astring$ = MiscReplaceStringSub(astring$, "  ", " ")
-If ierror Then Exit Sub
+astring$ = Replace$(astring$, "  ", " ")
+astring$ = Replace$(astring$, "  ", " ")
+astring$ = Replace$(astring$, "  ", " ")
+astring$ = Replace$(astring$, "  ", " ")
 
 ' Parse line into values (remainder of bstring contains comment string)
 Call InitParseStringToRealDelimit(astring$, NumberOfTunableSpecs% + NumberOfStageMotors%, atemp!(), VbSpace$)

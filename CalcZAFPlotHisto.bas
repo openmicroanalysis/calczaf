@@ -324,8 +324,7 @@ FormPLOTHISTO_GS.Graph1.LegendText = "Maximum Mass-Electron Zbar Difference" & S
 End If
 
 ' Correction options
-If CorrectionFlag% >= 0 And CorrectionFlag% <= 4 Then
-If UsePenepmaKratiosFlag = 1 Then
+If CorrectionFlag% = 0 Or (CorrectionFlag% >= 1 And CorrectionFlag% <= 4 And UsePenepmaKratiosFlag% = 1) Then
 FormPLOTHISTO_GS.Graph1.LegendText = bscstring$(ibsc%)
 FormPLOTHISTO_GS.Graph1.LegendText = mipstring$(imip%)
 FormPLOTHISTO_GS.Graph1.LegendText = stpstring$(istp%)
@@ -341,9 +340,13 @@ Else
 FormPLOTHISTO_GS.Graph1.LegendText = "Fluorescence of/by beta lines included"
 End If
 
-If CorrectionFlag% > 0 And CorrectionFlag% <= 4 Then
+If CorrectionFlag% >= 1 And CorrectionFlag% <= 4 Then
 FormPLOTHISTO_GS.Graph1.LegendText = empstring$(EmpiricalAlphaFlag%)
 End If
+
+' Using fundamental parameters
+ElseIf CorrectionFlag% = 5 Then
+FormPLOTHISTO_GS.Graph1.LegendText = "Using Fundamental Parameters"
 
 ' Using Penepma derived k-ratios alpha factors
 Else
@@ -353,8 +356,6 @@ Else
     FormPLOTHISTO_GS.Graph1.LegendText = "Using Penepma k-ratios if available...(" & Format$(PenepmaKratiosLimitValue!) & " % limit)"
     End If
 End If
-End If
-
 End If
 
 ' Calculate average and standard deviation
@@ -534,8 +535,7 @@ FormPLOTHISTO_PE.Graph1.LegendText = "Maximum Mass-Electron Zbar Difference" & S
 End If
 
 ' Correction options
-If CorrectionFlag% >= 0 And CorrectionFlag% <= 4 Then
-If UsePenepmaKratiosFlag = 1 Then
+If CorrectionFlag% = 0 Or (CorrectionFlag% >= 1 And CorrectionFlag% <= 4 And UsePenepmaKratiosFlag% = 1) Then
 FormPLOTHISTO_GS.Graph1.LegendText = bscstring$(ibsc%)
 FormPLOTHISTO_GS.Graph1.LegendText = mipstring$(imip%)
 FormPLOTHISTO_GS.Graph1.LegendText = stpstring$(istp%)
@@ -551,9 +551,13 @@ Else
 FormPLOTHISTO_GS.Graph1.LegendText = "Fluorescence of/by beta lines included"
 End If
 
-If CorrectionFlag% > 0 And CorrectionFlag% <= 4 Then
+If CorrectionFlag% >= 1 And CorrectionFlag% <= 4 Then
 FormPLOTHISTO_GS.Graph1.LegendText = empstring$(EmpiricalAlphaFlag%)
 End If
+
+' Using fundamental parameters
+ElseIf CorrectionFlag% = 5 Then
+FormPLOTHISTO_GS.Graph1.LegendText = "Using Fundamental Parameters"
 
 ' Using Penepma derived k-ratios alpha factors
 Else
@@ -563,8 +567,6 @@ Else
     FormPLOTHISTO_GS.Graph1.LegendText = "Using Penepma k-ratios if available...(" & Format$(PenepmaKratiosLimitValue!) & " % limit)"
     End If
 End If
-End If
-
 End If
 
 ' Calculate average and standard deviation

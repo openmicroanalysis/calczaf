@@ -11,10 +11,8 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-' X-ray line files
-' XLINE1.DAT, XEDGE1.DAT, XFLUR1.DAT    Johnson and White tables (default)
-' XLINE2.DAT, XEDGE2.DAT, XFLUR2.DAT    Armstrong (CITZAF) tables
-Dim XrayType As Integer ' 1=Xray,2=Edge,3=Flur
+' X-ray line files from Johnson and White tables
+Dim XrayType As Integer ' 1=Xray, 2=Edge, 3=Flur
 
 Dim XrayLastElement As Integer
 Dim XrayLastXray As Integer
@@ -28,7 +26,7 @@ Const MAC_FILE_RECORD_LENGTH% = 2400
 Const XRAY_FILE_RECORD_LENGTH% = 188
 
 Sub EditConvertElemInfoDat()
-' ConvertELEMINFO.DAT (Armstrong) to XLINE2.DAT, XEDGE2.DAT, XFLUR2.DAT
+' Convert ELEMINFO.DAT (Armstrong) to XLINE.DAT, XEDGE.DAT, XFLUR.DAT
 
 ierror = False
 On Error GoTo EditConvertElemInfoDatError
@@ -47,14 +45,19 @@ Dim flurow As TypeFlur
 eleminfofile$ = ProgramPath$ & "ELEMINFO.DAT"
 If Dir$(eleminfofile$) = vbNullString Then GoTo EditConvertElemInfoDatNotFound
 
-' Open x-ray edge file
-Open ProgramPath$ & "XEDGE2.DAT" For Random Access Write As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+' Make CITZAF folder is not found
+If Dir$(ProgramPath$ & "\CITZAF", vbDirectory) = vbNullString Then
+MkDir ProgramPath$ & "\CITZAF"
+End If
 
 ' Open x-ray line file
-Open ProgramPath$ & "XLINE2.DAT" For Random Access Write As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+Open ProgramPath$ & "\CITZAF\XLINE.DAT" For Random Access Write As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Open x-ray edge file
+Open ProgramPath$ & "\CITZAF\XEDGE.DAT" For Random Access Write As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray flur file
-Open ProgramPath$ & "XFLUR2.DAT" For Random Access Write As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+Open ProgramPath$ & "\CITZAF\XFLUR.DAT" For Random Access Write As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Write all zeros to file first
 For i% = 1 To MAXELM% + 2
@@ -140,7 +143,7 @@ Close #XLineFileNumber%
 Close #XFlurFileNumber%
 
 ' Inform user
-msg$ = "File " & eleminfofile$ & " converted to XLINE2.DAT, XEDGE2.DAT and XFLUR2.DAT"
+msg$ = "File " & eleminfofile$ & " converted to CITZAF\XLINE.DAT, CITZAF\XEDGE.DAT and CITZAF\XFLUR.DAT"
 MsgBox msg$, vbOKOnly + vbInformation, "EditConvertElemInfoDat"
 
 Exit Sub

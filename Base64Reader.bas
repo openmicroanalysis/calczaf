@@ -93,8 +93,8 @@ date2$ = Base64ReaderGetINIString$(lpFileName$, "Measured/Time", "End", FileDate
 If ierror Then Exit Sub
 
 ' Convert to MS date
-Call MiscReplaceStringA$(date1$, "T", " ")
-Call MiscReplaceStringA$(date2$, "T", " ")
+date1$ = Replace$(date1$, "T", " ")
+date2$ = Replace$(date2$, "T", " ")
 var1 = CDate(date1$)
 var2 = CDate(date2$)
 timeofacq1# = CVDate(var1)

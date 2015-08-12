@@ -64,8 +64,7 @@ Version! = UsDt("Version")
 UsDt.Close
 
 ' Replace single quotes (for Irish surnames)
-Call MiscReplaceString(tusername$, "'", "?")
-If ierror Then Exit Sub
+tusername$ = Replace$(tusername$, "'", "?")
 
 ' Define search based on user name
 SQLQ$ = "SELECT User.* FROM User WHERE User.Names Like '" & Trim$(tusername$) & "*' "

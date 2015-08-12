@@ -1459,7 +1459,7 @@ Const cdl_MaxBuffer = 512
     .flags = tFlags&
     
     ' Replace "|" with null character
-    tFilter$ = MiscReplaceStringSub(tFilter$, "|", vbNullChar)
+    tFilter$ = Replace$(tFilter$, "|", vbNullChar)
     .lpstrFilter = tFilter$
     .nFilterIndex = 1
     
@@ -1558,19 +1558,16 @@ If Dir$(sDVD$ & "Probe Software Web Site", vbDirectory) = vbNullString Then GoTo
 End If
 
 ' Remove http"/
-astring$ = MiscReplaceStringSub(sURL$, "http:/", "")
-If ierror Then Exit Sub
+astring$ = Replace$(sURL$, "http:/", vbNullString)
 
 ' Load specific DVD path
 aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site" & astring$
 
 ' Change backslashes to forward slashes
-aURL$ = MiscReplaceStringSub(aURL$, "\", "/")
-If ierror Then Exit Sub
+aURL$ = Replace$(aURL$, "\", "/")
 
 ' Change index.php to index.html (no php support from DVD to resolve URLs to specific boards and topics)
-aURL$ = MiscReplaceStringSub(aURL$, "index.php", "index.html")
-If ierror Then Exit Sub
+aURL$ = Replace$(aURL$, "index.php", "index.html")
 
 ' Temp code to fix local browse issue for smf links
 n% = InStr(aURL$, "/smf/")
