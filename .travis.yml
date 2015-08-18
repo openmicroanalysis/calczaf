@@ -1,0 +1,10 @@
+sudo: false
+language: python
+python: '3.4'
+install:
+- git clone git@github.com:openmicroanalysis/calczaf-github-sync.git $HOME/temp
+- python $HOME/temp/setup.py install
+script:
+- ls
+notifications:
+  email: false
