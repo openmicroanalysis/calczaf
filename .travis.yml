@@ -6,6 +6,11 @@ install:
 - cd $HOME/temp/calczaf-github-sync
 - python setup.py install
 script:
+- pwd
+- ls
 - calczaf_github_sync --help
 notifications:
   email: false
+after_success:
+  - chmod 600 .travis/deploy_key.pem # this key should have push access
+  - ssh-add .travis/deploy_key.pem
