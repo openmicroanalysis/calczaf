@@ -6,7 +6,7 @@ install:
 - cd $HOME/temp/calczaf-github-sync
 - python setup.py install
 script:
-- cd $HOME/openmicroanalysis/calczaf
+- cd $TRAVIS_BUILD_DIR
 - ls
 - calczaf_github_sync --help
 notifications:
