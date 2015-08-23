@@ -9,9 +9,11 @@ script:
   - cd $TRAVIS_BUILD_DIR
   - pwd
   - ls
+  - git config --global user.email "travis@openmicroanalysis.org"
+  - git config --global user.name "Travis"
   - calczaf_github_sync -v -w . --no-push
 notifications:
-  email: false
+  - email: false
 after_success:
   - chmod 600 .travis/deploy_key.pem # this key should have push access
   - ssh-add .travis/deploy_key.pem
