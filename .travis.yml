@@ -9,18 +9,14 @@ install:
   $TRAVIS_BUILD_DIR/../calczaf-github-sync
 - cd $TRAVIS_BUILD_DIR/../calczaf-github-sync
 - python setup.py install
-script:
-- cd $TRAVIS_BUILD_DIR
-- git config --global user.email "travis@openmicroanalysis.org"
-- git config --global user.name "Travis"
-- calczaf_github_sync -v -w . --no-push
-notifications:
-- email: false
-after_success:
 - chmod 600 .travis/deploy_key
 - eval `ssh-agent -s`
 - ssh-add .travis/deploy_key
 - git config --global push.default simple
-- git remote add deploy git@github.com:openmicroanalysis/calczaf.git
-- git push --all deploy
-
+- git config --global user.email "travis@openmicroanalysis.org"
+- git config --global user.name "Travis"
+script:
+- cd $TRAVIS_BUILD_DIR
+- calczaf_github_sync -v -w .
+notifications:
+  email: false
