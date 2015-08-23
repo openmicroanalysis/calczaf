@@ -22,5 +22,5 @@ after_success:
 - ssh-add .travis/deploy_key
 - git config --global push.default simple
 - git remote add deploy git@github.com:openmicroanalysis/calczaf.git
-- git push deploy HEAD
+- git push --all deploy
 
