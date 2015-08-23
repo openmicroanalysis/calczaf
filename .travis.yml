@@ -2,6 +2,7 @@ sudo: false
 language: python
 python: '3.4'
 before_install:
+  - cd $TRAVIS_BUILD_DIR
   - chmod 600 .travis/deploy_key.pem # this key should have push access
   - ssh-add .travis/deploy_key.pem
 install:
