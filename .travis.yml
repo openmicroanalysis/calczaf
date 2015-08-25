@@ -17,6 +17,7 @@ install:
 - git config --global user.email "travis@openmicroanalysis.org"
 script:
 - python .travis/sync.py --verbose --workdir . --no-push
+- git status
 - git push git@github.com:openmicroanalysis/calczaf.git travis
 notifications:
   email: false
