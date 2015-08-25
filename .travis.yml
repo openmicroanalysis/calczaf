@@ -18,7 +18,7 @@ install:
 script:
 - python .travis/sync.py --verbose --workdir . --no-push
 - git status
-- git push --all git@github.com:openmicroanalysis/calczaf.git travis
+- git push --all
 notifications:
   email: false
 
