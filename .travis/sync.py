@@ -91,7 +91,7 @@ def commit(workdir, message, tag, push=True):
 
     if push:
         logger.info('Running git push...')
-        args = ['git', 'push', '--all' 'https://github.com/openmicroanalysis/calczaf.git']
+        args = ['git', 'push', '--all', 'https://github.com/openmicroanalysis/calczaf.git']
         subprocess.check_call(args, cwd=workdir)
         logger.info('Running git push... DONE')
 
