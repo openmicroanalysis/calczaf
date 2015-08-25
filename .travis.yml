@@ -19,7 +19,8 @@ install:
 script:
 - python .travis/sync.py --verbose --workdir . --no-push
 - git diff --stat --cached origin
-- git push --all
+- git branch
+- git push origin
 notifications:
   email: false
 
