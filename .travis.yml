@@ -2,17 +2,21 @@ sudo: false
 language: python
 python:
 - '3.4'
-install:
-- openssl aes-256-cbc -K $encrypted_f4af44f35426_key -iv $encrypted_f4af44f35426_iv
+env:
+  global:
+    secure: Njt100tqGzcB56qC5McDWtYNRYhu0ZyQ1SlFI1hV1S0LWzGgcwISDHSHdpgnHhil7t99BU1JEA26Fzg4AGGo2MQxNWJwyxKV3I1k62yCMQh/vJEz89b2R/ked/NuLhYlRtO25SSecrDfvbZH0rOnR2fS24mlaXQ2jVolA4y5Dbdw6AUwN+7XNZHbh3IEtxTADGxhWj/q5oDDhKuSbFhu4yC503lSJ9PmIC3Zd7fCXp7rGwSRtYjsEzi3RJz2O8z09HqgrKXk0ZyKZTuEWjuzLt4tVAtxneR3tmzgNF+t+PMUvUogyUyT7ePbS7f2yiJRw9g9Z35AYEzWo2IvBjspN1piWoOnTRVGs4aqD3Nx0tRagV9LpGnFI8A9Ct+aHkVgDcDNWQIHi978WD8oQWzxANQzOMYlibg2VIPFsis7PfOYTtmfRmEy1d3ibC2zVybTXLL+sdIRBkj2pi119WKB9R3wASV+Wu8DDF7O2BYHCqMIwxEMY0Vw7XkbBXbci5IMm8V871bxoK5ISM9kS3XcQBVye5vKZy5QXut5lsVdezXQurO23VC3+l6UKJbUnwJzFUZ0W95tiht54hD3TrLkYAftav8A6iDJQxeH3rO5WUH8XT++GDV1Gd4T9nggFPDP/mDZ7BSHtoT3lbBuHywZresRuKWe8rjRn2e2V9ylU4Q=
+before_install:
+- openssl aes-256-cbc -K $encrypted_9783bb8d8f41_key -iv $encrypted_9783bb8d8f41_iv
   -in .travis/deploy_key.enc -out .travis/deploy_key -d
 - chmod 600 .travis/deploy_key
 - eval `ssh-agent -s`
 - ssh-add .travis/deploy_key
+install:
 - git config --global push.default simple
+- git config --global user.name "$travis"
 - git config --global user.email "travis@openmicroanalysis.org"
-- git config --global user.name "Travis"
 script:
-- ls -la
-- python .travis/sync.py -v -w .
+- python .travis/sync.py --verbose --workdir .
 notifications:
   email: false
+
