@@ -13,7 +13,7 @@ before_install:
 - ssh-add .travis/deploy_key
 install:
 - git config --global push.default simple
-- git config --global user.name "$travis"
+- git config --global user.name "travis"
 - git config --global user.email "travis@openmicroanalysis.org"
 script:
 - python .travis/sync.py --verbose --workdir .
