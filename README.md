@@ -1,9 +1,7 @@
 # CalcZAF
 
-EPMA Calculation Utility
-
-(c) Copyright 1995-2015 by John J. Donovan
-
+EPMA Calculation Utility<br/>
+(c) Copyright 1995-2015 by John J. Donovan<br/>
 Licensed under the MIT license.
 
 This repository contains a copy of the CalcZAF source code as officially distributed from the Probe Software inc. [website](http://probesoftware.com/download/CALCZAF_SOURCE-E2.ZIP).
