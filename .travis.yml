@@ -17,6 +17,7 @@ install:
 - git config --global user.email "travis@openmicroanalysis.org"
 - git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
 script:
+- git checkout master
 - python .travis/sync.py --verbose --workdir . --no-push
 - git diff --stat --cached origin
 - git branch
