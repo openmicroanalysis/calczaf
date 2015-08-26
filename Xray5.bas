@@ -58,7 +58,7 @@ Exit Sub
 
 End Sub
 
-Sub XrayLoad(Mode As Integer, method As Integer, klm As Single, keV As Single, xstart As Single, xstop As Single)
+Sub XrayLoad(mode As Integer, method As Integer, klm As Single, keV As Single, xstart As Single, xstop As Single)
 ' Calls XrayLoadDatabase to load the ListXray
 ' mode = 1 enable "Graph Selected" button
 ' mode = 2 disable "Graph Selected" button
@@ -87,7 +87,7 @@ FormXRAY.CheckAbsorptionEdges.Value = vbUnchecked
 End If
 
 ' Set "Graph Selected" button
-If Mode% = 1 Then
+If mode% = 1 Then
 FormXRAY.CommandGraphSelected.Enabled = True
 Else
 FormXRAY.CommandGraphSelected.Enabled = False
@@ -379,7 +379,7 @@ Exit Sub
 End Sub
 
 Sub XrayOpenNewMDB()
-' This routine reads file XRAY.ALL and converts it to a .MDB file
+' This routine reads file XRAY.ALL and converts it to XRAY.MDB file (use MakXray.exe to convert XrayData5_8_99.txt to xray.dat, then eventually to xray.all)
 
 ierror = False
 On Error GoTo XrayOpenNewMDBError
@@ -407,7 +407,7 @@ Exit Sub
 End If
 End If
 
-' Check for XRAY.ALL (See MakeXray.Exe)
+' Check for XRAY.ALL (See MakeXray.Exe) (XRAY.ALL is not distributed, so do not use ProgramPath$ or ApplicationCommonAppData$)
 xrayfile$ = app.Path & "\XRAY.ALL"
 If Dir$(xrayfile$) = vbNullString Then GoTo XrayOpenNewMDBNoXrayFile
 
@@ -558,7 +558,7 @@ Exit Function
 
 End Function
 
-Sub XraySpecifyRange(Mode As Integer)
+Sub XraySpecifyRange(mode As Integer)
 ' Specify spectrum range in FormXRAY list
 ' mode = 1 element change
 ' mode = 2 xray change
@@ -578,7 +578,7 @@ ip% = IPOS1(MAXELM%, sym$, Symlo$())
 If ip% = 0 Then Exit Sub
 
 ' Load default x-ray if element changed
-If Mode% = 1 Then
+If mode% = 1 Then
 FormXRAY.ComboXry.Text = Deflin$(ip%)
 FormXRAY.ComboOrder.Text = Format$(1)   ' assume first order
 End If

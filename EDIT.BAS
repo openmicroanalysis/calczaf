@@ -42,22 +42,22 @@ Dim edgrow As TypeEdge
 Dim flurow As TypeFlur
 
 ' Check for file
-eleminfofile$ = ProgramPath$ & "ELEMINFO.DAT"
+eleminfofile$ = ApplicationCommonAppData$ & "ELEMINFO.DAT"
 If Dir$(eleminfofile$) = vbNullString Then GoTo EditConvertElemInfoDatNotFound
 
 ' Make CITZAF folder is not found
-If Dir$(ProgramPath$ & "\CITZAF", vbDirectory) = vbNullString Then
-MkDir ProgramPath$ & "\CITZAF"
+If Dir$(ApplicationCommonAppData$ & "\CITZAF", vbDirectory) = vbNullString Then
+MkDir ApplicationCommonAppData$ & "\CITZAF"
 End If
 
-' Open x-ray line file
-Open ProgramPath$ & "\CITZAF\XLINE.DAT" For Random Access Write As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+' Open x-ray line file (note CITZAF subfolder!)
+Open ApplicationCommonAppData$ & "\CITZAF\XLINE.DAT" For Random Access Write As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray edge file
-Open ProgramPath$ & "\CITZAF\XEDGE.DAT" For Random Access Write As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+Open ApplicationCommonAppData$ & "\CITZAF\XEDGE.DAT" For Random Access Write As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray flur file
-Open ProgramPath$ & "\CITZAF\XFLUR.DAT" For Random Access Write As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+Open ApplicationCommonAppData$ & "\CITZAF\XFLUR.DAT" For Random Access Write As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Write all zeros to file first
 For i% = 1 To MAXELM% + 2
@@ -188,26 +188,25 @@ ReDim MACs(1 To elementsperline%) As Single
 ReDim inputfilenumbers(1 To 3) As Integer   ' K, L and M files
 
 ' Check for files
-macmatkfile$ = ProgramPath$ & "MACMATK.DAT"
+macmatkfile$ = ApplicationCommonAppData$ & "MACMATK.DAT"
 If Dir$(macmatkfile$) = vbNullString Then GoTo EditConvertMacMatDatKNotFound
-macmatlfile$ = ProgramPath$ & "MACMATL.DAT"
+macmatlfile$ = ApplicationCommonAppData$ & "MACMATL.DAT"
 If Dir$(macmatlfile$) = vbNullString Then GoTo EditConvertMacMatDatLNotFound
-macmatmfile$ = ProgramPath$ & "MACMATM.DAT"
+macmatmfile$ = ApplicationCommonAppData$ & "MACMATM.DAT"
 If Dir$(macmatmfile$) = vbNullString Then GoTo EditConvertMacMatDatMNotFound
 
 Dim macrow As TypeMu
         
 ' Load input file numbers
-inputfilenumbers%(1) = Temp1FileNumber%
-inputfilenumbers%(2) = Temp2FileNumber%
-inputfilenumbers%(3) = Temp3FileNumber%
-
+inputfilenumbers%(1) = FreeFile()
 Open macmatkfile$ For Input As #inputfilenumbers%(1)
+inputfilenumbers%(2) = FreeFile()
 Open macmatlfile$ For Input As #inputfilenumbers%(2)
+inputfilenumbers%(3) = FreeFile()
 Open macmatmfile$ For Input As #inputfilenumbers%(3)
 
 exportfilenumber% = FreeFile()
-Open ProgramPath$ & "CITZMU.DAT" For Random Access Read Write As #exportfilenumber% Len = MAC_FILE_RECORD_LENGTH%
+Open ApplicationCommonAppData$ & "CITZMU.DAT" For Random Access Read Write As #exportfilenumber% Len = MAC_FILE_RECORD_LENGTH%
 
 ' Write all zeros to file first
 For i% = 1 To MAXELM%
@@ -298,7 +297,7 @@ msg$ = "Files :" & vbCrLf
 msg$ = msg$ & macmatkfile$ & vbCrLf
 msg$ = msg$ & macmatlfile$ & vbCrLf
 msg$ = msg$ & macmatmfile$ & vbCrLf
-msg$ = msg$ & "converted to " & ProgramPath$ & "CITZMU.DAT"
+msg$ = msg$ & "converted to " & ApplicationCommonAppData$ & "CITZMU.DAT"
 MsgBox msg$, vbOKOnly + vbInformation, "EditConvertMacMatDat"
 
 Exit Sub
@@ -349,7 +348,7 @@ If iray% < 1 Or iray% > MAXRAY% - 1 Then Exit Sub
 If iabsorb% < 1 Or iabsorb% > MAXELM% Then Exit Sub
 
 ' Open MAC file
-MACFile$ = ProgramPath$ & macstring2$(MACTypeFlag%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 
 nrec% = ielm%
@@ -585,7 +584,7 @@ If iray% < 1 Or iray% > MAXRAY% Then Exit Sub
 If iabsorb% < 1 Or iabsorb% > MAXELM% Then Exit Sub
 
 ' Open MAC file
-MACFile$ = ProgramPath$ & macstring2$(MACTypeFlag%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 Open MACFile$ For Random Access Read Write As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 
 nrec% = ielm%
@@ -987,7 +986,7 @@ End If
 
 ' If creating user defined MAC table double check if it already exists
 If mode% = 5 Then
-MACFile$ = ProgramPath$ & macstring2$(7) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & ".DAT"
 If Dir$(MACFile$) <> vbNullString Then
 msg$ = "A user defined MAC table (" & MACFile$ & ") already exists. Are you sure you want to create a new USERMAC.DAT MAC table and overwrite any changes that you may have manually made to that MAC table?"
 response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditMakeNewMACTable")
@@ -1025,8 +1024,8 @@ FormMAC.Show vbModal
 If icancelload Then Exit Sub
 
 ' Copy the file only and exit
-tfilename$ = ProgramPath$ & macstring2$(MACTypeFlag%) & ".DAT"      ' user selected basis for new user defined MAC table
-MACFile$ = ProgramPath$ & macstring2$(7) & ".DAT"       ' user defined MAC file
+tfilename$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"      ' user selected basis for new user defined MAC table
+MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & ".DAT"       ' user defined MAC file
 FileCopy tfilename$, MACFile$       ' copy the selected file to the new user defined table
 
 msg$ = MACFile$ & " has been successfully created (based on the existing " & tfilename$ & " file). You may now edit it to add your own user defined MAC values or update it using a user defined update text file with the proper format."
@@ -1036,16 +1035,16 @@ End If
 
 ' Open output file
 If mode% = 1 Then
-MACFile$ = ProgramPath$ & "MCMASTER.DAT"
+MACFile$ = ApplicationCommonAppData$ & "MCMASTER.DAT"
 End If
 If mode% = 2 Then
-MACFile$ = ProgramPath$ & "MAC30.DAT"
+MACFile$ = ApplicationCommonAppData$ & "MAC30.DAT"
 End If
 If mode% = 3 Then
-MACFile$ = ProgramPath$ & "MACJTA.DAT"
+MACFile$ = ApplicationCommonAppData$ & "MACJTA.DAT"
 End If
 If mode% = 4 Then
-MACFile$ = ProgramPath$ & "FFAST.DAT"
+MACFile$ = ApplicationCommonAppData$ & "FFAST.DAT"
 End If
 
 Open MACFile$ For Random Access Write As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
@@ -1177,7 +1176,7 @@ itemp% = MACTypeFlag%
 Call IOWriteLog(vbNullString)
 For i% = 1 To MAXMACTYPE%
 MACTypeFlag% = i%
-MACFile$ = ProgramPath$ & macstring2$(MACTypeFlag%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 
 If Dir$(MACFile$) <> vbNullString Then
 Call EditGetMACData(ielm%, iray%, iabsorb%, temp!)
@@ -1219,6 +1218,9 @@ End Sub
 
 Sub EditConvertTextToDAT(tForm As Form)
 ' Convert element text file to data file
+'   mode% = 0 emission line energies
+'   mode% = 1 edge energies
+'   mode% = 2 fluorescent yields
 
 ierror = False
 On Error GoTo EditConvertTextToDATError
@@ -1230,33 +1232,37 @@ Dim x6row As TypeEnergy
 Dim x9row As TypeEdge
 
 ' Check for input file
-tfilename1$ = ProgramPath$ & "FLUR_YIELD.TXT"
+'tfilename1$ = ApplicationCommonAppData$ & "XRAY_EMISSION.TXT"
+'tfilename1$ = ApplicationCommonAppData$ & "XRAY_EDGE.TXT"
+tfilename1$ = ApplicationCommonAppData$ & "FLUR_YIELD.TXT"
 Call IOGetFileName(Int(2), "TXT", tfilename1$, tForm)
 If ierror Then Exit Sub
 
 ' Check for output file
-tfilename2$ = ProgramPath$ & "XFLUR3.DAT"
+'tfilename2$ = ApplicationCommonAppData$ & "XLINE1.DAT"
+'tfilename2$ = ApplicationCommonAppData$ & "XEDGE1.DAT"
+tfilename2$ = ApplicationCommonAppData$ & "XFLUR1.DAT"
 Call IOGetFileName(Int(1), "DAT", tfilename2$, tForm)
 If ierror Then Exit Sub
 
 If Dir$(tfilename1$) = vbNullString Then GoTo EditConvertTextToDATNotFound
 
 ' Determine mode
-If InStr(UCase$(tfilename2$), "EDGE") > 0 Then
-mode% = 1
-Else
-mode% = 0
-End If
+mode% = -1
+If InStr(UCase$(tfilename2$), "LINE") > 0 Then mode% = 0                               ' emission line energies
+If InStr(UCase$(tfilename2$), "EDGE") > 0 Then mode% = 1                               ' edge energies
+If InStr(UCase$(tfilename2$), "FLUR") > 0 Then mode% = 2                               ' fluorescent yields
+If mode% = -1 Then GoTo EditConvertTextToDATUnknownFormat
 
-' Open x-ray file
+' Open output x-ray file
 Open tfilename2$ For Random Access Write As #Temp2FileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Write all zeros to file first
 For i% = 1 To MAXELM% + 2
 nrec% = i%
-If mode% = 0 Then
+If mode% = 0 Then                               ' emission line energies or fluorescent yields
 Put #Temp2FileNumber%, nrec%, x6row
-Else
+Else                                            ' edge energies
 Put #Temp2FileNumber%, nrec%, x9row
 End If
 Next i%
@@ -1273,29 +1279,38 @@ nrec% = i% + 2
 
 ' Read symbol and data
 Line Input #Temp1FileNumber%, astring$
-If mode% = 0 Then
+If mode% = 0 Then                               ' emission line energies or fluorescent yields
+x6row.energy!(1) = Val(Mid$(astring, 11, 9)) * EVPERKEV#
+x6row.energy!(2) = Val(Mid$(astring, 20, 9)) * EVPERKEV#
+x6row.energy!(3) = Val(Mid$(astring, 29, 9)) * EVPERKEV#
+x6row.energy!(4) = Val(Mid$(astring, 38, 9)) * EVPERKEV#
+x6row.energy!(5) = Val(Mid$(astring, 47, 9)) * EVPERKEV#
+x6row.energy!(6) = Val(Mid$(astring, 56, 9)) * EVPERKEV#
+ElseIf mode% = 1 Then                           ' edge energies
+x9row.energy!(1) = Val(Mid$(astring, 11, 9)) * EVPERKEV#
+x9row.energy!(2) = Val(Mid$(astring, 20, 9)) * EVPERKEV#
+x9row.energy!(3) = Val(Mid$(astring, 29, 9)) * EVPERKEV#
+x9row.energy!(4) = Val(Mid$(astring, 38, 9)) * EVPERKEV#
+x9row.energy!(5) = Val(Mid$(astring, 47, 9)) * EVPERKEV#
+x9row.energy!(6) = Val(Mid$(astring, 56, 9)) * EVPERKEV#
+x9row.energy!(7) = Val(Mid$(astring, 65, 9)) * EVPERKEV#
+x9row.energy!(8) = Val(Mid$(astring, 74, 9)) * EVPERKEV#
+x9row.energy!(9) = Val(Mid$(astring, 83, 9)) * EVPERKEV#
+ElseIf mode% = 2 Then                           ' fluorescent yields
 x6row.energy!(1) = Val(Mid$(astring, 11, 9))
 x6row.energy!(2) = Val(Mid$(astring, 20, 9))
 x6row.energy!(3) = Val(Mid$(astring, 29, 9))
 x6row.energy!(4) = Val(Mid$(astring, 38, 9))
 x6row.energy!(5) = Val(Mid$(astring, 47, 9))
 x6row.energy!(6) = Val(Mid$(astring, 56, 9))
-Else
-x9row.energy!(1) = Val(Mid$(astring, 11, 9))
-x9row.energy!(2) = Val(Mid$(astring, 20, 9))
-x9row.energy!(3) = Val(Mid$(astring, 29, 9))
-x9row.energy!(4) = Val(Mid$(astring, 38, 9))
-x9row.energy!(5) = Val(Mid$(astring, 47, 9))
-x9row.energy!(6) = Val(Mid$(astring, 56, 9))
-x9row.energy!(7) = Val(Mid$(astring, 65, 9))
-x9row.energy!(8) = Val(Mid$(astring, 74, 9))
-x9row.energy!(9) = Val(Mid$(astring, 83, 9))
 End If
 
 If mode% = 0 Then
 Put #Temp2FileNumber%, nrec%, x6row
-Else
+ElseIf mode% = 1 Then
 Put #Temp2FileNumber%, nrec%, x9row
+ElseIf mode% = 2 Then
+Put #Temp2FileNumber%, nrec%, x6row
 End If
 
 Next i%
@@ -1304,7 +1319,8 @@ Close #Temp1FileNumber%
 Close #Temp2FileNumber%
 
 ' Inform user
-msg$ = "File " & tfilename1$ & " converted to " & tfilename2$
+msg$ = "File " & tfilename1$ & " converted to " & tfilename2$ & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "You may want to rename the new file to the default filename to utilize it in CalcZAF or Probe for EPMA quantitative calculations."
 MsgBox msg$, vbOKOnly + vbInformation, "EditConvertTextToDAT"
 
 Exit Sub
@@ -1320,6 +1336,142 @@ Exit Sub
 EditConvertTextToDATNotFound:
 msg$ = "File " & tfilename1$ & " was not found"
 MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertTextToDAT"
+ierror = True
+Exit Sub
+
+EditConvertTextToDATUnknownFormat:
+msg$ = "Input/output file format could not be determined. Make sure the filenames contain the string LINE, EDGE or FLUR to identify the data type."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertTextToDAT"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub EditConvertDATToText(tForm As Form)
+' Convert element binary DAT file to text file
+'   mode% = 0 emission line energies
+'   mode% = 1 edge energies
+'   mode% = 2 fluorescent yields
+
+ierror = False
+On Error GoTo EditConvertDATToTextError
+
+Dim i As Integer, nrec As Integer, mode As Integer
+Dim astring As String, tfilename1 As String, tfilename2 As String
+
+Dim x6row As TypeEnergy
+Dim x9row As TypeEdge
+
+' Check for input file
+tfilename1$ = ApplicationCommonAppData$ & "XLINE.DAT"
+'tfilename1$ = ApplicationCommonAppData$ & "XEDGE.DAT"
+'tfilename1$ = ApplicationCommonAppData$ & "XFLUR.DAT"
+Call IOGetFileName(Int(2), "DAT", tfilename1$, tForm)
+If ierror Then Exit Sub
+
+' Check for output file
+tfilename2$ = ApplicationCommonAppData$ & "XRAY_EMISSION.TXT"
+'tfilename2$ = ApplicationCommonAppData$ & "XRAY_EDGE.TXT"
+'tfilename2$ = ApplicationCommonAppData$ & "FLUR_YIELD.TXT"
+Call IOGetFileName(Int(1), "TXT", tfilename2$, tForm)
+If ierror Then Exit Sub
+
+If Dir$(tfilename1$) = vbNullString Then GoTo EditConvertDATToTextNotFound
+
+' Determine mode
+mode% = -1
+If InStr(UCase$(tfilename1$), "LINE") > 0 Then mode% = 0                               ' emission line energies
+If InStr(UCase$(tfilename1$), "EDGE") > 0 Then mode% = 1                               ' edge energies
+If InStr(UCase$(tfilename1$), "FLUR") > 0 Then mode% = 2                               ' fluorescent yields
+If mode% = -1 Then GoTo EditConvertDATToTextUnknownFormat
+
+' Open binary input DAT file
+Open tfilename1$ For Random Access Read As #Temp1FileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Open x-ray output text file
+Open tfilename2$ For Output As #Temp2FileNumber%
+
+' Print text file header (9 spaces for each column)
+astring$ = Format$("Element", a90$)
+If mode% = 0 Then
+For i% = 1 To MAXRAY_OLD%
+astring$ = astring$ & Format$(Xraylo$(i%), a90$)
+Next i%
+
+ElseIf mode% = 1 Then
+For i% = 1 To MAXEDG%
+astring$ = astring$ & Format$(Edglo$(i%), a90$)
+Next i%
+
+ElseIf mode% = 2 Then
+For i% = 1 To MAXRAY_OLD%
+astring$ = astring$ & Format$(Xraylo$(i%), a90$)
+Next i%
+End If
+Print #Temp2FileNumber%, astring$
+
+' Get each element record (first two records are just element symbols)
+For nrec% = 3 To MAXELM% + 2
+If mode% = 0 Then                           ' emission line energies
+'Get #Temp1FileNumber%, nrec%, x6row
+ElseIf mode% = 1 Then                       ' edge energies
+'Get #Temp1FileNumber%, nrec%, x9row
+ElseIf mode% = 2 Then                       ' fluorescent yields
+'Get #Temp1FileNumber%, nrec%, x6row
+End If
+
+' Write element symbol
+astring$ = Format$(Symup$(nrec% - 2), a90$)
+
+' Emission lines
+If mode% = 0 Then
+For i% = 1 To MAXRAY_OLD%
+astring$ = astring$ & Format$(MiscAutoFormat$(x6row.energy!(i%) / EVPERKEV#), a90$)
+Next i%
+
+' Edge energies
+ElseIf mode% = 1 Then
+For i% = 1 To MAXEDG%
+astring$ = astring$ & Format$(MiscAutoFormat$(x9row.energy!(i%) / EVPERKEV#), a90$)
+Next i%
+
+' Fluorescent yields
+ElseIf mode% = 2 Then
+For i% = 1 To MAXRAY_OLD%
+astring$ = astring$ & Format$(MiscAutoFormat$(x6row.energy!(i%)), a90$)
+Next i%
+End If
+
+' Write to text file
+Print #Temp2FileNumber%, astring$
+Next nrec%
+        
+Close #Temp1FileNumber%
+Close #Temp2FileNumber%
+
+' Inform user
+msg$ = "File " & tfilename1$ & " converted to " & tfilename2$
+MsgBox msg$, vbOKOnly + vbInformation, "EditConvertDATToText"
+
+Exit Sub
+
+' Errors
+EditConvertDATToTextError:
+MsgBox Error$, vbOKOnly + vbCritical, "EditConvertDATToText"
+ierror = True
+Close #Temp1FileNumber%
+Close #Temp2FileNumber%
+Exit Sub
+
+EditConvertDATToTextNotFound:
+msg$ = "File " & tfilename1$ & " was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertDATToText"
+ierror = True
+Exit Sub
+
+EditConvertDATToTextUnknownFormat:
+msg$ = "Input/output file format could not be determined. Make sure the filenames contain the string LINE, EDGE or FLUR to identify the data type."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertDATToText"
 ierror = True
 Exit Sub
 
@@ -1342,12 +1494,12 @@ ReDim mac_values(1 To MAXRAY% - 1) As Single
 Dim macrow As TypeMu
 
 ' Ask user for update file (default = UserMAC.TXT)
-tfilename$ = ProgramPath$ & "USERMAC.TXT"
+tfilename$ = ApplicationCommonAppData$ & "USERMAC.TXT"
 Call IOGetFileName(Int(2), "TXT", tfilename$, tForm)
 If ierror Then Exit Sub
 
 ' If updating user defined MAC table check that it already exists
-MACFile$ = ProgramPath$ & macstring2$(7) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then
 msg$ = "A user defined MAC table (" & MACFile$ & ") does not yet exist. Please first create the file by using the Create New User Defined MAC Table menu."
 MsgBox msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditUpdateUserMACFile"
@@ -1451,22 +1603,32 @@ Exit Sub
 End Sub
 
 Sub EditUpdateXFiles(mode As Integer, tForm As Form)
-' Update an existing XLINE, XEDGE or XFLUR .DAT table with values from a XLINE, XEDGE or XFLUR .TXT file
+' Update an existing XLINE, XEDGE or XFLUR .DAT table with values from a XLINE, XEDGE or XFLUR .TXT file (only for non zero input values!)
+' mode = 1  XLINE
+' mode = 2  XEDGE
+' mode = 3  XFLUR
 
 ierror = False
 On Error GoTo EditUpdateXFilesError
 
-Dim ix As Integer, iz As Integer
+Dim ix As Integer, iz As Integer, tmax As Integer
 Dim line_number As Long
 Dim astring As String, tfilename As String
 Dim response As Integer
 
-Dim tvalues(1 To MAXRAY% - 1) As Single
+Dim tvalues() As Single
+
+' Dimension temp array depending on mode
+If mode% = 1 Or mode% = 2 Then
+ReDim tvalues(1 To MAXRAY_OLD%) As Single
+Else
+ReDim tvalues(1 To MAXEDG%) As Single
+End If
 
 ' Ask user for update file (default = XEDGE.TXT)
-If mode% = 1 Then tfilename$ = ProgramPath$ & "XLINE.TXT"
-If mode% = 2 Then tfilename$ = ProgramPath$ & "XEDGE.TXT"
-If mode% = 3 Then tfilename$ = ProgramPath$ & "XFLUR.TXT"
+If mode% = 1 Then tfilename$ = ApplicationCommonAppData$ & "XLINE.TXT"
+If mode% = 2 Then tfilename$ = ApplicationCommonAppData$ & "XEDGE.TXT"
+If mode% = 3 Then tfilename$ = ApplicationCommonAppData$ & "XFLUR.TXT"
 Call IOGetFileName(Int(2), "TXT", tfilename$, tForm)
 If ierror Then Exit Sub
        
@@ -1481,22 +1643,22 @@ End If
        
 ' Open the input (comma, tab or space delimited) and output files
 Open tfilename$ For Input As #Temp1FileNumber%
-If mode% = 1 Then Open XLineFile$ For Random Access Read Write As #Temp2FileNumber% Len = MAC_FILE_RECORD_LENGTH%
-If mode% = 2 Then Open XEdgeFile$ For Random Access Read Write As #Temp2FileNumber% Len = MAC_FILE_RECORD_LENGTH%
-If mode% = 3 Then Open XFlurFile$ For Random Access Read Write As #Temp2FileNumber% Len = MAC_FILE_RECORD_LENGTH%
 
 ' Read first line of column headings
 Line Input #Temp1FileNumber%, astring
 Call IOWriteLog(astring$)
 
-' Loop on entries (ie = emitting Z, ia = absorbing Z)
+' Loop on element entries
 Call IOStatusAuto(vbNullString)
 icancelauto = False
 line_number& = 0
 Do Until EOF(Temp1FileNumber%)
-Input #Temp1FileNumber%, iz%, tvalues!(1), tvalues!(2), tvalues!(3), tvalues!(4), tvalues!(5), tvalues!(6)
+If mode% = 1 Then Input #Temp1FileNumber%, iz%, tvalues!(1), tvalues!(2), tvalues!(3), tvalues!(4), tvalues!(5), tvalues!(6)
+If mode% = 2 Then Input #Temp1FileNumber%, iz%, tvalues!(1), tvalues!(2), tvalues!(3), tvalues!(4), tvalues!(5), tvalues!(6), tvalues!(7), tvalues!(8), tvalues!(9)
+If mode% = 3 Then Input #Temp1FileNumber%, iz%, tvalues!(1), tvalues!(2), tvalues!(3), tvalues!(4), tvalues!(5), tvalues!(6)
+
 If mode% = 1 Then astring$ = "IZ=" & Format$(iz%) & ", XLINE (Ka, Kb, La, Lb, Ma, Mb) = " & MiscAutoFormat$(tvalues!(1)) & MiscAutoFormat$(tvalues!(2)) & MiscAutoFormat$(tvalues!(3)) & MiscAutoFormat$(tvalues!(4)) & MiscAutoFormat$(tvalues!(5)) & MiscAutoFormat$(tvalues!(6))
-If mode% = 2 Then astring$ = "IZ=" & Format$(iz%) & ", XEDGE (Ka, Kb, La, Lb, Ma, Mb) = " & MiscAutoFormat$(tvalues!(1)) & MiscAutoFormat$(tvalues!(2)) & MiscAutoFormat$(tvalues!(3)) & MiscAutoFormat$(tvalues!(4)) & MiscAutoFormat$(tvalues!(5)) & MiscAutoFormat$(tvalues!(6))
+If mode% = 2 Then astring$ = "IZ=" & Format$(iz%) & ", XEDGE (K, L-I, L-II, L-III, M-I, M-II, M-III, M-IV, M-V) = " & MiscAutoFormat$(tvalues!(1)) & MiscAutoFormat$(tvalues!(2)) & MiscAutoFormat$(tvalues!(3)) & MiscAutoFormat$(tvalues!(4)) & MiscAutoFormat$(tvalues!(5)) & MiscAutoFormat$(tvalues!(6)) & MiscAutoFormat$(tvalues!(7)) & MiscAutoFormat$(tvalues!(8)) & MiscAutoFormat$(tvalues!(9))
 If mode% = 3 Then astring$ = "IZ=" & Format$(iz%) & ", XFLUR (Ka, Kb, La, Lb, Ma, Mb) = " & MiscAutoFormat$(tvalues!(1)) & MiscAutoFormat$(tvalues!(2)) & MiscAutoFormat$(tvalues!(3)) & MiscAutoFormat$(tvalues!(4)) & MiscAutoFormat$(tvalues!(5)) & MiscAutoFormat$(tvalues!(6))
 Call IOWriteLog(astring$)
 line_number& = line_number& + 1
@@ -1504,20 +1666,30 @@ line_number& = line_number& + 1
 ' Check for valid values
 If iz% < 1 Or iz% > MAXELM% Then GoTo EditUpdateXFilesBadEmitter
       
-' Set updated data value
-For ix% = 1 To MAXRAY% - 1
+' Set updated data value for XLINE or XFLUR
+If mode% = 1 Or mode% = 2 Then
+For ix% = 1 To MAXRAY_OLD%
 If tvalues!(ix%) > 0# Then
 Call EditSetXrayData(iz%, ix%, tvalues!(ix%))
 If ierror Then Exit Sub
 End If
 Next ix%
 
+' Set updated data value for XEDGE
+Else
+For ix% = 1 To MAXEDG%
+If tvalues!(ix%) > 0# Then
+Call EditSetXrayData(iz%, ix%, tvalues!(ix%))
+If ierror Then Exit Sub
+End If
+Next ix%
+End If
+
 Call IOStatusAuto("Processing line " & Format$(line_number&) & " of file " & tfilename$ & "...")
 DoEvents
 If icancelauto Then
 Call IOStatusAuto(vbNullString)
 Close #Temp1FileNumber%
-Close #Temp2FileNumber%
 ierror = True
 Exit Sub
 End If
@@ -1525,7 +1697,6 @@ Loop
 
 Call IOStatusAuto(vbNullString)
 Close #Temp1FileNumber%
-Close #Temp2FileNumber%
 
 ' Inform user
 If mode% = 1 Then msg$ = "Table (" & XLineFile$ & ") was updated using values from the user update text file(" & tfilename$ & ")"
@@ -1542,7 +1713,6 @@ MsgBox msg$, vbOKOnly + vbCritical, "EditUpdateXFiles"
 Call IOStatusAuto(vbNullString)
 ierror = True
 Close #Temp1FileNumber%
-Close #Temp2FileNumber%
 Exit Sub
 
 EditUpdateXFilesBadEmitter:
@@ -1553,7 +1723,162 @@ MsgBox msg$, vbOKOnly + vbExclamation, "EditUpdateXFiles"
 Call IOStatusAuto(vbNullString)
 ierror = True
 Close #Temp1FileNumber%
-Close #Temp2FileNumber%
+Exit Sub
+
+End Sub
+
+Sub EditUpdateEdgeLineFlurFiles()
+' This routine (only called once) updates xray files and add records for elements 95 - 100 (nrec 97-102)
+
+' BE SURE TO COPY UNHASHED XLINE.DAT FROM REGISTER FOLDER
+' AFTER STARTING PROGRAM AND THEN RUN UPDATE!!!!!!!!!!!
+
+' From:
+' R. B. Firestone, Table of isotopes, 8th Edition,
+' Vol II: A+151-272, V.S. Shirley, ed.
+' Lawrence Berkeley National Laboratory,
+' John Wiley & Sons, Inc, New York
+
+' H. Kleykamp, "Wavelengths of the M X-Rays of Uranium, Plutonium,
+' and Americium", Z. Naturforsch., 36a, 1388-1390 (1981)
+
+' H. Kleykamp, "X-ray Emission Wavelengths of Argon, Krypton, Xenon
+' and Curium", Z. Naturforsch., 47a, 460-462 (1992).
+
+ierror = False
+On Error GoTo EditUpdateEdgeLineFlurFilesError
+
+Dim nrec As Integer, n As Integer, response As Integer
+
+Dim engrow As TypeEnergy
+Dim edgrow As TypeEdge
+Dim flurow As TypeFlur
+
+msg$ = "Are you sure you want to overwrite the records for elements 95-100 in the x-ray edge (XEDGE.DAT), line (XLINE.DAT) and fluorescent (XFLUR.DAT) data files?"
+response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton1, "EditUpdateEdgeLineFlurFiles")
+If response% = vbCancel Then Exit Sub
+
+' Open x-ray edge file
+Open XEdgeFile$ For Random Access Write As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Open x-ray line file
+Open XLineFile$ For Random Access Write As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Open x-ray flur file
+Open XFlurFile$ For Random Access Write As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Loop on records
+For n% = 95 To 100
+
+If n% = 95 Then
+edgrow.energy!(1) = 124.982 * EVPERKEV#  ' K
+edgrow.energy!(2) = 23.808 * EVPERKEV#  ' L-I
+edgrow.energy!(3) = 22.952 * EVPERKEV#  ' L-II
+edgrow.energy!(4) = 18.51 * EVPERKEV#  ' L-III
+edgrow.energy!(5) = 6.133 * EVPERKEV#  ' M-I
+edgrow.energy!(6) = 5.739 * EVPERKEV#  ' M-II
+edgrow.energy!(7) = 4.698 * EVPERKEV#  ' M-III
+edgrow.energy!(8) = 4.096 * EVPERKEV#  ' M-IV
+edgrow.energy!(9) = 3.89 * EVPERKEV#   ' M-V
+
+engrow.energy!(1) = 106.47 * EVPERKEV#  ' Ka
+engrow.energy!(2) = 120.284 * EVPERKEV#  ' Kb
+engrow.energy!(3) = 14.62 * EVPERKEV#  ' La
+engrow.energy!(4) = 18.856 * EVPERKEV#  ' Lb
+engrow.energy!(5) = 3.442 * EVPERKEV#  ' Ma
+engrow.energy!(6) = 3.633 * EVPERKEV#  ' Mb
+
+flurow.fraction!(1) = 0.977    ' Ka
+flurow.fraction!(2) = 0.977    ' Kb
+flurow.fraction!(3) = 0.494    ' La
+flurow.fraction!(4) = 0.494    ' Lb
+flurow.fraction!(5) = 0#    ' Ma
+flurow.fraction!(6) = 0#    ' Mb
+End If
+
+If n% = 96 Then
+edgrow.energy!(1) = 128.241 * EVPERKEV#  ' K
+edgrow.energy!(2) = 24.526 * EVPERKEV#  ' L-I
+edgrow.energy!(3) = 23.651 * EVPERKEV#  ' L-II
+edgrow.energy!(4) = 18.97 * EVPERKEV#  ' L-III
+edgrow.energy!(5) = 6.337 * EVPERKEV#  ' M-I
+edgrow.energy!(6) = 5.937 * EVPERKEV#  ' M-II
+edgrow.energy!(7) = 4.838 * EVPERKEV#  ' M-III
+edgrow.energy!(8) = 4.224 * EVPERKEV#  ' M-IV
+edgrow.energy!(9) = 4.009 * EVPERKEV#   ' M-V
+
+engrow.energy!(1) = 109.271 * EVPERKEV#  ' Ka
+engrow.energy!(2) = 123.403 * EVPERKEV#  ' Kb
+engrow.energy!(3) = 14.961 * EVPERKEV#  ' La
+engrow.energy!(4) = 19.427 * EVPERKEV#  ' Lb
+engrow.energy!(5) = 3.535 * EVPERKEV#  ' Ma
+engrow.energy!(6) = 3.738 * EVPERKEV#  ' Mb
+
+flurow.fraction!(1) = 0.978    ' Ka
+flurow.fraction!(2) = 0.978    ' Kb
+flurow.fraction!(3) = 0.504    ' La
+flurow.fraction!(4) = 0.504    ' Lb
+flurow.fraction!(5) = 0#    ' Ma
+flurow.fraction!(6) = 0#    ' Mb
+End If
+
+If n% = 97 Then
+edgrow.energy!(1) = 0#  ' K
+edgrow.energy!(2) = 0#  ' L-I
+edgrow.energy!(3) = 0#  ' L-II
+edgrow.energy!(4) = 0#  ' L-III
+edgrow.energy!(5) = 0#  ' M-I
+edgrow.energy!(6) = 0#  ' M-II
+edgrow.energy!(7) = 0#  ' M-III
+edgrow.energy!(8) = 0#  ' M-IV
+edgrow.energy!(9) = 0#   ' M-V
+
+engrow.energy!(1) = 0#  ' Ka
+engrow.energy!(2) = 0#  ' Kb
+engrow.energy!(3) = 0#  ' La
+engrow.energy!(4) = 0#  ' Lb
+engrow.energy!(5) = 0#  ' Ma
+engrow.energy!(6) = 0#  ' Mb
+
+flurow.fraction!(1) = 0#    ' Ka
+flurow.fraction!(2) = 0#    ' Kb
+flurow.fraction!(3) = 0#    ' La
+flurow.fraction!(4) = 0#    ' Lb
+flurow.fraction!(5) = 0#    ' Ma
+flurow.fraction!(6) = 0#    ' Mb
+End If
+
+If n% = 98 Then
+End If
+
+If n% = 99 Then
+End If
+
+If n% = 100 Then
+End If
+
+nrec% = n% + 2
+Put #XEdgeFileNumber%, nrec%, edgrow
+Put #XLineFileNumber%, nrec%, engrow
+Put #XFlurFileNumber%, nrec%, flurow
+Next n%
+
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+
+msg$ = "Records updated"
+MsgBox msg$, vbOKOnly + vbInformation, "EditUpdateEdgeLineFlurFiles"
+
+Exit Sub
+
+' Errors
+EditUpdateEdgeLineFlurFilesError:
+MsgBox Error$, vbOKOnly + vbCritical, "EditUpdateEdgeLineFlurFiles"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+ierror = True
 Exit Sub
 
 End Sub

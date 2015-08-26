@@ -768,8 +768,8 @@ ReDim kexp(1 To 2) As Single
 icancelauto = False
 
 ' Get import filename
-ImportDataFile2$ = ProgramPath$ & "kRatioConditions.csv"
-ExportDataFile$ = ProgramPath$ & "Pouchou2.dat"
+ImportDataFile2$ = ApplicationCommonAppData$ & "kRatioConditions.csv"
+ExportDataFile$ = ApplicationCommonAppData$ & "Pouchou2.dat"
 
 ' Open normal files
 Open ImportDataFile2$ For Input As #ImportDataFileNumber2%

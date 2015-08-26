@@ -281,9 +281,6 @@ Dim i As Integer, ip As Integer, ipp As Integer, iz As Integer, num As Integer
 
 Dim macrow As TypeMu
 
-' Load MAC filename
-MACFile$ = ProgramPath$ & macstring2$(MACTypeFlag%) & ".DAT"
-
 ' Calculate emitter x-ray position
 ip% = IPOS1%(MAXELM%, syme$, Symlo$())
 If ip% = 0 Then GoTo ConvertCalculateXrayTransmissionBadSyme
@@ -291,9 +288,22 @@ If ip% = 0 Then GoTo ConvertCalculateXrayTransmissionBadSyme
 ipp% = IPOS1%(MAXRAY% - 1, symx$, Xraylo$())
 If ipp% = 0 Then GoTo ConvertCalculateXrayTransmissionBadSymx
 
+' Load MAC filename
+If ip% <= MAXRAY_OLD% Then
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
+If Dir$(MACFile$) = vbNullString Then GoTo ConvertCalculateXrayTransmissionNotFound
 Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
 Get #MACFileNumber%, ip%, macrow
 Close #MACFileNumber%
+
+' Load MAC filename for additional x-rays
+Else
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
+If Dir$(MACFile$) = vbNullString Then GoTo ConvertCalculateXrayTransmissionNotFound
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
+Get #MACFileNumber%, ip%, macrow
+Close #MACFileNumber%
+End If
 
 ' Calculate average mass absorption for this emitter
 For i% = 1 To lchan%
@@ -334,6 +344,12 @@ Exit Sub
 
 ConvertCalculateXrayTransmissionBadSym:
 msg$ = "Invalid element symbol for absorber"
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertCalculateXrayTransmission"
+ierror = True
+Exit Sub
+
+ConvertCalculateXrayTransmissionNotFound:
+msg$ = "File " & MACFile$ & " was not found, please choose another MAC file or create the missing file using the CalcZAF Xray menu items"
 MsgBox msg$, vbOKOnly + vbExclamation, "ConvertCalculateXrayTransmission"
 ierror = True
 Exit Sub

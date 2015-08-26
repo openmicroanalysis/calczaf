@@ -143,7 +143,13 @@ GetElmOldSample(1).BackgroundPolynomialNominalBeam!(GetElmOldSample(1).LastElm%)
 ' Load other real time element parameters
 GetElmOldSample(1).BraggOrders%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).BraggOrders%(i%)
 GetElmOldSample(1).MotorNumbers%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).MotorNumbers%(i%)
+
+If GetElmOldSample(1).CrystalNames$(GetElmOldSample(1).LastElm%) <> EDS_CRYSTAL$ Then
 GetElmOldSample(1).OrderNumbers%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).OrderNumbers%(i%)
+Else
+GetElmOldSample(1).OrderNumbers%(GetElmOldSample(1).LastElm%) = 1           ' EDS element order is always one
+End If
+
 GetElmOldSample(1).CrystalNames$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).CrystalNames$(i%)
 GetElmOldSample(1).Crystal2ds!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).Crystal2ds!(i%)
 GetElmOldSample(1).CrystalKs!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).CrystalKs!(i%)

@@ -869,7 +869,7 @@ Dim StDt As Recordset
 
 ' Open the database and the "Standard" table
 Screen.MousePointer = vbHourglass
-If StandardDataFile$ = vbNullString Then StandardDataFile$ = ProgramPath$ & "STANDARD.MDB"
+If StandardDataFile$ = vbNullString Then StandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
 Set StDb = OpenDatabase(StandardDataFile$, StandardDatabaseExclusiveAccess%, False)
 Set StDt = StDb.OpenRecordset("Standard", dbOpenTable)
 
@@ -941,7 +941,7 @@ Dim SQLQ As String
 
 ' Open the database and the "Standard" table
 Screen.MousePointer = vbHourglass
-If tStandardDataFile$ = vbNullString Then tStandardDataFile$ = ProgramPath$ & "STANDARD.MDB"
+If tStandardDataFile$ = vbNullString Then tStandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
 Set StDb = OpenDatabase(tStandardDataFile$, StandardDatabaseNonExclusiveAccess%, True)
 
 ' Check that standard number already exists
@@ -1048,7 +1048,7 @@ Dim StDt As Recordset
 Dim SQLQ As String
 
 ' Open the database and the "Standard" table
-If StandardDataFile$ = vbNullString Then StandardDataFile$ = ProgramPath$ & "STANDARD.MDB"
+If StandardDataFile$ = vbNullString Then StandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
 Set StDb = OpenDatabase(StandardDataFile$, StandardDatabaseExclusiveAccess%, False)
 Set StDt = StDb.OpenRecordset("Standard", dbOpenTable)
 

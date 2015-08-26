@@ -18,7 +18,7 @@ ierror = False
 On Error GoTo GetZAFAllSaveMAC2Error
 
 ' Check that file exists
-MACFile$ = ProgramPath$ & macstring2$(itemp%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(itemp%) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo GetZAFAllSaveMAC2NotFound
 
 Exit Sub

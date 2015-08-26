@@ -237,7 +237,7 @@ Dim tmsg As String
 Dim macrow As TypeMu
 
 If DebugMode Then Call IOWriteLog("Now loading MACs...")
-MACFile$ = ProgramPath$ & macstring2$(MACTypeFlag%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
 
 ' Determine the element number
@@ -537,7 +537,7 @@ msg$ = "Enter the emitter element symbol for MAC table"
 sym$ = InputBox$(msg$, "XrayGetTable", Symup$(8))
 If sym$ = vbNullString Then Exit Sub
 
-MACFile$ = ProgramPath$ & macstring2$(MACTypeFlag%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 tfilename$ = MiscGetFileNameNoExtension$(MACFile$) & "_" & sym$ & ".TXT"
 Open tfilename$ For Output As #Temp1FileNumber%
 
@@ -561,7 +561,7 @@ ierror = True
 Exit Sub
 End If
 
-MACFile$ = ProgramPath$ & macstring2$(MACTypeFlag%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 tfilename$ = MiscGetFileNameNoExtension$(MACFile$) & ".TXT"
 Open tfilename$ For Output As #Temp1FileNumber%
 

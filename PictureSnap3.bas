@@ -1023,7 +1023,7 @@ End If
 PictureSnapCalibrated = True
 
 ' Load fake filename for Secondary.bas
-PictureSnapFilename$ = ProgramPath$ & "GRDInfo.ini"
+PictureSnapFilename$ = ApplicationCommonAppData$ & "GRDInfo.ini"
 
 Exit Sub
 

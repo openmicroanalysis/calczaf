@@ -135,6 +135,7 @@ Sub FileInfoLoadData(mode As Integer, tfilename As String)
 ' mode = 8  load setup database File table (interference standards)
 ' mode = 9  matrix database File table (Penepma matrix k-ratios and factors)
 ' mode = 10 boundary database File table (Penepma boundary k-ratios and factors)
+' mode = 11 pure element database File table (Penepma pure element intensities)
 
 ierror = False
 On Error GoTo FileInfoLoadDataError
@@ -178,6 +179,8 @@ ElseIf mode% = 9 Then           ' matrix (Penepm12 k-ratios and alpha factors)
 GoTo FileInfoLoadDataNotFound
 ElseIf mode% = 10 Then          ' boundary (Penepm12 k-ratios and alpha factors)
 GoTo FileInfoLoadDataNotFound
+ElseIf mode% = 11 Then          ' pure (Penepm12 pure element intensities)
+GoTo FileInfoLoadDataNotFound
 End If
 End If
 
@@ -211,6 +214,9 @@ versionnumber! = FileInfoGetVersion!(tfilename$, "MATRIX")
 If ierror Then Exit Sub
 ElseIf mode% = 10 Then
 versionnumber! = FileInfoGetVersion!(tfilename$, "BOUNDARY")
+If ierror Then Exit Sub
+ElseIf mode% = 11 Then
+versionnumber! = FileInfoGetVersion!(tfilename$, "PURE")
 If ierror Then Exit Sub
 End If
 
@@ -277,6 +283,7 @@ Sub FileInfoMakeNewTable(mode As Integer, tfilename As String)
 ' mode = 8  setup database File table (interference standards)
 ' mode = 9  matrix database File table (Penepma matrix k-ratios and factors)
 ' mode = 10 boundary database File table (Penepma boundary k-ratios and factors)
+' mode = 11 pure database File table (Penepma pure element intensities)
 
 ierror = False
 On Error GoTo FileInfoMakeNewTableError
@@ -398,6 +405,10 @@ MDBFileDescription$ = "Penepma Matrix K-Ratios and Factors (Probe for EPMA)"
 ElseIf mode% = 10 Then       ' Boundary database
 MDBFileType$ = "BOUNDARY"
 MDBFileDescription$ = "Penepma Boundary K-Ratios and Factors (Probe for EPMA)"
+
+ElseIf mode% = 11 Then       ' Pure database
+MDBFileType$ = "PURE"
+MDBFileDescription$ = "Penepma Pure Element Intensity (Probe for EPMA)"
 End If
 
 ' Now add new record to "File" table
@@ -502,28 +513,31 @@ ElseIf mode% = 2 And tfilename$ = vbNullString Then
 GoTo FileInfoGetMDBFileNameBlankProbeFile
 
 ElseIf mode% = 3 And tfilename$ = vbNullString Then
-tfilename$ = ProgramPath$ & "SETUP.MDB"
+tfilename$ = ApplicationCommonAppData$ & "SETUP.MDB"
 
 ElseIf mode% = 4 And tfilename$ = vbNullString Then
-tfilename$ = ProgramPath$ & "USER.MDB"
+tfilename$ = ApplicationCommonAppData$ & "USER.MDB"
 
 ElseIf mode% = 5 And tfilename$ = vbNullString Then
-tfilename$ = ProgramPath$ & "POSITION.MDB"
+tfilename$ = ApplicationCommonAppData$ & "POSITION.MDB"
 
 ElseIf mode% = 6 And tfilename$ = vbNullString Then
-tfilename$ = ProgramPath$ & "XRAY.MDB"
+tfilename$ = ApplicationCommonAppData$ & "XRAY.MDB"
 
 ElseIf mode% = 7 And tfilename$ = vbNullString Then
-tfilename$ = ProgramPath$ & "SETUP2.MDB"
+tfilename$ = ApplicationCommonAppData$ & "SETUP2.MDB"
 
 ElseIf mode% = 8 And tfilename$ = vbNullString Then
-tfilename$ = ProgramPath$ & "SETUP3.MDB"
+tfilename$ = ApplicationCommonAppData$ & "SETUP3.MDB"
 
 ElseIf mode% = 9 And tfilename$ = vbNullString Then
-tfilename$ = ProgramPath$ & "MATRIX.MDB"
+tfilename$ = ApplicationCommonAppData$ & "MATRIX.MDB"
 
 ElseIf mode% = 10 And tfilename$ = vbNullString Then
-tfilename$ = ProgramPath$ & "BOUNDARY.MDB"
+tfilename$ = ApplicationCommonAppData$ & "BOUNDARY.MDB"
+
+ElseIf mode% = 11 And tfilename$ = vbNullString Then
+tfilename$ = ApplicationCommonAppData$ & "PURE.MDB"
 End If
 
 Exit Sub

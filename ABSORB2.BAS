@@ -428,8 +428,8 @@ Dim i As Integer, iz As Integer
 Dim dt As String, TM As String
 Dim lab1 As String, lab2 As String, lab3 As String, lab4 As String
 
-If Dir$(ProgramPath$ & "LINES.DAT") = vbNullString Then GoTo AbsorbLoadLINESDataFileNoFile
-Open ProgramPath$ & "LINES.DAT" For Input As #Temp1FileNumber%
+If Dir$(ApplicationCommonAppData$ & "LINES.DAT") = vbNullString Then GoTo AbsorbLoadLINESDataFileNoFile
+Open ApplicationCommonAppData$ & "LINES.DAT" For Input As #Temp1FileNumber%
 
 Input #Temp1FileNumber%, dt$, TM$
 Input #Temp1FileNumber%, lab1$, lab2$
@@ -455,7 +455,7 @@ ierror = True
 Exit Sub
 
 AbsorbLoadLINESDataFileNoFile:
-msg$ = "File " & ProgramPath$ & "LINES.DAT" & " was not found"
+msg$ = "File " & ApplicationCommonAppData$ & "LINES.DAT" & " was not found"
 MsgBox msg$, vbOKOnly + vbExclamation, "AbsorbLoadLINESDataFile"
 ierror = True
 Exit Sub
@@ -472,8 +472,8 @@ Dim i As Integer, j As Integer
 Dim astring As String, bstring As String
 
 ' Read line and edge file if first time
-If Dir$(ProgramPath$ & "LINES2.DAT") = vbNullString Then GoTo AbsorbLoadLINES2DataFileNoFile
-Open ProgramPath$ & "LINES2.DAT" For Input As #Temp1FileNumber%
+If Dir$(ApplicationCommonAppData$ & "LINES2.DAT") = vbNullString Then GoTo AbsorbLoadLINES2DataFileNoFile
+Open ApplicationCommonAppData$ & "LINES2.DAT" For Input As #Temp1FileNumber%
 Line Input #Temp1FileNumber%, astring$  ' read comment
 Line Input #Temp1FileNumber%, astring$  ' read column labels
 
@@ -510,7 +510,7 @@ ierror = True
 Exit Sub
 
 AbsorbLoadLINES2DataFileNoFile:
-msg$ = "File " & ProgramPath$ & "LINES2.DAT" & " was not found"
+msg$ = "File " & ApplicationCommonAppData$ & "LINES2.DAT" & " was not found"
 MsgBox msg$, vbOKOnly + vbExclamation, "AbsorbLoadLINES2DataFile"
 ierror = True
 Exit Sub
@@ -533,8 +533,8 @@ For n% = 1 To MAXRAY% - 1
 
 ' Read line and edge file if first time
 tfilename$ = "CHANTLER2005-" & Xraylo$(n%) & ".dat"
-If Dir$(ProgramPath$ & tfilename$) = vbNullString Then GoTo AbsorbLoadCHANTLERDataFileNoFile
-Open ProgramPath$ & tfilename$ For Input As #Temp1FileNumber%
+If Dir$(ApplicationCommonAppData$ & tfilename$) = vbNullString Then GoTo AbsorbLoadCHANTLERDataFileNoFile
+Open ApplicationCommonAppData$ & tfilename$ For Input As #Temp1FileNumber%
 Line Input #Temp1FileNumber%, astring$  ' read first comment line
 Line Input #Temp1FileNumber%, astring$  ' read emitter labels (starts with Boron)
 Line Input #Temp1FileNumber%, astring$  ' read emitter atomic numbers
@@ -567,7 +567,7 @@ ierror = True
 Exit Sub
 
 AbsorbLoadCHANTLERDataFileNoFile:
-msg$ = "File " & ProgramPath$ & "CHANTLER.DAT" & " was not found"
+msg$ = "File " & ApplicationCommonAppData$ & tfilename$ & " was not found"
 MsgBox msg$, vbOKOnly + vbExclamation, "AbsorbLoadCHANTLERDataFile"
 ierror = True
 Exit Sub

@@ -15,6 +15,16 @@ Begin VB.Form FormANALYZE
    ScaleWidth      =   6495
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
+   Begin VB.CheckBox CheckOnlyDisplaySamplesWithData 
+      Caption         =   "Check1"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   9
+      TabStop         =   0   'False
+      ToolTipText     =   "Check this box if you do not want to see samples without data listed in the sample list"
+      Top             =   360
+      Width           =   255
+   End
    Begin VB.OptionButton OptionStandard 
       Caption         =   "Standards"
       Height          =   255
@@ -102,7 +112,7 @@ Begin VB.Form FormANALYZE
          NumPanels       =   3
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   7329
+            Object.Width           =   7805
             TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""

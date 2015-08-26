@@ -145,7 +145,7 @@ Dim colrec As TypeColumn2
 ' Check for string to load
 If Trim$(columnstring) = vbNullString Then Exit Sub
 
-tfilename$ = ProgramPath$ & "COLUMN2.DAT"
+tfilename$ = ApplicationCommonAppData$ & "COLUMN2.DAT"
 If Dir$(tfilename$) = vbNullString Then Exit Sub
 Open tfilename$ For Input As #Temp1FileNumber%
 

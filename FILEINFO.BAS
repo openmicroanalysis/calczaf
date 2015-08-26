@@ -23,6 +23,7 @@ Sub FileInfoLoad(mode As Integer, tfilename As String)
 ' mode = 8  setup database File table (interference standards)
 ' mode = 9  matrix database File table (Penepma matrix k-ratios and factors)
 ' mode = 10 boundary database File table (Penepma boundary k-ratios and factors)
+' mode = 11 pure database File table (Penepma pure element intensities)
 
 ierror = False
 On Error GoTo FileInfoLoadError

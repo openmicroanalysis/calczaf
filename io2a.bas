@@ -116,7 +116,7 @@ Exit Sub
 
 End Sub
 
-Sub IOSendEMail(mode As Integer, errstring As String, procstring As String)
+Sub IOSendEMail(Mode As Integer, errstring As String, procstring As String)
 ' Send e-mail message to specified address (in INI file)
 ' mode = 0 error message
 ' mode = 1 normal message
@@ -156,7 +156,7 @@ FormMAIN.SmtpClient1.Options = smtpOptionNone
 FormMAIN.SmtpClient1.Extended = True
     
 If DebugMode Then
-FormMAIN.SmtpClient1.TraceFile = ProgramPath$ & "SmtpTest.log"
+FormMAIN.SmtpClient1.TraceFile = ApplicationCommonAppData$ & "SmtpTest.log"
 FormMAIN.SmtpClient1.TraceFlags = 4
 FormMAIN.SmtpClient1.Trace = True
 Else
@@ -180,14 +180,14 @@ FormMAIN.MailMessage1.From = Trim$(SMTPAddressFrom$)
 FormMAIN.MailMessage1.To = Trim$(SMTPAddressTo$)
 FormMAIN.MailMessage1.date = FormMAIN.SmtpClient1.CurrentDate
 
-If mode% = 0 Then
+If Mode% = 0 Then
 FormMAIN.MailMessage1.Subject = "Automation error from Probe for EPMA, at " & Now
 Else
 FormMAIN.MailMessage1.Subject = "Automation message from Probe for EPMA, at " & Now
 End If
 
 ' Construct message
-If mode% = 0 Then
+If Mode% = 0 Then
 tmsg$ = "An error occured during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
 Else
 tmsg$ = "A message occured during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
@@ -201,7 +201,7 @@ tmsg$ = tmsg$ & "User: " & MDBUserName$ & vbCrLf
 tmsg$ = tmsg$ & "File Description : " & MDBFileDescription$ & vbCrLf & vbCrLf
 
 ' Send additional info
-If mode% = 0 Then
+If Mode% = 0 Then
 tmsg$ = tmsg$ & "Procedure : " & procstring$ & vbCrLf
 tmsg$ = tmsg$ & "Error : " & errstring$ & vbCrLf
 Else
@@ -371,14 +371,14 @@ On Error GoTo IOCleanWindowPositionFileError
 Dim deleted_lines As Long
 
 ' Copy the current WINDOW.INI file to temp file without any lines containing the current user
-deleted_lines& = MiscDeleteLines(WindowINIFile$, ProgramPath$ & "TEMP.INI", MDBUserName$, "[")
+deleted_lines& = MiscDeleteLines(WindowINIFile$, ApplicationCommonAppData$ & "TEMP.INI", MDBUserName$, "[")
 If ierror Then Exit Sub
 
 ' Delete the original file
 Kill WindowINIFile$
 
 ' Copy temp file to new WINDOW.INI
-FileCopy ProgramPath$ & "TEMP.INI", WindowINIFile$
+FileCopy ApplicationCommonAppData$ & "TEMP.INI", WindowINIFile$
 
 msg$ = "All window position references to current user (" & MDBUserName$ & ") deleted from " & WindowINIFile$
 MsgBox msg$, vbOKOnly + vbInformation, "IOCleamWindowPositionFile"

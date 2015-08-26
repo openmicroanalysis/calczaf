@@ -28,7 +28,7 @@ Dim PoDb As Database
 Dim PoRs As Recordset
 
 ' Open the database
-If PositionDataFile$ = vbNullString Then PositionDataFile$ = ProgramPath$ & "POSITION.MDB"
+If PositionDataFile$ = vbNullString Then PositionDataFile$ = ApplicationCommonAppData$ & "POSITION.MDB"
 Set PoDb = OpenDatabase(PositionDataFile$, PositionDatabaseNonExclusiveAccess%, dbReadOnly)
 
 ' Get position data from "Position" table

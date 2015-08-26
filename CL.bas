@@ -2,12 +2,8 @@ Attribute VB_Name = "CodeCL"
 ' (c) Copyright 1995-2015 by John J. Donovan
 Option Explicit
 
-Dim TotalEnergyRange As Single
-
-Dim GraphMinX As Single, GraphMinY As Single
-Dim GraphMaxX As Single, GraphMaxY As Single
-
 Dim CLDataRow As Integer
+
 Dim CLOldSample(1 To 1) As TypeSample
 
 Sub CLZoomFull(tForm As Form)
@@ -16,14 +12,14 @@ Sub CLZoomFull(tForm As Form)
 ierror = False
 On Error GoTo CLZoomFullError
 
-tForm.Graph1.XAxisMin = 0
-tForm.Graph1.XAxisMax = GraphMaxX!
-
-tForm.Graph1.YAxisMin = 0
-tForm.Graph1.YAxisMax = GraphMaxY!
-
-tForm.Graph1.MousePointer = 0
-tForm.Graph1.DrawMode = graphDraw
+' Call graphics routines
+If Not UseProEssentialsGraphics Then
+Call CLZoomFull_GS(tForm)
+If ierror Then Exit Sub
+Else
+Call CLZoomFull_PE(tForm)
+If ierror Then Exit Sub
+End If
 
 Exit Sub
 
@@ -57,88 +53,15 @@ CLDataRow% = datarow%
 ' Check for data
 If sample(1).CLSpectraNumberofChannels%(datarow%) < 1 Then Exit Sub
 
-' Display plot and fit
-tForm.Graph1.NumPoints = sample(1).CLSpectraNumberofChannels%(datarow%)
-If tCLIntensityOption% = 0 Then
-tForm.Graph1.LeftTitle = "Intensity (counts)"
-ElseIf tCLIntensityOption% = 1 Then
-tForm.Graph1.LeftTitle = "Intensity (cps)"
-ElseIf tCLIntensityOption% = 2 Then
-tForm.Graph1.LeftTitle = "Net Intensity (cps)"
-End If
-
-' Set aspect ratio for axes (in keV)
-tForm.Graph1.XAxisMin = sample(1).CLSpectraStartEnergy!(datarow%)
-tForm.Graph1.XAxisMax = sample(1).CLSpectraEndEnergy!(datarow%)
-TotalEnergyRange! = (sample(1).CLSpectraEndEnergy!(datarow%) - sample(1).CLSpectraStartEnergy!(datarow%))
-
-If VerboseMode And DebugMode Then
-msg$ = "CL Display: "
-msg$ = msg$ & "Start nm = " & Format$(sample(1).CLSpectraStartEnergy!(datarow%)) & ", "
-msg$ = msg$ & "Stop nm = " & Format$(sample(1).CLSpectraEndEnergy!(datarow%)) & ", "
-msg$ = msg$ & "numChan= " & Format$(sample(1).CLSpectraNumberofChannels%(datarow%)) & ", "
-Call IOWriteLog(msg$)
-End If
-
-' Load x and y axis data
-For i% = 1 To sample(1).CLSpectraNumberofChannels%(datarow%)
-
-' Display CL spectra
-If Not tCLDarkSpectra Then
-If tCLIntensityOption% = 0 Then
-tForm.Graph1.Data(i%) = sample(1).CLSpectraIntensities&(datarow%, i%)                                                     ' raw counts
-ElseIf tCLIntensityOption% = 1 Then
-temp1! = sample(1).CLSpectraIntensities&(datarow%, i%) / sample(1).CLAcquisitionCountTime!(datarow%)
-tForm.Graph1.Data(i%) = temp1!                                                                                            ' counts/sec
-ElseIf tCLIntensityOption% = 2 Then
-If sample(1).CLAcquisitionCountTime!(datarow%) = 0 Then GoTo CLDisplaySpectraZeroAcqTime
-If sample(1).CLDarkSpectraCountTimeFraction!(datarow%) = 0 Then GoTo CLDisplaySpectraZeroFraction
-temp1! = sample(1).CLSpectraIntensities&(datarow%, i%) / sample(1).CLAcquisitionCountTime!(datarow%)
-temp2! = sample(1).CLSpectraDarkIntensities(datarow%, i%) / (sample(1).CLAcquisitionCountTime!(datarow%) * sample(1).CLDarkSpectraCountTimeFraction!(datarow%))
-temp! = temp1! - temp2!
-tForm.Graph1.Data(i%) = temp!                                                                                             ' net intensities
-End If
-
-' Display dark spectra
-Else
-If tCLIntensityOption% = 0 Then
-tForm.Graph1.Data(i%) = sample(1).CLSpectraDarkIntensities(datarow%, i%)                                                  ' raw counts
-Else
-If sample(1).CLAcquisitionCountTime!(datarow%) = 0 Then GoTo CLDisplaySpectraZeroAcqTime
-If sample(1).CLDarkSpectraCountTimeFraction!(datarow%) = 0 Then GoTo CLDisplaySpectraZeroFraction
-temp1! = sample(1).CLAcquisitionCountTime!(datarow%) * sample(1).CLDarkSpectraCountTimeFraction!(datarow%)
-tForm.Graph1.Data(i%) = sample(1).CLSpectraDarkIntensities(datarow%, i%) / temp1!                                         ' counts/sec
-End If
-End If
-
-' Calculate x position
-temp! = i% * TotalEnergyRange! / (sample(1).CLSpectraNumberofChannels%(datarow%) - 1)
-temp! = sample(1).CLSpectraStartEnergy!(datarow%) + temp!
-tForm.Graph1.xpos(i%) = temp!
-tForm.Graph1.Color(i%) = 9        ' blue
-
-If VerboseMode And DebugMode Then
-Call IOWriteLog("CL Point" & Str$(i%) & ", " & InterfaceStringCLUnitsX$(CLSpectraInterfaceTypeStored%) & Str$(temp!) & ", " & Format$(sample(1).CLSpectraIntensities&(datarow%, i%)) & " counts")      ' raw counts
-End If
-Next i%
-
-' Debug output
-If VerboseMode Then
-GraphMinX! = tForm.Graph1.XAxisMin
-GraphMinY! = tForm.Graph1.YAxisMin
-
-GraphMaxX! = tForm.Graph1.XAxisMax
-GraphMaxY! = tForm.Graph1.YAxisMax
-
-Call IOWriteLog("CL Display Spectra: X Min/Max" & Str$(GraphMinX!) & "/" & Str$(GraphMaxX!) & ", Y Min/Max" & Str$(GraphMinY!) & "/" & Str$(GraphMaxY!))
-End If
-
-' Resize the graph
-Call CLSetBinSize(tForm)
+' Call graphics routines
+If Not UseProEssentialsGraphics Then
+Call CLDisplaySpectra_GS(tCLIntensityOption%, tCLDarkSpectra, tForm, datarow%, sample())
 If ierror Then Exit Sub
+Else
+Call CLDisplaySpectra_PE(tCLIntensityOption%, tCLDarkSpectra, tForm, datarow%, sample())
+If ierror Then Exit Sub
+End If
 
-'tForm.Graph1.DrawMode = graphBlit         ' refresh the graph (DrawMode = 3) (causes problems in Win8)
-tForm.Graph1.DrawMode = graphDraw         ' refresh the graph (DrawMode = 2)
 Exit Sub
 
 ' Errors
@@ -186,37 +109,14 @@ astring$ = sample(1).CLSpectraKilovolts!(datarow%) & " keV, " & sample(1).Name$ 
 End If
 tForm.LabelSpectrumName.Caption = astring$
 
-' Plot data into control, clear the graph
-tForm.Graph1.GraphType = graphBar2D
-
-tForm.Graph1.NumSets = 1
-tForm.Graph1.AutoInc = 0
-
-tForm.Graph1.XAxisStyle = 2 ' user defined
-tForm.Graph1.XAxisTicks = 10
-tForm.Graph1.XAxisMinorTicks = -1   ' 1 minor ticks per tick
-
-tForm.Graph1.YAxisStyle = 2 ' user defined
-tForm.Graph1.YAxisTicks = 10
-tForm.Graph1.YAxisMinorTicks = -1   ' 1 minor ticks per tick
-
-tForm.Graph1.YAxisMin = 0
-tForm.Graph1.YAxisMax = 0
-
-' Printer info
-tForm.Graph1.PrintInfo(11) = 1  ' landscape
-tForm.Graph1.PrintInfo(12) = 1  ' fit to page
-
-tForm.Graph1.BottomTitle = InterfaceStringCLUnitsX$(CLSpectraInterfaceTypeStored%)
-tForm.Graph1.LeftTitleStyle = 1
-tForm.Graph1.LeftTitle = vbNullString
-
-tForm.Graph1.AutoInc = 1
-tForm.Graph1.Hot = 0                  ' disable hot hit
-tForm.Graph1.SDKMouse = 1             ' enable zoom
-tForm.Graph1.SDKPaint = 0             ' enable repaint events
-tForm.Graph1.DrawMode = graphClear
-tForm.Graph1.SDKPaint = 1             ' enable repaint events
+' Call graphics routines
+If Not UseProEssentialsGraphics Then
+Call CLInitDisplay_GS(tForm, tCaption$, datarow%, sample())
+If ierror Then Exit Sub
+Else
+Call CLInitDisplay_PE(tForm, tCaption$, datarow%, sample())
+If ierror Then Exit Sub
+End If
 
 Exit Sub
 
@@ -235,26 +135,14 @@ Sub CLSetBinSize(tForm As Form)
 ierror = False
 On Error GoTo CLSetBinSizeError
 
-Dim PointsInCurrentRange As Long
-Dim CurrentEnergyRange As Single, CurrentEnergyFraction As Single
-Dim BinEnergyWidth As Single, BinEnergyGap As Single
-Dim BinEnergyPercent As Single
-
-tForm.Graph1.Bar2DGap = 98
-Exit Sub
-
-' Need to get this code working !
-If tForm.Graph1.NumPoints = 0# Then Exit Sub
-CurrentEnergyRange! = tForm.Graph1.XAxisMax - tForm.Graph1.XAxisMin
-If CurrentEnergyRange! = 0 Then Exit Sub
-
-CurrentEnergyFraction! = CurrentEnergyRange! / TotalEnergyRange!
-PointsInCurrentRange& = tForm.Graph1.NumPoints * CurrentEnergyFraction!
-
-BinEnergyWidth! = CSng(CurrentEnergyRange! / PointsInCurrentRange&)
-BinEnergyGap! = CurrentEnergyRange! / BinEnergyWidth!
-
-tForm.Graph1.Bar2DGap = BinEnergyPercent!
+' Call graphics routines
+If Not UseProEssentialsGraphics Then
+Call CLSetBinSize_GS(tForm)
+If ierror Then Exit Sub
+Else
+Call CLSetBinSize_PE(tForm)
+If ierror Then Exit Sub
+End If
 
 Exit Sub
 
@@ -274,8 +162,15 @@ On Error GoTo CLDisplayRedrawError
 
 If CLDataRow% < 1 Then Exit Sub
 If CLOldSample(1).CLSpectraNumberofChannels%(CLDataRow%) < 1 Then Exit Sub
-'FormCLDISPLAY.Graph1.DrawMode = graphBlit     ' refresh the graph (DrawMode = 3) (causes problems in Win8)
-FormCLDISPLAY.Graph1.DrawMode = graphDraw     ' refresh the graph (DrawMode = 2)
+
+' Call graphics routines
+If Not UseProEssentialsGraphics Then
+Call CLDisplayRedraw_GS
+If ierror Then Exit Sub
+Else
+Call CLDisplayRedraw_PE
+If ierror Then Exit Sub
+End If
 
 Exit Sub
 
@@ -296,11 +191,14 @@ On Error GoTo CLZoomGraphError
 If CLDataRow% < 1 Then Exit Sub
 If CLOldSample(1).CLSpectraNumberofChannels%(CLDataRow%) < 1 Then Exit Sub
 
-Call ZoomSDKPress(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, mode%, tForm)
+' Call graphics routines
+If Not UseProEssentialsGraphics Then
+Call CLZoomGraph_GS(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, Int(0), tForm)
 If ierror Then Exit Sub
-
-Call CLSetBinSize(FormCLDISPLAY)
+Else
+Call CLZoomGraph_PE(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, Int(0), tForm)
 If ierror Then Exit Sub
+End If
 
 Exit Sub
 

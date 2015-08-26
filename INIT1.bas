@@ -789,6 +789,12 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then UseWavFileAfterAutomationString$ = Left$(lpReturnString$, valid&)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+' Check that sound file exists
+If Dir$(ApplicationCommonAppData$ & UseWavFileAfterAutomationString$) = vbNullString Then
+msg$ = "Automation sound file " & UseWavFileAfterAutomationString$ & " as defined in " & ProbeWinINIFile$ & " was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIGeneral"
+End If
+
 lpAppName$ = "General"
 lpKeyName$ = "PeakCenterSkipPBCheck"
 nDefault& = False
@@ -1418,16 +1424,16 @@ End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 lpAppName$ = "Software"
-lpKeyName$ = "UseSimpleRegistration"     ' do not document (for bypassing "hash" registration)
-nDefault& = False
-'tvalid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+lpKeyName$ = "UseSimpleRegistration"     ' (for bypassing "hash" registration, but use by default for Unicode languages to avoid byte issues)
+nDefault& = True
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 If valid& <> 0 Then
 UseSimpleRegistrationFlag = True
 Else
 UseSimpleRegistrationFlag = False
 End If
-'If Left$(lpReturnString$, tvalid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 lpAppName$ = "Software"
 lpKeyName$ = "UseMultiplePeakCalibrationOffset"
@@ -1989,6 +1995,18 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
 StrataGEMVersion! = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
+lpAppName$ = "Software"
+lpKeyName$ = "UseConfirmDuringAcquisitionFlag"
+nDefault& = True
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+AutomateConfirmFlag = True
+Else
+AutomateConfirmFlag = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 Exit Sub
 
@@ -5381,7 +5399,7 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then DefaultMatchStandardDatabase$ = Left$(lpReturnString$, valid&)
-If Dir$(ProgramPath$ & DefaultMatchStandardDatabase) = vbNullString Then
+If Dir$(ApplicationCommonAppData$ & DefaultMatchStandardDatabase) = vbNullString Then
 msg$ = "MatchStandardDatabase keyword value " & DefaultMatchStandardDatabase$ & " in " & ProbeWinINIFile$ & " was not found in the Probe for EPMA folder"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIStandards"
 End
@@ -5640,6 +5658,10 @@ If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivatePro
 Call InitParseStringToString(astring$, StageBitMapCount%, StageBitMapFile$())
 If ierror Then End
 
+' Move stage bitmaps specified from probewin.ini file
+Call InitFilesMove(Int(1))
+If ierror Then Exit Sub
+
 ' Check that files are only WMF (WindowsMetaFiles) and exist
 For i% = 1 To StageBitMapCount%
 
@@ -5653,7 +5675,7 @@ End If
 
 ' Check that no path is specified
 If InStr(1, StageBitMapFile$(i%), "\", 1) <> 0 Then
-msg$ = "StageBitMapFile string " & StageBitMapFile$(i%) & " in " & tfilename$ & ", specifies a full path. Please move the file to the " & ProgramPath$ & " directory and edit the INI entry so that only the actual file name is specified." & vbCrLf & vbCrLf
+msg$ = "StageBitMapFile string " & StageBitMapFile$(i%) & " in " & tfilename$ & ", specifies a full path. Please move the file to the " & ApplicationCommonAppData$ & " directory and edit the INI entry so that only the actual file name is specified." & vbCrLf & vbCrLf
 msg$ = msg$ & "Program will now end."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIStageBitmaps"
 End
@@ -5661,7 +5683,7 @@ End If
 
 ' Check that file exists (skip if exporting INI file)
 If mode% = 0 Then
-If Dir$(ProgramPath$ & StageBitMapFile$(i%)) = vbNullString Then
+If Dir$(ApplicationCommonAppData$ & StageBitMapFile$(i%)) = vbNullString Then
 msg$ = "StageBitMapFile " & StageBitMapFile$(i%) & " in " & tfilename$ & " was not found" & vbCrLf & vbCrLf
 msg$ = msg$ & "Program will now end."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIStageBitmaps"

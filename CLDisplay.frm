@@ -1,5 +1,6 @@
 VERSION 5.00
 Object = "{827E9F53-96A4-11CF-823E-000021570103}#1.0#0"; "graphs32.ocx"
+Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
 Begin VB.Form FormCLDISPLAY 
    AutoRedraw      =   -1  'True
    Caption         =   "CL Spectrum Display"
@@ -67,6 +68,18 @@ Begin VB.Form FormCLDISPLAY
       NumPoints       =   10
       RandomData      =   0
       LabelYFormat    =   ""
+   End
+   Begin Pesgo32fLib.Pesgo Pesgo1 
+      Height          =   3375
+      Left            =   3840
+      TabIndex        =   6
+      Top             =   1440
+      Width           =   8415
+      _Version        =   65536
+      _ExtentX        =   14843
+      _ExtentY        =   5953
+      _StockProps     =   96
+      _AllProps       =   "CLDisplay.frx":0000
    End
    Begin VB.Label LabelTrack 
       BorderStyle     =   1  'Fixed Single

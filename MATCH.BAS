@@ -72,7 +72,7 @@ Call IOWriteLog(tmsg$)
 If MatchOldSample(1).LastChan% = 0 Then GoTo MatchStandardsNoElements
 
 ' Open the standard database
-If tStandardDataFile$ = vbNullString Then tStandardDataFile$ = ProgramPath$ & "STANDARD.MDB"
+If tStandardDataFile$ = vbNullString Then tStandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
 Set StDb = OpenDatabase(tStandardDataFile$, StandardDatabaseNonExclusiveAccess%, dbReadOnly)
 
 ' Get all standards that contain the elements
@@ -308,7 +308,7 @@ Exit Sub
 
 End Sub
 
-Sub MatchSave(Mode As Integer)
+Sub MatchSave(mode As Integer)
 ' Restore default database
 '  1 = load default match standard database
 '  2 = load default standard database
@@ -317,10 +317,10 @@ ierror = False
 On Error GoTo MatchSaveError
 
 ' Load match database to default match
-If Mode% = 1 Then
-If StandardDataFile$ = vbNullString Then StandardDataFile$ = ProgramPath$ & "STANDARD.MDB"
+If mode% = 1 Then
+If StandardDataFile$ = vbNullString Then StandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
 OriginalStandardDataFile$ = StandardDataFile$
-StandardDataFile$ = ProgramPath$ & DefaultMatchStandardDatabase$
+StandardDataFile$ = ApplicationCommonAppData$ & DefaultMatchStandardDatabase$
 
 ' Check that it exists
 If Dir$(StandardDataFile$) = vbNullString Then GoTo MatchSaveNotFound
@@ -328,7 +328,7 @@ If Dir$(StandardDataFile$) = vbNullString Then GoTo MatchSaveNotFound
 ' Restore default
 Else
 If OriginalStandardDataFile$ <> vbNullString$ Then StandardDataFile$ = OriginalStandardDataFile$
-If StandardDataFile$ = vbNullString Then StandardDataFile$ = ProgramPath$ & "STANDARD.MDB"
+If StandardDataFile$ = vbNullString Then StandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
 End If
 
 ' Get the standard numbers and names
@@ -340,15 +340,15 @@ Exit Sub
 ' Errors
 MatchSaveError:
 MsgBox Error$, vbOKOnly + vbCritical, "MatchSave"
-StandardDataFile$ = ProgramPath$ & "STANDARD.MDB"
+StandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
 Call StandardGetMDBIndex
 ierror = True
 Exit Sub
 
 MatchSaveNotFound:
-msg$ = "The specified match database " & DefaultMatchStandardDatabase$ & " was not found in the application folder" & ProgramPath$
+msg$ = "The specified match database " & DefaultMatchStandardDatabase$ & " was not found in the application folder " & ApplicationCommonAppData$
 MsgBox Error$, vbOKOnly + vbCritical, "MatchSave"
-StandardDataFile$ = ProgramPath$ & "STANDARD.MDB"
+StandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
 Call StandardGetMDBIndex
 ierror = True
 Exit Sub

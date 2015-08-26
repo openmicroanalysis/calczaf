@@ -17,6 +17,17 @@ Begin VB.Form FormPLOTHISTO_PE
    ScaleWidth      =   11025
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton CommandPlotConcentrationHistogram 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   "Plot Concentration Histogram"
+      Height          =   855
+      Left            =   9720
+      Style           =   1  'Graphical
+      TabIndex        =   15
+      ToolTipText     =   "Plot a concentration histogram (a la Carpenter)"
+      Top             =   5040
+      Width           =   1215
+   End
    Begin VB.CommandButton CommandOptions 
       Caption         =   "Histogram Options"
       Height          =   495
@@ -28,14 +39,14 @@ Begin VB.Form FormPLOTHISTO_PE
       Width           =   1215
    End
    Begin Pesgo32fLib.Pesgo Pesgo1 
-      Height          =   6135
+      Height          =   7215
       Left            =   120
       TabIndex        =   13
       Top             =   120
-      Width           =   6735
+      Width           =   8175
       _Version        =   65536
-      _ExtentX        =   11880
-      _ExtentY        =   10821
+      _ExtentX        =   14420
+      _ExtentY        =   12726
       _StockProps     =   96
       _AllProps       =   "PLOTHISTO_PE.frx":0000
    End
@@ -265,6 +276,12 @@ If Not DebugMode Then On Error Resume Next
 Call CalcZAFHistogramLoad
 If ierror Then Exit Sub
 FormHISTO.Show vbModal
+End Sub
+
+Private Sub CommandPlotConcentrationHistogram_Click()
+If Not DebugMode Then On Error Resume Next
+Call CalcZAFPlotHistogramConcentration
+If ierror Then Exit Sub
 End Sub
 
 Private Sub Form_Load()

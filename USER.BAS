@@ -394,7 +394,7 @@ Dim updated As Integer
 Dim UserTotalAcquisitionTime As New Field
 
 ' First check that a user database exists
-If Trim$(UserDataFile$) = vbNullString Then UserDataFile$ = ProgramPath$ & "USER.MDB"
+If Trim$(UserDataFile$) = vbNullString Then UserDataFile$ = ApplicationCommonAppData$ & "USER.MDB"
 If Dir$(UserDataFile$) = vbNullString Then Exit Sub
 
 ' Get version number

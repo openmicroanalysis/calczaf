@@ -482,6 +482,19 @@ Else
 FormMAIN.CMDialog1.DialogTitle = "Open File To Import CLR Color Data From"
 End If
 
+' PrbAcq ProbeImage acquisition files
+ElseIf UCase$(ioextension$) = UCase$("PrbAcq") Then
+FormMAIN.CMDialog1.Filter = "ProbeImage Acquisition Files (*.PrbAcq)|*.PrbAcq|All Files (*.*)|*.*|"
+If mode% < 2 Then
+If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.PrbAcq"
+End If
+
+If mode% < 2 Then
+FormMAIN.CMDialog1.DialogTitle = "Open File To Output ProbeImage Acquisition To"
+Else
+FormMAIN.CMDialog1.DialogTitle = "Open File To Input ProbeImage Acquisition From"
+End If
+
 End If
 
 ' Specify default filter
@@ -515,6 +528,7 @@ If UCase$(ioextension$) = UCase$("LUT") Then FormMAIN.CMDialog1.InitDir = UserDa
 If UCase$(ioextension$) = UCase$("FC") Then FormMAIN.CMDialog1.InitDir = UserDataDirectory$
 If UCase$(ioextension$) = UCase$("IMG") Then FormMAIN.CMDialog1.InitDir = UserDataDirectory$
 If UCase$(ioextension$) = UCase$("CLR") Then FormMAIN.CMDialog1.InitDir = SurferAppDirectory$
+If UCase$(ioextension$) = UCase$("PrbAcq") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
 
 ' Specify default extension
 FormMAIN.CMDialog1.DefaultExt = ioextension$
@@ -578,11 +592,8 @@ Dim lpAppName As String
 Dim lpKeyName As String
 Dim lpFileName As String
 
-' Use Windows API function to read PROBEHLP.INI
-If ProgramPath$ = vbNullString Then   ' in case loading FormMAIN (before Activate event for InitFiles is called)
-ProgramPath$ = app.Path
-If Right$(app.Path, 1) <> "\" Then ProgramPath$ = ProgramPath$ & "\"
-End If
+' In case loading FormMAIN (before Activate event for InitFiles is called)
+If ProgramPath$ = vbNullString Then ProgramPath$ = app.Path & "\"
 lpFileName$ = ProgramPath$ & "\PROBEHLP.INI"
 
 ' Check for existing PROBEHLP.INI   ' just return if not found
@@ -645,11 +656,11 @@ End If
 ' Add Explorer dialog flag
 FormMAIN.CMDialog1.flags = FormMAIN.CMDialog1.flags Or cdlOFNExplorer
 
-' Specify inital directory (probe data files use Userdata directory, other use ProgramPath$)
+' Specify inital directory (probe data files use Userdata directory, other use ApplicationCommonAppData$)
 If mode% = 1 Or mode% = 2 Then
 FormMAIN.CMDialog1.InitDir = UserDataDirectory$
 Else
-FormMAIN.CMDialog1.InitDir = ProgramPath$
+FormMAIN.CMDialog1.InitDir = ApplicationCommonAppData$
 End If
 
 ' Specify dialog title
@@ -1003,7 +1014,7 @@ Dim taskID As Long  ' for 32 bit OS
 Dim tfilename As String
 
 ' View version file
-tfilename$ = ProgramPath$ & "version.txt"
+tfilename$ = ApplicationCommonAppData$ & "version.txt"
 If Dir$(tfilename$) = vbNullString Then GoTo IODisplayVersionInfoNoFile
 msg$ = VbDquote$ & FileViewer$ & VbDquote$ & " " & VbDquote$ & tfilename$ & VbDquote$
 taskID& = Shell(msg$, vbNormalFocus)

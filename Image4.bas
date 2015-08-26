@@ -49,7 +49,7 @@ Exit Sub
 End If
 
 ' First check that CUSTOM.FC file exists
-If Dir$(ProgramPath$ & "CUSTOM.FC") = vbNullString Then
+If Dir$(ApplicationCommonAppData$ & "CUSTOM.FC") = vbNullString Then
 Call ImageMakeCustomPaletteFile
 If ierror Then Exit Sub
 End If
@@ -74,10 +74,10 @@ If p% > 0 Then
 k% = 0  ' re-set counter
 
 ' Load from disk
-If p% = 1 Then tfilename$ = ProgramPath$ & "THERMAL.FC"
-If p% = 2 Then tfilename$ = ProgramPath$ & "RAINBOW2.FC"
-If p% = 3 Then tfilename$ = ProgramPath$ & "BLUERED.FC"
-If p% = 4 Then tfilename$ = ProgramPath$ & "CUSTOM.FC"
+If p% = 1 Then tfilename$ = ApplicationCommonAppData$ & "THERMAL.FC"
+If p% = 2 Then tfilename$ = ApplicationCommonAppData$ & "RAINBOW2.FC"
+If p% = 3 Then tfilename$ = ApplicationCommonAppData$ & "BLUERED.FC"
+If p% = 4 Then tfilename$ = ApplicationCommonAppData$ & "CUSTOM.FC"
 
 If Dir$(tfilename$) = vbNullString Then GoTo ImageLoadPaletteNotFound
 
@@ -427,7 +427,7 @@ On Error GoTo ImageMakeCustomPaletteFileError
 Dim tfilename As String, astring As String
 
 Close #Temp1FileNumber%     ' make sure temp file is closed
-tfilename$ = ProgramPath$ & "CUSTOM.FC"
+tfilename$ = ApplicationCommonAppData$ & "CUSTOM.FC"
 If Dir$(tfilename$) <> vbNullString Then Exit Sub
 Open tfilename$ For Output As #Temp1FileNumber%
 

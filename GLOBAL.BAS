@@ -16,6 +16,9 @@ Global ierror As Integer                           ' global error for backing ou
 Global Const UseProEssentialsGraphics = False      ' global flag for Graphics Server form/code
 'Global Const UseProEssentialsGraphics = True       ' global flag for ProEssentials form/code
 
+Global Const UseAdditionalXrayLines = False      ' global flag for new non-traditional x-ray emission lines
+'Global Const UseAdditionalXrayLines= True        ' global flag for new non-traditional x-ray emission lines
+
 ' Based on Cameca SX100 set times
 Global Const KILOVOLT_SET_TIME! = 6#
 Global Const BEAMCURRENT_SET_TIME_CAMECA! = 11#
@@ -71,6 +74,11 @@ Public Declare Function GSCircle Lib "GSWDLL32.DLL" (ByVal fxOrg#, ByVal fyOrg#,
 'Public Declare Function GSSetRFontFace Lib "GSWDLL32.DLL" (ByVal tFont%, ByVal szString$) As Integer
 'Public Declare Function GSLoadRFont Lib "GSWDLL32.DLL" (ByVal tFont%, tAttr%, tsize%, tPitch%) As Integer
 
+' New constants for non-traditional emission lines
+Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,mb)
+Global Const MAXRAY% = 7                ' maximum xray symbols (ka,kb,la,lb,ma,mb," ") including blank for non-analyzed
+'Global Const MAXRAY% = 13               ' maximum xray symbols (ka,kb,la,lb,ma,mb,ln,lg,lv,ll,mg,mz," ") including blank for non-analyzed
+
 ' Constants for array declarations
 Global Const MAXINTERFACE% = 6          ' maximum number of instrument interfaces (0 to MAXINTERFACE%)
 Global Const MAXINTERFACE_EDS% = 6      ' maximum number of EDS spectra interfaces (0 to MAXINTERFACE_EDS)
@@ -82,7 +90,6 @@ Global Const MAXCHAN1% = MAXCHAN% + 1   ' maximum elements plus 1 (stoichiometri
 Global Const MAXSTD% = 128              ' maximum standards per run
 Global Const MAXROW% = 500              ' maximum lines per sample (changed to 500 rows 08-11-2012)
 Global Const MAXVOLATILE% = 400         ' maximum volatile/alternating intensities per chan per line per sample
-Global Const MAXRAY% = 7                ' maximum xray symbols (ka,kb,la,lb,ma,mb," ") including blank for non-analyzed
 Global Const MAXEDG% = 9                ' maximum emission edges
 Global Const MAXELM% = 100              ' maximum elements (do not change due to data restrictions in AbsorbGetMAC)
 Global Const MAXEMP% = 20               ' maximum empirical MAC/APFs
@@ -240,7 +247,10 @@ Global Const BIT5& = 31                  ' maximum 5 bit depth 0-31
 Global Const BIT4& = 15                  ' maximum 4 bit depth 0-15
 Global Const BIT3& = 7                   ' maximum 3 bit depth 0-7
 Global Const BIT2& = 3                   ' maximum 2 bit depth 0-3
+Global Const BIT1& = 1                   ' maximum 1 bit depth 0-1
 
+Global Const SIZE_65536_BYTES& = 65536   ' 65536 byte constant
+Global Const SIZE_32768_BYTES& = 32768   ' 32768 byte constant
 Global Const SIZE_16384_BYTES& = 16384   ' 16384 byte constant
 Global Const SIZE_8192_BYTES& = 8192     ' 8192 byte constant
 Global Const SIZE_4096_BYTES& = 4096     ' 4096 byte constant
@@ -1293,7 +1303,6 @@ Global CurrentMultiPointAcquireLastCountTimesLo() As Single   ' allocated in Ini
 ' File unit numbers used in Probe for EPMA
 Global Const Temp1FileNumber% = 201       ' #201 temporary file I/O
 Global Const Temp2FileNumber% = 202       ' #202 temporary file I/O
-Global Const Temp3FileNumber% = 203       ' #203 temporary file I/O
 
 Global Const Position1FileNumber% = 6     ' #6 *.POS position import or export
 Global Const Position2FileNumber% = 7     ' #7 *.POS position import or export
@@ -1301,12 +1310,18 @@ Global Const ProbeImageFileNumber% = 10   ' #10 ProbeImageFile$ (*.BIM)
 Global Const TipOfTheDayFileNumber% = 11  ' #11 TipOfTheDayFile$ (TipOfTheDay.TXT)
 
 Global Const MACFileNumber% = 16          ' #16 MACFile$ (MAC binary data file)
+
 Global Const XEdgeFileNumber% = 21        ' #21 XedgeFile$ (xray edge energy binary file)
 Global Const XLineFileNumber% = 22        ' #22 XlineFile$ (xray line energy binary file)
 Global Const XFlurFileNumber% = 23        ' #23 XflurFile$ (xray fluorescence yield binary file)
+
 Global Const EMPFileNumber% = 24          ' #24 EmpMACFile$ or EmpAPFFile$ (empirical MAC/APF ASCII files)
 Global Const EMPFacFileNumber% = 25       ' #25 EmpFacFile$ (empirical Alpha Factors ASCII file)
 Global Const EMPPHAFileNumber% = 26       ' #26 EmpPHAFile$ (empirical PHA coefficient ASCII file)
+
+Global Const XLineFileNumber2% = 27       ' #22 XlineFile2$ (xray line energy binary file for additional x-rays)
+Global Const XFlurFileNumber2% = 28        ' #23 XflurFile2$ (xray fluorescence yield binary file for additional x-rays)
+
 Global Const AbsorbFileNumber% = 99       ' #99 AbsorbFile$ (coefficient data for ABSORB.BAS)
 
 Global Const AFactorDataFileNumber% = 100           ' #100 AFactorDataFile$ (alpha-factor ASCII file)
@@ -1316,8 +1331,6 @@ Global Const ProbeErrorLogFileNumber% = 172         ' #172 ProbeErrorLogFile$ (P
 Global Const OutputReportFileNumber% = 173          ' #173 OutputReportFile$ (*.TXT) analyze report output
 Global Const RecalbELMFileNumber% = 175             ' #175 .ELM file number
 Global Const RecalbPHAFileNumber% = 176             ' #176 .PHA file number
-Global Const JeolEDSBatchFileNumber% = 181          ' #181 JEOL EDS batch file number
-Global Const JeolEDSSpectrumFileNumber% = 181       ' #181 JEOL EDS batch file number
 Global Const EMSASpectrumFileNumber% = 182          ' #182 EMSA EDS file number
 Global Const ProbeTextLogFileNumber% = 184          ' #184 ProbeTextLogFile$ (PROBEWIN.TXT)
 
@@ -1333,6 +1346,7 @@ Global PositionDatabaseExclusiveAccess As Integer
 Global XrayDatabaseExclusiveAccess As Integer
 Global MatrixDatabaseExclusiveAccess As Integer
 Global BoundaryDatabaseExclusiveAccess As Integer
+Global PureDatabaseExclusiveAccess As Integer
 
 Global DatabaseNonExclusiveAccess As Integer        ' for generic non-exclusive access
 Global StandardDatabaseNonExclusiveAccess As Integer
@@ -1343,15 +1357,22 @@ Global PositionDatabaseNonExclusiveAccess As Integer
 Global XrayDatabaseNonExclusiveAccess As Integer
 Global MatrixDatabaseNonExclusiveAccess As Integer
 Global BoundaryDatabaseNonExclusiveAccess As Integer
+Global PureDatabaseNonExclusiveAccess As Integer
 
-Global ProgramPath As String
 Global SystemPath As String
-Global ApplicationPath As String
+Global ProgramPath As String                ' works under VB6 IDE
+
+Global ApplicationPath As String            ' does not work under VB6 IDE
+Global ApplicationCommonAppData As String   ' all users
+Global ApplicationAppData As String         ' roaming users
 
 ' Xray data files
 Global XLineFile As String
-Global XEdgeFile As String
 Global XFlurFile As String
+Global XLineFile2 As String     ' for additional x-ray lines
+Global XFlurFile2 As String     ' for additional x-ray lines
+
+Global XEdgeFile As String
 Global ElementsFile As String
 Global AbsorbFile As String
 
@@ -1359,6 +1380,7 @@ Global EmpMACFile As String
 Global EmpAPFFile As String
 Global EmpFACFile As String
 Global EmpPHAFile As String
+
 Global MACFile As String
 
 Global ProbeWinINIFile As String
@@ -2634,6 +2656,7 @@ Global InstrumentAcknowledgementString As String
 Global AnalysisInSilentModeFlag As Boolean
 
 Global MatrixMDBFile As String
+Global PureMDBFile As String
 Global BoundaryMDBFile As String
 
 Global BinaryRanges(1 To MAXBINARY%) As Single  ' for matrix calculations
@@ -2787,9 +2810,6 @@ Global OriginalSurferDataDirectory As String
 Global OriginalGrapherDataDirectory As String
 Global OriginalDemoImagesDirectory As String
 
-Global ApplicationCommonAppData As String   ' all users
-Global ApplicationAppData As String         ' roaming users
-
 Global EDSInterfaceInsertRetractPresent As Boolean
 Global EDSInterfaceMaxEnergyThroughputPresent As Boolean
 
@@ -2840,3 +2860,7 @@ Global CLDarkSpectraCountTimeFraction As Single
 
 Global CLAcquisitionCountTime As Single     ' not stored in MDB
 
+Global ProbeImageAcquisitionFile As String
+Global ProbeImageSampleSetupNumber As Integer
+
+Global UseConfirmDuringAutomationFlag As Boolean

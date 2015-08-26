@@ -366,13 +366,13 @@ Dim tfilename As String
 
 ' Save input file
 tfilename$ = FormMODAL.TextInputDataFile.Text
-If Trim$(tfilename$) = vbNullString Then tfilename$ = ProgramPath$ & "modal.dat"
+If Trim$(tfilename$) = vbNullString Then tfilename$ = ApplicationCommonAppData$ & "modal.dat"
 If Dir$(tfilename$) = vbNullString Then GoTo ModalSaveFormBadInputFile
 ModalInputDataFile$ = tfilename$
 
 ' Save output file
 tfilename$ = FormMODAL.TextOutputDataFile.Text
-If Trim$(tfilename$) = vbNullString Then tfilename$ = ProgramPath$ & "modal.out"
+If Trim$(tfilename$) = vbNullString Then tfilename$ = ApplicationCommonAppData$ & "modal.out"
 ModalOutputDataFile$ = tfilename$
 
 Exit Sub

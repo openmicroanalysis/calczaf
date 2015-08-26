@@ -79,7 +79,7 @@ If zafinit% = 1 Then GoTo 7200
 ' STDABS1 / PHILIBERT ABSORPTION CORRECTION FOR STANDARDS
 If iabs% = 1 Then
 For i% = 1 To zaf.in0%
-f1!(i%) = 1.2 * zaf.atwts!(i%) / zaf.Z!(i%) ^ 2
+f1!(i%) = 1.2 * zaf.atwts!(i%) / zaf.Z%(i%) ^ 2
 Next i%
 
 For i% = 1 To zaf.in1%
@@ -105,7 +105,7 @@ For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 h!(i%) = zaf.eO!(i%) ^ 1.65 - zaf.eC!(i%) ^ 1.65
 ha! = 0.00000165
-hal! = 0.18 + 2# / h!(i%) + 0.000008 * zaf.eC!(i%) + 0.005 * Sqr(zaf.Z!(i%))
+hal! = 0.18 + 2# / h!(i%) + 0.000008 * zaf.eC!(i%) + 0.005 * Sqr(zaf.Z%(i%))
 zaf.genstd!(i%) = (1# + ha! * h!(i%) * zaf.mup!(i%, i%) * zaf.m1!(i%)) ^ 2 / (1# + hal! * (ha! * h!(i%) * zaf.mup!(i%, i%) * zaf.m1!(i%)))
 End If
 Next i%
@@ -114,7 +114,7 @@ Next i%
 ElseIf iabs% = 4 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-ps! = (0.000007870001 * jm!(i%) ^ 0.5 * zaf.eO!(i%) ^ 1.5 + 0.000000735 * zaf.eO!(i%) * zaf.eO!(i%)) / (zaf.Z!(i%) / zaf.atwts!(i%))
+ps! = (0.000007870001 * jm!(i%) ^ 0.5 * zaf.eO!(i%) ^ 1.5 + 0.000000735 * zaf.eO!(i%) * zaf.eO!(i%)) / (zaf.Z%(i%) / zaf.atwts!(i%))
 ppz! = ps! * (0.49269 - 1.0987 * hb!(i%) + 0.78557 * hb!(i%) * hb!(i%)) * Log(zaf.v!(i%))
 ppz! = ppz! / (0.70256 - 1.09865 * hb!(i%) + 1.0046 * hb!(i%) * hb!(i%) + Log(zaf.v!(i%)))
 zaf.genstd!(i%) = (1# - Exp(-2# * zaf.mup!(i%, i%) * zaf.m1!(i%) * ppz!)) / (2# * zaf.mup!(i%, i%) * zaf.m1!(i%) * ppz!)
@@ -127,9 +127,9 @@ ElseIf iabs% = 5 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 For i1% = 1 To zaf.in0%
-ps! = (0.000007870001 * jm!(i1%) ^ 0.5 * zaf.eO!(i%) ^ 1.5 + 0.000000735 * zaf.eO!(i%) * zaf.eO!(i%)) / (zaf.Z!(i1%) / zaf.atwts!(i1%))
+ps! = (0.000007870001 * jm!(i1%) ^ 0.5 * zaf.eO!(i%) ^ 1.5 + 0.000000735 * zaf.eO!(i%) * zaf.eO!(i%)) / (zaf.Z%(i1%) / zaf.atwts!(i1%))
 lu! = Log(zaf.v!(i%))
-pz!(i%, i1%) = ps! * lu! / ((2.4 + 0.07 * zaf.Z!(i1%)) * lu! + 1.04 + 0.48 * hb!(i1%)) ' use pure element backscatter
+pz!(i%, i1%) = ps! * lu! / ((2.4 + 0.07 * zaf.Z%(i1%)) * lu! + 1.04 + 0.48 * hb!(i1%)) ' use pure element backscatter
 Next i1%
 
 If i% < zaf.in0 Or zaf.in1% = zaf.in0 Then
@@ -145,18 +145,18 @@ For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 For i1% = 1 To zaf.in0%
 lu! = Log(zaf.v!(i%))
-ps! = (0.000007870001 * jm!(i1%) ^ 0.5 * zaf.eO!(i%) ^ 1.5 + 0.000000735 * zaf.eO!(i%) * zaf.eO!(i%)) / (zaf.Z!(i1%) / zaf.atwts!(i1%))
-pz!(i%, i1%) = ps! * lu! / ((2.4 + 0.07 * zaf.Z!(i1%)) * lu! + 1.04 + 0.48 * hb!(i1%))
+ps! = (0.000007870001 * jm!(i1%) ^ 0.5 * zaf.eO!(i%) ^ 1.5 + 0.000000735 * zaf.eO!(i%) * zaf.eO!(i%)) / (zaf.Z%(i1%) / zaf.atwts!(i1%))
+pz!(i%, i1%) = ps! * lu! / ((2.4 + 0.07 * zaf.Z%(i1%)) * lu! + 1.04 + 0.48 * hb!(i1%))
 Next i1%
 
 If i% < zaf.in0 Or zaf.in1% = zaf.in0 Then
-a1! = 2.2 + 0.00188 * zaf.Z!(i%)
-a3! = 0.01 + 0.00719 * zaf.Z!(i%)
+a1! = 2.2 + 0.00188 * zaf.Z%(i%)
+a3! = 0.01 + 0.00719 * zaf.Z%(i%)
 a2! = (a1! - 1#) * Exp(a3!)
 ax! = 1.23 - 1.25 * hb!(i%)
 hx! = a1! - a2! * Exp(-a3! * zaf.v!(i%) ^ ax!)
 
-zm! = pz!(i%, i%) * (0.29 + (0.662 + 0.443 * zaf.v!(i%) ^ 0.2) / Sqr(zaf.Z!(i%)))
+zm! = pz!(i%, i%) * (0.29 + (0.662 + 0.443 * zaf.v!(i%) ^ 0.2) / Sqr(zaf.Z%(i%)))
 zra! = hx!
 zrb! = hx! * (zm! - 3# * pz!(i%, i%))
 zrc! = zm! * (zm! - 3# * pz!(i%, i%))
@@ -182,13 +182,13 @@ pp!(1) = 0.78
 pp!(2) = 0.1
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-zz! = zaf.Z!(i%)
-zn! = zaf.Z!(i%)
+zz! = zaf.Z%(i%)
+zn! = zaf.Z%(i%)
 xp! = zaf.r!(i%, i%) / zaf.s!(i%, i%)
 jbar! = jm!(i%)
 hh! = hb!(i)
 xi! = zaf.mup!(i%, i%) * zaf.m1!(i%)
-sumatom! = zaf.Z!(i%) / zaf.atwts!(i%)
+sumatom! = zaf.Z%(i%) / zaf.atwts!(i%)
 
 ' Calculate PAP absorption
 Call ZAFPap(Int(1), i%)
@@ -202,9 +202,9 @@ Next i%
 ElseIf iabs% = 13 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-zz! = zaf.Z!(i%)
-zn! = zaf.Z!(i%)
-meanz! = zaf.Z!(i%)
+zz! = zaf.Z%(i%)
+zn! = zaf.Z%(i%)
+meanz! = zaf.Z%(i%)
 xp! = zaf.r!(i%, i%) / zaf.s!(i%, i%)
 jbar! = jm!(i%)
 hh! = hb!(i%)
@@ -229,7 +229,7 @@ ElseIf iabs% = 15 Then
 For i% = 1 To zaf.in1%
 For i1% = 1 To zaf.in0%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-pz!(i%, i1%) = 216140# * zaf.Z!(i1%) ^ 1.163 / ((zaf.eO!(i%) / zaf.eC!(i%) - 1) ^ 0.5 * zaf.eO!(i%) ^ 1.25 * zaf.atwts!(i1%))
+pz!(i%, i1%) = 216140# * zaf.Z%(i1%) ^ 1.163 / ((zaf.eO!(i%) / zaf.eC!(i%) - 1) ^ 0.5 * zaf.eO!(i%) ^ 1.25 * zaf.atwts!(i1%))
 pz!(i%, i1%) = pz!(i%, i1%) * (Log(1.166 * zaf.eO!(i%) / jm!(i%)) / zaf.eC!(i%)) ^ 0.5
 End If
 Next i1%
@@ -271,7 +271,7 @@ For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 zed! = 0#
 For i1% = 1 To zaf.in0%
-zed! = zed! + zaf.conc!(i1%) * zaf.Z!(i1%)
+zed! = zed! + zaf.conc!(i1%) * zaf.Z%(i1%)
 Next i1%
 hal! = 0.18 + 2# / h!(i%) + 0.000008 * zaf.eC!(i%) + 0.005 * Sqr(zed!)
 m7! = ZAFMACCal(i%, zaf)
@@ -287,8 +287,8 @@ m5! = 0#
 m6! = 0#
         
 For i1% = 1 To zaf.in0%
-m5! = m5! + zaf.conc!(i1%) * zaf.Z!(i1%) / zaf.atwts!(i1%)
-m6! = m6! + zaf.conc!(i1%) * zaf.Z!(i1%) * Log(jm!(i1%)) / zaf.atwts!(i1%)
+m5! = m5! + zaf.conc!(i1%) * zaf.Z%(i1%) / zaf.atwts!(i1%)
+m6! = m6! + zaf.conc!(i1%) * zaf.Z%(i1%) * Log(jm!(i1%)) / zaf.atwts!(i1%)
 Next i1%
         
 m6! = Exp(m6! / m5!)
@@ -327,7 +327,7 @@ m5! = 0#
 ppz! = 0#
 
 For i1% = 1 To zaf.in0%
-m5! = m5! + zaf.conc!(i1%) * zaf.Z!(i1%)
+m5! = m5! + zaf.conc!(i1%) * zaf.Z%(i1%)
 ppz! = ppz! + zaf.conc!(i1%) * pz!(i%, i1%)
 Next i1%
 
@@ -363,8 +363,8 @@ zz! = 0#
 zn! = 0#
 
 For i1% = 1 To zaf.in0%
-zz! = zz! + zaf.conc!(i1%) * zaf.Z!(i1%)
-zn! = zn! + zaf.conc!(i1%) * Log(zaf.Z!(i1%))
+zz! = zz! + zaf.conc!(i1%) * zaf.Z%(i1%)
+zn! = zn! + zaf.conc!(i1%) * Log(zaf.Z%(i1%))
 Next i1%
 
 If zz! < 0# Then GoTo ZAFAbsBadZZ
@@ -391,9 +391,9 @@ zz! = 0#
 zn! = 0#
 avez! = 0#
 For i1% = 1 To zaf.in0%
-zz! = zz! + zaf.conc!(i1%) * zaf.Z!(i1%)
-zn! = zn! + zaf.conc!(i1%) * Log(zaf.Z!(i1%))
-avez! = avez! + zaf.conc!(i1%) * Sqr(zaf.Z!(i1%))
+zz! = zz! + zaf.conc!(i1%) * zaf.Z%(i1%)
+zn! = zn! + zaf.conc!(i1%) * Log(zaf.Z%(i1%))
+avez! = avez! + zaf.conc!(i1%) * Sqr(zaf.Z%(i1%))
 Next i1%
 
 If zz! < 0# Then GoTo ZAFAbsBadZZ
@@ -739,7 +739,7 @@ If zafinit% = 1 Then GoTo 6900
 ' BSC1 / CALCULATION OF HEINRICH BACKSCATTER COEFFICIENTS FOR PURE ELEMENTS
 If ibsc% = 1 Then
 For i% = 1 To zaf.in0%
-yy! = zaf.Z!(i%)
+yy! = zaf.Z%(i%)
 If zaf.eO!(i%) < 11# Then GoTo 6630
 If zaf.eO!(i%) < 16# Then GoTo 6600
 If zaf.eO!(i%) < 21# Then GoTo 6570
@@ -769,7 +769,7 @@ hb!(i%) = h1!
 ' BSC2 / CALCULATION OF LOVE/SCOTT BACKSCATTER COEFFICIENTS FOR PURE ELEMENTS
 ElseIf ibsc% = 2 Then
 For i% = 1 To zaf.in0%
-yy! = zaf.Z!(i%)
+yy! = zaf.Z%(i%)
 h1! = (-52.3791 + 150.48371 * yy! - 1.67373 * yy! ^ 2 + 0.00716 * yy! ^ 3) / 10000#
 h2! = (-1112.8 + 30.289 * yy! - 0.15498 * yy! ^ 2) / 10000#
 hb!(i%) = h1! * (1# + h2! * Log(zaf.eO!(i%) / 20#))
@@ -779,7 +779,7 @@ Next i%
 ' BSC3 / CALCULATION OF POUCHOU/PICHOIR BACKSCATTER COEFFICIENTS FOR PURE ELEMENTS
 ElseIf ibsc% = 3 Then
 For i% = 1 To zaf.in0%
-yy! = zaf.Z!(i%)
+yy! = zaf.Z%(i%)
 h1! = 0.00175 * yy! + 0.37 * (1# - Exp(-0.015 * Exp(1.3 * Log(yy!))))
 hb!(i%) = h1!
 Next i%
@@ -787,7 +787,7 @@ Next i%
 ' BSC4 / CALCULATION OF HUNGLER & KUCHLER (AUGUST & WERNISCH) BACKSCATTER COEFFICIENTS FOR PURE ELEMENTS
 ElseIf ibsc% = 4 Then
 For i% = 1 To zaf.in0%
-yy! = zaf.Z!(i%)
+yy! = zaf.Z%(i%)
 h1! = 0.1904 - 0.2236 * Log(yy!) + 0.1292 * (Log(yy!)) ^ 2 - 0.01491 * (Log(yy!)) ^ 3
 h2! = 0.0002167 * yy! + 0.9987
 h1! = h1! * h2! * zaf.eO!(i) ^ (0.1382 - 0.9211 / Sqr(yy!))
@@ -811,7 +811,7 @@ Next i%
 ElseIf ibsc% = 3 Then
 Zbar! = 0#
 For i1% = 1 To zaf.in0%
-Zbar! = Zbar! + zaf.conc!(i1%) * Sqr(zaf.Z!(i1%))
+Zbar! = Zbar! + zaf.conc!(i1%) * Sqr(zaf.Z%(i1%))
 Next i1%
 Zbar! = Zbar! * Zbar!
 
@@ -853,72 +853,72 @@ If zafinit% = 1 Then GoTo 5400  ' calculate sample intensities
 ' STDMIP1 / BERGER/SELTZER MEAN IONIZATION POTENTIALS FOR STANDARDS
 If imip% = 1 Then
 For i% = 1 To zaf.in0%
-jm!(i%) = (9.76 * zaf.Z!(i%) + 58.5 * (1# / zaf.Z!(i%) ^ 0.19)) / 1000#
-' was jm!(i%) = (9.76 * zaf.z!(i%) + 58.5 * zaf.z!(i%) ^ (-.19)) / 1000#
+jm!(i%) = (9.76 * zaf.Z%(i%) + 58.5 * (1# / zaf.Z%(i%) ^ 0.19)) / 1000#
+' was jm!(i%) = (9.76 * zaf.z%(i%) + 58.5 * zaf.z%(i%) ^ (-.19)) / 1000#
 Next i%
 
 ' STDMIP2 / DUNCUMB/DA CASA MEAN IONIZATION POTENTIALS FOR STANDARDS
 ElseIf imip% = 2 Then
 For i% = 1 To zaf.in0%
-jm!(i%) = 14# * (1# - Exp(-0.1 * zaf.Z!(i%))) + 75.5 / zaf.Z!(i%) ^ (zaf.Z!(i%) / 7.5) - zaf.Z!(i%) / (100# + zaf.Z!(i%))
-jm!(i%) = zaf.Z!(i%) * jm!(i%) / 1000#
+jm!(i%) = 14# * (1# - Exp(-0.1 * zaf.Z%(i%))) + 75.5 / zaf.Z%(i%) ^ (zaf.Z%(i%) / 7.5) - zaf.Z%(i%) / (100# + zaf.Z%(i%))
+jm!(i%) = zaf.Z%(i%) * jm!(i%) / 1000#
 Next i%
 
 ' STDMIP3 / RUSTE & ZELLER MEAN IONIZATION POTENTIALS FOR STANDARDS
 ElseIf imip% = 3 Then
 For i% = 1 To zaf.in0%
-jm!(i%) = 10.04 + 8.25 * Exp(-zaf.Z!(i%) / 11.22)   ' changed 10.4 to 10.04 5/26/04 (typo)
-jm!(i%) = zaf.Z!(i%) * jm!(i%) / 1000#
+jm!(i%) = 10.04 + 8.25 * Exp(-zaf.Z%(i%) / 11.22)   ' changed 10.4 to 10.04 5/26/04 (typo)
+jm!(i%) = zaf.Z%(i%) * jm!(i%) / 1000#
 Next i%
 
 ' STDMIP4 / SPRINGER MEAN IONIZATION POTENTIALS FOR STANDARDS
 ElseIf imip% = 4 Then
 For i% = 1 To zaf.in0%
-jm!(i%) = 9# * (1 + zaf.Z!(i%) ^ (-2 / 3)) + 0.03 * zaf.Z!(i%)
-jm!(i%) = zaf.Z!(i%) * jm!(i%) / 1000#
+jm!(i%) = 9# * (1 + zaf.Z%(i%) ^ (-2 / 3)) + 0.03 * zaf.Z%(i%)
+jm!(i%) = zaf.Z%(i%) * jm!(i%) / 1000#
 Next i%
 
 ' STDMIP5 / WILSON MEAN IONIZATION POTENTIALS FOR STANDARDS
 ElseIf imip% = 5 Then
 For i% = 1 To zaf.in0%
 jm!(i%) = 11.5
-jm!(i%) = zaf.Z!(i%) * jm!(i%) / 1000#
+jm!(i%) = zaf.Z%(i%) * jm!(i%) / 1000#
 Next i%
 
 ' STDMIP6 / HEINRICH MEAN IONIZATION POTENTIALS FOR STANDARDS
 ElseIf imip% = 6 Then
 For i% = 1 To zaf.in0%
-jm!(i%) = 9.94 + 19.52 / zaf.Z!(i%)
-jm!(i%) = zaf.Z!(i%) * jm!(i%) / 1000#
+jm!(i%) = 9.94 + 19.52 / zaf.Z%(i%)
+jm!(i%) = zaf.Z%(i%) * jm!(i%) / 1000#
 Next i%
 
 ' STDMIP7 / BLOCH (LOVE/SCOTT) MEAN IONIZATION POTENTIALS FOR STANDARDS
 ElseIf imip% = 7 Then
 For i% = 1 To zaf.in0%
 jm!(i%) = 13.5
-jm!(i%) = zaf.Z!(i%) * jm!(i%) / 1000#
+jm!(i%) = zaf.Z%(i%) * jm!(i%) / 1000#
 Next i%
 
 ' STDMIP8 / ARMSTRONG (SPRINGER/BERGER) MEAN IONIZATION POTENTIALS FOR STANDARDS
 ElseIf imip% = 8 Then
 For i% = 1 To zaf.in0%
-If zaf.Z!(i%) < 30# Then
-  jm!(i%) = 9# * (1# + zaf.Z!(i%) ^ (-2 / 3)) + 0.03 * zaf.Z!(i%)
+If zaf.Z%(i%) < 30# Then
+  jm!(i%) = 9# * (1# + zaf.Z%(i%) ^ (-2 / 3)) + 0.03 * zaf.Z%(i%)
 Else
-  jm!(i%) = 9.76 + 58.5 * zaf.Z!(i%) ^ (-1.19)
+  jm!(i%) = 9.76 + 58.5 * zaf.Z%(i%) ^ (-1.19)
 End If
-jm!(i%) = zaf.Z!(i%) * jm!(i%) / 1000#
+jm!(i%) = zaf.Z%(i%) * jm!(i%) / 1000#
 Next i%
 
 ' STDMIP9 / JOY (WILSON/BERGER) MEAN IONIZATION POTENTIALS FOR STANDARDS
 ElseIf imip% = 9 Then
 For i% = 1 To zaf.in0%
-If zaf.Z!(i%) < 13# Then
+If zaf.Z%(i%) < 13# Then
   jm!(i%) = 11.5
 Else
-  jm!(i%) = 9.76 + 58.5 * zaf.Z!(i%) ^ (-1.19)
+  jm!(i%) = 9.76 + 58.5 * zaf.Z%(i%) ^ (-1.19)
 End If
-jm!(i%) = zaf.Z!(i%) * jm!(i%) / 1000#
+jm!(i%) = zaf.Z%(i%) * jm!(i%) / 1000#
 Next i%
 End If
 
@@ -929,11 +929,12 @@ Exit Sub
 m5! = 0#
 m6! = 0#
 For i% = 1 To zaf.in0%
-m5! = m5! + zaf.conc!(i%) * zaf.Z!(i%) / zaf.atwts!(i%)
-m6! = m6! + zaf.conc!(i%) * zaf.Z!(i%) * Log(jm!(i%)) / zaf.atwts!(i%)
+m5! = m5! + zaf.conc!(i%) * zaf.Z%(i%) / zaf.atwts!(i%)
+m6! = m6! + zaf.conc!(i%) * zaf.Z%(i%) * Log(jm!(i%)) / zaf.atwts!(i%)
 Next i%
 
 sumatom! = m5!
+If m6! / m5! > MAXLOGEXPS! Then GoTo ZAFMipBadJbar
 jbar! = Exp(m6! / m5!)
 
 Exit Sub
@@ -942,6 +943,18 @@ Exit Sub
 ZAFMipError:
 MsgBox Error$, vbOKOnly + vbCritical, "ZAFMip"
 ierror = True
+Exit Sub
+
+ZAFMipBadJbar:
+msg$ = "Bad jbar parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf & vbCrLf
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+If Not CalcImageQuantFlag Then
+MiscMsgBoxTim FormMSGBOXTIME, "ZAFMip", msg$, 20#
+Call IOWriteLog(msg$)
+Else
+Call IOWriteLog(msg$)
+End If
+'ierror = True
 Exit Sub
 
 End Sub
@@ -989,7 +1002,7 @@ ww! = zz! * ww! / 1000#
 
 ' SMPMIP8 / ARMSTRONG (SPRINGER/BERGER) MEAN IONIZATION POTENTIAL FOR SAMPLE
 ElseIf imip% = 8 Then
-If zaf.Z!(ii%) < 30# Then
+If zaf.Z%(ii%) < 30# Then
   ww! = 9# * (1# + zz! ^ (-2 / 3)) + 0.03 * zz!
 Else
   ww! = 9.76 + 58.5 * zz! ^ (-1.19)
@@ -998,7 +1011,7 @@ ww! = zz! * ww! / 1000#
 
 ' SMPMIP9 / JOY (WILSON/BERGER) MEAN IONIZATION POTENTIAL FOR SAMPLE
 ElseIf imip% = 9 Then
-If zaf.Z!(ii%) < 13# Then
+If zaf.Z%(ii%) < 13# Then
   ww! = 11.5
 Else
   ww! = 9.76 + 58.5 * zz! ^ (-1.19)
@@ -1055,7 +1068,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 10610
 If zafinit% = 1 Then GoTo 10200
 
 ' PHI-STD
-zz! = zaf.Z!(i%)
+zz! = zaf.Z%(i%)
 aa! = zaf.atwts!(i%)
 ww! = jm!(i%)
 
@@ -1073,7 +1086,7 @@ pp! = 0#
 hh! = eta!(i%)
 
 For i1% = 1 To zaf.in0%
-zz! = zz! + zaf.conc!(i1%) * zaf.Z!(i1%) / zaf.atwts!(i1%)
+zz! = zz! + zaf.conc!(i1%) * zaf.Z%(i1%) / zaf.atwts!(i1%)
 aa! = aa! + zaf.conc!(i1%)
 pp! = pp! + zaf.conc!(i1%) / zaf.atwts!(i1%)
 Next i1%
@@ -1150,9 +1163,9 @@ zz! = 0#
 za! = 0#
 ww! = 0#
 For i1% = 1 To zaf.in0%
-zz! = zz! + zaf.conc!(i1%) * zaf.Z!(i1%)
-za! = za! + zaf.conc!(i1%) * zaf.Z!(i1%) / zaf.atwts!(i1%)
-ww! = ww! + zaf.conc!(i1%) * (zaf.Z!(i1%) / zaf.atwts!(i1%)) * Log(1.166 * (v0! + v1!) / (2# * jm!(i1%)))
+zz! = zz! + zaf.conc!(i1%) * zaf.Z%(i1%)
+za! = za! + zaf.conc!(i1%) * zaf.Z%(i1%) / zaf.atwts!(i1%)
+ww! = ww! + zaf.conc!(i1%) * (zaf.Z%(i1%) / zaf.atwts!(i1%)) * Log(1.166 * (v0! + v1!) / (2# * jm!(i1%)))
 Next i1%
 
 x4! = 450000# * ((zz! - 1.3) / zz!) * za! ^ 0.5 * v0! ^ -0.75
@@ -1173,9 +1186,9 @@ za! = 0#
 
 xp! = zaf.bks!(i%) / zaf.stp!(i%)
 For i1% = 1 To zaf.in0%
-zz! = zz! + zaf.conc!(i1%) * zaf.Z!(i1%)
-za! = za! + zaf.conc!(i1%) * zaf.Z!(i1%) / zaf.atwts!(i1%)
-x4! = x4! + zaf.conc!(i1%) * zaf.Z!(i1%) / (zaf.atwts!(i1%) * pz!(i%, i1%))
+zz! = zz! + zaf.conc!(i1%) * zaf.Z%(i1%)
+za! = za! + zaf.conc!(i1%) * zaf.Z%(i1%) / zaf.atwts!(i1%)
+x4! = x4! + zaf.conc!(i1%) * zaf.Z%(i1%) / (zaf.atwts!(i1%) * pz!(i%, i1%))
 Next i1%
 x4! = x4! / za!
 x4! = 1# / x4!
@@ -1943,9 +1956,9 @@ If VerboseMode Then
 msg$ = vbCrLf & "NORMELEM"
 For i% = 1 To zaf.in0%
 If zaf.il%(i%) > 0 And zaf.il%(i%) < MAXRAY% Then
-msg$ = msg$ & Format$(Symlo$(CInt(zaf.Z!(i%))) & " " & Xraylo$(zaf.il%(i%)), a80$)
+msg$ = msg$ & Format$(Symlo$(zaf.Z%(i%)) & " " & Xraylo$(zaf.il%(i%)), a80$)
 Else
-msg$ = msg$ & Format$(Symlo$(CInt(zaf.Z!(i%))) & " (" & Format$(zaf.il%(i%)) & ")", a80$)
+msg$ = msg$ & Format$(Symlo$(zaf.Z%(i%)) & " (" & Format$(zaf.il%(i%)) & ")", a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
@@ -2245,7 +2258,7 @@ ierror = True
 Exit Sub
 
 ZAFSmpBadEnergyLoss:
-msg$ = "Calculated electron energy loss for " & Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " in this matrix is zero for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
+msg$ = "Calculated electron energy loss for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is zero for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
 MiscMsgBoxTim FormMSGBOXTIME, "ZAFSmp", msg$, 20#
 Call IOWriteLog(msg$)
@@ -2256,7 +2269,7 @@ End If
 Exit Sub
 
 ZAFSmpBadElectronLoss:
-msg$ = "Calculated electron backscatter loss for " & Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " in this matrix is zero for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
+msg$ = "Calculated electron backscatter loss for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is zero for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
 MiscMsgBoxTim FormMSGBOXTIME, "ZAFSmp", msg$, 20#
 Call IOWriteLog(msg$)
@@ -2294,7 +2307,7 @@ ReDim continuum(1 To MAXCHAN1%) As Single
 ' Initialize arrays
 For i% = 1 To MAXCHAN1%
 zaf.il%(i%) = 0
-zaf.Z!(i%) = 0#
+zaf.Z%(i%) = 0#
 p2!(i%) = 0#
 zaf.atwts!(i%) = 0#
 Next i%
@@ -2332,7 +2345,7 @@ zaf.m1!(i%) = 1# / Sin(tt!)
 If stdsample(1).KilovoltsArray!(i%) = 0# Then GoTo ZAFStdBadKilovolts
 zaf.eO!(i%) = stdsample(1).KilovoltsArray!(i%)
 
-zaf.Z!(i%) = CSng(stdsample(1).AtomicNums%(i%))
+zaf.Z%(i%) = stdsample(1).AtomicNums%(i%)
 zaf.atwts!(i%) = stdsample(1).AtomicWts!(i%)
 zaf.il%(i%) = stdsample(1).XrayNums%(i%)
 If stdsample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 10    ' use for disabled element
@@ -2351,7 +2364,7 @@ zaf.in1% = zaf.in0%
 zaf.in1% = zaf.in0% - 1
 
 zaf.eO!(zaf.in0%) = sample(1).kilovolts!   ' use sample kilovolts (no need to apply energy loss from coating to stoichiometric oxygen)
-zaf.Z!(zaf.in0%) = AllAtomicNums%(8)
+zaf.Z%(zaf.in0%) = AllAtomicNums%(8)
 zaf.il%(zaf.in0%) = 0
 p2!(zaf.in0%) = 0#
 zaf.atwts!(zaf.in0%) = AllAtomicWts!(8)
@@ -2751,7 +2764,7 @@ For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 For i1% = 1 To zaf.in0%
 n5! = 1000# * jm!(i1%)
-zaf.s!(i1%, i%) = 2# * zaf.Z!(i1%) / (zaf.atwts!(i1%) * (zaf.eO!(i%) + zaf.eC!(i%))) * Log(583# * (zaf.eO!(i%) + zaf.eC!(i%)) / n5!)
+zaf.s!(i1%, i%) = 2# * zaf.Z%(i1%) / (zaf.atwts!(i1%) * (zaf.eO!(i%) + zaf.eC!(i%))) * Log(583# * (zaf.eO!(i%) + zaf.eC!(i%)) / n5!)
 Next i1%
 End If
 Next i%
@@ -2761,7 +2774,7 @@ ElseIf istp% = 2 Then
 For i% = 1 To zaf.in1%
 zaf.s!(i%, i%) = 0#
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-m5! = zaf.Z!(i%) / zaf.atwts!(i%)
+m5! = zaf.Z%(i%) / zaf.atwts!(i%)
 m6! = 1.166 * zaf.eC!(i%) / jm!(i%)
 n2! = m6! * zaf.v!(i%)
 n3! = ZAFFNLint(n2!)
@@ -2781,7 +2794,7 @@ ElseIf istp% = 4 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 n5! = jm!(i%)
-zaf.s!(i%, i%) = zaf.atwts!(i%) * (1# + 16.05 * (n5! / zaf.eC!(i%)) ^ 0.5 * ((zaf.v!(i%) ^ 0.5 - 1#) / (zaf.v!(i%) - 1#)) ^ 1.07) / zaf.Z!(i%)
+zaf.s!(i%, i%) = zaf.atwts!(i%) * (1# + 16.05 * (n5! / zaf.eC!(i%)) ^ 0.5 * ((zaf.v!(i%) ^ 0.5 - 1#) / (zaf.v!(i%) - 1#)) ^ 1.07) / zaf.Z%(i%)
 zaf.s!(i%, i%) = 1# / zaf.s(i%, i%)
 End If
 Next i%
@@ -2793,32 +2806,32 @@ If zaf.il%(i%) <= MAXRAY% - 1 Then
 jbar! = jm!(i%)
 
 If zaf.il%(i%) = 1 Or zaf.il%(i%) = 2 Then  ' K lines
-emm! = 0.86 + 0.12 * Exp(-zaf.Z!(i%) * zaf.Z!(i%) / 25#)
-Select Case zaf.Z!(i%)
+emm! = 0.86 + 0.12 * Exp(-zaf.Z%(i%) * zaf.Z%(i%) / 25#)
+Select Case zaf.Z%(i%)
     Case Is < 12
       wght! = 0#
     Case 12 To 33
-      wght! = 2.0988 - 0.569943 * zaf.Z!(i%) + 0.05759217 * zaf.Z!(i%) ^ 2
-      wght! = wght! - 0.0026994591 * zaf.Z!(i%) ^ 3 + 0.00006008776 * zaf.Z!(i%) ^ 4
-      wght! = wght! - 0.000000514088 * zaf.Z!(i%) ^ 5
+      wght! = 2.0988 - 0.569943 * zaf.Z%(i%) + 0.05759217 * zaf.Z%(i%) ^ 2
+      wght! = wght! - 0.0026994591 * zaf.Z%(i%) ^ 3 + 0.00006008776 * zaf.Z%(i%) ^ 4
+      wght! = wght! - 0.000000514088 * zaf.Z%(i%) ^ 5
     Case Is > 33
       wght! = 0.14
 End Select
 wght! = 1# - wght!
 elinshell% = 2
-omega! = Exp(2.373 * Log(zaf.Z!(i%)) - 8.902)
+omega! = Exp(2.373 * Log(zaf.Z%(i%)) - 8.902)
 
 ElseIf zaf.il%(i%) = 3 Or zaf.il%(i%) = 4 Then  ' L lines
 emm! = 0.82
-wght! = 0.979 - 0.00187 * zaf.Z!(i%)
+wght! = 0.979 - 0.00187 * zaf.Z%(i%)
 elinshell% = 4
-omega! = Exp(2.946 * Log(zaf.Z!(i%)) - 13.94)
+omega! = Exp(2.946 * Log(zaf.Z%(i%)) - 13.94)
 
 ElseIf zaf.il%(i%) = 5 Or zaf.il%(i%) = 6 Then  ' M lines
 emm! = 0.78
 wght! = 1#
 elinshell% = 6
-omega! = 0.5 * Exp(2.946 * Log(zaf.Z!(i%) / 2) - 13.94)
+omega! = 0.5 * Exp(2.946 * Log(zaf.Z%(i%) / 2#) - 13.94)
 End If
 
 ' Save for sample calculations
@@ -2836,7 +2849,7 @@ xpp2! = 0.0000112 * (1.35 - 0.45 * jbar! * jbar!) * Exp(0.1 * Log(veeO! / u0!))
 xpp2! = xpp2! * (te2! * Exp(te2! * Log(u0!)) * Log(u0!) - Exp(te2! * n3!) + 1#) / te2! / te2!
 xpp3! = 0.0000022 / jbar! * Exp((-0.5 + jbar! / 4#) * Log(veeO! / u0!))
 xpp3! = xpp3! * (te3! * Exp(te3! * n3!) * n3! - Exp(te3! * n3!) + 1#) / te3! / te3!
-xp! = 66892# * zipi!(i%) / zaf.atwts!(i%) * (u0! / veeO! / (zaf.Z!(i%) / zaf.atwts!(i%))) * (xpp1! + xpp2! + xpp3!)
+xp! = 66892# * zipi!(i%) / zaf.atwts!(i%) * (u0! / veeO! / (zaf.Z%(i%) / zaf.atwts!(i%))) * (xpp1! + xpp2! + xpp3!)
 zaf.s!(i%, i%) = 1# / xp!
 End If
 Next i%
@@ -2873,7 +2886,7 @@ zaf.stp!(i%) = 0#
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 m6! = 0#
 For i1% = 1 To zaf.in0%
-m6! = m6! + (zaf.conc!(i1%) * zaf.Z!(i1%) / zaf.atwts!(i1%)) * Log(1.166 * zaf.eC!(i%) / jm!(i1%))
+m6! = m6! + (zaf.conc!(i1%) * zaf.Z%(i1%) / zaf.atwts!(i1%)) * Log(1.166 * zaf.eC!(i%) / jm!(i1%))
 Next i1%
 m6! = Exp(m6! / m5!)
 n2! = m6! * zaf.v!(i%)
@@ -3034,7 +3047,7 @@ End If
 
 For i% = 1 To MAXCHAN% + 1
 zaf.il%(i%) = 0
-zaf.Z!(i%) = 0#
+zaf.Z%(i%) = 0
 p2!(i%) = 0#
 zaf.atwts!(i%) = 0#
 Next i%
@@ -3069,7 +3082,7 @@ End If
 If sample(1).KilovoltsArray!(i%) = 0# Then sample(1).KilovoltsArray!(i%) = sample(1).kilovolts!
 zaf.eO!(i%) = sample(1).KilovoltsArray!(i%)
 
-zaf.Z!(i%) = CSng(sample(1).AtomicNums%(i%))
+zaf.Z%(i%) = sample(1).AtomicNums%(i%)
 zaf.atwts!(i%) = sample(1).AtomicWts!(i%)
 zaf.il%(i%) = sample(1).XrayNums%(i%)
 If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 10    ' use for disabled element
@@ -3090,7 +3103,7 @@ zaf.in1% = zaf.in0%
 zaf.in1% = zaf.in0% - 1
 
 zaf.eO!(zaf.in0%) = sample(1).kilovolts!
-zaf.Z!(zaf.in0%) = AllAtomicNums%(8)
+zaf.Z%(zaf.in0%) = AllAtomicNums%(8)
 zaf.il%(zaf.in0%) = 0
 p2!(zaf.in0%) = 0#
 zaf.atwts!(zaf.in0%) = AllAtomicWts!(8)
@@ -3179,7 +3192,7 @@ For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 m9 = 1# / zaf.genstd!(i%)
 If m9 < 0.4 Then
-msg$ = "WARNING in ZAFSetZAF- the f(x) of " & Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " " & Format$(Xraylo$(zaf.il%(i%)), a20$) & " is " & Format$(Format$(m9, f84), a80$)
+msg$ = "WARNING in ZAFSetZAF- the f(x) of " & Format$(Symup$(zaf.Z%(i%)), a20$) & " " & Format$(Xraylo$(zaf.il%(i%)), a20$) & " is " & Format$(Format$(m9, f84), a80$)
 Call IOWriteLog(msg$)
 End If
 End If
@@ -3274,7 +3287,7 @@ Next j%
 
 zaf.v!(i%) = 0#     ' over voltage
 zaf.vv!(i%) = 0#    ' fluorescence correction
-zaf.Z!(i%) = 0#     ' atomic number
+zaf.Z%(i%) = 0      ' atomic number
 zaf.stp!(i%) = 0#
 zaf.bks!(i%) = 0#
 zaf.zed!(i%) = 0#
@@ -3299,7 +3312,7 @@ Next i%
 zaf.d! = 0#     ' diameter in cm
 zaf.rho! = 0#   ' density in g/cm^3
 zaf.j9! = 0#    ' particle thicknes factor
-zaf.x1! = 0#    ' integration step length in g/cm^2
+zaf.X1! = 0#    ' integration step length in g/cm^2
 
 zaf.TotalCations! = 0#
 zaf.totalatoms! = 0#
@@ -3384,7 +3397,7 @@ n3! = 0.002703 * v2!(i%) ^ 3 - 0.05182 * v2!(i%) ^ 2 + 0.302 * v2!(i%) - 0.1836
 n4! = 0.887 - 3.44 / v2!(i%) + 9.33 / v2!(i%) ^ 2 - 6.43 / v2!(i%) ^ 3
 
 For i1% = 1 To zaf.in0%
-zaf.r!(i1%, i%) = n2! - n3! * Log(n4! * zaf.Z!(i1%) + 25#)
+zaf.r!(i1%, i%) = n2! - n3! * Log(n4! * zaf.Z%(i1%) + 25#)
 Next i1%
 End If
 Next i%
@@ -3399,7 +3412,7 @@ w3! = w2! * w1!
 w4! = w3! * w1!
 w5! = w4! * w1!
 For i1% = 1 To zaf.in0%
-z1! = zaf.Z!(i1%)
+z1! = zaf.Z%(i1%)
 z2! = z1! * z1!
 z3! = z2! * z1!
 z4! = z3! * z1!
@@ -3445,8 +3458,8 @@ ElseIf ibks% = 5 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 For i1% = 1 To zaf.in0%
-zaf.r!(i1%, i%) = 0.0000361325 * zaf.Z!(i1%) * zaf.Z!(i1%) + 0.00958267 * zaf.Z!(i1%) * Exp(-zaf.v!(i%))
-zaf.r!(i1%, i%) = zaf.r!(i1%, i%) + 1# - 0.00815168 * zaf.Z!(i1%) + 0.001141 * zaf.eO!(i%)
+zaf.r!(i1%, i%) = 0.0000361325 * zaf.Z%(i1%) * zaf.Z%(i1%) + 0.00958267 * zaf.Z%(i1%) * Exp(-zaf.v!(i%))
+zaf.r!(i1%, i%) = zaf.r!(i1%, i%) + 1# - 0.00815168 * zaf.Z%(i1%) + 0.001141 * zaf.eO!(i%)
 Next i1%
 End If
 Next i%
@@ -3498,7 +3511,7 @@ For i1% = 1 To zaf.in0%
 aug#(5, 5) = 1#
 For ij% = 1 To MAXAUG%
 For i2% = 1 To ij%
-aug#(5, 5) = aug#(5, 5) + aug#(i2%, ij% - i2% + 1) * ((1 / zaf.v!(i%) - 1) ^ i2%) * (zaf.Z!(i1%) ^ (ij% - i2% + 1))
+aug#(5, 5) = aug#(5, 5) + aug#(i2%, ij% - i2% + 1) * ((1 / zaf.v!(i%) - 1) ^ i2%) * (zaf.Z%(i1%) ^ (ij% - i2% + 1))
 Next i2%
 Next ij%
 zaf.r!(i1%, i%) = aug#(5, 5)
@@ -3515,7 +3528,7 @@ w2! = w1! * w1!
 w3! = w2! * w1!
 w4! = w3! * w1!
 For i1% = 1 To zaf.in0%
-z1! = zaf.Z!(i1%)
+z1! = zaf.Z%(i1%)
 z2! = z1! * z1!
 z3! = z2! * z1!
 z4! = z3! * z1!
@@ -3538,7 +3551,7 @@ n3! = 0.002703 * zaf.v!(i%) ^ 3 - 0.05182 * zaf.v!(i%) ^ 2 + 0.302 * zaf.v!(i%) 
 n4! = 0.887 - 3.44 / zaf.v!(i%) + 9.33 / zaf.v!(i%) ^ 2 - 6.43 / zaf.v!(i%) ^ 3
 
 For i1% = 1 To zaf.in0%
-zaf.r!(i1%, i%) = n2! - n3! * Log(n4! * zaf.Z!(i1%) + 25#)
+zaf.r!(i1%, i%) = n2! - n3! * Log(n4! * zaf.Z%(i1%) + 25#)
 Next i1%
 End If
 Next i%
@@ -3659,7 +3672,7 @@ rr! = 1# + (1# - 1# / Sqr(uu!)) ^ jpu! * gpu!
 ' RPHI6 AUGUST and WERNISCH PHI(0) EXPRESSION
 ElseIf iphi% = 6 Then
 If zaf.il%(ii%) = 1 Or zaf.il%(ii%) = 2 Then    ' K lines
-  jpu! = 0.86 + 0.12 * Exp(-(zaf.Z!(ii%) / 5#) ^ 2)
+  jpu! = 0.86 + 0.12 * Exp(-(zaf.Z%(ii%) / 5#) ^ 2)
 ElseIf zaf.il%(ii%) = 3 Or zaf.il%(ii%) = 4 Then  ' L lines
   jpu! = 0.82
 Else
@@ -4011,7 +4024,7 @@ q2! = s1!
 r5! = r4!
 If er1! >= er3! Then GoTo 11250
 
-er1! = er1! + zaf.x1!
+er1! = er1! + zaf.X1!
 If er1! > er3! Then er1! = er3!
 GoTo 11150
 

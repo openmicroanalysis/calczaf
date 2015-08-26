@@ -2,13 +2,49 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+	Note that I have released v. 11.0.1 which now installs PFE to the proper Windows locations of 
+	C:\ProgramData\Probe Software\Probe for EPMA and Program Files (x86)\Probe Software\Probe for EPMA. 
+	The new installer will install default files to the ProgramData folder but then when CalcZAF or PFE or 
+	whatever new app runs, it should copy your site specific config and data files over to the ProgramData|Probe 
+	Software\Probe for EPMA folder automatically.  But backup your original PFE folder (C:\Probe Software\Probe for EPMA) 
+	just to be safe!!!
+	
+	Version 11 (Spinal Tap edition!) of Probe for EPMA.msi and CalcZAF.msi must be downloaded manually from one of 
+	the ftp test sites. Eventually I will release on the ProbeSoftware.com Updates page, but first a little testing!!!
+	
+	Warning: The path statement in the Remote.ini file (SysWOW64 folder) will need to be edited by hand to
+	point to the new PFE app path (usually C:\Program Files (x86)\Probe Software\Probe for EPMA). Or simply delete the file 
+	and re-install Remote.msi.
+	
+	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
+	
+08/25/15	Improve file handling for xray databases.  Improve debug output for beam scan calibrations (Carpenter).
+	
+08/23/15	Small tweak getting ready for additional x-rays lines in ZAFReadLn and ZAFLoadMAC.
+v. 11.0.2
+	
+
+08/21/15	Move application files to Program Files and config and data files to ProgramData folder.
+v. 11.0.1
+	Add code to auto-update config and data files from old installation location.
+
+08/16/15	Add checkbox for only display samples with data (von der Handt)
+v. 10.9.9
+	Start moving config files to ProgramData folder.
+	
+	Add UseConfirmDuringAcquisitionFlag to INI file (von der Handt)
+
+08/15/15	Add check for DisableQuant flag in CalcImage output to Surfer (von der Handt).
+
+	Add debug statements to beam scan calibration calculation code (Carpenter).
+
 08/10/15	Re-arrange Acquire! buttons. (von der Handt).
 
 	Fix Combine Lines code (von der Handt)
 
 08/09/15	Copy Standard Assignments button to Acquire! (remove ratemeter window) (von der Handt).
 
-	Fix ZAFMip overflow eror on epoxy.
+	Fix ZAFMip overflow error on epoxy.
 	
 	Fix standard assignment combo order (Goemann).
 

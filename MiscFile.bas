@@ -94,8 +94,10 @@ If InStr(astring$, "SETUP.MDB") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "SETUP2.MDB") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "SETUP3.MDB") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "MATRIX.MDB") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "BOUNDARY.MDB") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "POSITION.MDB") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "XRAY.MDB") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "CUSTOM.MDB") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "TEMP.MDB") > 0 Then GoTo MiscCheckNameReserved
 
 If InStr(astring$, "PROBEWIN.") > 0 Then GoTo MiscCheckNameReserved
@@ -109,10 +111,31 @@ If InStr(astring$, "ELEMENTS.DAT") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "CRYSTALS.DAT") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "MOTORS.DAT") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "SCALERS.DAT") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "DETECTORS.DAT") > 0 Then GoTo MiscCheckNameReserved
+
+If InStr(astring$, "CITZMU.DAT") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "LINEMU.DAT") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "MACMASTER.DAT") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "MAC30.DAT") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "MACJTA.DAT") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "FFAST.DAT") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "USERMAC.DAT") > 0 Then GoTo MiscCheckNameReserved
+
+If InStr(astring$, "CITZMU2.DAT") > 0 Then GoTo MiscCheckNameReserved     ' additional x-ray lines
+If InStr(astring$, "LINEMU2.DAT") > 0 Then GoTo MiscCheckNameReserved     ' additional x-ray lines
+If InStr(astring$, "MACMASTER2.DAT") > 0 Then GoTo MiscCheckNameReserved  ' additional x-ray lines
+If InStr(astring$, "MAC302.DAT") > 0 Then GoTo MiscCheckNameReserved      ' additional x-ray lines
+If InStr(astring$, "MACJTA2.DAT") > 0 Then GoTo MiscCheckNameReserved     ' additional x-ray lines
+If InStr(astring$, "FFAST2.DAT") > 0 Then GoTo MiscCheckNameReserved      ' additional x-ray lines
+If InStr(astring$, "USERMAC2.DAT") > 0 Then GoTo MiscCheckNameReserved    ' additional x-ray lines
 
 If InStr(astring$, "XLINE.DAT") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "XEDGE.DAT") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "XFLUR.DAT") > 0 Then GoTo MiscCheckNameReserved
+
+If InStr(astring$, "XLINE2.DAT") > 0 Then GoTo MiscCheckNameReserved    ' additional x-ray lines
+If InStr(astring$, "XEDGE2.DAT") > 0 Then GoTo MiscCheckNameReserved    ' additional x-ray lines
+If InStr(astring$, "XFLUR2.DAT") > 0 Then GoTo MiscCheckNameReserved    ' additional x-ray lines
 
 If InStr(astring$, "EMPMAC.DAT") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "EMPAPF.DAT") > 0 Then GoTo MiscCheckNameReserved
@@ -283,12 +306,12 @@ If astring$ = vbNullString Then GoTo MiscGetNumberofColumnsEmpty
 astring$ = Replace$(astring$, vbTab, VbSpace$)
 
 ' Write string to temp file
-Open ProgramPath$ & "MODAL.TMP" For Output As #Temp1FileNumber%
+Open ApplicationCommonAppData$ & "MODAL.TMP" For Output As #Temp1FileNumber%
 Print #Temp1FileNumber%, astring$
 Close #Temp1FileNumber%
 
 ' Loop until end of temp file
-Open ProgramPath$ & "MODAL.TMP" For Input As #Temp1FileNumber%
+Open ApplicationCommonAppData$ & "MODAL.TMP" For Input As #Temp1FileNumber%
 
 n% = 0
 Do Until EOF(Temp1FileNumber%)

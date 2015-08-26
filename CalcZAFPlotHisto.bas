@@ -605,3 +605,35 @@ Exit Sub
 
 End Sub
 
+Sub CalcZAFPlotHistogramConcentration_PE(CalcZAFOutputCount As Long, KratioConc() As Single, KratioError() As Single)
+' Calculate and plot the histogram as a concentration histogram (x axis = concentration and y axis = error)
+
+ierror = False
+On Error GoTo CalcZAFPlotHistogramConcentration_PEError
+
+If CalcZAFOutputCount& < 1 Then GoTo CalcZAFPlotHistogramConcentration_PENoData
+
+
+
+
+
+
+FormPlotHistoConc.Show vbModal
+
+Exit Sub
+
+' Errors
+CalcZAFPlotHistogramConcentration_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "CalcZAFPlotHistogramConcentration_PE"
+Call CalcZAFImportClose
+ierror = True
+Exit Sub
+
+CalcZAFPlotHistogramConcentration_PENoData:
+msg$ = "No CalcZAF data to plot"
+MsgBox msg$, vbOKOnly + vbExclamation, "CalcZAFPlotHistogramConcentration_PE"
+ierror = True
+Exit Sub
+
+End Sub
+

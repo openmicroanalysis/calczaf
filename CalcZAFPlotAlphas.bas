@@ -133,7 +133,7 @@ If FormPlotAlpha_GS.CheckAllOptions.Value = vbChecked Then nsets% = MAXZAF%
 If FormPlotAlpha_GS.CheckAllMacs.Value = vbChecked Then
 nsets% = MAXMACTYPE%
 For k% = 1 To MAXMACTYPE%
-MACFile$ = ProgramPath$ & macstring2$(k%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(k%) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then nsets% = nsets% - 1
 Next k%
 End If
@@ -148,7 +148,7 @@ FormPlotAlpha_GS.Graph1.AutoInc = 1
 For k% = 1 To nsets%
 If FormPlotAlpha_GS.CheckAllOptions.Value = vbChecked Then FormPlotAlpha_GS.Graph1.LegendText = zafstring2$(k%)
 If FormPlotAlpha_GS.CheckAllMacs.Value = vbChecked Then
-MACFile$ = ProgramPath$ & macstring2$(k%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(k%) & ".DAT"
 If Dir$(MACFile$) <> vbNullString Then
 FormPlotAlpha_GS.Graph1.LegendText = macstring2$(k%)
 End If
@@ -201,7 +201,7 @@ If ierror Then Exit Sub
 End If
 
 If FormPlotAlpha_GS.CheckAllMacs.Value = vbChecked Then
-MACFile$ = ProgramPath$ & macstring2$(k%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(k%) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then
 msg$ = "File " & MACFile$ & " was not found, therefore the calculation will be skipped..."
 Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
@@ -484,7 +484,7 @@ If FormPlotAlpha_PE.CheckAllOptions.Value = vbChecked Then nsets% = MAXZAF%
 If FormPlotAlpha_PE.CheckAllMacs.Value = vbChecked Then
 nsets% = MAXMACTYPE%
 For k% = 1 To MAXMACTYPE%
-MACFile$ = ProgramPath$ & macstring2$(k%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(k%) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then nsets% = nsets% - 1
 Next k%
 End If
@@ -499,7 +499,7 @@ FormPlotAlpha_PE.Graph1.AutoInc = 1
 For k% = 1 To nsets%
 If FormPlotAlpha_PE.CheckAllOptions.Value = vbChecked Then FormPlotAlpha_PE.Graph1.LegendText = zafstring2$(k%)
 If FormPlotAlpha_PE.CheckAllMacs.Value = vbChecked Then
-MACFile$ = ProgramPath$ & macstring2$(k%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(k%) & ".DAT"
 If Dir$(MACFile$) <> vbNullString Then
 FormPlotAlpha_PE.Graph1.LegendText = macstring2$(k%)
 End If
@@ -552,7 +552,7 @@ If ierror Then Exit Sub
 End If
 
 If FormPlotAlpha_PE.CheckAllMacs.Value = vbChecked Then
-MACFile$ = ProgramPath$ & macstring2$(k%) & ".DAT"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(k%) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then
 msg$ = "File " & MACFile$ & " was not found, therefore the calculation will be skipped..."
 Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
