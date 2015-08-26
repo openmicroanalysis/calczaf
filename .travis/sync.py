@@ -226,7 +226,7 @@ def main():
     changes, tag = compare(zipfilepath, workdir)
     if not changes:
         teardown(workdir, userworkdir, zipfilepath, userzip)
-        sys.exit('No change. Exiting.')
+        logger.info('No change. Exiting.')
         return
 
     if changes:
