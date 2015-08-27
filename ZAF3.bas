@@ -29,7 +29,7 @@ Dim rela_line_wts2(1 To MAXCHAN1%, 1 To MAXCHAN1%, 1 To MAXRAY% - 1) As Single  
 Dim over_volt_fluor_line(1 To MAXCHAN1%, 1 To MAXCHAN1%) As Single                          ' overvoltage for the fluorescing line (formally x)
 Dim over_volt_fluor_line2(1 To MAXCHAN1%, 1 To MAXCHAN1%, 1 To MAXRAY% - 1) As Single       ' overvoltage for the fluorescing line (emitter, absorber, absorber x-ray) (formally x)
 
-Dim fluor_MACs(1 To MAXRAY% - 1, 1 To MAXCHAN1%, 1 To MAXCHAN1%) As Single      ' MACs for fluorescencing lines (formally fp)
+Dim fluor_MACs(1 To MAXRAY% - 1, 1 To MAXCHAN1%, 1 To MAXCHAN1%) As Single          ' MACs for fluorescencing lines (formally fp)
 
 Dim AllJumpRatios(1 To MAXEDG%, 1 To MAXELM%) As Single                                                 ' values from NIST FFAST table
 Dim AllTransitionProbabilities(1 To MAXELM%, 1 To MAXSHELL%, 1 To MAXSHELL%) As Single                  ' values from Penepma table
@@ -131,7 +131,7 @@ If i2% = 6 Then in8% = 8   ' Mb
 
 ' Check for missing absorption edge data
 If zaf.edg!(in8%, i1%) = 0# Then
-msg$ = "WARNING in ZAFFlu1- " & Format$(Symup$(Int(zaf.Z!(i1%))), a20$) & " " & Format$(Edglo$(in8%), a20$) & " absorption edge is zero"
+msg$ = "WARNING in ZAFFlu1- " & Format$(Symup$(zaf.Z%(i1%)), a20$) & " " & Format$(Edglo$(in8%), a20$) & " absorption edge is zero"
 Call IOWriteLog(msg$)
 GoTo 6960
 End If
@@ -144,7 +144,7 @@ fluor_type%(i%, i1%) = i2% + (MAXRAY% - 1) * (zaf.il%(i%) - 1)
 
 ' Warn if line is fluoresced
 If VerboseMode Then
-msg$ = "WARNING in ZAFFlu1- the " & Format$(Xraylo$(im4%), a20$) & " line of " & Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " is excited by the " & Format$(Xraylo$(i2%), a20$) & " line of " & Format$(Symup$(Int(zaf.Z!(i1%))), a20$)
+msg$ = "WARNING in ZAFFlu1- the " & Format$(Xraylo$(im4%), a20$) & " line of " & Format$(Symup$(zaf.Z%(i%)), a20$) & " is excited by the " & Format$(Xraylo$(i2%), a20$) & " line of " & Format$(Symup$(zaf.Z%(i1%)), a20$)
 Call IOWriteLog(msg$)
 End If
 
@@ -171,7 +171,7 @@ fluor_MACs!(i2%, i4%, i1%) = mac!
 
 Else
 If VerboseMode Then
-msg$ = "WARNING in ZAFFlu1- MAC not loaded for " & Format$(Symup$(Int(zaf.Z!(i1%))), a20$) & " " & Format$(Xraylo$(i2%), a20$) & " in " & Format$(Symup$(Int(zaf.Z!(i4%))), a20$) & ", fluorescence contribution will not be calculated for this line."
+msg$ = "WARNING in ZAFFlu1- MAC not loaded for " & Format$(Symup$(zaf.Z%(i1%)), a20$) & " " & Format$(Xraylo$(i2%), a20$) & " in " & Format$(Symup$(zaf.Z%(i4%)), a20$) & ", fluorescence contribution will not be calculated for this line."
 Call IOWriteLog(msg$)
 End If
 fluor_MACs!(i2%, i4%, i1%) = 1#
@@ -183,8 +183,8 @@ Next i4%
 6970:  Next i1%     ' for each absorber (matrix) element causing fluorescence
 
 ' Load jump ratios
-If zaf.il%(i%) = 1 Then jump_ratios!(i%) = 1.11728 - 0.07368 * Log(zaf.Z!(i%))     ' Ka line (0.88)
-If zaf.il%(i%) = 3 Then jump_ratios!(i%) = 0.95478 - 0.00259 * zaf.Z!(i%)          ' La line (0.75)
+If zaf.il%(i%) = 1 Then jump_ratios!(i%) = 1.11728 - 0.07368 * Log(zaf.Z%(i%))     ' Ka line (0.88)
+If zaf.il%(i%) = 3 Then jump_ratios!(i%) = 0.95478 - 0.00259 * zaf.Z%(i%)          ' La line (0.75)
 If zaf.il%(i%) = 5 Then jump_ratios!(i%) = 0.5                                     ' Ma line (0.5)
 
 ' Load fluorescent yields using pointer from above
@@ -291,7 +291,7 @@ End If
 zaf.vv!(i%) = zaf.vv!(i%) + n5!
 
 If DebugMode And VerboseMode% Then
-msg$ = Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " " & Format$(Xraylo$(zaf.il(i%)), a20$) & " by " & Format$(Symup$(Int(zaf.Z!(i1%))), a20$)
+msg$ = Format$(Symup$(zaf.Z%(i%)), a20$) & " " & Format$(Xraylo$(zaf.il(i%)), a20$) & " by " & Format$(Symup$(zaf.Z%(i1%)), a20$)
 msg$ = msg$ & ", " & Format$(fluor_type%(i%, i1%), a40$) & MiscAutoFormatB$(rela_line_wts!(i%, i1%)) & MiscAutoFormat$(fluor_yield!(i%, i1%)) & MiscAutoFormat$(jump_ratios!(i%)) & "  " & Format$(m7!(i%), e82$) & MiscAutoFormatI$(i2%) & "  " & Format$(m8!, e82$)
 Call IOWriteLog(msg$)
 End If
@@ -307,7 +307,7 @@ ierror = True
 Exit Sub
 
 ZAFFlu1NegativeMAC:
-msg$ = "Average MAC for " & Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
+msg$ = "Average MAC for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
 MiscMsgBoxTim FormMSGBOXTIME, "ZAFFlu1", msg$, 20#
 Call IOWriteLog(msg$)
@@ -318,7 +318,7 @@ End If
 Exit Sub
 
 ZAFFlu1NegativeFlu:
-msg$ = "Fluorescence factor for " & Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
+msg$ = "Fluorescence factor for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
 MiscMsgBoxTim FormMSGBOXTIME, "ZAFFlu1", msg$, 20#
 Call IOWriteLog(msg$)
@@ -413,7 +413,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
 
             ' Check for missing absorption edge data
             If zaf.edg!(in8%, i1%) = 0# Then
-            msg$ = "WARNING in ZAFFlu2- " & Format$(Symup$(Int(zaf.Z!(i1%))), a20$) & " " & Format$(Edglo$(in8%), a20$) & " absorption edge is zero"
+            msg$ = "WARNING in ZAFFlu2- " & Format$(Symup$(zaf.Z%(i1%)), a20$) & " " & Format$(Edglo$(in8%), a20$) & " absorption edge is zero"
             Call IOWriteLog(msg$)
             GoTo 6960
             End If
@@ -426,7 +426,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
 
             ' Warn if line is fluoresced
             If VerboseMode Then
-            msg$ = "WARNING in ZAFFlu2- the " & Format$(Xraylo$(zaf.il%(i%)), a20$) & " line of " & Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " is excited by the " & Format$(Xraylo$(i2%), a20$) & " line of " & Format$(Symup$(Int(zaf.Z!(i1%))), a20$)
+            msg$ = "WARNING in ZAFFlu2- the " & Format$(Xraylo$(zaf.il%(i%)), a20$) & " line of " & Format$(Symup$(zaf.Z%(i%)), a20$) & " is excited by the " & Format$(Xraylo$(i2%), a20$) & " line of " & Format$(Symup$(zaf.Z%(i1%)), a20$)
             Call IOWriteLog(msg$)
             End If
 
@@ -453,7 +453,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
 
                     Else
                     If VerboseMode Then
-                    msg$ = "WARNING in ZAFFlu2- MAC not loaded for " & Format$(Symup$(Int(zaf.Z!(i1%))), a20$) & " " & Format$(Xraylo$(i2%), a20$) & " in " & Format$(Symup$(Int(zaf.Z!(i4%))), a20$) & ", fluorescence contribution will not be calculated for this line."
+                    msg$ = "WARNING in ZAFFlu2- MAC not loaded for " & Format$(Symup$(zaf.Z%(i1%)), a20$) & " " & Format$(Xraylo$(i2%), a20$) & " in " & Format$(Symup$(zaf.Z%(i4%)), a20$) & ", fluorescence contribution will not be calculated for this line."
                     Call IOWriteLog(msg$)
                     End If
             
@@ -465,7 +465,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
 6970:   Next i1%        ' next absorber (matrix) element causing fluorescence
 
     ' Load from Jump_ratios.dat (from Nicholas Ritchie, NIST)
-    Call ZAFFLULoadJumpRatios(zaf.il%(i%), CInt(zaf.Z!(i%)), jump_ratios!(i%))
+    Call ZAFFLULoadJumpRatios(zaf.il%(i%), zaf.Z%(i%), jump_ratios!(i%))
     If ierror Then Exit Sub
 
         ' Load fluorescent yields using pointer from above
@@ -473,56 +473,16 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
             For i2% = 1 To MAXRAY% - 1      ' for each absorber (matrix) x-ray causing fluorescence
             If fluor_type2%(i%, i1%, i2%) > 0 Then    ' skip if no fluorescence (zero)
 
-            If fluor_type2%(i%, i1%, i2%) = 14 Then    ' test break
-            DoEvents
-            End If
-
             ' Variable fluor_yield2!(i%, i1%, i2%) is fluorescent yield of emitting element i% by absorbing (matrix) element i1%, line i2%
             fluor_yield2!(i%, i1%, i2%) = ZAFFLUGetFluYield(fluor_type2%(i%, i1%, i2%), i1%, zaf)
-        
-            ' Test code for loading z correlated relative line weights to improve accuracy
-            If Dir$(ProgramPath$ & "penelope_mod_transition_data.csv") <> vbNullString Then
-            'Call ZAFFLULoadLineWeights(Int(zaf.z!(i%)), Int(zaf.z!(i1%)), fluor_type2%(i%, i1%, i2%), rela_line_wts2!(i%, i1%, i2%))
+            
+            ' Load relative line weights using "tuned" values
+            Call ZAFFLULoadLineWeightsReed(i%, i1%, i2%, fluor_type2%(), rela_line_wts2!())
+            If ierror Then Exit Sub
+           
+            ' Load Z correlated relative line weights to improve accuracy (i% = emitter, i1% = matrix, i2% = matrix xray)
+            'Call ZAFFLULoadLineWeightsPenepma(zaf.Z%(i%), zaf.il%(i%), zaf.Z%(i1%), i2%, rela_line_wts2!(i%, i1%, i2%))
             'If ierror Then Exit Sub
-            End If
-
-            ' Note: rela_line_wts2!(i%, i1%, i2%) = relative line weights (originally Pij)
-            If fluor_type2%(i%, i1%, i2%) = 1 Then rela_line_wts2!(i%, i1%, i2%) = 1#     ' Ka by Ka
-            If fluor_type2%(i%, i1%, i2%) = 2 Then rela_line_wts2!(i%, i1%, i2%) = 0.05   ' Ka by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
-            If fluor_type2%(i%, i1%, i2%) = 3 Then rela_line_wts2!(i%, i1%, i2%) = 4.2    ' Ka by La (4.2 from Reed)
-            If fluor_type2%(i%, i1%, i2%) = 4 Then rela_line_wts2!(i%, i1%, i2%) = 0.2    ' Ka by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
-            If fluor_type2%(i%, i1%, i2%) = 5 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Ma (adjusted based on Penepma12_Exper_kratios Si/Pt)
-            If fluor_type2%(i%, i1%, i2%) = 6 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Mb (adjusted based on Penepma12_Exper_kratios Si/Pt)
-            If fluor_type2%(i%, i1%, i2%) = 7 Then rela_line_wts2!(i%, i1%, i2%) = 0.6    ' Kb by Ka (adjusted based on Penepma12_Exper_kratios_flu.dat)
-            If fluor_type2%(i%, i1%, i2%) = 8 Then rela_line_wts2!(i%, i1%, i2%) = 0.08   ' Kb by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
-            If fluor_type2%(i%, i1%, i2%) = 9 Then rela_line_wts2!(i%, i1%, i2%) = 0.3    ' Kb by La (adjusted based on Penepma12_Exper_kratios_flu.dat)
-            If fluor_type2%(i%, i1%, i2%) = 10 Then rela_line_wts2!(i%, i1%, i2%) = 2.4   ' Kb by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
-            If fluor_type2%(i%, i1%, i2%) = 11 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Ma ()
-            If fluor_type2%(i%, i1%, i2%) = 12 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Mb ()
-            If fluor_type2%(i%, i1%, i2%) = 13 Then rela_line_wts2!(i%, i1%, i2%) = 0.24  ' La by Ka (0.24 from Reed)
-            If fluor_type2%(i%, i1%, i2%) = 14 Then rela_line_wts2!(i%, i1%, i2%) = 0.005  ' La by Kb (adjusted based on Penepma12_Exper_kratios Cd/Ca)
-            If fluor_type2%(i%, i1%, i2%) = 15 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' La by La
-            If fluor_type2%(i%, i1%, i2%) = 16 Then rela_line_wts2!(i%, i1%, i2%) = 0.5   ' La by Lb (adjusted based on Penepma12_Exper_kratios Pb/Th)
-'            If fluor_type2%(i%, i1%, i2%) = 17 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' La by Ma (adjusted based on Penepma12_Exper_kratios Rb/Re)
-            If fluor_type2%(i%, i1%, i2%) = 18 Then rela_line_wts2!(i%, i1%, i2%) = 0.05  ' La by Mb (adjusted based on Pouchou2.dat)
-            If fluor_type2%(i%, i1%, i2%) = 19 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Ka (adjusted based on Penepma12_Exper_kratios Ag/Ca)
-            If fluor_type2%(i%, i1%, i2%) = 20 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Kb (adjusted based on Penepma12_Exper_kratios Ag/Ca)
-            If fluor_type2%(i%, i1%, i2%) = 21 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by La ()
-            If fluor_type2%(i%, i1%, i2%) = 22 Then rela_line_wts2!(i%, i1%, i2%) = 1#  ' Lb by Lb ()
-            If fluor_type2%(i%, i1%, i2%) = 23 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Ma ()
-            If fluor_type2%(i%, i1%, i2%) = 24 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Mb ()
-            If fluor_type2%(i%, i1%, i2%) = 25 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Ma by Ka (adjusted based on Pouchou2.dat)
-'            If fluor_type2%(i%, i1%, i2%) = 26 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Ma by Kb (adjusted based on Penepma12_Exper_kratios U/K)
-'            If fluor_type2%(i%, i1%, i2%) = 27 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by La (adjusted based on Penepma12_Exper_kratios Pb/Rh)
-            If fluor_type2%(i%, i1%, i2%) = 28 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by Lb (adjusted based on Pouchou2.dat)
-            If fluor_type2%(i%, i1%, i2%) = 29 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Ma by Ma
-            If fluor_type2%(i%, i1%, i2%) = 30 Then rela_line_wts2!(i%, i1%, i2%) = 0.03  ' Ma by Mb (adjusted based on Pouchou2.dat)
-            If fluor_type2%(i%, i1%, i2%) = 31 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Mb by Ka ()
-            If fluor_type2%(i%, i1%, i2%) = 32 Then rela_line_wts2!(i%, i1%, i2%) = 0.4   ' Mb by Kb (adjusted based on Pouchou2.dat)
-            If fluor_type2%(i%, i1%, i2%) = 33 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by La ()
-            If fluor_type2%(i%, i1%, i2%) = 34 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by Lb ()
-            If fluor_type2%(i%, i1%, i2%) = 35 Then rela_line_wts2!(i%, i1%, i2%) = 2#    ' Mb by Ma (adjusted based on Penepma12_Exper_kratios Pb/Th)
-            If fluor_type2%(i%, i1%, i2%) = 36 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Mb by Mb (adjusted based on Penepma12_Exper_kratios Pb/Th)
             
             End If
             Next i2%        ' next absorber (matrix) x-ray causing fluorecence
@@ -615,7 +575,7 @@ zaf.vv!(i%) = 0#
         zaf.vv!(i%) = zaf.vv!(i%) + n5!
 
         If DebugMode And VerboseMode% Then
-        msg$ = Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " " & Format$(Xraylo$(zaf.il(i%)), a20$) & " by " & Format$(Symup$(Int(zaf.Z!(i1%))), a20$) & " " & Format$(Xraylo$(i2%), a20$)
+        msg$ = Format$(Symup$(zaf.Z%(i%)), a20$) & " " & Format$(Xraylo$(zaf.il(i%)), a20$) & " by " & Format$(Symup$(zaf.Z%(i1%)), a20$) & " " & Format$(Xraylo$(i2%), a20$)
         msg$ = msg$ & ", " & Format$(fluor_type2%(i%, i1%, i2%), a40$) & MiscAutoFormatB$(rela_line_wts2!(i%, i1%, i2%)) & MiscAutoFormat$(fluor_yield2!(i%, i1%, i2%)) & MiscAutoFormat$(jump_ratios!(i%)) & "  " & Format$(m7!(i%), e82$) & MiscAutoFormatI$(i2%) & "  " & Format$(m8!, e82$)
         Call IOWriteLog(msg$)
         End If
@@ -632,7 +592,7 @@ ierror = True
 Exit Sub
 
 ZAFFlu2NegativeMAC:
-msg$ = "Average MAC for " & Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
+msg$ = "Average MAC for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
 MiscMsgBoxTim FormMSGBOXTIME, "ZAFFlu2", msg$, 20#
 Call IOWriteLog(msg$)
@@ -643,7 +603,7 @@ End If
 Exit Sub
 
 ZAFFlu2NegativeFlu:
-msg$ = "Fluorescence factor for " & Format$(Symup$(Int(zaf.Z!(i%))), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
+msg$ = "Fluorescence factor for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
 MiscMsgBoxTim FormMSGBOXTIME, "ZAFFlu2", msg$, 20#
 Call IOWriteLog(msg$)
@@ -694,7 +654,7 @@ If Not initialized Then
 Close #Temp1FileNumber%
 DoEvents
 
-tfilename$ = ProgramPath$ & "Jump_Ratios.dat"
+tfilename$ = ApplicationCommonAppData$ & "Jump_Ratios.dat"
 Open tfilename$ For Input As #Temp1FileNumber%
 
 ' Read first line of column headings
@@ -799,86 +759,115 @@ Exit Function
 
 End Function
 
-Sub ZAFFLULoadLineWeights(iemitter As Integer, iabsorber As Integer, tFluTyp As Integer, tLineWeightRatio As Single)
-' Load the relative line weights from the penelope_mod_transition_data.csv file from Penelope
-' and calculate the relative emission intensity based on the emitter, absorber and fluorescence type
+Sub ZAFFLULoadLineWeightsReed(i As Integer, i1 As Integer, i2 As Integer, fluor_type2() As Integer, rela_line_wts2() As Single)
+' Load the relative line weights calculated from Reed (improved by tuning to Penepma large fluorescence database)
+
+ierror = False
+On Error GoTo ZAFFLULoadLineWeightsReedError
+           
+' Variable fluor_type2%() is code for type of fluorescence:  0 = none
 ' 1=Ka by Ka  2=Ka by Kb  3=Ka by La  4=Ka by Lb  5=Ka by Ma  6=Ka by Mb
 ' 7=Kb by Ka  8=Kb by Kb  9=Kb by La 10=Kb by Lb 11=Kb by Ma 12=Kb by Mb
 '13=La by Ka 14=La by Kb 15=La by La 16=La by Lb 17=La by Ma 18=La by Mb
 '19=Lb by Ka 20=Lb by Kb 21=Lb by La 22=Lb by Lb 23=Lb by Ma 24=Lb by Mb
 '25=Ma by Ka 26=Ma by Kb 27=Ma by La 28=Ma by Lb 29=Ma by Ma 30=Ma by Mb
 '31=Mb by Ka 32=Mb by Kb 33=Mb by La 34=Mb by Lb 35=Mb by Ma 36=Mb by Mb
-
-ierror = False
-On Error GoTo ZAFFLULoadLineWeightsError
-
-Dim iz As Integer, idest As Integer, isrc As Integer
-Dim idest1 As Integer, isrc1 As Integer, idest2 As Integer, isrc2 As Integer
-
-Dim trans_prob As Single, trans_energy As Single
-Dim temp1 As Single, temp2 As Single
-Dim tfilename As String, astring As String, bstring As String
-
-Static initialized As Boolean
            
-' Open the input (comma, tab or space delimited) and output files
-If Not initialized Then
-Close #Temp1FileNumber%
-DoEvents
+' Note: rela_line_wts2!(i%, i1%, i2%) = relative line weights (originally Pij) without Z dependency
+If fluor_type2%(i%, i1%, i2%) = 1 Then rela_line_wts2!(i%, i1%, i2%) = 1#     ' Ka by Ka
+If fluor_type2%(i%, i1%, i2%) = 2 Then rela_line_wts2!(i%, i1%, i2%) = 0.05   ' Ka by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 3 Then rela_line_wts2!(i%, i1%, i2%) = 4.2    ' Ka by La (4.2 from Reed)
+If fluor_type2%(i%, i1%, i2%) = 4 Then rela_line_wts2!(i%, i1%, i2%) = 0.2    ' Ka by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 5 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Ma (adjusted based on Penepma12_Exper_kratios Si/Pt)
+If fluor_type2%(i%, i1%, i2%) = 6 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Mb (adjusted based on Penepma12_Exper_kratios Si/Pt)
+If fluor_type2%(i%, i1%, i2%) = 7 Then rela_line_wts2!(i%, i1%, i2%) = 0.6    ' Kb by Ka (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 8 Then rela_line_wts2!(i%, i1%, i2%) = 0.08   ' Kb by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 9 Then rela_line_wts2!(i%, i1%, i2%) = 0.3    ' Kb by La (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 10 Then rela_line_wts2!(i%, i1%, i2%) = 2.4   ' Kb by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 11 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Ma ()
+If fluor_type2%(i%, i1%, i2%) = 12 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Mb ()
+If fluor_type2%(i%, i1%, i2%) = 13 Then rela_line_wts2!(i%, i1%, i2%) = 0.24  ' La by Ka (0.24 from Reed)
+If fluor_type2%(i%, i1%, i2%) = 14 Then rela_line_wts2!(i%, i1%, i2%) = 0.005  ' La by Kb (adjusted based on Penepma12_Exper_kratios Cd/Ca)
+If fluor_type2%(i%, i1%, i2%) = 15 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' La by La
+If fluor_type2%(i%, i1%, i2%) = 16 Then rela_line_wts2!(i%, i1%, i2%) = 0.5   ' La by Lb (adjusted based on Penepma12_Exper_kratios Pb/Th)
+'If fluor_type2%(i%, i1%, i2%) = 17 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' La by Ma (adjusted based on Penepma12_Exper_kratios Rb/Re)
+If fluor_type2%(i%, i1%, i2%) = 18 Then rela_line_wts2!(i%, i1%, i2%) = 0.05  ' La by Mb (adjusted based on Pouchou2.dat)
+If fluor_type2%(i%, i1%, i2%) = 19 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Ka (adjusted based on Penepma12_Exper_kratios Ag/Ca)
+If fluor_type2%(i%, i1%, i2%) = 20 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Kb (adjusted based on Penepma12_Exper_kratios Ag/Ca)
+If fluor_type2%(i%, i1%, i2%) = 21 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by La ()
+If fluor_type2%(i%, i1%, i2%) = 22 Then rela_line_wts2!(i%, i1%, i2%) = 1#  ' Lb by Lb ()
+If fluor_type2%(i%, i1%, i2%) = 23 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Ma ()
+If fluor_type2%(i%, i1%, i2%) = 24 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Mb ()
+If fluor_type2%(i%, i1%, i2%) = 25 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Ma by Ka (adjusted based on Pouchou2.dat)
+'If fluor_type2%(i%, i1%, i2%) = 26 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Ma by Kb (adjusted based on Penepma12_Exper_kratios U/K)
+'If fluor_type2%(i%, i1%, i2%) = 27 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by La (adjusted based on Penepma12_Exper_kratios Pb/Rh)
+If fluor_type2%(i%, i1%, i2%) = 28 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by Lb (adjusted based on Pouchou2.dat)
+If fluor_type2%(i%, i1%, i2%) = 29 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Ma by Ma
+If fluor_type2%(i%, i1%, i2%) = 30 Then rela_line_wts2!(i%, i1%, i2%) = 0.03  ' Ma by Mb (adjusted based on Pouchou2.dat)
+If fluor_type2%(i%, i1%, i2%) = 31 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Mb by Ka ()
+If fluor_type2%(i%, i1%, i2%) = 32 Then rela_line_wts2!(i%, i1%, i2%) = 0.4   ' Mb by Kb (adjusted based on Pouchou2.dat)
+If fluor_type2%(i%, i1%, i2%) = 33 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by La ()
+If fluor_type2%(i%, i1%, i2%) = 34 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by Lb ()
+If fluor_type2%(i%, i1%, i2%) = 35 Then rela_line_wts2!(i%, i1%, i2%) = 2#    ' Mb by Ma (adjusted based on Penepma12_Exper_kratios Pb/Th)
+If fluor_type2%(i%, i1%, i2%) = 36 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Mb by Mb (adjusted based on Penepma12_Exper_kratios Pb/Th)
 
-tfilename$ = ProgramPath$ & "penelope_mod_transition_data.csv"
-Open tfilename$ For Input As #Temp1FileNumber%
-
-' Read first line of column headings
-Line Input #Temp1FileNumber%, astring   ' read column labels
-If VerboseMode Then Call IOWriteLog(astring$)
-
-' Loop on entries
-Call IOStatusAuto(vbNullString)
-icancelauto = False
-Do Until EOF(Temp1FileNumber%)
-Input #Temp1FileNumber%, iz%, idest%, isrc%, astring$, bstring$
-
-trans_prob! = Val(astring$)
-trans_energy! = Val(bstring$)
-
-' Check for valid values
-If iz% < 1 Or iz% > MAXELM% Then GoTo ZAFFLULoadLineWeightsBadEmitter
-
-' Load jump ratio values
-tmsg$ = "IZ=" & Format$(iz%) & ", " & Format$(idest%) & ", " & Format$(isrc%) & ", " & Format$(trans_prob!) & ", " & Format$(trans_energy!)
-If VerboseMode Then Call IOWriteLog(tmsg$)
-
-' Load data for this line
-AllTransitionProbabilities!(iz%, idest%, isrc%) = trans_prob!
-Loop
-
-Close #Temp1FileNumber%
-initialized = True
-End If
-
-' Load proper dest and source shells based on fluorescence type
-If tFluTyp% = 1 Then idest1% = 1: isrc1% = 4: idest2% = 1: isrc2% = 4       ' Ka by Ka
-
-' Return requested relative line intensity ratio based on emitter z, absorber z and fluorescence type
-temp1! = AllTransitionProbabilities!(iemitter%, idest1%, isrc1%)
-temp2! = AllTransitionProbabilities!(iabsorber%, idest2%, isrc2%)
-tLineWeightRatio! = temp1! / temp2!
+'If fluor_type2%(i%, i1%, i2%) = 14 Then    ' test break
+'DoEvents
+'End If
 
 Exit Sub
 
 ' Errors
-ZAFFLULoadLineWeightsError:
-MsgBox Error$, vbOKOnly + vbCritical, "ZAFFLULoadLineWeights"
+ZAFFLULoadLineWeightsReedError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFFLULoadLineWeightsReed"
 ierror = True
-Close #Temp1FileNumber%
 Exit Sub
 
-ZAFFLULoadLineWeightsBadEmitter:
-msg$ = "Invalid atomic number in " & tfilename$
-MsgBox msg$, vbOKOnly + vbExclamation, "ZAFFLULoadLineWeights"
+End Sub
+
+Sub ZAFFLULoadLineWeightsPenepma(iemitter_elem As Integer, iemitter_xray As Integer, imatrix_elem As Integer, imatrix_xray As Integer, tLineWeightRatio As Single)
+' Load the relative line weights calculated from the ratio of the pure element generated intensities from Penfluor/Fanal
+' Relative emission intensity based on the emitter element, emitter x-ray, matrix element causing fluorescence, and matrix element x-ray and takeoff and keV
+
+ierror = False
+On Error GoTo ZAFFLULoadLineWeightsPenepmaError
+
+Dim temp1 As Single, temp2 As Single
+           
+
+
+
+
+
+
+
+
+' Sanity check
+If temp1! = 0# Then Exit Sub
+If temp2! = 0# Then Exit Sub
+
+If DebugMode Then
+tmsg$ = "Pure element generated intensity for emitter " & Format$(Symup$(iemitter_elem%), a20$) & " " & Format$(Xraylo$(iemitter_xray%), a20$) & " is " & Format$(temp1!)
+tmsg$ = tmsg$ & ", and for matrix fluorescer " & Format$(Symup$(imatrix_elem%), a20$) & " " & Format$(Xraylo$(imatrix_xray%), a20$) & " line of " & " is " & Format$(temp2!)
+tmsg$ = tmsg$ & ", and the relative line weight from (improved) Reed is " & Format$(tLineWeightRatio!) & ", and from phi-rho-z is " & Format$(temp2! / temp1!)
+Call IOWriteLog(tmsg$)
+End If
+
+' Calculate generated pure element intensity ratio
+tLineWeightRatio! = temp2! / temp1!
+
+Exit Sub
+
+' Errors
+ZAFFLULoadLineWeightsPenepmaError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFFLULoadLineWeightsPenepma"
 ierror = True
-Close #Temp1FileNumber%
+Exit Sub
+
+ZAFFLULoadLineWeightsPenepmaNoMatrixElementFound:
+msg$ = "Invalid atomic number matrix element specified for fluorescence"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFFLULoadLineWeightsPenepma"
+ierror = True
 Exit Sub
 
 End Sub

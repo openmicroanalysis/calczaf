@@ -463,8 +463,6 @@ Sub MQOptionsExtractData(tForm As Form)
 ierror = False
 On Error GoTo MqOptionsExtractDataError
 
-Dim tfilenumber1 As Integer, tfilenumber2 As Integer, tfilenumber3 As Integer
-
 Dim tfilename As String     ' input file
 Dim tfilename1 As String    ' input file (compound)
 Dim tfilename2 As String    ' input file (pure element)
@@ -573,7 +571,7 @@ If ierror Then Exit Sub
 UserDataDirectory$ = MiscGetPathOnly2$(tfilename1$)
 
 ' Open compound file and read composition
-Call MQOptionsExtractDataFile(tfilename1$, filmnumberofelements%, substratenumberofelements%, atomicnumber%(), AtomicWeight!(), concentration!(), backscatter!, generated!(), emitted!())
+Call MQOptionsExtractDataFile(tfilename1$, Temp1FileNumber%, filmnumberofelements%, substratenumberofelements%, atomicnumber%(), AtomicWeight!(), concentration!(), backscatter!, generated!(), emitted!())
 If ierror Then Exit Sub
 
 ' Open individual element files
@@ -587,25 +585,25 @@ End If
 
 If filmnumberofelements% > 0 Then
 tfilename2$ = Trim$(Str$(Val(tfilename$))) & "-" & Trim$(Symup$(atomicnumber%(1))) & ".DAT"
-Call MQOptionsExtractDataFile(ElementPath$ & tfilename2$, tfilmnumberofelements%, tsubstratenumberofelements%, atomicnumberA%(), atomicweightA!(), concentrationA!(), backscatterA!, generatedA!(), emittedA!())
+Call MQOptionsExtractDataFile(ElementPath$ & tfilename2$, Temp2FileNumber%, tfilmnumberofelements%, tsubstratenumberofelements%, atomicnumberA%(), atomicweightA!(), concentrationA!(), backscatterA!, generatedA!(), emittedA!())
 If ierror Then Exit Sub
 End If
 
 If filmnumberofelements% > 1 Then
 tfilename2$ = Trim$(Str$(Val(tfilename$))) & "-" & Trim$(Symup$(atomicnumber%(2))) & ".DAT"
-Call MQOptionsExtractDataFile(ElementPath$ & tfilename2$, tfilmnumberofelements%, tsubstratenumberofelements%, atomicnumberB%(), atomicweightB!(), concentrationB!(), backscatterB!, generatedB!(), emittedB!())
+Call MQOptionsExtractDataFile(ElementPath$ & tfilename2$, Temp2FileNumber%, tfilmnumberofelements%, tsubstratenumberofelements%, atomicnumberB%(), atomicweightB!(), concentrationB!(), backscatterB!, generatedB!(), emittedB!())
 If ierror Then Exit Sub
 End If
 
 If filmnumberofelements% > 2 Then
 tfilename2$ = Trim$(Str$(Val(tfilename$))) & "-" & Trim$(Symup$(atomicnumber%(3))) & ".DAT"
-Call MQOptionsExtractDataFile(ElementPath$ & tfilename2$, tfilmnumberofelements%, tsubstratenumberofelements%, atomicnumberC%(), atomicweightC!(), concentrationC!(), backscatterC!, generatedC!(), emittedC!())
+Call MQOptionsExtractDataFile(ElementPath$ & tfilename2$, Temp2FileNumber%, tfilmnumberofelements%, tsubstratenumberofelements%, atomicnumberC%(), atomicweightC!(), concentrationC!(), backscatterC!, generatedC!(), emittedC!())
 If ierror Then Exit Sub
 End If
 
 If filmnumberofelements% > 3 Then
 tfilename2$ = Trim$(Str$(Val(tfilename$))) & "-" & Trim$(Symup$(atomicnumber%(4))) & ".DAT"
-Call MQOptionsExtractDataFile(ElementPath$ & tfilename2$, tfilmnumberofelements%, tsubstratenumberofelements%, atomicnumberD%(), atomicweightD!(), concentrationD!(), backscatterD!, generatedD!(), emittedD!())
+Call MQOptionsExtractDataFile(ElementPath$ & tfilename2$, Temp2FileNumber%, tfilmnumberofelements%, tsubstratenumberofelements%, atomicnumberD%(), atomicweightD!(), concentrationD!(), backscatterD!, generatedD!(), emittedD!())
 If ierror Then Exit Sub
 End If
 
@@ -731,16 +729,16 @@ columnlabels$ = columnlabels$ & VbDquote$ & "A electron fraction" & VbDquote$ & 
 columnlabels$ = columnlabels$ & VbDquote$ & "B electron fraction" & VbDquote$ & VbComma$
 columnlabels$ = columnlabels$ & VbDquote$ & "C electron fraction" & VbDquote$ & VbComma$
 columnlabels$ = columnlabels$ & VbDquote$ & "D electron fraction" & VbDquote$ & VbComma$
-Open tfilename3$ For Append As tfilenumber3%
-Print #tfilenumber3%, columnlabels$
-Close tfilenumber3%
+Open tfilename3$ For Append As Temp3FileNumber%
+Print #Temp3FileNumber%, columnlabels$
+Close Temp3FileNumber%
 initializedbse = True
 End If
 
 ' Write extracted (and calculated) data for BSE
-Open tfilename3$ For Append As tfilenumber3%
+Open tfilename3$ For Append As Temp3FileNumber%
 tfilename$ = MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(tfilename1$))
-Print #tfilenumber3%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
+Print #Temp3FileNumber%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
 & syms$(1) & VbComma$ & syms$(2) & VbComma$ & syms$(3) & VbComma$ & syms$(4) & VbComma$ _
 & MQOptionsFormat$(backscatter!) & VbComma$ & MQOptionsFormat$(massbse!) & VbComma$ & MQOptionsFormat$(elecbse!) & VbComma$ _
 & MQOptionsFormat$(masserror!) & VbComma$ & MQOptionsFormat$(elecerror!) & VbComma$ _
@@ -755,7 +753,7 @@ Print #tfilenumber3%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
 & MQOptionsFormat$(electron!(1)) & VbComma$ & MQOptionsFormat$(electron!(2)) & VbComma$ _
 & MQOptionsFormat$(electron!(3)) & VbComma$ & MQOptionsFormat$(electron!(4)) & VbComma$
 
-Close tfilenumber3%
+Close Temp3FileNumber%
 
 Call IOWriteLog("MQ data from " & tfilename1$ & " extracted to " & tfilename3$)
 
@@ -798,16 +796,16 @@ columnlabels$ = columnlabels$ & VbDquote$ & "A electron fraction prediction erro
 columnlabels$ = columnlabels$ & VbDquote$ & "B electron fraction prediction error" & VbDquote$ & VbComma$
 columnlabels$ = columnlabels$ & VbDquote$ & "C electron fraction prediction error" & VbDquote$ & VbComma$
 columnlabels$ = columnlabels$ & VbDquote$ & "D electron fraction prediction error" & VbDquote$ & VbComma$
-Open tfilename3$ For Append As tfilenumber3%
-Print #tfilenumber3%, columnlabels$
-Close tfilenumber3%
+Open tfilename3$ For Append As Temp3FileNumber%
+Print #Temp3FileNumber%, columnlabels$
+Close Temp3FileNumber%
 initializedxry = True
 End If
 
 ' Write extracted (and calculated) data
-Open tfilename3$ For Append As tfilenumber3%
+Open tfilename3$ For Append As Temp3FileNumber%
 tfilename$ = MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(tfilename1$))
-Print #tfilenumber3%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
+Print #Temp3FileNumber%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
 & syms$(1) & VbComma$ & syms$(2) & VbComma$ & syms$(3) & VbComma$ & syms$(4) & VbComma$ _
 & MQOptionsFormat$(generatedA!(1)) & VbComma$ & MQOptionsFormat$(generatedB!(1)) & VbComma$ _
 & MQOptionsFormat$(generatedC!(1)) & VbComma$ & MQOptionsFormat$(generatedD!(1)) & VbComma$ _
@@ -824,27 +822,26 @@ Print #tfilenumber3%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
 & MQOptionsFormat$(eerror!(1)) & VbComma$ & MQOptionsFormat$(eerror!(2)) & VbComma$ _
 & MQOptionsFormat$(eerror!(3)) & VbComma$ & MQOptionsFormat$(eerror!(4)) & VbComma$
 
-Close tfilenumber3%
+Close Temp3FileNumber%
 
 Call IOWriteLog("MQ data from " & tfilename1$ & " extracted to " & tfilename3$)
 Exit Sub
 
 ' Errors
 MqOptionsExtractDataError:
-Close tfilenumber3%
+Close Temp3FileNumber%
 MsgBox Error$, vbOKOnly + vbCritical, "MqOptionsExtractData"
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub MQOptionsExtractDataFile(tfilename As String, filmnumberofelements As Integer, substratenumberofelements As Integer, atomicnumber() As Integer, AtomicWeight() As Single, concentration() As Single, backscatter As Single, generated() As Single, emitted() As Single)
+Sub MQOptionsExtractDataFile(tfilename As String, tfilenumber As Integer, filmnumberofelements As Integer, substratenumberofelements As Integer, atomicnumber() As Integer, AtomicWeight() As Single, concentration() As Single, backscatter As Single, generated() As Single, emitted() As Single)
 ' Parse the MQ output file
 
 ierror = False
 On Error GoTo MqOptionsExtractDataFileError
 
-Dim tfilenumber As Integer
 Dim astring As String, bstring As String
 Dim i As Integer
 
@@ -852,7 +849,6 @@ Dim i As Integer
 If Trim$(tfilename$) = vbNullString Then GoTo MQOptionsExtractDataFileNoName
 If Dir$(tfilename$) = vbNullString Then GoTo MQOptionsExtractDataFileNoFile
 
-tfilenumber% = FreeFile()
 Open tfilename$ For Input As tfilenumber%
 
 Input #tfilenumber%, astring$    ' read title

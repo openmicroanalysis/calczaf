@@ -82,7 +82,7 @@ If ProbeDataFile$ <> vbNullString Then
 Call MiscChangePath(ProbeDataFile$)
 If ierror Then Exit Sub
 Else
-Call MiscChangePath(ApplicationCommonAppData$)
+Call MiscChangePath(ProgramPath$)
 If ierror Then Exit Sub
 End If
 
@@ -168,7 +168,7 @@ If Not ExcelAppIsRunning() Then GoTo ExcelSendDataToSpreadsheetNoApp
 
 ' Load cell range
 For i% = 1 To nCol%
-xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).value = MiscSetSignificantDigits(10, temp#(i%))
+xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).Value = MiscSetSignificantDigits(10, temp#(i%))
 Next i%
 
 ' Increment row
@@ -219,14 +219,14 @@ End If
 If Not changed Then Exit Sub
 
 ' Load sample name
-xlSheet.Cells(ExcelRow&, 1).value = VbDquote$ & astring$ & VbDquote$
+xlSheet.Cells(ExcelRow&, 1).Value = VbDquote$ & astring$ & VbDquote$
 
 ' Increment row
 ExcelRow& = ExcelRow& + 1
 
 ' Load cell range
 For i% = 1 To nCol%
-xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).value = VbDquote$ & tlabel$(i%) & VbDquote$
+xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).Value = VbDquote$ & tlabel$(i%) & VbDquote$
 Next i%
 
 ' Increment row

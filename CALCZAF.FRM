@@ -54,6 +54,7 @@ Begin VB.Form FormMAIN
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
             Object.Width           =   14579
+            TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""
             Object.ToolTipText     =   "Automation status"
@@ -411,24 +412,6 @@ Begin VB.Form FormMAIN
          Caption         =   "Update Existing User Defined MAC Table (Update USERMAC.DAT)"
          HelpContextID   =   826
       End
-      Begin VB.Menu menuXraySeparator7 
-         Caption         =   "-"
-         Visible         =   0   'False
-      End
-      Begin VB.Menu menuXrayUpdateEdgeLineFlurFiles 
-         Caption         =   "Update XLINE, XEDGE, XFLUR .DAT Files For Actinides"
-         HelpContextID   =   628
-         Visible         =   0   'False
-      End
-      Begin VB.Menu menuXrayConvertTextToData 
-         Caption         =   "Convert XLINE, XEDGE, XFLUR .TXT Files To Binary .DAT Files"
-         HelpContextID   =   630
-         Visible         =   0   'False
-      End
-      Begin VB.Menu menuXrayConvertDataToText 
-         Caption         =   "Convert Binary XLINE, XEDGE, XFLUR .DAT Files To .TXT Files"
-         Visible         =   0   'False
-      End
    End
    Begin VB.Menu menuAnalytical 
       Caption         =   "&Analytical"
@@ -563,6 +546,20 @@ Begin VB.Form FormMAIN
          HelpContextID   =   146
          Visible         =   0   'False
       End
+      Begin VB.Menu menuAnalyticalSeparator7 
+         Caption         =   "-"
+         Visible         =   0   'False
+      End
+      Begin VB.Menu menuAnalyticalUpdateEdgeLineFlurFiles 
+         Caption         =   "Update XEdge XLine XFlur Files"
+         HelpContextID   =   628
+         Visible         =   0   'False
+      End
+      Begin VB.Menu menuAnalyticalConvertTextToData 
+         Caption         =   "Convert Text To Data"
+         HelpContextID   =   630
+         Visible         =   0   'False
+      End
    End
    Begin VB.Menu menuRun 
       Caption         =   "&Run"
@@ -695,11 +692,11 @@ Option Explicit
 
 Private Sub Form_Activate()
 Static initialized As Integer
+
 If Not DebugMode Then On Error Resume Next
 
 ' Initialize the global variables
 If initialized = False Then
-initialized = True
 
 ' Initialize the files
 Call InitFiles
@@ -740,9 +737,8 @@ If ierror Then Exit Sub
 
 'Call CalcZAFConvertPouchouCSV   ' test code
 
-Call InitWindow(Int(2), MDBUserName$, Me)           ' to ensure default position gets saved
+initialized = True
 End If
-
 End Sub
 
 Private Sub Form_Load()
@@ -1021,6 +1017,12 @@ End If
 FormZAF.Show vbModeless
 End Sub
 
+Private Sub menuAnalyticalConvertTextToData_Click()
+If Not DebugMode Then On Error Resume Next
+Call EditConvertTextToDAT(FormMAIN)
+If ierror Then Exit Sub
+End Sub
+
 Private Sub menuAnalyticalElementalFactors_Click()
 If Not DebugMode Then On Error Resume Next
 Call CalcZAFElementalToOxideFactors(Int(1))
@@ -1088,6 +1090,12 @@ Else
 msg$ = "Penepma12 application files were not found. Please download the PENEPMA12.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "menuAnayticalSecondary"
 End If
+End Sub
+
+Private Sub menuAnalyticalUpdateEdgeLineFlurFiles_Click()
+If Not DebugMode Then On Error Resume Next
+Call ConvertUpdateEdgeLineFlurFiles
+If ierror Then Exit Sub
 End Sub
 
 Private Sub menuAnalyticalUseConductiveCoatingCorrectionForXrayTransmission_Click()
@@ -1511,7 +1519,7 @@ Call XrayGetTable(Int(1))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub menuXrayFluorescentYieldTable_Click()
+Private Sub menuXrayFluorescentYieldtable_Click()
 If Not DebugMode Then On Error Resume Next
 ' Obtain an fluorescent yield table
 Call XrayGetTable(Int(3))
@@ -1560,24 +1568,6 @@ Private Sub menuXrayXrayDatabase_Click()
 If Not DebugMode Then On Error Resume Next
 ' Loads the xray database
 Call XrayGetDatabase
-If ierror Then Exit Sub
-End Sub
-
-Private Sub menuXrayConvertTextToData_Click()
-If Not DebugMode Then On Error Resume Next
-Call EditConvertTextToDAT(FormMAIN)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub menuXrayConvertDataToText_Click()
-If Not DebugMode Then On Error Resume Next
-Call EditConvertDATToText(FormMAIN)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub menuXrayUpdateEdgeLineFlurFiles_Click()
-If Not DebugMode Then On Error Resume Next
-Call EditUpdateEdgeLineFlurFiles
 If ierror Then Exit Sub
 End Sub
 

@@ -25,10 +25,6 @@ Global Binary_ZAF_Kratios() As Double
 Global Binary_ZA_Kratios() As Double
 Global Binary_F_Kratios() As Double
 
-' Pure element globals
-Global PureGenerated_Intensities() As Double
-Global PureEmitted_Intensities() As Double
-
 ' Temporary flag to round keV to nearest integer
 Const Penepma12UseKeVRoundingFlag = True
 
@@ -56,7 +52,6 @@ ierror = False
 On Error GoTo Penepma12CalculateReadWriteBinaryDataMatrixError
 
 Dim l As Integer, n As Integer, i As Integer
-Dim tfilenumber As Integer
 Dim tkeV As Single
 Dim astring As String, ttfilename As String
 
@@ -68,9 +63,9 @@ End If
 
 ' Write column labels only
 If mode% = 0 Then
+Close #Temp3FileNumber%
 ttfilename$ = tfolder$ & "\" & tfilename$
-tfilenumber% = FreeFile()
-Open tfilename$ For Output As #tfilenumber%
+Open ttfilename$ For Output As #Temp3FileNumber%
 
 ' Load output string for keV
 astring$ = VbDquote$ & "keV" & VbDquote$ & vbTab
@@ -94,41 +89,41 @@ Next n%
 Next l%
 
 ' Output column labels
-Print #tfilenumber%, astring$
-Close #tfilenumber%
+Print #Temp3FileNumber%, astring$
+Close #Temp3FileNumber%
 End If
 
 ' Read data for specified beam energy
 If mode% = 1 Then
+Close #Temp3FileNumber%
 ttfilename$ = tfolder$ & "\" & tfilename$
 If Dir$(ttfilename$) = vbNullString Then GoTo Penepma12CalculateReadWriteBinaryDataMatrixFileNotFound
-tfilenumber% = FreeFile()
-Open ttfilename$ For Input As #tfilenumber%
+Open ttfilename$ For Input As #Temp3FileNumber%
 
 ' Read the column labels
-Line Input #tfilenumber%, astring$
+Line Input #Temp3FileNumber%, astring$
 
 ' Loop on file until desired voltage is found
 For i% = 1 To 50
 
 ' Read temp keV
-Input #tfilenumber%, tkeV!
-If tkeV! <> i% Then GoTo Penepma12CalculateReadWriteBinaryDataMatrixWrongkeV
+Input #Temp3FileNumber%, tkeV!
+If tkeV! <> i% Then GoTo Penepma12CalculateReadWriteBinarydataWrongkeV
 
 For l% = 1 To MAXRAY% - 1
 For n% = 1 To MAXBINARY%
 
 ' Input ZAF values
-Input #tfilenumber%, Binary_ZAF_Kratios#(l%, n%)
-Input #tfilenumber%, CalcZAF_ZAF_Kratios#(l%, n%)
+Input #Temp3FileNumber%, Binary_ZAF_Kratios#(l%, n%)
+Input #Temp3FileNumber%, CalcZAF_ZAF_Kratios#(l%, n%)
 
 ' Input ZA values
-Input #tfilenumber%, Binary_ZA_Kratios#(l%, n%)
-Input #tfilenumber%, CalcZAF_ZA_Kratios#(l%, n%)
+Input #Temp3FileNumber%, Binary_ZA_Kratios#(l%, n%)
+Input #Temp3FileNumber%, CalcZAF_ZA_Kratios#(l%, n%)
 
 ' Input F values
-Input #tfilenumber%, Binary_F_Kratios#(l%, n%)
-Input #tfilenumber%, CalcZAF_F_Kratios#(l%, n%)
+Input #Temp3FileNumber%, Binary_F_Kratios#(l%, n%)
+Input #Temp3FileNumber%, CalcZAF_F_Kratios#(l%, n%)
 Next n%
 Next l%
 
@@ -136,13 +131,12 @@ Next l%
 If keV! = tkeV! Then Exit For
 Next i%
 
-Close #tfilenumber%
+Close #Temp3FileNumber%
 End If
 
 ' Write data for specified beam energy (must be written in consecutive keV order)
 If mode% = 2 Then
-tfilenumber% = FreeFile()
-Open tfolder$ & "\" & tfilename$ For Append As #tfilenumber%
+Open tfolder$ & "\" & tfilename$ For Append As #Temp3FileNumber%
 
 ' Load output string for keV
 astring$ = Format$(keV!) & vbTab
@@ -166,8 +160,8 @@ Next n%
 Next l%
 
 ' Output data for this keV
-Print #tfilenumber%, astring$
-Close #tfilenumber%
+Print #Temp3FileNumber%, astring$
+Close #Temp3FileNumber%
 End If
 
 Exit Sub
@@ -177,7 +171,7 @@ Penepma12CalculateReadWriteBinaryDataMatrixError:
 If mode% = 0 Then MsgBox Error$ & ", creating file " & tfilename$, vbOKOnly + vbCritical, "Penepma12CalculateReadWriteBinaryDataMatrix"
 If mode% = 1 Then MsgBox Error$ & ", keV(read)= " & Format$(i%) & ", keV(desired)= " & Format$(keV!) & ", ray= " & Format$(l%) & ", n= " & Format$(n%) & ", reading file " & tfilename$, vbOKOnly + vbCritical, "Penepma12CalculateReadWriteBinaryDataMatrix"
 If mode% = 2 Then MsgBox Error$ & ", writing file " & tfilename$, vbOKOnly + vbCritical, "Penepma12CalculateReadWriteBinaryDataMatrix"
-Close #tfilenumber%
+Close #Temp3FileNumber%
 Call IOStatusAuto(vbNullString)
 ierror = True
 Exit Sub
@@ -185,15 +179,12 @@ Exit Sub
 Penepma12CalculateReadWriteBinaryDataMatrixFileNotFound:
 msg$ = "The binary composition matrix database file " & tfolder$ & "\" & tfilename$ & " was not found. Unable to perform Penepma k-ratio quantification."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CalculateReadWriteBinaryDataMatrix"
-Close #tfilenumber%
-Call IOStatusAuto(vbNullString)
 ierror = True
 Exit Sub
 
-Penepma12CalculateReadWriteBinaryDataMatrixWrongkeV:
+Penepma12CalculateReadWriteBinarydataWrongkeV:
 msg$ = "The keV value (" & Format$(tkeV!) & ") read from file " & tfilename$ & ", is not the expected keV value (" & Format$(i%) & ")."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CalculateReadWriteBinaryDataMatrix"
-Close #tfilenumber%
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CalculateReadWriteBinaryData"
 Call IOStatusAuto(vbNullString)
 ierror = True
 Exit Sub
@@ -516,199 +507,3 @@ ierror = True
 Exit Sub
 
 End Sub
-
-Sub Penepma12CalculateReadWritePureElement(mode As Integer, tfolder As String, tfilename As String, keV As Single)
-' Reads or write the binary fluorescence matrix k-ratio data to or from a data file for a specified beam energy
-'  mode = 0 create file and write column labels only
-'  mode = 1 read data
-'  mode = 2 write data
-'  tfolder$ is the full path of the pure element data file to read or write
-'  tfilename$ is the filename of the pure element data file to read or write
-'  keV is the specified beam energy
-
-ierror = False
-On Error GoTo Penepma12CalculateReadWritePureElementError
-
-Dim tfilenumber As Integer
-Dim l As Integer, i As Integer
-Dim tkeV As Single
-Dim astring As String, ttfilename As String
-
-' Write column labels only
-If mode% = 0 Then
-ttfilename$ = tfolder$ & "\" & tfilename$
-tfilenumber% = FreeFile()
-Open ttfilename$ For Output As #tfilenumber%
-
-' Load output string for keV
-astring$ = VbDquote$ & "keV" & VbDquote$ & vbTab
-
-' Load data column labels for generated and emitted pure element intensities
-For l% = 1 To MAXRAY% - 1
-astring$ = astring$ & VbDquote$ & "Gene_" & Xraylo$(l%) & "_(Fanal)" & VbDquote$ & vbTab
-astring$ = astring$ & VbDquote$ & "Emit_" & Xraylo$(l%) & "_(Fanal)" & VbDquote$ & vbTab
-Next l%
-
-' Output column labels
-Print #tfilenumber%, astring$
-Close #tfilenumber%
-End If
-
-' Read data for specified beam energy
-If mode% = 1 Then
-ttfilename$ = tfolder$ & "\" & tfilename$
-If Dir$(ttfilename$) = vbNullString Then GoTo Penepma12CalculateReadWritePureElementFileNotFound
-tfilenumber% = FreeFile()
-Open ttfilename$ For Input As #tfilenumber%
-
-' Read the column labels
-Line Input #tfilenumber%, astring$
-
-' Loop on file until desired voltage is found
-For i% = 1 To 50
-
-' Read temp keV
-Input #tfilenumber%, tkeV!
-If tkeV! <> i% Then GoTo Penepma12CalculateReadWritePureElementWrongkeV
-
-For l% = 1 To MAXRAY% - 1
-Input #tfilenumber%, PureGenerated_Intensities#(l%)
-Input #tfilenumber%, PureEmitted_Intensities#(l%)
-Next l%
-
-' Exit for loop if desired voltage was read
-If keV! = tkeV! Then Exit For
-Next i%
-
-Close #tfilenumber%
-End If
-
-' Write data for specified beam energy (must be written in consecutive keV order)
-If mode% = 2 Then
-tfilenumber% = FreeFile()
-Open tfolder$ & "\" & tfilename$ For Append As #tfilenumber%
-
-' Load output string for keV
-astring$ = Format$(keV!) & vbTab
-
-' Create output string for generated and pure element intensities
-For l% = 1 To MAXRAY% - 1
-astring$ = astring$ & Format$(PureGenerated_Intensities#(l%)) & vbTab
-astring$ = astring$ & Format$(PureEmitted_Intensities#(l%)) & vbTab
-Next l%
-
-' Output data for this keV
-Print #tfilenumber%, astring$
-Close #tfilenumber%
-End If
-
-Exit Sub
-
-' Errors
-Penepma12CalculateReadWritePureElementError:
-If mode% = 0 Then MsgBox Error$ & ", creating file " & tfilename$, vbOKOnly + vbCritical, "Penepma12CalculateReadWritePureElement"
-If mode% = 1 Then MsgBox Error$ & ", keV(read)= " & Format$(i%) & ", keV(desired)= " & Format$(keV!) & ", ray= " & Format$(l%) & ", reading file " & tfilename$, vbOKOnly + vbCritical, "Penepma12CalculateReadWritePureElement"
-If mode% = 2 Then MsgBox Error$ & ", writing file " & tfilename$, vbOKOnly + vbCritical, "Penepma12CalculateReadWritePureElement"
-Close #tfilenumber%
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
-Penepma12CalculateReadWritePureElementFileNotFound:
-msg$ = "The binary composition matrix database file " & tfolder$ & "\" & tfilename$ & " was not found. Unable to perform Penepma k-ratio quantification."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CalculateReadWritePureElement"
-Close #tfilenumber%
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
-Penepma12CalculateReadWritePureElementWrongkeV:
-msg$ = "The keV value (" & Format$(tkeV!) & ") read from file " & tfilename$ & ", is not the expected keV value (" & Format$(i%) & ")."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CalculateReadWritePureElement"
-Close #tfilenumber%
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub Penepma12PureReadMDB2(tTakeoff As Single, tKilovolt As Single, tEmitter As Integer, tXray As Integer, tIntensityGenerated As Double, tIntensityEmitted As Double, notfound As Boolean)
-' This routine reads the Pure.mdb file for the specified beam energy, emitter and x-ray and returns the generated and emitted pure element intensities.
-
-ierror = False
-On Error GoTo Penepma12PureReadMDB2Error
-
-Dim i As Integer
-Dim nrec As Long
-
-Dim SQLQ As String
-Dim MtDb As Database
-Dim MtDs As Recordset
-
-' Check for file
-If Dir$(PureMDBFile$) = vbNullString Then GoTo Penepma12PureReadMDBNoPureMDB2File
-
-' Check for use keV rounding flag for fractional keVs
-If Penepma12UseKeVRoundingFlag Then
-tKilovolt! = Int(tKilovolt! + 0.5)
-End If
-
-' Open Pure database (non exclusive and read only)
-Screen.MousePointer = vbHourglass
-Set MtDb = OpenDatabase(PureMDBFile$, PureDatabaseNonExclusiveAccess%, dbReadOnly)
-
-' Try to find requested emitter, etc
-SQLQ$ = "SELECT Pure.BeamTakeOff, Pure.BeamEnergy, Pure.EmittingElement, Pure.EmittingXray, Pure.PureNumber FROM Pure WHERE"
-SQLQ$ = SQLQ$ & " BeamTakeOff = " & Format$(tTakeoff!) & " AND BeamEnergy = " & Format$(tKilovolt!) & " AND"
-SQLQ$ = SQLQ$ & " EmittingElement = " & Format$(tEmitter%) & " AND EmittingXray = " & Format$(tXray%)
-Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
-
-' If record not found, return notfound
-If MtDs.BOF And MtDs.EOF Then
-notfound = True
-Screen.MousePointer = vbDefault
-Exit Sub
-End If
-
-' Load return values based on "PureNumber"
-nrec& = MtDs("PureNumber")
-MtDs.Close
-
-' Search for records
-SQLQ$ = "SELECT PureIntensity.PureIntensityGenerated, PureIntensity.PureIntensityEmitted FROM PureIntensity WHERE PureIntensityNumber = " & Format$(nrec&)
-Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
-If MtDs.BOF And MtDs.EOF Then GoTo Penepma12PureReadMDB2NoIntensities
-
-' Load pure element intensities
-tIntensityGenerated# = CDbl(MtDs("PureIntensityGenerated"))
-tIntensityEmitted# = CDbl(MtDs("PureIntensityEmitted"))
-MtDs.Close
-
-notfound = False
-MtDb.Close
-
-Screen.MousePointer = vbDefault
-Exit Sub
-
-' Errors
-Penepma12PureReadMDB2Error:
-Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma12PureReadMDB2"
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
-Penepma12PureReadMDBNoPureMDB2File:
-msg$ = "File " & PureMDBFile$ & " was not found"
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12PureReadMDB2"
-ierror = True
-Exit Sub
-
-Penepma12PureReadMDB2NoIntensities:
-msg$ = "File " & PureMDBFile$ & " did not contain any pure element intensity records for " & Format$(tTakeoff!) & " degrees, " & Format$(tKilovolt!) & " keV, " & Symup$(tEmitter%) & " " & Xraylo$(tXray%)
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12PureReadMDB2"
-ierror = True
-Exit Sub
-
-End Sub
-

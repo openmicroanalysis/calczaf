@@ -346,7 +346,7 @@ ierror = True
 Exit Sub
 
 MatchSaveNotFound:
-msg$ = "The specified match database " & DefaultMatchStandardDatabase$ & " was not found in the application folder " & ApplicationCommonAppData$
+msg$ = "The specified match database " & DefaultMatchStandardDatabase$ & " was not found in the application folder" & ProgramPath$
 MsgBox Error$, vbOKOnly + vbCritical, "MatchSave"
 StandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
 Call StandardGetMDBIndex

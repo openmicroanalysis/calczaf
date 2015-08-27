@@ -55,14 +55,14 @@ Global Const SW_SHOWNORMAL& = 1
 'Global Const SW_SHOWDEFAULT& = 10
 
 ' Declare Windows API Functions
-Public Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, _
+Public Declare Function GetPrivateProfileString Lib "Kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, _
     ByVal lpReturnedString As String, ByVal nSize As Long, ByVal lpFileName As String) As Long
-Public Declare Function GetPrivateProfileInt Lib "kernel32" Alias "GetPrivateProfileIntA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal nDefault As Long, _
+Public Declare Function GetPrivateProfileInt Lib "Kernel32" Alias "GetPrivateProfileIntA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal nDefault As Long, _
     ByVal lpFileName As String) As Long
-Public Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As Any, _
+Public Declare Function WritePrivateProfileString Lib "Kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As Any, _
     ByVal lpFileName As String) As Long
 
-Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Public Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 
 ' Graphics Server DLL functions
 Public Declare Function GSLineAbs Lib "GSWDLL32.DLL" (ByVal fxA#, ByVal fya#, ByVal fxB#, ByVal fyB#, ByVal nmode%, ByVal nStyle%, ByVal nClr%) As Integer
@@ -73,11 +73,6 @@ Public Declare Function GSGetSD Lib "GSWDLL32.DLL" () As Double      ' used in S
 Public Declare Function GSCircle Lib "GSWDLL32.DLL" (ByVal fxOrg#, ByVal fyOrg#, ByVal fRadius#, nmode%, nStyle%, nClr%) As Integer
 'Public Declare Function GSSetRFontFace Lib "GSWDLL32.DLL" (ByVal tFont%, ByVal szString$) As Integer
 'Public Declare Function GSLoadRFont Lib "GSWDLL32.DLL" (ByVal tFont%, tAttr%, tsize%, tPitch%) As Integer
-
-' New constants for non-traditional emission lines
-Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,mb)
-Global Const MAXRAY% = 7                ' maximum xray symbols (ka,kb,la,lb,ma,mb," ") including blank for non-analyzed
-'Global Const MAXRAY% = 13               ' maximum xray symbols (ka,kb,la,lb,ma,mb,ln,lg,lv,ll,mg,mz," ") including blank for non-analyzed
 
 ' Constants for array declarations
 Global Const MAXINTERFACE% = 6          ' maximum number of instrument interfaces (0 to MAXINTERFACE%)
@@ -90,6 +85,7 @@ Global Const MAXCHAN1% = MAXCHAN% + 1   ' maximum elements plus 1 (stoichiometri
 Global Const MAXSTD% = 128              ' maximum standards per run
 Global Const MAXROW% = 500              ' maximum lines per sample (changed to 500 rows 08-11-2012)
 Global Const MAXVOLATILE% = 400         ' maximum volatile/alternating intensities per chan per line per sample
+Global Const MAXRAY% = 7                ' maximum xray symbols (ka,kb,la,lb,ma,mb," ") including blank for non-analyzed
 Global Const MAXEDG% = 9                ' maximum emission edges
 Global Const MAXELM% = 100              ' maximum elements (do not change due to data restrictions in AbsorbGetMAC)
 Global Const MAXEMP% = 20               ' maximum empirical MAC/APFs
@@ -1303,6 +1299,7 @@ Global CurrentMultiPointAcquireLastCountTimesLo() As Single   ' allocated in Ini
 ' File unit numbers used in Probe for EPMA
 Global Const Temp1FileNumber% = 201       ' #201 temporary file I/O
 Global Const Temp2FileNumber% = 202       ' #202 temporary file I/O
+Global Const Temp3FileNumber% = 203       ' #203 temporary file I/O
 
 Global Const Position1FileNumber% = 6     ' #6 *.POS position import or export
 Global Const Position2FileNumber% = 7     ' #7 *.POS position import or export
@@ -1310,18 +1307,12 @@ Global Const ProbeImageFileNumber% = 10   ' #10 ProbeImageFile$ (*.BIM)
 Global Const TipOfTheDayFileNumber% = 11  ' #11 TipOfTheDayFile$ (TipOfTheDay.TXT)
 
 Global Const MACFileNumber% = 16          ' #16 MACFile$ (MAC binary data file)
-
 Global Const XEdgeFileNumber% = 21        ' #21 XedgeFile$ (xray edge energy binary file)
 Global Const XLineFileNumber% = 22        ' #22 XlineFile$ (xray line energy binary file)
 Global Const XFlurFileNumber% = 23        ' #23 XflurFile$ (xray fluorescence yield binary file)
-
 Global Const EMPFileNumber% = 24          ' #24 EmpMACFile$ or EmpAPFFile$ (empirical MAC/APF ASCII files)
 Global Const EMPFacFileNumber% = 25       ' #25 EmpFacFile$ (empirical Alpha Factors ASCII file)
 Global Const EMPPHAFileNumber% = 26       ' #26 EmpPHAFile$ (empirical PHA coefficient ASCII file)
-
-Global Const XLineFileNumber2% = 27       ' #22 XlineFile2$ (xray line energy binary file for additional x-rays)
-Global Const XFlurFileNumber2% = 28        ' #23 XflurFile2$ (xray fluorescence yield binary file for additional x-rays)
-
 Global Const AbsorbFileNumber% = 99       ' #99 AbsorbFile$ (coefficient data for ABSORB.BAS)
 
 Global Const AFactorDataFileNumber% = 100           ' #100 AFactorDataFile$ (alpha-factor ASCII file)
@@ -1346,7 +1337,6 @@ Global PositionDatabaseExclusiveAccess As Integer
 Global XrayDatabaseExclusiveAccess As Integer
 Global MatrixDatabaseExclusiveAccess As Integer
 Global BoundaryDatabaseExclusiveAccess As Integer
-Global PureDatabaseExclusiveAccess As Integer
 
 Global DatabaseNonExclusiveAccess As Integer        ' for generic non-exclusive access
 Global StandardDatabaseNonExclusiveAccess As Integer
@@ -1357,7 +1347,6 @@ Global PositionDatabaseNonExclusiveAccess As Integer
 Global XrayDatabaseNonExclusiveAccess As Integer
 Global MatrixDatabaseNonExclusiveAccess As Integer
 Global BoundaryDatabaseNonExclusiveAccess As Integer
-Global PureDatabaseNonExclusiveAccess As Integer
 
 Global SystemPath As String
 Global ProgramPath As String                ' works under VB6 IDE
@@ -1368,11 +1357,8 @@ Global ApplicationAppData As String         ' roaming users
 
 ' Xray data files
 Global XLineFile As String
-Global XFlurFile As String
-Global XLineFile2 As String     ' for additional x-ray lines
-Global XFlurFile2 As String     ' for additional x-ray lines
-
 Global XEdgeFile As String
+Global XFlurFile As String
 Global ElementsFile As String
 Global AbsorbFile As String
 
@@ -1380,7 +1366,6 @@ Global EmpMACFile As String
 Global EmpAPFFile As String
 Global EmpFACFile As String
 Global EmpPHAFile As String
-
 Global MACFile As String
 
 Global ProbeWinINIFile As String
@@ -2656,7 +2641,6 @@ Global InstrumentAcknowledgementString As String
 Global AnalysisInSilentModeFlag As Boolean
 
 Global MatrixMDBFile As String
-Global PureMDBFile As String
 Global BoundaryMDBFile As String
 
 Global BinaryRanges(1 To MAXBINARY%) As Single  ' for matrix calculations

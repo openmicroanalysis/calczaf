@@ -81,9 +81,9 @@ FormXRAY.TextkeV.Text = Str$(keV!)
 
 ' Load absorption edges checkbox
 If DefaultAbsorptionEdgeDisplay% = 1 Then
-FormXRAY.CheckAbsorptionEdges.Value = vbChecked
+FormXRAY.CheckAbsorptionEdges.value = vbChecked
 Else
-FormXRAY.CheckAbsorptionEdges.Value = vbUnchecked
+FormXRAY.CheckAbsorptionEdges.value = vbUnchecked
 End If
 
 ' Set "Graph Selected" button
@@ -323,7 +323,7 @@ xstop! = Val(FormXRAY.TextStop.Text)
 End If
 
 ' Load x-ray absorption edges flag
-If FormXRAY.CheckAbsorptionEdges.Value = vbChecked Then
+If FormXRAY.CheckAbsorptionEdges.value = vbChecked Then
 method% = 1
 Else
 method% = 0
@@ -379,7 +379,7 @@ Exit Sub
 End Sub
 
 Sub XrayOpenNewMDB()
-' This routine reads file XRAY.ALL and converts it to XRAY.MDB file (use MakXray.exe to convert XrayData5_8_99.txt to xray.dat, then eventually to xray.all)
+' This routine reads file XRAY.ALL and converts it to a .MDB file (use MakXray.exe to convert XrayData5_8_99.txt to xray.dat, then eventually to xray.all)
 
 ierror = False
 On Error GoTo XrayOpenNewMDBError
@@ -407,7 +407,7 @@ Exit Sub
 End If
 End If
 
-' Check for XRAY.ALL (See MakeXray.Exe) (XRAY.ALL is not distributed, so do not use ProgramPath$ or ApplicationCommonAppData$)
+' Check for XRAY.ALL (See MakeXray.Exe) (do not use ProgramPath$)
 xrayfile$ = app.Path & "\XRAY.ALL"
 If Dir$(xrayfile$) = vbNullString Then GoTo XrayOpenNewMDBNoXrayFile
 
