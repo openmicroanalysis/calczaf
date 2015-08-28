@@ -476,7 +476,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
             ' Variable fluor_yield2!(i%, i1%, i2%) is fluorescent yield of emitting element i% by absorbing (matrix) element i1%, line i2%
             fluor_yield2!(i%, i1%, i2%) = ZAFFLUGetFluYield(fluor_type2%(i%, i1%, i2%), i1%, zaf)
             
-            ' Load relative line weights using "tuned" values
+            ' Load relative line weights using "tuned" values (no Z or keV dependency)
             Call ZAFFLULoadLineWeightsReed(i%, i1%, i2%, fluor_type2%(), rela_line_wts2!())
             If ierror Then Exit Sub
            
@@ -848,16 +848,19 @@ If ierror Then Exit Sub
 If notfound1 Then Exit Sub
 If notfound2 Then Exit Sub
 
+' Check and debug output
+If matrix_generated# > 0# And emitter_generated# > 0# Then
 If DebugMode Then
-tmsg$ = "Pure element generated intensity for emitter " & Format$(Symup$(iemitter_elem%), a20$) & " " & Format$(Xraylo$(iemitter_xray%), a20$) & " is " & MiscAutoFormat$(CSng(emitter_generated#)) & ", "
-tmsg$ = tmsg$ & "and for matrix fluorescer " & Format$(Symup$(imatrix_elem%), a20$) & " " & Format$(Xraylo$(imatrix_xray%), a20$) & " is " & MiscAutoFormat$(CSng(matrix_generated#)) & ", " & vbCrLf
-tmsg$ = tmsg$ & "and the relative line weight from (improved) Reed is " & Format$(tLineWeightRatio!) & ", and from Penfluor/Fanal is " & MiscAutoFormat$(CSng(emitter_generated# / matrix_generated#))
+tmsg$ = "Pure element generated intensity for emitter " & Format$(Symup$(iemitter_elem%), a20$) & " " & Format$(Xraylo$(iemitter_xray%), a20$) & " is " & MiscAutoFormatD$(emitter_generated#) & ", "
+tmsg$ = tmsg$ & "and for matrix fluorescer " & Format$(Symup$(imatrix_elem%), a20$) & " " & Format$(Xraylo$(imatrix_xray%), a20$) & " is " & MiscAutoFormatD$(matrix_generated#) & ", " & vbCrLf
+'tmsg$ = tmsg$ & "and the relative line weight (fluorescer/emitter) from (improved) Reed is " & Format$(tLineWeightRatio!) & ", and from Penfluor/Fanal is " & MiscAutoFormat$(CSng(matrix_generated# / emitter_generated#))
+tmsg$ = tmsg$ & "and the relative line weight (fluorescer/emitter) from (improved) Reed is " & Format$(tLineWeightRatio!) & ", and from Penfluor/Fanal is " & MiscAutoFormat$(CSng(matrix_generated# / emitter_generated#) / 10#)
 Call IOWriteLog(tmsg$)
 End If
 
-' Calculate generated pure element intensity ratio if pure element intensities found
-If matrix_generated# > 0# And emitter_generated# > 0# Then
-tLineWeightRatio! = CSng(emitter_generated# / matrix_generated#)
+' Calculate generated pure element intensity ratio if pure element intensities found (Reed uses fluorescer / emitter for relative line weight ratios, that is W La / Fe Ka)
+'tLineWeightRatio! = CSng(matrix_generated# / emitter_generated#)
+tLineWeightRatio! = CSng(matrix_generated# / emitter_generated#) / 10#
 End If
 
 Exit Sub

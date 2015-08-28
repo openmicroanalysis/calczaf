@@ -789,6 +789,12 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then UseWavFileAfterAutomationString$ = Left$(lpReturnString$, valid&)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+' Check that sound file exists
+If Dir$(ApplicationCommonAppData$ & UseWavFileAfterAutomationString$) = vbNullString Then
+msg$ = "Automation sound file " & UseWavFileAfterAutomationString$ & " as defined in " & ProbeWinINIFile$ & " was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIGeneral"
+End If
+
 lpAppName$ = "General"
 lpKeyName$ = "PeakCenterSkipPBCheck"
 nDefault& = False
@@ -5652,6 +5658,10 @@ If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivatePro
 Call InitParseStringToString(astring$, StageBitMapCount%, StageBitMapFile$())
 If ierror Then End
 
+' Move stage bitmaps specified from probewin.ini file
+Call InitFilesMove(Int(1))
+If ierror Then Exit Sub
+
 ' Check that files are only WMF (WindowsMetaFiles) and exist
 For i% = 1 To StageBitMapCount%
 
@@ -5673,8 +5683,6 @@ End If
 
 ' Check that file exists (skip if exporting INI file)
 If mode% = 0 Then
-Call InitFilesMove(StageBitMapFile$(i%), ProgramPath$, ApplicationCommonAppData$)         ' move stage bit maps to ProgramData folder
-
 If Dir$(ApplicationCommonAppData$ & StageBitMapFile$(i%)) = vbNullString Then
 msg$ = "StageBitMapFile " & StageBitMapFile$(i%) & " in " & tfilename$ & " was not found" & vbCrLf & vbCrLf
 msg$ = msg$ & "Program will now end."

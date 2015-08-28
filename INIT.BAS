@@ -18,6 +18,9 @@ Global ScalersFile As String
 Global MotorsFile As String
 Global ChargesFile As String
 
+Global Const OldInstallationFolder$ = "C:\Probe Software\Probe for EPMA\"
+Global Const PFE_SourceCodeFolder$ = "C:\Source\Probewin32-E\"
+
 ' Modules level only
 Dim DensityFile As String
 Dim DensityFile2 As String
@@ -1351,9 +1354,8 @@ VbSquote$ = ChrW$(39)    ' single quote character
 VbComma$ = ChrW$(44)     ' comma character
 VbForwardSlash$ = ChrW$(47)     ' foward slash character
 
-' Load program path, note that it handles the root          (works under VB6 IDE!!!)
-ProgramPath$ = app.Path
-If Right$(app.Path, 1) <> "\" Then ProgramPath$ = ProgramPath$ & "\"
+' Load program path (works under VB6 IDE!!!)
+ProgramPath$ = app.Path & "\"
 
 ' Get the Windows system path
 If MiscSystemIsHost64Bit() = False Then
@@ -1373,7 +1375,6 @@ If ierror Then End
 
 ' Load special program path for Remote app
 If MiscStringsAreSame(app.EXEName, "Remote") Then
-ProgramPath$ = "C:\Probe Software\Probe for EPMA\"   ' default Probe for EPMA path
 If Dir$(SystemPath$ & "\Remote.ini") <> vbNullString Then
 ProgramPath$ = InitGetINIData(SystemPath$ & "\Remote.ini", "Software", "ProgramPath", ProgramPath$)
 End If
@@ -1381,7 +1382,6 @@ End If
 
 ' Load special program path for Matrix app
 If MiscStringsAreSame(app.EXEName, "Matrix") Then
-ProgramPath$ = "C:\Probe Software\Probe for EPMA\"   ' default Probe for EPMA path
 If Dir$(SystemPath$ & "\Matrix.ini") <> vbNullString Then
 ProgramPath$ = InitGetINIData(SystemPath$ & "\Matrix.ini", "Software", "ProgramPath", ProgramPath$)
 End If
@@ -1393,117 +1393,21 @@ If DebugMode Then Call IOWriteLog(amsg$)
 Call MiscChangePath(app.Path)
 If ierror Then Exit Sub
     
-' Delete this test code when new installer code is ready that supports ProgramData folder
-ApplicationCommonAppData$ = ProgramPath$
-
-' Move config/data files from ProgramPath folder to ProgramData folder (for existing installations)
-If Trim$(UCase$(ApplicationCommonAppData$)) <> Trim$(UCase$(ProgramPath$)) Then
-Call InitFilesMove("PROBEWIN.INI", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("MOTORS.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("SCALERS.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("ELEMENTS.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CRYSTALS.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CHARGES.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("DENSITY.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("DENSITY2.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("DETECTORS.DAT", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("STANDARD.MDB", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("XLINE.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("XEDGE.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("XFLUR.DAT", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("LINEMU.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CITZMU.DAT", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("ABSORB.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("XRAY.MDB", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("EMPMAC.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("EMPAPF.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("EMPFAC.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("EMPPHA.DAT", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("Jump_Ratios.dat", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("LINES.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("LINES2.DAT", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CHANTLER2005-" & Xraylo$(1) & ".dat", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CHANTLER2005-" & Xraylo$(2) & ".dat", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CHANTLER2005-" & Xraylo$(3) & ".dat", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CHANTLER2005-" & Xraylo$(4) & ".dat", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CHANTLER2005-" & Xraylo$(5) & ".dat", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CHANTLER2005-" & Xraylo$(6) & ".dat", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("all_weights-modified.txt", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("WINDOW.INI", ProgramPath$, ApplicationCommonAppData$)            ' user window size/position preferences
-Call InitFilesMove("USER.MDB", ProgramPath$, ApplicationCommonAppData$)                ' user database
-Call InitFilesMove("POSITION.MDB", ProgramPath$, ApplicationCommonAppData$)        ' position sample database
-
-Call InitFilesMove("DHZ.MDB", ProgramPath$, ApplicationCommonAppData$)                ' composition match database
-Call InitFilesMove("ORE.MDB", ProgramPath$, ApplicationCommonAppData$)                ' dana composition database
-Call InitFilesMove("SRM.MDB", ProgramPath$, ApplicationCommonAppData$)                ' dana composition database
-Call InitFilesMove("AMCSD.MDB", ProgramPath$, ApplicationCommonAppData$)              ' crystal diffraction (ideal formula) composition database
-
-Call InitFilesMove("SETUP.MDB", ProgramPath$, ApplicationCommonAppData$)                ' element setup database
-Call InitFilesMove("SETUP2.MDB", ProgramPath$, ApplicationCommonAppData$)              ' MAN element setup database
-Call InitFilesMove("SETUP3.MDB", ProgramPath$, ApplicationCommonAppData$)             ' interference element setup database
-
-Call InitFilesMove("PROCESS.DAT", ProgramPath$, ApplicationCommonAppData$)       ' inter-application process flags
-Call InitFilesMove(app.EXEName & ".ERR", ProgramPath$, ApplicationCommonAppData$)   ' error log
-Call InitFilesMove("PROBEWIN.ELM", ProgramPath$, ApplicationCommonAppData$)               ' wds element/parameter file
-Call InitFilesMove("PROBEWIN.PHA", ProgramPath$, ApplicationCommonAppData$)               ' wds PHA parameter file
-Call InitFilesMove(app.EXEName & ".TXT", ProgramPath$, ApplicationCommonAppData$)     ' text log
-
-Call InitFilesMove("Version.txt", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("UNTITLED.AFA", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("PROBEWIN-KA.CAL", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("PROBEWIN-KB.CAL", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("PROBEWIN-LA.CAL", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("PROBEWIN-LB.CAL", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("PROBEWIN-MA.CAL", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("PROBEWIN-MB.CAL", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("Matrix.mdb", ProgramPath$, ApplicationCommonAppData$)           ' penepma matrix correction k-ratio database
-Call InitFilesMove("Boundary.mdb", ProgramPath$, ApplicationCommonAppData$)        ' Penepma boundary fluorescence k-ratio database
-Call InitFilesMove("Custom.mdb", ProgramPath$, ApplicationCommonAppData$)            ' custom composition standard database
-
-Call InitFilesMove("THERMAL.FC", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("RAINBOW2.FC", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("BLUERED.FC", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("CUSTOM.FC", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("GRIDXY_Custom1.BAS", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("GRIDXY_Custom2.BAS", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("GRIDXY_Custom3.BAS", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("GRIDXY_Custom4.BAS", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("SLICEXY_Custom1.BAS", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("SLICEXY_Custom2.BAS", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("POLYXY_Custom1.BAS", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("POLYXY_Custom2.BAS", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("STRIPXY1_Custom1.BAS", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("STRIPXY2_Custom1.BAS", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("STRIPXY3_Custom1.BAS", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("STRIPXY1_Custom2.BAS", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("STRIPXY2_Custom2.BAS", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("STRIPXY3_Custom2.BAS", ProgramPath$, ApplicationCommonAppData$)
-
-Call InitFilesMove("TipOfTheDay.txt", ProgramPath$, ApplicationCommonAppData$)
-Call InitFilesMove("Xline.dll", ProgramPath$, ApplicationCommonAppData$)
-End If
-        
+' Move existing config/data files from original ProgramPath folder to new ProgramData folder (for existing V10 installations)
+Call InitFilesMove(Int(0))
+If ierror Then Exit Sub
+    
 ' Load file names (ProgramData folder)
 amsg$ = "Loading file names..."
 If DebugMode Then Call IOWriteLog(amsg$)
 StandardDataFile$ = ApplicationCommonAppData$ & "STANDARD.MDB"
-XLineFile$ = ApplicationCommonAppData$ & "XLINE.DAT"
 XEdgeFile$ = ApplicationCommonAppData$ & "XEDGE.DAT"
+
+XLineFile$ = ApplicationCommonAppData$ & "XLINE.DAT"
 XFlurFile$ = ApplicationCommonAppData$ & "XFLUR.DAT"
+
+XLineFile2$ = ApplicationCommonAppData$ & "XLINE2.DAT"      ' for additional x-ray lines
+XFlurFile2$ = ApplicationCommonAppData$ & "XFLUR2.DAT"      ' for additional x-ray lines
 
 AbsorbFile$ = ApplicationCommonAppData$ & "ABSORB.DAT"
 XrayDataFile$ = ApplicationCommonAppData$ & "XRAY.MDB"
@@ -1546,8 +1450,26 @@ CalibratePeakCenterFiles$(4) = ApplicationCommonAppData$ & "PROBEWIN-MA.CAL"
 CalibratePeakCenterFiles$(5) = ApplicationCommonAppData$ & "PROBEWIN-MB.CAL"
 
 MatrixMDBFile$ = ApplicationCommonAppData$ & "Matrix.mdb"           ' penepma matrix correction k-ratio database
+PureMDBFile$ = ApplicationCommonAppData$ & "Pure.mdb"               ' penepma pure element k-ratio database
 BoundaryMDBFile$ = ApplicationCommonAppData$ & "Boundary.mdb"       ' Penepma boundary fluorescence k-ratio database
 CustomMDBFile$ = ApplicationCommonAppData$ & "Custom.mdb"           ' custom composition standard database
+
+OutputDataFile$ = ApplicationCommonAppData$ & app.EXEName$ & ".OUT"
+
+' Load model (base) script files (read only but still...)
+GRIDBB_BAS_File$ = ApplicationCommonAppData$ & "GRIDBB.BAS"
+GRIDCC_BAS_File$ = ApplicationCommonAppData$ & "GRIDCC.BAS"
+
+SLICEXY_BAS_File$ = ApplicationCommonAppData$ & "SLICEXY.BAS"
+POLYXY_BAS_File$ = ApplicationCommonAppData$ & "POLYXY.BAS"
+MODALXY_BAS_File$ = ApplicationCommonAppData$ & "MODALXY.BAS"
+
+STRIPXY1_BAS_File$ = ApplicationCommonAppData$ & "STRIPXY1.BAS"     ' equal aspect images
+STRIPXY2_BAS_File$ = ApplicationCommonAppData$ & "STRIPXY2.BAS"     ' tall aspect images
+STRIPXY3_BAS_File$ = ApplicationCommonAppData$ & "STRIPXY3.BAS"     ' wide aspect images
+
+' Load Tip of the Day file
+TipOfTheDayFile$ = ApplicationCommonAppData$ & "TipOfTheDay.txt"
 
 ' Load PDF file names (in application folder)
 ProbeforEPMAQuickStartGuide$ = ProgramPath$ & "Probe for EPMA_Quick Start.pdf"
@@ -1556,18 +1478,6 @@ ProbeforEPMAFAQ$ = ProgramPath$ & "Probe for EPMA Frequently Asked Questions.pdf
 GettingStartedManual$ = ProgramPath$ & "GettingStarted_ProbeSoftware.pdf"
 AdvancedTopicsManual$ = ProgramPath$ & "AdvancedTopics_ProbeSoftware.pdf"
 UserReferenceManual$ = ProgramPath$ & "probewin.pdf"
-
-' Load model (base) script files (in application folder)
-GRIDBB_BAS_File$ = ProgramPath$ & "GRIDBB.BAS"
-GRIDCC_BAS_File$ = ProgramPath$ & "GRIDCC.BAS"
-
-SLICEXY_BAS_File$ = ProgramPath$ & "SLICEXY.BAS"
-POLYXY_BAS_File$ = ProgramPath$ & "POLYXY.BAS"
-MODALXY_BAS_File$ = ProgramPath$ & "MODALXY.BAS"
-
-STRIPXY1_BAS_File$ = ProgramPath$ & "STRIPXY1.BAS"     ' equal aspect images
-STRIPXY2_BAS_File$ = ProgramPath$ & "STRIPXY2.BAS"     ' tall aspect images
-STRIPXY3_BAS_File$ = ProgramPath$ & "STRIPXY3.BAS"     ' wide aspect images
 
 ' Load help files
 ProbewinHelpFile$ = ProgramPath$ & "Probewin.chm"
@@ -1595,9 +1505,7 @@ If Dir$(ProbewinHelpFile$) = vbNullString Then GoTo InitFilesHelpFileNotFoundPro
 app.HelpFile = ProbewinHelpFile$
 End If
 
-' Load Tip of the Day file
-TipOfTheDayFile$ = ApplicationCommonAppData$ & "TipOfTheDay.txt"
-
+       
 amsg$ = "InitFiles completed"
 If DebugMode Then Call IOWriteLog(amsg$)
 Exit Sub
@@ -1649,49 +1557,213 @@ Exit Sub
 
 End Sub
 
-Sub InitFilesMove(tfilename As String, tProgramPath As String, tApplicationCommonAppData As String)
-' Move the passed filename from the application folder to the program data folder (for existing installations)
+Sub InitFilesMove(mode As Integer)
+' Copy files from previous (v10) installation to ProgramData folder (v11)
+' mode = 0  move old files except stage bitmaps
+' mode = 1  move only stage bitmaps
 
 ierror = False
 On Error GoTo InitFilesMoveError
- 
-' Skip if source and target folders are the same
-If Trim$(UCase$(ApplicationCommonAppData$)) = Trim$(UCase$(ProgramPath$)) Then Exit Sub
 
-' Check if old file location exists (if not PFE Source folder!)
-If Trim$(UCase$(ProgramPath$)) <> Trim$(UCase$("C:\Source\Probewin32-E\")) Then
-If Dir$(tProgramPath$ & tfilename$) = vbNullString Then Exit Sub
+Dim tProgramPath As String
+Dim i As Integer
+
+' Check if app is running from PFE source folder (if so just exit)
+If Trim$(UCase$(app.Path & "\")) = Trim$(UCase$(PFE_SourceCodeFolder$)) Then Exit Sub
+
+' Set program path to old installation folder to update current installation
+tProgramPath$ = OldInstallationFolder$
+
+' Copy all files except stage bit maps
+If mode% = 0 Then
+
+' Check for old installation config and data files (copy and delete old config and data files)
+If Dir$(tProgramPath$ & "Probewin.ini") <> vbNullString Then
+Call InitFilesMove2("PROBEWIN.INI", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("MOTORS.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("SCALERS.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("ELEMENTS.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CRYSTALS.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CHARGES.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DENSITY.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DENSITY2.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DETECTORS.DAT", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("STANDARD.MDB", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("XLINE.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("XEDGE.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("XFLUR.DAT", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("LINEMU.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CITZMU.DAT", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("ABSORB.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("XRAY.MDB", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("EMPMAC.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("EMPAPF.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("EMPFAC.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("EMPPHA.DAT", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("Jump_Ratios.dat", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("LINES.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("LINES2.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CHANTLER2005-" & Xraylo$(1) & ".dat", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CHANTLER2005-" & Xraylo$(2) & ".dat", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CHANTLER2005-" & Xraylo$(3) & ".dat", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CHANTLER2005-" & Xraylo$(4) & ".dat", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CHANTLER2005-" & Xraylo$(5) & ".dat", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CHANTLER2005-" & Xraylo$(6) & ".dat", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("all_weights-modified.txt", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("WINDOW.INI", tProgramPath$, ApplicationCommonAppData$)              ' user window size/position preferences
+Call InitFilesMove2("USER.MDB", tProgramPath$, ApplicationCommonAppData$)                ' user database
+Call InitFilesMove2("POSITION.MDB", tProgramPath$, ApplicationCommonAppData$)            ' position sample database
+  
+Call InitFilesMove2("DHZ.MDB", tProgramPath$, ApplicationCommonAppData$)                ' composition match database
+Call InitFilesMove2("ORE.MDB", tProgramPath$, ApplicationCommonAppData$)                ' dana composition database
+Call InitFilesMove2("SRM.MDB", tProgramPath$, ApplicationCommonAppData$)                ' dana composition database
+Call InitFilesMove2("AMCSD.MDB", tProgramPath$, ApplicationCommonAppData$)              ' crystal diffraction (ideal formula) composition database
+
+Call InitFilesMove2("SETUP.MDB", tProgramPath$, ApplicationCommonAppData$)                ' element setup database
+Call InitFilesMove2("SETUP2.MDB", tProgramPath$, ApplicationCommonAppData$)               ' MAN element setup database
+Call InitFilesMove2("SETUP3.MDB", tProgramPath$, ApplicationCommonAppData$)               ' interference element setup database
+   
+Call InitFilesMove2("PROCESS.DAT", tProgramPath$, ApplicationCommonAppData$)                ' inter-application process flags
+Call InitFilesMove2("PROBEWIN.ELM", tProgramPath$, ApplicationCommonAppData$)               ' wds element/parameter file
+Call InitFilesMove2("PROBEWIN.PHA", tProgramPath$, ApplicationCommonAppData$)               ' wds PHA parameter file
+Call InitFilesMove2("Version.txt", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("TipOfTheDay.txt", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2(app.EXEName & ".OUT", tProgramPath$, ApplicationCommonAppData$)     ' output log
+Call InitFilesMove2(app.EXEName & ".TXT", tProgramPath$, ApplicationCommonAppData$)     ' text log
+Call InitFilesMove2(app.EXEName & ".ERR", tProgramPath$, ApplicationCommonAppData$)     ' error log
+
+Call InitFilesMove2("UNTITLED.AFA", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("PROBEWIN-KA.CAL", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("PROBEWIN-KB.CAL", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("PROBEWIN-LA.CAL", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("PROBEWIN-LB.CAL", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("PROBEWIN-MA.CAL", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("PROBEWIN-MB.CAL", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("Matrix.mdb", tProgramPath$, ApplicationCommonAppData$)            ' penepma matrix correction k-ratio database
+Call InitFilesMove2("Boundary.mdb", tProgramPath$, ApplicationCommonAppData$)          ' Penepma boundary fluorescence k-ratio database
+Call InitFilesMove2("Custom.mdb", tProgramPath$, ApplicationCommonAppData$)            ' custom composition standard database
+
+Call InitFilesMove2("THERMAL.FC", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("RAINBOW2.FC", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("BLUERED.FC", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CUSTOM.FC", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("GRIDBB.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("GRIDCC.BAS", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("SLICEXY.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("POLYXY.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("MODALXY.BAS", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("STRIPXY1.BAS", tProgramPath$, ApplicationCommonAppData$)     ' equal aspect images
+Call InitFilesMove2("STRIPXY2.BAS", tProgramPath$, ApplicationCommonAppData$)     ' tall aspect images
+Call InitFilesMove2("STRIPXY3.BAS", tProgramPath$, ApplicationCommonAppData$)     ' wide aspect images
+
+Call InitFilesMove2("GRIDXY_Custom1.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("GRIDXY_Custom2.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("GRIDXY_Custom3.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("GRIDXY_Custom4.BAS", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("SLICEXY_Custom1.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("SLICEXY_Custom2.BAS", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("POLYXY_Custom1.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("POLYXY_Custom2.BAS", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("STRIPXY1_Custom1.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("STRIPXY2_Custom1.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("STRIPXY3_Custom1.BAS", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("STRIPXY1_Custom2.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("STRIPXY2_Custom2.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("STRIPXY3_Custom2.BAS", tProgramPath$, ApplicationCommonAppData$)
+
+' Files that will get moved to userData folders
+Call InitFilesMove2("MODAL.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CALCZAF.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CALCZAF2.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CALCBIN.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("NISTBIN.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("NISTBIN2.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("NISTBIN3.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("POUCHOU.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("POUCHOU2.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("AUAGCU2.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("NISTBINA20.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("NISTBINZ10.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("POUCHOUA20.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("POUCHOUZ10.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("AuCu_NBS-K-ratios.DAT", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("Olivine particle-JTA-1.0um.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("Olivine particle-JTA-0.5um.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("Pouchou2_Au,Cu,Ag_only.dat", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("CaF2_Particles_20 keV.DAT", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("Wark-Watson Exper. Data (CalcZAF format)_JEOL.dat", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("Wark-Watson Exper. Data (CalcZAF format)_Cameca.dat", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("SiO2-TiO2_400um_JEOL.BMP", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("SiO2-TiO2_400um_JEOL.ACQ", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("SiO2-TiO2_400um_Cameca.BMP", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("SiO2-TiO2_400um_Cameca.ACQ", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("XYSCAN2.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("XYSCAN2.BLN", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("XYSCAN2.DAT", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("XYSLICE2.BAS", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("Montel-1_Quant_Point_Classify.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("Silicates-2_Quant_Image_Classify.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("Silicates-2_Quant_Image_Classify.INI", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("Silicates-2_Quant_Image_Classify.TXT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("Silicates-2_00485_VS1.grd", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("XYTRAV.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("XYTRAV.DAT", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("XYTRAV2.DAT", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("DEMO2_JEOL.BMP", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DEMO2_JEOL.JPG", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DEMO2_JEOL.GIF", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DEMO2_JEOL.ACQ", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("DEMO2_Cameca.BMP", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DEMO2_Cameca.JPG", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DEMO2_Cameca.GIF", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DEMO2_Cameca.ACQ", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("DEMO3_JEOL.BMP", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DEMO3_JEOL.ACQ", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DEMO3_Cameca.BMP", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("DEMO3_Cameca.ACQ", tProgramPath$, ApplicationCommonAppData$)
+
+' See special treatment in InitFilesMove2 (until new driver is available)
+Call InitFilesMove2("Xline.dll", tProgramPath$, ApplicationCommonAppData$)
+End If
 End If
 
-' Check if target location file already exists
-If Dir$(tApplicationCommonAppData & tfilename$) <> vbNullString Then
-If DebugMode Then Call IOWriteLog("Deleting default config or data file " & tfilename$ & " from ProgramData folder...")
-Kill tApplicationCommonAppData & tfilename$
-DoEvents
-If Dir$(tApplicationCommonAppData & tfilename$) <> vbNullString Then GoTo InitFilesMoveNotDeletedProgramData
+' Note that stage bitmaps are moved from InitINIStageBitmaps procedure
+If mode% = 1 Then
+
+' Check for old installation stage bitmap files (copy and delete old files)
+For i% = 1 To StageBitMapCount%
+If Dir$(tProgramPath$ & StageBitMapFile$(i%)) <> vbNullString Then
+Call InitFilesMove2(StageBitMapFile$(i%), tProgramPath$, ApplicationCommonAppData$)         ' move stage bit maps to ProgramData folder
 End If
+Next i%
 
-' Now copy old location to new location (if it exists)
-If Dir$(tProgramPath$ & tfilename$) <> vbNullString Then
-If DebugMode Then Call IOWriteLog("Copying custom config or data file " & tfilename$ & " to ProgramData folder...")
-FileCopy tProgramPath$ & tfilename$, tApplicationCommonAppData & tfilename$
-DoEvents
-
-' Now double check it was copied
-If Dir$(tApplicationCommonAppData & tfilename$) = vbNullString Then GoTo InitFilesMoveNotCopiedProgramData
-
-' File was not found in ProgramPath$ (e.g., Probewin.elm, Probewin.pha)
-Else
-If DebugMode Then Call IOWriteLog("Custom config or data file " & tfilename$ & " was not found and therefore not copied to the ProgramData folder...")
-End If
-
-' Now delete the original custom file from the ProgramPath folder (if it is not the PFE Source folder!)
-If Trim$(UCase$(ProgramPath$)) <> Trim$(UCase$("C:\Source\Probewin32-E\")) Then
-Kill tProgramPath$ & tfilename$
-DoEvents
-
-' Now double check it was deleted
-If Dir$(tProgramPath$ & tfilename$) <> vbNullString Then GoTo InitFilesMoveNotDeletedProgramPath
 End If
 
 Exit Sub
@@ -1702,21 +1774,74 @@ MsgBox Error$, vbOKOnly + vbCritical, "InitFilesMove"
 ierror = True
 Exit Sub
 
-InitFilesMoveNotDeletedProgramData:
+End Sub
+
+Sub InitFilesMove2(tfilename As String, tProgramPath As String, tApplicationCommonAppData As String)
+' Move the passed filename from the application folder to the program data folder (for existing installations)
+
+ierror = False
+On Error GoTo InitFilesMove2Error
+ 
+' Check if not PFE Source folder
+If Trim$(UCase$(ProgramPath$)) = Trim$(UCase$(PFE_SourceCodeFolder$)) Then Exit Sub
+
+' Check if old file location exists
+If Dir$(tProgramPath$ & tfilename$) = vbNullString Then Exit Sub
+
+' Check if target location file already exists (default V11 installation being overwritten by V10 site specific config and data files)
+If Dir$(tApplicationCommonAppData & tfilename$) <> vbNullString Then
+If DebugMode Then Call IOWriteLog("Deleting default config or data file " & tfilename$ & " from ProgramData folder...")
+Kill tApplicationCommonAppData & tfilename$
+DoEvents
+If Dir$(tApplicationCommonAppData & tfilename$) <> vbNullString Then GoTo InitFilesMove2NotDeletedProgramData
+End If
+
+' Now copy old location to new location (if it exists)
+If Dir$(tProgramPath$ & tfilename$) <> vbNullString Then
+If DebugMode Then Call IOWriteLog("Copying custom config or data file " & tfilename$ & " to ProgramData folder...")
+FileCopy tProgramPath$ & tfilename$, tApplicationCommonAppData & tfilename$
+DoEvents
+
+' Now double check it was copied
+If Dir$(tApplicationCommonAppData & tfilename$) = vbNullString Then GoTo InitFilesMove2NotCopiedProgramData
+
+' File was not found in ProgramPath$ (e.g., Probewin.elm, Probewin.pha)
+Else
+Call IOWriteLog("Custom config or data file " & tfilename$ & " was not found and therefore not copied to the ProgramData folder...")
+End If
+
+' Now delete the original V10 file from the ProgramPath folder (note special exception for Xline.dll until new driver is available)
+If Trim$(UCase$(tfilename$)) <> Trim$(UCase$("Xline.dll")) Then
+Kill tProgramPath$ & tfilename$
+DoEvents
+
+' Now double check it was deleted
+If Dir$(tProgramPath$ & tfilename$) <> vbNullString Then GoTo InitFilesMove2NotDeletedProgramPath
+End If
+
+Exit Sub
+
+' Errors
+InitFilesMove2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "InitFilesMove2"
+ierror = True
+Exit Sub
+
+InitFilesMove2NotDeletedProgramData:
 msg$ = "The default config or data file (" & tfilename$ & ") was not properly deleted from the ProgramData folder properly. Please contact Probe Software technical support."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitFilesMove"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitFilesMove2"
 ierror = True
 End
 
-InitFilesMoveNotCopiedProgramData:
+InitFilesMove2NotCopiedProgramData:
 msg$ = "The custom config or data file (" & tfilename$ & ") was not properly copied to the ProgramData folder properly. Please contact Probe Software technical support."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitFilesMove"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitFilesMove2"
 ierror = True
 End
 
-InitFilesMoveNotDeletedProgramPath:
+InitFilesMove2NotDeletedProgramPath:
 msg$ = "The custom config or data file (" & tfilename$ & ") was not properly deleted from the ProgramPath (app) folder properly. Please contact Probe Software technical support."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitFilesMove"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitFilesMove2"
 ierror = True
 End
 
@@ -1747,6 +1872,12 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitCheckFiles"
 End
 End If
 
+'If Dir$(XLineFile2$) = vbNullString Then
+'msg$ = "The " & XLineFile2$ & " file was not found"
+'MsgBox msg$, vbOKOnly + vbExclamation, "InitCheckFiles"
+'End
+'End If
+
 If Dir$(XEdgeFile$) = vbNullString Then
 msg$ = "The " & XEdgeFile$ & " file was not found"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitCheckFiles"
@@ -1758,6 +1889,12 @@ msg$ = "The " & XFlurFile$ & " file was not found"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitCheckFiles"
 End
 End If
+
+'If Dir$(XFlurFile2$) = vbNullString Then
+'msg$ = "The " & XFlurFile2$ & " file was not found"
+'MsgBox msg$, vbOKOnly + vbExclamation, "InitCheckFiles"
+'End
+'End If
 
 If Dir$(ElementsFile$) = vbNullString Then
 msg$ = "The " & ElementsFile$ & " file was not found"
@@ -2037,12 +2174,10 @@ RealTimeInterfaceBusy = False
 ' Initialize open data file names
 ProbeDataFile$ = vbNullString
 ProbeImageFile$ = vbNullString
-OutputDataFile$ = vbNullString
 
 ' Make sure temp files are closed
 Close #Temp1FileNumber%
 Close #Temp2FileNumber%
-Close #Temp3FileNumber%
 
 ' Randomize random number generator
 Randomize
@@ -2071,6 +2206,7 @@ PositionDatabaseExclusiveAccess% = True
 XrayDatabaseExclusiveAccess% = True
 MatrixDatabaseExclusiveAccess% = True
 BoundaryDatabaseExclusiveAccess% = True
+PureDatabaseExclusiveAccess% = True
 
 ' Set non exclusive (read only) access permissions
 DatabaseNonExclusiveAccess% = False
@@ -2082,6 +2218,7 @@ PositionDatabaseNonExclusiveAccess% = False
 XrayDatabaseNonExclusiveAccess% = False
 MatrixDatabaseNonExclusiveAccess% = False
 BoundaryDatabaseNonExclusiveAccess% = False
+PureDatabaseNonExclusiveAccess% = False
 
 ' Set defaults
 InterfaceString$(0) = "EPMA Demonstration"
@@ -2209,7 +2346,6 @@ If DebugMode Then
 Close #OutputDataFileNumber%        ' in case another app is opening Matrix or Remote both in debug mode
 SaveToDisk = True
 FormMAIN.menuOutputSaveToDiskLog.Checked = True
-OutputDataFile$ = ApplicationCommonAppData$ & "\" & app.EXEName$ & ".OUT"
 Open OutputDataFile$ For Output As #OutputDataFileNumber%
 Else
 FormMAIN.menuOutputSaveToDiskLog.Checked = False
@@ -2420,6 +2556,17 @@ Xraylo$(4) = "lb"
 Xraylo$(5) = "ma"
 Xraylo$(6) = "mb"
 Xraylo$(7) = vbNullString     ' unanalyzed element
+
+' Initialize additional xray strings
+If MAXRAY% - 1 > MAXRAY_OLD% Then
+Xraylo$(7) = "Ln"
+Xraylo$(8) = "Lg"
+Xraylo$(9) = "Lv"
+Xraylo$(10) = "Ll"
+Xraylo$(11) = "Mg"
+Xraylo$(12) = "Mz"
+Xraylo$(13) = vbNullString     ' unanalyzed element
+End If
 
 Edglo$(1) = "k"
 Edglo$(2) = "l1"
@@ -2881,6 +3028,15 @@ XrayColor&(4) = RGB(128, 192, 128) ' Lb
 XrayColor&(5) = RGB(128, 128, 255) ' Ma
 XrayColor&(6) = RGB(128, 128, 192) ' Mb
 
+If MAXRAY% - 1 > MAXRAY_OLD% Then
+XrayColor&(7) = RGB(128, 128, 128) ' Ln
+XrayColor&(8) = RGB(192, 64, 128) ' Lg
+XrayColor&(9) = RGB(64, 255, 128) ' Lv
+XrayColor&(10) = RGB(64, 192, 128) ' Ll
+XrayColor&(11) = RGB(128, 64, 255) ' Mg
+XrayColor&(12) = RGB(128, 64, 192) ' Mz
+End If
+
 ' Alternative array for graph control
 XrayColor2%(1) = 12 ' Ka
 XrayColor2%(2) = 4 ' Kb
@@ -2888,6 +3044,15 @@ XrayColor2%(3) = 10 ' La
 XrayColor2%(4) = 2 ' Lb
 XrayColor2%(5) = 9 ' Ma
 XrayColor2%(6) = 1 ' Mb
+
+If MAXRAY% - 1 > MAXRAY_OLD% Then
+XrayColor2%(7) = 11 ' Ka
+XrayColor2%(8) = 3 ' Kb
+XrayColor2%(9) = 8 ' La
+XrayColor2%(10) = 3 ' Lb
+XrayColor2%(11) = 13 ' Ma
+XrayColor2%(12) = 14 ' Mb
+End If
 
 ' Load sample exchange positions
 Call InitINI3
@@ -3125,6 +3290,7 @@ CLUnknownCountFactor! = 1#
 UseDefaultFocusFlag = True
 
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
+
 MinimumOverVoltageType% = 1   ' use 10 percent minimum overvoltage (0 = 2%, 1 = 10%, 2 = 20%)
 DefaultEDSDeadtimePercent! = 50#    ' assume 50% deadtime
 SurferPageSecondsDelay% = 8     ' used by CalcImage
@@ -3135,15 +3301,8 @@ If ierror Then Exit Sub
 
 ' Get registration information (do not check Matrix or Remote Matrix)
 If Not MiscStringsAreSame(app.EXEName, "Matrix") And Not MiscStringsAreSame(app.EXEName, "Remote") Then
-If Not UseSimpleRegistrationFlag Then
-Call RegisterLoad
-If ierror Then Exit Sub
-
- ' If Japanese OS is present (for example) do not use hash method
-Else
 Call RegisterLoad2
 If ierror Then Exit Sub
-End If
 End If
 
 ' Type welcome message
@@ -4546,28 +4705,28 @@ If Not firsttime Then Exit Sub
 If UCase$(app.EXEName$) <> UCase$("TestFid") Then
 amsg$ = "Copying standard data files..."
 If DebugMode Then Call IOWriteLog(amsg$)
-FileCopy ProgramPath$ & "DHZ.DAT", CalcZAFDATFileDirectory$ & "\DHZ.DAT"
-FileCopy ProgramPath$ & "SRM.DAT", CalcZAFDATFileDirectory$ & "\SRM.DAT"
-FileCopy ProgramPath$ & "ORE.DAT", CalcZAFDATFileDirectory$ & "\ORE.DAT"
+FileCopy ApplicationCommonAppData$ & "DHZ.DAT", CalcZAFDATFileDirectory$ & "\DHZ.DAT"
+FileCopy ApplicationCommonAppData$ & "SRM.DAT", CalcZAFDATFileDirectory$ & "\SRM.DAT"
+FileCopy ApplicationCommonAppData$ & "ORE.DAT", CalcZAFDATFileDirectory$ & "\ORE.DAT"
 End If
 
 ' If TestFid or demo mode copy sample data to userdata folder
 If UCase$(app.EXEName$) = UCase$("Testfid") Or InterfaceType% = 0 Then
 amsg$ = "Copying TestFid or demo sample position files..."
 If DebugMode Then Call IOWriteLog(amsg$)
-If Dir$(ProgramPath$ & "Alkali-glass.pos") <> vbNullString Then FileCopy ProgramPath$ & "Alkali-glass.pos", StandardPOSFileDirectory$ & "\Alkali-glass.pos"
-If Dir$(ProgramPath$ & "Johnson-metal.pos") <> vbNullString Then FileCopy ProgramPath$ & "Johnson-metal.pos", StandardPOSFileDirectory$ & "\Johnson-metal.pos"
+If Dir$(ApplicationCommonAppData$ & "Alkali-glass.pos") <> vbNullString Then FileCopy ApplicationCommonAppData$ & "Alkali-glass.pos", StandardPOSFileDirectory$ & "\Alkali-glass.pos"
+If Dir$(ApplicationCommonAppData$ & "Johnson-metal.pos") <> vbNullString Then FileCopy ApplicationCommonAppData$ & "Johnson-metal.pos", StandardPOSFileDirectory$ & "\Johnson-metal.pos"
 End If
 
 ' If demo mode then copy sample standard bitmaps to Standard POS directory
 If InterfaceType% = 0 Then
 amsg$ = "Copying sample standard bitmap files..."
 If DebugMode Then Call IOWriteLog(amsg$)
-If Dir$(ProgramPath$ & "0395_magnetite.bmp") <> vbNullString Then FileCopy ProgramPath$ & "0395_magnetite.bmp", StandardPOSFileDirectory$ & "\0395_magnetite.bmp"
-If Dir$(ProgramPath$ & "0012_MgO.bmp") <> vbNullString Then FileCopy ProgramPath$ & "0012_MgO.bmp", StandardPOSFileDirectory$ & "\0012_MgO.bmp"
-If Dir$(ProgramPath$ & "0023_V2O3.bmp") <> vbNullString Then FileCopy ProgramPath$ & "0023_V2O3.bmp", StandardPOSFileDirectory$ & "\0023_V2O3.bmp"
-If Dir$(ProgramPath$ & "0140_calcite.bmp") <> vbNullString Then FileCopy ProgramPath$ & "0140_calcite.bmp", StandardPOSFileDirectory$ & "\0140_calcite.bmp"
-If Dir$(ProgramPath$ & "0298_VG2 glass.bmp") <> vbNullString Then FileCopy ProgramPath$ & "0298_VG2 glass.bmp", StandardPOSFileDirectory$ & "\0298_VG2_glass.bmp"
+If Dir$(ApplicationCommonAppData$ & "0395_magnetite.bmp") <> vbNullString Then FileCopy ApplicationCommonAppData$ & "0395_magnetite.bmp", StandardPOSFileDirectory$ & "\0395_magnetite.bmp"
+If Dir$(ApplicationCommonAppData$ & "0012_MgO.bmp") <> vbNullString Then FileCopy ApplicationCommonAppData$ & "0012_MgO.bmp", StandardPOSFileDirectory$ & "\0012_MgO.bmp"
+If Dir$(ApplicationCommonAppData$ & "0023_V2O3.bmp") <> vbNullString Then FileCopy ApplicationCommonAppData$ & "0023_V2O3.bmp", StandardPOSFileDirectory$ & "\0023_V2O3.bmp"
+If Dir$(ApplicationCommonAppData$ & "0140_calcite.bmp") <> vbNullString Then FileCopy ApplicationCommonAppData$ & "0140_calcite.bmp", StandardPOSFileDirectory$ & "\0140_calcite.bmp"
+If Dir$(ApplicationCommonAppData$ & "0298_VG2 glass.bmp") <> vbNullString Then FileCopy ApplicationCommonAppData$ & "0298_VG2 glass.bmp", StandardPOSFileDirectory$ & "\0298_VG2_glass.bmp"
 End If
 
 Exit Sub
@@ -4902,14 +5061,14 @@ On Error GoTo InitFilesUserData2Error
 Dim dt1 As Variant, dt2 As Variant
 
 ' Source file is not available
-If Dir$(ProgramPath$ & tfilename$) = vbNullString Then
-If mode% = 0 Then Call IOWriteLog("InitFilesUserData2: " & ProgramPath$ & tfilename$ & " cannot be located for updating, please contact Probe Software for an updated file")
+If Dir$(ApplicationCommonAppData$ & tfilename$) = vbNullString Then
+If mode% = 0 Then Call IOWriteLog("InitFilesUserData2: " & ApplicationCommonAppData$ & tfilename$ & " cannot be located for updating, please contact Probe Software for an updated file")
 
 ' Source file is available
 Else
 
 ' First check if it needs to be updated based on file date/time
-dt1 = FileDateTime(ProgramPath$ & tfilename$)
+dt1 = FileDateTime(ApplicationCommonAppData$ & tfilename$)
 If Dir$(tfolder$ & "\" & tfilename$) <> vbNullString Then dt2 = FileDateTime(tfolder$ & "\" & tfilename$)
 
 ' Target is older than source, so update it
@@ -4917,17 +5076,17 @@ If dt1 > dt2 Then
 
 ' Target is not found
 If Dir$(tfolder$ & "\" & tfilename$) = vbNullString Then
-FileCopy ProgramPath$ & tfilename$, tfolder$ & "\" & tfilename$
+FileCopy ApplicationCommonAppData$ & tfilename$, tfolder$ & "\" & tfilename$
 
 ' Target is found
 Else
 Kill tfolder$ & "\" & tfilename$
-FileCopy ProgramPath$ & tfilename$, tfolder$ & "\" & tfilename$
+FileCopy ApplicationCommonAppData$ & tfilename$, tfolder$ & "\" & tfilename$
 End If
 
 ' Target not copied, warn user if debug
 Else
-If DebugMode Then Call IOWriteLog("InitFilesUserData2: " & ProgramPath$ & tfilename$ & " is same date or older than target file. Source file will not be copied to target for updating.")
+If DebugMode Then Call IOWriteLog("InitFilesUserData2: " & ApplicationCommonAppData$ & tfilename$ & " is same date or older than target file. Source file will not be copied to target for updating.")
 End If
 End If
 
@@ -4935,7 +5094,7 @@ Exit Sub
 
 ' Errors
 InitFilesUserData2Error:
-MsgBox Error$ & ", Source: " & ProgramPath$ & tfilename$ & ", Target: " & tfolder$ & "\" & tfilename$, vbOKOnly + vbCritical, "InitFilesUserData2"
+MsgBox Error$ & ", Source: " & ApplicationCommonAppData$ & tfilename$ & ", Target: " & tfolder$ & "\" & tfilename$, vbOKOnly + vbCritical, "InitFilesUserData2"
 ierror = True
 Exit Sub
 
@@ -5240,6 +5399,9 @@ ReDim Boundary_Material_A_Densities(1 To MAXBINARY%) As Single
 ReDim Boundary_Material_B_Densities(1 To MAXBINARY%) As Single
 
 ReDim Boundary_ZAF_Betas(1 To MAXBINARY%, 1 To MAXBINARY%, 1 To 1) As Single
+
+ReDim PureGenerated_Intensities(1 To MAXRAY% - 1) As Double
+ReDim PureEmitted_Intensities(1 To MAXRAY% - 1) As Double
 
 Exit Sub
 

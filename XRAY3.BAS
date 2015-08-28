@@ -11,7 +11,7 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Function XrayCalculatePositions(Mode As Integer, motor As Integer, order As Integer, x2d As Single, k As Single, onpos As Single) As Single
+Function XrayCalculatePositions(mode As Integer, motor As Integer, order As Integer, x2d As Single, k As Single, onpos As Single) As Single
 ' Routine to return various default spectrometer positions based on motor, 2d and on-peak position
 '  mode = 0 return on peak position (based on lambda, order, x2d and crystal k)
 '  mode = 1 return hi-off peak position
@@ -38,7 +38,7 @@ If order% = 0 Then GoTo XrayCalculatePositionsZeroOrder
 If x2d! = 0# Then GoTo XrayCalculatePositionsZero2d
 
 ' Load default (theoritical) on peak (onpos is lambda)
-If Mode% = 0 Then
+If mode% = 0 Then
 
 ' Calculation based on: sin0 = N * lambda/(2d * (1.0 - k/N^2))
 pos! = order% * onpos! / MotUnitsToAngstromMicrons!(motor%) * LIF2D! / (x2d! * (1# - k! / order% ^ 2))
@@ -58,12 +58,12 @@ factor! = factor! * Sqr(temp! / onpos!)
 NoMotorPositionBoundsChecking(motor%) = False
 
 ' Hi and Lo off-peaks offset
-If Mode% = 1 Or Mode% = 2 Then
+If mode% = 1 Or mode% = 2 Then
 temp! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) / ScalOffPeakFactors!(motor%)
 temp! = temp! * factor! ' apply crystal/spectrometer factor
 
 ' Load hi off-peak default
-If Mode% = 1 Then
+If mode% = 1 Then
 pos! = onpos! + temp!
 If Not MiscMotorInBounds(motor%, pos!) Then
 smallamount! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!     ' to place it inside the limits
@@ -73,7 +73,7 @@ XrayCalculatePositions! = pos!
 End If
 
 ' Load lo off-peak default
-If Mode% = 2 Then
+If mode% = 2 Then
 pos! = onpos! - temp!
 If Not MiscMotorInBounds(motor%, pos!) Then
 smallamount! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!     ' to place it inside the limits
@@ -87,12 +87,12 @@ End If
 
 
 ' Hi and Lo wavescan positions
-If Mode% = 3 Or Mode% = 4 Then
+If mode% = 3 Or mode% = 4 Then
 temp! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) / ScalWaveScanSizeFactors!(motor%)
 temp! = temp! * factor! ' apply crystal/spectrometer factor
 
 ' Load hi wavescan default
-If Mode% = 3 Then
+If mode% = 3 Then
 pos! = onpos! + temp!
 If Not MiscMotorInBounds(motor%, pos!) Then
 smallamount! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!     ' to place it inside the limits
@@ -102,7 +102,7 @@ XrayCalculatePositions! = pos!
 End If
 
 ' Load lo wavescan default
-If Mode% = 4 Then
+If mode% = 4 Then
 pos! = onpos! - temp!
 If Not MiscMotorInBounds(motor%, pos!) Then
 smallamount! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!     ' to place it inside the limits
@@ -116,7 +116,7 @@ End If
 
 
 ' Hi and Lo peakscan positions
-If Mode% = 5 Or Mode% = 6 Then
+If mode% = 5 Or mode% = 6 Then
 temp! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) / ScalPeakScanSizeFactors!(motor%)
 temp! = temp! * factor! ' apply crystal/spectrometer factor
 
@@ -125,7 +125,7 @@ temp! = temp! / 20#         ' as documented in help file
 End If
 
 ' Load hi peakscan default
-If Mode% = 5 Then
+If mode% = 5 Then
 pos! = onpos! + temp!
 If Not MiscMotorInBounds(motor%, pos!) Then
 smallamount! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!
@@ -135,7 +135,7 @@ XrayCalculatePositions! = pos!
 End If
 
 ' Load lo peakscan default
-If Mode% = 6 Then
+If mode% = 6 Then
 pos! = onpos! - temp!
 If Not MiscMotorInBounds(motor%, pos!) Then
 smallamount! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!
@@ -149,18 +149,18 @@ End If
 
 
 ' Hi and Lo quickscan positions (onpos! is ignored, base on actual limits)
-If Mode% = 7 Or Mode% = 8 Then
+If mode% = 7 Or mode% = 8 Then
 temp! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!
 
 ' Load hi quickscan default
-If Mode% = 7 Then
+If mode% = 7 Then
 pos! = MotHiLimits!(motor%) - temp!
 If (InterfaceType% = 0 And MiscIsInstrumentStage("JEOL")) Or InterfaceType% = 2 Then pos! = MotHiLimits!(motor%) - 2#     ' add 2mm slack for JEOL
 XrayCalculatePositions! = pos!
 End If
 
 ' Load lo quickscan default
-If Mode% = 8 Then
+If mode% = 8 Then
 pos! = MotLoLimits!(motor%) + temp!
 If (InterfaceType% = 0 And MiscIsInstrumentStage("JEOL")) Or InterfaceType% = 2 Then pos! = MotLoLimits!(motor%) + 2#     ' add 2mm slack for JEOL
 XrayCalculatePositions! = pos!
@@ -170,16 +170,16 @@ End If
 
 
 ' Peaking start and stop size
-If Mode% = 9 Or Mode% = 10 Then
+If mode% = 9 Or mode% = 10 Then
 
 ' Load start size
-If Mode% = 9 Then
+If mode% = 9 Then
 pos! = ScalLiFPeakingStartSizes!(motor%) * factor!
 XrayCalculatePositions! = pos!
 End If
 
 ' Load stop size
-If Mode% = 10 Then
+If mode% = 10 Then
 pos! = ScalLiFPeakingStopSizes!(motor%) * factor!
 XrayCalculatePositions! = pos!
 End If
@@ -202,7 +202,7 @@ Exit Function
 
 XrayCalculatePositionsZeroPos:
 msg$ = "Lambda position is zero"
-If Mode% > 0 Then msg$ = "OnPos position is zero on spectro " & Format$(motor%)
+If mode% > 0 Then msg$ = "OnPos position is zero on spectro " & Format$(motor%)
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayCalculatePositions"
 ierror = True
 Exit Function
@@ -214,13 +214,13 @@ ierror = True
 Exit Function
 
 XrayCalculatePositionsZero2d:
-msg$ = "Crystal 2d is zero on spectro " & Format$(motor%) & "(mode= " & Format$(Mode%) & ")"
+msg$ = "Crystal 2d is zero on spectro " & Format$(motor%) & "(mode= " & Format$(mode%) & ")"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayCalculatePositions"
 ierror = True
 Exit Function
 
 XrayCalculatePositionsNegative:
-msg$ = "Negative result prior to square root on spectro " & Format$(motor%) & ", mode " & Format$(Mode%) & ", onpos " & Format$(onpos!)
+msg$ = "Negative result prior to square root on spectro " & Format$(motor%) & ", mode " & Format$(mode%) & ", onpos " & Format$(onpos!)
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayCalculatePositions"
 ierror = True
 Exit Function
@@ -271,7 +271,7 @@ Exit Function
 
 End Function
 
-Function XrayConvertSpecAng(Mode As Integer, chan As Integer, pos As Single, order As Integer, sample() As TypeSample) As Single
+Function XrayConvertSpecAng(mode As Integer, chan As Integer, pos As Single, order As Integer, sample() As TypeSample) As Single
 ' Converts spectrometer to angstroms or angstroms to spectrometer
 '  mode = 1  convert spectrometer to angstroms
 '  mode = 2  convert angstroms to spectrometer
@@ -289,8 +289,8 @@ Dim pos1 As Single, coeff1 As Single, coeff2 As Single, coeff3 As Single
 Dim offset As Single, voffset As Single, temp1 As Single, temp2 As Single
 
 ' If no valid mode or channel, just exit
-If Mode% = 0 Or chan% = 0 Then
-If Mode% = 0 Then msg$ = "Warning in XrayConvertSpecAng: mode parameter is zero"
+If mode% = 0 Or chan% = 0 Then
+If mode% = 0 Then msg$ = "Warning in XrayConvertSpecAng: mode parameter is zero"
 If chan% = 0 Then msg$ = "Warning in XrayConvertSpecAng: chan parameter is zero"
 Call IOWriteLog(msg$)
 Exit Function
@@ -336,7 +336,7 @@ coeff2! = MultiplePeakCoefficient2!(ip% - 1, ipp%, sample(1).MotorNumbers%(chan%
 coeff3! = MultiplePeakCoefficient3!(ip% - 1, ipp%, sample(1).MotorNumbers%(chan%))
 
 ' Calculate offset based on passed spectrometer position
-If Mode% = 1 Then
+If mode% = 1 Then
 offset! = coeff1! + coeff2! * pos! + coeff3! * pos! ^ 2
 Else
 temp1! = pos! / temp!  ' convert angstrom to spectrometer position first
@@ -359,7 +359,7 @@ End If
 End If
 
 ' Spectrometer to angstroms
-If Mode% = 1 Then
+If mode% = 1 Then
 If UseMultiplePeakCalibrationOffsetFlag And order% = 1 Then
 temp! = (pos! + offset!) * temp!
 Else
@@ -372,7 +372,7 @@ End If
 End If
 
 ' Angstroms to spectrometer
-If Mode% = 2 Then
+If mode% = 2 Then
 If UseMultiplePeakCalibrationOffsetFlag And order% = 1 Then
 temp! = pos! / temp! - offset!
 Else
@@ -385,17 +385,17 @@ End If
 End If
 
 ' Spectrometer to angstroms (w/o offset)
-If Mode% = 3 Then
+If mode% = 3 Then
 temp! = pos * temp!
 End If
 
 ' Angstroms to spectrometer (w/o offset)
-If Mode% = 4 Then
+If mode% = 4 Then
 temp! = pos! / temp!
 End If
 
 ' Angstroms to angstroms (refractive order correction only)
-If Mode% = 5 Then
+If mode% = 5 Then
 temp2! = 1# - (k - (k! / order% ^ 2))
 temp! = pos! * temp2!
 If DebugMode And VerboseMode Then
@@ -405,7 +405,7 @@ End If
 End If
 
 ' Angstroms to kilovolts (with refractive order correction)
-If Mode% = 6 Then
+If mode% = 6 Then
 temp2! = 1# - (k - (k! / order% ^ 2))
 temp! = pos! * temp2!
 temp! = order% * ANGKEV! / temp! ' convert to actual keV
@@ -433,7 +433,7 @@ Exit Function
 
 XrayConvertSpecAngZeroPos:
 msg$ = "Lambda position is zero"
-If Mode% > 0 Then msg$ = "OnPos position is zero"
+If mode% > 0 Then msg$ = "OnPos position is zero"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayConvertSpecAng"
 ierror = True
 Exit Function
@@ -476,7 +476,7 @@ If iray% = 0 Then GoTo XrayGetKevLambdaInvalidXray
 
 ' Read x-ray line file
 nrec% = ielm% + 2
-Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = 188
+Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber%, nrec%, engrow
 Close #XLineFileNumber%
 
@@ -525,7 +525,7 @@ Exit Sub
 
 End Sub
 
-Sub XrayGetOffsets(Mode As Integer, sample() As TypeSample)
+Sub XrayGetOffsets(mode As Integer, sample() As TypeSample)
 ' Calculates spectrometer offset values for each tunable element
 ' mode = 0 type warnings
 ' mode = 1 do not type warnings
@@ -549,7 +549,7 @@ sample(1).Offsets!(i%) = onpos! - sample(1).OnPeaks!(i%)
 End If
 Next i%
 
-If Mode% = 1 Then Exit Sub
+If mode% = 1 Then Exit Sub
 
 ' Check if offset if too large and type warning to log window
 For i% = 1 To sample(1).LastElm%
@@ -722,7 +722,7 @@ If iray% < 1 Or iray% > MAXRAY% - 1 Then GoTo XrayGetEnergyInvalidXray
 
 ' Read x-ray line file
 nrec% = ielm% + 2
-Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = 188
+Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber%, nrec%, engrow
 Close #XLineFileNumber%
 
@@ -730,7 +730,7 @@ Close #XLineFileNumber%
 energy! = engrow.energy!(iray%) / EVPERKEV#
 
 ' Read x-ray edge file
-Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = 188
+Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XEdgeFileNumber%, nrec%, edgrow
 Close #XEdgeFileNumber%
 
@@ -771,7 +771,7 @@ Exit Sub
 
 End Sub
 
-Function XrayCalculateActualPosition(Mode As Integer, motor As Integer, crystal As String, pos As Single) As Single
+Function XrayCalculateActualPosition(mode As Integer, motor As Integer, crystal As String, pos As Single) As Single
 ' Calculates spectrometer offset at this position for this spectrometer/crystal
 '  mode = 0  Ka-lines
 '  mode = 1  Kb-lines
@@ -799,10 +799,10 @@ ip% = MiscGetCrystalIndex%(motor%, crystal$)
 If ip% = 0 Then Exit Function
 
 ' Check for valid coefficients, exit if all are zero
-If MultiplePeakCoefficient1!(Mode%, ip%, motor%) = 0# And MultiplePeakCoefficient2!(Mode%, ip%, motor%) = 0# And MultiplePeakCoefficient3!(Mode%, ip%, motor%) = 0# Then Exit Function
+If MultiplePeakCoefficient1!(mode%, ip%, motor%) = 0# And MultiplePeakCoefficient2!(mode%, ip%, motor%) = 0# And MultiplePeakCoefficient3!(mode%, ip%, motor%) = 0# Then Exit Function
 
 ' Calculate spectrometer position based on variable offset
-offset! = MultiplePeakCoefficient1!(Mode%, ip%, motor%) + MultiplePeakCoefficient2!(Mode%, ip%, motor%) * pos! + MultiplePeakCoefficient3!(Mode%, ip%, motor%) * pos! ^ 2
+offset! = MultiplePeakCoefficient1!(mode%, ip%, motor%) + MultiplePeakCoefficient2!(mode%, ip%, motor%) * pos! + MultiplePeakCoefficient3!(mode%, ip%, motor%) * pos! ^ 2
 XrayCalculateActualPosition! = pos! - offset!
 
 Exit Function

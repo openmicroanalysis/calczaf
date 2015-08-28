@@ -213,7 +213,7 @@ End If
 If i2% <= MAXRAY_OLD% Then
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo ZAFLoadMACNotFound
-Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 Get #MACFileNumber%, emtz%, macrow
 Close #MACFileNumber%
 
@@ -227,7 +227,7 @@ End If
 Else
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo ZAFLoadMACNotFound
-Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 Get #MACFileNumber%, emtz%, macrow
 Close #MACFileNumber%
 
@@ -308,7 +308,7 @@ End If
 If i2% <= MAXRAY_OLD% Then
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo ZAFLoadMAC2NotFound
-Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 Get #MACFileNumber%, emtz%, macrow
 Close #MACFileNumber%
 
@@ -322,7 +322,7 @@ End If
 Else
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo ZAFLoadMAC2NotFound
-Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 Get #MACFileNumber%, emtz%, macrow
 Close #MACFileNumber%
 
@@ -378,13 +378,13 @@ Dim edgrow As TypeEdge
 Dim flurow As TypeFlur
 
 ' Open x-ray edge file
-Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = 188
+Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray line file
-Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = 188
+Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray flur file
-Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = 188
+Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Read absorption edges (convert to keV)
 nrec% = i% + 2
@@ -559,13 +559,13 @@ If ierror Then Exit Sub
 End If
 
 ' Open x-ray edge file
-Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = 188
+Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray line file
-Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = 188
+Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray flur file
-Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = 188
+Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Loop on each emitter in matrix
 For i% = 1 To zaf.in0%
@@ -685,10 +685,10 @@ Dim edgrow As TypeEdge
 Dim flurow As TypeFlur
 
 ' Open x-ray line file
-Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = 188
+Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray flur file
-Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = 188
+Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Loop on each emitter in matrix
 For i% = 1 To zaf.in0%

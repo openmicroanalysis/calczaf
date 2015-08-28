@@ -88,10 +88,10 @@ Dim edgrow As TypeEdge
 If VerboseMode Then Call IOWriteLog("Checking x-ray lines...")
 
 ' Open x-ray edge file
-Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = 188
+Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray line file
-Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = 188
+Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Check xray line selections, load as absorber if specified or a problem is found
 For i% = 1 To sample(1).LastChan%

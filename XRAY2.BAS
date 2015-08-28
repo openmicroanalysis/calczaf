@@ -41,7 +41,7 @@ For ielm% = 1 To MAXELM%
 
 ' Read x-ray edge file
 nrec% = ielm% + 2
-Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = 188
+Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XEdgeFileNumber%, nrec%, edgrow
 Close #XEdgeFileNumber%
 
@@ -115,7 +115,7 @@ For ielm% = 1 To MAXELM%
 
 ' Read x-ray line file
 nrec% = ielm% + 2
-Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = 188
+Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber%, nrec%, engrow
 Close #XLineFileNumber%
 
@@ -186,7 +186,7 @@ For ielm% = 1 To MAXELM%
 
 ' Read x-ray line file
 nrec% = ielm% + 2
-Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = 188
+Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XFlurFileNumber%, nrec%, engrow
 Close #XFlurFileNumber%
 
@@ -238,7 +238,7 @@ Dim macrow As TypeMu
 
 If DebugMode Then Call IOWriteLog("Now loading MACs...")
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
-Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 
 ' Determine the element number
 ip% = IPOS1(MAXELM%, sym$, Symlo$())
@@ -386,7 +386,7 @@ tmsg$ = tmsg$ & Format$(Symup$(ielm%), a80$) & " "
 
 ' Read x-ray line file for this line
 nrec% = ielm% + 2
-Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = 188
+Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber%, nrec%, engrow
 Close #XLineFileNumber%
 

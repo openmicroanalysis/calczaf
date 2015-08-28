@@ -225,7 +225,7 @@ If ip% = 0 Then GoTo ConvertCalculateXrayRangeBadSyme
 nrec% = AllAtomicNums%(ip%) + 2
 
 ' Read from file
-Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = 188
+Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XEdgeFileNumber%, nrec%, edgrow
 Close #XEdgeFileNumber%
 
@@ -292,7 +292,7 @@ If ipp% = 0 Then GoTo ConvertCalculateXrayTransmissionBadSymx
 If ip% <= MAXRAY_OLD% Then
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo ConvertCalculateXrayTransmissionNotFound
-Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 Get #MACFileNumber%, ip%, macrow
 Close #MACFileNumber%
 
@@ -300,7 +300,7 @@ Close #MACFileNumber%
 Else
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo ConvertCalculateXrayTransmissionNotFound
-Open MACFile$ For Random Access Read As #MACFileNumber% Len = 2400
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 Get #MACFileNumber%, ip%, macrow
 Close #MACFileNumber%
 End If

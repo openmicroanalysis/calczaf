@@ -592,11 +592,8 @@ Dim lpAppName As String
 Dim lpKeyName As String
 Dim lpFileName As String
 
-' Use Windows API function to read PROBEHLP.INI (application folder)
-If ProgramPath$ = vbNullString Then   ' in case loading FormMAIN (before Activate event for InitFiles is called)
-ProgramPath$ = app.Path
-If Right$(app.Path, 1) <> "\" Then ProgramPath$ = ProgramPath$ & "\"
-End If
+' In case loading FormMAIN (before Activate event for InitFiles is called)
+If ProgramPath$ = vbNullString Then ProgramPath$ = app.Path & "\"
 lpFileName$ = ProgramPath$ & "\PROBEHLP.INI"
 
 ' Check for existing PROBEHLP.INI   ' just return if not found
@@ -659,7 +656,7 @@ End If
 ' Add Explorer dialog flag
 FormMAIN.CMDialog1.flags = FormMAIN.CMDialog1.flags Or cdlOFNExplorer
 
-' Specify inital directory (probe data files use Userdata directory, other use ProgramPath$)
+' Specify inital directory (probe data files use Userdata directory, other use ApplicationCommonAppData$)
 If mode% = 1 Or mode% = 2 Then
 FormMAIN.CMDialog1.InitDir = UserDataDirectory$
 Else

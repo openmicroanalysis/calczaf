@@ -1062,6 +1062,7 @@ If ierror Then Exit Sub
 ' Make extended menus visible if flag is set
 If ExtendedMenuFlag Then
 FormMAIN.menuXraySeparator10.Visible = True
+FormMAIN.menuXraySeparator7.Visible = True
 FormMAIN.menuXrayUpdateXLineTable.Visible = True
 FormMAIN.menuXrayUpdateXEdgeTable.Visible = True
 FormMAIN.menuXrayUpdateXFlurTable.Visible = True
@@ -1069,7 +1070,6 @@ FormMAIN.menuXrayUpdateXFlurTable.Visible = True
 FormMAIN.menuAnalyticalSeparator4.Visible = True
 FormMAIN.menuAnalyticalSeparator6.Visible = True
 FormMAIN.menuAnalyticalSeparator5.Visible = True
-FormMAIN.menuAnalyticalSeparator7.Visible = True
 
 FormMAIN.menuAnalyticalCalculateBinaryIntensities1.Visible = True
 FormMAIN.menuAnalyticalCalculateBinaryIntensities2.Visible = True
@@ -1078,8 +1078,9 @@ FormMAIN.menuAnalyticalCalculateFirstApproximations1.Visible = True
 FormMAIN.menuAnalyticalCalculateFirstApproximations2.Visible = True
 FormMAIN.menuAnalyticalCalculateFirstApproximations3.Visible = True
 
-FormMAIN.menuAnalyticalUpdateEdgeLineFlurFiles.Visible = True
-FormMAIN.menuAnalyticalConvertTextToData.Visible = True
+FormMAIN.menuXrayUpdateEdgeLineFlurFiles.Visible = True
+FormMAIN.menuXrayConvertTextToData.Visible = True
+FormMAIN.menuXrayConvertDataToText.Visible = True
 
 FormBINARY.CheckFirstApproximationApplyAbsorption.Enabled = True
 FormBINARY.CheckFirstApproximationApplyFluorescence.Enabled = True
@@ -4297,6 +4298,7 @@ Dim i As Integer, ip As Integer
 Dim astring As String
 
 ' Write space to log window for new composition
+icancel = False
 Call IOWriteLog(vbNullString)
 
 ' Get formula or weight from user
@@ -4324,6 +4326,10 @@ If ierror Then Exit Sub
 
 ' Return modified sample
 Call FormulaReturnSample(CalcZAFOldSample())
+If ierror Then Exit Sub
+
+' Check elements returned
+Call ElementGetData(CalcZAFOldSample())
 If ierror Then Exit Sub
 
 ' Load string
