@@ -301,7 +301,7 @@ On Error GoTo MiscGetNextGeologicalOrderInitError
 Dim i As Integer, j As Integer, ip As Integer
 
 ' Load geology string
-If GeologicalSortOrderFlag% = 0 Then
+If GeologicalSortOrderFlag% = 1 Then
 GeologicalOrder$(1) = "nb"
 GeologicalOrder$(2) = "ta"
 GeologicalOrder$(3) = "mo"
@@ -402,12 +402,14 @@ End If
 Next j%
 Next i%
 
-ElseIf GeologicalSortOrderFlag% = 1 Then
+' Low to high Z order
+ElseIf GeologicalSortOrderFlag% = 2 Then
 For i% = 1 To MAXELM%
 GeologicalOrder$(i%) = Symlo$(i%)
 Next i%
 
-ElseIf GeologicalSortOrderFlag% = 2 Then
+' High to low Z order
+ElseIf GeologicalSortOrderFlag% = 3 Then
 For i% = 1 To MAXELM%
 GeologicalOrder$(i%) = Symlo$(MAXELM% - (i% - 1))
 Next i%

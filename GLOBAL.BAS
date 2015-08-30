@@ -124,6 +124,7 @@ Global Const MAXORDER% = 72             ' maximum number of elements per spectro
 Global Const MAXEND% = 4                ' maximum number of mineral end members per mineral type
 Global Const MAXPHASCAN% = 256          ' maximum number of PHA scan data points (see Cameca MCA PHA code)
 Global Const MAXBRAGG% = 9              ' maximum analytical Bragg order
+Global Const MAXELEMENTSORTMETHODS% = 3        ' 0 to MAXELEMENTSORTMETHODS% (0 = none)
 
 Global Const MAXCORRECTION% = 6          ' maximum number of matrix correction types (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
 Global Const MAXBINARY% = 11             ' maximum binary pairs for alpha factor calculations

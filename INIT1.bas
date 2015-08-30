@@ -1703,12 +1703,12 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 ' Geological sort order flag
 lpAppName$ = "Software"
 lpKeyName$ = "GeologicalSortOrder"
-nDefault& = 0       ' 0 = traditional, 1 = low to high Z, 2 = high to low Z
+nDefault& = 0       ' 0 = no sorting, 1 = traditional, 2 = low to high Z, 3 = high to low Z
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 GeologicalSortOrderFlag% = CInt(valid&)
-If GeologicalSortOrderFlag% < 0 Or GeologicalSortOrderFlag% > 2 Then
-msg$ = "GeolgicalSortOrder keyword value out of range (must be between 0 and 2) in " & ProbeWinINIFile$
+If GeologicalSortOrderFlag% < 0 Or GeologicalSortOrderFlag% > MAXELEMENTSORTMETHODS% Then
+msg$ = "GeolgicalSortOrder keyword value out of range (must be between 0 and " & Format$(MAXELEMENTSORTMETHODS%) & ") in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
 GeologicalSortOrderFlag% = CInt(nDefault&)
 End If

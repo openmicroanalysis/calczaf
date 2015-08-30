@@ -18,6 +18,14 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+08/29/15	Add dialog for selection of Bruker quantification method (Pinard and Goemann).
+
+	Add update code for modified beam scan calibration parameters in Probewin.ini file (Carpenter).
+	
+	Fix element atomic charge saving in GetElm code (Neill). 
+	
+	Modify sort order options (Neill).
+	
 08/27/15	Add code to support PI automation from PFE. Fix NS update (probesoftware) ftp folder issue.
 
 	Change "reading glasses" buttons to normal "Read" buttons in conditions dialogs (Hanson).
