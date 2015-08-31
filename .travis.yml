@@ -15,6 +15,7 @@ install:
 - git config --global push.default simple
 - git config --global user.name "travis"
 - git config --global user.email "travis@openmicroanalysis.org"
+- git config --global core.ignorecase true
 - git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
 script:
 - git checkout master
