@@ -18,6 +18,8 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+08/31/15	Fix bug in multi-point beam scan calibration code (Carpenter).
+	
 08/30/15	Modify Output menu and Elements/Cations and Acquisition Options dialogs per Anette von der Handt's designs.
 	
 08/29/15	Add dialog for selection of Bruker quantification method (Pinard and Goemann).
