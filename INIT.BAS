@@ -1688,7 +1688,15 @@ Call InitFilesMove2("STRIPXY1_Custom2.BAS", tProgramPath$, ApplicationCommonAppD
 Call InitFilesMove2("STRIPXY2_Custom2.BAS", tProgramPath$, ApplicationCommonAppData$)
 Call InitFilesMove2("STRIPXY3_Custom2.BAS", tProgramPath$, ApplicationCommonAppData$)
 
-' Files that will get moved to userData folders
+Call InitFilesMove2("TRAVXY.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("TRAVXY_Custom1.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("TRAVXY_Custom2.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("TRAVXY_Custom3.BAS", tProgramPath$, ApplicationCommonAppData$)
+Call InitFilesMove2("TRAVXY_Custom4.BAS", tProgramPath$, ApplicationCommonAppData$)
+
+Call InitFilesMove2("COLUMN2.DAT", tProgramPath$, ApplicationCommonAppData$)
+
+' Files that will get moved to UserData folders
 Call InitFilesMove2("MODAL.DAT", tProgramPath$, ApplicationCommonAppData$)
 Call InitFilesMove2("CALCZAF.DAT", tProgramPath$, ApplicationCommonAppData$)
 Call InitFilesMove2("CALCZAF2.DAT", tProgramPath$, ApplicationCommonAppData$)
