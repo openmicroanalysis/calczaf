@@ -622,6 +622,7 @@ sample(1).OnPeakTimeFractionValue! = 1#
 sample(1).ChemicalAgeCalculationFlag = False
 
 sample(1).PTCDoNotNormalizeSpecifiedFlag = False
+sample(1).EDSSpectraQuantMethodOrProject$ = vbNullString
 
 Exit Sub
 

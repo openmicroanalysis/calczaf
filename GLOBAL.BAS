@@ -103,7 +103,7 @@ Global Const MAXCRYS% = 6               ' maximum crystals per spectrometer
 
 Global Const MAXCOND% = 64              ' maximum number of analytical or column conditions per sample
 
-Global Const MAXSPEC% = 6                       ' maximum spectrometers per run (MAXSPEC% = EDS)
+Global Const MAXSPEC% = 6                       ' maximum spectrometers per run (spectro 0 = EDS)
 Global Const MAXAXES% = 4                       ' maximum stage axes (x, y, z, w)
 Global Const MAXMOT% = MAXSPEC% + MAXAXES%      ' maximum motors (spectrometer + stage)
 
@@ -835,6 +835,8 @@ Type TypeSample
     
     EDSSpectraKLineBCoefficient() As Single     ' used by Bruker only
     EDSSpectraKLineCCoefficient() As Single     ' used by Bruker only
+    
+    EDSSpectraQuantMethodOrProject As String    ' currently only used by Bruker
    
 '    EDSSpectraMaxPeakChannelNumber() As Integer
 '    EDSSpectraAnalysisType() As Integer

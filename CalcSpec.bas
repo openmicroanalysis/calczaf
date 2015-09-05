@@ -114,7 +114,7 @@ Exit Sub
 End If
 
 tXray$ = FormCALCSPEC.ComboXRay.List(FormCALCSPEC.ComboXRay.ListIndex)
-ip% = IPOS1%(MAXRAY% - 2, tXray$, Xraylo$())
+ip% = IPOS1%(MAXRAY% - 1, tXray$, Xraylo$())
 If ip% = 0 Then
 msg$ = "X-ray " & tXray$ & " is not a valid x-ray symbol"
 MsgBox msg$, vbOKOnly + vbExclamation, "CalcSpecSave"
