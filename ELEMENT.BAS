@@ -79,7 +79,7 @@ On Error GoTo ElementCheckXrayError
 
 Dim i As Integer, chan As Integer, nrec As Integer
 Dim jnum As Integer, ip As Integer
-Dim edge As Single, overvolt As Single
+Dim edge As Single, overvolt As Single, tenergy As Single
 Dim sym As String
  
 Dim engrow As TypeEnergy
@@ -92,6 +92,9 @@ Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECO
 
 ' Open x-ray line file
 Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Open x-ray line file
+Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Check xray line selections, load as absorber if specified or a problem is found
 For i% = 1 To sample(1).LastChan%
@@ -110,8 +113,19 @@ If sample(1).AtomicNums%(chan%) = 1 Or sample(1).AtomicNums%(chan%) = 2 Then GoT
 
 ' Check for bad xray lines (no data)
 nrec% = sample(1).AtomicNums%(chan%) + 2
+
+' Read original x-ray lines
+If sample(1).XrayNums%(chan%) <= MAXRAY_OLD% Then
 Get #XLineFileNumber%, nrec%, engrow
-If engrow.energy!(sample(1).XrayNums%(chan%)) <= 0# Then
+tenergy! = engrow.energy!(sample(1).XrayNums%(chan%))
+
+' Read additional x-ray lines
+Else
+Get #XLineFileNumber2%, nrec%, engrow
+tenergy! = engrow.energy!(sample(1).XrayNums%(chan%) - MAXRAY_OLD%)
+End If
+
+If tenergy! <= 0# Then
 msg$ = "Warning in ElementCheckXray: No x-ray emission data for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%)
 If mode% = 1 Then
 MsgBox msg$, vbOKOnly + vbExclamation, "ElementCheckXray"
@@ -123,7 +137,9 @@ GoTo AbsorberOnly
 End If
 
 ' Load sample array (in eV)
-sample(1).LineEnergy!(chan%) = engrow.energy!(sample(1).XrayNums%(chan%))
+sample(1).LineEnergy!(chan%) = tenergy!
+
+' Now read edge energies
 Get #XEdgeFileNumber%, nrec%, edgrow
 
 ' Calculate edge index for this x-ray
@@ -133,6 +149,13 @@ If sample(1).XrayNums%(chan%) = 3 Then jnum% = 4   ' La
 If sample(1).XrayNums%(chan%) = 4 Then jnum% = 3   ' Lb
 If sample(1).XrayNums%(chan%) = 5 Then jnum% = 9   ' Ma
 If sample(1).XrayNums%(chan%) = 6 Then jnum% = 8   ' Mb
+
+If sample(1).XrayNums%(chan%) = 7 Then jnum% = 3   ' Ln
+If sample(1).XrayNums%(chan%) = 8 Then jnum% = 3   ' Lg
+If sample(1).XrayNums%(chan%) = 9 Then jnum% = 3   ' Lv
+If sample(1).XrayNums%(chan%) = 10 Then jnum% = 4   ' Ll
+If sample(1).XrayNums%(chan%) = 11 Then jnum% = 7   ' Mg
+If sample(1).XrayNums%(chan%) = 12 Then jnum% = 8   ' Mz
 
 If edgrow.energy!(jnum%) <= 0# Then
 msg$ = "Warning in ElementCheckXray: No x-ray absorption edge data for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & "(edge index= " & Format$(jnum%) & ")"
@@ -178,6 +201,7 @@ sample(1).DisableQuantFlag%(chan%) = 1  ' 0=enable, 1=disable
 
 Close #XEdgeFileNumber%
 Close #XLineFileNumber%
+Close #XLineFileNumber2%
 
 Exit Sub
 
@@ -186,6 +210,7 @@ ElementCheckXrayError:
 MsgBox Error$, vbOKOnly + vbCritical, "ElementCheckXray"
 Close #XEdgeFileNumber%
 Close #XLineFileNumber%
+Close #XLineFileNumber2%
 ierror = True
 Exit Sub
 

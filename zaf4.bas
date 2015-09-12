@@ -139,6 +139,39 @@ End Sub
 
 Sub ZAFPrintSmp(zaf As TypeZAF, tzbar As Single, tdisplayoxide As Integer, texcess As Single)
 ' Print sample ZAF results if debug
+' Note x-ray flags
+'  il() = 0 = stoichiometric element (oxygen)
+'  il() = 1 = Ka
+'  il() = 2 = Kb
+'  il() = 3 = La
+'  il() = 4 = Lb
+'  il() = 5 = Ma
+'  il() = 6 = Mb
+
+'  il() = 7 = Ln
+'  il() = 8 = Lg
+'  il() = 9 = Lv
+'  il() = 10 = Ll
+'  il() = 11 = Mg
+'  il() = 12 = Mz
+
+' Old definitions
+'  il() = 7 = by difference
+'  il() = 8 = by specified concentration
+'  il() = 9 = by stoichiometry to stoichiometric oxygen
+'  il() = 10 = disabled quantification
+'  il() = 11 = by stoichiometry to another element
+'  il() = 12 = by hydrogen stoichiometry to oxygen (measured, specified or calculated)
+'  il() = 13 = by difference (formula)
+
+' New definitions
+'  il() = 13 = by difference
+'  il() = 14 = by specified concentration
+'  il() = 15 = by stoichiometry to stoichiometric oxygen
+'  il() = 16 = disabled quantification
+'  il() = 17 = by stoichiometry to another element
+'  il() = 18 = by hydrogen stoichiometry to oxygen (measured, specified or calculated)
+'  il() = 19 = by difference (formula)
 
 ierror = False
 On Error GoTo ZAFPrintSmpError
@@ -169,7 +202,8 @@ If zaf.il%(i%) <= MAXRAY% - 1 Then
 msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(zaf.il%(i%)), a80$)
 
 ' Absorption
-If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 10 Then
+'If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 10 Then
+If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 16 Then
 If Not ZAFEquationMode Then
 msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%), f84$), a80$)
 Else
@@ -180,7 +214,8 @@ msg$ = msg$ & Format$("*****", a80$)
 End If
 
 ' Fluorescence
-If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 10 Then
+'If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 10 Then
+If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 16 Then
 If Not ZAFEquationMode Then
 msg$ = msg$ & Format$(Format$(1# / (1# + zaf.vv!(i%)), f84$), a80$)
 Else
@@ -198,7 +233,8 @@ msg$ = msg$ & Format$(Format$(1# / zaf.zed!(i%), f84$), a80$)
 End If
 
 ' ZAF Correction
-If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 10 Then
+'If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 10 Then
+If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 16 Then
 If Not ZAFEquationMode Then
 msg$ = msg$ & Format$(Format$((zaf.gensmp!(i%) / zaf.genstd!(i%)) * zaf.zed!(i%) / (1# + zaf.vv!(i%)), f84$), a80$)
 Else
@@ -303,7 +339,7 @@ End If
 
 ' Analyzed element
 Else
-If zaf.Z%(i%) <> 8 Then
+If zaf.Z%(i%) <> AllAtomicNums%(8) Then
 If zaf.in1% <> zaf.in0% Or tdisplayoxide% Then      ' using stoichiometric oxygen
 If Not UseAutomaticFormatForResultsFlag Then
 msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & Format$(Format$(zaf.kraw!(i%), f85$), a80$) & Format$(Format$(zaf.krat!(i%), f85$), a80$) & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(Format$(zaf.OxPercents!(i%), f83$), a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)

@@ -54,6 +54,7 @@ Begin VB.Form FormMAIN
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
             Object.Width           =   14579
+            TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""
             Object.ToolTipText     =   "Automation status"
@@ -111,7 +112,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   7858
       _ExtentY        =   7646
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"CALCZAF.frx":59D8A
    End
@@ -298,31 +298,52 @@ Begin VB.Form FormMAIN
       Begin VB.Menu menuXrayCalculateSpectrometerPosition 
          Caption         =   "Calculate Spectrometer Position"
       End
-      Begin VB.Menu menuXraySeparator00 
-         Caption         =   "-"
-      End
-      Begin VB.Menu menuXrayEmissionTable 
-         Caption         =   "Emission Table"
-         HelpContextID   =   115
-      End
-      Begin VB.Menu menuXrayEdgeTable 
-         Caption         =   "Edge Table"
-         HelpContextID   =   116
-      End
-      Begin VB.Menu menuXrayFluorescentYieldtable 
-         Caption         =   "Fluorescent Yield Table"
-         HelpContextID   =   117
-      End
       Begin VB.Menu menuXraySeparator0 
          Caption         =   "-"
       End
+      Begin VB.Menu menuXrayEmissionTable 
+         Caption         =   "Emission Table (Ka, Kb, La, Lb, Ma, Mb)"
+         HelpContextID   =   115
+      End
+      Begin VB.Menu menuXrayEdgeTable 
+         Caption         =   "Edge Table (K, L-I, L-II, L-III, M-I, M-II, M-III, M-IV, M-V)"
+         HelpContextID   =   116
+      End
+      Begin VB.Menu menuXrayFluorescentYieldTable 
+         Caption         =   "Fluorescent Yield Table (Ka, Kb, La, Lb, Ma, Mb)"
+         HelpContextID   =   117
+      End
+      Begin VB.Menu menuXraySeparator00 
+         Caption         =   "-"
+      End
+      Begin VB.Menu menuXrayEmissionTable2 
+         Caption         =   "Emission Table (Ln, Lg, Lv, Ll, Mg, Mz)"
+      End
+      Begin VB.Menu menuXrayFluorescentYieldTable2 
+         Caption         =   "Fluorescent Yield Table (Ln, Lg, Lv, Ll, Mg, Mz)"
+      End
+      Begin VB.Menu menuXraySeparator000 
+         Caption         =   "-"
+      End
       Begin VB.Menu menuXrayMACTable 
-         Caption         =   "MAC Table"
+         Caption         =   "MAC Table (Ka, Kb, La, Lb, Ma, Mb)"
          HelpContextID   =   118
       End
       Begin VB.Menu menuXrayMACTableComplete 
-         Caption         =   "MAC Table (complete)"
+         Caption         =   "MAC Table (complete) (Ka, Kb, La, Lb, Ma, Mb)"
          HelpContextID   =   509
+      End
+      Begin VB.Menu menuXraySeparator111 
+         Caption         =   "-"
+      End
+      Begin VB.Menu menuXrayMACTable2 
+         Caption         =   "MAC Table (Ln, Lg, Lv, Ll, Mg, Mz)"
+      End
+      Begin VB.Menu menuXrayMACTableComplete2 
+         Caption         =   "MAC Table (complete) (Ln, Lg, Lv, Ll, Mg, Mz)"
+      End
+      Begin VB.Menu menuXraySeparator1111 
+         Caption         =   "-"
       End
       Begin VB.Menu menuXrayDisplayMACEmitterAbsorber 
          Caption         =   "Display MAC Emitter Absorber Pair"
@@ -738,7 +759,9 @@ FormZAF.Show vbModeless
 Call CalcZAFLoad
 If ierror Then Exit Sub
 
-'Call CalcZAFConvertPouchouCSV   ' test code
+'Call CalcZAFConvertPouchouCSV          ' test code
+'Call EditConvertCSVToText(FormMAIN)    ' test code
+'Call EditConvertFFAST2Dat              ' test code
 
 Call InitWindow(Int(2), MDBUserName$, Me)           ' to ensure default position gets saved
 End If
@@ -1511,6 +1534,13 @@ Call XrayGetTable(Int(1))
 If ierror Then Exit Sub
 End Sub
 
+Private Sub menuXrayEmissionTable2_Click()
+If Not DebugMode Then On Error Resume Next
+' Obtain an emission table for additional x-rays
+Call XrayGetTable(Int(4))
+If ierror Then Exit Sub
+End Sub
+
 Private Sub menuXrayFluorescentYieldTable_Click()
 If Not DebugMode Then On Error Resume Next
 ' Obtain an fluorescent yield table
@@ -1518,17 +1548,38 @@ Call XrayGetTable(Int(3))
 If ierror Then Exit Sub
 End Sub
 
+Private Sub menuXrayFluorescentYieldTable2_Click()
+If Not DebugMode Then On Error Resume Next
+' Obtain an emission table for additional x-rays
+Call XrayGetTable(Int(6))
+If ierror Then Exit Sub
+End Sub
+
 Private Sub menuXrayMACTable_Click()
 If Not DebugMode Then On Error Resume Next
 ' Obtain a MAC table
-Call XrayGetTable(Int(4))
+Call XrayGetTable(Int(7))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub menuXrayMACTable2_Click()
+If Not DebugMode Then On Error Resume Next
+' Obtain a MAC table (additional lines)
+Call XrayGetTable(Int(9))
 If ierror Then Exit Sub
 End Sub
 
 Private Sub menuXrayMACTableComplete_Click()
 If Not DebugMode Then On Error Resume Next
 ' Obtain a MAC table (complete)
-Call XrayGetTable(Int(5))
+Call XrayGetTable(Int(8))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub menuXrayMACTableComplete2_Click()
+If Not DebugMode Then On Error Resume Next
+' Obtain a MAC table (complete) (additional lines)
+Call XrayGetTable(Int(10))
 If ierror Then Exit Sub
 End Sub
 

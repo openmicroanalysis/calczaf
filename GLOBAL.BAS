@@ -509,7 +509,7 @@ Global Const CONTINUED$ = "continued"
 
 ' User defined data types
 Type TypeEnergy
-    energy(1 To MAXRAY% - 1) As Single
+    energy(1 To MAXRAY_OLD%) As Single
 End Type
 
 Type TypeEdge
@@ -517,11 +517,11 @@ Type TypeEdge
 End Type
 
 Type TypeFlur
-    fraction(1 To MAXRAY% - 1) As Single
+    fraction(1 To MAXRAY_OLD%) As Single
 End Type
 
 Type TypeMu
-    mac(1 To 600) As Single
+    mac(1 To MAXELM% * MAXRAY_OLD%) As Single
 End Type
 
 ' Average arrays
@@ -1310,10 +1310,10 @@ Global CurrentMultiPointAcquireLastCountTimesLo() As Single   ' allocated in Ini
 Global Const Temp1FileNumber% = 201       ' #201 temporary file I/O
 Global Const Temp2FileNumber% = 202       ' #202 temporary file I/O
 
-Global Const Position1FileNumber% = 6     ' #6 *.POS position import or export
-Global Const Position2FileNumber% = 7     ' #7 *.POS position import or export
 Global Const ProbeImageFileNumber% = 10   ' #10 ProbeImageFile$ (*.BIM)
 Global Const TipOfTheDayFileNumber% = 11  ' #11 TipOfTheDayFile$ (TipOfTheDay.TXT)
+Global Const Position1FileNumber% = 12    ' #12 *.POS position import or export
+Global Const Position2FileNumber% = 13    ' #13 *.POS position import or export
 
 Global Const MACFileNumber% = 16          ' #16 MACFile$ (MAC binary data file)
 
@@ -1326,7 +1326,7 @@ Global Const EMPFacFileNumber% = 25       ' #25 EmpFacFile$ (empirical Alpha Fac
 Global Const EMPPHAFileNumber% = 26       ' #26 EmpPHAFile$ (empirical PHA coefficient ASCII file)
 
 Global Const XLineFileNumber2% = 27       ' #22 XlineFile2$ (xray line energy binary file for additional x-rays)
-Global Const XFlurFileNumber2% = 28        ' #23 XflurFile2$ (xray fluorescence yield binary file for additional x-rays)
+Global Const XFlurFileNumber2% = 28       ' #23 XflurFile2$ (xray fluorescence yield binary file for additional x-rays)
 
 Global Const AbsorbFileNumber% = 99       ' #99 AbsorbFile$ (coefficient data for ABSORB.BAS)
 

@@ -58,7 +58,7 @@ atotal! = 0#
 
 ' Check for low energy
 If energy! < 1# Then
-If DebugMode Then
+If VerboseMode Then
 msg$ = "WARNING in AbsorbGetMAC- energy " & Format$(Format$(energy!, f83$), a80$) & " is too low for " & MiscAutoUcase$(Symlo$(iz%)) & " absorber MAC calculation."
 Call IOWriteLog(msg$)
 End If

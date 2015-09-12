@@ -86,10 +86,12 @@ Exit Function
 
 End Function
 
-Function XrayGetEmissionTable(mode As Integer) As String
+Function XrayGetEmissionTable(mode As Integer, method As Integer) As String
 ' Subroutine to return a string of a table of emission energies or angstroms
-'  mode = 1 return energy
-'  mode = 2 return angstroms
+'  mode = 1 original x-ray lines
+'  mode = 2 additional x-ray lines
+'  method = 1 return energy
+'  method = 2 return angstroms
 
 ierror = False
 On Error GoTo XrayGetEmissionTableError
@@ -101,34 +103,59 @@ Dim tmsg As String
 
 Dim engrow As TypeEnergy
 
+' Check for new MAXRAY constant
+If mode% = 2 And MAXRAY% - 1 = MAXRAY_OLD% Then Exit Function
+
 ' Determine the element number
 tmsg$ = vbCrLf
-If mode% = 1 Then tmsg$ = tmsg$ & "Table of Emission Energies (KeV)"
-If mode% = 2 Then tmsg$ = tmsg$ & "Table of Emission Angstroms"
+If method% = 1 Then tmsg$ = tmsg$ & "Table of Emission Energies (KeV)"
+If method% = 2 Then tmsg$ = tmsg$ & "Table of Emission Angstroms"
 tmsg$ = tmsg$ & vbCrLf
-tmsg$ = tmsg$ & Format$("Element", a80$) & " " & Format$("Ka", a80$) & " " & Format$("Kb", a80$) & " "
-tmsg$ = tmsg$ & Format$("La", a80$) & " " & Format$("Lb", a80$) & " "
-tmsg$ = tmsg$ & Format$("Ma", a80$) & " " & Format$("Mb", a80$) & " "
+tmsg$ = tmsg$ & Format$("Element", a80$) & " "
+
+' Load column labels
+For iray% = 1 To MAXRAY_OLD%
+
+' original x-rays
+If mode% = 1 Then
+tmsg$ = tmsg$ & Format$(Xraylo$(iray%), a80$) & " "
+
+' Additional x-rays
+Else
+tmsg$ = tmsg$ & Format$(Xraylo$(iray% + MAXRAY_OLD%), a80$) & " "
+End If
+Next iray%
 tmsg$ = tmsg$ & vbCrLf
 
+' All elements
 For ielm% = 1 To MAXELM%
 
 ' Read x-ray line file
 nrec% = ielm% + 2
+
+' Original x-ray lines
+If mode% = 1 Then
 Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber%, nrec%, engrow
 Close #XLineFileNumber%
 
+' Additional x-ray lines
+Else
+Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+Get #XLineFileNumber2%, nrec%, engrow
+Close #XLineFileNumber2%
+End If
+
 tmsg$ = tmsg$ & Format$(Symup$(ielm%), a80$) & " "
 
 ' Loop on all xrays
-For iray% = 1 To MAXRAY% - 1
+For iray% = 1 To MAXRAY_OLD%
 
 ' Check for non-zero entry
 If Not MiscDifferenceIsSmall(engrow.energy!(iray%), 0#, 0.000001) Then
 
 ' Load energy (in keV)
-If mode% = 1 Then
+If method% = 1 Then
 temp! = engrow.energy!(iray%) / EVPERKEV#
 tmsg$ = tmsg$ & Format$(Format$(temp!, f85$), a80$) & " "
 
@@ -156,13 +183,16 @@ XrayGetEmissionTableError:
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "XrayGetEmissionTable"
 Close #XLineFileNumber%
+Close #XLineFileNumber2%
 ierror = True
 Exit Function
 
 End Function
 
-Function XrayGetFluorescentYieldTable() As String
+Function XrayGetFluorescentYieldTable(mode As Integer) As String
 ' Subroutine to return a string of a table of fluorescent yields
+'  mode = 1 original x-ray lines
+'  mode = 2 additional x-ray lines
 
 ierror = False
 On Error GoTo XrayGetFluorescentYieldTableError
@@ -173,32 +203,54 @@ Dim tmsg As String
 
 Dim engrow As TypeEnergy
 
+' Check for new MAXRAY constant
+If mode% = 2 And MAXRAY% - 1 = MAXRAY_OLD% Then Exit Function
+
 ' Determine the element number
 tmsg$ = vbCrLf
 tmsg$ = tmsg$ & "Table of Fluorescent Yields"
 tmsg$ = tmsg$ & vbCrLf
-tmsg$ = tmsg$ & Format$("Element", a80$) & " " & Format$("Ka", a80$) & " " & Format$("Kb", a80$) & " "
-tmsg$ = tmsg$ & Format$("La", a80$) & " " & Format$("Lb", a80$) & " "
-tmsg$ = tmsg$ & Format$("Ma", a80$) & " " & Format$("Mb", a80$) & " "
+tmsg$ = tmsg$ & Format$("Element", a80$) & " "
+
+' Load column labels
+For iray% = 1 To MAXRAY_OLD%
+
+' original x-rays
+If mode% = 1 Then
+tmsg$ = tmsg$ & Format$(Xraylo$(iray%), a80$) & " "
+
+' Additional x-rays
+Else
+tmsg$ = tmsg$ & Format$(Xraylo$(iray% + MAXRAY_OLD%), a80$) & " "
+End If
+Next iray%
 tmsg$ = tmsg$ & vbCrLf
 
 For ielm% = 1 To MAXELM%
 
 ' Read x-ray line file
 nrec% = ielm% + 2
+
+' Load original x-ray lines
+If mode% = 1 Then
 Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XFlurFileNumber%, nrec%, engrow
 Close #XFlurFileNumber%
 
+' KLoad additional x-ray lines
+Else
+Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+Get #XFlurFileNumber2%, nrec%, engrow
+Close #XFlurFileNumber2%
+End If
+
 tmsg$ = tmsg$ & Format$(Symup$(ielm%), a80$) & " "
 
 ' Loop on all xrays
-For iray% = 1 To MAXRAY% - 1
+For iray% = 1 To MAXRAY_OLD%
 
 ' Check for non-zero entry
 If engrow.energy!(iray%) <> 0# Then
-
-' Load energy
 tmsg$ = tmsg$ & Format$(Format$(engrow.energy!(iray%), f84$), a80$) & " "
 
 ' Load space if zero
@@ -219,13 +271,16 @@ XrayGetFluorescentYieldTableError:
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "XrayGetFluorescentYieldTable"
 Close #XFlurFileNumber%
+Close #XFlurFileNumber2%
 ierror = True
 Exit Function
 
 End Function
 
-Function XrayGetMACTable(sym As String) As String
+Function XrayGetMACTable(mode As Integer, sym As String) As String
 ' Subroutine to return a string of a table of MACs
+'  mode = 1 original x-ray lines
+'  mode = 2 additional x-ray lines
 
 ierror = False
 On Error GoTo XrayGetMACTableError
@@ -236,8 +291,24 @@ Dim tmsg As String
 
 Dim macrow As TypeMu
 
+' Check for new MAXRAY constant
+If mode% = 2 And MAXRAY% - 1 = MAXRAY_OLD% Then Exit Function
+
+' Check for additional lines. If found, check that FFAST2.DAT files exists.
+If mode% = 2 Then
+If MACTypeFlag% <> 6 Then GoTo XrayGetMACTableFFASTNotSpecified
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
+If Dir$(MACFile$) = vbNullString Then GoTo XrayGetMACTableFFAST2DATNotFound
+End If
+
 If DebugMode Then Call IOWriteLog("Now loading MACs...")
+
+If mode% = 1 Then
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
+Else
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
+End If
+
 Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 
 ' Determine the element number
@@ -252,16 +323,28 @@ Close #MACFileNumber%
 tmsg$ = vbCrLf
 tmsg$ = tmsg$ & VbDquote$ & "Table of MACs (mass absorption coefficients) from " & MACFile$ & VbDquote$ & vbCrLf
 tmsg$ = tmsg$ & VbDquote$ & "Emitting Element: " & Symup$(ip%) & VbDquote$ & vbCrLf
-tmsg$ = tmsg$ & Format$("Absorber", a80$) & vbTab & Format$("Ka", a80$) & vbTab & Format$("Kb", a80$) & vbTab
-tmsg$ = tmsg$ & Format$("La", a80$) & vbTab & Format$("Lb", a80$) & vbTab
-tmsg$ = tmsg$ & Format$("Ma", a80$) & vbTab & Format$("Mb", a80$) & vbTab & vbCrLf
+tmsg$ = tmsg$ & Format$("Absorber", a80$) & vbTab
+
+' Load column labels
+For iray% = 1 To MAXRAY_OLD%
+
+' Original x-rays
+If mode% = 1 Then
+tmsg$ = tmsg$ & Format$(Xraylo$(iray%), a80$) & vbTab
+
+' Additional x-rays
+Else
+tmsg$ = tmsg$ & Format$(Xraylo$(iray% + MAXRAY_OLD%), a80$) & vbTab
+End If
+Next iray%
+tmsg$ = tmsg$ & vbCrLf
 
 For ielm% = 1 To MAXELM%
 tmsg$ = tmsg$ & Format$(Symup$(ielm%), a80$) & vbTab
 
 ' Loop on all xrays
-For iray% = 1 To MAXRAY% - 1
-num% = iray% + (ielm% - 1) * (MAXRAY% - 1)
+For iray% = 1 To MAXRAY_OLD%
+num% = iray% + (ielm% - 1) * (MAXRAY_OLD%)
 If macrow.mac!(num%) > 0# Then
 tmsg$ = tmsg$ & Format$(Format$(macrow.mac!(num%), f82$), a80$) & vbTab
 
@@ -274,6 +357,7 @@ Next iray%
 tmsg$ = tmsg$ & vbCrLf
 Next ielm%
 
+Close #MACFileNumber%
 XrayGetMACTable$ = tmsg$
 
 Exit Function
@@ -291,6 +375,18 @@ Screen.MousePointer = vbDefault
 msg$ = "Invalid element symbol in MAC table"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetMACTable"
 Close #MACFileNumber%
+ierror = True
+Exit Function
+
+XrayGetMACTableFFASTNotSpecified:
+msg$ = "For quantification of additional x-ray lines, you must specify the FFAST MAC database. See the Analytical | ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections menu and select the MACs button."
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetMACTable"
+ierror = True
+Exit Function
+
+XrayGetMACTableFFAST2DATNotFound:
+msg$ = "File " & MACFile$ & " was not found. You will need to re-run the CalcZAF.msi installer to obtain the new x-ray tables for additional x-ray lines."
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetMACTable"
 ierror = True
 Exit Function
 
@@ -473,16 +569,25 @@ Sub XrayGetTable(mode As Integer)
 '  mode = 1 display emission table
 '  mode = 2 display edge table
 '  mode = 3 display fluorescent yield table
-'  mode = 4 display MAC table
-'  mode = 5 display MAC table (complete)
+'
+'  mode = 4 display emission table (additional x-ray lines)
+'  mode = 5 not used
+'  mode = 6 display fluorescent yield table (additional x-ray lines)
+'
+'  mode = 7  display MAC table
+'  mode = 8  display MAC table (complete)
+'  mode = 9  display MAC table (additional x-ray lines)
+'  mode = 10 display MAC table (complete) (additional x-ray lines)
 
 ierror = False
 On Error GoTo XrayGetTableError
 
 Dim response As Integer, i As Integer
-Dim sym As String, tfilename As String
+Dim tfilename As String
 
-If mode% = 1 Or mode% = 2 Then
+Static sym As String
+
+If mode% = 1 Or mode% = 2 Or mode% = 4 Then
 msg$ = "Display the x-ray table values in angstrom units?"
 response% = MsgBox(msg$, vbYesNoCancel + vbQuestion + vbDefaultButton2, "XrayGetTable")
 If response% = vbCancel Then Exit Sub
@@ -491,7 +596,7 @@ If response% = vbCancel Then Exit Sub
 If response% = vbYes Then
 If mode% = 1 Then
 Screen.MousePointer = vbHourglass
-msg$ = XrayGetEmissionTable(Int(2))
+msg$ = XrayGetEmissionTable(Int(1), Int(2))
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End If
@@ -503,11 +608,18 @@ Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End If
 
+If mode% = 4 Then
+Screen.MousePointer = vbHourglass
+msg$ = XrayGetEmissionTable(Int(2), Int(2))
+Screen.MousePointer = vbDefault
+If ierror Then Exit Sub
+End If
+
 ' Energy
 Else
 If mode% = 1 Then
 Screen.MousePointer = vbHourglass
-msg$ = XrayGetEmissionTable(Int(1))
+msg$ = XrayGetEmissionTable(Int(1), Int(1))
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End If
@@ -518,40 +630,60 @@ msg$ = XrayGetEdgeTable(Int(1))
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End If
+
+If mode% = 4 Then
+Screen.MousePointer = vbHourglass
+msg$ = XrayGetEmissionTable(Int(2), Int(1))
+Screen.MousePointer = vbDefault
+If ierror Then Exit Sub
+End If
 End If
 End If
 
 ' Fluorescent yield
 If mode% = 3 Then
 Screen.MousePointer = vbHourglass
-msg$ = XrayGetFluorescentYieldTable()
+msg$ = XrayGetFluorescentYieldTable(Int(1))
+Screen.MousePointer = vbDefault
+If ierror Then Exit Sub
+End If
+
+If mode% = 6 Then
+Screen.MousePointer = vbHourglass
+msg$ = XrayGetFluorescentYieldTable(Int(2))
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End If
 
 ' MAC table
-If mode% = 4 Then
+If mode% = 7 Or mode% = 9 Then
 
 ' MAC element emitter
 msg$ = "Enter the emitter element symbol for MAC table"
-sym$ = InputBox$(msg$, "XrayGetTable", Symup$(8))
+If sym$ = vbNullString Then sym$ = Symup$(8)
+sym$ = InputBox$(msg$, "XrayGetTable", sym$)
 If sym$ = vbNullString Then Exit Sub
 
-MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
+If mode% = 7 Then MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
+If mode% = 9 Then MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
 tfilename$ = MiscGetFileNameNoExtension$(MACFile$) & "_" & sym$ & ".TXT"
 Open tfilename$ For Output As #Temp1FileNumber%
 
 Screen.MousePointer = vbHourglass
-msg$ = XrayGetMACTable(sym$)
+If mode% = 7 Then msg$ = XrayGetMACTable(Int(1), sym$)
+If mode% = 9 Then msg$ = XrayGetMACTable(Int(2), sym$)
 Screen.MousePointer = vbDefault
-If ierror Then Exit Sub
+If ierror Then
+Close (Temp1FileNumber%)
+Exit Sub
+End If
 
 Print #Temp1FileNumber, msg$
 Close (Temp1FileNumber%)
 End If
 
 ' MAC table (complete)
-If mode% = 5 Then
+If mode% = 8 Or mode% = 10 Then
 
 ' MAC element emitter
 msg$ = "Are you sure that you want to see the complete MAC table?"
@@ -561,13 +693,15 @@ ierror = True
 Exit Sub
 End If
 
-MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
+If mode% = 8 Then MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
+If mode% = 10 Then MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
 tfilename$ = MiscGetFileNameNoExtension$(MACFile$) & ".TXT"
 Open tfilename$ For Output As #Temp1FileNumber%
 
 For i% = 1 To MAXELM%
 Screen.MousePointer = vbHourglass
-msg$ = XrayGetMACTable(Symlo$(i%))
+If mode% = 8 Then msg$ = XrayGetMACTable(Int(1), Symlo$(i%))
+If mode% = 10 Then msg$ = XrayGetMACTable(Int(2), Symlo$(i%))
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 
@@ -581,7 +715,7 @@ End If
 
 ' Load into log window
 Call IOWriteLog(msg$)   ' write string to log file (all except complete MAC table)
-If mode% = 4 Or mode% = 5 Then MsgBox "Tab delimited output also saved to " & tfilename$, vbOKOnly + vbInformation, "XrayGetTable"
+If mode% = 8 Or mode% = 10 Then MsgBox "Tab delimited output also saved to " & tfilename$, vbOKOnly + vbInformation, "XrayGetTable"
 Exit Sub
 
 ' Errors

@@ -113,9 +113,17 @@ Dim mac As Single
 
 ' Check for lines close to edges
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 1020
+If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 1020     ' skip absorber only elements
 im4% = zaf.il%(i%)
 
+' Check for additional lines. If found, check that FFAST2.DAT files exists.
+If im4% > MAXRAY_OLD% Then
+If MACTypeFlag% <> 6 Then GoTo ZAFReadMuFFASTNotSpecified
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
+If Dir$(MACFile$) = vbNullString Then GoTo ZAFReadMuFFAST2DATNotFound
+End If
+
+' Loop on all emitters, all edges
 For i1% = 1 To zaf.in0%
 For i3% = 1 To MAXEDG%
 If zaf.edg!(i3, i1%) = 0# Then GoTo 990
@@ -137,10 +145,10 @@ If VerboseMode Then Call IOWriteLog("Now loading MACs for primary lines...")
 
 ' Load MAC values for primary analytical lines
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 1060
+If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 1060     ' skip absorber only elements
 im4% = zaf.il%(i%)
 
-' Load MAC value
+' Load MAC values for all emitter absorber pairs
 For i1% = 1 To zaf.in0%
 Call ZAFLoadMac(i%, im4%, i1%, mac!, zaf)
 If ierror Then Exit Sub
@@ -155,6 +163,7 @@ If zaf.Z%(i%) < 10 Then zaf.mup!(i1%, i%) = 10000#
 End If
 If im4% = 3 Or im4% = 4 Then zaf.mup!(i1%, i%) = 100#
 If im4% = 5 Or im4% = 6 Then zaf.mup!(i1%, i%) = 1000#
+If im4% > MAXRAY_OLD% Then zaf.mup!(i1%, i%) = 2000#
 msg$ = "WARNING in ZAFReadMu- MAC not loaded for " & Symup$(zaf.Z%(i%)) & " " & Xraylo$(im4%) & " in " & Symup$(zaf.Z%(i1%)) & ", will assume a MAC value of " & Format$(zaf.mup!(i1%, i%)) & " for this line."
 Call IOWriteLog(msg$)
 Else
@@ -169,6 +178,19 @@ Exit Sub
 ' Errors
 ZAFReadMuError:
 MsgBox Error$, vbOKOnly + vbCritical, "ZAFReadMu"
+ierror = True
+Exit Sub
+
+ZAFReadMuFFASTNotSpecified:
+msg$ = "For quantification of additional x-ray lines, you must specify the FFAST MAC database." & vbCrLf & vbCrLf
+msg$ = msg$ & "See the Analytical | ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections menu and select the MACs button."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFReadMu"
+ierror = True
+Exit Sub
+
+ZAFReadMuFFAST2DATNotFound:
+msg$ = "File " & MACFile$ & " was not found. You will need to re-run the CalcZAF.msi installer to obtain the new x-ray tables for additional x-ray lines."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFReadMu"
 ierror = True
 Exit Sub
 
@@ -217,7 +239,7 @@ Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LE
 Get #MACFileNumber%, emtz%, macrow
 Close #MACFileNumber%
 
-num% = i2% + (absz% - 1) * (MAXRAY% - 1)
+num% = i2% + (absz% - 1) * (MAXRAY_OLD%)
 mac! = macrow.mac!(num%)
 If mac! > 0# Then
 Exit Sub
@@ -226,7 +248,7 @@ End If
 ' Load from additional lines MAC file
 Else
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
-If Dir$(MACFile$) = vbNullString Then GoTo ZAFLoadMACNotFound
+If Dir$(MACFile$) <> vbNullString Then
 Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 Get #MACFileNumber%, emtz%, macrow
 Close #MACFileNumber%
@@ -237,6 +259,7 @@ If mac! > 0# Then
 Exit Sub
 End If
 End If
+End If
 
 ' Now try to calculate using McMaster if not available from disk file
 energy! = zaf.eng!(i2%, i1%)
@@ -245,7 +268,7 @@ If ierror Then
 Exit Sub
 End If
 If mac! > 0# Then
-If DebugMode Then
+If VerboseMode Then
 msg$ = "WARNING in ZAFLoadMac- MAC (" & Format$(mac!) & ") calculated for " & Format$(Symup$(emtz%), a20$) & " " & Format$(Xraylo$(i2%), a20$) & " in " & Format$(Symup$(absz%), a20$) & " using McMaster expressions."
 Call IOWriteLog(msg$)
 End If
@@ -279,7 +302,7 @@ ierror = False
 On Error GoTo ZAFLoadMac2Error
 
 Dim num As Integer, emtz As Integer, absz As Integer
-Dim aenergy As Single, aedge As Single, aflur As Single
+Dim aenergy As Single, aflur As Single
 Dim tstring As String
 Dim aelastic As Single, ainelastic As Single, aphoto As Single
 Dim tfactor As Single, tstandard As String
@@ -312,7 +335,7 @@ Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LE
 Get #MACFileNumber%, emtz%, macrow
 Close #MACFileNumber%
 
-num% = i2% + (absz% - 1) * (MAXRAY% - 1)
+num% = i2% + (absz% - 1) * (MAXRAY_OLD%)
 mac! = macrow.mac!(num%)
 If mac! > 0# Then
 Exit Sub
@@ -334,7 +357,7 @@ End If
 End If
 
 ' Now try to calculate using McMaster if not available from disk file
-Call ZAFLoadXray(i1%, i2%, aenergy!, aedge!, aflur!)
+Call ZAFLoadXray(i1%, i2%, aenergy!, aflur!)
 If ierror Then Exit Sub
 Call AbsorbGetMAC(absz%, aenergy!, aphoto!, aelastic!, ainelastic!, mac!)
 If ierror Then
@@ -365,8 +388,8 @@ Exit Sub
 
 End Sub
 
-Sub ZAFLoadXray(i As Integer, i2 As Integer, aenergy As Single, aedge As Single, aflur As Single)
-' This routine reads the x-ray line, x-ray edge and x-ray fluorescense for a specified atomic number emitter
+Sub ZAFLoadXray(i As Integer, i2 As Integer, aenergy As Single, aflur As Single)
+' This routine reads the x-ray line energy and x-ray fluorescence yield for a specified atomic number emitter
 
 ierror = False
 On Error GoTo ZAFLoadXrayError
@@ -374,11 +397,13 @@ On Error GoTo ZAFLoadXrayError
 Dim nrec As Integer
 
 Dim engrow As TypeEnergy
-Dim edgrow As TypeEdge
 Dim flurow As TypeFlur
 
-' Open x-ray edge file
-Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+' Load record number
+nrec% = i% + 2
+
+' Open x-ray files (for original lines)
+If i2% <= MAXRAY_OLD% Then
 
 ' Open x-ray line file
 Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
@@ -386,33 +411,46 @@ Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECO
 ' Open x-ray flur file
 Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
-' Read absorption edges (convert to keV)
-nrec% = i% + 2
-Get #XEdgeFileNumber%, nrec%, edgrow
-aedge! = edgrow.energy!(i2%) / EVPERKEV#
-
 ' Read emission lines (convert to keV)
-nrec% = i% + 2
 Get #XLineFileNumber%, nrec%, engrow
 aenergy! = engrow.energy!(i2%) / EVPERKEV#
 
 ' Read fluorescent yields
-nrec% = i% + 2
 Get #XFlurFileNumber%, nrec%, flurow
 aflur! = flurow.fraction!(i2%)
 
-Close #XEdgeFileNumber%
 Close #XLineFileNumber%
 Close #XFlurFileNumber%
+
+' Open x-ray edge file (for original lines)
+Else
+
+' Open x-ray line file
+Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Open x-ray flur file
+Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Read emission lines (convert to keV)
+Get #XLineFileNumber2%, nrec%, engrow
+aenergy! = engrow.energy!(i2% - MAXRAY_OLD%) / EVPERKEV#
+
+' Read fluorescent yields
+Get #XFlurFileNumber2%, nrec%, flurow
+aflur! = flurow.fraction!(i2% - MAXRAY_OLD%)
+
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
+End If
 
 Exit Sub
 
 ' Errors
 ZAFLoadXrayError:
 MsgBox Error$, vbOKOnly + vbCritical, "ZAFLoadXray"
-Close #XEdgeFileNumber%
 Close #XLineFileNumber%
 Close #XFlurFileNumber%
+Close #XLineFileNumber2%
 ierror = True
 Exit Sub
 
@@ -552,12 +590,6 @@ Dim engrow As TypeEnergy
 Dim edgrow As TypeEdge
 Dim flurow As TypeFlur
 
-' If additional x-ray lines, load those here
-If MAXRAY% - 1 > MAXRAY_OLD% Then
-Call ZAFReadLn2(zaf)
-If ierror Then Exit Sub
-End If
-
 ' Open x-ray edge file
 Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
@@ -567,31 +599,47 @@ Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECO
 ' Open x-ray flur file
 Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
+' Open x-ray line file for additional x-rays
+Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Open x-ray flur file for additional x-rays
+Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+
 ' Loop on each emitter in matrix
 For i% = 1 To zaf.in0%
-
-' Read absorption edges (convert to keV)
 nrec% = zaf.Z%(i%) + 2
+
+' Read all absorption edges for this element (convert to keV)
 Get #XEdgeFileNumber%, nrec%, edgrow
 For i2% = 1 To MAXEDG%
 zaf.edg!(i2%, i%) = edgrow.energy!(i2%) / EVPERKEV#
 Next i2%
 
-' Read emission lines (convert to keV)
-nrec% = zaf.Z%(i%) + 2
+' Read all original emission lines for this element (convert to keV)
 Get #XLineFileNumber%, nrec%, engrow
-For i2% = 1 To MAXRAY% - 1
+For i2% = 1 To MAXRAY_OLD%
 zaf.eng!(i2%, i%) = engrow.energy!(i2%) / EVPERKEV#
 Next i2%
 
-' Read fluorescent yields, calculate missing values
-nrec% = zaf.Z%(i%) + 2
+' Read all original fluorescent yields for this element
 Get #XFlurFileNumber%, nrec%, flurow
-For i2% = 1 To MAXRAY% - 1
+For i2% = 1 To MAXRAY_OLD%
 zaf.flu!(i2%, i%) = flurow.fraction!(i2%)
 Next i2%
 
-' Calculate yields if zero value loaded
+' Read all additional emission lines for this element (convert to keV)
+Get #XLineFileNumber2%, nrec%, engrow
+For i2% = MAXRAY_OLD% + 1 To MAXRAY% - 1
+zaf.eng!(i2%, i%) = engrow.energy!(i2% - MAXRAY_OLD%) / EVPERKEV#
+Next i2%
+
+' Read all additional fluorescent yields for this element
+Get #XFlurFileNumber2%, nrec%, flurow
+For i2% = MAXRAY_OLD% + 1 To MAXRAY% - 1
+zaf.flu!(i2%, i%) = flurow.fraction!(i2% - MAXRAY_OLD%)
+Next i2%
+
+' Calculate yields if zero value loaded form original x-ray lines
 If zaf.flu!(1, i%) = 0# Then zaf.flu!(1, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(1))   ' calculate Ka yields
 If zaf.flu!(1, i%) < 0# Then zaf.flu!(1, i%) = 0#
 
@@ -610,17 +658,49 @@ If zaf.flu!(5, i%) < 0# Then zaf.flu!(5, i%) = 0#
 If zaf.flu!(6, i%) = 0# Then zaf.flu!(6, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(6))   ' calculate Mb yields
 If zaf.flu!(6, i%) < 0# Then zaf.flu!(6, i%) = 0#
 
-' Load x-ray line types if emitting line
+' Calculate yields if zero value loaded for additional x-ray lines
+If MAXRAY% - 1 > MAXRAY_OLD% Then
+If zaf.flu!(7, i%) = 0# Then zaf.flu!(7, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(7))   ' calculate Ln yields
+If zaf.flu!(7, i%) < 0# Then zaf.flu!(7, i%) = 0#
+
+If zaf.flu!(8, i%) = 0# Then zaf.flu!(8, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(8))   ' calculate Lg yields
+If zaf.flu!(8, i%) < 0# Then zaf.flu!(8, i%) = 0#
+
+If zaf.flu!(9, i%) = 0# Then zaf.flu!(9, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(9))   ' calculate Lv yields
+If zaf.flu!(9, i%) < 0# Then zaf.flu!(9, i%) = 0#
+
+If zaf.flu!(10, i%) = 0# Then zaf.flu!(10, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(10))   ' calculate Ll yields
+If zaf.flu!(10, i%) < 0# Then zaf.flu!(10, i%) = 0#
+
+If zaf.flu!(11, i%) = 0# Then zaf.flu!(11, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(11))   ' calculate Mg yields
+If zaf.flu!(11, i%) < 0# Then zaf.flu!(11, i%) = 0#
+
+If zaf.flu!(12, i%) = 0# Then zaf.flu!(12, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(12))   ' calculate Mz yields
+If zaf.flu!(12, i%) < 0# Then zaf.flu!(12, i%) = 0#
+End If
+Next i%
+
+' Loop on each emitter in matrix and check for bad values
+For i% = 1 To zaf.in0%
+
+' Now load x-ray line types for all x-rays if emitting line (skip absorber only)
 If zaf.il%(i%) >= 1 And zaf.il%(i%) <= MAXRAY% - 1 Then
 im4% = zaf.il%(i%)
 
-' Calculate edge index for each line overvoltage
+' Calculate edge index for each line overvoltage (K, L-I, L-II, L-III, M-I, M-II, M-III, M-IV, and M-V)
 If im4% = 1 Then im5% = 1   ' Ka
 If im4% = 2 Then im5% = 1   ' Kb
 If im4% = 3 Then im5% = 4   ' La
 If im4% = 4 Then im5% = 3   ' Lb
 If im4% = 5 Then im5% = 9   ' Ma
 If im4% = 6 Then im5% = 8   ' Mb
+
+If im4% = 7 Then im5% = 3    ' Ln
+If im4% = 8 Then im5% = 3    ' Lg
+If im4% = 9 Then im5% = 3    ' Lv
+If im4% = 10 Then im5% = 4   ' Ll
+If im4% = 11 Then im5% = 7   ' Mg
+If im4% = 12 Then im5% = 8   ' Mz
 
 ' Calculate overvoltages
 zaf.eC!(i%) = zaf.edg!(im5%, i%)
@@ -656,6 +736,8 @@ End If      ' skip absorber only
 Close #XEdgeFileNumber%
 Close #XLineFileNumber%
 Close #XFlurFileNumber%
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
 
 Exit Sub
 
@@ -665,100 +747,6 @@ MsgBox Error$, vbOKOnly + vbCritical, "ZAFReadLn"
 Close #XEdgeFileNumber%
 Close #XLineFileNumber%
 Close #XFlurFileNumber%
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub ZAFReadLn2(zaf As TypeZAF)
-' This routine reads the x-ray line and x-ray fluorescense yield data for this run. The xray emission line energies are read
-' in electron volts in the order Ln, Lg, Lv, Ll, Mg, Mz. Fluorescent yields are read in the same order as the emission line energies.
-
-ierror = False
-On Error GoTo ZAFReadLn2Error
-
-Dim nrec As Integer, im4 As Integer, im5 As Integer
-Dim i As Integer, i2 As Integer
-
-Dim engrow As TypeEnergy
-Dim edgrow As TypeEdge
-Dim flurow As TypeFlur
-
-' Open x-ray line file
-Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
-
-' Open x-ray flur file
-Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
-
-' Loop on each emitter in matrix
-For i% = 1 To zaf.in0%
-
-' Read additional emission lines (convert to keV)
-nrec% = zaf.Z%(i%) + 2
-Get #XLineFileNumber2%, nrec%, engrow
-For i2% = MAXRAY_OLD% + 1 To MAXRAY% - 1
-zaf.eng!(i2%, i%) = engrow.energy!(i2% - MAXRAY_OLD%) / EVPERKEV#
-Next i2%
-
-' Read fluorescent yields, calculate missing values
-nrec% = zaf.Z%(i%) + 2
-Get #XFlurFileNumber2%, nrec%, flurow
-For i2% = MAXRAY_OLD% + 1 To MAXRAY% - 1
-zaf.flu!(i2%, i%) = flurow.fraction!(i2% - MAXRAY_OLD%)
-Next i2%
-
-' Load x-ray line types if emitting line
-If zaf.il%(i%) >= 1 And zaf.il%(i%) <= MAXRAY% - 1 Then
-im4% = zaf.il%(i%)
-
-' Calculate edge index for each line overvoltage (K, L-I, L-II, L-III, M-I, M-II, M-III, M-IV, and M-V)
-If im4% = 7 Then im5% = 3    ' Ln
-If im4% = 8 Then im5% = 3    ' Lg
-If im4% = 9 Then im5% = 3    ' Lv
-If im4% = 10 Then im5% = 4   ' Ll
-If im4% = 11 Then im5% = 7   ' Mg
-If im4% = 12 Then im5% = 8   ' Mz
-
-' Calculate overvoltages
-zaf.eC!(i%) = zaf.edg!(im5%, i%)
-zaf.gensmp!(i%) = zaf.eng!(im4%, i%)
-If zaf.eC!(i%) = 0# Then
-msg$ = "Warning in ZAFReadLn2: Edge energy of " & Symup$(zaf.Z%(i%)) & " " & Xraylo$(zaf.il%(i%)) & " is zero. Overvoltage was not calculated."
-MsgBox msg$, vbOKOnly + vbExclamation, "ZAFReadLn2"
-Else
-zaf.v!(i%) = zaf.eO!(i%) / zaf.eC!(i%)
-End If
-
-' Check overvoltage values
-If zaf.il%(i%) < 1 Or zaf.il%(i%) > MAXRAY% - 1 Then GoTo 750
-
-'If zaf.v!(i%) <= 1# Then
-'msg$ = "Error in ZAFReadLn2: Operating voltage is less than or equal to the " & Symup$(zaf.z%(i%)) & " " & Xraylo$(zaf.il%(i%)) & " absorption edge at " & Str$(zaf.ec!(i%)) & " KeV"
-'MsgBox msg$, vbOKOnly + vbExclamation, "ZAFReadLn2"
-'Close #XLineFileNumber2%
-'Close #XFlurFileNumber2%
-'ierror = True
-'Exit Sub
-'End If
-
-If zaf.v!(i%) < 1.1 Then
-msg$ = "Warning in ZAFReadLn2: Overvoltage of " & Symup$(zaf.Z%(i%)) & " " & Xraylo$(zaf.il%(i%)) & " is only " & Str$(zaf.v!(i%))
-Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int(FONT_REGULAR%), Int(0))
-End If
-
-End If      ' skip absorber only
-750:  Next i%
-
-Close #XLineFileNumber2%
-Close #XFlurFileNumber2%
-
-Exit Sub
-
-' Errors
-ZAFReadLn2Error:
-MsgBox Error$, vbOKOnly + vbCritical, "ZAFReadLn2"
-Close #XLineFileNumber2%
-Close #XFlurFileNumber2%
 ierror = True
 Exit Sub
 

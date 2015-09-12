@@ -1326,6 +1326,14 @@ Sub ZAFSmp(row As Integer, UnkCounts() As Single, zerror As Integer, analysis As
 '  il() = 5 = Ma
 '  il() = 6 = Mb
 
+'  il() = 7 = Ln
+'  il() = 8 = Lg
+'  il() = 9 = Lv
+'  il() = 10 = Ll
+'  il() = 11 = Mg
+'  il() = 12 = Mz
+
+' Old definitions
 '  il() = 7 = by difference
 '  il() = 8 = by specified concentration
 '  il() = 9 = by stoichiometry to stoichiometric oxygen
@@ -1333,6 +1341,15 @@ Sub ZAFSmp(row As Integer, UnkCounts() As Single, zerror As Integer, analysis As
 '  il() = 11 = by stoichiometry to another element
 '  il() = 12 = by hydrogen stoichiometry to oxygen (measured, specified or calculated)
 '  il() = 13 = by difference (formula)
+
+' New definitions
+'  il() = 13 = by difference
+'  il() = 14 = by specified concentration
+'  il() = 15 = by stoichiometry to stoichiometric oxygen
+'  il() = 16 = disabled quantification
+'  il() = 17 = by stoichiometry to another element
+'  il() = 18 = by hydrogen stoichiometry to oxygen (measured, specified or calculated)
+'  il() = 19 = by difference (formula)
 
 ierror = False
 On Error GoTo ZAFSmpError
@@ -1567,19 +1584,19 @@ End If
 zaf.eO!(i%) = sample(1).KilovoltsArray!(i%)
 
 ' Check for disable quant flag
-If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 10    ' use for disabled element
+'If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 10    ' use for disabled element
+If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 16    ' use for disabled element
 
 ' Check for extremely negative k-ratios on each measured element
 If zaf.krat!(i%) <= MAXNEGATIVE_KRATIO! Then GoTo ZAFSmpVeryNegativeKratio
 End If
 Next i%
 
-' Input specified elemental weight percents into ZAF array, and check for
-' element by difference, element by stoichiometry and element to oxide
-' conversion elements and element relative to another element.
-' NOTE: specified arrays must contain elemental concentrations.
+' Input specified elemental weight percents into ZAF array, and check for element by difference, element by stoichiometry and element to oxide
+' conversion elements and element relative to another element. NOTE: specified arrays must contain elemental concentrations.
 For i% = sample(1).LastElm% + 1 To sample(1).LastChan%
-zaf.il%(i%) = 8
+'zaf.il%(i%) = 8
+zaf.il%(i%) = 14
 zaf.krat!(i%) = analysis.WtPercents!(i%) / 100#
 
 ' Element by difference
@@ -1587,7 +1604,8 @@ If sample(1).DifferenceElementFlag% And sample(1).DifferenceElement$ <> vbNullSt
 ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, sample(1).DifferenceElement$, sample(1).Elsyms$())
 If ip% = i% Then
 zaf.krat!(i%) = 0#
-zaf.il%(i%) = 7
+'zaf.il%(i%) = 7
+zaf.il%(i%) = 13
 End If
 End If
 
@@ -1595,7 +1613,8 @@ End If
 If sample(1).DifferenceFormulaFlag% And sample(1).DifferenceFormula$ <> vbNullString Then
 If ConvertIsDifferenceFormulaElement(sample(1).DifferenceFormula$, sample(1).Elsyms$(i%), sample()) Then
 zaf.krat!(i%) = 0#
-zaf.il%(i%) = 13
+'zaf.il%(i%) = 13
+zaf.il%(i%) = 19
 End If
 End If
 
@@ -1604,7 +1623,8 @@ If sample(1).StoichiometryElementFlag And sample(1).StoichiometryElement$ <> vbN
 ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, sample(1).StoichiometryElement$, sample(1).Elsyms$())
 If ip% = i% Then
 zaf.krat!(i%) = 0#
-zaf.il%(i%) = 9
+'zaf.il%(i%) = 9
+zaf.il%(i%) = 15
 End If
 End If
 
@@ -1613,7 +1633,8 @@ If sample(1).RelativeElementFlag% And sample(1).RelativeElement$ <> vbNullString
 ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, sample(1).RelativeElement$, sample(1).Elsyms$())
 If ip% = i% Then
 zaf.krat!(i%) = 0#
-zaf.il%(i%) = 11
+'zaf.il%(i%) = 11
+zaf.il%(i%) = 17
 End If
 End If
 
@@ -1627,7 +1648,8 @@ If sample(1).HydrogenStoichiometryFlag And sample(1).HydrogenStoichiometryRatio!
 ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, Symlo$(1), sample(1).Elsyms$())
 If ip% = i% Then
 zaf.krat!(i%) = 0#
-zaf.il%(i%) = 12
+'zaf.il%(i%) = 12
+zaf.il%(i%) = 18
 End If
 End If
 End If
@@ -1652,7 +1674,8 @@ zaf.ksum! = zaf.ksum! + zaf.krat!(zaf.in0%)
 
 ' Add in elements calculated relative to stoichiometric element (in0%)
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 9 Then
+'If zaf.il%(i%) = 9 Then
+If zaf.il%(i%) = 15 Then
 zaf.krat!(i%) = (zaf.krat!(zaf.in0%) / zaf.atwts!(zaf.in0%)) * sample(1).StoichiometryRatio! * zaf.atwts!(i%)
 zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) + zaf.krat!(i%) * zaf.p1!(i%)
 zaf.ksum! = zaf.ksum! + zaf.krat!(i%) + zaf.krat!(i%) * zaf.p1!(i%)
@@ -1662,7 +1685,8 @@ End If
 
 ' Add in element relative to another element
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 11 Then
+'If zaf.il%(i%) = 11 Then
+If zaf.il%(i%) = 17 Then
 zaf.krat!(i%) = zaf.krat!(ipp%) / zaf.atwts!(ipp%)
 zaf.krat!(i%) = zaf.krat!(i%) * sample(1).RelativeRatio! * zaf.atwts!(i%)
 If zaf.il%(zaf.in0%) = 0 Then   ' if calculating oxygen by stoichiometry
@@ -1676,7 +1700,8 @@ Next i%
 
 ' Add in hydrogen by stoichiometry to excess oxygen
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 12 Then
+'If zaf.il%(i%) = 12 Then
+If zaf.il%(i%) = 18 Then
 zaf.krat!(i%) = ZAFConvertExcessOxygenToHydrogen!(zaf.krat!(), zaf, sample())
 zaf.ksum! = zaf.ksum! + zaf.krat!(i%)
 End If
@@ -1684,7 +1709,8 @@ Next i%
 
 ' Add in element by difference, set total to 100 %
 For i% = 1 To zaf.in0%
-If zaf.il%(i%) = 7 Then
+'If zaf.il%(i%) = 7 Then
+If zaf.il%(i%) = 13 Then
 If zaf.ksum! < 1# Then
 zaf.krat!(i%) = 1# - zaf.ksum!
 If zaf.il%(zaf.in0%) = 0 Then   ' if calculating oxygen by stoichiometry
@@ -1704,7 +1730,8 @@ If ierror Then Exit Sub
 ' Calculate sum of composition skipping formula by difference elements
 zaf.ksum! = 0#
 For i% = 1 To zaf.in0%
-If zaf.il%(i%) <> 13 Then
+'If zaf.il%(i%) <> 13 Then
+If zaf.il%(i%) <> 19 Then
 zaf.ksum! = zaf.ksum! + zaf.krat!(i%)
 End If
 Next i%
@@ -1715,7 +1742,8 @@ If temp! < 0# Then temp! = 1#
 
 ' Add in formula by difference elements (search from 1 to LastChan in FormulaTmpSample())
 For i% = 1 To zaf.in0%
-If zaf.il%(i%) = 13 Then
+'If zaf.il%(i%) = 13 Then
+If zaf.il%(i%) = 19 Then
 If zaf.ksum! < 1# Then
 ip% = IPOS1B(Int(1), FormulaTmpSample(1).LastChan%, sample(1).Elsyms$(i%), FormulaTmpSample(1).Elsyms$())
 If ip% > 0 Then
@@ -1838,7 +1866,8 @@ End If
 ' Add in specified element concentrations
 If zaf.il%(i%) > MAXRAY% - 1 Then
 r1!(i%) = 0#
-If zaf.il%(i%) = 8 Then
+'If zaf.il%(i%) = 8 Then
+If zaf.il%(i%) = 14 Then
 r1!(i%) = zaf.krat!(i%)
 zaf.ksum! = zaf.ksum! + r1!(i%)
 End If
@@ -1855,7 +1884,8 @@ Next i%
 ' Calculate element relative to stoichiometric element based on previous iteration calculation of oxygen
 If zaf.il%(zaf.in0%) = 0 Then    ' if calculating oxygen by stoichiometry
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 9 Then
+'If zaf.il%(i%) = 9 Then
+If zaf.il%(i%) = 15 Then
 r1!(i%) = (r1!(zaf.in0%) / zaf.atwts!(zaf.in0%)) * sample(1).StoichiometryRatio! * zaf.atwts!(i%)
 zaf.ksum! = zaf.ksum! + r1!(i%)
 zaf.krat!(i%) = r1!(i%)
@@ -1877,7 +1907,8 @@ End If
 
 ' Calculate element relative to another element
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 11 Then
+'If zaf.il%(i%) = 11 Then
+If zaf.il%(i%) = 17 Then
 r1!(i%) = r1!(ipp%) / zaf.atwts!(ipp%)
 r1!(i%) = r1!(i%) * sample(1).RelativeRatio! * zaf.atwts!(i%)
 If zaf.il%(zaf.in0%) = 0 Then   ' if calculating oxygen by stoichiometry
@@ -1892,7 +1923,8 @@ Next i%
 
 ' Calculate hydrogen by stoichiometry to excess oxygen
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 12 Then
+'If zaf.il%(i%) = 12 Then
+If zaf.il%(i%) = 18 Then
 r1!(i%) = ZAFConvertExcessOxygenToHydrogen!(r1!(), zaf, sample())
 zaf.ksum! = zaf.ksum! + r1!(i%)
 End If
@@ -1900,7 +1932,8 @@ Next i%
 
 ' Calculate element by difference
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 7 Then
+'If zaf.il%(i%) = 7 Then
+If zaf.il%(i%) = 13 Then
 If zaf.ksum! < 1# Then
 r1!(i%) = 1# - zaf.ksum!
 If zaf.il%(zaf.in0%) = 0 Then
@@ -1919,7 +1952,8 @@ If sample(1).DifferenceFormulaFlag Then
 ' Calculate sum of composition skipping formula by difference elements
 zaf.ksum! = 0#
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) <> 13 Then
+'If zaf.il%(i%) <> 13 Then
+If zaf.il%(i%) <> 19 Then
 zaf.ksum! = zaf.ksum! + r1!(i%)
 End If
 Next i%
@@ -1929,7 +1963,8 @@ temp! = 1# - zaf.ksum!
 
 ' Add in formula by difference elements (search from 1 to LastChan in FormulaTmpSample())
 For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 13 Then
+'If zaf.il%(i%) = 13 Then
+If zaf.il%(i%) = 19 Then
 If zaf.ksum! < 1# Then
 ip% = IPOS1B(Int(1), FormulaTmpSample(1).LastChan%, sample(1).Elsyms$(i%), FormulaTmpSample(1).Elsyms$())
 If ip% > 0 Then
@@ -1999,7 +2034,8 @@ analysis.WtPercents!(i%) = zaf.conc!(i%) * 100#
 
 ' Load if not disabled
 analysis.UnkKrats!(i%) = zaf.krat!(i%)
-If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 10 Then
+'If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 10 Then
+If zaf.genstd!(i%) <> 0# And (1# + zaf.vv!(i%)) <> 0# And zaf.gensmp!(i%) <> 0# And zaf.il%(i%) <> 16 Then
 For j% = 1 To MAXZAFCOR%
 If j% = 1 Then analysis.UnkZAFCors!(1, i%) = zaf.gensmp!(i%) / zaf.genstd!(i%)
 If j% = 2 Then analysis.UnkZAFCors!(2, i%) = 1# / (1# + zaf.vv!(i%))
@@ -2348,7 +2384,8 @@ zaf.eO!(i%) = stdsample(1).KilovoltsArray!(i%)
 zaf.Z%(i%) = stdsample(1).AtomicNums%(i%)
 zaf.atwts!(i%) = stdsample(1).AtomicWts!(i%)
 zaf.il%(i%) = stdsample(1).XrayNums%(i%)
-If stdsample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 10    ' use for disabled element
+'If stdsample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 10    ' use for disabled element
+If stdsample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 16    ' use for disabled element
 
 ' Standards are ALWAYS elemental!!!!! (OxideOrElemental% = 2), but do p2 calculation anyway for CalcZAF
 p2!(i%) = CSng(stdsample(1).numoxd%(i%)) / CSng(stdsample(1).numcat%(i%))
@@ -2832,6 +2869,12 @@ emm! = 0.78
 wght! = 1#
 elinshell% = 6
 omega! = 0.5 * Exp(2.946 * Log(zaf.Z%(i%) / 2#) - 13.94)
+
+Else                                            ' additional x-ray lines...???
+emm! = 0.78
+wght! = 1#
+elinshell% = 6
+omega! = 0.5 * Exp(2.946 * Log(zaf.Z%(i%) / 2#) - 13.94)
 End If
 
 ' Save for sample calculations
@@ -3085,7 +3128,8 @@ zaf.eO!(i%) = sample(1).KilovoltsArray!(i%)
 zaf.Z%(i%) = sample(1).AtomicNums%(i%)
 zaf.atwts!(i%) = sample(1).AtomicWts!(i%)
 zaf.il%(i%) = sample(1).XrayNums%(i%)
-If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 10    ' use for disabled element
+'If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 10    ' use for disabled element
+If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 15    ' use for disabled element
 
 p2!(i%) = 0#
 If sample(1).OxideOrElemental% = 1 Or sample(1).numoxd%(i%) <> 0 Then
@@ -3312,7 +3356,7 @@ Next i%
 zaf.d! = 0#     ' diameter in cm
 zaf.rho! = 0#   ' density in g/cm^3
 zaf.j9! = 0#    ' particle thicknes factor
-zaf.X1! = 0#    ' integration step length in g/cm^2
+zaf.x1! = 0#    ' integration step length in g/cm^2
 
 zaf.TotalCations! = 0#
 zaf.totalatoms! = 0#
@@ -4024,7 +4068,7 @@ q2! = s1!
 r5! = r4!
 If er1! >= er3! Then GoTo 11250
 
-er1! = er1! + zaf.X1!
+er1! = er1! + zaf.x1!
 If er1! > er3! Then er1! = er3!
 GoTo 11150
 

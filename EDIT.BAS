@@ -22,6 +22,125 @@ Dim XrayLastElementEmitted As Integer
 Dim XrayLastXrayEmitted As Integer
 Dim XrayLastElementAbsorbed As Integer
 
+Dim ElementNames(1 To MAXELM%) As String
+
+Sub EditLoadFullElementNames()
+' Dang. Never had to do this before!
+
+ierror = False
+On Error GoTo EditLoadFullElementNamesError
+
+ElementNames$(1) = "Hydrogen"
+ElementNames$(2) = "Helium"
+ElementNames$(3) = "Lithium"
+ElementNames$(4) = "Beryllium"
+ElementNames$(5) = "Boron"
+ElementNames$(6) = "Carbon"
+ElementNames$(7) = "Nitrogen"
+ElementNames$(8) = "Oxygen"
+ElementNames$(9) = "Fluorine"
+ElementNames$(10) = "Neon"
+ElementNames$(11) = "Sodium"
+ElementNames$(12) = "Magnesium"
+ElementNames$(13) = "Aluminum"
+ElementNames$(14) = "Silicon"
+ElementNames$(15) = "Phosphorus"
+ElementNames$(16) = "Sulfur"
+ElementNames$(17) = "Chlorine"
+ElementNames$(18) = "Argon"
+ElementNames$(19) = "Potassium"
+ElementNames$(20) = "Calcium"
+ElementNames$(21) = "Scandium"
+ElementNames$(22) = "Titanium"
+ElementNames$(23) = "Vanadium"
+ElementNames$(24) = "Chromium"
+ElementNames$(25) = "Manganese"
+ElementNames$(26) = "Iron"
+ElementNames$(27) = "Cobalt"
+ElementNames$(28) = "Nickel"
+ElementNames$(29) = "Copper"
+ElementNames$(30) = "Zinc"
+ElementNames$(31) = "Gallium"
+ElementNames$(32) = "Germanium"
+ElementNames$(33) = "Arsenic"
+ElementNames$(34) = "Selenium"
+ElementNames$(35) = "Bromine"
+ElementNames$(36) = "Krypton"
+ElementNames$(37) = "Rubidium"
+ElementNames$(38) = "Strontium"
+ElementNames$(39) = "Yttrium"
+ElementNames$(40) = "Zirconium"
+ElementNames$(41) = "Niobium"
+ElementNames$(42) = "Molybdenum"
+ElementNames$(43) = "Technetium"
+ElementNames$(44) = "Ruthenium"
+ElementNames$(45) = "Rhodium"
+ElementNames$(46) = "Palladium"
+ElementNames$(47) = "Silver"
+ElementNames$(48) = "Cadmium"
+ElementNames$(49) = "Indium"
+ElementNames$(50) = "Tin"
+ElementNames$(51) = "Antimony"
+ElementNames$(52) = "Tellurium"
+ElementNames$(53) = "Iodine"
+ElementNames$(54) = "Xenon"
+ElementNames$(55) = "Cesium"
+ElementNames$(56) = "Barium"
+ElementNames$(57) = "Lanthanum"
+ElementNames$(58) = "Cerium"
+ElementNames$(59) = "Praseodymium"
+ElementNames$(60) = "Neodymium"
+ElementNames$(61) = "Promethium"
+ElementNames$(62) = "Samarium"
+ElementNames$(63) = "Europium"
+ElementNames$(64) = "Gadolinium"
+ElementNames$(65) = "Terbium"
+ElementNames$(66) = "Dysprosium"
+ElementNames$(67) = "Holmium"
+ElementNames$(68) = "Erbium"
+ElementNames$(69) = "Thulium"
+ElementNames$(70) = "Ytterbium"
+ElementNames$(71) = "Lutetium"
+ElementNames$(72) = "Hafnium"
+ElementNames$(73) = "Tantalum"
+ElementNames$(74) = "Tungsten"
+ElementNames$(75) = "Rhenium"
+ElementNames$(76) = "Osmium"
+ElementNames$(77) = "Iridium"
+ElementNames$(78) = "Platinum"
+ElementNames$(79) = "Gold"
+ElementNames$(80) = "Mercury"
+ElementNames$(81) = "Thallium"
+ElementNames$(82) = "Lead"
+ElementNames$(83) = "Bismuth"
+ElementNames$(84) = "Polonium"
+ElementNames$(85) = "Astatine"
+ElementNames$(86) = "Radon"
+ElementNames$(87) = "Francium"
+ElementNames$(88) = "Radium"
+ElementNames$(89) = "Actinium"
+ElementNames$(90) = "Thorium"
+ElementNames$(91) = "Protactinium"
+ElementNames$(92) = "Uranium"
+ElementNames$(93) = "Neptunium"
+ElementNames$(94) = "Plutonium"
+ElementNames$(95) = "Americium"
+ElementNames$(96) = "Curium"
+ElementNames$(97) = "Berkelium"
+ElementNames$(98) = "Californium"
+ElementNames$(99) = "Einsteinium"
+ElementNames$(100) = "Fermium"
+
+Exit Sub
+
+' Errors
+EditLoadFullElementNamesError:
+MsgBox Error$, vbOKOnly + vbCritical, "EditLoadFullElementNames"
+ierror = True
+Exit Sub
+
+End Sub
+
 Sub EditConvertElemInfoDat()
 ' Convert ELEMINFO.DAT (Armstrong) to XLINE.DAT, XEDGE.DAT, XFLUR.DAT
 
@@ -1229,9 +1348,9 @@ Dim x6row As TypeEnergy
 Dim x9row As TypeEdge
 
 ' Check for input file
-'tfilename1$ = ApplicationCommonAppData$ & "XRAY_EMISSION.TXT"
+'tfilename1$ = ApplicationCommonAppData$ & "XRAY_LINE.TXT"
 'tfilename1$ = ApplicationCommonAppData$ & "XRAY_EDGE.TXT"
-tfilename1$ = ApplicationCommonAppData$ & "FLUR_YIELD.TXT"
+tfilename1$ = ApplicationCommonAppData$ & "XRAY_FLUR.TXT"
 Call IOGetFileName(Int(2), "TXT", tfilename1$, tForm)
 If ierror Then Exit Sub
 
@@ -1268,7 +1387,7 @@ Next nrec%
 ' Open input file
 Open tfilename1$ For Input As #Temp1FileNumber%
 
-' Skip header
+' Skip header line
 Line Input #Temp1FileNumber%, astring$
 
 ' Start writing records to direct file (skip first two records for compatibility)
@@ -1367,9 +1486,9 @@ Call IOGetFileName(Int(2), "DAT", tfilename1$, tForm)
 If ierror Then Exit Sub
 
 ' Check for output file
-tfilename2$ = ApplicationCommonAppData$ & "XRAY_EMISSION.TXT"
+tfilename2$ = ApplicationCommonAppData$ & "XRAY_LINE.TXT"
 'tfilename2$ = ApplicationCommonAppData$ & "XRAY_EDGE.TXT"
-'tfilename2$ = ApplicationCommonAppData$ & "FLUR_YIELD.TXT"
+'tfilename2$ = ApplicationCommonAppData$ & "XRAY_FLUR.TXT"
 Call IOGetFileName(Int(1), "TXT", tfilename2$, tForm)
 If ierror Then Exit Sub
 
@@ -1877,6 +1996,361 @@ Close #XLineFileNumber%
 Close #XFlurFileNumber%
 ierror = True
 Exit Sub
+
+End Sub
+
+Sub EditConvertCSVToText(tForm As Form)
+' Convert element CSV file to text file for additional x-ray lines (Ln, Lg, Lv, Ll, Mg, Mz) (data from Phil Gopon from DTSA2)
+'   mode% = 0 emission line energies
+'   mode% = 1 edge energies (not used)
+'   mode% = 2 fluorescent yields
+
+ierror = False
+On Error GoTo EditConvertCSVToTextError
+
+Dim i As Integer, nrec As Integer, mode As Integer
+Dim astring As String, bstring As String, tfilename1 As String, tfilename2 As String
+
+Dim array6(1 To MAXRAY_OLD%) As Single
+Dim array9(1 To MAXEDG%) As Single
+
+' Check for new dimensioning
+If MAXRAY% <> 13 Then GoTo EditConvertCSVToTextNotNewMAXRAY
+
+' Check for input file
+tfilename1$ = "C:\Source\Probewin32-E\Additional Xray Lines\" & "XLINE2.CSV"
+'tfilename1$ = "C:\Source\Probewin32-E\Additional Xray Lines\" & "XEDGE2.CSV"         ' not used
+'tfilename1$ = "C:\Source\Probewin32-E\Additional Xray Lines\" & "XFLUR2.CSV"
+Call IOGetFileName(Int(2), "CSV", tfilename1$, tForm)
+If ierror Then Exit Sub
+
+' Check for output file
+tfilename2$ = "C:\Source\Probewin32-E\Additional Xray Lines\" & "XRAY_LINE2.TXT"
+'tfilename2$ = "C:\Source\Probewin32-E\Additional Xray Lines\"& "XRAY_EDGE2.TXT"       ' not used
+'tfilename2$ = "C:\Source\Probewin32-E\Additional Xray Lines\" & "XRAY_FLUR2.TXT"
+Call IOGetFileName(Int(1), "TXT", tfilename2$, tForm)
+If ierror Then Exit Sub
+
+If Dir$(tfilename1$) = vbNullString Then GoTo EditConvertCSVToTextNotFound
+
+' Determine mode
+mode% = -1
+If InStr(UCase$(tfilename1$), "LINE") > 0 Then mode% = 0                               ' emission line energies
+If InStr(UCase$(tfilename1$), "EDGE") > 0 Then mode% = 1                               ' edge energies (not used)
+If InStr(UCase$(tfilename1$), "FLUR") > 0 Then mode% = 2                               ' fluorescent yields
+If mode% = -1 Then GoTo EditConvertCSVToTextUnknownFormat
+
+' Open comma delimited input CSV file
+Open tfilename1$ For Input As #Temp1FileNumber%
+
+' Open x-ray output text file
+Open tfilename2$ For Output As #Temp2FileNumber%
+
+' Print text file header (9 spaces for each column)
+astring$ = Format$("Element", a90$)
+If mode% = 0 Then
+For i% = MAXRAY_OLD% + 1 To MAXRAY% - 1
+astring$ = astring$ & Format$(Xraylo$(i%), a90$)
+Next i%
+
+ElseIf mode% = 1 Then
+For i% = 1 To MAXEDG%
+astring$ = astring$ & Format$(Edglo$(i%), a90$)
+Next i%
+
+ElseIf mode% = 2 Then
+For i% = MAXRAY_OLD% + 1 To MAXRAY% - 1
+astring$ = astring$ & Format$(Xraylo$(i%), a90$)
+Next i%
+End If
+Print #Temp2FileNumber%, astring$
+
+' Get each element line (first line is a header)
+Line Input #Temp1FileNumber%, astring$
+For nrec% = 3 To MAXELM% + 2
+Line Input #Temp1FileNumber%, astring$
+
+' Remove atomic number and symbol from string
+Call MiscParseStringToStringA(astring$, VbComma, bstring$)
+If ierror Then Exit Sub
+Call MiscParseStringToStringA(astring$, VbComma, bstring$)
+If ierror Then Exit Sub
+
+' Load the values into an array
+If mode% = 0 Then                           ' emission line energies
+Call InitParseStringToReal(astring$, MAXRAY_OLD%, array6!())
+If ierror Then Exit Sub
+
+ElseIf mode% = 1 Then                       ' edge energies
+Call InitParseStringToReal(astring$, MAXEDG%, array9!())
+If ierror Then Exit Sub
+
+ElseIf mode% = 2 Then                       ' fluorescent yields
+Call InitParseStringToReal(astring$, MAXRAY_OLD%, array6!())
+If ierror Then Exit Sub
+End If
+
+' Write element symbol
+astring$ = Format$(Symup$(nrec% - 2), a90$)
+
+' Emission lines in keV
+If mode% = 0 Then
+For i% = 1 To MAXRAY_OLD%
+astring$ = astring$ & Format$(MiscAutoFormat$(array6!(i%)), a90$)
+Next i%
+
+' Edge energies in keV (not used)
+ElseIf mode% = 1 Then
+For i% = 1 To MAXEDG%
+astring$ = astring$ & Format$(MiscAutoFormat$(array9!(i%)), a90$)
+Next i%
+
+' Fluorescent yields (fraction)
+ElseIf mode% = 2 Then
+For i% = 1 To MAXRAY_OLD%
+astring$ = astring$ & Format$(MiscAutoFormat$(array6!(i%)), a90$)
+Next i%
+End If
+
+' Write to text file
+Print #Temp2FileNumber%, astring$
+Next nrec%
+        
+Close #Temp1FileNumber%
+Close #Temp2FileNumber%
+
+' Inform user
+msg$ = "File " & tfilename1$ & " converted to " & tfilename2$
+MsgBox msg$, vbOKOnly + vbInformation, "EditConvertCSVToText"
+
+Exit Sub
+
+' Errors
+EditConvertCSVToTextError:
+MsgBox Error$, vbOKOnly + vbCritical, "EditConvertCSVToText"
+ierror = True
+Close #Temp1FileNumber%
+Close #Temp2FileNumber%
+Exit Sub
+
+EditConvertCSVToTextNotNewMAXRAY:
+msg$ = "The application is not using the new constant for MAXRAY. Check the Global.bas source code and uncomment/comment as necesaary."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertCSVToText"
+ierror = True
+Exit Sub
+
+EditConvertCSVToTextNotFound:
+msg$ = "File " & tfilename1$ & " was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertCSVToText"
+ierror = True
+Exit Sub
+
+EditConvertCSVToTextUnknownFormat:
+msg$ = "Input/output file format could not be determined. Make sure the filenames contain the string LINE, EDGE or FLUR to identify the data type."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertCSVToText"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub EditConvertFFAST2Dat()
+' Convert FFAST2*.CSV (Gopon) to FFAST2.DAT for additional x-ray lines (Ln, Lg, Lv, Ll, Mg, Mz)
+
+ierror = False
+On Error GoTo EditConvertFFAST2DatError
+
+Dim nrec As Integer, ip As Integer, j As Integer, k As Integer
+Dim iemitter As Integer, ixray As Integer, iabsorber As Integer
+Dim astring As String, bstring As String
+Dim mac_value As Single
+Dim exportfilenumber As Integer
+
+Dim macrow As TypeMu
+
+ReDim inputfilenames(1 To MAXRAY_OLD%) As String   ' Ln, Lg, Lv, Ll, Mg, Mz files
+ReDim inputfilenumbers(1 To MAXRAY_OLD%) As Integer   ' Ln, Lg, Lv, Ll, Mg, Mz files
+
+' Load full elements names!
+Call EditLoadFullElementNames
+If ierror Then Exit Sub
+
+' Check for files
+inputfilenames$(1) = "C:\Source\Probewin32-E\Additional Xray Lines\" & "FFAST2_Ln.csv"
+If Dir$(inputfilenames$(1)) = vbNullString Then GoTo EditConvertFFAST2DatNotFound
+
+inputfilenames$(2) = "C:\Source\Probewin32-E\Additional Xray Lines\" & "FFAST2_Lg.csv"
+If Dir$(inputfilenames$(2)) = vbNullString Then GoTo EditConvertFFAST2DatNotFound
+
+inputfilenames$(3) = "C:\Source\Probewin32-E\Additional Xray Lines\" & "FFAST2_Lv.csv"
+If Dir$(inputfilenames$(3)) = vbNullString Then GoTo EditConvertFFAST2DatNotFound
+
+inputfilenames$(4) = "C:\Source\Probewin32-E\Additional Xray Lines\" & "FFAST2_Ll.csv"
+If Dir$(inputfilenames$(4)) = vbNullString Then GoTo EditConvertFFAST2DatNotFound
+
+inputfilenames$(5) = "C:\Source\Probewin32-E\Additional Xray Lines\" & "FFAST2_Mg.csv"
+If Dir$(inputfilenames$(5)) = vbNullString Then GoTo EditConvertFFAST2DatNotFound
+
+inputfilenames$(6) = "C:\Source\Probewin32-E\Additional Xray Lines\" & "FFAST2_Mz.csv"
+If Dir$(inputfilenames$(6)) = vbNullString Then GoTo EditConvertFFAST2DatNotFound
+      
+' Load input file numbers
+inputfilenumbers%(1) = FreeFile()
+Open inputfilenames$(1) For Input As #inputfilenumbers%(1)
+
+inputfilenumbers%(2) = FreeFile()
+Open inputfilenames$(2) For Input As #inputfilenumbers%(2)
+
+inputfilenumbers%(3) = FreeFile()
+Open inputfilenames$(3) For Input As #inputfilenumbers%(3)
+
+inputfilenumbers%(4) = FreeFile()
+Open inputfilenames$(4) For Input As #inputfilenumbers%(4)
+
+inputfilenumbers%(5) = FreeFile()
+Open inputfilenames$(5) For Input As #inputfilenumbers%(5)
+
+inputfilenumbers%(6) = FreeFile()
+Open inputfilenames$(6) For Input As #inputfilenumbers%(6)
+
+' Open output file
+exportfilenumber% = FreeFile()
+Open "C:\Source\Probewin32-E\Additional Xray Lines\" & "FFAST2.DAT" For Random Access Read Write As #exportfilenumber% Len = MAC_FILE_RECORD_LENGTH%
+
+' Write all zeros to file first
+For nrec% = 1 To MAXELM%
+Put #exportfilenumber%, nrec%, macrow
+Next nrec%
+
+' Loop on each input file
+For j% = 1 To MAXRAY_OLD%
+
+' Read header info
+Line Input #inputfilenumbers%(j%), astring
+Line Input #inputfilenumbers%(j%), astring
+Line Input #inputfilenumbers%(j%), astring
+
+' Read first element absorber string
+Line Input #inputfilenumbers%(j%), astring
+
+' Loop until EOF
+Do Until EOF(inputfilenumbers%(j%))
+
+' Determine element absorber Z
+Call MiscParseStringToStringA(astring$, VbComma, bstring$)
+If ierror Then Exit Sub
+ip% = IPOS1%(MAXELM%, bstring$, ElementNames$())
+If ip% = 0 Then GoTo EditConvertFFAST2DatBadAbsorber
+iabsorber% = ip%
+
+' Read first emitter Z
+Line Input #inputfilenumbers%(j%), astring
+
+' Loop while string does not contain two commas (process emitters)
+Do While InStr(astring$, ",,") = 0
+
+' Determine element emitter Z
+Call MiscParseStringToStringA(astring$, VbSpace, bstring$)
+If ierror Then Exit Sub
+ip% = IPOS1%(MAXELM%, bstring$, Symlo$())
+If ip% = 0 Then GoTo EditConvertFFAST2DatBadEmitter
+iemitter% = ip%
+
+' Determine emitter transition (should be constant for each file)
+ixray% = j% + MAXRAY_OLD%       ' to be self consistent with ZAFLoadMAC and ZAFLoadMAC2
+
+' Determine mac value
+Call MiscParseStringToStringA(astring$, VbComma, bstring$)
+If ierror Then Exit Sub
+
+' Sanity check for transition
+If j% = 1 Then If bstring$ <> "L2-M1" Then GoTo EditConvertFFAST2DatBadTransition   ' Ln
+If j% = 2 Then If bstring$ <> "L2-N4" Then GoTo EditConvertFFAST2DatBadTransition   ' Lg
+If j% = 3 Then If bstring$ <> "L2-N6" Then GoTo EditConvertFFAST2DatBadTransition   ' Lv
+If j% = 4 Then If bstring$ <> "L3-M1" Then GoTo EditConvertFFAST2DatBadTransition   ' Ll
+If j% = 5 Then If bstring$ <> "M3-N5" Then GoTo EditConvertFFAST2DatBadTransition   ' Mg
+If j% = 6 Then If bstring$ <> "M5-N3" Then GoTo EditConvertFFAST2DatBadTransition   ' Mz
+
+Call MiscParseStringToStringA(astring$, VbComma, bstring$)
+If ierror Then Exit Sub
+mac_value! = Val(bstring$)
+
+' Determine emitter record number (1 to MAXELM%)
+nrec% = iemitter%
+Get #exportfilenumber%, nrec%, macrow
+
+' Calculate record offset and update
+k% = (ixray% - MAXRAY_OLD%) + (iabsorber% - 1) * (MAXRAY_OLD%)
+macrow.mac!(k%) = mac_value!
+
+' Save edited value
+Put #exportfilenumber%, nrec%, macrow
+
+' Read next emitter
+Line Input #inputfilenumbers%(j%), astring
+Loop
+
+Loop          ' EOF
+Next j%       ' next input file
+
+Close #inputfilenumbers%(1)
+Close #inputfilenumbers%(2)
+Close #inputfilenumbers%(3)
+Close #inputfilenumbers%(4)
+Close #inputfilenumbers%(5)
+Close #inputfilenumbers%(6)
+
+Close #exportfilenumber%
+
+' Inform user
+msg$ = "Files :" & vbCrLf
+msg$ = msg$ & inputfilenames$(1) & vbCrLf
+msg$ = msg$ & inputfilenames$(2) & vbCrLf
+msg$ = msg$ & inputfilenames$(3) & vbCrLf
+msg$ = msg$ & inputfilenames$(4) & vbCrLf
+msg$ = msg$ & inputfilenames$(5) & vbCrLf
+msg$ = msg$ & inputfilenames$(6) & vbCrLf
+msg$ = msg$ & "converted to " & ApplicationCommonAppData$ & "FFAST2.DAT"
+MsgBox msg$, vbOKOnly + vbInformation, "EditConvertFFAST2Dat"
+
+Exit Sub
+
+' Errors
+EditConvertFFAST2DatError:
+MsgBox Error$, vbOKOnly + vbCritical, "EditConvertFFAST2Dat"
+ierror = True
+Close #inputfilenumbers%(1)
+Close #inputfilenumbers%(2)
+Close #inputfilenumbers%(3)
+Close #inputfilenumbers%(4)
+Close #inputfilenumbers%(5)
+Close #inputfilenumbers%(6)
+Close #exportfilenumber%
+Exit Sub
+
+EditConvertFFAST2DatNotFound:
+msg$ = "One of the FFAST2*.csv input files was not found. There should be six of them, e.g. " & inputfilenames$(1) & "."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertFFAST2Dat"
+ierror = True
+Exit Sub
+
+EditConvertFFAST2DatBadAbsorber:
+msg$ = "MAC absorber Z could not be determined in string " & bstring$ & ", for input file " & inputfilenames$(j%)
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertFFAST2Dat"
+ierror = True
+Exit Sub
+
+EditConvertFFAST2DatBadEmitter:
+msg$ = "MAC emitter Z could not be determined in string " & bstring$ & ", for input file " & inputfilenames$(j%)
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertFFAST2Dat"
+ierror = True
+Exit Sub
+
+EditConvertFFAST2DatBadTransition:
+msg$ = "Invalid x-ray transition in string " & bstring$ & ", for input file " & inputfilenames$(j%)
+MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertFFAST2Dat"
+ierror = True
+Exit Sub
+
 
 End Sub
 

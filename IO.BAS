@@ -495,6 +495,19 @@ Else
 FormMAIN.CMDialog1.DialogTitle = "Open File To Input ProbeImage Acquisition From"
 End If
 
+' CSV comma delimited files
+ElseIf UCase$(ioextension$) = UCase$("CSV") Then
+FormMAIN.CMDialog1.Filter = "CSV Comma Delimited Data Files (*.CSV)|*.CSV|All Files (*.*)|*.*|"
+If mode% < 2 Then
+If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.csv"
+End If
+
+If mode% < 2 Then
+FormMAIN.CMDialog1.DialogTitle = "Open File To Output Comma Delimited Data To"
+Else
+FormMAIN.CMDialog1.DialogTitle = "Open File To Input Comma Delimited Data From"
+End If
+
 End If
 
 ' Specify default filter
@@ -529,6 +542,7 @@ If UCase$(ioextension$) = UCase$("FC") Then FormMAIN.CMDialog1.InitDir = UserDat
 If UCase$(ioextension$) = UCase$("IMG") Then FormMAIN.CMDialog1.InitDir = UserDataDirectory$
 If UCase$(ioextension$) = UCase$("CLR") Then FormMAIN.CMDialog1.InitDir = SurferAppDirectory$
 If UCase$(ioextension$) = UCase$("PrbAcq") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
+If UCase$(ioextension$) = UCase$("CSV") Then FormMAIN.CMDialog1.InitDir = UserDataDirectory$
 
 ' Specify default extension
 FormMAIN.CMDialog1.DefaultExt = ioextension$

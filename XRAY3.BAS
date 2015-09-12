@@ -460,6 +460,7 @@ On Error GoTo XrayGetKevLambdaError
 
 Dim ielm As Integer, iray As Integer
 Dim nrec As Integer
+Dim tenergy As Single
 
 Dim engrow As TypeEnergy
 
@@ -474,14 +475,27 @@ If Trim$(symx$) = vbNullString Then symx$ = Deflin$(ielm%)
 iray% = IPOS1(MAXRAY% - 1, symx$, Xraylo$())
 If iray% = 0 Then GoTo XrayGetKevLambdaInvalidXray
 
-' Read x-ray line file
+' Check if original or additional x-ray line
+If iray% <= MAXRAY_OLD% Then
+
+' Read original x-ray line file
 nrec% = ielm% + 2
 Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber%, nrec%, engrow
 Close #XLineFileNumber%
+tenergy! = engrow.energy!(iray%)
+
+' Read additional x-ray line file
+Else
+nrec% = ielm% + 2
+Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+Get #XLineFileNumber2%, nrec%, engrow
+Close #XLineFileNumber2%
+tenergy! = engrow.energy!(iray% - MAXRAY_OLD%)
+End If
 
 ' Check invalid value
-If engrow.energy!(iray%) <= 0# Then
+If tenergy! <= 0# Then
 If UCase$(app.EXEName) <> UCase$("Matrix") Then
 msg$ = "No x-ray data found in " & XLineFile$ & " for " & syme$ & " " & symx$
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetKevLambda"
@@ -497,8 +511,8 @@ End If
 End If
 
 ' Calculate kev and angstroms and return
-keV! = engrow.energy!(iray%) / EVPERKEV#
-lam! = ANGEV! / engrow.energy!(iray%)
+keV! = tenergy! / EVPERKEV#
+lam! = ANGEV! / tenergy!
 
 Exit Sub
 
@@ -506,6 +520,7 @@ Exit Sub
 XrayGetKevLambdaError:
 MsgBox Error$, vbOKOnly + vbCritical, "XrayGetKevLambda"
 Close #XLineFileNumber%
+Close #XLineFileNumber2%
 ierror = True
 Exit Sub
 
@@ -513,6 +528,7 @@ XrayGetKevLambdaInvalidElement:
 msg$ = "Invalid element symbol"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetKevLambda"
 Close #XLineFileNumber%
+Close #XLineFileNumber2%
 ierror = True
 Exit Sub
 
@@ -520,6 +536,7 @@ XrayGetKevLambdaInvalidXray:
 msg$ = "Invalid xray symbol"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetKevLambda"
 Close #XLineFileNumber%
+Close #XLineFileNumber2%
 ierror = True
 Exit Sub
 
@@ -720,14 +737,29 @@ Dim engrow As TypeEnergy, edgrow As TypeEdge
 If ielm% < 1 Or ielm% > MAXELM% Then GoTo XrayGetEnergyInvalidElement
 If iray% < 1 Or iray% > MAXRAY% - 1 Then GoTo XrayGetEnergyInvalidXray
 
-' Read x-ray line file
+' Add record location
 nrec% = ielm% + 2
+
+' Check if original or additional x-ray line
+If iray% <= MAXRAY_OLD% Then
+
+' Read original x-ray line file
 Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber%, nrec%, engrow
 Close #XLineFileNumber%
 
 ' Calculate emission energy in kev and return
 energy! = engrow.energy!(iray%) / EVPERKEV#
+
+' Read original x-ray line file
+Else
+Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+Get #XLineFileNumber2%, nrec%, engrow
+Close #XLineFileNumber2%
+
+' Calculate emission energy in kev and return
+energy! = engrow.energy!(iray% - MAXRAY_OLD%) / EVPERKEV#
+End If
 
 ' Read x-ray edge file
 Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
@@ -741,6 +773,13 @@ If iray% = 4 Then jnum% = 3   ' Lb
 If iray% = 5 Then jnum% = 9   ' Ma
 If iray% = 6 Then jnum% = 8   ' Mb
 
+If iray% = 7 Then jnum% = 3    ' Ln
+If iray% = 8 Then jnum% = 3    ' Lg
+If iray% = 9 Then jnum% = 3    ' Lv
+If iray% = 10 Then jnum% = 4   ' Ll
+If iray% = 11 Then jnum% = 7   ' Mg
+If iray% = 12 Then jnum% = 8   ' Mz
+
 ' Load edge energy (in keV)
 edge! = edgrow.energy!(jnum%) / EVPERKEV#
 Exit Sub
@@ -750,6 +789,7 @@ XrayGetEnergyError:
 MsgBox Error$, vbOKOnly + vbCritical, "XrayGetEnergy"
 Close #XLineFileNumber%
 Close #XEdgeFileNumber%
+Close #XLineFileNumber2%
 ierror = True
 Exit Sub
 
@@ -758,6 +798,7 @@ msg$ = "Invalid element number"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetEnergy"
 Close #XLineFileNumber%
 Close #XEdgeFileNumber%
+Close #XLineFileNumber2%
 ierror = True
 Exit Sub
 
@@ -766,6 +807,7 @@ msg$ = "Invalid xray number"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetEnergy"
 Close #XLineFileNumber%
 Close #XEdgeFileNumber%
+Close #XLineFileNumber2%
 ierror = True
 Exit Sub
 
