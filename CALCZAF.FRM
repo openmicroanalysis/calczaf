@@ -454,9 +454,28 @@ Begin VB.Form FormMAIN
    Begin VB.Menu menuAnalytical 
       Caption         =   "&Analytical"
       HelpContextID   =   129
+      Begin VB.Menu menuAnalyticalZAFSelections 
+         Caption         =   "ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections"
+         HelpContextID   =   134
+      End
+      Begin VB.Menu menuAnalyticalConditions 
+         Caption         =   "Operating Conditions"
+         HelpContextID   =   135
+      End
+      Begin VB.Menu menuAnalyticalEmpiricalMACs 
+         Caption         =   "Empirical MACs"
+         HelpContextID   =   133
+      End
+      Begin VB.Menu menuAnalyticalParticleandThinFilm 
+         Caption         =   "Particle and Thin Film"
+         HelpContextID   =   528
+      End
       Begin VB.Menu menuAnalyticalElements 
          Caption         =   "Display Current Sample Elements"
          HelpContextID   =   770
+      End
+      Begin VB.Menu menuAnalyticalSeparator1 
+         Caption         =   "-"
       End
       Begin VB.Menu menuAnalyticalModelSeco 
          Caption         =   $"CALCZAF.frx":59E0E
@@ -478,25 +497,6 @@ Begin VB.Form FormMAIN
       Begin VB.Menu menuStudentstTable 
          Caption         =   "Students ""t"" Table"
          HelpContextID   =   626
-      End
-      Begin VB.Menu menuAnalyticalSeparator1 
-         Caption         =   "-"
-      End
-      Begin VB.Menu menuAnalyticalEmpiricalMACs 
-         Caption         =   "Empirical MACs"
-         HelpContextID   =   133
-      End
-      Begin VB.Menu menuAnalyticalZAFSelections 
-         Caption         =   "ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections"
-         HelpContextID   =   134
-      End
-      Begin VB.Menu menuAnalyticalConditions 
-         Caption         =   "Operating Conditions"
-         HelpContextID   =   135
-      End
-      Begin VB.Menu menuAnalyticalParticleandThinFilm 
-         Caption         =   "Particle and Thin Film"
-         HelpContextID   =   528
       End
       Begin VB.Menu menuAnalyticalSeparator11 
          Caption         =   "-"

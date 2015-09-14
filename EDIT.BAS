@@ -2274,6 +2274,10 @@ Call MiscParseStringToStringA(astring$, VbComma, bstring$)
 If ierror Then Exit Sub
 mac_value! = Val(bstring$)
 
+' Output to log window
+msg$ = MiscGetFileNameOnly$(inputfilenames$(j%)) & ", absorber= " & Symlo$(iabsorber%) & ", emitter= " & Symlo$(iemitter%) & ", xray= " & Xraylo$(ixray%) & ", mac= " & Format$(mac_value!)
+Call IOWriteLog(msg$)
+
 ' Determine emitter record number (1 to MAXELM%)
 nrec% = iemitter%
 Get #exportfilenumber%, nrec%, macrow
@@ -2287,6 +2291,7 @@ Put #exportfilenumber%, nrec%, macrow
 
 ' Read next emitter
 Line Input #inputfilenumbers%(j%), astring
+DoEvents
 Loop
 
 Loop          ' EOF
@@ -2316,7 +2321,7 @@ Exit Sub
 
 ' Errors
 EditConvertFFAST2DatError:
-MsgBox Error$, vbOKOnly + vbCritical, "EditConvertFFAST2Dat"
+MsgBox Error$ & ", input file " & inputfilenames$(j%), vbOKOnly + vbCritical, "EditConvertFFAST2Dat"
 ierror = True
 Close #inputfilenumbers%(1)
 Close #inputfilenumbers%(2)

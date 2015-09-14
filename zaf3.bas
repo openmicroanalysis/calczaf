@@ -375,19 +375,22 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
     If zaf.il%(i%) = 5 Then n6! = 3.5  ' Ma
     If zaf.il%(i%) = 6 Then n6! = 3.5  ' Mb
 
+    ' If additional x-ray lines, load those here...
+    If MAXRAY% - 1 > MAXRAY_OLD% Then
+    If zaf.il%(i%) = 7 Then n6! = 3.5   ' Ln
+    If zaf.il%(i%) = 8 Then n6! = 3.5   ' Lg
+    If zaf.il%(i%) = 9 Then n6! = 3.5   ' Lv
+    If zaf.il%(i%) = 10 Then n6! = 3.5  ' Ll
+    If zaf.il%(i%) = 11 Then n6! = 3.5  ' Mg
+    If zaf.il%(i%) = 12 Then n6! = 3.5  ' Mz
+    End If
+
     ' Check to see if any absorber (matrix) element present can fluoresce the emitted element/line
     For i1% = 1 To zaf.in0%     ' for each absorber (matrix) element causing fluorescence
         If Not UseFluorescenceByBetaLinesFlag Then
         If zaf.il%(i1%) = 2 Or zaf.il%(i1%) = 4 Or zaf.il%(i1%) = 6 Then GoTo 6970  ' skip fluorescence by beta lines
+        If zaf.il%(i1%) > MAXRAY_OLD% Then GoTo 6970                                ' skip fluorescence by additional x-ray lines
         End If
-
-        ' Variable fluor_type2%() is code for type of fluorescence:  0 = none
-        ' 1=Ka by Ka  2=Ka by Kb  3=Ka by La  4=Ka by Lb  5=Ka by Ma  6=Ka by Mb
-        ' 7=Kb by Ka  8=Kb by Kb  9=Kb by La 10=Kb by Lb 11=Kb by Ma 12=Kb by Mb
-        '13=La by Ka 14=La by Kb 15=La by La 16=La by Lb 17=La by Ma 18=La by Mb
-        '19=Lb by Ka 20=Lb by Kb 21=Lb by La 22=Lb by Lb 23=Lb by Ma 24=Lb by Mb
-        '25=Ma by Ka 26=Ma by Kb 27=Ma by La 28=Ma by Lb 29=Ma by Ma 30=Ma by Mb
-        '31=Mb by Ka 32=Mb by Kb 33=Mb by La 34=Mb by Lb 35=Mb by Ma 36=Mb by Mb
 
             ' First test for fluorescence by K line, then L, and then M (if indicated).
             ' Note that "eng!(1 to MAXRAY%-1, 1 to MAXCHAN%)" is the emission line energies for all lines of
@@ -398,6 +401,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
             If iflu% = 2 And (i2% = 5 Or i2% = 6) Then GoTo 6960    ' only do fluorescence of K and L lines if indicated
                 If Not UseFluorescenceByBetaLinesFlag Then
                 If i2% = 2 Or i2% = 4 Or i2% = 6 Then GoTo 6960     ' skip fluorescence by beta lines
+                If i2% > MAXRAY_OLD% Then GoTo 6960                 ' skip fluorescence by additional x-ray lines
                 End If
 
             ' Check for energy greater than critical excitation energy
@@ -410,6 +414,16 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
             If i2% = 4 Then in8% = 3   ' Lb
             If i2% = 5 Then in8% = 9   ' Ma
             If i2% = 6 Then in8% = 8   ' Mb
+
+            ' If additional x-ray lines, load those here...
+            If MAXRAY% - 1 > MAXRAY_OLD% Then
+            If i2% = 7 Then in8% = 3   ' Ln
+            If i2% = 8 Then in8% = 3   ' Lg
+            If i2% = 9 Then in8% = 3   ' Lv
+            If i2% = 10 Then in8% = 4   ' Ll
+            If i2% = 11 Then in8% = 7   ' Mg
+            If i2% = 12 Then in8% = 9   ' Mz
+            End If
 
             ' Check for missing absorption edge data
             If zaf.edg!(in8%, i1%) = 0# Then
@@ -514,11 +528,13 @@ zaf.vv!(i%) = 0#
         If fluor_type2%(i%, i1%, i2%) = 0 Then GoTo 7340
         If Not UseFluorescenceByBetaLinesFlag Then
         If zaf.il%(i1%) = 2 Or zaf.il%(i1%) = 4 Or zaf.il%(i1%) = 6 Then GoTo 7340  ' skip beta lines
+        If zaf.il%(i1%) > MAXRAY_OLD% Then GoTo 7340                                ' skip fluorescence by additional x-ray lines
         End If
+     
+        ' Get x-ray line index for MAC of fluorescencing line
+        i2% = fluor_type2%(i%, i1%, i2%) - (MAXRAY% - 1) * (zaf.il%(i%) - 1)
 
-        m8! = 0#
-        i2% = fluor_type2%(i%, i1%, i2%) - (MAXRAY% - 1) * (zaf.il%(i%) - 1)  ' get index for MAC of fluorescencing line
-
+            m8! = 0#
             For i4% = 1 To zaf.in0%
             m8! = m8! + zaf.conc!(i4%) * fluor_MACs!(i2%, i4%, i1%)
             Next i4%
@@ -656,12 +672,15 @@ DoEvents
 
 tfilename$ = ApplicationCommonAppData$ & "Jump_Ratios.dat"
 Open tfilename$ For Input As #Temp1FileNumber%
+'Call IOWritelog(vbcrlf & "Opening " & tfilename$)
 
 ' Read first line of column headings
 Line Input #Temp1FileNumber%, astring   ' read comment
+'Call IOWriteLog(astring$)
 Line Input #Temp1FileNumber%, astring   ' read comment
+'Call IOWriteLog(astring$)
 Line Input #Temp1FileNumber%, astring   ' read column labels
-If VerboseMode Then Call IOWriteLog(astring$)
+'Call IOWriteLog(astring$)
 
 ' Loop on entries
 Call IOStatusAuto(vbNullString)
@@ -688,7 +707,7 @@ If ierror Then Exit Sub
 tvalues!(i%) = Val(bstring$)
 tmsg$ = tmsg$ & MiscAutoFormat$(tvalues!(i%))
 Next i%
-If VerboseMode Then Call IOWriteLog(tmsg$)
+'Call IOWriteLog(tmsg$)
 
 ' Load data value (ri - 1)/ri. That is, convert from jump "factor" to jump "ratio"
 For i% = 1 To MAXEDG%
@@ -697,6 +716,7 @@ Next i%
 Loop
 
 Close #Temp1FileNumber%
+'Call IOWriteLog(vbNullString)
 initialized = True
 End If
 
@@ -707,6 +727,13 @@ If iray% = 3 Then in8% = 4   ' La
 If iray% = 4 Then in8% = 3   ' Lb
 If iray% = 5 Then in8% = 9   ' Ma
 If iray% = 6 Then in8% = 8   ' Mb
+
+If iray% = 7 Then in8% = 3    ' Ln
+If iray% = 8 Then in8% = 3    ' Lg
+If iray% = 9 Then in8% = 3    ' Lv
+If iray% = 10 Then in8% = 4   ' Ll
+If iray% = 11 Then in8% = 7   ' Mg
+If iray% = 12 Then in8% = 9   ' Mz
 
 ' Return requested value
 tJumpRatio! = AllJumpRatios!(in8%, ielm%)
@@ -731,23 +758,79 @@ End Sub
 
 Function ZAFFLUGetFluYield(tFluTyp As Integer, iabs As Integer, zaf As TypeZAF) As Single
 ' Return the fluorescent yield for the specified fluorescence type
-' 1=Ka by Ka  2=Ka by Kb  3=Ka by La  4=Ka by Lb  5=Ka by Ma  6=Ka by Mb
-' 7=Kb by Ka  8=Kb by Kb  9=Kb by La 10=Kb by Lb 11=Kb by Ma 12=Kb by Mb
-'13=La by Ka 14=La by Kb 15=La by La 16=La by Lb 17=La by Ma 18=La by Mb
-'19=Lb by Ka 20=Lb by Kb 21=Lb by La 22=Lb by Lb 23=Lb by Ma 24=Lb by Mb
-'25=Ma by Ka 26=Ma by Kb 27=Ma by La 28=Ma by Lb 29=Ma by Ma 30=Ma by Mb
-'31=Mb by Ka 32=Mb by Kb 33=Mb by La 34=Mb by Lb 35=Mb by Ma 36=Mb by Mb
 
 ierror = False
 On Error GoTo ZAFFLUGetFluYieldError
 
 ZAFFLUGetFluYield! = 0#
+
+' Load fluorescent yields for original lines here...
+' 1=Ka by Ka  2=Ka by Kb  3=Ka by La   4=Ka by Lb  5=Ka by Ma  6=Ka by Mb
+' 7=Kb by Ka  8=Kb by Kb  9=Kb by La  10=Kb by Lb 11=Kb by Ma 12=Kb by Mb
+'13=La by Ka 14=La by Kb 15=La by La  16=La by Lb 17=La by Ma 18=La by Mb
+'19=Lb by Ka 20=Lb by Kb 21=Lb by La  22=Lb by Lb 23=Lb by Ma 24=Lb by Mb
+'25=Ma by Ka 26=Ma by Kb 27=Ma by La  28=Ma by Lb 29=Ma by Ma 30=Ma by Mb
+'31=Mb by Ka 32=Mb by Kb 33=Mb by La  34=Mb by Lb 35=Mb by Ma 36=Mb by Mb
+If MAXRAY% - 1 = MAXRAY_OLD% Then
 If tFluTyp% = 1 Or tFluTyp% = 7 Or tFluTyp% = 13 Or tFluTyp% = 19 Or tFluTyp% = 25 Or tFluTyp% = 31 Then ZAFFLUGetFluYield! = zaf.flu!(1, iabs%)  ' fluorescence by Ka
 If tFluTyp% = 2 Or tFluTyp% = 8 Or tFluTyp% = 14 Or tFluTyp% = 20 Or tFluTyp% = 26 Or tFluTyp% = 32 Then ZAFFLUGetFluYield! = zaf.flu!(2, iabs%)  ' fluorescence by Kb
 If tFluTyp% = 3 Or tFluTyp% = 9 Or tFluTyp% = 15 Or tFluTyp% = 21 Or tFluTyp% = 27 Or tFluTyp% = 33 Then ZAFFLUGetFluYield! = zaf.flu!(3, iabs%)  ' fluorescence by La
 If tFluTyp% = 4 Or tFluTyp% = 10 Or tFluTyp% = 16 Or tFluTyp% = 22 Or tFluTyp% = 28 Or tFluTyp% = 34 Then ZAFFLUGetFluYield! = zaf.flu!(4, iabs%)  ' fluorescence by Lb
 If tFluTyp% = 5 Or tFluTyp% = 11 Or tFluTyp% = 17 Or tFluTyp% = 23 Or tFluTyp% = 29 Or tFluTyp% = 35 Then ZAFFLUGetFluYield! = zaf.flu!(5, iabs%)  ' fluorescence by Ma
 If tFluTyp% = 6 Or tFluTyp% = 12 Or tFluTyp% = 18 Or tFluTyp% = 24 Or tFluTyp% = 30 Or tFluTyp% = 36 Then ZAFFLUGetFluYield! = zaf.flu!(6, iabs%)  ' fluorescence by Mb
+
+' Load fluorescent yields for original and additional lines here...
+'  1=Ka by Ka   2=Ka by Kb   3=Ka by La    4=Ka by Lb   5=Ka by Ma   6=Ka by Mb     7=Ka by Ln   8=Ka by Lg   9=Ka by Lv   10=Ka by Ll  11=Ka by Mg  12=Ka by Mz
+' 13=Kb by Ka  14=Kb by Kb  15=Kb by La   16=Kb by Lb  17=Kb by Ma  18=Kb by Mb    19=Kb by Ln  20=Kb by Lg  21=Kb by Lv   22=Kb by Ll  23=Kb by Mg  24=Kb by Mz
+' 25=La by Ka  26=La by Kb  27=La by La   28=La by Lb  29=La by Ma  30=La by Mb    31=La by Ln  32=La by Lg  33=La by Lv   34=La by Ll  35=La by Mg  36=La by Mz
+' 37=Lb by Ka  38=Lb by Kb  39=Lb by La   40=Lb by Lb  41=Lb by Ma  42=Lb by Mb    43=Lb by Ln  44=Lb by Lg  45=Lb by Lv   46=Lb by Ll  47=Lb by Mg  48=Lb by Mz
+' 49=Ma by Ka  50=Ma by Kb  51=Ma by La   52=Ma by Lb  53=Ma by Ma  54=Ma by Mb    55=Ma by Ln  56=Ma by Lg  57=Ma by Lv   58=Ma by Ll  59=Ma by Mg  60=Ma by Mz
+' 61=Mb by Ka  62=Mb by Kb  63=Mb by La   64=Mb by Lb  65=Mb by Ma  66=Mb by Mb    67=Mb by Ln  68=Mb by Lg  69=Mb by Lv   70=Mb by Ll  71=Mb by Mg  72=Mb by Mz
+
+' 73=Ln by Ka  74=Ln by Kb  75=Ln by La   76=Ln by Lb  77=Ln by Ma  78=Ln by Mb    79=Ln by Ln  80=Ln by Lg  81=Ln by Lv   82=Ln by Ll  83=Ln by Mg  84=Ln by Mz
+' 85=Lg by Ka  86=Lg by Kb  87=Lg by La   88=Lg by Lb  89=Lg by Ma  90=Lg by Mb    91=Lg by Ln  92=Lg by Lg  93=Lg by Lv   94=Lg by Ll  95=Lg by Mg  96=Lg by Mz
+' 97=Lv by Ka  98=Lv by Kb  99=Lv by La  100=Lv by Lb 101=Lv by Ma 102=Lv by Mb   103=Lv by Ln 104=Lv by Lg 105=Lv by Lv  106=Lv by Ll 107=Lv by Mg 108=Lv by Mz
+'109=Ll by Ka 110=Ll by Kb 111=Ll by La  112=Ll by Lb 113=Ll by Ma 114=Ll by Mb   115=Ll by Ln 116=Ll by Lg 117=Ll by Lv  118=Ll by Ll 119=Ll by Mg 120=Ll by Mz
+'121=Mg by Ka 122=Mg by Kb 123=Mg by La  124=Mg by Lb 125=Mg by Ma 126=Mg by Mb   127=Mg by Ln 128=Mg by Lg 129=Mg by Lv  130=Mg by Ll 131=Mg by Mg 132=Mg by Mz
+'133=Mz by Ka 134=Mz by Kb 135=Mz by La  136=Mz by Lb 137=Mz by Ma 138=Mz by Mb   139=Mz by Ln 140=Mz by Lg 141=Mz by Lv  142=Mz by Ll 143=Mz by Mg 144=Mz by Mz
+Else
+If tFluTyp% = 1 Or tFluTyp% = 13 Or tFluTyp% = 25 Or tFluTyp% = 37 Or tFluTyp% = 49 Or tFluTyp% = 61 Then ZAFFLUGetFluYield! = zaf.flu!(1, iabs%)  ' fluorescence by Ka
+If tFluTyp% = 73 Or tFluTyp% = 85 Or tFluTyp% = 97 Or tFluTyp% = 109 Or tFluTyp% = 121 Or tFluTyp% = 133 Then ZAFFLUGetFluYield! = zaf.flu!(1, iabs%)  ' fluorescence by Ka
+
+If tFluTyp% = 2 Or tFluTyp% = 14 Or tFluTyp% = 26 Or tFluTyp% = 38 Or tFluTyp% = 50 Or tFluTyp% = 62 Then ZAFFLUGetFluYield! = zaf.flu!(2, iabs%)  ' fluorescence by Kb
+If tFluTyp% = 74 Or tFluTyp% = 86 Or tFluTyp% = 98 Or tFluTyp% = 110 Or tFluTyp% = 122 Or tFluTyp% = 134 Then ZAFFLUGetFluYield! = zaf.flu!(2, iabs%)  ' fluorescence by Kb
+
+If tFluTyp% = 3 Or tFluTyp% = 15 Or tFluTyp% = 27 Or tFluTyp% = 39 Or tFluTyp% = 51 Or tFluTyp% = 63 Then ZAFFLUGetFluYield! = zaf.flu!(3, iabs%)  ' fluorescence by La
+If tFluTyp% = 75 Or tFluTyp% = 87 Or tFluTyp% = 99 Or tFluTyp% = 111 Or tFluTyp% = 123 Or tFluTyp% = 135 Then ZAFFLUGetFluYield! = zaf.flu!(3, iabs%)  ' fluorescence by La
+
+If tFluTyp% = 4 Or tFluTyp% = 16 Or tFluTyp% = 28 Or tFluTyp% = 40 Or tFluTyp% = 52 Or tFluTyp% = 64 Then ZAFFLUGetFluYield! = zaf.flu!(4, iabs%)  ' fluorescence by Lb
+If tFluTyp% = 76 Or tFluTyp% = 88 Or tFluTyp% = 100 Or tFluTyp% = 112 Or tFluTyp% = 124 Or tFluTyp% = 136 Then ZAFFLUGetFluYield! = zaf.flu!(4, iabs%)  ' fluorescence by Lb
+
+If tFluTyp% = 5 Or tFluTyp% = 17 Or tFluTyp% = 29 Or tFluTyp% = 41 Or tFluTyp% = 53 Or tFluTyp% = 65 Then ZAFFLUGetFluYield! = zaf.flu!(5, iabs%)  ' fluorescence by Ma
+If tFluTyp% = 77 Or tFluTyp% = 89 Or tFluTyp% = 101 Or tFluTyp% = 113 Or tFluTyp% = 125 Or tFluTyp% = 137 Then ZAFFLUGetFluYield! = zaf.flu!(5, iabs%)  ' fluorescence by Ma
+
+If tFluTyp% = 6 Or tFluTyp% = 18 Or tFluTyp% = 30 Or tFluTyp% = 42 Or tFluTyp% = 54 Or tFluTyp% = 66 Then ZAFFLUGetFluYield! = zaf.flu!(6, iabs%)  ' fluorescence by Mb
+If tFluTyp% = 78 Or tFluTyp% = 90 Or tFluTyp% = 102 Or tFluTyp% = 114 Or tFluTyp% = 126 Or tFluTyp% = 138 Then ZAFFLUGetFluYield! = zaf.flu!(6, iabs%)  ' fluorescence by Mb
+
+
+If tFluTyp% = 7 Or tFluTyp% = 19 Or tFluTyp% = 31 Or tFluTyp% = 43 Or tFluTyp% = 55 Or tFluTyp% = 67 Then ZAFFLUGetFluYield! = zaf.flu!(7, iabs%)  ' fluorescence by Ln
+If tFluTyp% = 79 Or tFluTyp% = 91 Or tFluTyp% = 103 Or tFluTyp% = 115 Or tFluTyp% = 127 Or tFluTyp% = 139 Then ZAFFLUGetFluYield! = zaf.flu!(7, iabs%)  ' fluorescence by Ln
+
+If tFluTyp% = 8 Or tFluTyp% = 20 Or tFluTyp% = 32 Or tFluTyp% = 44 Or tFluTyp% = 56 Or tFluTyp% = 68 Then ZAFFLUGetFluYield! = zaf.flu!(8, iabs%)  ' fluorescence by Lg
+If tFluTyp% = 80 Or tFluTyp% = 92 Or tFluTyp% = 104 Or tFluTyp% = 116 Or tFluTyp% = 128 Or tFluTyp% = 140 Then ZAFFLUGetFluYield! = zaf.flu!(8, iabs%)  ' fluorescence by Lg
+
+If tFluTyp% = 9 Or tFluTyp% = 21 Or tFluTyp% = 33 Or tFluTyp% = 45 Or tFluTyp% = 57 Or tFluTyp% = 69 Then ZAFFLUGetFluYield! = zaf.flu!(9, iabs%)  ' fluorescence by Lv
+If tFluTyp% = 81 Or tFluTyp% = 93 Or tFluTyp% = 105 Or tFluTyp% = 117 Or tFluTyp% = 129 Or tFluTyp% = 141 Then ZAFFLUGetFluYield! = zaf.flu!(9, iabs%)  ' fluorescence by Lv
+
+If tFluTyp% = 10 Or tFluTyp% = 22 Or tFluTyp% = 34 Or tFluTyp% = 46 Or tFluTyp% = 58 Or tFluTyp% = 70 Then ZAFFLUGetFluYield! = zaf.flu!(10, iabs%)  ' fluorescence by Ll
+If tFluTyp% = 82 Or tFluTyp% = 94 Or tFluTyp% = 106 Or tFluTyp% = 118 Or tFluTyp% = 130 Or tFluTyp% = 142 Then ZAFFLUGetFluYield! = zaf.flu!(10, iabs%)  ' fluorescence by Ll
+
+If tFluTyp% = 11 Or tFluTyp% = 23 Or tFluTyp% = 35 Or tFluTyp% = 47 Or tFluTyp% = 59 Or tFluTyp% = 71 Then ZAFFLUGetFluYield! = zaf.flu!(11, iabs%)  ' fluorescence by Mg
+If tFluTyp% = 83 Or tFluTyp% = 95 Or tFluTyp% = 107 Or tFluTyp% = 119 Or tFluTyp% = 131 Or tFluTyp% = 143 Then ZAFFLUGetFluYield! = zaf.flu!(11, iabs%)  ' fluorescence by Mg
+
+If tFluTyp% = 12 Or tFluTyp% = 24 Or tFluTyp% = 36 Or tFluTyp% = 48 Or tFluTyp% = 60 Or tFluTyp% = 72 Then ZAFFLUGetFluYield! = zaf.flu!(12, iabs%)  ' fluorescence by Mz
+If tFluTyp% = 84 Or tFluTyp% = 96 Or tFluTyp% = 108 Or tFluTyp% = 120 Or tFluTyp% = 132 Or tFluTyp% = 144 Then ZAFFLUGetFluYield! = zaf.flu!(12, iabs%)  ' fluorescence by Mz
+End If
 
 Exit Function
 
@@ -761,49 +844,55 @@ End Function
 
 Sub ZAFFLULoadLineWeightsReed(i As Integer, i1 As Integer, i2 As Integer, fluor_type2() As Integer, rela_line_wts2() As Single)
 ' Load the relative line weights calculated from Reed (improved by tuning to Penepma large fluorescence database)
+' Note: rela_line_wts2!(i%, i1%, i2%) = relative line weights (originally Pij) without Z dependency
+' Variable fluor_type2%() is code for type of fluorescence:  0 = none
 
 ierror = False
 On Error GoTo ZAFFLULoadLineWeightsReedError
            
-' Variable fluor_type2%() is code for type of fluorescence:  0 = none
-' 1=Ka by Ka  2=Ka by Kb  3=Ka by La  4=Ka by Lb  5=Ka by Ma  6=Ka by Mb
-' 7=Kb by Ka  8=Kb by Kb  9=Kb by La 10=Kb by Lb 11=Kb by Ma 12=Kb by Mb
-'13=La by Ka 14=La by Kb 15=La by La 16=La by Lb 17=La by Ma 18=La by Mb
-'19=Lb by Ka 20=Lb by Kb 21=Lb by La 22=Lb by Lb 23=Lb by Ma 24=Lb by Mb
-'25=Ma by Ka 26=Ma by Kb 27=Ma by La 28=Ma by Lb 29=Ma by Ma 30=Ma by Mb
-'31=Mb by Ka 32=Mb by Kb 33=Mb by La 34=Mb by Lb 35=Mb by Ma 36=Mb by Mb
-           
-' Note: rela_line_wts2!(i%, i1%, i2%) = relative line weights (originally Pij) without Z dependency
+' Load relative line weights for original x-ray lines here...
+' 1=Ka by Ka  2=Ka by Kb  3=Ka by La   4=Ka by Lb  5=Ka by Ma  6=Ka by Mb
+' 7=Kb by Ka  8=Kb by Kb  9=Kb by La  10=Kb by Lb 11=Kb by Ma 12=Kb by Mb
+'13=La by Ka 14=La by Kb 15=La by La  16=La by Lb 17=La by Ma 18=La by Mb
+'19=Lb by Ka 20=Lb by Kb 21=Lb by La  22=Lb by Lb 23=Lb by Ma 24=Lb by Mb
+'25=Ma by Ka 26=Ma by Kb 27=Ma by La  28=Ma by Lb 29=Ma by Ma 30=Ma by Mb
+'31=Mb by Ka 32=Mb by Kb 33=Mb by La  34=Mb by Lb 35=Mb by Ma 36=Mb by Mb
+If MAXRAY% - 1 = MAXRAY_OLD% Then
 If fluor_type2%(i%, i1%, i2%) = 1 Then rela_line_wts2!(i%, i1%, i2%) = 1#     ' Ka by Ka
 If fluor_type2%(i%, i1%, i2%) = 2 Then rela_line_wts2!(i%, i1%, i2%) = 0.05   ' Ka by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
 If fluor_type2%(i%, i1%, i2%) = 3 Then rela_line_wts2!(i%, i1%, i2%) = 4.2    ' Ka by La (4.2 from Reed)
 If fluor_type2%(i%, i1%, i2%) = 4 Then rela_line_wts2!(i%, i1%, i2%) = 0.2    ' Ka by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
 If fluor_type2%(i%, i1%, i2%) = 5 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Ma (adjusted based on Penepma12_Exper_kratios Si/Pt)
 If fluor_type2%(i%, i1%, i2%) = 6 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Mb (adjusted based on Penepma12_Exper_kratios Si/Pt)
+
 If fluor_type2%(i%, i1%, i2%) = 7 Then rela_line_wts2!(i%, i1%, i2%) = 0.6    ' Kb by Ka (adjusted based on Penepma12_Exper_kratios_flu.dat)
 If fluor_type2%(i%, i1%, i2%) = 8 Then rela_line_wts2!(i%, i1%, i2%) = 0.08   ' Kb by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
 If fluor_type2%(i%, i1%, i2%) = 9 Then rela_line_wts2!(i%, i1%, i2%) = 0.3    ' Kb by La (adjusted based on Penepma12_Exper_kratios_flu.dat)
 If fluor_type2%(i%, i1%, i2%) = 10 Then rela_line_wts2!(i%, i1%, i2%) = 2.4   ' Kb by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
 If fluor_type2%(i%, i1%, i2%) = 11 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Ma ()
 If fluor_type2%(i%, i1%, i2%) = 12 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Mb ()
+
 If fluor_type2%(i%, i1%, i2%) = 13 Then rela_line_wts2!(i%, i1%, i2%) = 0.24  ' La by Ka (0.24 from Reed)
 If fluor_type2%(i%, i1%, i2%) = 14 Then rela_line_wts2!(i%, i1%, i2%) = 0.005  ' La by Kb (adjusted based on Penepma12_Exper_kratios Cd/Ca)
 If fluor_type2%(i%, i1%, i2%) = 15 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' La by La
 If fluor_type2%(i%, i1%, i2%) = 16 Then rela_line_wts2!(i%, i1%, i2%) = 0.5   ' La by Lb (adjusted based on Penepma12_Exper_kratios Pb/Th)
 'If fluor_type2%(i%, i1%, i2%) = 17 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' La by Ma (adjusted based on Penepma12_Exper_kratios Rb/Re)
 If fluor_type2%(i%, i1%, i2%) = 18 Then rela_line_wts2!(i%, i1%, i2%) = 0.05  ' La by Mb (adjusted based on Pouchou2.dat)
+
 If fluor_type2%(i%, i1%, i2%) = 19 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Ka (adjusted based on Penepma12_Exper_kratios Ag/Ca)
 If fluor_type2%(i%, i1%, i2%) = 20 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Kb (adjusted based on Penepma12_Exper_kratios Ag/Ca)
 If fluor_type2%(i%, i1%, i2%) = 21 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by La ()
 If fluor_type2%(i%, i1%, i2%) = 22 Then rela_line_wts2!(i%, i1%, i2%) = 1#  ' Lb by Lb ()
 If fluor_type2%(i%, i1%, i2%) = 23 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Ma ()
 If fluor_type2%(i%, i1%, i2%) = 24 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Mb ()
+
 If fluor_type2%(i%, i1%, i2%) = 25 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Ma by Ka (adjusted based on Pouchou2.dat)
 'If fluor_type2%(i%, i1%, i2%) = 26 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Ma by Kb (adjusted based on Penepma12_Exper_kratios U/K)
 'If fluor_type2%(i%, i1%, i2%) = 27 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by La (adjusted based on Penepma12_Exper_kratios Pb/Rh)
 If fluor_type2%(i%, i1%, i2%) = 28 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by Lb (adjusted based on Pouchou2.dat)
 If fluor_type2%(i%, i1%, i2%) = 29 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Ma by Ma
 If fluor_type2%(i%, i1%, i2%) = 30 Then rela_line_wts2!(i%, i1%, i2%) = 0.03  ' Ma by Mb (adjusted based on Pouchou2.dat)
+
 If fluor_type2%(i%, i1%, i2%) = 31 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Mb by Ka ()
 If fluor_type2%(i%, i1%, i2%) = 32 Then rela_line_wts2!(i%, i1%, i2%) = 0.4   ' Mb by Kb (adjusted based on Pouchou2.dat)
 If fluor_type2%(i%, i1%, i2%) = 33 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by La ()
@@ -814,6 +903,74 @@ If fluor_type2%(i%, i1%, i2%) = 36 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' 
 'If fluor_type2%(i%, i1%, i2%) = 14 Then    ' test break
 'DoEvents
 'End If
+
+' Load relative line weights for original and additional x-ray lines here...
+'  1=Ka by Ka   2=Ka by Kb   3=Ka by La    4=Ka by Lb   5=Ka by Ma   6=Ka by Mb     7=Ka by Ln   8=Ka by Lg   9=Ka by Lv   10=Ka by Ll  11=Ka by Mg  12=Ka by Mz
+' 13=Kb by Ka  14=Kb by Kb  15=Kb by La   16=Kb by Lb  17=Kb by Ma  18=Kb by Mb    19=Kb by Ln  20=Kb by Lg  21=Kb by Lv   22=Kb by Ll  23=Kb by Mg  24=Kb by Mz
+' 25=La by Ka  26=La by Kb  27=La by La   28=La by Lb  29=La by Ma  30=La by Mb    31=La by Ln  32=La by Lg  33=La by Lv   34=La by Ll  35=La by Mg  36=La by Mz
+' 37=Lb by Ka  38=Lb by Kb  39=Lb by La   40=Lb by Lb  41=Lb by Ma  42=Lb by Mb    43=Lb by Ln  44=Lb by Lg  45=Lb by Lv   46=Lb by Ll  47=Lb by Mg  48=Lb by Mz
+' 49=Ma by Ka  50=Ma by Kb  51=Ma by La   52=Ma by Lb  53=Ma by Ma  54=Ma by Mb    55=Ma by Ln  56=Ma by Lg  57=Ma by Lv   58=Ma by Ll  59=Ma by Mg  60=Ma by Mz
+' 61=Mb by Ka  62=Mb by Kb  63=Mb by La   64=Mb by Lb  65=Mb by Ma  66=Mb by Mb    67=Mb by Ln  68=Mb by Lg  69=Mb by Lv   70=Mb by Ll  71=Mb by Mg  72=Mb by Mz
+
+' 73=Ln by Ka  74=Ln by Kb  75=Ln by La   76=Ln by Lb  77=Ln by Ma  78=Ln by Mb    79=Ln by Ln  80=Ln by Lg  81=Ln by Lv   82=Ln by Ll  83=Ln by Mg  84=Ln by Mz
+' 85=Lg by Ka  86=Lg by Kb  87=Lg by La   88=Lg by Lb  89=Lg by Ma  90=Lg by Mb    91=Lg by Ln  92=Lg by Lg  93=Lg by Lv   94=Lg by Ll  95=Lg by Mg  96=Lg by Mz
+' 97=Lv by Ka  98=Lv by Kb  99=Lv by La  100=Lv by Lb 101=Lv by Ma 102=Lv by Mb   103=Lv by Ln 104=Lv by Lg 105=Lv by Lv  106=Lv by Ll 107=Lv by Mg 108=Lv by Mz
+'109=Ll by Ka 110=Ll by Kb 111=Ll by La  112=Ll by Lb 113=Ll by Ma 114=Ll by Mb   115=Ll by Ln 116=Ll by Lg 117=Ll by Lv  118=Ll by Ll 119=Ll by Mg 120=Ll by Mz
+'121=Mg by Ka 122=Mg by Kb 123=Mg by La  124=Mg by Lb 125=Mg by Ma 126=Mg by Mb   127=Mg by Ln 128=Mg by Lg 129=Mg by Lv  130=Mg by Ll 131=Mg by Mg 132=Mg by Mz
+'133=Mz by Ka 134=Mz by Kb 135=Mz by La  136=Mz by Lb 137=Mz by Ma 138=Mz by Mb   139=Mz by Ln 140=Mz by Lg 141=Mz by Lv  142=Mz by Ll 143=Mz by Mg 144=Mz by Mz
+Else
+If fluor_type2%(i%, i1%, i2%) = 1 Then rela_line_wts2!(i%, i1%, i2%) = 1#     ' Ka by Ka
+If fluor_type2%(i%, i1%, i2%) = 2 Then rela_line_wts2!(i%, i1%, i2%) = 0.05   ' Ka by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 3 Then rela_line_wts2!(i%, i1%, i2%) = 4.2    ' Ka by La (4.2 from Reed)
+If fluor_type2%(i%, i1%, i2%) = 4 Then rela_line_wts2!(i%, i1%, i2%) = 0.2    ' Ka by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 5 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Ma (adjusted based on Penepma12_Exper_kratios Si/Pt)
+If fluor_type2%(i%, i1%, i2%) = 6 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Mb (adjusted based on Penepma12_Exper_kratios Si/Pt)
+
+
+If fluor_type2%(i%, i1%, i2%) = 13 Then rela_line_wts2!(i%, i1%, i2%) = 0.6    ' Kb by Ka (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 14 Then rela_line_wts2!(i%, i1%, i2%) = 0.08   ' Kb by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 15 Then rela_line_wts2!(i%, i1%, i2%) = 0.3    ' Kb by La (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 16 Then rela_line_wts2!(i%, i1%, i2%) = 2.4   ' Kb by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
+If fluor_type2%(i%, i1%, i2%) = 17 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Ma ()
+If fluor_type2%(i%, i1%, i2%) = 18 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Mb ()
+
+
+If fluor_type2%(i%, i1%, i2%) = 25 Then rela_line_wts2!(i%, i1%, i2%) = 0.24  ' La by Ka (0.24 from Reed)
+If fluor_type2%(i%, i1%, i2%) = 26 Then rela_line_wts2!(i%, i1%, i2%) = 0.005  ' La by Kb (adjusted based on Penepma12_Exper_kratios Cd/Ca)
+If fluor_type2%(i%, i1%, i2%) = 27 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' La by La
+If fluor_type2%(i%, i1%, i2%) = 28 Then rela_line_wts2!(i%, i1%, i2%) = 0.5   ' La by Lb (adjusted based on Penepma12_Exper_kratios Pb/Th)
+'If fluor_type2%(i%, i1%, i2%) = 29 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' La by Ma (adjusted based on Penepma12_Exper_kratios Rb/Re)
+If fluor_type2%(i%, i1%, i2%) = 30 Then rela_line_wts2!(i%, i1%, i2%) = 0.05  ' La by Mb (adjusted based on Pouchou2.dat)
+
+
+If fluor_type2%(i%, i1%, i2%) = 37 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Ka (adjusted based on Penepma12_Exper_kratios Ag/Ca)
+If fluor_type2%(i%, i1%, i2%) = 38 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Kb (adjusted based on Penepma12_Exper_kratios Ag/Ca)
+If fluor_type2%(i%, i1%, i2%) = 39 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by La ()
+If fluor_type2%(i%, i1%, i2%) = 40 Then rela_line_wts2!(i%, i1%, i2%) = 1#  ' Lb by Lb ()
+If fluor_type2%(i%, i1%, i2%) = 41 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Ma ()
+If fluor_type2%(i%, i1%, i2%) = 42 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Mb ()
+
+
+If fluor_type2%(i%, i1%, i2%) = 49 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Ma by Ka (adjusted based on Pouchou2.dat)
+'If fluor_type2%(i%, i1%, i2%) = 50 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Ma by Kb (adjusted based on Penepma12_Exper_kratios U/K)
+'If fluor_type2%(i%, i1%, i2%) = 51 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by La (adjusted based on Penepma12_Exper_kratios Pb/Rh)
+If fluor_type2%(i%, i1%, i2%) = 52 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by Lb (adjusted based on Pouchou2.dat)
+If fluor_type2%(i%, i1%, i2%) = 53 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Ma by Ma
+If fluor_type2%(i%, i1%, i2%) = 54 Then rela_line_wts2!(i%, i1%, i2%) = 0.03  ' Ma by Mb (adjusted based on Pouchou2.dat)
+
+
+If fluor_type2%(i%, i1%, i2%) = 61 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Mb by Ka ()
+If fluor_type2%(i%, i1%, i2%) = 62 Then rela_line_wts2!(i%, i1%, i2%) = 0.4   ' Mb by Kb (adjusted based on Pouchou2.dat)
+If fluor_type2%(i%, i1%, i2%) = 63 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by La ()
+If fluor_type2%(i%, i1%, i2%) = 64 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by Lb ()
+If fluor_type2%(i%, i1%, i2%) = 65 Then rela_line_wts2!(i%, i1%, i2%) = 2#    ' Mb by Ma (adjusted based on Penepma12_Exper_kratios Pb/Th)
+If fluor_type2%(i%, i1%, i2%) = 66 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Mb by Mb (adjusted based on Penepma12_Exper_kratios Pb/Th)
+
+'If fluor_type2%(i%, i1%, i2%) = 26 Then    ' test break
+'DoEvents
+'End If
+
+End If
 
 Exit Sub
 
@@ -853,14 +1010,12 @@ If matrix_generated# > 0# And emitter_generated# > 0# Then
 If DebugMode Then
 tmsg$ = "Pure element generated intensity for emitter " & Format$(Symup$(iemitter_elem%), a20$) & " " & Format$(Xraylo$(iemitter_xray%), a20$) & " is " & MiscAutoFormatD$(emitter_generated#) & ", "
 tmsg$ = tmsg$ & "and for matrix fluorescer " & Format$(Symup$(imatrix_elem%), a20$) & " " & Format$(Xraylo$(imatrix_xray%), a20$) & " is " & MiscAutoFormatD$(matrix_generated#) & ", " & vbCrLf
-'tmsg$ = tmsg$ & "and the relative line weight (fluorescer/emitter) from (improved) Reed is " & Format$(tLineWeightRatio!) & ", and from Penfluor/Fanal is " & MiscAutoFormat$(CSng(matrix_generated# / emitter_generated#))
-tmsg$ = tmsg$ & "and the relative line weight (fluorescer/emitter) from (improved) Reed is " & Format$(tLineWeightRatio!) & ", and from Penfluor/Fanal is " & MiscAutoFormat$(CSng(matrix_generated# / emitter_generated#) / 10#)
+tmsg$ = tmsg$ & "and the relative line weight (fluorescer/emitter) from (improved) Reed is " & Format$(tLineWeightRatio!) & ", and from Penfluor/Fanal is " & MiscAutoFormat$(CSng(matrix_generated# / emitter_generated#))
 Call IOWriteLog(tmsg$)
 End If
 
 ' Calculate generated pure element intensity ratio if pure element intensities found (Reed uses fluorescer / emitter for relative line weight ratios, that is W La / Fe Ka)
-'tLineWeightRatio! = CSng(matrix_generated# / emitter_generated#)
-tLineWeightRatio! = CSng(matrix_generated# / emitter_generated#) / 10#
+tLineWeightRatio! = CSng(matrix_generated# / emitter_generated#)
 End If
 
 Exit Sub

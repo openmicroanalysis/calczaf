@@ -778,7 +778,7 @@ If iray% = 8 Then jnum% = 3    ' Lg
 If iray% = 9 Then jnum% = 3    ' Lv
 If iray% = 10 Then jnum% = 4   ' Ll
 If iray% = 11 Then jnum% = 7   ' Mg
-If iray% = 12 Then jnum% = 8   ' Mz
+If iray% = 12 Then jnum% = 9   ' Mz
 
 ' Load edge energy (in keV)
 edge! = edgrow.energy!(jnum%) / EVPERKEV#

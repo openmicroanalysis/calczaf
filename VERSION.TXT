@@ -18,13 +18,21 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+09/13/15	Fix beam scan calibration interpolation to use log-log relation (Carpenter).
+
+	Add additional absorbers to FFAST2.DAT MAC table (Gopon).
+	
+09/12/15	Add more debug statements to function RealTimeGetBeamScanCalibration for advanced beam scan calibrations.
+
 09/11/15	More work on additional x-ray lines (Gopon). Make JEOL monitor read statements key on VerboseMode flag (Carpenter).
 
 09/10/15	More work on 8x30 get/set column conditions (Pinard) and additional x-ray lines (Gopon).
-	
+v. 11.05
+
 09/04/15	Additional work on 8x30 save/load column condition code (Pinard). Fix minor CalcZAF bug (Poeml).
 	
 09/01/15	Add check for non-zero pixel dwell times in CalcImage. Add scan rotation command to Sx100 code for image acquisition.
+v. 11.04
 	
 08/31/15	Fix bug in multi-point beam scan calibration code (Carpenter).
 	
@@ -50,7 +58,6 @@ v. 11.0.3
 08/23/15	Small tweak getting ready for additional x-rays lines in ZAFReadLn and ZAFLoadMAC.
 v. 11.0.2
 	
-
 08/21/15	Move application files to Program Files and config and data files to ProgramData folder.
 v. 11.0.1
 	Add code to auto-update config and data files from old installation location.

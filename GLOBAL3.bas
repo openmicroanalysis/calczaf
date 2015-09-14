@@ -11,14 +11,17 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-' Constants for CalcZAF and Standard (and UserWin) only
-Global Const HistogramDataFileNumber% = 9        ' #9 HistogramDataFile$ (*.TXT)
-
 ' Import/Export files
-Global Const ImportDataFileNumber% = 5           ' #5 ImportDataFile$ (STANDARD.DAT or *.DAT)
-Global Const ImportDataFileNumber2% = 40         ' #40 ImportDataFile$ (*.DAT)
-Global Const ExportDataFileNumber% = 8           ' #8 ExportDataFile$ (*.OUT)
-Global Const ExportDataFileNumber2% = 41         ' #41 ExportDataFile$ (*.OUT)
+Global Const ImportDataFileNumber% = 40          ' #40 ImportDataFile$ (STANDARD.DAT or *.DAT)
+Global Const ImportDataFileNumber2% = 41         ' #41 ImportDataFile$ (*.DAT)
+Global Const ExportDataFileNumber% = 42          ' #42 ExportDataFile$ (*.OUT)
+Global Const ExportDataFileNumber2% = 43         ' #43 ExportDataFile$ (*.OUT)
+
+' Constants for CalcZAF and Standard (and UserWin) only
+Global Const HistogramDataFileNumber% = 44       ' #44 HistogramDataFile$ (*.TXT)
+
+Global Const ModalInputDataFileNumber% = 49      ' #49 Modal analysis input ASCII file
+Global Const ModalOuputDataFileNumber% = 50      ' #50 Modal analysis output ASCII file
 
 Global CalculateAlternativeZbarsFlag As Integer
 Global CalculateContinuumAbsorptionFlag As Integer
@@ -29,9 +32,6 @@ Global Const MAXCOEFF10% = 10           ' maximum number of fit coefficients
 Global Const MAXCOEFF13% = 13           ' maximum number of fit coefficients
 
 Global Const MILLIWATTSPERWATT& = 1000&  ' milliwatts per watt
-
-Global Const ModalInputDataFileNumber% = 49 ' #49 Modal analysis input ASCII file
-Global Const ModalOuputDataFileNumber% = 50 ' #50 Modal analysis output ASCII file
 
 Global ImportDataFile2 As String
 Global HistogramDataFile As String

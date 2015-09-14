@@ -155,7 +155,7 @@ If sample(1).XrayNums%(chan%) = 8 Then jnum% = 3   ' Lg
 If sample(1).XrayNums%(chan%) = 9 Then jnum% = 3   ' Lv
 If sample(1).XrayNums%(chan%) = 10 Then jnum% = 4   ' Ll
 If sample(1).XrayNums%(chan%) = 11 Then jnum% = 7   ' Mg
-If sample(1).XrayNums%(chan%) = 12 Then jnum% = 8   ' Mz
+If sample(1).XrayNums%(chan%) = 12 Then jnum% = 9   ' Mz
 
 If edgrow.energy!(jnum%) <= 0# Then
 msg$ = "Warning in ElementCheckXray: No x-ray absorption edge data for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & "(edge index= " & Format$(jnum%) & ")"

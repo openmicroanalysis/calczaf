@@ -43,14 +43,14 @@ Sub Penepma12CalculateReadWriteBinaryDataMatrix(mode As Integer, tfolder As Stri
 '
 '  BinaryRanges!(1 to MAXBINARY%)  are the compositional binaries (always 99 to 1 wt%)
 '
-'  Binary_ZAF_Kratios#(1 to MAXRAY%, 1 to MAXBINARY%)  are the full k-ratios from Fanal in k-ratio % for each x-ray and binary composition
-'  CalcZAF_ZAF_Kratios#(1 to MAXRAY%, 1 to MAXBINARY%)  are the full k-ratios from CalcZAF in k-ratio % for each x-ray and binary composition
+'  Binary_ZAF_Kratios#(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the full k-ratios from Fanal in k-ratio % for each x-ray and binary composition
+'  CalcZAF_ZAF_Kratios#(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the full k-ratios from CalcZAF in k-ratio % for each x-ray and binary composition
 '
-'  Binary_ZA_Kratios#(1 to MAXRAY%, 1 to MAXBINARY%)  are the ZA only k-ratios from Fanal in k-ratio % for each x-ray and binary composition
-'  CalcZAF_ZA_Kratios#(1 to MAXRAY%, 1 to MAXBINARY%)  are the ZA only k-ratios from CalcZAF in k-ratio % for each x-ray and binary composition
+'  Binary_ZA_Kratios#(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the ZA only k-ratios from Fanal in k-ratio % for each x-ray and binary composition
+'  CalcZAF_ZA_Kratios#(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the ZA only k-ratios from CalcZAF in k-ratio % for each x-ray and binary composition
 '
-'  Binary_F_Kratios#(1 to MAXRAY%, 1 to MAXBINARY%)  are the fluorescence only k-ratios from Fanal in k-ratio % for each x-ray and binary composition
-'  CalcZAF_F_Kratios#(1 to MAXRAY%, 1 to MAXBINARY%)  are the fluorescence only k-ratios from CalcZAF in k-ratio % for each x-ray and binary composition
+'  Binary_F_Kratios#(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the fluorescence only k-ratios from Fanal in k-ratio % for each x-ray and binary composition
+'  CalcZAF_F_Kratios#(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the fluorescence only k-ratios from CalcZAF in k-ratio % for each x-ray and binary composition
 
 ierror = False
 On Error GoTo Penepma12CalculateReadWriteBinaryDataMatrixError
@@ -76,7 +76,7 @@ Open tfilename$ For Output As #tfilenumber%
 astring$ = VbDquote$ & "keV" & VbDquote$ & vbTab
 
 ' Load data column labels for k-ratios and binary alpha factors
-For l% = 1 To MAXRAY% - 1
+For l% = 1 To MAXRAY_OLD%
 For n% = 1 To MAXBINARY%
 
 ' Create ZAF output strings
@@ -115,7 +115,7 @@ For i% = 1 To 50
 Input #tfilenumber%, tkeV!
 If tkeV! <> i% Then GoTo Penepma12CalculateReadWriteBinaryDataMatrixWrongkeV
 
-For l% = 1 To MAXRAY% - 1
+For l% = 1 To MAXRAY_OLD%
 For n% = 1 To MAXBINARY%
 
 ' Input ZAF values
@@ -148,7 +148,7 @@ Open tfolder$ & "\" & tfilename$ For Append As #tfilenumber%
 astring$ = Format$(keV!) & vbTab
 
 ' Output binary (Penepma) and CalcZAF k-ratios
-For l% = 1 To MAXRAY% - 1
+For l% = 1 To MAXRAY_OLD%
 For n% = 1 To MAXBINARY%
 
 ' Create output string for k-ratios (%) and binary alpha factors
@@ -204,9 +204,9 @@ Sub Penepma12CalculateAlphaFactors(l As Integer, tBinaryRanges() As Single, tBin
 ' Calculate the alpha factors and fit coefficients for the passed k-ratios (matrix alpha factors)
 '  l% is the x-ray line being calculated
 '  tBinaryRanges!(1 to MAXBINARY%)  are the compositional binaries in weight percent
-'  tBinary_Kratios#(1 to MAXRAY%, 1 to MAXBINARY%)  are the k-ratios for each x-ray and binary composition
-'  tBinary_Factors!(1 to MAXRAY%, 1 to MAXBINARY%)  are the alpha factors for each x-ray and binary composition, alpha = (C/K - C)/(1 - C)
-'  tBinary_Coeffs!(1 to MAXRAY%, 1 to MAXCOEFF4%)  are the polynomial/non-linear alpha factors fit coefficients for each x-ray and MAXBINARY% alpha factors
+'  tBinary_Kratios#(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the k-ratios for each x-ray and binary composition
+'  tBinary_Factors!(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the alpha factors for each x-ray and binary composition, alpha = (C/K - C)/(1 - C)
+'  tBinary_Coeffs!(1 to MAXRAY_OLD%, 1 to MAXCOEFF4%)  are the polynomial/non-linear alpha factors fit coefficients for each x-ray and MAXBINARY% alpha factors
 
 ierror = False
 On Error GoTo Penepma12CalculateAlphaFactorsError
@@ -303,15 +303,22 @@ Exit Sub
 End Sub
 
 Sub PenepmaGetPDATCONFTransition(n As Integer, l As Integer, t1 As Single, t2 As Single)
-' Returns the ionization (edge) energies of the specified transition
-'  n = atomic number
-'  l = PFE x-ray line
+' Returns the ionization (edge) energies of the specified transition (see table 6.2 in Penelope-2006-NEA-pdf)
+'  n = atomic number,  l = PFE x-ray line
 '     Ka = 1  = "K L3"   = 1 and 4
 '     Kb = 2  = "K M3"   = 1 and 7
 '     La = 3  = "L3 M5"  = 4 and 9
 '     Lb = 4  = "L2 M4"  = 3 and 8
 '     Ma = 5  = "M5 N7"  = 9 and 16
 '     Mb = 6  = "M4 N6"  = 8 and 15
+
+'     Ln = 7  = "L2-M1"  = 3 and 5
+'     Lg = 8  = "L2-N4"  = 3 and 13
+'     Lv = 9  = "L2-N6"  = 3 and 15
+'     Ll = 10 = "L3-M1"  = 4 and 5
+'     Mg = 11 = "M3-N5"  = 7 and 14
+'     Mz = 12 = "M5-N3"  = 9 and 12
+
 '  t1 = first transition edge
 '  t2 = second transition edge
 
@@ -333,12 +340,19 @@ t2! = 0#
 
 ' Load test variables
 If n% > 6 Then
-If l% = 1 Then i1% = 1: i2% = 4
-If l% = 2 Then i1% = 1: i2% = 7
-If l% = 3 Then i1% = 4: i2% = 9
-If l% = 4 Then i1% = 3: i2% = 8
-If l% = 5 Then i1% = 9: i2% = 16
-If l% = 6 Then i1% = 8: i2% = 15
+If l% = 1 Then i1% = 1: i2% = 4         ' Ka
+If l% = 2 Then i1% = 1: i2% = 7         ' Kb
+If l% = 3 Then i1% = 4: i2% = 9         ' La
+If l% = 4 Then i1% = 3: i2% = 8         ' Lb
+If l% = 5 Then i1% = 9: i2% = 16        ' Ma
+If l% = 6 Then i1% = 8: i2% = 15        ' Mb
+
+If l% = 7 Then i1% = 3: i2% = 5         ' Ln
+If l% = 8 Then i1% = 3: i2% = 13        ' Lg
+If l% = 9 Then i1% = 3: i2% = 15        ' Lv
+If l% = 10 Then i1% = 4: i2% = 5        ' Ll
+If l% = 11 Then i1% = 7: i2% = 14       ' Mg
+If l% = 12 Then i1% = 9: i2% = 12       ' Mz
 
 ' Special sub shells for carbon, boron, beryllium
 Else
@@ -544,7 +558,7 @@ Open ttfilename$ For Output As #tfilenumber%
 astring$ = VbDquote$ & "keV" & VbDquote$ & vbTab
 
 ' Load data column labels for generated and emitted pure element intensities
-For l% = 1 To MAXRAY% - 1
+For l% = 1 To MAXRAY_OLD%
 astring$ = astring$ & VbDquote$ & "Gene_" & Xraylo$(l%) & "_(Fanal)" & VbDquote$ & vbTab
 astring$ = astring$ & VbDquote$ & "Emit_" & Xraylo$(l%) & "_(Fanal)" & VbDquote$ & vbTab
 Next l%
@@ -571,7 +585,7 @@ For i% = 1 To 50
 Input #tfilenumber%, tkeV!
 If tkeV! <> i% Then GoTo Penepma12CalculateReadWritePureElementWrongkeV
 
-For l% = 1 To MAXRAY% - 1
+For l% = 1 To MAXRAY_OLD%
 Input #tfilenumber%, PureGenerated_Intensities#(l%)
 Input #tfilenumber%, PureEmitted_Intensities#(l%)
 Next l%
@@ -592,7 +606,7 @@ Open tfolder$ & "\" & tfilename$ For Append As #tfilenumber%
 astring$ = Format$(keV!) & vbTab
 
 ' Create output string for generated and pure element intensities
-For l% = 1 To MAXRAY% - 1
+For l% = 1 To MAXRAY_OLD%
 astring$ = astring$ & Format$(PureGenerated_Intensities#(l%)) & vbTab
 astring$ = astring$ & Format$(PureEmitted_Intensities#(l%)) & vbTab
 Next l%

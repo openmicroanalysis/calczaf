@@ -240,6 +240,13 @@ If ip% = 4 Then i2% = 3   ' Lb
 If ip% = 5 Then i2% = 9   ' Ma
 If ip% = 6 Then i2% = 8   ' Mb
 
+If ip% = 7 Then i2% = 3    ' Ln
+If ip% = 8 Then i2% = 3    ' Lg
+If ip% = 9 Then i2% = 3    ' Lv
+If ip% = 10 Then i2% = 4   ' Ll
+If ip% = 11 Then i2% = 7   ' Mg
+If ip% = 12 Then i2% = 9   ' Mz
+
 kec! = edgrow.energy!(i2%) / EVPERKEV#
 
 ' Electron ranges
