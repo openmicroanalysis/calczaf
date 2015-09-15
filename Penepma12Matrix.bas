@@ -70,7 +70,7 @@ End If
 If mode% = 0 Then
 ttfilename$ = tfolder$ & "\" & tfilename$
 tfilenumber% = FreeFile()
-Open tfilename$ For Output As #tfilenumber%
+Open ttfilename$ For Output As #tfilenumber%
 
 ' Load output string for keV
 astring$ = VbDquote$ & "keV" & VbDquote$ & vbTab
@@ -141,8 +141,9 @@ End If
 
 ' Write data for specified beam energy (must be written in consecutive keV order)
 If mode% = 2 Then
+ttfilename$ = tfolder$ & "\" & tfilename$
 tfilenumber% = FreeFile()
-Open tfolder$ & "\" & tfilename$ For Append As #tfilenumber%
+Open ttfilename$ For Append As #tfilenumber%
 
 ' Load output string for keV
 astring$ = Format$(keV!) & vbTab

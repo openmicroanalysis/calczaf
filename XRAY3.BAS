@@ -497,7 +497,11 @@ End If
 ' Check invalid value
 If tenergy! <= 0# Then
 If UCase$(app.EXEName) <> UCase$("Matrix") Then
+If iray% <= MAXRAY_OLD% Then
 msg$ = "No x-ray data found in " & XLineFile$ & " for " & syme$ & " " & symx$
+Else
+msg$ = "No x-ray data found in " & XLineFile2$ & " for " & syme$ & " " & symx$
+End If
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetKevLambda"
 ierror = True
 Exit Sub

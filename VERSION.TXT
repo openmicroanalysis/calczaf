@@ -18,6 +18,8 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+09/14/15	Fix wavescan display for additional x-ray lines (Gopon).
+	
 09/13/15	Fix beam scan calibration interpolation to use log-log relation (Carpenter).
 
 	Add additional absorbers to FFAST2.DAT MAC table (Gopon).
