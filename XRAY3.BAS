@@ -488,6 +488,8 @@ tenergy! = engrow.energy!(iray%)
 ' Read additional x-ray line file
 Else
 nrec% = ielm% + 2
+If Dir$(XLineFile2$) = vbNullString Then GoTo XrayGetKevLambdaNotFoundXLINE2DAT
+If FileLen(XLineFile2$) = 0 Then GoTo XrayGetKevLambdaZeroSizeXLINE2DAT
 Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber2%, nrec%, engrow
 Close #XLineFileNumber2%
@@ -538,6 +540,25 @@ Exit Sub
 
 XrayGetKevLambdaInvalidXray:
 msg$ = "Invalid xray symbol"
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetKevLambda"
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+XrayGetKevLambdaNotFoundXLINE2DAT:
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetKevLambda"
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+XrayGetKevLambdaZeroSizeXLINE2DAT:
+Kill XLineFile2$
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetKevLambda"
 Close #XLineFileNumber%
 Close #XLineFileNumber2%
@@ -757,6 +778,8 @@ energy! = engrow.energy!(iray%) / EVPERKEV#
 
 ' Read original x-ray line file
 Else
+If Dir$(XLineFile2$) = vbNullString Then GoTo XrayGetEnergyNotFoundXLINE2DAT
+If FileLen(XLineFile2$) = 0 Then GoTo XrayGetEnergyZeroSizeXLINE2DAT
 Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber2%, nrec%, engrow
 Close #XLineFileNumber2%
@@ -811,6 +834,27 @@ msg$ = "Invalid xray number"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetEnergy"
 Close #XLineFileNumber%
 Close #XEdgeFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+XrayGetEnergyNotFoundXLINE2DAT:
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetEnergy"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+XrayGetEnergyZeroSizeXLINE2DAT:
+Kill XLineFile2$
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetEnergy"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
 Close #XLineFileNumber2%
 ierror = True
 Exit Sub

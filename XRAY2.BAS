@@ -141,6 +141,8 @@ Close #XLineFileNumber%
 
 ' Additional x-ray lines
 Else
+If Dir$(XLineFile2$) = vbNullString Then GoTo XrayGetEmissionTableNotFoundXLINE2DAT
+If FileLen(XLineFile2$) = 0 Then GoTo XrayGetEmissionTableZeroSizeXLINE2DAT
 Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber2%, nrec%, engrow
 Close #XLineFileNumber2%
@@ -182,6 +184,25 @@ Exit Function
 XrayGetEmissionTableError:
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "XrayGetEmissionTable"
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Function
+
+XrayGetEmissionTableNotFoundXLINE2DAT:
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetEmissionTable"
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Function
+
+XrayGetEmissionTableZeroSizeXLINE2DAT:
+Kill XLineFile2$
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetEmissionTable"
 Close #XLineFileNumber%
 Close #XLineFileNumber2%
 ierror = True

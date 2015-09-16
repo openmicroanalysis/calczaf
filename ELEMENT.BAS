@@ -94,6 +94,8 @@ Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECO
 Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray line file
+If Dir$(XLineFile2$) = vbNullString Then GoTo ElementCheckXrayNotFoundXLINE2DAT
+If FileLen(XLineFile2$) = 0 Then GoTo ElementCheckXrayZeroSizeXLINE2DAT
 Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Check xray line selections, load as absorber if specified or a problem is found
@@ -208,6 +210,27 @@ Exit Sub
 ' Errors
 ElementCheckXrayError:
 MsgBox Error$, vbOKOnly + vbCritical, "ElementCheckXray"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+ElementCheckXrayNotFoundXLINE2DAT:
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ElementCheckXray"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+ElementCheckXrayZeroSizeXLINE2DAT:
+Kill XLineFile2$
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ElementCheckXray"
 Close #XEdgeFileNumber%
 Close #XLineFileNumber%
 Close #XLineFileNumber2%
