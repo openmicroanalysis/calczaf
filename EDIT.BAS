@@ -157,6 +157,9 @@ Dim engrow As TypeEnergy
 Dim edgrow As TypeEdge
 Dim flurow As TypeFlur
 
+Dim edgesymbols As TypeEdgeSymbols
+Dim xraysymbols As TypeXraySymbols
+
 ' Check for file
 eleminfofile$ = ApplicationCommonAppData$ & "ELEMINFO.DAT"
 If Dir$(eleminfofile$) = vbNullString Then GoTo EditConvertElemInfoDatNotFound
@@ -182,6 +185,17 @@ Put #XEdgeFileNumber%, nrec%, edgrow
 Put #XLineFileNumber%, nrec%, engrow
 Put #XFlurFileNumber%, nrec%, flurow
 Next i%
+
+' Write lines or edges to first record
+For i% = 1 To MAXEDG%
+edgesymbols.syms$(i%) = Edglo$(i%)
+Next i%
+For i% = 1 To MAXRAY_OLD%
+xraysymbols.syms$(i%) = Xraylo$(i%)
+Next i%
+Put #XEdgeFileNumber%, 1, edgesymbols
+Put #XLineFileNumber%, 1, xraysymbols
+Put #XFlurFileNumber%, 1, xraysymbols
 
 ' Open JTA element data file
 Open eleminfofile$ For Input As #Temp1FileNumber%
@@ -223,7 +237,7 @@ engrow.energy(5) = Val(Mid$(astring, 46, 9))
 
 Call IOWriteLog(Str$(engrow.energy!(1)) & Str$(engrow.energy!(3)) & Str$(engrow.energy!(5)))
 
-For j% = 1 To MAXRAY% - 1
+For j% = 1 To MAXRAY_OLD% - 1
 engrow.energy!(j%) = engrow.energy!(j%) * EVPERKEV#
 Next j%
         
@@ -1256,11 +1270,11 @@ On Error GoTo EditGetMACEmitterAbsorberError
 
 Dim ielm As Integer, iray As Integer, iabsorb As Integer, itemp As Integer, i As Integer
 Dim temp As Single
-Dim astring As String, Elm As String, ray As String, absorb As String
+Dim astring As String, esym As String, xsym As String, absorb As String
 
 Static emitterstring As String
 
-If emitterstring$ = vbNullString Then emitterstring$ = "Si ka Mg"
+If emitterstring$ = vbNullString Then emitterstring$ = "Mg ka Fe"
 
 ' Get string from user
 msg$ = "Enter the emitter-xray and absorber pair (e.g., Si ka Mg) that you want to display all database values for"
@@ -1269,17 +1283,17 @@ If emitterstring$ = vbNullString Then Exit Sub
 
 ' Parse
 astring$ = emitterstring$
-Call MiscParseStringToString(astring$, Elm$)
+Call MiscParseStringToString(astring$, esym$)
 If ierror Then Exit Sub
-Call MiscParseStringToString(astring$, ray$)
+Call MiscParseStringToString(astring$, xsym$)
 If ierror Then Exit Sub
 Call MiscParseStringToString(astring$, absorb$)
 If ierror Then Exit Sub
 
-ielm% = IPOS1(MAXELM%, Elm$, Symlo$())
+ielm% = IPOS1(MAXELM%, esym$, Symlo$())
 If ielm% = 0 Then GoTo EditGetMACEmitterAbsorberInvalidElement
 
-iray% = IPOS1(MAXRAY% - 1, ray$, Xraylo$())
+iray% = IPOS1(MAXRAY% - 1, xsym$, Xraylo$())
 If iray% = 0 Then GoTo EditGetMACEmitterAbsorberInvalidXray
 
 iabsorb% = IPOS1(MAXELM%, absorb$, Symlo$())
@@ -1292,11 +1306,23 @@ itemp% = MACTypeFlag%
 Call IOWriteLog(vbNullString)
 For i% = 1 To MAXMACTYPE%
 MACTypeFlag% = i%
-MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 
+If iray% <= MAXRAY_OLD% Then
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
+Else
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
+End If
+
+' If MAC file exists then get value
 If Dir$(MACFile$) <> vbNullString Then
+
+If iray% <= MAXRAY_OLD% Then
 Call EditGetMACData(ielm%, iray%, iabsorb%, temp!)
-msg$ = "MAC value for " & Elm$ & " " & ray$ & " in " & absorb$ & " = " & Format$(Format$(temp!, f102$), a100$) & "  (" & macstring$(MACTypeFlag%) & ")"
+Else
+Call EditGetMACData(ielm%, iray% - MAXRAY_OLD%, iabsorb%, temp!)
+End If
+
+msg$ = "MAC value for " & esym$ & " " & xsym$ & " in " & absorb$ & " = " & Format$(Format$(temp!, f102$), a100$) & "  (" & macstring$(MACTypeFlag%) & ")"
 Call IOWriteLog(msg$)
 End If
 
@@ -1313,19 +1339,19 @@ ierror = True
 Exit Sub
 
 EditGetMACEmitterAbsorberInvalidElement:
-msg$ = Elm$ & " is an invalid emitter element"
+msg$ = esym$ & " is an invalid emitter element symbol"
 MsgBox msg$, vbOKOnly + vbExclamation, "EditGetMACEmitterAbsorber"
 ierror = True
 Exit Sub
 
 EditGetMACEmitterAbsorberInvalidXray:
-msg$ = ray$ & " is an invalid xray"
+msg$ = xsym$ & " is an invalid x-ray symbol"
 MsgBox msg$, vbOKOnly + vbExclamation, "EditGetMACEmitterAbsorber"
 ierror = True
 Exit Sub
 
 EditGetMACEmitterAbsorberInvalidAbsorber:
-msg$ = absorb$ & " is an invalid absorber element"
+msg$ = absorb$ & " is an invalid absorber element symbol"
 MsgBox msg$, vbOKOnly + vbExclamation, "EditGetMACEmitterAbsorber"
 ierror = True
 Exit Sub
@@ -1341,11 +1367,14 @@ Sub EditConvertTextToDAT(tForm As Form)
 ierror = False
 On Error GoTo EditConvertTextToDATError
 
-Dim nrec As Integer, mode As Integer
+Dim nrec As Integer, mode As Integer, i As Integer
 Dim astring As String, tfilename1 As String, tfilename2 As String
 
 Dim x6row As TypeEnergy
 Dim x9row As TypeEdge
+
+Dim edgesymbols As TypeEdgeSymbols
+Dim xraysymbols As TypeXraySymbols
 
 ' Check for input file
 'tfilename1$ = ApplicationCommonAppData$ & "XRAY_LINE.TXT"
@@ -1383,6 +1412,22 @@ ElseIf mode% = 2 Then                           ' fluorescent yields
 Put #Temp2FileNumber%, nrec%, x6row
 End If
 Next nrec%
+
+' Write lines or edge symbols to first record
+For i% = 1 To MAXEDG%
+edgesymbols.syms$(i%) = Edglo$(i%)
+Next i%
+For i% = 1 To MAXRAY_OLD%
+If InStr(UCase$(tfilename1$), UCase$("2.txt")) = 0 Then xraysymbols.syms$(i%) = Xraylo$(i%)
+If InStr(UCase$(tfilename1$), UCase$("2.txt")) > 0 Then xraysymbols.syms$(i%) = Xraylo$(i% + MAXRAY_OLD%)
+Next i%
+If mode% = 0 Then                               ' emission line energies
+Put #Temp2FileNumber%, 1, xraysymbols
+ElseIf mode% = 1 Then                           ' edge energies
+Put #Temp2FileNumber%, 1, edgesymbols
+ElseIf mode% = 2 Then                           ' fluorescent yields
+Put #Temp2FileNumber%, 1, xraysymbols
+End If
 
 ' Open input file
 Open tfilename1$ For Input As #Temp1FileNumber%

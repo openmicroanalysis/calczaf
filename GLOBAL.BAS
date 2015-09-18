@@ -73,8 +73,8 @@ Public Declare Function GSCircle Lib "GSWDLL32.DLL" (ByVal fxOrg#, ByVal fyOrg#,
 
 ' New constants for non-traditional emission lines
 Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,mb)
-Global Const MAXRAY% = 7                ' maximum xray symbols (ka,kb,la,lb,ma,mb," ") including blank for non-analyzed
-'Global Const MAXRAY% = 13               ' maximum xray symbols (ka,kb,la,lb,ma,mb,ln,lg,lv,ll,mg,mz," ") including blank for non-analyzed
+'Global Const MAXRAY% = 7                ' maximum xray symbols (ka,kb,la,lb,ma,mb," ") including blank for non-analyzed
+Global Const MAXRAY% = 13               ' maximum xray symbols (ka,kb,la,lb,ma,mb,ln,lg,lv,ll,mg,mz," ") including blank for non-analyzed
 
 ' Constants for array declarations
 Global Const MAXINTERFACE% = 6          ' maximum number of instrument interfaces (0 to MAXINTERFACE%)
@@ -519,6 +519,14 @@ End Type
 
 Type TypeMu
     mac(1 To MAXELM% * MAXRAY_OLD%) As Single
+End Type
+
+Type TypeXraySymbols
+    syms(1 To MAXRAY_OLD%) As String * 2
+End Type
+
+Type TypeEdgeSymbols
+    syms(1 To MAXEDG%) As String * 2
 End Type
 
 ' Average arrays

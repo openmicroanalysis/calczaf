@@ -616,19 +616,28 @@ Dim updated As Integer
 
 Dim StdDensities As New Field
 
-Dim EDSSpectra As TableDef  ' EDS spectra
-Dim EDSSpectraIndex As New Index  ' EDS spectra index (to sample row numbers)
-Dim EDSParameters As TableDef ' EDS parameters
-Dim EDSParametersIndex As New Index  ' EDS parameters index (to sample row numbers)
+Dim EDSSpectra As TableDef              ' EDS spectra
+Dim EDSSpectraIndex As New Index        ' EDS spectra index (to sample row numbers)
+Dim EDSParameters As TableDef           ' EDS parameters
+Dim EDSParametersIndex As New Index     ' EDS parameters index (to sample row numbers)
 
-Dim CLSpectra As TableDef  ' CL spectra
-Dim CLSpectraIndex As New Index  ' CL spectra index (to sample row numbers)
-Dim CLParameters As TableDef ' CL parameters
-Dim CLParametersIndex As New Index  ' CL parameters index (to sample row numbers)
+Dim CLSpectra As TableDef               ' CL spectra
+Dim CLSpectraIndex As New Index         ' CL spectra index (to sample row numbers)
+Dim CLParameters As TableDef            ' CL parameters
+Dim CLParametersIndex As New Index      ' CL parameters index (to sample row numbers)
 
 Dim EDSFileNames As New Field
 Dim CLFileNames As New Field
 Dim CLKilovolts As New Field
+
+Dim StdKRatios As TableDef              ' measured k-ratios
+
+Dim StdKRatiosTakeoffs As New Field
+Dim StdKRatiosKilovolts As New Field
+Dim StdKRatiosElements As New Field
+Dim StdKRatiosXrays As New Field
+Dim StdKRatiosKRatios As New Field
+Dim StdKRatiosStdAssigns As New Field
 
 ' Check for valid file name
 If Trim$(tfilename$) = vbNullString Then
@@ -778,7 +787,7 @@ End If
 ' Add additional EDS and CL spectra fields and records
 If versionnumber! < 10.94 Then
 
-' Add new fields to EDS parameters table
+' Create EDS parameters table
 EDSFileNames.Name = "EDSParametersFileName"
 EDSFileNames.Type = dbText
 EDSFileNames.Size = DbTextFilenameLength%
@@ -798,6 +807,29 @@ CLKilovolts.Name = "CLParametersKilovolts"
 CLKilovolts.Type = dbSingle
 
 StDb.TableDefs("CLParameters").Fields.Append CLKilovolts
+
+updated = True
+End If
+
+' Create StdKratios table
+If versionnumber! < 11.06 Then
+
+Set StdKRatios = StDb.CreateTableDef("NewTableDef")
+StdKRatios.Name = "StdKratios"
+
+With StdKRatios
+.Fields.Append .CreateField("StdKRatiosToNumber", dbInteger)        ' points back to Standard table/Numbers field
+.Fields.Append .CreateField("StdKRatiosNumber", dbLong)             ' for unique record number ???
+
+.Fields.Append .CreateField("StdKRatiosTakeOffs", dbSingle)
+.Fields.Append .CreateField("StdKRatiosKilovolts", dbSingle)
+.Fields.Append .CreateField("StdKRatiosElements", dbText, DbTextElementStringLength%)
+.Fields.Append .CreateField("StdKRatiosXrays", dbText, DbTextXrayStringLength%)
+.Fields.Append .CreateField("StdKRatiosKRatios", dbSingle)
+.Fields.Append .CreateField("StdKRatiosStdAssigns", dbInteger)
+End With
+
+StDb.TableDefs.Append StdKRatios
 
 updated = True
 End If

@@ -531,7 +531,7 @@ ierror = True
 Exit Sub
 
 XrayGetKevLambdaInvalidElement:
-msg$ = "Invalid element symbol"
+msg$ = "Element " & syme$ & " is an invalid element symbol"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetKevLambda"
 Close #XLineFileNumber%
 Close #XLineFileNumber2%
@@ -539,7 +539,7 @@ ierror = True
 Exit Sub
 
 XrayGetKevLambdaInvalidXray:
-msg$ = "Invalid xray symbol"
+msg$ = "Xray " & symx$ & " is an invalid x-ray symbol"
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetKevLambda"
 Close #XLineFileNumber%
 Close #XLineFileNumber2%

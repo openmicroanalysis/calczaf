@@ -414,7 +414,7 @@ Exit Function
 End Function
 
 Function XrayGetSpectrometerTable() As String
-' Subroutine to return a string of a table of spectrometer positions
+' Subroutine to return a string of a table of spectrometer positions (Ka, La, Ma, Kb, Lb, Mb only)
 
 ierror = False
 On Error GoTo XrayGetSpectrometerTableError
@@ -424,7 +424,7 @@ Dim nrec As Integer, ip As Integer, n As Integer
 Dim i As Integer, j As Integer
 Dim lam As Single, temp As Single
 Dim x2d As Single, k As Single
-Dim Elm As String, ray As String
+Dim esym As String, xsym As String
 Dim tmsg As String
 
 Dim engrow As TypeEnergy
@@ -447,7 +447,7 @@ If n% <= MAXCRYSTYPE% Then
 txnames$(n%) = ScalCrystalNames$(j%, i%)
 
 ' Get the 2d for each crystal to sort by below
-Call MiscGetCrystalParameters(txnames$(n%), x2d!, k!, Elm$, ray$)
+Call MiscGetCrystalParameters(txnames$(n%), x2d!, k!, esym$, xsym$)
 If ierror Then Exit Function
 tx2ds!(n%) = x2d!
 End If
@@ -462,7 +462,7 @@ If ierror Then Exit Function
 
 ' Get the 2d and k for each sorted crystal for position calculation below
 For i% = 1 To n%
-Call MiscGetCrystalParameters(xnames$(i%), x2d!, k!, Elm$, ray$)
+Call MiscGetCrystalParameters(xnames$(i%), x2d!, k!, esym$, xsym$)
 If ierror Then Exit Function
 
 x2ds!(i%) = x2d!
@@ -494,7 +494,6 @@ tmsg$ = tmsg$ & "  "
 For i% = 1 To n%
 tmsg$ = tmsg$ & Format$(xnames$(i%), a80$) & " "
 Next i%
-
 tmsg$ = tmsg$ & vbCrLf
 
 ' Determine the element number
@@ -512,7 +511,7 @@ For i% = 1 To n%
 astring$(i%) = Space$(8) & " "
 
 ' Loop on alpha xrays
-For iray% = 1 To 5 Step 2
+For iray% = 1 To MAXRAY_OLD% - 1 Step 2
 
 ' Load xray symbol and get energy and angstroms
 If engrow.energy(iray%) > 0 Then
@@ -544,7 +543,7 @@ For i% = 1 To n%
 astring$(i%) = Space$(8) & " "
 
 ' Loop on beta xrays
-For iray% = 2 To (MAXRAY% - 1) Step 2
+For iray% = 2 To (MAXRAY_OLD%) Step 2
 
 ' Load xray symbol and get energy and angstroms
 If engrow.energy(iray%) > 0 Then

@@ -17,6 +17,18 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	and re-install Remote.msi.
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
+
+	
+09/18/15	First release of additional x-ray lines (Ln, Lg, Lv, ll, Mg, Mz) (Gopon).
+v. 11.0.6
+	Fix CalcZAF "standard" output format.
+
+	New matrix.mdb.
+	
+	Add new kratio table in standard MDB files for storing measured k-ratios on standards (for future error 
+	distribution calculations).
+	
+09/16/15	New matrix mdb. Improved output for x-ray tables.	
 	
 09/15/15	Add check for missing or zero byte new x-ray files.
 	
