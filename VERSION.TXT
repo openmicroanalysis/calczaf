@@ -18,7 +18,8 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 
-	
+09/19/15	Updated XEDGE.DAT file
+
 09/18/15	First release of additional x-ray lines (Ln, Lg, Lv, ll, Mg, Mz) (Gopon).
 v. 11.0.6
 	Fix CalcZAF "standard" output format.
