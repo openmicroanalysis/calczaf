@@ -3029,20 +3029,20 @@ UseParticleCorrectionFlag% = False
 VbDarkBlue& = RGB(0, 0, 230)
 
 ' Load element colors
-XrayColor&(1) = RGB(255, 128, 128) ' Ka
-XrayColor&(2) = RGB(192, 128, 128) ' Kb
-XrayColor&(3) = RGB(128, 255, 128) ' La
-XrayColor&(4) = RGB(128, 192, 128) ' Lb
-XrayColor&(5) = RGB(128, 128, 255) ' Ma
-XrayColor&(6) = RGB(128, 128, 192) ' Mb
+XrayColor&(1) = RGB(255, 80, 80) ' Ka
+XrayColor&(2) = RGB(220, 80, 80) ' Kb
+XrayColor&(3) = RGB(80, 255, 80) ' La
+XrayColor&(4) = RGB(80, 220, 80) ' Lb
+XrayColor&(5) = RGB(80, 80, 255) ' Ma
+XrayColor&(6) = RGB(80, 80, 220) ' Mb
 
 If MAXRAY% - 1 > MAXRAY_OLD% Then
-XrayColor&(7) = RGB(128, 128, 128) ' Ln
-XrayColor&(8) = RGB(192, 64, 128) ' Lg
-XrayColor&(9) = RGB(64, 255, 128) ' Lv
-XrayColor&(10) = RGB(64, 192, 128) ' Ll
-XrayColor&(11) = RGB(128, 64, 255) ' Mg
-XrayColor&(12) = RGB(128, 64, 192) ' Mz
+XrayColor&(7) = RGB(200, 100, 100)  ' Ln
+XrayColor&(8) = RGB(128, 64, 64)    ' Lg
+XrayColor&(9) = RGB(100, 200, 100)  ' Lv
+XrayColor&(10) = RGB(64, 128, 64)   ' Ll
+XrayColor&(11) = RGB(100, 100, 200) ' Mg
+XrayColor&(12) = RGB(64, 64, 100)   ' Mz
 End If
 
 ' Alternative array for graph control

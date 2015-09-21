@@ -173,6 +173,7 @@ Module=CodeXRAY4; XRAY4.BAS
 Module=CodePenepma08b; Penepma08b.bas
 Form=PlotHistogram.frm
 ResFile32="CalcZAF.RES"
+Form=MsgBoxTi.frm
 IconForm="FormMAIN"
 Startup="Sub Main"
 HelpFile="ProbeWin.chm"

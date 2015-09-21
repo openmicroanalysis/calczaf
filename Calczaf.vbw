@@ -156,3 +156,4 @@ CodeABSORB2 = 0, 0, 1279, 626, C
 CodeXRAY4 = 225, 225, 1356, 958, C
 CodePenepma08b = 0, 0, 0, 0, C
 FormPlotHistoConc = 200, 200, 1381, 800, C, 125, 125, 1306, 725, C
+FormMSGBOXTIM = 0, 0, 0, 0, C, 0, 0, 0, 0, C

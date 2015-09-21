@@ -599,6 +599,7 @@ zaf.vv!(i%) = 0#
 7340:  Next i2%     ' next absorber (matrix) x-ray line
        Next i1%     ' next absorber (matrix) element
 7350:  Next i%      ' next emitting element
+
 Exit Sub
 
 ' Errors
@@ -610,8 +611,7 @@ Exit Sub
 ZAFFlu2NegativeMAC:
 msg$ = "Average MAC for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFFlu2", msg$, 20#
-Call IOWriteLog(msg$)
+MiscMsgBoxTim FormMSGBOXTIM, "ZAFFlu2", msg$, 10#
 Else
 Call IOWriteLog(msg$)
 End If
@@ -621,8 +621,7 @@ Exit Sub
 ZAFFlu2NegativeFlu:
 msg$ = "Fluorescence factor for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFFlu2", msg$, 20#
-Call IOWriteLog(msg$)
+MiscMsgBoxTim FormMSGBOXTIM, "ZAFFlu2", msg$, 10#
 Else
 Call IOWriteLog(msg$)
 End If
