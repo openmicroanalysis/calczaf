@@ -81,12 +81,12 @@ FormXRAY.TextkeV.Text = Str$(keV!)
 
 ' Load absorption edges checkbox
 If DefaultAbsorptionEdgeDisplay% = 1 Then
-FormXRAY.CheckAbsorptionEdges.Value = vbChecked
+FormXRAY.CheckAbsorptionEdges.value = vbChecked
 Else
-FormXRAY.CheckAbsorptionEdges.Value = vbUnchecked
+FormXRAY.CheckAbsorptionEdges.value = vbUnchecked
 End If
 
-' Set "Graph Selected" button
+' Set "Graph Selected" button ebale
 If mode% = 1 Then
 FormXRAY.CommandGraphSelected.Enabled = True
 Else
@@ -323,7 +323,7 @@ xstop! = Val(FormXRAY.TextStop.Text)
 End If
 
 ' Load x-ray absorption edges flag
-If FormXRAY.CheckAbsorptionEdges.Value = vbChecked Then
+If FormXRAY.CheckAbsorptionEdges.value = vbChecked Then
 method% = 1
 Else
 method% = 0

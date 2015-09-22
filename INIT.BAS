@@ -3046,20 +3046,20 @@ XrayColor&(12) = RGB(64, 64, 100)   ' Mz
 End If
 
 ' Alternative array for graph control
-XrayColor2%(1) = 12 ' Ka
-XrayColor2%(2) = 4 ' Kb
-XrayColor2%(3) = 10 ' La
-XrayColor2%(4) = 2 ' Lb
-XrayColor2%(5) = 9 ' Ma
-XrayColor2%(6) = 1 ' Mb
+XrayColor2%(1) = 12             ' Ka
+XrayColor2%(2) = 4              ' Kb
+XrayColor2%(3) = 10             ' La
+XrayColor2%(4) = 2              ' Lb
+XrayColor2%(5) = 9              ' Ma
+XrayColor2%(6) = 1              ' Mb
 
 If MAXRAY% - 1 > MAXRAY_OLD% Then
-XrayColor2%(7) = 11 ' Ka
-XrayColor2%(8) = 3 ' Kb
-XrayColor2%(9) = 8 ' La
-XrayColor2%(10) = 3 ' Lb
-XrayColor2%(11) = 13 ' Ma
-XrayColor2%(12) = 14 ' Mb
+XrayColor2%(7) = 11             ' Ln
+XrayColor2%(8) = 3              ' Lg
+XrayColor2%(9) = 8              ' Lv
+XrayColor2%(10) = 3             ' Ll
+XrayColor2%(11) = 13            ' Mg
+XrayColor2%(12) = 14            ' Mz
 End If
 
 ' Load sample exchange positions
