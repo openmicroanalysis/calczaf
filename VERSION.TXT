@@ -18,6 +18,11 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+09/23/15	Enable options in Automate! to allow Probe Image to be launched after the completion of 
+	the automated samples in PFE.  Requires v. 1.2.2 of Probe Image.
+	
+09/22/15	Add "hi/lo" text to Elements/Cations dialog interference output (Poeml).
+
 09/21/15	Improve time estimation for TDI option (von der Handt).
 
 09/20/15	Add XLINE2.TXT and XFLUR2.TXT (all zero) text files for updating additional x-rays files.

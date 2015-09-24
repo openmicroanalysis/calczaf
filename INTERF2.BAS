@@ -4,7 +4,7 @@ Option Explicit
 
 Dim Interf2Sample(1 To 1) As TypeSample
 
-Function Interf2Calculate(method As Integer, Mode As Integer, chan As Integer, rangefraction As Single, lifwidth As Single, minimumoverlap As Single, discrimination As Single, sample() As TypeSample) As String
+Function Interf2Calculate(method As Integer, mode As Integer, chan As Integer, rangefraction As Single, lifwidth As Single, minimumoverlap As Single, discrimination As Single, sample() As TypeSample) As String
 ' Calculates interferences based on a sample composition
 '  method = 0 check all interfering elements
 '  method = 1 check only interfering elements in sample
@@ -57,16 +57,18 @@ If sample(1).Xrsyms$(i%) = vbNullString Then GoTo 3000
 If chan% > 0 And chan% <> i% Then GoTo 3000
 
 ' Load specified position and convert to angstroms
-If Mode% = 0 Then pos! = sample(1).OnPeaks!(i%)
-If Mode% = 1 Then pos! = sample(1).HiPeaks!(i%)
-If Mode% = 2 Then pos! = sample(1).LoPeaks!(i%)
+If mode% = 0 Then pos! = sample(1).OnPeaks!(i%)
+If mode% = 1 Then pos! = sample(1).HiPeaks!(i%)
+If mode% = 2 Then pos! = sample(1).LoPeaks!(i%)
 interferedline! = XrayConvertSpecAng(Int(1), i%, pos!, sample(1).BraggOrders%(i%), sample())
 
 ' Load current analyzed line text
 If chan% = 0 Then tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "For " & Format$(sample(1).Elsyup$(i%), a20$) & " " & Format$(sample(1).Xrsyms$(i%), a20$) & " "
-tmsg$ = tmsg$ & Format$(sample(1).CrystalNames$(i%), a80$) & " at " & MiscAutoFormat$(interferedline!) & " angstroms"
-If Mode% > 0 Then tmsg$ = tmsg$ & "(" & MiscAutoFormat$(pos!) & ")"
+If mode% = 1 Then tmsg$ = tmsg$ & "(hi-off), "
+If mode% = 2 Then tmsg$ = tmsg$ & "(lo-off), "
+tmsg$ = tmsg$ & Format$(sample(1).CrystalNames$(i%), a60$) & " at " & MiscAutoFormat$(interferedline!) & " angstroms"
+If mode% > 0 Then tmsg$ = tmsg$ & "(" & MiscAutoFormat$(pos!) & ")"
 tmsg$ = tmsg$ & ", at an assumed concentration of " & Format$(sample(1).ElmPercents!(i%)) & " wt.% "
 tmsg$ = tmsg$ & vbCrLf
 
@@ -102,7 +104,7 @@ ip% = IPOS1(sample(1).LastChan%, esym$, sample(1).Elsyms$())
 If ip% = 0 And method% = 1 Then GoTo 2000
 
 ' If on-peak interferences, check that interfering element (line) is not the interfered line
-If Mode% = 0 And ip% = i% Then GoTo 2000
+If mode% = 0 And ip% = i% Then GoTo 2000
 
 ' Get nominal overlap intensity
 overlapfraction! = Interf2GetOverlap(interferingline!, interferedline!, sigma!)
@@ -138,7 +140,7 @@ tmsg$ = tmsg$ & Format$(xlabel$) & " "
 tmsg$ = tmsg$ & "at " & MiscAutoFormat$(interferingline!) & " "
 pos! = XrayConvertSpecAng(Int(2), i%, interferingline!, sample(1).BraggOrders%(i%), sample())   ' don't use actual order to be self consistant
 tmsg$ = tmsg$ & "(" & MiscAutoFormat$(pos!) & ") "
-If Mode% = 0 Then
+If mode% = 0 Then
 tmsg$ = tmsg$ & "(" & MiscAutoFormat$(pos! - sample(1).OnPeaks!(i%)) & ") "
 End If
 tmsg$ = tmsg$ & "= " & Format$(Format$(overlappercent!, f81$), a80$) & "%"
@@ -212,7 +214,7 @@ Exit Function
 
 End Function
 
-Function Interf2LoadElement(method%, Mode As Integer, chan As Integer, sample() As TypeSample) As String
+Function Interf2LoadElement(method%, mode As Integer, chan As Integer, sample() As TypeSample) As String
 ' Function to load a nominal sample for a single element interference calculation (called Probewin.exe only)
 '  method = 0 check all interfering elements
 '  method = 1 check only interfering elements in sample
@@ -254,7 +256,7 @@ End If
 ' Get the nominal interference
 rangefraction! = DefaultRangeFraction! * sample(1).Crystal2ds!(chan%) / LIF2D!
 If rangefraction! > 0.5 Then rangefraction! = 0.5
-tmsg$ = Interf2Calculate(method%, Mode%, chan%, rangefraction!, DefaultLIFPeakWidth! * temp!, DefaultMinimumOverlap!, DefaultPHADiscrimination!, Interf2Sample())
+tmsg$ = Interf2Calculate(method%, mode%, chan%, rangefraction!, DefaultLIFPeakWidth! * temp!, DefaultMinimumOverlap!, DefaultPHADiscrimination!, Interf2Sample())
 If ierror Then Exit Function
 
 ' Return string
