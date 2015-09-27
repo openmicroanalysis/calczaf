@@ -398,6 +398,11 @@ msg$ = msg$ & "Use Aggregate Intensity option or Disable Quant feature for accur
 Call IOWriteLog(msg$)
 End If
 
+If sample(1).EDSSpectraFlag And sample(1).EDSSpectraUseFlag And sample(1).EDSSpectraQuantMethodOrProject$ <> vbNullString Then
+msg$ = "EDS Quant Method or Project: " & sample(1).EDSSpectraQuantMethodOrProject$
+Call IOWriteLog(msg$)
+End If
+
 ' PTC modification
 If UseParticleCorrectionFlag And iptc% = 1 Then
 msg$ = vbCrLf & "Using Particle and Thin Film Corrections:"

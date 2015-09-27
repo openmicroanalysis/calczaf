@@ -18,6 +18,8 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+09/26/15	Improve TDI time estimation (Gopon).
+	
 09/23/15	Enable options in Automate! to allow Probe Image to be launched after the completion of 
 	the automated samples in PFE.  Requires v. 1.2.2 of Probe Image.
 	
