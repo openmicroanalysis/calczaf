@@ -18,6 +18,10 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+10/04/15	Add element by stoichiometry and element relative to output .DAT files (Seward).
+	
+09/30/15	Add new pure element k-ratios to Penepma12 distribution.  Work on new MAN sensitivity expressions from Singer.
+	
 09/27/15	Chnage k-ratio error distribution .DAT files (Pouchou, NIST, etc) absorber only from 7 to 13 (additional x-ray lines
 	means that 13 is now the absorber only integer flag, not 7).  Add to distribution files.
  
