@@ -2382,6 +2382,9 @@ ReDim MANAssignsDateTimes(1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) As Double
 ReDim MANAssignsSets(1 To MAXMAN%, 1 To MAXCHAN%) As Integer
 ReDim MANAssignsSampleRows(1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) As Integer
 
+ReDim MANAssignsCountTimes(1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) As Single
+ReDim MANAssignsBeamCurrents(1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) As Single
+
 ReDim CurrentMultiPointAcquirePositionsHi(1 To MAXCHAN%, 1 To MAXMULTI%) As Single
 ReDim CurrentMultiPointAcquirePositionsLo(1 To MAXCHAN%, 1 To MAXMULTI%) As Single
 ReDim CurrentMultiPointAcquireLastCountTimesHi(1 To MAXCHAN%, 1 To MAXMULTI%) As Single

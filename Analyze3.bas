@@ -99,7 +99,7 @@ Call IOWriteLog(msg$)
 If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then
 msg$ = "Element Standard K-Factors:" & vbCrLf
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.StdAssignsKrats!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
@@ -454,7 +454,7 @@ RowUnkZAFIters!(linerow%) = CSng(analysis.ZAFIter!)
 RowUnkMANIters!(linerow%) = CSng(analysis.MANIter!)
 
 RowUnkTotalPercents!(linerow%) = analysis.TotalPercent!
-RowUnkTotalOxygens!(linerow%) = analysis.TotalOxygen!
+RowUnkTotalOxygens!(linerow%) = analysis.totaloxygen!
 RowUnkTotalCations!(linerow%) = analysis.TotalCations!
 RowUnkTotalAtoms!(linerow%) = analysis.totalatoms!
 RowUnkCalculatedOxygens!(linerow%) = analysis.CalculatedOxygen!
@@ -1188,8 +1188,8 @@ RowUnkZAFIters!(linerow%) = 0#
 RowUnkMANIters!(linerow%) = 0#
 
 RowUnkTotalPercents!(linerow%) = analysis.TotalPercent!
-RowUnkTotalOxygens!(linerow%) = analysis.TotalOxygen!
-RowUnkTotalCations!(linerow%) = analysis.TotalOxygen!
+RowUnkTotalOxygens!(linerow%) = analysis.totaloxygen!
+RowUnkTotalCations!(linerow%) = analysis.totaloxygen!
 RowUnkCalculatedOxygens!(linerow%) = analysis.CalculatedOxygen!
 RowUnkExcessOxygens!(linerow%) = analysis.ExcessOxygen!
 RowUnkZbars!(linerow%) = analysis.Zbar!
@@ -1291,7 +1291,7 @@ analysis.AtomicWeight! = 0#
 analysis.Zbar! = 0#
 
 analysis.CalculatedOxygen! = 0#
-analysis.TotalOxygen! = 0#
+analysis.totaloxygen! = 0#
 analysis.ExcessOxygen! = 0#
 
 Exit Sub
@@ -1318,7 +1318,7 @@ analysis.TotalPercent! = average.averags!(1)
 
 Call MathAverage(average, RowUnkTotalOxygens!(), sample(1).Datarows%, sample())
 If ierror Then Exit Sub
-analysis.TotalOxygen! = average.averags!(1)
+analysis.totaloxygen! = average.averags!(1)
 
 Call MathAverage(average, RowUnkTotalCations!(), sample(1).Datarows%, sample())
 If ierror Then Exit Sub
@@ -2059,7 +2059,7 @@ If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString
 
 ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
 If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then       ' check for duplicate element
-msg$ = msg$ & Format$(Format$(analysis.StdAssignsKrats!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84$), a80$)
 Else
 msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
 End If

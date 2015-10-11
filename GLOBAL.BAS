@@ -712,7 +712,7 @@ Type TypeAnalysis
     StdAssignsCounts(1 To MAXCHAN%) As Single
     StdAssignsTimes(1 To MAXCHAN%) As Single
     StdAssignsBeams(1 To MAXCHAN%) As Single
-    StdAssignsKrats(1 To MAXCHAN%) As Single
+    StdAssignsKfactors(1 To MAXCHAN%) As Single
     StdAssignsZAFCors() As Single                   ' allocated in InitStandards (1 To MAXZAFCOR%, 1 To MAXCHAN%)
     StdAssignsBetas(1 To MAXCHAN%) As Single        ' alpha factor calculations only
     StdAssignsPercents(1 To MAXCHAN%) As Single     ' alpha factor calculations only
@@ -737,6 +737,9 @@ Type TypeAnalysis
     MANFitCoefficients() As Single      ' allocated in InitStandards (1 To MAXCOEFF%, 1 To MAXCHAN%)
     MANAssignsCounts() As Single        ' allocated in InitStandards (1 To MAXMAN%, 1 To MAXCHAN%)
     MANAssignsRows() As Integer         ' allocated in InitStandards (1 To MAXMAN%, 1 To MAXCHAN%)
+
+    MANAssignsCountTimes() As Single     ' allocated in InitStandards (1 To MAXMAN%, 1 To MAXCHAN%)
+    MANAssignsBeamCurrents() As Single   ' allocated in InitStandards (1 To MAXMAN%, 1 To MAXCHAN%)
 
     SampleIsAnalyzed As Boolean
 End Type
@@ -1932,10 +1935,14 @@ Global iabs As Integer, ibsc As Integer, ibks As Integer
 Global imip As Integer, iphi As Integer, izaf As Integer
 Global istp As Integer, iflu As Integer, ielc As Integer    ' ielc% is currently not used
 
+' MAN drift arrays
 Global MANAssignsDriftCounts() As Single    ' (1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) allocated in InitData
 Global MANAssignsDateTimes() As Double      ' (1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) allocated in InitData
 Global MANAssignsSets() As Integer          ' (1 To MAXMAN%, 1 To MAXCHAN%) allocated in InitData
 Global MANAssignsSampleRows() As Integer    ' (1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) allocated in InitData
+
+Global MANAssignsCountTimes() As Single     ' (1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) allocated in InitData
+Global MANAssignsBeamCurrents() As Single   ' (1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) allocated in InitData
 
 ' Serial port globals
 Global SerialPort As Integer

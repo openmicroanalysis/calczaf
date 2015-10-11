@@ -587,6 +587,79 @@ Exit Sub
 
 End Sub
 
+Sub MathSimpleAverage22(average As TypeAverage, ArrayPassed!(), cols As Integer, row As Integer)
+' Single Column average (not based on TypeSample!) of a single column in a 2 dimensional array
+' This routine takes the data in the array passed and averages the single row of data,
+' and returns the standard deviations, the square root, and the standard errors
+' about the average. The results are returned in "average.Averags", "average.Stddevs",
+' "average.Sqroots", and "average.Stderrs".
+'
+' ArrayPassed(col, row) = 2d array passed
+' col = the columns to be averaged
+' rows = the row to be averaged
+
+ierror = False
+On Error GoTo MathSimpleAverage22Error
+
+Dim rowsum As Single, temp As Single
+Dim col As Integer
+
+' First zero the return arrays and the column sums
+temp! = 0#
+average.averags!(1) = 0#
+average.Stddevs!(1) = 0#
+average.Sqroots!(1) = 0#
+average.Stderrs!(1) = 0#
+average.Reldevs!(1) = 0#
+average.Minimums!(1) = 0#
+average.Maximums!(1) = 0#
+
+rowsum! = 0#
+
+' Check for valid data
+If cols% < 1 Then Exit Sub
+
+' Load default minimums and maximums
+average.Minimums!(1) = MAXMINIMUM!
+average.Maximums!(1) = MAXMAXIMUM!
+
+' Calculate sum of all valid rows
+For col% = 1 To cols%
+If ArrayPassed!(col%, row%) < average.Minimums!(1) Then average.Minimums!(1) = ArrayPassed!(col%, row%)
+If ArrayPassed!(col%, row%) > average.Maximums!(1) Then average.Maximums!(1) = ArrayPassed!(col%, row%)
+rowsum! = rowsum! + ArrayPassed!(col%, row%)
+Next col%
+
+' Divide to determine the averages
+average.averags!(1) = rowsum! / cols%
+
+' Determine standard deviations, first sum the squares
+rowsum! = 0#
+For col% = 1 To cols%
+temp! = ArrayPassed!(col%, row%) - average.averags!(1)
+rowsum! = rowsum! + temp! * temp!
+Next col%
+
+' Calculate square root, standard deviation and standard error
+average.Sqroots!(1) = Sqr(Abs(average.averags!(1)))
+If cols% > 1 Then
+average.Stddevs!(1) = Sqr(Abs(rowsum!) / (cols% - 1))
+average.Stderrs!(1) = average.Stddevs!(1) / Sqr(cols%)
+If average.averags!(1) <> 0# Then
+average.Reldevs!(1) = average.Stddevs!(1) / average.averags!(1)
+End If
+End If
+
+Exit Sub
+
+' Errors
+MathSimpleAverage22Error:
+MsgBox Error$, vbOKOnly + vbCritical, "MathSimpleAverage22"
+ierror = True
+Exit Sub
+
+End Sub
+
 Sub MathArrayAverage3(average As TypeAverage, ArrayPassed() As Single, rows As Long, cols As Integer)
 ' Column and row average (not based on TypeSample). This routine takes the data in the
 ' array passed and averages the data by columns, and also returns the standard deviations,

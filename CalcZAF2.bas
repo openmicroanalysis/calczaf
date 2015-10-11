@@ -182,7 +182,7 @@ tlabel$(nCol%) = sample(1).Elsyup$(chan%) & " " & sample(1).Xrsyms$(chan%)
 
 If CalcZAFMode% = 0 Then    ' intensities from concentrations
 If CorrectionFlag% = 0 Or CorrectionFlag% = 5 Or CorrectionFlag% = MAXCORRECTION% Then
-tdata#(nCol%) = CDbl(analysis.StdAssignsKrats!(chan%))   ' load k-ratios
+tdata#(nCol%) = CDbl(analysis.StdAssignsKfactors!(chan%))   ' load k-ratios
 Else
 tdata#(nCol%) = CDbl(analysis.StdAssignsBetas!(chan%))   ' load beta factors
 End If
@@ -440,9 +440,9 @@ msg$ = msg$ & Format$(Format$(analysis.UnkKrats!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = "STKR: "
+msg$ = "STKF: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.StdAssignsKrats!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 

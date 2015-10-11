@@ -1415,7 +1415,7 @@ ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
 If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then
 If sample(1).DisableQuantFlag%(i%) = 0 Then             ' no disabled quant flag
 If analysis.StdAssignsCounts!(i%) <= 0# Then GoTo ZAFSmpBadStdCounts
-If analysis.StdAssignsKrats!(i%) <= 0# Then GoTo ZAFSmpBadStdKrat
+If analysis.StdAssignsKfactors!(i%) <= 0# Then GoTo ZAFSmpBadStdKrat
 End If
 End If
 End If
@@ -1523,7 +1523,7 @@ Call IOWriteLog(msg$)
 
 msg$ = "STDKFAC "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & MiscAutoFormat$(analysis.StdAssignsKrats!(i%))
+msg$ = msg$ & MiscAutoFormat$(analysis.StdAssignsKfactors!(i%))
 Next i%
 Call IOWriteLog(msg$)
 End If
@@ -1570,7 +1570,7 @@ If sample(1).DisableAcqFlag%(i%) = 0 Then
 If analysis.StdAssignsCounts!(i%) <> 0# Then
 If sample(1).DisableQuantFlag%(i%) = 0 Then
 zaf.kraw!(i%) = unkcnts!(i%) / stdcnts!(i%)
-zaf.krat!(i%) = (unkcnts!(i%) / stdcnts!(i%)) * analysis.StdAssignsKrats!(i%)
+zaf.krat!(i%) = (unkcnts!(i%) / stdcnts!(i%)) * analysis.StdAssignsKfactors!(i%)
 End If
 End If
 If zaf.krat!(i%) = 0# Then zaf.krat!(i%) = NotAnalyzedValue! / 100# ' use a non-zero value
@@ -2153,7 +2153,7 @@ Call IOWriteLog(msg$)
 
 msg$ = vbCrLf & "STDKFAC "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.StdAssignsKrats!(i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
@@ -2288,7 +2288,7 @@ zerror = True
 Exit Sub
 
 ZAFSmpBadStdKrat:
-msg$ = "Bad standard k factor (" & Format$(analysis.StdAssignsKrats!(i%)) & ") for " & sample(1).Elsyup$(i%) & " " & sample(1).Xrsyms$(i%) & ", on channel " & Format$(i%) & "."
+msg$ = "Bad standard k factor (" & Format$(analysis.StdAssignsKfactors!(i%)) & ") for " & sample(1).Elsyup$(i%) & " " & sample(1).Xrsyms$(i%) & ", on channel " & Format$(i%) & "."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSmp"
 ierror = True
 Exit Sub
@@ -2654,7 +2654,7 @@ If ip% = 0 Then GoTo 8400
 analysis.StdAssignsPercents!(i%) = zaf.conc!(ip%) * 100#
 
 ' Load assigned standard k ratio
-analysis.StdAssignsKrats!(i%) = zaf.krat!(ip%)
+analysis.StdAssignsKfactors!(i%) = zaf.krat!(ip%)
 
 ' Load coating x-ray transmission for each element
 analysis.Coating_StdAssignsTrans!(i%) = zaf.coating_trans_std!(row%, ip%)      ' coating x-ray transmission
@@ -3356,7 +3356,7 @@ Next i%
 zaf.d! = 0#     ' diameter in cm
 zaf.rho! = 0#   ' density in g/cm^3
 zaf.j9! = 0#    ' particle thicknes factor
-zaf.x1! = 0#    ' integration step length in g/cm^2
+zaf.X1! = 0#    ' integration step length in g/cm^2
 
 zaf.TotalCations! = 0#
 zaf.totalatoms! = 0#
@@ -4068,7 +4068,7 @@ q2! = s1!
 r5! = r4!
 If er1! >= er3! Then GoTo 11250
 
-er1! = er1! + zaf.x1!
+er1! = er1! + zaf.X1!
 If er1! > er3! Then er1! = er3!
 GoTo 11150
 

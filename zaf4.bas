@@ -520,7 +520,7 @@ Else
 msg$ = msg$ & Format$(DASHED5$, a80$)
 End If
 msg$ = msg$ & Format$(Format$(analysis.StdAssignsPercents!(i%), f83$), a80$)
-msg$ = msg$ & Format$(Format$(analysis.StdAssignsKrats!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84$), a80$)
 msg$ = msg$ & Format$(Format$(analysis.StdAssignsZbars!(i%), f84$), a80$)
 
 ' Absorption

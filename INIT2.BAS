@@ -716,14 +716,16 @@ ReDim analysis.MANFitCoefficients(1 To MAXCOEFF%, 1 To MAXCHAN%) As Single
 ReDim analysis.MANAssignsCounts(1 To MAXMAN%, 1 To MAXCHAN%) As Single
 ReDim analysis.MANAssignsRows(1 To MAXMAN%, 1 To MAXCHAN%) As Integer
 
+ReDim analysis.MANAssignsCountTimes(1 To MAXMAN%, 1 To MAXCHAN%) As Single
+ReDim analysis.MANAssignsBeamCurrents(1 To MAXMAN%, 1 To MAXCHAN%) As Single
+
 ReDim analysis.StdAssignsIntfCounts(1 To MAXINTF%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdAssignsIntfRows(1 To MAXINTF%, 1 To MAXCHAN%) As Integer
-
 
 ' Initialize Standard arrays
 For i% = 1 To MAXCHAN%
 analysis.StdAssignsPercents!(i%) = 0#
-analysis.StdAssignsKrats!(i%) = 0#
+analysis.StdAssignsKfactors!(i%) = 0#
 analysis.StdAssignsBetas!(i%) = 0#
 analysis.StdAssignsCounts(i%) = 0#
 analysis.StdAssignsActualKilovolts(i%) = 0#

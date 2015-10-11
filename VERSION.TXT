@@ -18,6 +18,10 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+10/10/15	Work new MAN precision expressions from Singer.
+v. 10.0.7
+	Add calculate image statistics menu to CalcImage log window for currently open images.
+
 10/04/15	Add element by stoichiometry and element relative to output .DAT files (Seward).
 	
 09/30/15	Add new pure element k-ratios to Penepma12 distribution.  Work on new MAN sensitivity expressions from Singer.

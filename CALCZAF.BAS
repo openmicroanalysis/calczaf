@@ -279,7 +279,7 @@ CalcZAFAnalysis.StdAssignsCounts!(i%) = 1#
 ' K-ratios
 ElseIf CalcZAFMode% = 3 Then
 CalcZAFAnalysis.StdAssignsCounts!(i%) = 1#
-CalcZAFAnalysis.StdAssignsKrats!(i%) = 1#
+CalcZAFAnalysis.StdAssignsKfactors!(i%) = 1#
 CalcZAFAnalysis.StdAssignsBetas!(i%) = 1#
 CalcZAFAnalysis.StdAssignsPercents!(i%) = 100#
 End If
@@ -1191,7 +1191,7 @@ End If
 
 ' Standard data
 FormZAF.GridElementList.col = 4
-FormZAF.GridElementList.Text = MiscAutoFormat$(CalcZAFAnalysis.StdAssignsKrats!(i%))
+FormZAF.GridElementList.Text = MiscAutoFormat$(CalcZAFAnalysis.StdAssignsKfactors!(i%))
 FormZAF.GridElementList.col = 5
 FormZAF.GridElementList.Text = MiscAutoFormat$(StdCounts!(i%))
 
@@ -1848,8 +1848,8 @@ KratioError!(2, CalcZAFOutputCount&) = 0#
 ' Calculate error
 If mode% = 0 Or mode% = 4 Or mode% = 5 Then
 If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then              ' ZAF/Phi-rho-z calculations (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
-    If kexp!(1) <> 0# Then KratioError!(1, CalcZAFOutputCount&) = CalcZAFAnalysis.StdAssignsKrats!(1) / kexp!(1)
-    If kexp!(2) <> 0# Then KratioError!(2, CalcZAFOutputCount&) = CalcZAFAnalysis.StdAssignsKrats!(2) / kexp!(2)
+    If kexp!(1) <> 0# Then KratioError!(1, CalcZAFOutputCount&) = CalcZAFAnalysis.StdAssignsKfactors!(1) / kexp!(1)
+    If kexp!(2) <> 0# Then KratioError!(2, CalcZAFOutputCount&) = CalcZAFAnalysis.StdAssignsKfactors!(2) / kexp!(2)
 Else                                     ' alpha factor calculations (mode% = 0 only)
     KratioAlpha!(1) = 0#
     KratioAlpha!(2) = 0#
@@ -1906,7 +1906,7 @@ If mode% = 0 Then
     If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then              ' ZAF/Phi-rho-z calculations (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
     Print #ExportDataFileNumber2%, CalcZAFLineCount&, vbTab, isym%(1), vbTab, isym%(2), vbTab, iray%(1), vbTab, iray%(2), vbTab, _
     eO!, vbTab, TOA!, vbTab, conc!(1), vbTab, conc!(2), vbTab, kexp!(1), vbTab, kexp!(2), vbTab, _
-    CalcZAFAnalysis.StdAssignsKrats!(1), vbTab, CalcZAFAnalysis.StdAssignsKrats!(2), vbTab, _
+    CalcZAFAnalysis.StdAssignsKfactors!(1), vbTab, CalcZAFAnalysis.StdAssignsKfactors!(2), vbTab, _
     CalcZAFAnalysis.StdZAFCors!(7, 1, 1), vbTab, CalcZAFAnalysis.StdZAFCors!(8, 1, 1), vbTab, _
     CalcZAFAnalysis.StdZAFCors!(1, 1, 1), vbTab, CalcZAFAnalysis.StdZAFCors!(2, 1, 1), vbTab, _
     CalcZAFAnalysis.StdZAFCors!(3, 1, 1), vbTab, CalcZAFAnalysis.StdZAFCors!(5, 1, 1), vbTab, _
@@ -1925,7 +1925,7 @@ If mode% = 0 Then
 ElseIf mode% = 4 Then
 Print #ExportDataFileNumber2%, CalcZAFLineCount&, vbTab, isym%(1), vbTab, isym%(2), vbTab, iray%(1), vbTab, iray%(2), vbTab, _
     eO!, vbTab, TOA!, vbTab, conc!(1), vbTab, conc!(2), vbTab, kexp!(1), vbTab, kexp!(2), vbTab, _
-    CalcZAFAnalysis.StdAssignsKrats!(1), vbTab, CalcZAFAnalysis.StdAssignsKrats!(2), vbTab, _
+    CalcZAFAnalysis.StdAssignsKfactors!(1), vbTab, CalcZAFAnalysis.StdAssignsKfactors!(2), vbTab, _
     CalcZAFAnalysis.StdZAFCors!(7, 1, 1), vbTab, CalcZAFAnalysis.StdZAFCors!(8, 1, 1), vbTab, _
     CalcZAFAnalysis.StdZAFCors!(1, 1, 1), vbTab, CalcZAFAnalysis.StdZAFCors!(2, 1, 1), vbTab, _
     CalcZAFAnalysis.StdZAFCors!(3, 1, 1), vbTab, CalcZAFAnalysis.StdZAFCors!(5, 1, 1), vbTab, _
@@ -1940,7 +1940,7 @@ ElseIf mode% = 5 Then
 tfilenumber% = CalcZAFBinaryFile%(Int(2), izaf%, MACTypeFlag%)  ' open for APPEND
 Print #tfilenumber%, CalcZAFLineCount&, vbTab, isym%(1), vbTab, isym%(2), vbTab, iray%(1), vbTab, iray%(2), vbTab, _
     eO!, vbTab, TOA!, vbTab, conc!(1), vbTab, conc!(2), vbTab, kexp!(1), vbTab, kexp!(2), vbTab, _
-    CalcZAFAnalysis.StdAssignsKrats!(1), vbTab, CalcZAFAnalysis.StdAssignsKrats!(2), vbTab, _
+    CalcZAFAnalysis.StdAssignsKfactors!(1), vbTab, CalcZAFAnalysis.StdAssignsKfactors!(2), vbTab, _
     CalcZAFAnalysis.StdZAFCors!(7, 1, 1), vbTab, CalcZAFAnalysis.StdZAFCors!(8, 1, 1), vbTab, _
     CalcZAFAnalysis.StdZAFCors!(1, 1, 1), vbTab, CalcZAFAnalysis.StdZAFCors!(2, 1, 1), vbTab, _
     CalcZAFAnalysis.StdZAFCors!(3, 1, 1), vbTab, CalcZAFAnalysis.StdZAFCors!(5, 1, 1), vbTab, _
@@ -1958,7 +1958,7 @@ Call IOWriteLog(vbNullString)
 msg$ = Space$(4) & Format$("Conc", a80$) & Format$("K-Exp", a80$) & Format$("K-Rat", a80$) & Format$("K-Err", a80$)
 Call IOWriteLog(msg$)
 If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then              ' ZAF/Phi-rho-z calculations (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
-msg$ = Symup$(isym%(1)) & " " & Xraylo$(iray%(1)) & MiscAutoFormat$(conc!(1)) & MiscAutoFormat$(kexp!(1)) & MiscAutoFormat$(CalcZAFAnalysis.StdAssignsKrats!(1)) & MiscAutoFormat$(KratioError!(1, CalcZAFOutputCount&))
+msg$ = Symup$(isym%(1)) & " " & Xraylo$(iray%(1)) & MiscAutoFormat$(conc!(1)) & MiscAutoFormat$(kexp!(1)) & MiscAutoFormat$(CalcZAFAnalysis.StdAssignsKfactors!(1)) & MiscAutoFormat$(KratioError!(1, CalcZAFOutputCount&))
 Else                                     ' alpha factor calculations (mode% = 0 only)
 msg$ = Symup$(isym%(1)) & " " & Xraylo$(iray%(1)) & MiscAutoFormat$(conc!(1)) & MiscAutoFormat$(kexp!(1)) & MiscAutoFormat$(KratioAlpha!(1)) & MiscAutoFormat$(KratioError!(1, CalcZAFOutputCount&))
 End If
@@ -1966,7 +1966,7 @@ Call IOWriteLog(msg$)
 
 If iray%(2) <> MAXRAY% Then
 If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then              ' ZAF/Phi-rho-z calculations
-msg$ = Symup$(isym%(2)) & " " & Xraylo$(iray%(2)) & MiscAutoFormat$(conc!(2)) & MiscAutoFormat$(kexp!(2)) & MiscAutoFormat$(CalcZAFAnalysis.StdAssignsKrats!(2)) & MiscAutoFormat$(KratioError!(2, CalcZAFOutputCount&))
+msg$ = Symup$(isym%(2)) & " " & Xraylo$(iray%(2)) & MiscAutoFormat$(conc!(2)) & MiscAutoFormat$(kexp!(2)) & MiscAutoFormat$(CalcZAFAnalysis.StdAssignsKfactors!(2)) & MiscAutoFormat$(KratioError!(2, CalcZAFOutputCount&))
 Else                                     ' alpha factor calculations (mode% = 0 only)
 msg$ = Symup$(isym%(2)) & " " & Xraylo$(iray%(2)) & MiscAutoFormat$(conc!(2)) & MiscAutoFormat$(kexp!(2)) & MiscAutoFormat$(KratioAlpha!(2)) & MiscAutoFormat$(KratioError!(2, CalcZAFOutputCount&))
 End If
@@ -2074,7 +2074,7 @@ CalcZAFOutputCount& = CalcZAFOutputCount& + 1
 ReDim Preserve KratioError!(1 To 2, 1 To CalcZAFOutputCount&)
 Input #tfilenumber%, CalcZAFLineCount&, isym%(1), isym%(2), iray%(1), iray%(2), _
 eO!, TOA!, conc!(1), conc!(2), kexp!(1), kexp!(2), _
-CalcZAFAnalysis.StdAssignsKrats!(1), CalcZAFAnalysis.StdAssignsKrats!(2), _
+CalcZAFAnalysis.StdAssignsKfactors!(1), CalcZAFAnalysis.StdAssignsKfactors!(2), _
 CalcZAFAnalysis.StdZAFCors!(7, 1, 1), CalcZAFAnalysis.StdZAFCors!(8, 1, 1), _
 CalcZAFAnalysis.StdZAFCors!(1, 1, 1), CalcZAFAnalysis.StdZAFCors!(2, 1, 1), _
 CalcZAFAnalysis.StdZAFCors!(3, 1, 1), CalcZAFAnalysis.StdZAFCors!(5, 1, 1), _
@@ -3693,7 +3693,7 @@ End If
 
 ' Load calculated k-ratios from published wt percents and restore original standard assignments
 For i% = 1 To CalcZAFOldSample(1).LastChan%
-StdKFactors!(i%) = CalcZAFAnalysis.StdAssignsKrats!(i%)
+StdKFactors!(i%) = CalcZAFAnalysis.StdAssignsKfactors!(i%)
 CalcZAFOldSample(1).StdAssigns%(i%) = tStdAssigns%(i%)
 Next i%
 

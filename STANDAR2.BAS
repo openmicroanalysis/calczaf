@@ -510,7 +510,7 @@ Next i%
 
 tmsg$ = tmsg$ & vbCrLf & "KFAC: "
 For i% = ii% To jj%
-tmsg$ = tmsg$ & Format$(Format$(analysis.StdAssignsKrats!(i%), f84$), a80$)
+tmsg$ = tmsg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84$), a80$)
 Next i%
 
 tmsg$ = tmsg$ & vbCrLf & "ZCOR: "
@@ -638,6 +638,7 @@ Dim StdKRatiosElements As New Field
 Dim StdKRatiosXrays As New Field
 Dim StdKRatiosKRatios As New Field
 Dim StdKRatiosStdAssigns As New Field
+Dim StdKRatiosFileName As New Field
 
 ' Check for valid file name
 If Trim$(tfilename$) = vbNullString Then
@@ -819,7 +820,7 @@ StdKRatios.Name = "StdKratios"
 
 With StdKRatios
 .Fields.Append .CreateField("StdKRatiosToNumber", dbInteger)        ' points back to Standard table/Numbers field
-.Fields.Append .CreateField("StdKRatiosNumber", dbLong)             ' for unique record number ???
+.Fields.Append .CreateField("StdKRatiosNumber", dbLong)             ' for k-ratio import set number (see StdKRatiosFileName field)
 
 .Fields.Append .CreateField("StdKRatiosTakeOffs", dbSingle)
 .Fields.Append .CreateField("StdKRatiosKilovolts", dbSingle)
@@ -830,6 +831,16 @@ With StdKRatios
 End With
 
 StDb.TableDefs.Append StdKRatios
+
+updated = True
+End If
+
+' Add k-ratio file name to Kratio table
+If versionnumber! < 11.07 Then
+StdKRatiosFileName.Name = "StdKRatiosFileName"
+StdKRatiosFileName.Type = dbText
+StdKRatiosFileName.Size = DbTextFilenameLengthNew%
+StDb.TableDefs("StdKratios").Fields.Append StdKRatiosFileName
 
 updated = True
 End If

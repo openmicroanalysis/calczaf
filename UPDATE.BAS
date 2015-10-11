@@ -221,7 +221,7 @@ Exit Sub
 
 End Sub
 
-Function UpdateGetMaxSet(Mode As Integer, sample() As TypeSample) As Integer
+Function UpdateGetMaxSet(mode As Integer, sample() As TypeSample) As Integer
 ' Return the maximum number of assigned sets in the sample
 '  mode = 1  do standard sets
 '  mode = 2  do standard interference sets
@@ -236,14 +236,14 @@ Dim imax As Integer
 imax% = 0
 
 ' Standards sets
-If Mode% = 1 Then
+If mode% = 1 Then
 For i% = 1 To sample(1).LastElm%
 If StdAssignsSets%(i%) > imax% Then imax% = StdAssignsSets%(i%)
 Next i%
 End If
 
 ' Standard interference sets
-If Mode% = 2 Then
+If mode% = 2 Then
 For i% = 1 To sample(1).LastElm%
 For j% = 1 To MAXINTF%
 If StdAssignsIntfSets%(j%, i%) > imax% Then imax% = StdAssignsIntfSets%(j%, i%)
@@ -252,7 +252,7 @@ Next i%
 End If
 
 ' Standard MAN sets
-If Mode% = 3 Then
+If mode% = 3 Then
 For i% = 1 To sample(1).LastElm%
 For j% = 1 To MAXMAN%
 If MANAssignsSets%(j%, i%) > imax% Then imax% = MANAssignsSets%(j%, i%)
@@ -1650,6 +1650,9 @@ For j% = 1 To MAXMAN%
 analysis.MANAssignsCounts!(j%, chan%) = MANAssignsDriftCounts!(set1%(j%), j%, chan%)
 analysis.MANAssignsRows%(j%, chan%) = MANAssignsSampleRows%(set1%(j%), j%, chan%)
 
+analysis.MANAssignsCountTimes!(j%, chan%) = MANAssignsCountTimes!(set1%(j%), j%, chan%)
+analysis.MANAssignsBeamCurrents!(j%, chan%) = MANAssignsBeamCurrents!(set1%(j%), j%, chan%)
+
 ' If a subsequent set was found, then calculate drift based on elasped time from passed DateTime parameter
 If UseDriftFlag And set2%(j%) <> 0 Then
 deltacounts! = MANAssignsDriftCounts!(set2%(j%), j%, chan%) - MANAssignsDriftCounts!(set1%(j%), j%, chan%)
@@ -2079,7 +2082,7 @@ Exit Sub
 
 End Sub
 
-Sub UpdateGetMANStandards(Mode As Integer, sample() As TypeSample)
+Sub UpdateGetMANStandards(mode As Integer, sample() As TypeSample)
 ' Routine to load all MAN standard sets for MAN drift correction calculation of
 ' both standards and unknowns. See routine UpdateCalculateMANDrift for actual
 ' MAN drift calculation. Called by routines UpdateStdDriftCounts and MANLoad, etc.
@@ -2094,6 +2097,8 @@ Dim samplerow As Integer, ip As Integer, chan As Integer
 Dim jmax As Integer, kmax As Integer
 
 Dim average As TypeAverage
+Dim average2 As TypeAverage
+Dim average3 As TypeAverage
 
 If DebugMode Then
 Call IOWriteLog(vbCrLf & "Entering UpdateGetMANStandards...")
@@ -2108,6 +2113,8 @@ For k% = 1 To MAXSET%
 MANAssignsDriftCounts!(k%, j%, i%) = 0#
 MANAssignsDateTimes(k%, j%, i%) = 0#
 MANAssignsSampleRows%(k%, j%, i%) = 0
+MANAssignsCountTimes!(k%, j%, i%) = 0#
+MANAssignsBeamCurrents!(k%, j%, i%) = 0#
 Next k%
 Next j%
 
@@ -2139,7 +2146,7 @@ GoTo 9000
 7000:
 
 ' Update status form
-If Mode% = 0 Then
+If mode% = 0 Then
 msg$ = SampleGetString(samplerow%)
 Call AnalyzeStatusAnal("Loading count data for MAN  " & msg$ & "...")
 If icancelanal Then
@@ -2206,6 +2213,19 @@ End If
 Call MathCountAverage(average, UpdateTmpSample())
 If ierror Then Exit Sub
 
+' Average the count times
+Call MathArrayAverage(average2, UpdateTmpSample(1).OnTimeData!(), UpdateTmpSample(1).Datarows%, UpdateTmpSample(1).LastElm%, UpdateTmpSample())
+If ierror Then Exit Sub
+
+' Average the beam currents
+If Not UpdateTmpSample(1).CombinedConditionsFlag Then
+Call MathArrayAverage(average3, UpdateTmpSample(1).OnBeamData!(), UpdateTmpSample(1).Datarows%, UpdateTmpSample(1).LastElm%, UpdateTmpSample())
+If ierror Then Exit Sub
+Else
+Call MathArrayAverage(average3, UpdateTmpSample(1).OnBeamDataArray!(), UpdateTmpSample(1).Datarows%, UpdateTmpSample(1).LastElm%, UpdateTmpSample())
+If ierror Then Exit Sub
+End If
+
 If DebugMode Then
 msg$ = vbCrLf & "MAN Standard " & SampleGetString2$(UpdateTmpSample()) & " intensity data (averaged):"
 Call IOWriteLog(msg$)
@@ -2270,6 +2290,12 @@ MANAssignsSets%(j, i%) = MANAssignsSets%(j, i%) + 1
 ' Load average counts
 MANAssignsDriftCounts!(MANAssignsSets%(j, i%), j%, i%) = average.averags!(ip%)
 
+' Load average count times
+MANAssignsCountTimes!(MANAssignsSets%(j, i%), j%, i%) = average2.averags!(ip%)
+
+' Load average beam currents
+MANAssignsBeamCurrents!(MANAssignsSets%(j, i%), j%, i%) = average3.averags!(ip%)
+
 ' Load average "dateTime"
 MANAssignsDateTimes(MANAssignsSets%(j, i%), j%, i%) = average.AverDateTime
 
@@ -2330,7 +2356,7 @@ Next j%
 End If
 Next i%
 
-If Not DebugMode Or Mode% = 1 Then Exit Sub
+If Not DebugMode Or mode% = 1 Then Exit Sub
 
 ' Debug, print MAN drift array
 jmax% = UpdateGetMaxMANAssign(sample())
@@ -2338,8 +2364,8 @@ kmax% = UpdateGetMaxSet(Int(3), sample())
 
 For j% = 1 To jmax%
 
-If j% = 1 Then
 ' Print MAN standard assignments and MAN sets
+If j% = 1 Then
 msg$ = vbCrLf & "MAN Standard drift array set numbers (cps/" & Format$(NominalBeam!) & FaradayCurrentUnits$ & "):"
 Call IOWriteLog(msg$)
 msg$ = vbCrLf & "ELEM: "
@@ -2388,6 +2414,20 @@ Call IOWriteLog(msg$)
 msg$ = "MANCNT"
 For i% = 1 To sample(1).LastElm%
 msg$ = msg$ & Format$(Format$(MANAssignsDriftCounts!(k%, j%, i%), f82$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+
+' Print MAN drift count times
+msg$ = "MANTIM"
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(MANAssignsCountTimes!(k%, j%, i%), f82$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+
+' Print MAN drift beam currents
+msg$ = "MANCUR"
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(MANAssignsBeamCurrents!(k%, j%, i%), f82$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
