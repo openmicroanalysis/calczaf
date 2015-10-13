@@ -743,13 +743,16 @@ End If
 If UseBlankCorFlag Then
 If Not MiscAllZero(sample(1).LastElm%, sample(1).BlankCorrectionUnks%()) Then
 If sample(1).BlankCorrectionUnks%(chan%) > 0 Then
-temp! = (AnalBlankCorrectionPercents!(chan%) - sample(1).BlankCorrectionLevels!(chan%))     ' calculate wt% blank correction
-temp! = analysis.StdAssignsCounts!(chan%) * temp! / analysis.StdAssignsPercents!(chan%)    ' convert to unknown intensity (divide % by %)
+temp! = (AnalBlankCorrectionPercents!(chan%) - sample(1).BlankCorrectionLevels!(chan%))              ' calculate wt% blank correction
+temp! = analysis.StdAssignsCounts!(chan%) * temp! / analysis.StdAssignsPercents!(chan%)              ' convert to unknown intensity (divide % by %)
+
 If CorrectionFlag% = 0 Then
 blankcts!(chan%) = temp! * analysis.StdAssignsZAFCors!(4, chan%) / analysis.UnkZAFCors!(4, chan%)    ' correct for matrix effect
-Else
-blankcts!(chan%) = temp! * analysis.StdAssignsBetas!(chan%) / analysis.UnkBetas!(chan%)    ' correct for matrix effect
+ElseIf CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
+blankcts!(chan%) = temp! * analysis.StdAssignsBetas!(chan%) / analysis.UnkBetas!(chan%)              ' correct for matrix effect
+ElseIf CorrectionFlag% = MAXCORRECTION% Then
 End If
+
 uncts!(chan%) = uncts!(chan%) - blankcts!(chan%)
 End If
 End If

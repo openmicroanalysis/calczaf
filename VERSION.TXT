@@ -18,7 +18,11 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
-10/10/15	Work new MAN precision expressions from Singer.
+10/12/15	Update Quick Start manual in distribution. 
+
+	Update Getting Started manual (by Karsten Goemann).
+	
+10/10/15	Work on new MAN precision expressions from Singer.
 v. 10.0.7
 	Add calculate image statistics menu to CalcImage log window for currently open images.
 
