@@ -312,19 +312,18 @@ Global Const MAXINTEGRATEDINTENSITYMINIMUMSTEP! = 20#
 Global Const INTEGRATEDINTENSITYINITIALSTEP! = 100#
 Global Const INTEGRATEDINTENSITYMINIMUMSTEP! = 400#
 
-'Global Const SCALERSDATLINESOLD% = 40    ' number of lines in old SCALERS.DAT file
-Global Const SCALERSDATLINESNEW% = 90    ' number of lines in new SCALERS.DAT file
+Global Const SCALERSDATLINESNEW% = 90               ' number of lines in new SCALERS.DAT file
 
-Global Const MAXSCANS& = 99999           ' maximum number of PHA, bias, gain or peaking scans
-Global Const MAXAPERTURES% = 4           ' maximum number of apertures in system
+Global Const MAXSCANS& = 99999                      ' maximum number of PHA, bias, gain or peaking scans
+Global Const MAXAPERTURES% = 4                      ' maximum number of apertures in system
 Global Const SMALLAMOUNTFRACTION_HALF! = 0.0005     ' small amount fraction for motion limits (times 0.5)
 Global Const SMALLAMOUNTFRACTION! = 0.001           ' small amount fraction for motion limits
 Global Const SMALLAMOUNTFRACTIONx5! = 0.005         ' small amount fraction for motion limits (times 5)
 Global Const SMALLAMOUNTFRACTIONx10! = 0.01         ' small amount fraction for motion limits (times 10)
-Global Const MAXROMPEAKTYPES% = 6           ' maximum number of ROM scan peaking types
-Global Const DEFAULTVOLATILEINTERVALS% = 5  ' default number of volatile intervals
+Global Const MAXROMPEAKTYPES% = 6                   ' maximum number of ROM scan peaking types
+Global Const DEFAULTVOLATILEINTERVALS% = 5          ' default number of volatile intervals
 
-Global Const JEOL_SPECTRO_JOG_SIZE# = 0.6   ' additional room for JEOL spectro low limit jog (in mm)
+Global Const JEOL_SPECTRO_JOG_SIZE# = 0.6           ' additional room for JEOL spectro low limit jog (in mm)
 Global Const JEOL_IMAGE_SHIFT_FACTOR! = 163.8       ' image_shift = CInt(um_shift * 163.8)
 
 Global Const MAXKLMORDER% = 20           ' maximum number of KLM higher order lines to display
@@ -347,48 +346,48 @@ Global Const FONT_UNDERLINE% = 4         ' underline
 Global Const FONT_STRIKETHRU% = 8        ' strikethru
 
 ' Graphics Server Text Constants
-'Global Const GSR_CSSYSTEM% = 0     ' Default vector font
-'Global Const GSR_CSUSER% = 1       ' Vector font loaded with GSLoadVFont function
-Global Const GSR_CSRASTER% = 2     ' Flag for raster font
+'Global Const GSR_CSSYSTEM% = 0             ' Default vector font
+'Global Const GSR_CSUSER% = 1               ' Vector font loaded with GSLoadVFont function
+Global Const GSR_CSRASTER% = 2              ' Flag for raster font
 ' Note: GSR_CSRASTER% + GSR_CSSYSTEM% = 2   ' Default raster font
 ' Note: GSR_CSRASTER% + GSR_CSUSER% = 3     ' Raster font loaded with GSLoadRFont function
 
-'Global Const GSR_TXEXACT% = 1    ' Text conforms to specified height and width (vector fonts only)
-'Global Const GSR_TXLEFT% = 0     ' Text aligns at left
-Global Const GSR_TXMID% = 2      ' Text aligns at midpoint
-'Global Const GSR_TXRIGHT% = 4    ' Text aligns at right
-'Global Const GSR_TXBOTTOM% = 0   ' Text aligns along extreme bottom of characters
-Global Const GSR_TXBASELINE% = 8 ' Text aligns along baseline of characters
-Global Const GSR_TXTOP% = 16     ' Text aligns along top of characters
-'Global Const GSR_TXUP90% = 32    ' Rotates text 90 degrees counterclockwise
-'Global Const GSR_TXDOWN90% = 64  ' Rotates text 90 degrees clockwise
-Global Const GSR_TXTRANS% = 256  ' Text background is transparent
+'Global Const GSR_TXEXACT% = 1      ' Text conforms to specified height and width (vector fonts only)
+'Global Const GSR_TXLEFT% = 0       ' Text aligns at left
+Global Const GSR_TXMID% = 2         ' Text aligns at midpoint
+'Global Const GSR_TXRIGHT% = 4      ' Text aligns at right
+'Global Const GSR_TXBOTTOM% = 0     ' Text aligns along extreme bottom of characters
+Global Const GSR_TXBASELINE% = 8    ' Text aligns along baseline of characters
+Global Const GSR_TXTOP% = 16        ' Text aligns along top of characters
+'Global Const GSR_TXUP90% = 32      ' Rotates text 90 degrees counterclockwise
+'Global Const GSR_TXDOWN90% = 64    ' Rotates text 90 degrees clockwise
+Global Const GSR_TXTRANS% = 256     ' Text background is transparent
 
-Global Const GSR_USETITG% = 0   ' Graph title
-Global Const GSR_USETITXY% = 1  ' Other titles (left, right, bottom)
-Global Const GSR_USELABS% = 2   ' Labels
+Global Const GSR_USETITG% = 0       ' Graph title
+Global Const GSR_USETITXY% = 1      ' Other titles (left, right, bottom)
+Global Const GSR_USELABS% = 2       ' Labels
 
-'Global Const GSR_FOROMAN% = 1  ' Roman
-'Global Const GSR_FOSWISS% = 2  ' Swiss (Helvetica)
-'Global Const GSR_FOMODERN% = 3 ' Modern
-'Global Const GSR_FOSCRIPT% = 4 ' Script
-'Global Const GSR_FODECO% = 5   ' Decorative
+'Global Const GSR_FOROMAN% = 1      ' Roman
+'Global Const GSR_FOSWISS% = 2      ' Swiss (Helvetica)
+'Global Const GSR_FOMODERN% = 3     ' Modern
+'Global Const GSR_FOSCRIPT% = 4     ' Script
+'Global Const GSR_FODECO% = 5       ' Decorative
 
-'Global Const GSR_FOREGULAR% = 0 ' Regular
-'Global Const GSR_FOITALIC% = 16 ' Italic
-'Global Const GSR_FOBOLD% = 32   ' Bold
-'Global Const GSR_FOULINE% = 64  ' Underlined
+'Global Const GSR_FOREGULAR% = 0    ' Regular
+'Global Const GSR_FOITALIC% = 16    ' Italic
+'Global Const GSR_FOBOLD% = 32      ' Bold
+'Global Const GSR_FOULINE% = 64     ' Underlined
 
-Global Const GSR_SIZE_60% = 60  ' 60% of system font
-Global Const GSR_SIZE_80% = 80  ' 80% of system font
-Global Const GSR_SIZE_100% = 100  ' 100% of system font
-Global Const GSR_SIZE_120% = 120  ' 120% of system font
-Global Const GSR_SIZE_150% = 150  ' 150% of system font
-'Global Const GSR_SIZE_200% = 200  ' 200% of system font
-'Global Const GSR_SIZE_300% = 300  ' 300% of system font
+Global Const GSR_SIZE_60% = 60      ' 60% of system font
+Global Const GSR_SIZE_80% = 80      ' 80% of system font
+Global Const GSR_SIZE_100% = 100    ' 100% of system font
+Global Const GSR_SIZE_120% = 120    ' 120% of system font
+Global Const GSR_SIZE_150% = 150    ' 150% of system font
+'Global Const GSR_SIZE_200% = 200   ' 200% of system font
+'Global Const GSR_SIZE_300% = 300   ' 300% of system font
 
-'Global Const GSR_FOVARIABLE% = 0 ' Variable pitch (default is variable)
-'Global Const GSR_FOFIXED% = 128  ' Fixed pitch (default is variable)
+'Global Const GSR_FOVARIABLE% = 0   ' Variable pitch (default is variable)
+'Global Const GSR_FOFIXED% = 128    ' Fixed pitch (default is variable)
 
 ' Database Field lengths
 Global Const DbTextDescriptionLength% = 255
@@ -644,8 +643,8 @@ Type TypeMonitorStructure
     beamonstatus As Boolean  ' true = beam on
     
     scanmode As Integer ' 0 = scan, 1 = spot, 2 = digital
-    reflectstatus As Integer    ' true = reflected light on
-    transmitstatus As Integer    ' true = transmitted light on
+    reflectstatus As Integer        ' true = reflected light on
+    transmitstatus As Integer       ' true = transmitted light on
     
     crystalpositions(1 To MAXSPEC%) As String
     counts(1 To MAXSPEC%) As Single
@@ -768,16 +767,16 @@ Type TypeSample
     ColumnConditionString As String
     ApertureNumber As Integer           ' aperture number (JEOL only)
     
-    PreAcquireString As String  ' column string applied during sample acquisition
-    PostAcquireString As String  ' column string applied after sample acquisition
+    PreAcquireString As String          ' column string applied during sample acquisition
+    PostAcquireString As String         ' column string applied after sample acquisition
     
     CombinedConditionsFlag As Integer
-    TakeoffArray(1 To MAXCHAN%) As Single ' for multiple conditions
-    KilovoltsArray(1 To MAXCHAN%) As Single ' for multiple conditions
-    BeamCurrentArray(1 To MAXCHAN%) As Single ' for multiple conditions
-    BeamSizeArray(1 To MAXCHAN%) As Single ' for multiple conditions
-    ColumnConditionMethodArray(1 To MAXCHAN%) As Integer ' for multiple conditions
-    ColumnConditionStringArray(1 To MAXCHAN%) As String ' for multiple conditions
+    TakeoffArray(1 To MAXCHAN%) As Single                   ' for multiple conditions
+    KilovoltsArray(1 To MAXCHAN%) As Single                 ' for multiple conditions
+    BeamCurrentArray(1 To MAXCHAN%) As Single               ' for multiple conditions
+    BeamSizeArray(1 To MAXCHAN%) As Single                  ' for multiple conditions
+    ColumnConditionMethodArray(1 To MAXCHAN%) As Integer    ' for multiple conditions
+    ColumnConditionStringArray(1 To MAXCHAN%) As String     ' for multiple conditions
     
     Description As String
     OxideOrElemental As Integer
@@ -871,20 +870,20 @@ Type TypeSample
     FiducialSetDescription As String        ' data is stored in Fiducial table
     fiducialpositions(1 To MAXAXES%, 1 To MAXDIM%) As Single
 
-    Linenumber(1 To MAXROW%) As Long    ' changed from integer 11/11/05 to handle more than 32K data points
+    Linenumber(1 To MAXROW%) As Long        ' changed from integer 11/11/05 to handle more than 32K data points
     LineStatus(1 To MAXROW%) As Integer
     DateTimes(1 To MAXROW%) As Double
-    StagePositions() As Single     ' allocated in InitSample (1 To MAXROW%, 1 To MAXAXES%)
+    StagePositions() As Single              ' allocated in InitSample (1 To MAXROW%, 1 To MAXAXES%)
 
     OnBeamCounts(1 To MAXROW%) As Single
     AbBeamCounts(1 To MAXROW%) As Single
-    OnBeamCountsArray() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
-    AbBeamCountsArray() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    OnBeamCountsArray() As Single           ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    AbBeamCountsArray() As Single           ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
 
     OnBeamCounts2(1 To MAXROW%) As Single
     AbBeamCounts2(1 To MAXROW%) As Single
-    OnBeamCountsArray2() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
-    AbBeamCountsArray2() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    OnBeamCountsArray2() As Single          ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    AbBeamCountsArray2() As Single          ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
 
     Elsyms(1 To MAXCHAN%) As String
     Xrsyms(1 To MAXCHAN%) As String
@@ -903,11 +902,11 @@ Type TypeSample
     HiPeaks(1 To MAXCHAN%) As Single
     LoPeaks(1 To MAXCHAN%) As Single
     StdAssigns(1 To MAXCHAN%) As Integer
-    StdAssignsFlag(1 To MAXCHAN%) As Integer    ' 0 = normal, 1 = virtual
-    DisableQuantFlag(1 To MAXCHAN%) As Integer   ' 0 = enabled, 1 = disabled
-    DisableAcqFlag(1 To MAXCHAN%) As Integer   ' 0 = enabled, 1 = disabled
+    StdAssignsFlag(1 To MAXCHAN%) As Integer        ' 0 = normal, 1 = virtual
+    DisableQuantFlag(1 To MAXCHAN%) As Integer      ' 0 = enabled, 1 = disabled
+    DisableAcqFlag(1 To MAXCHAN%) As Integer        ' 0 = enabled, 1 = disabled
 
-    BackgroundTypes(1 To MAXCHAN%) As Integer   ' 0 = off-peak, 1 = MAN, 2 = MPB
+    BackgroundTypes(1 To MAXCHAN%) As Integer       ' 0 = off-peak, 1 = MAN, 2 = MPB
 
     Baselines(1 To MAXCHAN%) As Single
     Windows(1 To MAXCHAN%) As Single
@@ -937,22 +936,22 @@ Type TypeSample
     LastPeakCountTimes(1 To MAXCHAN%) As Single
     LastQuickCountTimes(1 To MAXCHAN%) As Single
     
-    UnknownCountFactors() As Single    ' changed to single (4/24/02)
-    UnknownMaxCounts() As Long      ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    UnknownCountFactors() As Single     ' changed to single (4/24/02)
+    UnknownMaxCounts() As Long          ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
     
-    OnPeakCounts() As Single ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
-    HiPeakCounts() As Single ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
-    LoPeakCounts() As Single ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    OnPeakCounts() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    HiPeakCounts() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    LoPeakCounts() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
     
-    OnCountTimes() As Single ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
-    HiCountTimes() As Single ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
-    LoCountTimes() As Single ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    OnCountTimes() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    HiCountTimes() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    LoCountTimes() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
     
-    VolCountTimesStart() As Variant  ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
-    VolCountTimesStop() As Variant  ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
-    VolCountTimesDelay() As Single  ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    VolCountTimesStart() As Variant     ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    VolCountTimesStop() As Variant      ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    VolCountTimesDelay() As Single      ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
         
-    LastElm As Integer  ' calculated in DataGetMDBSample
+    LastElm As Integer          ' calculated in DataGetMDBSample
     LastChan As Integer
     Datarows As Integer
     GoodDataRows As Integer
@@ -970,7 +969,7 @@ Type TypeSample
     OnBeamData() As Single          ' on beam data (allocated in DataGetMDBSample)
     OnBeamDataArray() As Single     ' on beam data array (allocated in DataGetMDBSample)
         
-    AggregateNumChannels() As Integer ' number of aggregate channels (allocated in DataGetMDBSample)
+    AggregateNumChannels() As Integer       ' number of aggregate channels (allocated in DataGetMDBSample)
         
     Offsets(1 To MAXCHAN%) As Single        ' loaded in XrayGetOffsets
     LineEnergy(1 To MAXCHAN%) As Single     ' loaded in ElementCheckXray
@@ -1101,12 +1100,12 @@ Type TypeSample
     SecondaryFluorescenceBoundaryImageNumber As Integer     ' image number for BIM file (stored)
     SecondaryFluorescenceBoundaryImageFileName As String    ' original image file name (stored)
        
-    SecondaryFluorescenceBoundaryDistance() As Single               ' (in um) allocated in InitSample (1 To MAXROW%) (calculated)
-    SecondaryFluorescenceBoundaryKratios() As Single                 ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%) (calculated)
+    SecondaryFluorescenceBoundaryDistance() As Single                       ' (in um) allocated in InitSample (1 To MAXROW%) (calculated)
+    SecondaryFluorescenceBoundaryKratios() As Single                        ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%) (calculated)
     
-    SecondaryFluorescenceBoundaryMatA_String(1 To MAXCHAN%) As String   ' for stored kratio DAT table
-    SecondaryFluorescenceBoundaryMatB_String(1 To MAXCHAN%) As String   ' for stored kratio DAT table
-    SecondaryFluorescenceBoundaryMatBStd_String(1 To MAXCHAN%) As String   ' for stored kratio DAT table
+    SecondaryFluorescenceBoundaryMatA_String(1 To MAXCHAN%) As String       ' for stored kratio DAT table
+    SecondaryFluorescenceBoundaryMatB_String(1 To MAXCHAN%) As String       ' for stored kratio DAT table
+    SecondaryFluorescenceBoundaryMatBStd_String(1 To MAXCHAN%) As String    ' for stored kratio DAT table
     
     ' Correction using binary corrections (SecondaryFluorescenceBoundaryCorrectionMethod = 1)
 '    SecondaryFluorescenceBoundaryMaterialB_Name As String                       ' material B composition (stored)
@@ -1244,6 +1243,9 @@ Global VbForwardSlash As String * 1     ' forward slash character
 
 Global Const MAC_FILE_RECORD_LENGTH% = 2400
 Global Const XRAY_FILE_RECORD_LENGTH% = 188
+
+' Acquisition times for CalcImage pixels on a channel by channel basis
+Global ConditionSampleDateTime(1 To MAXCHAN%) As Variant
 
 ' Real-Time parameters (stored in "Current" table .MDB file)
 Global CurrentTableUpdatedOnly As Integer   ' flag for warning when loading saved sample setup

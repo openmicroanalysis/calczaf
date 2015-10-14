@@ -1065,7 +1065,8 @@ If ip% = 0 Then GoTo UpdateStdMANBackgroundsNoStandard
 For i% = 1 To kmax%
 If StdAssignsBackgroundTypes%(i%, chan%) = 1 Then
 
-Call UpdateCalculateMANDrift(chan%, StdAssignsDateTimes(i%, chan%), analysis)
+' Was: Call UpdateCalculateMANDrift(chan%, StdAssignsDateTimes(i%, chan%), analysis)
+Call UpdateCalculateMANDrift(Int(1), chan%, Int(0), i%, Int(0), analysis, sample())
 If ierror Then Exit Sub
 
 ' Now fit the drift corrected MAN counts for this standard
@@ -1184,7 +1185,8 @@ For i% = 1 To kmax%
 ' counts vs zbar, if this interference standard intensity is MAN corrected.
 If StdAssignsIntfBackgroundTypes%(i%, j%, chan%) = 1 Then
 
-Call UpdateCalculateMANDrift(chan%, StdAssignsIntfDateTimes(i%, j%, chan%), analysis)
+' Was: Call UpdateCalculateMANDrift(chan%, StdAssignsIntfDateTimes(i%, j%, chan%), analysis)
+Call UpdateCalculateMANDrift(Int(2), chan%, Int(0), i%, j%, analysis, sample())
 If ierror Then Exit Sub
 
 ' Now fit the drift corrected MAN counts for this standard time. Counts are
@@ -1545,7 +1547,7 @@ Next i%
 ' Loop on each element and calculate standard and interference standard drift corrected counts
 For i% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(i%) = 0 Then     ' for aggregate printout
-Call UpdateCalculateStdDrift(i%, row%, sample(), analysis)
+Call UpdateCalculateStdDrift(i%, row%, analysis, sample())
 If ierror Then Exit Sub
 End If
 Next i%
@@ -1571,7 +1573,8 @@ For i% = 1 To sample(1).LastElm%
 
 ' Check if this is a MAN correction at all (0=off-peak, 1=MAN, 2=multipoint)
 If sample(1).BackgroundTypes%(i%) = 1 Then
-Call UpdateCalculateMANDrift(i%, sample(1).DateTimes(row%), analysis)
+' Was: Call UpdateCalculateMANDrift(i%, sample(1).DateTimes(row%), analysis)
+Call UpdateCalculateMANDrift(Int(3), i%, row%, Int(0), Int(0), analysis, sample())
 If ierror Then Exit Sub
 End If
 
@@ -1599,9 +1602,12 @@ Exit Sub
 
 End Sub
 
-Sub UpdateCalculateMANDrift(chan As Integer, DateTime As Variant, analysis As TypeAnalysis)
-' Calculate drift counts for MAN correction of standards and unknowns. Called
-' by UpdateStandardMANBackground for standards and interference standards and
+Sub UpdateCalculateMANDrift(mode As Integer, chan As Integer, row As Integer, setnumber As Integer, interfnumber As Integer, analysis As TypeAnalysis, sample() As TypeSample)
+' Calculate drift corrected counts for MAN correction of standards, interference stds and unknowns.
+' mode = 1 calculate MAN counts for primary stds
+' mode = 2 calculate MAN counts for interference stds
+' mode = 3 calculate MAN counts for unknowns
+' Called by UpdateStandardMANBackground for standards and interference standards and
 ' by UpdateCalculateDrift for unknowns. Note that because the acqusition datetimes
 ' of the standards can be different from the unknowns, this routine uses an array
 ' of all assigned MAN standard sets in the run to accurately calculate the MAN
@@ -1613,6 +1619,7 @@ On Error GoTo UpdateCalculateMANDriftError
 Dim j As Integer, iset As Integer
 Dim deltatime As Double, elapsedtime As Double
 Dim deltacounts As Single
+Dim tDateTime As Variant
 
 ReDim set1(1 To MAXMAN%) As Integer, set2(1 To MAXMAN%) As Integer
 
@@ -1621,10 +1628,31 @@ For j% = 1 To MAXMAN%
 set1%(j%) = 1
 Next j%
 
+' Calculate drift for primary assigned standards
+If mode% = 1 Then
+tDateTime = StdAssignsDateTimes(setnumber%, chan%)
+
+' Calculate drift for primary assigned interference standards
+ElseIf mode% = 2 Then
+tDateTime = StdAssignsIntfDateTimes(setnumber%, interfnumber%, chan%)
+
+' Calculate drift for unknowns (point or pixels)
+ElseIf mode% = 3 Then
+
+' Load acquisition time from single point analyses time for PFE and Evaluate
+If UCase$(Trim$(app.EXEName)) <> UCase$(Trim$("CalcImage")) Then
+tDateTime = sample(1).DateTimes(row%)
+
+' Load acquisition time for x-ray map pixels from image start/stop map acquisition times for CalcImage
+Else
+tDateTime = ConditionSampleDateTime(chan%)
+End If
+End If
+
 For iset% = 2 To MAXSET%
 For j% = 1 To MAXMAN%
 If MANAssignsDateTimes(iset%, j%, chan%) <> 0# Then
-If DateTime >= MANAssignsDateTimes(iset%, j%, chan%) Then set1%(j%) = iset%
+If tDateTime >= MANAssignsDateTimes(iset%, j%, chan%) Then set1%(j%) = iset%
 End If
 Next j%
 Next iset%
@@ -1636,7 +1664,7 @@ Next j%
 
 For iset% = MAXSET% To 1 Step -1
 For j% = 1 To MAXMAN%
-If DateTime < MANAssignsDateTimes(iset%, j%, chan%) Then set2%(j%) = iset%
+If tDateTime < MANAssignsDateTimes(iset%, j%, chan%) Then set2%(j%) = iset%
 Next j%
 Next iset%
 
@@ -1657,7 +1685,7 @@ analysis.MANAssignsBeamCurrents!(j%, chan%) = MANAssignsBeamCurrents!(set1%(j%),
 If UseDriftFlag And set2%(j%) <> 0 Then
 deltacounts! = MANAssignsDriftCounts!(set2%(j%), j%, chan%) - MANAssignsDriftCounts!(set1%(j%), j%, chan%)
 deltatime = MANAssignsDateTimes(set2%(j%), j%, chan%) - MANAssignsDateTimes(set1%(j%), j%, chan%)
-elapsedtime = DateTime - MANAssignsDateTimes(set1%(j%), j%, chan%)
+elapsedtime = tDateTime - MANAssignsDateTimes(set1%(j%), j%, chan%)
 
 If deltatime <> 0# Then
 analysis.MANAssignsCounts!(j%, chan%) = MANAssignsDriftCounts!(set1%(j%), j%, chan%) + deltacounts! * elapsedtime / deltatime
@@ -1676,7 +1704,7 @@ Exit Sub
 
 End Sub
 
-Sub UpdateCalculateStdDrift(chan As Integer, row As Integer, sample() As TypeSample, analysis As TypeAnalysis)
+Sub UpdateCalculateStdDrift(chan As Integer, row As Integer, analysis As TypeAnalysis, sample() As TypeSample)
 ' Calculate drift corrected standard and interference counts for standards and unknowns
 
 ierror = False
@@ -1689,6 +1717,7 @@ Dim deltabeams As Single, temp As Single
 Dim deltabgdcounts As Single
 Dim std1 As Integer, std2 As Integer
 Dim tmsg As String
+Dim tDateTime As Variant
 
 ReDim set1(1 To MAXINTF%) As Integer, set2(1 To MAXINTF%) As Integer
 
@@ -1698,14 +1727,23 @@ For j% = 1 To MAXINTF%      ' interference standards
 set1%(j%) = 1
 Next j%
 
+' Load acquisition time from single point analyses time for PFE and Evaluate
+If UCase$(Trim$(app.EXEName)) <> UCase$(Trim$("CalcImage")) Then
+tDateTime = sample(1).DateTimes(row%)
+
+' Load acquisition time for x-ray map pixels from image start/stop map acquisition times for CalcImage
+Else
+tDateTime = ConditionSampleDateTime(chan%)
+End If
+
 ' Determine the first set for each standard and interference standard taken before this point
 For iset% = 2 To MAXSET%
 If StdAssignsDateTimes(iset%, chan%) <> 0# Then
-If sample(1).DateTimes(row%) >= StdAssignsDateTimes(iset%, chan%) Then std1% = iset%
+If tDateTime >= StdAssignsDateTimes(iset%, chan%) Then std1% = iset%
 End If
 For j% = 1 To MAXINTF%
 If StdAssignsIntfDateTimes(iset%, j%, chan%) <> 0# Then
-If sample(1).DateTimes(row%) >= StdAssignsIntfDateTimes(iset%, j%, chan%) Then set1%(j%) = iset%
+If tDateTime >= StdAssignsIntfDateTimes(iset%, j%, chan%) Then set1%(j%) = iset%
 End If
 Next j%
 Next iset%
@@ -1717,9 +1755,9 @@ set2%(j%) = 0
 Next j%
 
 For iset% = MAXSET% To 1 Step -1
-If sample(1).DateTimes(row%) < StdAssignsDateTimes(iset%, chan%) Then std2% = iset%
+If tDateTime < StdAssignsDateTimes(iset%, chan%) Then std2% = iset%
 For j% = 1 To MAXINTF%
-If sample(1).DateTimes(row%) < StdAssignsIntfDateTimes(iset%, j%, chan%) Then set2%(j%) = iset%
+If tDateTime < StdAssignsIntfDateTimes(iset%, j%, chan%) Then set2%(j%) = iset%
 Next j%
 Next iset%
 
@@ -1745,7 +1783,9 @@ deltacounts! = StdAssignsDriftCounts!(std2%, chan%) - StdAssignsDriftCounts!(std
 deltatimes! = StdAssignsDriftTimes!(std2%, chan%) - StdAssignsDriftTimes!(std1%, chan%)
 deltabeams! = StdAssignsDriftBeams!(std2%, chan%) - StdAssignsDriftBeams!(std1%, chan%)
 deltatime = StdAssignsDateTimes(std2%, chan%) - StdAssignsDateTimes(std1%, chan%)
-elapsedtime = sample(1).DateTimes(row%) - StdAssignsDateTimes(std1%, chan%)
+elapsedtime = tDateTime - StdAssignsDateTimes(std1%, chan%)
+
+' Load interpolated std bgd counts
 deltabgdcounts! = StdAssignsDriftBgdCounts!(std2%, chan%) - StdAssignsDriftBgdCounts!(std1%, chan%)
 
 ' Calculate drift and print warning if greater than tolerance (and more than an hour has elapsed)
@@ -1780,7 +1820,7 @@ analysis.StdAssignsIntfRows%(j%, chan%) = StdAssignsIntfSampleRows%(set1%(j%), j
 If UseDriftFlag And set2%(j%) <> 0 Then
 deltacounts! = StdAssignsIntfDriftCounts!(set2%(j%), j%, chan%) - StdAssignsIntfDriftCounts!(set1%(j%), j%, chan%)
 deltatime = StdAssignsIntfDateTimes(set2%(j%), j%, chan%) - StdAssignsIntfDateTimes(set1%(j%), j%, chan%)
-elapsedtime = sample(1).DateTimes(row%) - StdAssignsIntfDateTimes(set1%(j%), j%, chan%)
+elapsedtime = tDateTime - StdAssignsIntfDateTimes(set1%(j%), j%, chan%)
 
 If deltatime <> 0# Then
 analysis.StdAssignsIntfCounts!(j%, chan%) = StdAssignsIntfDriftCounts!(set1%(j%), j%, chan%) + deltacounts! * elapsedtime / deltatime
