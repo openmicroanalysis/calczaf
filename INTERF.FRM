@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{B16553C3-06DB-101B-85B2-0000C009BE81}#1.0#0"; "spin32.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormINTERF 
    AutoRedraw      =   -1  'True
    BorderStyle     =   1  'Fixed Single
@@ -183,11 +183,22 @@ Begin VB.Form FormINTERF
       TabIndex        =   7
       Top             =   120
       Width           =   4695
+      Begin MSComCtl2.UpDown UpDown1 
+         Height          =   615
+         Left            =   2880
+         TabIndex        =   22
+         ToolTipText     =   "Change the selected element"
+         Top             =   1440
+         Width           =   255
+         _ExtentX        =   450
+         _ExtentY        =   1085
+         _Version        =   393216
+      End
       Begin VB.ComboBox ComboXray 
          Height          =   315
-         Left            =   3360
+         Left            =   3240
          Style           =   2  'Dropdown List
-         TabIndex        =   22
+         TabIndex        =   21
          ToolTipText     =   "Calculate a specific x-ray line for the selected element"
          Top             =   1800
          Width           =   975
@@ -222,31 +233,14 @@ Begin VB.Form FormINTERF
       End
       Begin VB.ComboBox ComboElement 
          Appearance      =   0  'Flat
-         Height          =   300
-         Left            =   3360
+         Height          =   315
+         Left            =   3240
          Style           =   2  'Dropdown List
          TabIndex        =   5
          TabStop         =   0   'False
          ToolTipText     =   "Select a specific element to calculate interferences for"
          Top             =   1440
          Width           =   975
-      End
-      Begin Spin.SpinButton Spin1 
-         Height          =   615
-         Left            =   2760
-         TabIndex        =   21
-         ToolTipText     =   "Change the selected element"
-         Top             =   1440
-         Width           =   495
-         _Version        =   65536
-         _ExtentX        =   873
-         _ExtentY        =   1085
-         _StockProps     =   73
-         BackColor       =   12632256
-         BorderThickness =   0
-         Delay           =   200
-         ShadowThickness =   1
-         TdThickness     =   1
       End
       Begin VB.CommandButton Command3 
          Caption         =   "Enter Unknown"
@@ -370,7 +364,7 @@ End Sub
 
 Private Sub OptionAll_Click()
 If Not DebugMode Then On Error Resume Next
-FormINTERF.Spin1.Enabled = False
+FormINTERF.UpDown1.Enabled = False
 FormINTERF.ComboElement.Enabled = False
 FormINTERF.ComboXray.Enabled = False
 FormINTERF.CommandLoadXrayDatabase.Enabled = False
@@ -378,52 +372,10 @@ End Sub
 
 Private Sub OptionSelected_Click()
 If Not DebugMode Then On Error Resume Next
-FormINTERF.Spin1.Enabled = True
+FormINTERF.UpDown1.Enabled = True
 FormINTERF.ComboElement.Enabled = True
 FormINTERF.ComboXray.Enabled = True
 FormINTERF.CommandLoadXrayDatabase.Enabled = True
-End Sub
-
-Private Sub Spin1_SpinDown()
-If Not DebugMode Then On Error Resume Next
-
-Dim ip As Integer
-
-' Increment element
-If FormINTERF.ComboElement.ListCount < 0 Then Exit Sub
-ip% = FormINTERF.ComboElement.ListIndex + 1
-If ip% > FormINTERF.ComboElement.ListCount - 1 Then ip% = 0
-
-' Change list element
-FormINTERF.ComboElement.ListIndex = ip%
-FormINTERF.ComboElement.Refresh
-
-' Disable and enable spin button to fix weird problem
-FormINTERF.Spin1.Enabled = False
-DoEvents
-FormINTERF.Spin1.Enabled = True
-
-End Sub
-
-Private Sub Spin1_SpinUp()
-If Not DebugMode Then On Error Resume Next
-
-Dim ip As Integer
-
-' Increment element
-If FormINTERF.ComboElement.ListCount < 0 Then Exit Sub
-ip% = FormINTERF.ComboElement.ListIndex - 1
-If ip% < 0 Then ip% = FormINTERF.ComboElement.ListCount - 1
-
-' Change list element
-FormINTERF.ComboElement.ListIndex = ip%
-FormINTERF.ComboElement.Refresh
-
-' Disable and enable spin button to fix weird problem
-FormINTERF.Spin1.Enabled = False
-DoEvents
-FormINTERF.Spin1.Enabled = True
-
 End Sub
 
 Private Sub TextLiFPeakWidth_GotFocus()
@@ -446,3 +398,30 @@ If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
+Private Sub UpDown1_DownClick()
+If Not DebugMode Then On Error Resume Next
+Dim ip As Integer
+
+' Increment element
+If FormINTERF.ComboElement.ListCount < 0 Then Exit Sub
+ip% = FormINTERF.ComboElement.ListIndex + 1
+If ip% > FormINTERF.ComboElement.ListCount - 1 Then ip% = 0
+
+' Change list element
+FormINTERF.ComboElement.ListIndex = ip%
+FormINTERF.ComboElement.Refresh
+End Sub
+
+Private Sub UpDown1_UpClick()
+If Not DebugMode Then On Error Resume Next
+Dim ip As Integer
+
+' Increment element
+If FormINTERF.ComboElement.ListCount < 0 Then Exit Sub
+ip% = FormINTERF.ComboElement.ListIndex - 1
+If ip% < 0 Then ip% = FormINTERF.ComboElement.ListCount - 1
+
+' Change list element
+FormINTERF.ComboElement.ListIndex = ip%
+FormINTERF.ComboElement.Refresh
+End Sub

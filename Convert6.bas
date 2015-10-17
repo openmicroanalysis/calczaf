@@ -650,8 +650,8 @@ astring$ = astring$ & Format$("(K+Na+Ca+Ba)", a22$) & Format$("(Ti+Al(VI)+Fe+Mg+
 astring$ = astring$ & Format$(Format$(sum1!, f84$), a22$) & Format$(Format$(sum2!, f84$), a22$) & Format$(Format$(sum3!, f84$), a22$) & Format$(Format$(sum4!, f84$), a22$)
 Call IOWriteLog(astring$)
             
-' WRITE OUTPUT FILE FOR PLOT1 (COMPOSITONAL FRAMES)
-astring$ = "Sample " & VbDquote$ & sample(1).number% & VbDquote$
+' WRITE OUTPUT FILE FOR HALOG.OUT (COMPOSITONAL FRAMES)
+astring$ = "Sample " & vbTab & VbDquote$ & sample(1).number% & VbDquote$ & vbTab & VbDquote$ & sample(1).Name$ & VbDquote$
 Print #Temp2FileNumber%, astring$
 
 astring$ = vbNullString

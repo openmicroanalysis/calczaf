@@ -4,6 +4,8 @@ Option Explicit
 
 Const MAXAMPHI% = 12
 
+Dim tfilenumber As Integer, tfilenumber2 As Integer
+
 Sub ConvertMinerals2(method As Integer, percents() As Single, sample() As TypeSample)
 ' Alternative calculations for mineral calculations
 '  method = 6 amphibole calculations
@@ -16,7 +18,7 @@ On Error GoTo ConvertMinerals2Error
 Dim i As Integer
 Dim sum As Single
 
-Dim tfilename As String
+Dim tfilename As String, tfilename2 As String
 Dim response As Integer
 
 Static initialized6 As Boolean
@@ -28,12 +30,18 @@ If method% = 6 Then tfilename$ = UserDataDirectory$ & "\AMPHI.OUT"
 'If method% = 7 Then tfilename$ = UserDataDirectory$ & "\BIOTITE.OUT"
 If method% = 7 Then tfilename$ = UserDataDirectory$ & "\HALOG.OUT"
 
+If method% = 6 Then tfilename2$ = UserDataDirectory$ & "\AMPHI.DAT"
+'If method% = 6 Then tfilename2$ = UserDataDirectory$ & "\AMPHI2.DAT"
+'If method% = 7 Then tfilename2$ = UserDataDirectory$ & "\BIOTITE.DAT"
+If method% = 7 Then tfilename2$ = UserDataDirectory$ & "\HALOG.DAT"
+
 ' Check for existing file if first output
 If method% = 6 And Not initialized6 Then
 If Not Dir$(tfilename$) = vbNullString Then
 msg$ = tfilename$ & " already exists. Do you want to delete the existing output file and start a new AMPHI.OUT output file?"
 response% = MsgBox(msg$, vbYesNoCancel + vbQuestion + vbDefaultButton1, "ConvertMinerals2")
 If response% = vbYes Then Kill tfilename$
+If response% = vbYes And Not Dir$(tfilename2$) = vbNullString Then Kill tfilename2$
 If response% = vbCancel Then Exit Sub
 End If
 initialized6 = True
@@ -44,6 +52,7 @@ If Not Dir$(tfilename$) = vbNullString Then
 msg$ = tfilename$ & " already exists. Do you want to delete the existing output file and start a new BIOTITE.OUT output file?"
 response% = MsgBox(msg$, vbYesNoCancel + vbQuestion + vbDefaultButton1, "ConvertMinerals2")
 If response% = vbYes Then Kill tfilename$
+If response% = vbYes And Not Dir$(tfilename2$) = vbNullString Then Kill tfilename2$
 If response% = vbCancel Then Exit Sub
 End If
 initialized7 = True
@@ -58,19 +67,27 @@ If sum! < 80# Then GoTo ConvertMinerals2LowTotal
 
 ' Amphibole
 If method% = 6 Then
-Open tfilename$ For Append As #Temp2FileNumber%
+tfilenumber% = FreeFile()
+Open tfilename$ For Append As #tfilenumber%
+tfilenumber2% = FreeFile()
+Open tfilename2$ For Append As #tfilenumber2%
 Call ConvertAmphibole(Int(13), percents!(), sample())
 'Call ConvertAmphibole2(CSng(0#), percents!(), sample())
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 If ierror Then Exit Sub
 End If
 
 ' Biotite
 If method% = 7 Then
-Open tfilename$ For Append As #Temp2FileNumber%
+tfilenumber% = FreeFile()
+Open tfilename$ For Append As #tfilenumber%
+tfilenumber2% = FreeFile()
+Open tfilename$ For Append As #tfilenumber2%
 'Call ConvertBiotite(percents!(), sample())
 Call ConvertHalog(percents!(), sample())
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 If ierror Then Exit Sub
 End If
 
@@ -79,13 +96,16 @@ Exit Sub
 ' Errors
 ConvertMinerals2Error:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertMinerals2"
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 ierror = True
 Exit Sub
 
 ConvertMinerals2LowTotal:
 msg$ = "Total is too low to calculate a structural formula"
 MsgBox msg$, vbOKOnly + vbExclamation, "ConvertMinerals2"
+Close #tfilenumber%
+Close #tfilenumber2%
 ierror = True
 Exit Sub
 
@@ -94,7 +114,7 @@ End Sub
 Sub ConvertAmphibole(INORM As Integer, percents() As Single, sample() As TypeSample)
 ' Amphibole calculation (COMPUTES CALCIC AMPHIBOLE STRUCTURAL FORMULAS)
 '  Originally written in FORTRAN by JAY AGUE, translated to Visual Basic by John Donovan
-'  Calls NORM, AVER, SUM, GETFE and AUTOAV routines
+'  Calls ConvertAmphiboleNORM, ConvertAmphiboleAVER, ConvertAmphiboleSUM, ConvertAmphiboleGETFE and ConvertAmphiboleAUTOAV routines
 
 ierror = False
 On Error GoTo ConvertAmphiboleError
@@ -436,14 +456,14 @@ If PRESS23! < 0# Then PRESS23! = 0#
 
 Call IOWriteLog(a6x$ & "STRUCTURAL FORMULA:")
 Call IOWriteLog(a8x$ & "SI   " & Format$(Format$(CATF(1), f84$), a80$))
-Call IOWriteLog(a8x$ & "ALIV " & Format$(Format$(TETAL!, f84$), a80$) & a8x$ & "ALVI" & Format$(Format$(OCTAL!, f84$), a80$))
 Call IOWriteLog(a8x$ & "TI   " & Format$(Format$(CATF(2), f84$), a80$))
+Call IOWriteLog(a8x$ & "AL IV" & Format$(Format$(TETAL!, f84$), a80$) & a8x$ & "AL VI" & Format$(Format$(OCTAL!, f84$), a80$))
 Call IOWriteLog(a8x$ & "FE3+ " & Format$(Format$(CATF(4), f84$), a80$))
 Call IOWriteLog(a8x$ & "FE2+ " & Format$(Format$(CATF(5), f84$), a80$))
 Call IOWriteLog(a8x$ & "MG   " & Format$(Format$(CATF(6), f84$), a80$))
 Call IOWriteLog(a8x$ & "MN   " & Format$(Format$(CATF(7), f84$), a80$))
 Call IOWriteLog(a8x$ & "CA   " & Format$(Format$(CATF(8), f84$), a80$))
-Call IOWriteLog(a8x$ & "NA   " & Format$(Format$(ANAM4!, f84$), a80$) & a8x$ & "NA  " & Format$(Format$(ANA12!, f84$), a80$))
+Call IOWriteLog(a8x$ & "NA A " & Format$(Format$(ANAM4!, f84$), a80$) & a8x$ & "NA B " & Format$(Format$(ANA12!, f84$), a80$))
 Call IOWriteLog(a8x$ & "K    " & Format$(Format$(CATF(10), f84$), a80$))
 Call IOWriteLog(a8x$ & "F    " & Format$(Format$(CATF(11), f84$), a80$))
 Call IOWriteLog(a8x$ & "CL   " & Format$(Format$(CATF(12), f84$), a80$))
@@ -470,9 +490,9 @@ Call IOWriteLog(a6x$ & "ALVI+2TI+A-SITE+FE3+=     " & Format$(Format$(OC1!, f83$
 Call IOWriteLog(vbNullString)
 Call IOWriteLog(a6x$ & "Schmidt (1992) Pressure (All FE2+): " & Format$(Format$(PRESS2!, f42$), a80$) & " KBar, " & a4x$ & "(FE2+ -FE3+): " & Format$(Format$(PRESS23!, f42$), a80$) & " KBar")
       
-' Output to file
-astring$ = "Sample " & VbDquote$ & sample(1).number% & VbDquote$
-Print #Temp2FileNumber%, astring$
+' Output to file (AMPHI.OUT)
+astring$ = vbCrLf & "Sample " & VbDquote$ & sample(1).number% & VbDquote$ & vbTab & VbDquote$ & sample(1).Name$ & VbDquote$
+Print #tfilenumber%, astring$
 
 astring$ = vbNullString
 For j% = 1 To MAXAMPHI%
@@ -486,7 +506,7 @@ For j% = 1 To MAXAMPHI%
     astring$ = astring$ + MiscAutoFormat$(WTPC!(j%)) & vbTab$ & MiscAutoFormat$(ANSFO!(j%)) & vbTab$ & MiscAutoFormat$(CATF!(j%)) & vbTab & esym$(j%) & vbCrLf
     End If
 Next j%
-Print #Temp2FileNumber%, astring$
+Print #tfilenumber%, astring$
     
 astring$ = vbNullString
 astring$ = astring$ & MiscAutoFormat$(HALOG!) & vbTab$ & MiscAutoFormat$(RAMGFE!) & vbTab$ & MiscAutoFormat$(MGB!) & vbTab$
@@ -496,14 +516,119 @@ astring$ = astring$ & MiscAutoFormat$(OC2!) & vbTab$ & MiscAutoFormat$(CATF(3)) 
 astring$ = astring$ & MiscAutoFormat$(FERAT!) & vbTab$ & MiscAutoFormat$(CATF(1)) & vbCrLf
 astring$ = astring$ & MiscAutoFormat$(ANAM4!) & vbTab$ & MiscAutoFormat$(ANA12!) & vbTab$ & MiscAutoFormat$(OCTA!) & vbTab$
 astring$ = astring$ & MiscAutoFormat$(CATF!(8)) & vbTab & MiscAutoFormatI$(NCODE%)
-Print #Temp2FileNumber%, astring$
+Print #tfilenumber%, astring$
 
+' Output to file (AMPHI.DAT)
+astring$ = vbCrLf & "Sample " & vbTab & VbDquote$ & sample(1).number% & VbDquote$ & vbTab & VbDquote$ & sample(1).Name$ & VbDquote$
+Print #tfilenumber2%, astring$
+
+' Output oxide labels
+astring$ = vbNullString
+For j% = 1 To MAXAMPHI%
+    If j% = 1 Then astring$ = astring$ & "SiO2" & vbTab
+    If j% = 2 Then astring$ = astring$ & "TiO2" & vbTab
+    If j% = 3 Then
+        astring$ = astring$ & "Al2O3" & vbTab
+        astring$ = astring$ & "-----" & vbTab
+    End If
+    If j% = 4 Then astring$ = astring$ & "Fe2O3" & vbTab
+    If j% = 5 Then astring$ = astring$ & "FeO" & vbTab
+    If j% = 6 Then astring$ = astring$ & "MgO" & vbTab
+    If j% = 7 Then astring$ = astring$ & "MnO" & vbTab
+    If j% = 8 Then astring$ = astring$ & "CaO" & vbTab
+    If j% = 9 Then
+        astring$ = astring$ & "Na2O" & vbTab
+        astring$ = astring$ & "----" & vbTab
+    End If
+    If j% = 10 Then astring$ = astring$ & "K2O" & vbTab
+    If j% = 11 Then astring$ = astring$ & "F" & vbTab
+    If j% = 12 Then astring$ = astring$ & "Cl" & vbTab
+Next j%
+astring$ = astring$ & "OH" & vbTab
+Print #tfilenumber2%, astring$
+
+' Output oxide wt%
+astring$ = vbNullString
+For j% = 1 To MAXAMPHI%
+    If j% = 1 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+    If j% = 2 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+    If j% = 3 Then
+        astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+        astring$ = astring$ & Format$(0#) & vbTab
+    End If
+    If j% = 4 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+    If j% = 5 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+    If j% = 6 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+    If j% = 7 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+    If j% = 8 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+    If j% = 9 Then
+        astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+        astring$ = astring$ & Format$(0#) & vbTab
+    End If
+    If j% = 10 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+    If j% = 11 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+    If j% = 12 Then astring$ = astring$ & Format$(WTPC!(j%)) & vbTab
+Next j%
+astring$ = astring$ & Format$(2# - (CATF(11) + CATF(12))) & vbTab
+Print #tfilenumber2%, astring$
+
+' Output structural formula labels
+astring$ = vbNullString
+For j% = 1 To MAXAMPHI%
+    If j% = 1 Then astring$ = astring$ & VbDquote$ & "SI" & VbDquote$ & vbTab
+    If j% = 2 Then astring$ = astring$ & VbDquote$ & "TI" & VbDquote$ & vbTab
+    If j% = 3 Then
+        astring$ = astring$ & "AL IV" & vbTab
+        astring$ = astring$ & "AL VI" & vbTab
+    End If
+    If j% = 4 Then astring$ = astring$ & VbDquote$ & "FE 3+" & VbDquote$ & vbTab
+    If j% = 5 Then astring$ = astring$ & VbDquote$ & "FE 2+" & VbDquote$ & vbTab
+    If j% = 6 Then astring$ = astring$ & VbDquote$ & "MG" & VbDquote$ & vbTab
+    If j% = 7 Then astring$ = astring$ & VbDquote$ & "Mn" & VbDquote$ & vbTab
+    If j% = 8 Then astring$ = astring$ & VbDquote$ & "CA" & VbDquote$ & vbTab
+    If j% = 9 Then
+        astring$ = astring$ & VbDquote$ & "NA A" & VbDquote$ & vbTab
+        astring$ = astring$ & VbDquote$ & "NA B" & VbDquote$ & vbTab
+    End If
+    If j% = 10 Then astring$ = astring$ & VbDquote$ & "K" & VbDquote$ & vbTab
+    If j% = 11 Then astring$ = astring$ & VbDquote$ & "F" & VbDquote$ & vbTab
+    If j% = 12 Then astring$ = astring$ & VbDquote$ & "CL" & VbDquote$ & vbTab
+Next j%
+astring$ = astring$ & VbDquote$ & "OH" & VbDquote$ & vbTab
+Print #tfilenumber2%, astring$
+    
+' Output structural formulas
+astring$ = vbNullString
+For j% = 1 To MAXAMPHI%
+    If j% = 1 Then astring$ = astring$ & Format$(CATF(1)) & vbTab
+    If j% = 2 Then astring$ = astring$ & Format$(CATF(2)) & vbTab
+    If j% = 3 Then
+        astring$ = astring$ & Format$(TETAL!) & vbTab
+        astring$ = astring$ & Format$(OCTAL!) & vbTab
+    End If
+    If j% = 4 Then astring$ = astring$ & Format$(CATF(4)) & vbTab
+    If j% = 5 Then astring$ = astring$ & Format$(CATF(5)) & vbTab
+    If j% = 6 Then astring$ = astring$ & Format$(CATF(6)) & vbTab
+    If j% = 7 Then astring$ = astring$ & Format$(CATF(7)) & vbTab
+    If j% = 8 Then astring$ = astring$ & Format$(CATF(8)) & vbTab
+    If j% = 9 Then
+        astring$ = astring$ & Format$(ANAM4!) & vbTab
+        astring$ = astring$ & Format$(ANA12!) & vbTab
+    End If
+    If j% = 10 Then astring$ = astring$ & Format$(CATF(10)) & vbTab
+    If j% = 11 Then astring$ = astring$ & Format$(CATF(11)) & vbTab
+    If j% = 12 Then astring$ = astring$ & Format$(CATF(12)) & vbTab
+Next j%
+astring$ = astring$ & Format$(2# - (CATF(11) + CATF(12))) & vbTab
+Print #tfilenumber2%, astring$
+    
 Exit Sub
 
 ' Errors
 ConvertAmphiboleError:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertAmphibole"
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 ierror = True
 Exit Sub
 
@@ -838,7 +963,7 @@ Call IOWriteLog(a6x$ & "Schmidt (1992) Pressure (All FE2+): " & Format$(Format$(
       
 ' Output to file
 astring$ = "Sample " & VbDquote$ & sample(1).number% & VbDquote$
-Print #Temp2FileNumber%, astring$
+Print #tfilenumber%, astring$
 
 astring$ = vbNullString
 For j% = 1 To MAXAMPHI%
@@ -852,20 +977,21 @@ For j% = 1 To MAXAMPHI%
     astring$ = astring$ + MiscAutoFormat$(WTPC!(j%)) & vbTab$ & MiscAutoFormat$(ANSFO!(j%)) & vbTab$ & MiscAutoFormat$(CATF!(j%)) & vbTab & esym$(j%) & vbCrLf
     End If
 Next j%
-Print #Temp2FileNumber%, astring$
+Print #tfilenumber%, astring$
 
 astring$ = vbNullString
 astring$ = astring$ & MiscAutoFormat$(HALOG!) & vbTab$ & MiscAutoFormat$(RAMGFE!) & vbTab$ & MiscAutoFormat$(MGB!) & vbTab$ & MiscAutoFormat$(FE2X!) & vbTab$ & MiscAutoFormat$(tix!) & vbTab$ & MiscAutoFormat$(XALVI!) & vbTab$ & MiscAutoFormat$(MNX!) & vbTab$ & MiscAutoFormat$(XFOXOH!) & vbCrLf
 astring$ = astring$ & MiscAutoFormat$(OC1!) & vbTab$ & MiscAutoFormat$(OC2!) & vbTab$ & MiscAutoFormat$(CATF(3)) & vbTab$ & MiscAutoFormat$(ASITE!) & vbTab$ & MiscAutoFormat$(FERAT!) & vbTab$ & MiscAutoFormat$(CATF(1)) & vbCrLf
 astring$ = astring$ & MiscAutoFormat$(ANAM4!) & vbTab$ & MiscAutoFormat$(ANA12!) & vbTab$ & MiscAutoFormat$(OCTA!) & vbTab$ & MiscAutoFormat$(CATF!(8)) & vbTab$ & MiscAutoFormat$(FIXRAT!) & vbTab$ & MiscAutoFormat$(WTT!)
-Print #Temp2FileNumber%, astring$
+Print #tfilenumber%, astring$
 
 Exit Sub
 
 ' Errors
 ConvertAmphibole2Error:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertAmphibole2"
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 ierror = True
 Exit Sub
 
@@ -1008,7 +1134,8 @@ Exit Sub
 ' Errors
 ConvertAmphiboleNormError:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertAmphiboleNorm"
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 ierror = True
 Exit Sub
 
@@ -1040,7 +1167,8 @@ Exit Sub
 ' Errors
 ConvertAmphiboleGetFeError:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertAmphiboleGetFe"
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 ierror = True
 Exit Sub
 
@@ -1071,7 +1199,8 @@ Exit Sub
 ' Errors
 ConvertAmphiboleSumError:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertAmphiboleSum"
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 ierror = True
 Exit Sub
 
@@ -1124,7 +1253,8 @@ Exit Sub
 ' Errors
 ConvertAmphiboleAverError:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertAmphiboleAver"
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 ierror = True
 Exit Sub
 
@@ -1197,7 +1327,8 @@ Exit Sub
 ' Errors
 ConvertAmphiboleAutoAvError:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertAmphiboleAutoAv"
-Close #Temp2FileNumber%
+Close #tfilenumber%
+Close #tfilenumber2%
 ierror = True
 Exit Sub
 

@@ -18,6 +18,10 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 
+10/16/15	Add Excel tab delimited format for amphibole recalculations (Lowers).  See new AMPHI.DAT file.
+
+	Replace old spin button controls with new MS UpDown controls in Standard and CalcZAF.
+
 10/13/15	Add Print Log and Print Setup menus to the CalcImage log window.
 	
 	Implement rigorous calculation of pixel acquisition time in CalcImage for

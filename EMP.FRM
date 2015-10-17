@@ -50,7 +50,7 @@ Begin VB.Form FormEMP
       Style           =   1  'Graphical
       TabIndex        =   7
       TabStop         =   0   'False
-      Top             =   5280
+      Top             =   5400
       Width           =   1335
    End
    Begin VB.CommandButton Command4 
@@ -118,7 +118,7 @@ Begin VB.Form FormEMP
       Left            =   13560
       TabIndex        =   0
       TabStop         =   0   'False
-      Top             =   5280
+      Top             =   5400
       Width           =   1215
    End
    Begin VB.Label LabelMAC 

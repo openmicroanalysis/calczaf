@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{B16553C3-06DB-101B-85B2-0000C009BE81}#1.0#0"; "spin32.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormCALCSPEC 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Calculate Spectrometer Position"
@@ -24,19 +24,18 @@ Begin VB.Form FormCALCSPEC
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   3615
    ScaleWidth      =   8655
-   Begin Spin.SpinButton SpinButton1 
-      Height          =   255
-      Left            =   6240
-      TabIndex        =   21
-      Top             =   840
-      Width           =   375
-      _Version        =   65536
-      _ExtentX        =   661
-      _ExtentY        =   450
-      _StockProps     =   73
-      ForeColor       =   -2147483630
-      Enabled         =   0   'False
-      ShadowThickness =   1
+   Begin MSComCtl2.UpDown UpDown1 
+      Height          =   375
+      Left            =   6360
+      TabIndex        =   24
+      TabStop         =   0   'False
+      ToolTipText     =   "Adjust the analyzing crystal refractive index"
+      Top             =   720
+      Width           =   255
+      _ExtentX        =   450
+      _ExtentY        =   661
+      _Version        =   393216
+      Enabled         =   -1  'True
    End
    Begin VB.TextBox TextKIndex 
       Enabled         =   0   'False
@@ -71,7 +70,7 @@ Begin VB.Form FormCALCSPEC
          Height          =   255
          Index           =   3
          Left            =   120
-         TabIndex        =   24
+         TabIndex        =   23
          TabStop         =   0   'False
          Top             =   1080
          Width           =   6255
@@ -81,7 +80,7 @@ Begin VB.Form FormCALCSPEC
          Height          =   255
          Index           =   2
          Left            =   120
-         TabIndex        =   23
+         TabIndex        =   22
          TabStop         =   0   'False
          Top             =   840
          Width           =   6255
@@ -190,7 +189,7 @@ Begin VB.Form FormCALCSPEC
       Caption         =   "K-index"
       Height          =   255
       Left            =   4440
-      TabIndex        =   22
+      TabIndex        =   21
       Top             =   840
       Width           =   735
    End
@@ -283,10 +282,10 @@ Private Sub CheckUseRefractiveIndex_Click()
 If Not DebugMode Then On Error Resume Next
 If FormCALCSPEC.CheckUseRefractiveIndex.Value = vbChecked Then
 FormCALCSPEC.TextKIndex.Enabled = True
-FormCALCSPEC.SpinButton1.Enabled = True
+FormCALCSPEC.UpDown1.Enabled = True
 Else
 FormCALCSPEC.TextKIndex.Enabled = False
-FormCALCSPEC.SpinButton1.Enabled = False
+FormCALCSPEC.UpDown1.Enabled = False
 End If
 End Sub
 
@@ -336,21 +335,21 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub SpinButton1_SpinDown()
+Private Sub TextKIndex_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub UpDown1_DownClick()
 If Not DebugMode Then On Error Resume Next
 AllCrystalKs!(FormCALCSPEC.ComboCrystal.ListIndex + 1) = Val(FormCALCSPEC.TextKIndex.Text)
 AllCrystalKs!(FormCALCSPEC.ComboCrystal.ListIndex + 1) = AllCrystalKs!(FormCALCSPEC.ComboCrystal.ListIndex + 1) * 0.8
 FormCALCSPEC.TextKIndex.Text = Format$(AllCrystalKs!(FormCALCSPEC.ComboCrystal.ListIndex + 1), f96$)
 End Sub
 
-Private Sub SpinButton1_SpinUp()
+Private Sub UpDown1_UpClick()
 If Not DebugMode Then On Error Resume Next
 AllCrystalKs!(FormCALCSPEC.ComboCrystal.ListIndex + 1) = Val(FormCALCSPEC.TextKIndex.Text)
 AllCrystalKs!(FormCALCSPEC.ComboCrystal.ListIndex + 1) = AllCrystalKs!(FormCALCSPEC.ComboCrystal.ListIndex + 1) * 1.2
 FormCALCSPEC.TextKIndex.Text = Format$(AllCrystalKs!(FormCALCSPEC.ComboCrystal.ListIndex + 1), f96$)
-End Sub
-
-Private Sub TextKIndex_GotFocus()
-If Not DebugMode Then On Error Resume Next
-Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

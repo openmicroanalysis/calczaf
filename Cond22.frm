@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{B16553C3-06DB-101B-85B2-0000C009BE81}#1.0#0"; "spin32.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormCOND2 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Combined Analytical Conditions"
@@ -30,7 +30,7 @@ Begin VB.Form FormCOND2
       Height          =   375
       Left            =   7560
       Style           =   1  'Graphical
-      TabIndex        =   14
+      TabIndex        =   13
       ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
       Top             =   1320
       Width           =   1335
@@ -43,20 +43,17 @@ Begin VB.Form FormCOND2
       TabIndex        =   10
       Top             =   2160
       Width           =   7335
-      Begin Spin.SpinButton SpinButton1 
-         Height          =   615
-         Left            =   6600
-         TabIndex        =   12
+      Begin MSComCtl2.UpDown UpDown1 
+         Height          =   2415
+         Left            =   6960
+         TabIndex        =   14
+         TabStop         =   0   'False
          ToolTipText     =   "Click to change the selected element channel order"
-         Top             =   1080
-         Width           =   615
-         _Version        =   65536
-         _ExtentX        =   1085
-         _ExtentY        =   1085
-         _StockProps     =   73
-         ForeColor       =   -2147483630
-         BorderThickness =   0
-         TdThickness     =   2
+         Top             =   360
+         Width           =   255
+         _ExtentX        =   450
+         _ExtentY        =   4260
+         _Version        =   393216
       End
       Begin VB.ListBox ListElements 
          Height          =   2400
@@ -64,7 +61,7 @@ Begin VB.Form FormCOND2
          TabIndex        =   11
          ToolTipText     =   "Changing the channel order affects the order in which the combined condition elements are acquired"
          Top             =   360
-         Width           =   6375
+         Width           =   6735
       End
    End
    Begin VB.Frame Frame1 
@@ -82,7 +79,7 @@ Begin VB.Form FormCOND2
          Height          =   1215
          Left            =   5760
          Style           =   1  'Graphical
-         TabIndex        =   13
+         TabIndex        =   12
          Top             =   360
          Width           =   1455
       End
@@ -250,18 +247,6 @@ If Not DebugMode Then On Error Resume Next
 FormCOND2.ComboElementXraySpectrometerCrystal.ListIndex = FormCOND2.ListElements.ListIndex
 End Sub
 
-Private Sub SpinButton1_SpinDown()
-If Not DebugMode Then On Error Resume Next
-Call Cond2Sort(Int(1))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub SpinButton1_SpinUp()
-If Not DebugMode Then On Error Resume Next
-Call Cond2Sort(Int(2))
-If ierror Then Exit Sub
-End Sub
-
 Private Sub TextKilovolts_GotFocus()
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
@@ -272,3 +257,14 @@ If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
+Private Sub UpDown1_DownClick()
+If Not DebugMode Then On Error Resume Next
+Call Cond2Sort(Int(1))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub UpDown1_UpClick()
+If Not DebugMode Then On Error Resume Next
+Call Cond2Sort(Int(2))
+If ierror Then Exit Sub
+End Sub
