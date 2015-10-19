@@ -17,6 +17,8 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	and re-install Remote.msi.
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
+	
+10/18/15	Start replacing VB5 legacy controls with MicroSoft common controls.
 
 10/16/15	Add Excel tab delimited format for amphibole recalculations (Lowers).  See new AMPHI.DAT file.
 

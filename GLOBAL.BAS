@@ -1553,7 +1553,6 @@ Global tAcquisitionOnAutomate As Integer    ' used for quick standard time calcu
 Global AcquisitionOnVolatile As Integer
 Global AcquisitionOnQuickscan As Integer
 Global AcquisitionOnImageInterface As Integer
-Global AcquisitionOnOtherProcess As Integer
 Global AcquisitionOnBeamDeflect As Integer
 Global AcquisitionOnAutoFocus As Integer
 Global AcquisitionOnROMPeakPHA As Integer
