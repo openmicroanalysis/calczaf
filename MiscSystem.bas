@@ -205,7 +205,7 @@ Private Type OSVERSIONINFO
     dwBuildNumber   As Long
     PlatformID      As Long
     szCSDVersion    As String * 128
-    End Type
+End Type
     
 Private Const VER_PLATFORM_WIN32s = 0
 Private Const VER_PLATFORM_WIN32_WINDOWS = 1
@@ -220,12 +220,12 @@ Private Declare Function IsWow64Process Lib "Kernel32" (ByVal hProc As Long, ByR
 Global Const FWP_STARTSWITH As Long = 0
 Global Const FWP_CONTAINS As Long = 1
 
-Private Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
-Private Declare Function OSFindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
-Private Declare Function OSGetWindow Lib "user32" Alias "GetWindow" (ByVal hWnd As Long, ByVal wCmd As Long) As Long
-'Private Declare Function OSSetActiveWindow Lib "user32" Alias "SetForegroundWindow" (ByVal hWnd As Long) As Long
-Private Declare Function OSGetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hWnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
-Private Declare Function OSGetParent Lib "user32" Alias "GetParent" (ByVal hWnd As Long) As Long
+Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Declare Function OSFindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+Declare Function OSGetWindow Lib "user32" Alias "GetWindow" (ByVal hWnd As Long, ByVal wCmd As Long) As Long
+'Declare Function OSSetActiveWindow Lib "user32" Alias "SetForegroundWindow" (ByVal hWnd As Long) As Long
+Declare Function OSGetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hWnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
+Declare Function OSGetParent Lib "user32" Alias "GetParent" (ByVal hWnd As Long) As Long
 
 Private Declare Function GetFileVersionInfo Lib "Version.dll" Alias "GetFileVersionInfoA" (ByVal lptstrFilename As String, ByVal dwhandle As Long, ByVal dwlen As Long, lpData As Any) As Long
 Private Declare Function GetFileVersionInfoSize Lib "Version.dll" Alias "GetFileVersionInfoSizeA" (ByVal lptstrFilename As String, lpdwHandle As Long) As Long

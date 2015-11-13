@@ -396,7 +396,7 @@ End Sub
 
 Private Sub CommandPrint_Click()
 If Not DebugMode Then On Error Resume Next
-Call ZoomPrintGraph(FormPlotAlpha_PE.Graph1)
+Call ZoomPrintGraph_PE(FormPlotAlpha_PE.Pesgo1)
 If ierror Then Exit Sub
 End Sub
 

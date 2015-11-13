@@ -7,34 +7,19 @@ Dim TotalEnergyRange As Single
 Dim GraphMinX As Single, GraphMinY As Single
 Dim GraphMaxX As Single, GraphMaxY As Single
 
-Sub EDSDisplayRedraw_GS()
-' Redraw the display, if graph has data (Graphics Server)
-
-ierror = False
-On Error GoTo EDSDisplayRedraw_GSError
-
-'FormEDSDISPLAY3.Graph1.DrawMode = graphBlit     ' refresh the graph (DrawMode = 3) (causes problems in Win8)
-FormEDSDISPLAY3.Graph1.DrawMode = graphDraw     ' refresh the graph (DrawMode = 2)
-
-Exit Sub
-
-' Errors
-EDSDisplayRedraw_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSDisplayRedraw_GS"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub EDSDisplayRedraw_PE()
+Sub EDSDisplayRedraw_PE(tForm As Form)
 ' Redraw the display, if graph has data (Pro Essentials)
 
 ierror = False
 On Error GoTo EDSDisplayRedraw_PEError
 
-'FormEDSDISPLAY3.Graph1.DrawMode = graphBlit     ' refresh the graph (DrawMode = 3) (causes problems in Win8)
-FormEDSDISPLAY3.Graph1.DrawMode = graphDraw     ' refresh the graph (DrawMode = 2)
+tForm.Pesgo1.GraphAnnotationX(-1) = 0               ' empty annotation array
+tForm.Pesgo1.GraphAnnotationY(-1) = 0
 
+Call EDSPlotKLM1(tForm)
+If ierror Then Exit Sub
+
+tForm.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE
 Exit Sub
 
 ' Errors
@@ -45,129 +30,74 @@ Exit Sub
 
 End Sub
 
-Sub EDSDisplaySpectra_GS(tEDSIntensityOption As Integer, tForm As Form, datarow As Integer, sample() As TypeSample)
-' Display current spectrum from the interface (Graphics Server)
-
-ierror = False
-On Error GoTo EDSDisplaySpectra_GSError
-
-Dim i As Integer
-Dim xtemp As Single, ytemp As Single
-
-If tEDSIntensityOption% = 0 Then
-tForm.Graph1.LeftTitle = "Intensity (counts)"
-Else
-tForm.Graph1.LeftTitle = "Intensity (cps)"
-End If
-
-' Display plot and fit
-tForm.Graph1.NumPoints = sample(1).EDSSpectraNumberofChannels%(datarow%)
-
-' Set aspect ratio for axes (in keV)
-tForm.Graph1.XAxisMin = sample(1).EDSSpectraStartEnergy!(datarow%)
-tForm.Graph1.XAxisMax = sample(1).EDSSpectraEndEnergy!(datarow%)
-TotalEnergyRange! = (sample(1).EDSSpectraEndEnergy!(datarow%) - sample(1).EDSSpectraStartEnergy!(datarow%))
-
-tForm.Graph1.YAxisMin = 0
-If tEDSIntensityOption% = 0 Then
-tForm.Graph1.YAxisMax = sample(1).EDSSpectraMaxCounts&(datarow%)                                                  ' raw counts
-Else
-If sample(1).EDSSpectraLiveTime!(datarow%) <> 0# Then tForm.Graph1.YAxisMax = sample(1).EDSSpectraMaxCounts&(datarow%) / sample(1).EDSSpectraLiveTime!(datarow%)        ' cps
-End If
-
-If VerboseMode And DebugMode Then
-msg$ = "EDS Display: "
-msg$ = msg$ & "Start keV= " & Format$(sample(1).EDSSpectraStartEnergy!(datarow%)) & ", "
-msg$ = msg$ & "Stop keV= " & Format$(sample(1).EDSSpectraEndEnergy!(datarow%)) & ", "
-msg$ = msg$ & "numChan= " & Format$(sample(1).EDSSpectraNumberofChannels%(datarow%)) & ", "
-msg$ = msg$ & "MaxInt= " & Format$(sample(1).EDSSpectraMaxCounts&(datarow%))
-Call IOWriteLog(msg$)
-End If
-
-' Load y axis data
-For i% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)
-If tEDSIntensityOption% = 0 Then
-ytemp! = sample(1).EDSSpectraIntensities&(datarow%, i%)                                                ' raw counts
-Else
-If sample(1).EDSSpectraLiveTime!(datarow%) <> 0# Then ytemp! = sample(1).EDSSpectraIntensities&(datarow%, i%) / sample(1).EDSSpectraLiveTime!(datarow%)      ' cps
-End If
-
-tForm.Graph1.Data(i%) = ytemp!
-
-' Load x axis data
-xtemp! = sample(1).EDSSpectraEVPerChannel!(datarow%) * (i% - 1) / EVPERKEV#
-If EDSSpectraInterfaceType% = 2 Then
-xtemp! = xtemp! + sample(1).EDSSpectraStartEnergy!(datarow%) ' Bruker zero spectrum starts at plus start energy in keV
-End If
-
-tForm.Graph1.xpos(i%) = xtemp!
-tForm.Graph1.Color(i%) = 12     ' red
-
-If VerboseMode And DebugMode Then
-If tEDSIntensityOption% = 0 Then
-Call IOWriteLog("EDS Point" & Str$(i%) & ", keV" & Str$(xtemp!) & ", counts" & Str$(ytemp!))      ' raw counts
-Else
-Call IOWriteLog("EDS Point" & Str$(i%) & ", keV" & Str$(xtemp!) & ", cps" & Str$(ytemp!))         ' cps
-End If
-End If
-Next i%
-
-' Debug output
-If VerboseMode Then
-GraphMinX! = tForm.Graph1.XAxisMin
-GraphMinY! = tForm.Graph1.YAxisMin
-
-GraphMaxX! = tForm.Graph1.XAxisMax
-GraphMaxY! = tForm.Graph1.YAxisMax
-
-Call IOWriteLog("EDS Display Spectra: X Min/Max" & Str$(GraphMinX!) & "/" & Str$(GraphMaxX!) & ", Y Min/Max" & Str$(GraphMinY!) & "/" & Str$(GraphMaxY!))
-End If
-
-' Resize the graph
-Call EDSSetBinSize(tForm)
-If ierror Then Exit Sub
-
-'tForm.Graph1.DrawMode = graphBlit         ' refresh the graph (DrawMode = 3) (causes problems in Win8)
-tForm.Graph1.DrawMode = graphDraw         ' refresh the graph (DrawMode = 2)
-Exit Sub
-
-' Errors
-EDSDisplaySpectra_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSDisplaySpectra_GS"
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub EDSDisplaySpectra_PE(tEDSIntensityOption As Integer, tForm As Form, datarow As Integer, sample() As TypeSample)
+Sub EDSDisplaySpectra_PE(tForm As Form, datarow As Integer, sample() As TypeSample)
 ' Display current spectrum from the interface (Pro Essentials)
 
 ierror = False
 On Error GoTo EDSDisplaySpectra_PEError
 
 Dim i As Integer
-Dim xtemp As Single, ytemp As Single
+Dim xtemp As Single, ytemp As Single, EDSeVmaxdata As Single
 
-If tEDSIntensityOption% = 0 Then
-tForm.Graph1.LeftTitle = "Intensity (counts)"
+If EDSIntensityOption% = 0 Then
+tForm.Pesgo1.YAxisLabel = "Intensity"           ' Axis labels
 Else
-tForm.Graph1.LeftTitle = "Intensity (cps)"
+tForm.Pesgo1.YAxisLabel = "Intensity (cps)"     ' Axis labels
 End If
 
-' Display plot and fit
-tForm.Graph1.NumPoints = sample(1).EDSSpectraNumberofChannels%(datarow%)
+' Define #subset and #points
+tForm.Pesgo1.Subsets = 1
+tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(255, 255, 0, 0) ' red
 
-' Set aspect ratio for axes (in keV)
-tForm.Graph1.XAxisMin = sample(1).EDSSpectraStartEnergy!(datarow%)
-tForm.Graph1.XAxisMax = sample(1).EDSSpectraEndEnergy!(datarow%)
+tForm.Pesgo1.Points = sample(1).EDSSpectraNumberofChannels%(datarow%)
+
+' Load y axis data subset 0 - eds data
+For i% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)
+If EDSIntensityOption% = 0 Then
+ytemp! = sample(1).EDSSpectraIntensities&(datarow%, i%)                                                ' raw counts
+Else
+If sample(1).EDSSpectraLiveTime!(datarow%) <> 0# Then ytemp! = sample(1).EDSSpectraIntensities&(datarow%, i%) / sample(1).EDSSpectraLiveTime!(datarow%)      ' cps
+End If
+
+tForm.Pesgo1.ydata(0, i% - 1) = ytemp!
+
+' Load x axis data
+xtemp! = sample(1).EDSSpectraEVPerChannel!(datarow%) * (i% - 1) / EVPERKEV#
+If EDSSpectraInterfaceType% = 2 Then
+xtemp! = xtemp! + sample(1).EDSSpectraStartEnergy!(datarow%) ' Bruker zero spectrum starts at plus start energy in keV
+End If
+
+tForm.Pesgo1.xdata(0, i% - 1) = xtemp!
+
+' Find max eV channel that contains ydata, also = Duane-Hunt limit
+If xtemp! * ytemp! > 0 Then EDSeVmaxdata! = xtemp! ' could use this to scale x if max eV with y data does not equal EDSSpectraAcceleratingVoltage!(datarow%)
+
+If VerboseMode And DebugMode Then
+If EDSIntensityOption% = 0 Then
+Call IOWriteLog("EDS Point" & Str$(i%) & ", keV" & Str$(xtemp!) & ", counts" & Str$(ytemp!))      ' raw counts
+Else
+Call IOWriteLog("EDS Point" & Str$(i%) & ", keV" & Str$(xtemp!) & ", cps" & Str$(ytemp!))         ' cps
+End If
+End If
+Next i%
+
+' Define axis and graph properties and X extent
+tForm.Pesgo1.ManualScaleControlX = PEMSC_MINMAX ' Manually Control X Axis
+tForm.Pesgo1.ManualMinX = sample(1).EDSSpectraStartEnergy!(datarow%)
+'tForm.Pesgo1.ManualMaxX = sample(1).EDSSpectraEndEnergy!(datarow%)
+'tForm.Pesgo1.ManualMaxX = EDSeVmaxdata! ' max x axis is defined as last eV channel with Y data
+tForm.Pesgo1.ManualMaxX = sample(1).EDSSpectraAcceleratingVoltage!(datarow%)
+
 TotalEnergyRange! = (sample(1).EDSSpectraEndEnergy!(datarow%) - sample(1).EDSSpectraStartEnergy!(datarow%))
 
-tForm.Graph1.YAxisMin = 0
-If tEDSIntensityOption% = 0 Then
-tForm.Graph1.YAxisMax = sample(1).EDSSpectraMaxCounts&(datarow%)                                                  ' raw counts
+' Define Y extent
+tForm.Pesgo1.ManualScaleControlY = PEMSC_MIN ' Autoscale Control Y Axis max, Manual Control min
+tForm.Pesgo1.ManualMinY = 0
+
+If EDSIntensityOption% = 0 Then
+tForm.Pesgo1.ManualMaxY = sample(1).EDSSpectraMaxCounts&(datarow%)                                                  ' raw counts
 Else
-If sample(1).EDSSpectraLiveTime!(datarow%) <> 0# Then tForm.Graph1.YAxisMax = sample(1).EDSSpectraMaxCounts&(datarow%) / sample(1).EDSSpectraLiveTime!(datarow%)        ' cps
+If sample(1).EDSSpectraLiveTime!(datarow%) <> 0# Then tForm.Pesgo1.ManualMaxY = sample(1).EDSSpectraMaxCounts&(datarow%) / sample(1).EDSSpectraLiveTime!(datarow%)        ' cps
 End If
 
 If VerboseMode And DebugMode Then
@@ -179,51 +109,16 @@ msg$ = msg$ & "MaxInt= " & Format$(sample(1).EDSSpectraMaxCounts&(datarow%))
 Call IOWriteLog(msg$)
 End If
 
-' Load y axis data
-For i% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)
-If tEDSIntensityOption% = 0 Then
-ytemp! = sample(1).EDSSpectraIntensities&(datarow%, i%)                                                ' raw counts
-Else
-If sample(1).EDSSpectraLiveTime!(datarow%) <> 0# Then ytemp! = sample(1).EDSSpectraIntensities&(datarow%, i%) / sample(1).EDSSpectraLiveTime!(datarow%)      ' cps
-End If
-
-tForm.Graph1.Data(i%) = ytemp!
-
-' Load x axis data
-xtemp! = sample(1).EDSSpectraEVPerChannel!(datarow%) * (i% - 1) / EVPERKEV#
-If EDSSpectraInterfaceType% = 2 Then
-xtemp! = xtemp! + sample(1).EDSSpectraStartEnergy!(datarow%) ' Bruker zero spectrum starts at plus start energy in keV
-End If
-
-tForm.Graph1.xpos(i%) = xtemp!
-tForm.Graph1.Color(i%) = 12     ' red
-
-If VerboseMode And DebugMode Then
-If tEDSIntensityOption% = 0 Then
-Call IOWriteLog("EDS Point" & Str$(i%) & ", keV" & Str$(xtemp!) & ", counts" & Str$(ytemp!))      ' raw counts
-Else
-Call IOWriteLog("EDS Point" & Str$(i%) & ", keV" & Str$(xtemp!) & ", cps" & Str$(ytemp!))         ' cps
-End If
-End If
-Next i%
-
 ' Debug output
 If VerboseMode Then
-GraphMinX! = tForm.Graph1.XAxisMin
-GraphMinY! = tForm.Graph1.YAxisMin
-
-GraphMaxX! = tForm.Graph1.XAxisMax
-GraphMaxY! = tForm.Graph1.YAxisMax
-
+GraphMinX! = tForm.Pesgo1.ManualMinX
+GraphMinY! = tForm.Pesgo1.ManualMinY
+GraphMaxX! = tForm.Pesgo1.ManualMaxX
+GraphMaxY! = tForm.Pesgo1.ManualMaxY
 Call IOWriteLog("EDS Display Spectra: X Min/Max" & Str$(GraphMinX!) & "/" & Str$(GraphMaxX!) & ", Y Min/Max" & Str$(GraphMinY!) & "/" & Str$(GraphMaxY!))
 End If
 
-' Resize the graph
-Call EDSSetBinSize(tForm)
-If ierror Then Exit Sub
-
-'tForm.Graph1.DrawMode = graphBlit         ' refresh the graph (DrawMode = 3) (causes problems in Win8)
-tForm.Graph1.DrawMode = graphDraw         ' refresh the graph (DrawMode = 2)
+tForm.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE    ' generate new plot
 Exit Sub
 
 ' Errors
@@ -235,96 +130,61 @@ Exit Sub
 
 End Sub
 
-Sub EDSInitDisplay_GS(tForm As Form, tCaption As String, datarow As Integer, sample() As TypeSample)
-' Init spectrum display (Graphics Server)
-
-ierror = False
-On Error GoTo EDSInitDisplay_GSError
-
-Dim astring As String
-
-' Plot data into control, clear the graph
-tForm.Graph1.GraphType = graphBar2D
-
-tForm.Graph1.NumSets = 1
-tForm.Graph1.AutoInc = 0
-
-tForm.Graph1.XAxisStyle = 2 ' user defined
-tForm.Graph1.XAxisTicks = 10
-tForm.Graph1.XAxisMinorTicks = -1   ' 1 minor ticks per tick
-
-tForm.Graph1.YAxisStyle = 2 ' user defined
-tForm.Graph1.YAxisTicks = 10
-tForm.Graph1.YAxisMinorTicks = -1   ' 1 minor ticks per tick
-
-tForm.Graph1.YAxisMin = 0
-tForm.Graph1.YAxisMax = 0
-
-' Printer info
-tForm.Graph1.PrintInfo(11) = 1  ' landscape
-tForm.Graph1.PrintInfo(12) = 1  ' fit to page
-
-tForm.Graph1.BottomTitle = "keV"
-tForm.Graph1.LeftTitleStyle = 1
-
-tForm.Graph1.AutoInc = 1
-
-tForm.Graph1.Hot = 0                  ' disable hot hit
-tForm.Graph1.SDKMouse = 1             ' enable zoom
-tForm.Graph1.SDKPaint = 0             ' enable repaint events
-tForm.Graph1.DrawMode = graphClear
-tForm.Graph1.SDKPaint = 1             ' enable repaint events
-
-Exit Sub
-
-' Errors
-EDSInitDisplay_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSInitDisplay_GS"
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub EDSInitDisplay_PE(tForm As Form, tCaption As String, datarow As Integer, sample() As TypeSample)
+Sub EDSInitDisplay_PE(tForm As Form, tCaption As String)
 ' Init spectrum display (Pro Essentials)
 
 ierror = False
 On Error GoTo EDSInitDisplay_PEError
 
-Dim astring As String
+' Init graph properies
+tForm.Pesgo1.Subsets = 1
+tForm.Pesgo1.Points = 1
+tForm.Pesgo1.xdata(0, 0) = 0                    'for empty subset
+tForm.Pesgo1.ydata(0, 0) = 0
 
-' Plot data into control, clear the graph
-tForm.Graph1.GraphType = graphBar2D
+tForm.Pesgo1.RenderEngine = PERE_GDIPLUS&       ' PERE_DIRECT2D may screw xp people?
+tForm.Pesgo1.AntiAliasText = True               ' needed?
+tForm.Pesgo1.DataShadows = PEDS_NONE&           ' no data shadows
 
-tForm.Graph1.NumSets = 1
-tForm.Graph1.AutoInc = 0
+' Plot type
+tForm.Pesgo1.PlottingMethod = SGPM_BAR&         ' bargraph subset
+'tForm.Pesgo1.BarWidth(0) = 1                   ' this should be = to the true bin width for 100% bar, if needed.
+tForm.Pesgo1.AdjoinBars = True                  ' yes or no?
 
-tForm.Graph1.XAxisStyle = 2 ' user defined
-tForm.Graph1.XAxisTicks = 10
-tForm.Graph1.XAxisMinorTicks = -1   ' 1 minor ticks per tick
+tForm.Pesgo1.ShowTickMarkY = PESTM_TICKS_HIDE&
+tForm.Pesgo1.ShowTickMarkX = PESTM_TICKS_OUTSIDE&
 
-tForm.Graph1.YAxisStyle = 2 ' user defined
-tForm.Graph1.YAxisTicks = 10
-tForm.Graph1.YAxisMinorTicks = -1   ' 1 minor ticks per tick
+' Annotation properties
+tForm.Pesgo1.GraphAnnotationTextSize = 75               ' define annotation text size
+tForm.Pesgo1.LabelFont = "Arial"                        ' define Font for annotations (and axes)
+tForm.Pesgo1.HideIntersectingText = PEHIT_NO_HIDING&    ' or PEHIT_HIDE&
 
-tForm.Graph1.YAxisMin = 0
-tForm.Graph1.YAxisMax = 0
+' Title Properties
+tForm.Pesgo1.MainTitle = vbNullString
+tForm.Pesgo1.SubTitle = vbNullString
+tForm.Pesgo1.ImageAdjustTop = 50                ' space above title formatting
+tForm.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
 
-' Printer info
-tForm.Graph1.PrintInfo(11) = 1  ' landscape
-tForm.Graph1.PrintInfo(12) = 1  ' fit to page
+tForm.Pesgo1.XAxisLabel = "keV"
+If EDSIntensityOption% = 0 Then
+tForm.Pesgo1.YAxisLabel = "Intensity" ' Axis labels
+Else
+tForm.Pesgo1.YAxisLabel = "Intensity (cps)" ' Axis labels
+End If
 
-tForm.Graph1.BottomTitle = "keV"
-tForm.Graph1.LeftTitleStyle = 1
+' Enable zoom
+tForm.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&
+tForm.Pesgo1.ZoomStyle = PEZS_RO2_NOT&
 
-tForm.Graph1.AutoInc = 1
+' Allow scroll after zoom
+tForm.Pesgo1.ScrollingHorzZoom = True
+tForm.Pesgo1.ScrollingVertZoom = True
+tForm.Pesgo1.MouseDraggingX = True
+tForm.Pesgo1.MouseDraggingY = True
+tForm.Pesgo1.ZoomWindow = True
 
-tForm.Graph1.Hot = 0                  ' disable hot hit
-tForm.Graph1.SDKMouse = 1             ' enable zoom
-tForm.Graph1.SDKPaint = 0             ' enable repaint events
-tForm.Graph1.DrawMode = graphClear
-tForm.Graph1.SDKPaint = 1             ' enable repaint events
+tForm.TextStartkeV.Text = Format$(0)
+tForm.TextStopkeV.Text = Format$(20)
 
 Exit Sub
 
@@ -337,119 +197,13 @@ Exit Sub
 
 End Sub
 
-Sub EDSSetBinSize_GS(tForm As Form)
-' Re-size EDS graph and recalculate bar sizes (Graphics Server)
-
-ierror = False
-On Error GoTo EDSSetBinSize_GSError
-
-Dim PointsInCurrentRange As Long
-Dim CurrentEnergyRange As Single, CurrentEnergyFraction As Single
-Dim BinEnergyWidth As Single, BinEnergyGap As Single
-Dim BinEnergyPercent As Single
-
-tForm.Graph1.Bar2DGap = 98
-Exit Sub
-
-' Need to get this code working !
-If tForm.Graph1.NumPoints = 0# Then Exit Sub
-CurrentEnergyRange! = tForm.Graph1.XAxisMax - tForm.Graph1.XAxisMin
-If CurrentEnergyRange! = 0 Then Exit Sub
-
-CurrentEnergyFraction! = CurrentEnergyRange! / TotalEnergyRange!
-PointsInCurrentRange& = tForm.Graph1.NumPoints * CurrentEnergyFraction!
-
-BinEnergyWidth! = CSng(CurrentEnergyRange! / PointsInCurrentRange&)
-BinEnergyGap! = CurrentEnergyRange! / BinEnergyWidth!
-
-tForm.Graph1.Bar2DGap = BinEnergyPercent!
-
-Exit Sub
-
-' Errors
-EDSSetBinSize_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSSetBinSize_GS"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub EDSSetBinSize_PE(tForm As Form)
-' Re-size EDS graph and recalculate bar sizes (Pro Essentials)
-
-ierror = False
-On Error GoTo EDSSetBinSize_PEError
-
-Dim PointsInCurrentRange As Long
-Dim CurrentEnergyRange As Single, CurrentEnergyFraction As Single
-Dim BinEnergyWidth As Single, BinEnergyGap As Single
-Dim BinEnergyPercent As Single
-
-tForm.Graph1.Bar2DGap = 98
-Exit Sub
-
-' Need to get this code working !
-If tForm.Graph1.NumPoints = 0# Then Exit Sub
-CurrentEnergyRange! = tForm.Graph1.XAxisMax - tForm.Graph1.XAxisMin
-If CurrentEnergyRange! = 0 Then Exit Sub
-
-CurrentEnergyFraction! = CurrentEnergyRange! / TotalEnergyRange!
-PointsInCurrentRange& = tForm.Graph1.NumPoints * CurrentEnergyFraction!
-
-BinEnergyWidth! = CSng(CurrentEnergyRange! / PointsInCurrentRange&)
-BinEnergyGap! = CurrentEnergyRange! / BinEnergyWidth!
-
-tForm.Graph1.Bar2DGap = BinEnergyPercent!
-
-Exit Sub
-
-' Errors
-EDSSetBinSize_PEError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSSetBinSize_PE"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub EDSZoomFull_GS(tForm As Form)
-' Zoom to origin (Graphics Server)
-
-ierror = False
-On Error GoTo EDSZoomFull_GSError
-
-tForm.Graph1.XAxisMin = 0
-tForm.Graph1.XAxisMax = GraphMaxX!
-
-tForm.Graph1.YAxisMin = 0
-tForm.Graph1.YAxisMax = GraphMaxY!
-
-tForm.Graph1.MousePointer = 0
-tForm.Graph1.DrawMode = graphDraw
-
-Exit Sub
-
-' Errors
-EDSZoomFull_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSZoomFull_GS"
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub EDSZoomFull_PE(tForm As Form)
 ' Zoom to origin (Pro Essentials)
 
 ierror = False
 On Error GoTo EDSZoomFull_PEError
 
-tForm.Graph1.XAxisMin = 0
-tForm.Graph1.XAxisMax = GraphMaxX!
-
-tForm.Graph1.YAxisMin = 0
-tForm.Graph1.YAxisMax = GraphMaxY!
-
-tForm.Graph1.MousePointer = 0
-tForm.Graph1.DrawMode = graphDraw
+tForm.Pesgo1.PEactions = UNDO_ZOOM
 
 Exit Sub
 
@@ -461,48 +215,86 @@ Exit Sub
 
 End Sub
 
-Sub EDSZoomGraph_GS(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, mode As Integer, tForm As Form)
-' User clicked mouse, zoom graph (Graphics Server)
+Sub EDSPlotKLM2_PE(tForm As Form, num As Long, sarray() As String, xarray() As String, iarray() As Single, earray() As Single, EDSKLMCounter As Long)
+' Plot KLM lines and annotations (Pro Essentials code)
 
 ierror = False
-On Error GoTo EDSZoomGraph_GSError
+On Error GoTo EDSPlotKLM2_PEError
 
-Call ZoomSDKPress(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, mode%, tForm)
-If ierror Then Exit Sub
+Dim n As Long
+Dim temp1 As Single, temp2 As Single, ydatamin As Single
 
-Call EDSSetBinSize(FormEDSDISPLAY3)
-If ierror Then Exit Sub
+' Load graph y axis extents only on first init or during acquisition
+temp1! = tForm.Pesgo1.ManualMaxY - tForm.Pesgo1.ManualMinY
+If temp1! = 0# Then Exit Sub
+
+' Draw annotations for KLM markers
+For n& = 1 To num&
+
+' Start point
+tForm.Pesgo1.ShowAnnotations = True
+tForm.Pesgo1.GraphAnnotationX(EDSKLMCounter&) = earray!(n&)
+tForm.Pesgo1.GraphAnnotationY(EDSKLMCounter&) = 0
+tForm.Pesgo1.GraphAnnotationType(EDSKLMCounter&) = PEGAT_THIN_SOLIDLINE
+tForm.Pesgo1.GraphAnnotationColor(EDSKLMCounter&) = tForm.Pesgo1.PEargb(255, 0, 0, 255)
+EDSKLMCounter& = EDSKLMCounter& + 1
+
+' End point
+tForm.Pesgo1.GraphAnnotationX(EDSKLMCounter&) = earray!(n&)
+tForm.Pesgo1.GraphAnnotationType(EDSKLMCounter&) = PEGAT_LINECONTINUE
+tForm.Pesgo1.GraphAnnotationColor(EDSKLMCounter&) = tForm.Pesgo1.PEargb(255, 0, 0, 255)
+
+' Calculate Y axis height for KLM markers
+ydatamin! = tForm.Pesgo1.ManualMinY
+temp2! = ydatamin! + temp1! * iarray!(n&) / 150# ' maximum intensity
+tForm.Pesgo1.GraphAnnotationY(EDSKLMCounter&) = temp2!
+
+' Horizontal KLM (start by displaying x-ray text only for markers with intensities greater than 10)
+tForm.Pesgo1.GraphAnnotationText(EDSKLMCounter&) = Trim$(sarray$(n&))
+If iarray!(n&) > 10# Then tForm.Pesgo1.GraphAnnotationText(EDSKLMCounter&) = Trim$(sarray$(n&)) & " " & Trim$(xarray$(n&))
+
+' Vertical KLM (for vertical text, prefix string with "|e")
+'tForm.Pesgo1.GraphAnnotationText(EDSKLMCounter&) = "|e" & Trim$(sArray$(n&))
+'If iarray!(n&) > 10# Then tForm.Pesgo1.GraphAnnotationText(EDSKLMCounter&) = "|e" & Trim$(sArray$(n&)) & " " & Trim$(xarray$(n&))
+
+tForm.Pesgo1.GraphAnnotationBold(EDSKLMCounter&) = False
+EDSKLMCounter& = EDSKLMCounter& + 1
+Next n&
 
 Exit Sub
 
 ' Errors
-EDSZoomGraph_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSZoomGraph_GS"
+EDSPlotKLM2_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "EDSPlotKLM2_PE"
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub EDSZoomGraph_PE(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, mode As Integer, tForm As Form)
-' User clicked mouse, zoom graph (Pro Essentials)
+Sub EDSRePlotKLM_PE(tForm As Form, num As Long, sarray() As String, xarray() As String, EDSKLMCounter As Long)
+' Re plot specified KLM lines and modify x-ray text based on current zoom
 
 ierror = False
-On Error GoTo EDSZoomGraph_PEError
+On Error GoTo EDSRePlotKLM_PEError
 
-Call ZoomSDKPress(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, mode%, tForm)
-If ierror Then Exit Sub
+Dim n As Long
 
-Call EDSSetBinSize(FormEDSDISPLAY3)
-If ierror Then Exit Sub
+' Re-load KLM annotations with x-ray text if KLM annotation height is larger then 1/10 current Y zoom
+EDSKLMCounter& = 0
+For n& = 1 To num&
+EDSKLMCounter& = EDSKLMCounter& + 1
+tForm.Pesgo1.GraphAnnotationText(EDSKLMCounter&) = Trim$(sarray$(n&))
+If tForm.Pesgo1.GraphAnnotationY(EDSKLMCounter&) > tForm.Pesgo1.ZoomMaxY / 10# Then tForm.Pesgo1.GraphAnnotationText(EDSKLMCounter&) = Trim$(sarray$(n&)) & " " & Trim$(xarray$(n&))
+EDSKLMCounter& = EDSKLMCounter& + 1
+Next n&
 
 Exit Sub
 
 ' Errors
-EDSZoomGraph_PEError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSZoomGraph_PE"
+EDSRePlotKLM_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "EDSRePlotKLM_PE"
 ierror = True
 Exit Sub
 
 End Sub
-
 

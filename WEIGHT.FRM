@@ -116,11 +116,6 @@ Unload FormWEIGHT
 icancel = True
 End Sub
 
-Private Sub Form_Activate()
-If Not DebugMode Then On Error Resume Next
-FormWEIGHT.TextWeightPercentString.SetFocus
-End Sub
-
 Private Sub Form_Load()
 If Not DebugMode Then On Error Resume Next
 icancel = False

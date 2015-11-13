@@ -199,6 +199,8 @@ Global Const ANALYTICALMAGTHRESHOLD# = 50000#    ' minimum mag for analytical wa
 
 Global Const PI! = 3.14159               ' close enough!
 Global Const PID# = 3.141592653          ' closer!
+Global Const PIDD# = 3.14159265358979    ' even closer!
+
 Global Const NATURALE# = 2.718281828     ' natural log constant
 Global Const MAXLOGEXPD! = 709.6         ' maximum exponent for double precision natural log (e^MAXLOGEXPD!)
 Global Const MAXLOGEXPS! = 88.721        ' maximum exponent for single precision natural log (e^MAXLOGEXPS!)
@@ -1342,7 +1344,6 @@ Global Const AbsorbFileNumber% = 99       ' #99 AbsorbFile$ (coefficient data fo
 
 Global Const AFactorDataFileNumber% = 100           ' #100 AFactorDataFile$ (alpha-factor ASCII file)
 Global Const OutputDataFileNumber% = 170            ' #170 OutputDataFile$ (*.OUT)
-Global Const ProbeProcessFlagFileNumber% = 171      ' #171 ProbeProcessFlagFile$ (PROCESS.DAT)
 Global Const ProbeErrorLogFileNumber% = 172         ' #172 ProbeErrorLogFile$ (PROBEWIN.ERR)
 Global Const OutputReportFileNumber% = 173          ' #173 OutputReportFile$ (*.TXT) analyze report output
 Global Const RecalbELMFileNumber% = 175             ' #175 .ELM file number
@@ -1409,7 +1410,6 @@ Global MaxMenuFileArray As Integer
 Global OutputDataFile As String
 Global OutputReportFile As String
 Global AFactorDataFile As String
-Global ProbeProcessFlagFile As String
 Global ProbeErrorLogFile As String
 Global ProbeTextLogFile As String
 
@@ -1591,14 +1591,7 @@ Global NoMotorPositionLimitsChecking(1 To MAXMOT%) As Integer
 Global RealTimeMotorPositions(1 To MAXMOT%) As Single
 Global RealTimeCrystalPositions(1 To MAXSPEC%) As String
 
-Global RealTimeCounts(1 To MAXSPEC%) As Single
-Global RealTimeCountTimes(1 To MAXSPEC%) As Single
-Global RealTimeCountStatus(1 To MAXSPEC%) As Integer
 Global RealTimeScalLabels(1 To MAXSPEC%) As String
-
-' Faraday and absorbed current globals
-Global RealTimeFaradayCurrent As Single
-Global RealTimeAbsorbedCurrent As Single
 
 ' Demo stuff
 Global DemoOnCounts(1 To MAXCHAN%) As Single
@@ -2007,6 +2000,7 @@ Global SMTPUserPassword As String
 ' Image acquisition
 Global ImageInterfacePresent As Integer
 Global ImageInterfaceType As Integer
+Global ImageInterfaceNameChan0 As String    ' special for imported PrbImg file
 Global ImageInterfaceNameChan1 As String
 Global ImageInterfaceNameChan2 As String
 Global ImageInterfaceNameChan3 As String
@@ -2885,3 +2879,9 @@ Global ProbeImageSampleSetupNumber As Integer
 Global UseConfirmDuringAutomationFlag As Boolean
 Global RunProbeImageFlag As Boolean
 
+Global EDSIntensityOption As Integer
+Global CLIntensityOption As Integer
+
+Global RunStandardsAfterProbeImageFlag As Boolean
+
+Global UseStageReproducibilityCorrectionFlag As Boolean

@@ -153,6 +153,9 @@ Begin VB.Form FormPICTURESNAP
       Begin VB.Menu menuDisplayUseBlackScaleBar 
          Caption         =   "Use Black Scaler Bar"
       End
+      Begin VB.Menu menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly 
+         Caption         =   "Display Digitized Positions For Selected Position Sample Only"
+      End
    End
    Begin VB.Menu menuMisc 
       Caption         =   "&Misc"
@@ -246,6 +249,16 @@ Unload FormPICTURESNAP3    ' unload full window view in case it is loaded
 FormPICTURESNAP.TimerPictureSnap.Enabled = False
 End Sub
 
+Private Sub menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly_Click()
+If Not DebugMode Then On Error Resume Next
+FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked = Not FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked
+FormPICTURESNAP.menuDisplayWavescans.Checked = False
+FormPICTURESNAP.menuDisplayStandards.Checked = False
+FormPICTURESNAP.menuDisplayUnknowns.Checked = False
+Call PictureSnapLoadPositions(Int(0))
+If ierror Then Exit Sub
+End Sub
+
 Private Sub menuDisplayLongLabels_Click()
 If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuDisplayLongLabels.Checked = Not FormPICTURESNAP.menuDisplayLongLabels.Checked
@@ -267,6 +280,7 @@ If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuDisplayStandards.Checked = Not FormPICTURESNAP.menuDisplayStandards.Checked
 FormPICTURESNAP.menuDisplayUnknowns.Checked = False
 FormPICTURESNAP.menuDisplayWavescans.Checked = False
+FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked = False
 Call PictureSnapLoadPositions(Int(1))
 If ierror Then Exit Sub
 End Sub
@@ -276,6 +290,7 @@ If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuDisplayUnknowns.Checked = Not FormPICTURESNAP.menuDisplayUnknowns.Checked
 FormPICTURESNAP.menuDisplayStandards.Checked = False
 FormPICTURESNAP.menuDisplayWavescans.Checked = False
+FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked = False
 Call PictureSnapLoadPositions(Int(2))
 If ierror Then Exit Sub
 End Sub
@@ -290,6 +305,7 @@ If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuDisplayWavescans.Checked = Not FormPICTURESNAP.menuDisplayWavescans.Checked
 FormPICTURESNAP.menuDisplayStandards.Checked = False
 FormPICTURESNAP.menuDisplayUnknowns.Checked = False
+FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked = False
 Call PictureSnapLoadPositions(Int(3))
 If ierror Then Exit Sub
 End Sub
@@ -418,16 +434,16 @@ If ierror Then Exit Sub
 End If
 End Sub
 
-Private Sub Picture2_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub Picture2_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
 BitMapButton% = Button%
-BitMapX! = x!
+BitMapX! = X!
 BitMapY! = Y!   ' store for double-click and map calibrate
 End Sub
 
-Private Sub Picture2_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub Picture2_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
-Call PictureSnapUpdateCursor(Int(0), x!, Y!)
+Call PictureSnapUpdateCursor(Int(0), X!, Y!)
 If ierror Then Exit Sub
 End Sub
 

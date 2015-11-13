@@ -715,7 +715,7 @@ End If
 
 If mode% = 8 Then MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 If mode% = 10 Then MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
-tfilename$ = MiscGetFileNameNoExtension$(MACFile$) & ".TXT"
+tfilename$ = MiscGetFileNameNoExtension$(MACFile$) & "_OUTPUT.TXT"
 Open tfilename$ For Output As #Temp1FileNumber%
 
 For i% = 1 To MAXELM%

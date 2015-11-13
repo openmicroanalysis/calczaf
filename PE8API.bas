@@ -24,6 +24,8 @@ Option Explicit
 'Global Const PELT_THIN_SOLID& = 0
 'Global Const PELS_1_LINE_INSIDE_OVERLAP& = 4
 'Global Const REVERT_TO_DEFAULTS& = 20
+'Global Const PESTM_TICKS_HIDE& = 2
+'Global Const PESTM_TICKS_OUTSIDE& = 1
 
 ' Expicitly declared PE constants
 'Global Const FIRST_DEFAULT_TAB& = 0

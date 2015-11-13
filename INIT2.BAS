@@ -276,36 +276,6 @@ Exit Sub
 
 End Sub
 
-Sub InitRealTime()
-' Initialze real time acquisition arrays and flags
-
-ierror = False
-On Error GoTo InitRealTimeError
-
-Dim i As Integer
-
-If DebugMode Then Call IOWriteLog("Initializing real time global variables...")
-
-' Count arrays
-For i% = 1 To MAXSPEC%
-RealTimeCounts!(i%) = 0#
-RealTimeCountTimes!(i%) = 0#
-RealTimeCountStatus%(i%) = True
-Next i%
-
-' Faraday
-RealTimeFaradayCurrent! = 0#
-RealTimeAbsorbedCurrent! = 0#
-
-Exit Sub
-
-InitRealTimeError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitRealTime"
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub InitSample(sample() As TypeSample)
 ' Routine to initialize a sample array
 

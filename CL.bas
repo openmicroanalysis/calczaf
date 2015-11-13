@@ -13,13 +13,8 @@ ierror = False
 On Error GoTo CLZoomFullError
 
 ' Call graphics routines
-If Not UseProEssentialsGraphics Then
-Call CLZoomFull_GS(tForm)
-If ierror Then Exit Sub
-Else
 Call CLZoomFull_PE(tForm)
 If ierror Then Exit Sub
-End If
 
 Exit Sub
 
@@ -31,7 +26,7 @@ Exit Sub
 
 End Sub
 
-Sub CLDisplaySpectra(tCLIntensityOption As Integer, tCLDarkSpectra As Boolean, tForm As Form, datarow As Integer, sample() As TypeSample)
+Sub CLDisplaySpectra(tCLDarkSpectra As Boolean, tForm As Form, datarow As Integer, sample() As TypeSample)
 ' Display current spectrum from the interface
 '  tCLDarkSpectra = false normal CL spectrum
 '  tCLDarkSpectra = true dark CL spectrum
@@ -54,13 +49,8 @@ CLDataRow% = datarow%
 If sample(1).CLSpectraNumberofChannels%(datarow%) < 1 Then Exit Sub
 
 ' Call graphics routines
-If Not UseProEssentialsGraphics Then
-Call CLDisplaySpectra_GS(tCLIntensityOption%, tCLDarkSpectra, tForm, datarow%, sample())
+Call CLDisplaySpectra_PE(tCLDarkSpectra, tForm, datarow%, sample())
 If ierror Then Exit Sub
-Else
-Call CLDisplaySpectra_PE(tCLIntensityOption%, tCLDarkSpectra, tForm, datarow%, sample())
-If ierror Then Exit Sub
-End If
 
 Exit Sub
 
@@ -93,15 +83,13 @@ On Error GoTo CLInitDisplayError
 
 Dim astring As String
 
-' Check for data
-If datarow% = 0 Then Exit Sub
-
 ' Load form caption
 If tCaption$ <> vbNullString Then
 tForm.Caption = "CL Spectrum Display" & " [" & tCaption$ & "]"
 End If
 
 ' Load label
+astring$ = sample(1).Name$
 If sample(1).Linenumber&(datarow%) > 0 Then
 astring$ = sample(1).Name$ & ", Line " & Format$(sample(1).Linenumber&(datarow%))                         ' PFE
 Else
@@ -110,13 +98,8 @@ End If
 tForm.LabelSpectrumName.Caption = astring$
 
 ' Call graphics routines
-If Not UseProEssentialsGraphics Then
-Call CLInitDisplay_GS(tForm, tCaption$, datarow%, sample())
-If ierror Then Exit Sub
-Else
 Call CLInitDisplay_PE(tForm, tCaption$, datarow%, sample())
 If ierror Then Exit Sub
-End If
 
 Exit Sub
 
@@ -124,31 +107,6 @@ Exit Sub
 CLInitDisplayError:
 MsgBox Error$, vbOKOnly + vbCritical, "CLInitDisplay"
 Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub CLSetBinSize(tForm As Form)
-' Re-size CL graph and recalculate bar sizes
-
-ierror = False
-On Error GoTo CLSetBinSizeError
-
-' Call graphics routines
-If Not UseProEssentialsGraphics Then
-Call CLSetBinSize_GS(tForm)
-If ierror Then Exit Sub
-Else
-Call CLSetBinSize_PE(tForm)
-If ierror Then Exit Sub
-End If
-
-Exit Sub
-
-' Errors
-CLSetBinSizeError:
-MsgBox Error$, vbOKOnly + vbCritical, "CLSetBinSize"
 ierror = True
 Exit Sub
 
@@ -164,13 +122,8 @@ If CLDataRow% < 1 Then Exit Sub
 If CLOldSample(1).CLSpectraNumberofChannels%(CLDataRow%) < 1 Then Exit Sub
 
 ' Call graphics routines
-If Not UseProEssentialsGraphics Then
-Call CLDisplayRedraw_GS
-If ierror Then Exit Sub
-Else
 Call CLDisplayRedraw_PE
 If ierror Then Exit Sub
-End If
 
 Exit Sub
 
@@ -192,13 +145,8 @@ If CLDataRow% < 1 Then Exit Sub
 If CLOldSample(1).CLSpectraNumberofChannels%(CLDataRow%) < 1 Then Exit Sub
 
 ' Call graphics routines
-If Not UseProEssentialsGraphics Then
-Call CLZoomGraph_GS(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, Int(0), tForm)
-If ierror Then Exit Sub
-Else
 Call CLZoomGraph_PE(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, Int(0), tForm)
 If ierror Then Exit Sub
-End If
 
 Exit Sub
 
@@ -276,7 +224,3 @@ ierror = True
 Exit Sub
 
 End Sub
-
-
-
-

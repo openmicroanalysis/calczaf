@@ -296,7 +296,7 @@ ipp% = IPOS1%(MAXRAY% - 1, symx$, Xraylo$())
 If ipp% = 0 Then GoTo ConvertCalculateXrayTransmissionBadSymx
 
 ' Load MAC filename
-If ip% <= MAXRAY_OLD% Then
+If ipp% <= MAXRAY_OLD% Then
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo ConvertCalculateXrayTransmissionNotFound
 Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%

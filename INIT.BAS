@@ -18,8 +18,8 @@ Global ScalersFile As String
 Global MotorsFile As String
 Global ChargesFile As String
 
-Global Const OldInstallationFolder$ = "C:\Probe Software\Probe for EPMA\"
-Global Const PFE_SourceCodeFolder$ = "C:\Source\Probewin32-E\"
+Global Const OldInstallationFolder$ = "C:\Probe Software\Probe for EPMA"
+Global Const PFE_SourceCodeFolder$ = "C:\Source\Probewin32-E"
 
 ' Modules level only
 Dim DensityFile As String
@@ -1322,6 +1322,8 @@ Dim amsg As String
 Dim sLanguage As String
 Dim sLocaleD As String, sLocaleT As String
 
+Dim tProgramPath As String
+
 ' Check language
 sLanguage$ = MiscSystemGetLanguage()
 If ierror Then Exit Sub
@@ -1360,12 +1362,15 @@ ProgramPath$ = app.Path & "\"
 ' Get the Windows system path
 If MiscSystemIsHost64Bit() = False Then
 SystemPath$ = InitGetWindowsDirectory$() & "\System32"
+If ierror Then End
 Else
 SystemPath$ = InitGetWindowsDirectory$() & "\SysWOW64"
+If ierror Then End
 End If
 
-' Get application path                                      (does not work under VB IDE!!!)
+' Get application path (does not work under VB IDE!!!) (returns VB6 IDE path)
 ApplicationPath$ = InitGetApplicationPath$()
+If ierror Then End
 
 ' Get INI file locations
 ApplicationCommonAppData$ = IOBrowseGetAppDataFolder$(SpecialFolder_CommonAppData) & "\Probe Software\Probe for EPMA\"      ' all users
@@ -1435,7 +1440,6 @@ SetupDataFile$ = ApplicationCommonAppData$ & "SETUP.MDB"             ' element s
 SetupDataFile2$ = ApplicationCommonAppData$ & "SETUP2.MDB"             ' MAN element setup database
 SetupDataFile3$ = ApplicationCommonAppData$ & "SETUP3.MDB"             ' interference element setup database
 
-ProbeProcessFlagFile$ = ApplicationCommonAppData$ & "PROCESS.DAT"       ' inter-application process flags
 ProbeErrorLogFile$ = ApplicationCommonAppData$ & app.EXEName & ".ERR"      ' error log
 ProbeElmFile$ = ApplicationCommonAppData$ & "PROBEWIN.ELM"    ' wds element/parameter file
 ProbePHAFile$ = ApplicationCommonAppData$ & "PROBEWIN.PHA"    ' wds PHA parameter file
@@ -1569,10 +1573,10 @@ Dim tProgramPath As String
 Dim i As Integer
 
 ' Check if app is running from PFE source folder (if so just exit)
-If Trim$(UCase$(app.Path & "\")) = Trim$(UCase$(PFE_SourceCodeFolder$)) Then Exit Sub
+If Trim$(UCase$(app.Path)) = Trim$(UCase$(PFE_SourceCodeFolder$)) Then Exit Sub
 
 ' Set program path to old installation folder to update current installation
-tProgramPath$ = OldInstallationFolder$
+tProgramPath$ = OldInstallationFolder$ & "\"
 
 ' Copy all files except stage bit maps
 If mode% = 0 Then
@@ -1631,7 +1635,6 @@ Call InitFilesMove2("SETUP.MDB", tProgramPath$, ApplicationCommonAppData$)      
 Call InitFilesMove2("SETUP2.MDB", tProgramPath$, ApplicationCommonAppData$)               ' MAN element setup database
 Call InitFilesMove2("SETUP3.MDB", tProgramPath$, ApplicationCommonAppData$)               ' interference element setup database
    
-Call InitFilesMove2("PROCESS.DAT", tProgramPath$, ApplicationCommonAppData$)                ' inter-application process flags
 Call InitFilesMove2("PROBEWIN.ELM", tProgramPath$, ApplicationCommonAppData$)               ' wds element/parameter file
 Call InitFilesMove2("PROBEWIN.PHA", tProgramPath$, ApplicationCommonAppData$)               ' wds PHA parameter file
 Call InitFilesMove2("Version.txt", tProgramPath$, ApplicationCommonAppData$)
@@ -1757,7 +1760,7 @@ Call InitFilesMove2("DEMO3_JEOL.ACQ", tProgramPath$, ApplicationCommonAppData$)
 Call InitFilesMove2("DEMO3_Cameca.BMP", tProgramPath$, ApplicationCommonAppData$)
 Call InitFilesMove2("DEMO3_Cameca.ACQ", tProgramPath$, ApplicationCommonAppData$)
 
-' See special treatment in InitFilesMove2 (until new driver is available)
+' See special treatment in InitFilesMove2 (until all apps support new JEOL/Cameca drivers)
 Call InitFilesMove2("Xline.dll", tProgramPath$, ApplicationCommonAppData$)
 End If
 End If
@@ -1791,7 +1794,7 @@ ierror = False
 On Error GoTo InitFilesMove2Error
  
 ' Check if not PFE Source folder
-If Trim$(UCase$(ProgramPath$)) = Trim$(UCase$(PFE_SourceCodeFolder$)) Then Exit Sub
+If Trim$(UCase$(ProgramPath$)) = Trim$(UCase$(PFE_SourceCodeFolder$ & "\")) Then Exit Sub
 
 ' Check if old file location exists
 If Dir$(tProgramPath$ & tfilename$) = vbNullString Then Exit Sub
@@ -3305,6 +3308,21 @@ MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 MinimumOverVoltageType% = 1   ' use 10 percent minimum overvoltage (0 = 2%, 1 = 10%, 2 = 20%)
 DefaultEDSDeadtimePercent! = 50#    ' assume 50% deadtime
 SurferPageSecondsDelay% = 8     ' used by CalcImage
+
+' Set EDS and CL intensity defaults
+If UCase$(Trim$(app.EXEName$)) = UCase$(Trim$("Standard")) Then
+EDSIntensityOption% = 1         ' cps for Standard
+CLIntensityOption% = 1          ' cps for Standard
+Else
+EDSIntensityOption% = 0         ' raw intensity for PFE/TestEDS
+CLIntensityOption% = 0          ' raw intensity for PFE/TestEDS
+End If
+
+RunProbeImageFlag = False
+ProbeImageAcquisitionFile$ = vbNullString
+ProbeImageSampleSetupNumber% = 0
+
+UseStageReproducibilityCorrectionFlag = False
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

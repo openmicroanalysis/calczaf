@@ -618,7 +618,7 @@ Exit Sub
 
 End Sub
 
-Sub XrayLoadDatabase2(minintensity As Single, atnum As Integer, xstart As Single, xstop As Single, num As Integer, sArray() As String, xarray() As String, iarray() As Single, earray() As Single)
+Sub XrayLoadDatabase2(minintensity As Single, atnum As Integer, xstart As Single, xstop As Single, num As Long, sarray() As String, xarray() As String, iarray() As Single, earray() As Single)
 ' Load array of lines (1st order only) and intensities for the elements specified for the passed range (in keV)
 ' minintensity = minimum intensity (normalized to 100)
 ' atnum = atomic number of element
@@ -632,7 +632,7 @@ Sub XrayLoadDatabase2(minintensity As Single, atnum As Integer, xstart As Single
 ierror = False
 On Error GoTo XrayLoadDatabase2Error
 
-Dim n As Integer
+Dim n As Long
 Dim tempmin As Single, tempmax As Single
 
 Dim SQLQ As String
@@ -655,7 +655,7 @@ Set PrDb = OpenDatabase(XrayDataFile$, XrayDatabaseNonExclusiveAccess%, dbReadOn
 ' All element x-ray lines in range
 SQLQ$ = "SELECT Xray.* FROM Xray WHERE XrayAtomNum = " & Str$(atnum%) & " AND XrayIntensity >= " & Str$(minintensity!) & " AND XrayOrder = 1" & " AND XrayEnergy > " & Str$(tempmin!) & " AND XrayEnergy < " & Str$(tempmax!) '& " AND XrayEdge <> ABS"
 
-num% = 0
+num& = 0
 Set PrDs = PrDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
 If PrDs.EOF Then
 Screen.MousePointer = vbDefault
@@ -663,21 +663,21 @@ Exit Sub
 End If
 
 PrDs.MoveLast
-num% = PrDs.RecordCount
+num& = PrDs.RecordCount
 PrDs.MoveFirst
-ReDim sArray(1 To num%) As String
-ReDim xarray(1 To num%) As String
-ReDim iarray(1 To num%) As Single
-ReDim earray(1 To num%) As Single
+ReDim sarray(1 To num&) As String
+ReDim xarray(1 To num&) As String
+ReDim iarray(1 To num&) As Single
+ReDim earray(1 To num&) As Single
 
 ' Load list array
-n% = 0
+n& = 0
 Do Until PrDs.EOF
-n% = n% + 1
-sArray$(n%) = PrDs("XraySymbol")
-xarray$(n%) = PrDs("XrayLine")
-iarray!(n%) = PrDs("XrayIntensity")
-earray!(n%) = PrDs("XrayEnergy")
+n& = n& + 1
+sarray$(n&) = PrDs("XraySymbol")
+xarray$(n&) = PrDs("XrayLine")
+iarray!(n&) = PrDs("XrayIntensity")
+earray!(n&) = PrDs("XrayEnergy")
 PrDs.MoveNext
 Loop
 

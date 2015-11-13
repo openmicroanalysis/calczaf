@@ -1,19 +1,30 @@
 VERSION 5.00
-Object = "{827E9F53-96A4-11CF-823E-000021570103}#1.0#0"; "graphs32.ocx"
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
 Begin VB.Form FormCLDISPLAY 
    AutoRedraw      =   -1  'True
    Caption         =   "CL Spectrum Display"
-   ClientHeight    =   5550
+   ClientHeight    =   5520
    ClientLeft      =   120
    ClientTop       =   405
-   ClientWidth     =   12345
+   ClientWidth     =   13575
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MinButton       =   0   'False
-   ScaleHeight     =   5550
-   ScaleWidth      =   12345
+   ScaleHeight     =   5520
+   ScaleWidth      =   13575
    StartUpPosition =   3  'Windows Default
+   Begin Pesgo32fLib.Pesgo Pesgo1 
+      Height          =   3855
+      Left            =   120
+      TabIndex        =   5
+      Top             =   120
+      Width           =   9255
+      _Version        =   65536
+      _ExtentX        =   16325
+      _ExtentY        =   6800
+      _StockProps     =   96
+      _AllProps       =   "CLDisplay.frx":0000
+   End
    Begin VB.CommandButton CommandClose 
       BackColor       =   &H00008000&
       Caption         =   "Close"
@@ -28,7 +39,7 @@ Begin VB.Form FormCLDISPLAY
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   11040
+      Left            =   12360
       Style           =   1  'Graphical
       TabIndex        =   0
       Top             =   4920
@@ -38,7 +49,7 @@ Begin VB.Form FormCLDISPLAY
       Caption         =   "Copy To Clipboard"
       Height          =   495
       Left            =   6240
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   4920
       Width           =   1575
    End
@@ -46,46 +57,15 @@ Begin VB.Form FormCLDISPLAY
       Caption         =   "Zoom Full"
       Height          =   495
       Left            =   4920
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   4920
       Width           =   1095
-   End
-   Begin GraphsLib.Graph Graph1 
-      Height          =   4695
-      Left            =   120
-      TabIndex        =   2
-      TabStop         =   0   'False
-      Top             =   120
-      Width           =   12135
-      _Version        =   327680
-      _ExtentX        =   21405
-      _ExtentY        =   8281
-      _StockProps     =   96
-      BorderStyle     =   1
-      Background      =   "15~-1~-1~-1~-1~-1~-1"
-      ColorData       =   "1~1~1~1~1~1~1~1~1~1"
-      GraphType       =   0
-      NumPoints       =   10
-      RandomData      =   0
-      LabelYFormat    =   ""
-   End
-   Begin Pesgo32fLib.Pesgo Pesgo1 
-      Height          =   3375
-      Left            =   3840
-      TabIndex        =   6
-      Top             =   1440
-      Width           =   8415
-      _Version        =   65536
-      _ExtentX        =   14843
-      _ExtentY        =   5953
-      _StockProps     =   96
-      _AllProps       =   "CLDisplay.frx":0000
    End
    Begin VB.Label LabelTrack 
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   120
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   5160
       Width           =   4695
    End
@@ -113,16 +93,15 @@ End Sub
 
 Private Sub CommandCopyToClipboard_Click()
 If Not DebugMode Then On Error Resume Next
-FormCLDISPLAY.Graph1.DrawMode = 3     ' bit blit (DrawMode = 3) to put in bitmap format (otherwise metafile format does not work correctly)
-DoEvents
-FormCLDISPLAY.Graph1.DrawMode = 4     ' copy to clipboard
+FormCLDISPLAY.Pesgo1.DpiX = 300       ' might choose to use the PE global export functionality? press X on any open graph to see it!
+FormCLDISPLAY.Pesgo1.DpiY = 300
+FormCLDISPLAY.Pesgo1.ExportImageLargeFont = False ' = True for large font
+Call FormCLDISPLAY.Pesgo1.PEcopybitmaptoclipboard(1400, 600)
 End Sub
 
 Private Sub CommandZoom_Click()
 If Not DebugMode Then On Error Resume Next
 Call CLZoomFull(FormCLDISPLAY)
-If ierror Then Exit Sub
-Call CLSetBinSize(FormCLDISPLAY)
 If ierror Then Exit Sub
 Call CLDisplayRedraw
 If ierror Then Exit Sub
@@ -139,10 +118,6 @@ End Sub
 Private Sub Form_Resize()
 If Not DebugMode Then On Error Resume Next
 Dim temp As Single, TopOfButtons As Single
-
-' Make EDS display full size of window
-FormCLDISPLAY.Graph1.Width = FormCLDISPLAY.ScaleWidth - FormCLDISPLAY.Graph1.Left * 2#
-
 TopOfButtons! = 600
 FormCLDISPLAY.LabelSpectrumName.Top = FormCLDISPLAY.ScaleHeight - TopOfButtons!
 FormCLDISPLAY.LabelTrack.Top = FormCLDISPLAY.ScaleHeight - (TopOfButtons! - 300)
@@ -153,8 +128,10 @@ FormCLDISPLAY.CommandCopyToClipboard.Top = FormCLDISPLAY.ScaleHeight - TopOfButt
 FormCLDISPLAY.CommandClose.Top = FormCLDISPLAY.ScaleHeight - TopOfButtons!
 FormCLDISPLAY.CommandClose.Left = FormCLDISPLAY.ScaleWidth - (FormCLDISPLAY.CommandClose.Width + 200)
 
+' Make EDS display full size of window (PE)
+FormCLDISPLAY.Pesgo1.Width = FormCLDISPLAY.ScaleWidth - FormCLDISPLAY.Pesgo1.Left * 2#
 temp! = FormCLDISPLAY.ScaleHeight - (TopOfButtons! + WINDOWBORDERWIDTH%)
-If temp! > 0# Then FormCLDISPLAY.Graph1.Height = temp!
+If temp! > 0# Then FormCLDISPLAY.Pesgo1.Height = temp!
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -162,26 +139,37 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub Graph1_SDKPress(PressStatus As Integer, PressX As Double, PressY As Double, PressDataX As Double, PressDataY As Double)
+Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
-Call CLZoomGraph(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, Int(0), FormCLDISPLAY)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Graph1_SDKTrack(TrackX As Double, TrackY As Double, TrackDataX As Double, TrackDataY As Double)
-If Not DebugMode Then On Error Resume Next
-
 Dim astring As String
-Dim tempx As Single, tempy As Single
-
-tempx! = TrackDataX#
-tempy! = TrackDataY#
-astring$ = MiscAutoFormat$(tempx!) & ", " & MiscAutoFormat$(tempy!)
-FormCLDISPLAY.LabelTrack.Caption = astring$
-
-' Zoom rectangle
-Call ZoomSDKTrack(TrackX#, TrackY#)
-If ierror Then Exit Sub
-
+Dim nA As Long
+Dim nX As Long
+Dim nY As Long
+Dim fX As Double
+Dim fY As Double
+Dim nLeft As Integer
+Dim nTop As Integer
+Dim nRight As Integer
+Dim nBottom As Integer
+Dim pX As Integer
+Dim pY As Integer
+    
+' Get last mouse location within control
+FormCLDISPLAY.Pesgo1.GetLastMouseMove pX%, pY%
+    
+' Test to see if this is within grid area
+FormCLDISPLAY.Pesgo1.GetRectGraph nLeft%, nTop%, nRight%, nBottom%
+If pX% > nLeft% And pX% < nRight% And pY% > nTop% And pY% < nBottom% Then
+   nA& = 0              ' initialize axis if using OverlapMultiAxes, else this function will
+                        ' return the axis if MultiAxesSubsets is used without OverlapMultiAxes
+   nX& = CLng(pX%)      ' initialize nX and nY with mouse location
+   nY& = CLng(pY%)
+   FormCLDISPLAY.Pesgo1.PEconvpixeltograph nA&, nX&, nY&, fX#, fY#, 0, 0, 0
+        
+   astring$ = FormCLDISPLAY.Pesgo1.XAxisLabel & " " & (CSng(fX#)) & ", " & FormCLDISPLAY.Pesgo1.YAxisLabel & " " & MiscAutoFormat$(CSng(fY#))
+   FormCLDISPLAY.LabelTrack.Caption = astring$
+        
+Else
+   FormCLDISPLAY.LabelTrack.Caption = vbNullString
+End If
 End Sub
-

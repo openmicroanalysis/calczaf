@@ -18,7 +18,70 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
-10/18/15	Start replacing VB5 legacy controls with MicroSoft common controls.
+11/11/15	Add check for no WDS driver versions and warn user if found.
+
+	Move TestEDS to ProbeForEPMA.msi installer.
+
+11/10/15	Add JEOL EIKS to PFE installer (also needed for PI, NSS and Esprit installers).
+
+	
+11/09/15	Improve Cameca sx.mdb import for standard compositions (Seward)
+
+	Add proper signal type when importing PrbImg files.
+
+11/08/15	Add code to automatically move JEOL EIKS files to new app folder if necessary when updating from v. 10.x (Seward).
+	
+11/06/15	Add button to load PrbImg file for automation digitizing in Digitize Image (Locock).
+
+	Add menu in PictureSnap to only display the currently selected sample in Automate!
+
+11/05/15	Add cancel button to Imaging/Digitize Imaging window when saving image (Neill).
+v. 11.1.2
+
+11/04/15	Add option to re-run standards after Probe Image automation completes.
+	
+11/03/15	Add check for v. 2.0.3 drivers if old app folder not present.
+
+	Add alt key support for small MPB adjustment (Poeml) in Model Backgrounds.
+
+11/02/15	Fix small bug in standard drift correction in CalcImage analysis code.
+
+10/31/15	Many changes to numerous routines to remove RealTimeCounts and RealTimeCountTimes globals.
+v. 11.1.1
+		Fix update of peaking time in GetTim.bas.
+	
+10/29/15	Fix user specified output bug when using sample averages.
+v. 11.0.9
+	Modify detection limit calculations for Nth point acquisitions.
+	
+10/28/15	Fix CalcZAF emitter absorber MAC pair output (Buse).
+
+	Fix Excel formatting bug (column spacing) when using no sample name, line or number and using average output.
+
+10/27/15	Improve CalcImage behavior for multiple quant runs. Fix init of PI automation from PFE.
+
+10/26/15	Tweak minor tick marks on EDS plots (Seward).
+
+10/24/15	Work on new dynamic loading of KLM marker x-ray text.
+
+10/23/15	Fix raw intensity Surfer label (Carpenter).
+
+	Replace all old Spin controls with new UpDown controls.
+
+10/22/15	Implement shape control for elapsed time gauge (Acquire).
+v. 11.0.8
+	Add new controls to installer.
+	
+	Save PFE path to restore after running PI.
+	
+	Move EDS init code in Calculation Options so it doesn't get called unless one clicks the EDS Quant 
+	Method button (Chouinard).
+
+10/21/15	Implement new PE graphics by Seward for EDS and CL data.
+
+10/20/15	Work on Seward's PE graphics code. for EDS display.
+
+10/18/15	Start replacing VB5 legacy controls with Microsoft common controls.
 
 10/16/15	Add Excel tab delimited format for amphibole recalculations (Lowers).  See new AMPHI.DAT file.
 

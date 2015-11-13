@@ -1,4 +1,4 @@
-Attribute VB_Name = "CodeXRAY4"
+Attribute VB_Name = "CodeXRAYPlot"
 ' (c) Copyright 1995-2015 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
@@ -634,4 +634,143 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub XrayPlotgetGraphExtents_GS(tForm As Form, xstart As Single, xstop As Single)
+' Return the graph extents for the passed form (Graphics Server code)
+' .SDKInfo(1)   X axis maximum (your data units)
+' .SDKInfo(2)   X axis minimum (your data units)
+' .SDKInfo(3)   Y axis maximum (your data units)
+' .SDKInfo(4)   Y axis minimum (your data units)
+' .SDKInfo(5)   X axis length (GS units)
+' .SDKInfo(6)   Y axis length (GS units)
+' .SDKInfo(7)   X origin (GS units)
+' .SDKInfo(8)   Y origin (GS units)
+
+ierror = False
+On Error GoTo XrayPlotGetGraphExtents_GSError
+
+xstart! = tForm.Graph1.SDKInfo(2)
+xstop! = tForm.Graph1.SDKInfo(1)
+
+Exit Sub
+
+' Errors
+XrayPlotGetGraphExtents_GSError:
+MsgBox Error$, vbOKOnly + vbCritical, "XrayPlotGetGraphExtents_GS"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub XrayPlotgetGraphExtents_PE(tForm As Form, xstart As Single, xstop As Single)
+' Return the graph extents for the passed form (Pro Essentials code)
+
+ierror = False
+On Error GoTo XrayPlotGetGraphExtents_PEError
+
+xstart! = tForm.Graph1.SDKInfo(2)
+xstop! = tForm.Graph1.SDKInfo(1)
+
+Exit Sub
+
+' Errors
+XrayPlotGetGraphExtents_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "XrayPlotGetGraphExtents_PE"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub XrayPlotForceRedraw_GS(tForm As Form)
+' Force a re-draw on the graph for the passed form (Graphics Server code)
+
+ierror = False
+On Error GoTo XrayPlotForceReDraw_GSError
+
+tForm.Graph1.DrawMode = 2
+
+Exit Sub
+
+' Errors
+XrayPlotForceReDraw_GSError:
+MsgBox Error$, vbOKOnly + vbCritical, "XrayPlotForceReDraw_GS"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub XrayPlotForceRedraw_PE(tForm As Form)
+' Force a re-draw on the graph for the passed form (Pro Essentials code)
+
+ierror = False
+On Error GoTo XrayPlotForceReDraw_PEError
+
+tForm.Graph1.DrawMode = 2
+
+Exit Sub
+
+' Errors
+XrayPlotForceReDraw_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "XrayPlotForceReDraw_PE"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub XrayPlotShowDateStamp_GS(tForm As Form, sample() As TypeSample)
+' Show a date time file stamp in the corner (Graphics Server code)
+' .SDKInfo(1)   X axis maximum (your data units)
+' .SDKInfo(2)   X axis minimum (your data units)
+' .SDKInfo(3)   Y axis maximum (your data units)
+' .SDKInfo(4)   Y axis minimum (your data units)
+' .SDKInfo(5)   X axis length (GS units)
+' .SDKInfo(6)   Y axis length (GS units)
+' .SDKInfo(7)   X origin (GS units)
+' .SDKInfo(8)   Y origin (GS units)
+
+ierror = False
+On Error GoTo XrayPlotShowDateStamp_GSError
+
+Dim r As Long
+Dim xpos As Double, ypos As Double
+
+' Display the filename and current time
+xpos# = (tForm.Graph1.SDKInfo(7) + tForm.Graph1.SDKInfo(5)) / 2
+ypos# = tForm.Graph1.SDKInfo(8) + tForm.Graph1.SDKInfo(6) + 50
+r& = GSRText(xpos#, ypos#, 2, GSR_TXMID% + GSR_TXTOP% + GSR_TXTRANS%, 0, ProbeDataFile$ & ", " & Format$(CDate(sample(1).DateTimes(1))))
+
+Exit Sub
+
+' Errors
+XrayPlotShowDateStamp_GSError:
+MsgBox Error$, vbOKOnly + vbCritical, "XrayPlotShowDateStamp_GS"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub XrayPlotShowDateStamp_PE(tForm As Form, sample() As TypeSample)
+' Show a date time file stamp in the corner (Pro Essentials code)
+
+ierror = False
+On Error GoTo XrayPlotShowDateStamp_PEError
+
+Dim r As Long
+Dim xpos As Double, ypos As Double
+
+' Display the filename and current time
+xpos# = (tForm.Graph1.SDKInfo(7) + tForm.Graph1.SDKInfo(5)) / 2
+ypos# = tForm.Graph1.SDKInfo(8) + tForm.Graph1.SDKInfo(6) + 50
+r& = GSRText(xpos#, ypos#, 2, GSR_TXMID% + GSR_TXTOP% + GSR_TXTRANS%, 0, ProbeDataFile$ & ", " & Format$(CDate(sample(1).DateTimes(1))))
+
+Exit Sub
+
+' Errors
+XrayPlotShowDateStamp_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "XrayPlotShowDateStamp_PE"
+ierror = True
+Exit Sub
+
+End Sub
+
 

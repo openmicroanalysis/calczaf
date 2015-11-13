@@ -684,14 +684,14 @@ If n% = 8 Then SpaceOrNot$ = Space(1)
 If n% = 9 Then SpaceOrNot$ = Space(1)
 If n% = 10 Then SpaceOrNot$ = Space(1)
 If n% = 11 Then SpaceOrNot$ = Space(1)
-If n% > 11 Then SpaceOrNot$ = Space(1)      ' default for new versions is use space
+If n% > 12 Then SpaceOrNot$ = Space(1)      ' default for new versions is use space
 End If
 If mode% = 2 Then   ' Surfer
 If n% = 7 Then SpaceOrNot$ = Space(1)
 If n% = 9 Then SpaceOrNot$ = Space(1)
 If n% = 10 Then SpaceOrNot$ = Space(1)
 If n% = 11 Then SpaceOrNot$ = Space(1)
-If n% > 11 Then SpaceOrNot$ = Space(1)      ' default for new versions is use space
+If n% > 12 Then SpaceOrNot$ = Space(1)      ' default for new versions is use space???
 End If
 aPath$ = Left$(sPath$, Len(sPath$) - 6) & "\Golden Software\" & gs_string$ & SpaceOrNot$ & Format$(n%)    ' remove " (x86)"
 If Dir$(aPath$, vbDirectory) <> vbNullString Then
@@ -710,14 +710,14 @@ If n% = 8 Then SpaceOrNot$ = Space(1)
 If n% = 9 Then SpaceOrNot$ = Space(1)
 If n% = 10 Then SpaceOrNot$ = Space(1)
 If n% = 11 Then SpaceOrNot$ = Space(1)
-If n% > 11 Then SpaceOrNot$ = Space(1)      ' default for new versions is use space
+If n% > 12 Then SpaceOrNot$ = Space(1)      ' default for new versions is use space???
 End If
 If mode% = 2 Then   ' Surfer
 If n% = 7 Then SpaceOrNot$ = Space(1)
 If n% = 9 Then SpaceOrNot$ = Space(1)
 If n% = 10 Then SpaceOrNot$ = Space(1)
 If n% = 11 Then SpaceOrNot$ = Space(1)
-If n% > 11 Then SpaceOrNot$ = Space(1)      ' default for new versions is use space
+If n% > 12 Then SpaceOrNot$ = Space(1)      ' default for new versions is use space
 End If
 aPath$ = sPath$ & "\Golden Software\" & gs_string$ & SpaceOrNot$ & Format$(n%)
 If Dir$(aPath$, vbDirectory) <> vbNullString Then

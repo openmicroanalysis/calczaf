@@ -394,16 +394,12 @@ Begin VB.Form FormMAIN
          Caption         =   "Convert JTA ELEMINFO.DAT (Create New XLINE.DAT, XEDGE.DAT and XFLUR.DAT)"
          HelpContextID   =   123
       End
-      Begin VB.Menu menuXrayConvertMACMATDAT 
-         Caption         =   "Convert MACMAT*.DAT (Create New CITZMU.DAT)"
-         HelpContextID   =   124
-      End
       Begin VB.Menu menuXraySeparator3 
          Caption         =   "-"
       End
-      Begin VB.Menu menuXrayCreateNewXrayDatabase 
-         Caption         =   "Create New X-Ray Database (XRAY.ALL -> XRAY.MDB)"
-         HelpContextID   =   125
+      Begin VB.Menu menuXrayConvertMACMATDAT 
+         Caption         =   "Create New CITZMU MAC Table (Create New CITZMU.DAT)"
+         HelpContextID   =   124
       End
       Begin VB.Menu menuXrayCreateNewMcMasterMACTable 
          Caption         =   "Create New McMaster MAC Table (Create New MCMASTER.DAT)"
@@ -425,8 +421,11 @@ Begin VB.Form FormMAIN
          Caption         =   "-"
       End
       Begin VB.Menu menuXrayCreateNewUSERMACTable 
-         Caption         =   "Create New User Defined MAC Table (Create New USERMAC.DAT)"
+         Caption         =   "Create Default User Defined MAC Table (Create Default USERMAC.DAT from another MAC file)"
          HelpContextID   =   825
+      End
+      Begin VB.Menu menuXrayOutputExistingUSERMACTable 
+         Caption         =   "Output Exisiting User Defined MAC Table (Create New USERMAC.TXT)"
       End
       Begin VB.Menu menuXrayUpdateUSERMACTable 
          Caption         =   "Update Existing User Defined MAC Table (Update USERMAC.DAT)"
@@ -449,6 +448,13 @@ Begin VB.Form FormMAIN
       Begin VB.Menu menuXrayConvertDataToText 
          Caption         =   "Convert Binary XLINE, XEDGE, XFLUR .DAT Files To .TXT Files"
          Visible         =   0   'False
+      End
+      Begin VB.Menu menuXraySeparator8 
+         Caption         =   "-"
+      End
+      Begin VB.Menu menuXrayCreateNewXrayDatabase 
+         Caption         =   "Create New X-Ray Database (XRAY.ALL -> XRAY.MDB)"
+         HelpContextID   =   125
       End
    End
    Begin VB.Menu menuAnalytical 
@@ -1580,6 +1586,12 @@ Private Sub menuXrayMACTableComplete2_Click()
 If Not DebugMode Then On Error Resume Next
 ' Obtain a MAC table (complete) (additional lines)
 Call XrayGetTable(Int(10))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub menuXrayOutputExistingUSERMACTable_Click()
+If Not DebugMode Then On Error Resume Next
+Call EditOutputUserMACFile(FormMAIN)
 If ierror Then Exit Sub
 End Sub
 

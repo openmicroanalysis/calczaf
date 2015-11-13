@@ -403,7 +403,7 @@ nrec% = ielm%(k%)
 ' Calculate record offset
 If nrec% >= ilo% And nrec% <= ihi% And iz% <= MAXELM% Then
 ix% = j% * 2 - 1
-im% = ix% + (iz% - 1) * (MAXRAY% - 1)
+im% = ix% + (iz% - 1) * MAXRAY_OLD%
 Get #exportfilenumber%, nrec%, macrow
 macrow.mac!(im%) = MACs!(k%)
 Put #exportfilenumber%, nrec%, macrow
@@ -478,20 +478,33 @@ If iray% < 1 Or iray% > MAXRAY% - 1 Then Exit Sub
 If iabsorb% < 1 Or iabsorb% > MAXELM% Then Exit Sub
 
 ' Open MAC file
+If iray% <= MAXRAY_OLD% Then
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 
 nrec% = ielm%
 Get #MACFileNumber%, nrec%, macrow
-num% = iray% + (iabsorb% - 1) * (MAXRAY% - 1)
+num% = iray% + (iabsorb% - 1) * (MAXRAY_OLD%)
 temp! = macrow.mac!(num%)
 Close #MACFileNumber%
+
+Else
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
+
+nrec% = ielm%
+Get #MACFileNumber%, nrec%, macrow
+num% = (iray% - MAXRAY_OLD%) + (iabsorb% - 1) * (MAXRAY_OLD%)
+temp! = macrow.mac!(num%)
+Close #MACFileNumber%
+End If
 
 Exit Sub
 
 ' Errors
 EditGetMACDataError:
 MsgBox Error$, vbOKOnly + vbCritical, "EditGetMACData"
+Close #MACFileNumber%
 ierror = True
 Exit Sub
 
@@ -548,6 +561,9 @@ Exit Sub
 ' Errors
 EditGetXrayDataError:
 MsgBox Error$, vbOKOnly + vbCritical, "EditGetXrayData"
+Close #XLineFileNumber%
+Close #XEdgeFileNumber%
+Close #XFlurFileNumber%
 ierror = True
 Exit Sub
 
@@ -714,21 +730,35 @@ If iray% < 1 Or iray% > MAXRAY% Then Exit Sub
 If iabsorb% < 1 Or iabsorb% > MAXELM% Then Exit Sub
 
 ' Open MAC file
+If iray% <= MAXRAY_OLD% Then
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"
 Open MACFile$ For Random Access Read Write As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 
 nrec% = ielm%
 Get #MACFileNumber%, nrec%, macrow
-num% = iray% + (iabsorb% - 1) * (MAXRAY% - 1)
+num% = iray% + (iabsorb% - 1) * (MAXRAY_OLD%)
 macrow.mac!(num%) = temp!
 Put #MACFileNumber%, nrec%, macrow
 Close #MACFileNumber%
+
+Else
+MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
+Open MACFile$ For Random Access Read Write As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
+
+nrec% = ielm%
+Get #MACFileNumber%, nrec%, macrow
+num% = (iray% - MAXRAY_OLD%) + (iabsorb% - 1) * (MAXRAY_OLD%)
+macrow.mac!(num%) = temp!
+Put #MACFileNumber%, nrec%, macrow
+Close #MACFileNumber%
+End If
 
 Exit Sub
 
 ' Errors
 EditSetMACDataError:
 MsgBox Error$, vbOKOnly + vbCritical, "EditSetMACData"
+Close #MACFileNumber%
 ierror = True
 Exit Sub
 
@@ -788,9 +818,11 @@ Exit Sub
 ' Errors
 EditSetXrayDataError:
 MsgBox Error$, vbOKOnly + vbCritical, "EditSetXrayData"
+Close #XLineFileNumber%
+Close #XEdgeFileNumber%
+Close #XFlurFileNumber%
 ierror = True
 Exit Sub
-
 
 End Sub
 
@@ -1063,7 +1095,7 @@ Exit Sub
 End Sub
 
 Sub EditMakeNewMACTable(mode As Integer)
-' Create McMaster or MAC30 or MACJTA or FFAST or user defined (copy only) Mac table
+' Create McMaster or MAC30 or MACJTA or FFAST or user defined (copy only) MAC table
 ' mode = 1 make McMaster
 ' mode = 2 make MAC30
 ' mode = 3 make MACJTA
@@ -1196,8 +1228,8 @@ ierror = True
 Exit Sub
 End If
 
-' Loop on all xrays
-For iray% = 1 To MAXRAY% - 1
+' Loop on all xrays (only for traditional x-ray line MAC tables)
+For iray% = 1 To MAXRAY_OLD%
 
 ' Determine energy of emitter
 Call XrayGetEnergy(ip%, iray%, keV!, edg!)
@@ -1234,7 +1266,7 @@ atotal! = 0#
 End If
 
 ' Calculate position in type and load
-num% = iray% + (ielm% - 1) * (MAXRAY% - 1)
+num% = iray% + (ielm% - 1) * MAXRAY_OLD%
 macrow.mac!(num%) = atotal!
 
 Next iray%
@@ -1254,9 +1286,9 @@ Exit Sub
 
 ' Errors
 EditMakeNewMACTableError:
-Close #MACFileNumber%
 MsgBox Error$, vbOKOnly + vbCritical, "EditMakeNewMACTable"
 Call IOStatusAuto(vbNullString)
+Close #MACFileNumber%
 ierror = True
 Exit Sub
 
@@ -1638,8 +1670,88 @@ Exit Sub
 
 End Sub
 
+Sub EditOutputUserMACFile(tForm As Form)
+' Output an existing USERMAC.DAT table to a USERMAC.TXT file for editing and subsequent updating of the current USERMAC.DAT MAC table
+
+ierror = False
+On Error GoTo EditOutputUserMACFileError
+
+Dim nrec As Integer, ia As Integer, ix As Integer, num As Integer
+Dim astring As String, tfilename As String
+Dim response As Integer
+
+Dim macrow As TypeMu
+
+msg$ = "Do you want to output your current USERMAC.DAT user defined MAC file to a USERMAC.TXT text file, for editing using a text editor, and subsequently updating your current USERMAC.DAT MAC table?"
+response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditOutputUserMACFile")
+If response% = vbCancel Then
+ierror = True
+Exit Sub
+End If
+
+' If updating user defined MAC table check that it already exists
+MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & ".DAT"
+tfilename$ = ApplicationCommonAppData$ & macstring2$(7) & ".TXT"
+              
+' Open the input DAT file
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
+
+' Open the output text file
+Open tfilename$ For Output As #Temp1FileNumber%
+
+' Loop on entries
+Call IOStatusAuto(vbNullString)
+
+' Create header
+astring$ = Format$("zMeas") & vbTab & Format$("zAbsorb")
+For ix% = 1 To MAXRAY_OLD%
+astring$ = astring$ & vbTab & Format$(Xraylo$(ix%))
+Next ix%
+
+Print #Temp1FileNumber%, astring$
+
+' Loop on absorbers
+For ia% = 1 To MAXELM%
+
+' Loop on emitters
+For nrec% = 1 To MAXELM%
+Get #MACFileNumber%, nrec%, macrow
+
+' Create output string
+astring$ = Format$(nrec%) & vbTab & Format$(ia%)
+For ix% = 1 To MAXRAY_OLD%
+num% = ix% + (ia% - 1) * MAXRAY_OLD%
+astring$ = astring$ & vbTab & Format$(macrow.mac(num%))
+Next ix%
+
+Print #Temp1FileNumber%, astring$
+
+Next nrec%
+Next ia%
+
+Call IOStatusAuto(vbNullString)
+Close #Temp1FileNumber%
+Close #MACFileNumber%
+
+' Inform user
+msg$ = "The user defined MAC table (" & MACFile$ & ") was output to a text file (" & tfilename$ & "), for editing using a text editor and subsequent updating using the Update Existing User Defined MAC table menu."
+MsgBox msg$, vbOKOnly + vbInformation, "EditOutputUserMACFile"
+Exit Sub
+
+' Errors
+EditOutputUserMACFileError:
+msg$ = Error$
+MsgBox msg$, vbOKOnly + vbCritical, "EditOutputUserMACFile"
+Call IOStatusAuto(vbNullString)
+ierror = True
+Close #Temp1FileNumber%
+Close #MACFileNumber%
+Exit Sub
+
+End Sub
+
 Sub EditUpdateUserMACFile(tForm As Form)
-' Update an existing USERMAC table with values from a USERMAC.TXT file
+' Update an existing USERMAC table with values from a USERMAC.TXT file (only write non-zero values)
 
 ierror = False
 On Error GoTo EditUpdateUserMACFileError
@@ -1650,7 +1762,7 @@ Dim line_number As Long
 Dim astring As String, tfilename As String
 Dim response As Integer
 
-ReDim mac_values(1 To MAXRAY% - 1) As Single
+ReDim mac_values(1 To MAXRAY_OLD%) As Single
 
 Dim macrow As TypeMu
 
@@ -1701,11 +1813,11 @@ If ia% < 1 Or ia% > MAXELM% Then GoTo EditUpdateUserMACFileBadAbsorber
 nrec% = ie%
         
 ' Calculate record offset
-For ix% = 1 To MAXRAY% - 1
+For ix% = 1 To MAXRAY_OLD%
 If mac_values!(ix%) > 0# Then
 
 ' Calculate position in emitting record for this absorber and x-ray
-num% = ix% + (ia% - 1) * (MAXRAY% - 1)
+num% = ix% + (ia% - 1) * MAXRAY_OLD%
 Get #MACFileNumber%, nrec%, macrow
 macrow.mac!(num%) = mac_values!(ix%)
 Put #MACFileNumber%, nrec%, macrow
@@ -2059,9 +2171,6 @@ Dim astring As String, bstring As String, tfilename1 As String, tfilename2 As St
 Dim array6(1 To MAXRAY_OLD%) As Single
 Dim array9(1 To MAXEDG%) As Single
 
-' Check for new dimensioning
-If MAXRAY% <> 13 Then GoTo EditConvertCSVToTextNotNewMAXRAY
-
 ' Check for input file
 tfilename1$ = "C:\Source\Probewin32-E\Additional Xray Lines\" & "XLINE2.CSV"
 'tfilename1$ = "C:\Source\Probewin32-E\Additional Xray Lines\" & "XEDGE2.CSV"         ' not used
@@ -2088,7 +2197,7 @@ If mode% = -1 Then GoTo EditConvertCSVToTextUnknownFormat
 ' Open comma delimited input CSV file
 Open tfilename1$ For Input As #Temp1FileNumber%
 
-' Open x-ray output text file
+' Open x-ray output text file for additional x-ray lines
 Open tfilename2$ For Output As #Temp2FileNumber%
 
 ' Print text file header (9 spaces for each column)
@@ -2176,12 +2285,6 @@ MsgBox Error$, vbOKOnly + vbCritical, "EditConvertCSVToText"
 ierror = True
 Close #Temp1FileNumber%
 Close #Temp2FileNumber%
-Exit Sub
-
-EditConvertCSVToTextNotNewMAXRAY:
-msg$ = "The application is not using the new constant for MAXRAY. Check the Global.bas source code and uncomment/comment as necesaary."
-MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertCSVToText"
-ierror = True
 Exit Sub
 
 EditConvertCSVToTextNotFound:
@@ -2400,7 +2503,6 @@ msg$ = "Invalid x-ray transition in string " & bstring$ & ", for input file " & 
 MsgBox msg$, vbOKOnly + vbExclamation, "EditConvertFFAST2Dat"
 ierror = True
 Exit Sub
-
 
 End Sub
 

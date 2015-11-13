@@ -91,3 +91,75 @@ Exit Sub
 
 End Sub
 
+Sub PositionGetSampleDataOnly(samplerow As Integer, npts As Integer, xdata() As Single, ydata() As Single, zdata() As Single, wdata() As Single, idata() As Integer)
+' Routine to load position data (x,y,z only) from the POSITION.MDB database
+
+ierror = False
+On Error GoTo PositionGetSampleDataOnlyError
+
+Dim i As Integer
+Dim SQLQ As String
+
+Dim position As TypePosition
+
+Dim PoDb As Database
+Dim PoRs As Recordset
+
+' Open the database
+Screen.MousePointer = vbHourglass
+If PositionDataFile$ = vbNullString Then PositionDataFile$ = ApplicationCommonAppData$ & "POSITION.MDB"
+Set PoDb = OpenDatabase(PositionDataFile$, PositionDatabaseNonExclusiveAccess%, dbReadOnly)
+
+' Get position data from "Position" table
+SQLQ$ = "SELECT Position.* from Position WHERE PosToRow = " & Str$(samplerow%) & " "
+SQLQ$ = SQLQ$ & "ORDER by PosOrder"
+Set PoRs = PoDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
+
+' Update grid for new number of rows
+If PoRs.BOF And PoRs.EOF Then GoTo PositionGetSampleDataOnlyNoPositions
+
+' Load number of points
+PoRs.MoveLast
+npts% = PoRs.RecordCount
+PoRs.MoveFirst
+
+ReDim xdata(1 To npts%) As Single
+ReDim ydata(1 To npts%) As Single
+ReDim zdata(1 To npts%) As Single
+ReDim wdata(1 To npts%) As Single
+ReDim idata(1 To npts%) As Integer
+
+' Load position data
+i% = 0
+Do Until PoRs.EOF
+i% = i% + 1
+xdata!(i%) = PoRs("StageX")
+ydata!(i%) = PoRs("StageY")
+zdata!(i%) = PoRs("StageZ")
+wdata!(i%) = PoRs("StageW")
+idata%(i%) = PoRs("PosOrder")   ' row numbers (may not be consecutive)
+PoRs.MoveNext
+Loop
+
+PoRs.Close
+PoDb.Close
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+PositionGetSampleDataOnlyError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "PositionGetSampleDataOnly"
+ierror = True
+Exit Sub
+
+PositionGetSampleDataOnlyNoPositions:
+Screen.MousePointer = vbDefault
+msg$ = "No position data for position sample " & Str$(position.samplenumber%) & " in " & PositionDataFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "PositionGetSampleDataOnly"
+ierror = True
+Exit Sub
+
+End Sub
+

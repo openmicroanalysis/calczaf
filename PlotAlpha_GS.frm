@@ -383,7 +383,7 @@ End Sub
 
 Private Sub CommandPrint_Click()
 If Not DebugMode Then On Error Resume Next
-Call ZoomPrintGraph(FormPlotAlpha_GS.Graph1)
+Call ZoomPrintGraph_GS(FormPlotAlpha_GS.Graph1)
 If ierror Then Exit Sub
 End Sub
 

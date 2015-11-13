@@ -968,11 +968,27 @@ Sub PictureSnapLoadPositions(mode As Integer)
 ierror = False
 On Error GoTo PictureSnapLoadPositionsError
 
-Dim i As Long, imode As Integer
+Dim i As Long, imode As Integer, samplerow As Integer, npts As Integer
 
-' Zero out array
 ImagePoints& = 0
-If FormPICTURESNAP.menuDisplayStandards.Checked Or FormPICTURESNAP.menuDisplayUnknowns.Checked Or FormPICTURESNAP.menuDisplayWavescans.Checked Then
+
+' Check if only loading data for selected sample
+If FormPICTURESNAP.Visible And FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked Then
+If FormAUTOMATE.ListDigitize.ListIndex < 0 Then GoTo PictureSnapLoadPositionsNotSelected
+samplerow% = FormAUTOMATE.ListDigitize.ItemData(FormAUTOMATE.ListDigitize.ListIndex)
+Call PositionGetSampleDataOnly(samplerow%, npts%, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageWdata!(), ImageIdata%())
+If ierror Then Exit Sub
+
+' Dimension unused arrays
+ImagePoints& = CLng(npts%)
+If ImagePoints& > 0 Then
+ReDim ImageNData(1 To ImagePoints&) As Integer
+ReDim ImageSData(1 To ImagePoints&) As Integer
+ReDim ImageSNdata(1 To ImagePoints&) As String
+End If
+
+' Load data for selected position sample type
+ElseIf FormPICTURESNAP.menuDisplayStandards.Checked Or FormPICTURESNAP.menuDisplayUnknowns.Checked Or FormPICTURESNAP.menuDisplayWavescans.Checked Then
 
 ' Load sample types
 imode% = mode%
@@ -980,6 +996,7 @@ If imode% = 0 Then imode% = lastmode%
 Call PositionGetXYZW(imode%, ImagePoints&, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageWdata!(), ImageIdata%(), ImageNData%(), ImageSData%(), ImageSNdata$())
 If ierror Then Exit Sub
 If imode% > 0 Then lastmode% = imode%  ' save for next load label call (mode% = 0)
+End If
 
 ' Print out for debug
 If DebugMode% Then
@@ -1005,14 +1022,18 @@ Next i&
 End If
 End If
 
-End If
-
 FormPICTURESNAP.Picture2.Refresh
 Exit Sub
 
 ' Errors
 PictureSnapLoadPositionsError:
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapLoadPositions"
+ierror = True
+Exit Sub
+
+PictureSnapLoadPositionsNotSelected:
+msg$ = "The Display Digitized Positions For Selected Position Sample Only menu was checked but no position sample is currently selected in the Automate! window"
+MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapLoadPositionsNotSelected"
 ierror = True
 Exit Sub
 
@@ -1108,7 +1129,7 @@ Dim beamcurrent1 As Single, beamcurrent2 As Single, keV As Single, counttime As 
 Dim timeofacq1 As Double, timeofacq2 As Double
 Dim mag As Double, scan As Double
 
-Dim sArray() As Single
+Dim sarray() As Single
 Dim response As Integer
 
 Dim ix As Integer, iy As Integer
@@ -1129,14 +1150,14 @@ Screen.MousePointer = vbHourglass
 ' Extract data from PrbImg
 Call IOStatusAuto("Reading PrbImg file " & tfilename$ & "...")
 DoEvents
-Call Base64ReaderInput(tfilename$, keV!, counttime!, beamcurrent1!, beamcurrent2!, timeofacq1#, timeofacq2#, ix%, iy%, sArray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#, mag#, scan#)
+Call Base64ReaderInput(tfilename$, keV!, counttime!, beamcurrent1!, beamcurrent2!, timeofacq1#, timeofacq2#, ix%, iy%, sarray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#, mag#, scan#)
 If ierror Then Exit Sub
 
 ' Create GRD file from extracted data and save to folder
 gfilename$ = MiscGetFileNameNoExtension$(tfilename$) & ".grd"
 Call IOStatusAuto("Writing GRD file " & MiscGetFileNameOnly$(gfilename$) & "...")
 DoEvents
-Call CalcImageCreateGRDFromArray(gfilename$, ix%, iy%, sArray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#)
+Call CalcImageCreateGRDFromArray(gfilename$, ix%, iy%, sarray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#)
 If ierror Then Exit Sub
 
 Call IOStatusAuto("Loading image grid file " & gfilename$ & "...")
