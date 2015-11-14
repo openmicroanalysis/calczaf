@@ -1166,6 +1166,7 @@ Type TypeImage
     ImageBeamSize As Single
     ImageTitle As String
     ImageScanRotation As Single     ' added 12/12/2014
+    ImageChannelNumber As Integer   ' added 11/13/2015
     
     ImageData() As Long             ' image intensity data (unnormalized)
 End Type
@@ -2885,3 +2886,7 @@ Global CLIntensityOption As Integer
 Global RunStandardsAfterProbeImageFlag As Boolean
 
 Global UseStageReproducibilityCorrectionFlag As Boolean
+
+Global ImageSizeIndex As Integer
+Global ImageChannelNumber As Integer
+

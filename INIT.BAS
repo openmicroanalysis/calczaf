@@ -3323,6 +3323,7 @@ ProbeImageAcquisitionFile$ = vbNullString
 ProbeImageSampleSetupNumber% = 0
 
 UseStageReproducibilityCorrectionFlag = False
+ImageSizeIndex% = -1            ' to force loading of default image size
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
