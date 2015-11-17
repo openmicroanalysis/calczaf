@@ -18,6 +18,10 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 
+11/16/15	Enable new detection limits for MAN and Nth point background methods.
+
+	Work on relative line weight code (Goemann).  Work on stage reproducibility correction code.
+
 11/13/15	Work on new stage reproducibility feature (almost there!).
 v. 11.1.3
 	
@@ -109,7 +113,7 @@ v. 10.0.7
 	
 09/30/15	Add new pure element k-ratios to Penepma12 distribution.  Work on new MAN sensitivity expressions from Singer.
 	
-09/27/15	Chnage k-ratio error distribution .DAT files (Pouchou, NIST, etc) absorber only from 7 to 13 (additional x-ray lines
+09/27/15	Change k-ratio error distribution .DAT files (Pouchou, NIST, etc) absorber only from 7 to 13 (additional x-ray lines
 	means that 13 is now the absorber only integer flag, not 7).  Add to distribution files.
  
 09/26/15	Improve TDI time estimation (Gopon).
