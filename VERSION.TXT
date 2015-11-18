@@ -18,6 +18,10 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 
+11/17/15	Add code to check for proper JEOL EIKS ini file values.
+
+	Fix DataGetVirtual file locking error (Poeml).
+
 11/16/15	Enable new detection limits for MAN and Nth point background methods.
 
 	Work on relative line weight code (Goemann).  Work on stage reproducibility correction code.
