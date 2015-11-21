@@ -128,7 +128,7 @@ FormCLDISPLAY.CommandCopyToClipboard.Top = FormCLDISPLAY.ScaleHeight - TopOfButt
 FormCLDISPLAY.CommandClose.Top = FormCLDISPLAY.ScaleHeight - TopOfButtons!
 FormCLDISPLAY.CommandClose.Left = FormCLDISPLAY.ScaleWidth - (FormCLDISPLAY.CommandClose.Width + 200)
 
-' Make EDS display full size of window (PE)
+' Make CL display full size of window (PE)
 FormCLDISPLAY.Pesgo1.Width = FormCLDISPLAY.ScaleWidth - FormCLDISPLAY.Pesgo1.Left * 2#
 temp! = FormCLDISPLAY.ScaleHeight - (TopOfButtons! + WINDOWBORDERWIDTH%)
 If temp! > 0# Then FormCLDISPLAY.Pesgo1.Height = temp!

@@ -27,8 +27,8 @@ End Sub
 
 Sub CLDisplaySpectra_PE(tCLDarkSpectra As Boolean, tForm As Form, datarow As Integer, sample() As TypeSample)
 ' Display current spectrum from the interface (Pro Essentials)
-'  tCLDarkSpectra = false normal CL spectrum
-'  tCLDarkSpectra = true dark CL spectrum
+'  tCLDarkSpectra = false for normal CL spectrum
+'  tCLDarkSpectra = true for dark CL spectrum
 
 ierror = False
 On Error GoTo CLDisplaySpectra_PEError
@@ -40,7 +40,7 @@ Dim temp1 As Single, temp2 As Single
 ' Define #subset and #points
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(255, 0, 0, 255) ' Blue
-tForm.Pesgo1.points = sample(1).CLSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.Points = sample(1).CLSpectraNumberofChannels%(datarow%)
 
 ' Display options for Y axis label
 If CLIntensityOption% = 0 Then
@@ -154,7 +154,7 @@ Dim astring As String
 
 ' Init graph properies
 tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.points = 1
+tForm.Pesgo1.Points = 1
 tForm.Pesgo1.xdata(0, 0) = 0                    'for empty subset
 tForm.Pesgo1.ydata(0, 0) = 0
 

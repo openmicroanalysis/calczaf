@@ -17,6 +17,12 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	and re-install Remote.msi.
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
+	
+11/20/15	New code to save and restore miscellaneous Run table paramters when loading a file setup (Seward).
+v. 11.1.4
+	Start work on implementing Ocean Optics OmniDriver calls.
+
+11/19/15	Work on testCL.exe test app.  Re-work some EDS display code and TestEDS.
 
 11/18/15	Improve plot code for PE conversion.
 
