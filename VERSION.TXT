@@ -18,6 +18,8 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+11/23/15	Remove nominal beam from load file setup save/restore code.
+
 11/20/15	New code to save and restore miscellaneous Run table paramters when loading a file setup (Seward).
 v. 11.1.4
 	Start work on implementing Ocean Optics OmniDriver calls.
