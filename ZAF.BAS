@@ -2797,9 +2797,9 @@ If zafinit% = 1 Then GoTo 6800
 
 ' STDSTP1 / DUNCUMB/REED(FRAME) STOPPING POWER CORRECTION FOR STANDARDS
 If istp% = 1 Then
-For i% = 1 To zaf.in1%
+For i% = 1 To zaf.in1%                  ' emitting elements
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-For i1% = 1 To zaf.in0%
+For i1% = 1 To zaf.in0%                 ' matrix elements
 n5! = 1000# * jm!(i1%)
 zaf.s!(i1%, i%) = 2# * zaf.Z%(i1%) / (zaf.atwts!(i1%) * (zaf.eO!(i%) + zaf.eC!(i%))) * Log(583# * (zaf.eO!(i%) + zaf.eC!(i%)) / n5!)
 Next i1%
@@ -2912,10 +2912,10 @@ Exit Sub
 ' SMPSTP1 / DUNCUMB/REED (FRAME) STOPPING POWER CORRECTION FOR SAMPLE
 6800:
 If istp% = 1 Then
-For i% = 1 To zaf.in1%
+For i% = 1 To zaf.in1%              ' emitting elements
 zaf.stp!(i%) = 0#
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-For i1% = 1 To zaf.in0%
+For i1% = 1 To zaf.in0%             ' matrix elements
 zaf.stp!(i%) = zaf.stp!(i%) + zaf.conc!(i1%) * zaf.s!(i1%, i%)
 Next i1%
 End If
@@ -3142,9 +3142,9 @@ Next i%
 ' analyzed for, load last element as oxygen by stoichiometry.
 zaf.in1% = zaf.in0%
 If sample(1).OxideOrElemental% = 1 Then
-zaf.in0% = zaf.in0% + 1
+zaf.in0% = zaf.in0% + 1                     ' array index for all matrix elements (including oxygen by stoichiometry)
 zaf.in1% = zaf.in0%
-zaf.in1% = zaf.in0% - 1
+zaf.in1% = zaf.in0% - 1                     ' array index for all emitting elements (not including oxygen by stoichiometry)
 
 zaf.eO!(zaf.in0%) = sample(1).kilovolts!
 zaf.Z%(zaf.in0%) = AllAtomicNums%(8)
@@ -3356,7 +3356,7 @@ Next i%
 zaf.d! = 0#     ' diameter in cm
 zaf.rho! = 0#   ' density in g/cm^3
 zaf.j9! = 0#    ' particle thicknes factor
-zaf.X1! = 0#    ' integration step length in g/cm^2
+zaf.x1! = 0#    ' integration step length in g/cm^2
 
 zaf.TotalCations! = 0#
 zaf.totalatoms! = 0#
@@ -4068,7 +4068,7 @@ q2! = s1!
 r5! = r4!
 If er1! >= er3! Then GoTo 11250
 
-er1! = er1! + zaf.X1!
+er1! = er1! + zaf.x1!
 If er1! > er3! Then er1! = er3!
 GoTo 11150
 

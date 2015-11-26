@@ -18,6 +18,10 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+11/21/15	Fix Xray menu in StartWin.exe.
+
+11/24/15	Move ROM scan structures to module level for JEOL (von der Handt).
+
 11/23/15	Remove nominal beam from load file setup save/restore code.
 
 11/20/15	New code to save and restore miscellaneous Run table paramters when loading a file setup (Seward).
