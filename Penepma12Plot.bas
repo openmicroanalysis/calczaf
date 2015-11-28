@@ -191,7 +191,7 @@ FormPENEPMA12.Pesgo1.RenderEngine = PERE_GDIPLUS&
 FormPENEPMA12.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&
 FormPENEPMA12.Pesgo1.ZoomStyle = PEZS_RO2_NOT&
 
-' scrolling options (when zoomed)
+' Scrolling options (when zoomed)
 FormPENEPMA12.Pesgo1.ScrollingHorzZoom = True
 FormPENEPMA12.Pesgo1.ScrollingVertZoom = True
 FormPENEPMA12.Pesgo1.MouseDraggingX = True
@@ -231,7 +231,7 @@ Dim alen As Integer, blen As Integer, clen As Integer               'max length 
 
 If Not PenepmaDataPlotted Then Exit Sub
 
-' with w/o gridlines
+' With or w/o gridlines
 If UseGridLines Then
 FormPENEPMA12.Pesgo1.GridLineControl = PEGLC_BOTH&          ' x and y grid
 FormPENEPMA12.Pesgo1.GridBands = True                       ' adds colour banding on background
@@ -240,7 +240,7 @@ FormPENEPMA12.Pesgo1.GridLineControl = PEGLC_NONE&
 FormPENEPMA12.Pesgo1.GridBands = False                      ' removes colour banding on background
 End If
 
-' with w/o log scale
+' With or w/o log scale
 If UseLogScale Then
 FormPENEPMA12.Pesgo1.YAxisScaleControl = PEAC_LOG&
 Else

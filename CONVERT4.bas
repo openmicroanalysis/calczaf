@@ -318,7 +318,7 @@ For i% = 1 To lchan%
 ' Calculate absorber position
 iz% = IPOS1%(MAXELM%, syms$(i%), Symlo$())
 If iz% = 0 Then GoTo ConvertCalculateXrayTransmissionBadSym
-num% = ipp% + (iz% - 1) * (MAXRAY% - 1)
+num% = ipp% + (iz% - 1) * (MAXRAY_OLD%)
 
 If DebugMode Then
 Call IOWriteLog(Symlo$(ip%) & " " & Xraylo$(ipp%) & " absorbed by " & Symlo$(iz%) & " = " & Str$(macrow.mac!(num%)))

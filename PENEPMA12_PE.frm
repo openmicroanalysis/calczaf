@@ -1687,6 +1687,7 @@ Private Sub Pesgo1_ZoomOut()
 If Not DebugMode Then On Error Resume Next
 CommandZoomFull.Enabled = False
 End Sub
+
 Private Sub TextBeamEnergy_GotFocus()
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
