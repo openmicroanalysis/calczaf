@@ -18,11 +18,27 @@ Option Explicit
 'Global Const PEANF_EXP_NOTATION& = 1
 'Global Const PEANF_EXP_NOTATION_3X& = 2
 'Global Const PERE_GDIPLUS& = 2
-'Global Const SGPM_POINT& = 1
 'Global Const PEPGS_NONE& = 0
 'Global Const PEMPS_MEDIUM_LARGE& = 5
 'Global Const PELT_THIN_SOLID& = 0
+
+'Global Const SGPM_LINE& = 0
+'Global Const SGPM_POINT& = 1
+'Global Const SGPM_STICK& = 2
+'Global Const SGPM_POINTSPLUSBFL& = 3         ' points plus best fit line
+'Global Const SGPM_POINTSPLUSBFC& = 4         ' points plus best fit curve
+'Global Const SGPM_POINTSPLUSSPLINE& = 5
+'Global Const SGPM_SPLINE& = 6
+'Global Const SGPM_BUBBLE& = 7
+'Global Const SGPM_POINTSPLUSLINE& = 8
+
+'Global Const PELS_2_LINE& = 0
+'Global Const PELS_1_LINE& = 1
+'Global Const PELS_1_LINE_INSIDE_AXIS& = 2
+'Global Const PELS_1_LINE_TOP_OF_AXIS& = 3
 'Global Const PELS_1_LINE_INSIDE_OVERLAP& = 4
+'Global Const PELS_1_LINE_LEFT_OF_AXIS& = 5
+
 'Global Const REVERT_TO_DEFAULTS& = 20
 'Global Const PESTM_TICKS_HIDE& = 2
 'Global Const PESTM_TICKS_OUTSIDE& = 1
@@ -643,10 +659,10 @@ Global Const PEPT_ARROW_SW& = 97
 Global Const PEPT_ARROW_W& = 98
 Global Const PEPT_ARROW_NW& = 99
 
-'Global Const PEADL_NONE& = 0
-'Global Const PEADL_DATAVALUES& = 1
-'Global Const PEADL_POINTLABELS& = 2
-'Global Const PEADL_DATAPOINTLABELS& = 3
+Global Const PEADL_NONE& = 0
+Global Const PEADL_DATAVALUES& = 1
+Global Const PEADL_POINTLABELS& = 2
+Global Const PEADL_DATAPOINTLABELS& = 3
 
 Global Const PEAZ_NONE& = 0
 Global Const PEAZ_HORIZONTAL& = 1
@@ -816,10 +832,10 @@ Global Const PEAZ_HORZANDVERT& = 3
 'Global Const PESS_NONE& = 0
 'Global Const PESS_FINANCIAL& = 1
 
-'Global Const PELL_TOP& = 0
-'Global Const PELL_BOTTOM& = 1
-'Global Const PELL_LEFT& = 2
-'Global Const PELL_RIGHT& = 3
+Global Const PELL_TOP& = 0
+Global Const PELL_BOTTOM& = 1
+Global Const PELL_LEFT& = 2
+Global Const PELL_RIGHT& = 3
 
 'Global Const PEHSS_SMALL& = 0
 'Global Const PEHSS_MEDIUM& = 1

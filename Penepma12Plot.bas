@@ -111,12 +111,12 @@ Next j%
 If ParameterFileA$ <> ParameterFileB$ Then
 FormPENEPMA12.Pesgo1.LegendStyle = PELS_1_LINE_INSIDE_OVERLAP&                ' Legend inside plot
 Else
-FormPENEPMA12.Pesgo1.LegendStyle = 1                ' single line per legend
-FormPENEPMA12.Pesgo1.LegendLocation = 1             ' 0 = PELL_TOP, 1 = PELL_BOTTOM
+FormPENEPMA12.Pesgo1.LegendStyle = PELS_1_LINE&                               ' single line per legend
+FormPENEPMA12.Pesgo1.LegendLocation = PELL_BOTTOM&                            ' 0 = PELL_TOP, 1 = PELL_BOTTOM
 End If
-FormPENEPMA12.Pesgo1.OneLegendPerLine = True        ' Edit Put one Legend per line
+FormPENEPMA12.Pesgo1.OneLegendPerLine = True                                  ' Edit Put one Legend per line
 FormPENEPMA12.Pesgo1.SimpleLineLegend = True
-FormPENEPMA12.Pesgo1.SimplePointLegend = True       ' default False encloses in a box
+FormPENEPMA12.Pesgo1.SimplePointLegend = True                                 ' default False encloses in a box
 
 Call Penepma12PlotUpdate_PE(Int(1), FormPENEPMA12)
 If ierror Then Exit Sub

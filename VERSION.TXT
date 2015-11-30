@@ -18,6 +18,11 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+11/29/15	Work on FormSCAN graphics conversion.  Add better warning is 2048 imaging selected for Sx100 and not in 
+	single channel mode (Seward).
+	
+	Fix Stage.exe mosiac corner updating for move to buttons (Seward).
+
 11/27/15	Fix minor bug in Standard and StartWin X-Ray menus and CalcZAF x-ray transmission code (Neill).
 v. 11.1.5
 
