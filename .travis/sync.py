@@ -2,7 +2,7 @@
 Script to synchronize CalcZAF source code from Probe Software with GitHub using
 Travis CI.
 Steps:
-  
+
   * Pull repository from GitHub
   * Download ZIP containing CalcZAF source code from Probe Software website
   * Parse version text file and compare for new changes
@@ -127,6 +127,28 @@ def extract(filepath, workdir):
         z.extractall(workdir)
     logger.info('Extracting %s... DONE', filepath)
 
+def all_files_lowercase(workdir):
+    logger.info("all_files_lowercase")
+
+    ignore_paths = [".git", ".travis"]
+    ignore_files = [".gitignore", ".travis.yml", "VERSION.TXT"]
+    rename_file_extentions = ['.bas', '.frm', '.frx', '.vbp', '*.vbw']
+
+    for root, dirs, files in os.walk(workdir):
+        for ignore_path in ignore_paths:
+            if ignore_path in root:
+                break
+
+            for filename in files:
+                if filename not in ignore_files:
+                    _root, extention = os.path.splitext(filename)
+                    if extention.lower() in rename_file_extentions and filename != filename.lower():
+                        srcpath = os.path.join(root, filename)
+                        dstpath = os.path.join(root, filename.lower())
+                        if os.path.isfile(srcpath):
+                            logger.info("Renaming %s to %s", filename, filename.lower())
+                            os.rename(srcpath, dstpath)
+
 def create_commit_message(changes):
     logger.info('Create commit message...')
 
@@ -199,12 +221,22 @@ def main():
     parser.add_argument('--reposurl', default='git@github.com:openmicroanalysis/calczaf.git')
     parser.add_argument('--no-push', action='store_true', default=False,
                         help='Do not push after commit')
+    parser.add_argument('--no-commit', action='store_true', default=False,
+                        help='Do not commit change')
+    parser.add_argument('--force-check-change', action='store_true', default=False,
+                        help='Force checking change even if the version is the same')
 
     args = parser.parse_args()
+
 
     level = logging.DEBUG if args.verbose else logging.INFO
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(level)
+
+    no_commit = args.no_commit
+    force_check_change = args.force_check_change
+    logger.info(no_commit)
+    logger.info(force_check_change)
 
     workdir = args.workdir
     workdir, userworkdir = setup(workdir)
@@ -216,7 +248,9 @@ def main():
     # Download zip
     url = args.url
     userzip = True
-    if urllib.parse.urlparse(url).scheme != '':
+    if urllib.parse.urlparse(url).scheme == 'd':
+        zipfilepath = url
+    elif urllib.parse.urlparse(url).scheme != '':
         zipfilepath = download(url)
         userzip = False
     else:
@@ -224,20 +258,25 @@ def main():
 
     # Compare versions
     changes, tag = compare(zipfilepath, workdir)
-    if not changes:
+    if not changes and not force_check_change:
         teardown(workdir, userworkdir, zipfilepath, userzip)
         logger.info('No change. Exiting.')
         return
 
-    if changes:
+    if changes or force_check_change:
         logger.info('%i new changes found', len(changes))
 
         extract(zipfilepath, workdir)
 
+        all_files_lowercase(workdir)
+
         message = create_commit_message(changes)
+        logger.info('Message: %s', message)
 
         push = not args.no_push
-        commit(workdir, message, tag, push=push)
+        if not no_commit:
+            logger.info('Commit change.')
+            commit(workdir, message, tag, push=push)
 
     # Clean up
     teardown(workdir, userworkdir, zipfilepath, userzip)
