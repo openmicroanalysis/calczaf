@@ -18,6 +18,10 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+12/02/15	Update reference manual.
+	
+12/01/05	Fix PHA done flag for PHA scans (Goemann).  Add Z stage interpolation for Stage mosaic digitization (Seward).
+	
 11/30/15	Add Imaging button to Stage Mosaic window (Seward and von der Handt).
 
 11/29/15	Work on FormSCAN graphics conversion.  Add better warning if 2048 imaging selected for Sx100 and not in 
