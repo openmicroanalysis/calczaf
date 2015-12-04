@@ -3819,7 +3819,8 @@ Sub Penepma12CalculateBinaries()
 ierror = False
 On Error GoTo Penepma12CalculateBinariesError
 
-Dim k As Integer
+Dim notfound1 As Boolean, notfound2 As Boolean
+Dim k As Integer, ip As Integer
 Dim pfilename As String
 
 Dim binarynames(1 To MAXBINARY%) As String
@@ -3877,6 +3878,27 @@ PENEPMA_Sample(1).Xrsyms$(1) = Deflin$(BinaryElement1%)  ' just load defaults he
 
 PENEPMA_Sample(1).Elsyms$(2) = Symlo$(BinaryElement2%)
 PENEPMA_Sample(1).Xrsyms$(2) = Deflin$(BinaryElement2%)  ' just load defaults here
+
+PENEPMA_Sample(1).AtomicNums%(1) = AllAtomicNums%(BinaryElement1%)
+PENEPMA_Sample(1).AtomicNums%(2) = AllAtomicNums%(BinaryElement2%)
+
+ip% = IPOS1(MAXRAY% - 1, PENEPMA_Sample(1).Xrsyms$(1), Xraylo$())
+PENEPMA_Sample(1).XrayNums%(1) = ip%
+ip% = IPOS1(MAXRAY% - 1, PENEPMA_Sample(1).Xrsyms$(2), Xraylo$())
+PENEPMA_Sample(1).XrayNums%(2) = ip%
+
+' Check if x-ray is in database
+Call Penepma12CheckXray(PENEPMA_Sample(), notfound1, notfound2)
+If notfound1 Then
+msg$ = "Penepma12CalculateBinaries: No x-ray data found for " & PENEPMA_Sample(1).Elsyms$(1) & " " & PENEPMA_Sample(1).Xrsyms$(1) & ". The " & PENEPMA_Sample(1).Elsyms$(1) & "-" & PENEPMA_Sample(1).Elsyms$(2) & " binary calculation will be skipped."
+Call IOWriteLog(msg$)
+Exit Sub
+End If
+If notfound2 Then
+msg$ = "Penepma12CalculateBinaries: No x-ray data found for " & PENEPMA_Sample(1).Elsyms$(2) & " " & PENEPMA_Sample(1).Xrsyms$(2) & ". The " & PENEPMA_Sample(1).Elsyms$(1) & "-" & PENEPMA_Sample(1).Elsyms$(2) & " binary calculation will be skipped."
+Call IOWriteLog(msg$)
+Exit Sub
+End If
 
 ' Load element data
 PENEPMA_Sample(1).KilovoltsArray!(1) = CSng(MaterialMeasuredEnergy#)    ' set voltage just for over voltage check (not used by Penfluor)
@@ -8937,3 +8959,111 @@ Exit Sub
 
 End Sub
 
+Sub Penepma12CheckXray(sample() As TypeSample, notfound1 As Boolean, notfound2 As Boolean)
+' Check for valid x-rays
+
+ierror = False
+On Error GoTo Penepma12CheckXrayError
+
+Dim chan As Integer, nrec As Integer
+Dim jnum As Integer, ip As Integer
+Dim edge As Single, overvolt As Single, tenergy As Single
+Dim sym As String
+ 
+Dim engrow As TypeEnergy
+Dim edgrow As TypeEdge
+
+notfound1 = False
+notfound2 = False
+
+' Open x-ray edge file
+Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Open x-ray line file
+Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Open x-ray line file
+If Dir$(XLineFile2$) = vbNullString Then GoTo Penepma12CheckXrayNotFoundXLINE2DAT
+If FileLen(XLineFile2$) = 0 Then GoTo Penepma12CheckXrayZeroSizeXLINE2DAT
+Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+
+' Check xray line selections, load as absorber if specified or a problem is found
+For chan% = 1 To sample(1).LastChan%
+sym$ = sample(1).Xrsyms$(chan%)
+
+' Read original x-ray lines
+nrec% = sample(1).AtomicNums%(chan%) + 2
+If sample(1).XrayNums%(chan%) <= MAXRAY_OLD% Then
+Get #XLineFileNumber%, nrec%, engrow
+tenergy! = engrow.energy!(sample(1).XrayNums%(chan%))
+
+' Read additional x-ray lines
+Else
+Get #XLineFileNumber2%, nrec%, engrow
+tenergy! = engrow.energy!(sample(1).XrayNums%(chan%) - MAXRAY_OLD%)
+End If
+
+' Check for bad xray lines (no data)
+If chan% = 1 And tenergy! <= 0# Then notfound1 = True
+If chan% = 2 And tenergy! <= 0# Then notfound2 = True
+
+' Now read edge energies
+Get #XEdgeFileNumber%, nrec%, edgrow
+
+' Calculate edge index for this x-ray
+If sample(1).XrayNums%(chan%) = 1 Then jnum% = 1   ' Ka
+If sample(1).XrayNums%(chan%) = 2 Then jnum% = 1   ' Kb
+If sample(1).XrayNums%(chan%) = 3 Then jnum% = 4   ' La
+If sample(1).XrayNums%(chan%) = 4 Then jnum% = 3   ' Lb
+If sample(1).XrayNums%(chan%) = 5 Then jnum% = 9   ' Ma
+If sample(1).XrayNums%(chan%) = 6 Then jnum% = 8   ' Mb
+
+If sample(1).XrayNums%(chan%) = 7 Then jnum% = 3   ' Ln
+If sample(1).XrayNums%(chan%) = 8 Then jnum% = 3   ' Lg
+If sample(1).XrayNums%(chan%) = 9 Then jnum% = 3   ' Lv
+If sample(1).XrayNums%(chan%) = 10 Then jnum% = 4   ' Ll
+If sample(1).XrayNums%(chan%) = 11 Then jnum% = 7   ' Mg
+If sample(1).XrayNums%(chan%) = 12 Then jnum% = 9   ' Mz
+
+' Check for missing absorption edge energy
+If chan% = 1 And edgrow.energy!(jnum%) <= 0# Then notfound1 = True
+If chan% = 2 And edgrow.energy!(jnum%) <= 0# Then notfound2 = True
+Next chan%
+
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+
+Exit Sub
+
+' Errors
+Penepma12CheckXrayError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma12CheckXray"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+Penepma12CheckXrayNotFoundXLINE2DAT:
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CheckXray"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+Penepma12CheckXrayZeroSizeXLINE2DAT:
+Kill XLineFile2$
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CheckXray"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+End Sub

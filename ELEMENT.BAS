@@ -77,7 +77,7 @@ Sub ElementCheckXray(mode As Integer, sample() As TypeSample)
 ierror = False
 On Error GoTo ElementCheckXrayError
 
-Dim i As Integer, chan As Integer, nrec As Integer
+Dim chan As Integer, nrec As Integer
 Dim jnum As Integer, ip As Integer
 Dim edge As Single, overvolt As Single, tenergy As Single
 Dim sym As String
@@ -99,8 +99,7 @@ If FileLen(XLineFile2$) = 0 Then GoTo ElementCheckXrayZeroSizeXLINE2DAT
 Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Check xray line selections, load as absorber if specified or a problem is found
-For i% = 1 To sample(1).LastChan%
-chan% = i%
+For chan% = 1 To sample(1).LastChan%
 If chan% > sample(1).LastElm% Then GoTo AbsorberOnly
 sym$ = sample(1).Xrsyms$(chan%)
 ip% = IPOS1(MAXRAY% - 1, sym$, Xraylo$())
@@ -199,7 +198,7 @@ GoTo 3000
 
 DisableQuant:
 sample(1).DisableQuantFlag%(chan%) = 1  ' 0=enable, 1=disable
-3000:  Next i%
+3000:  Next chan%
 
 Close #XEdgeFileNumber%
 Close #XLineFileNumber%
