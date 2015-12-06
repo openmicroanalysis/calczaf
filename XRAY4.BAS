@@ -635,7 +635,7 @@ Exit Sub
 
 End Sub
 
-Sub XrayPlotgetGraphExtents_GS(tForm As Form, xstart As Single, xstop As Single)
+Sub XrayPlotGetGraphExtents_GS(tForm As Form, xstart As Single, xstop As Single)
 ' Return the graph extents for the passed form (Graphics Server code)
 ' .SDKInfo(1)   X axis maximum (your data units)
 ' .SDKInfo(2)   X axis minimum (your data units)

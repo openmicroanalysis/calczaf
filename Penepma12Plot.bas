@@ -203,7 +203,7 @@ FormPENEPMA12.Pesgo1.SubTitle = vbNullString
 FormPENEPMA12.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
 FormPENEPMA12.Pesgo1.AxisBorderType = PEABT_THIN_LINE&
 
-FormPENEPMA12.CommandZoomFull.Enabled = False ' zoom full handeled in FormPENEPMA12 Code
+FormPENEPMA12.CommandZoomFull.Enabled = False               ' zoom full handeled in FormPENEPMA12 Code
 FormPENEPMA12.Refresh
 
 Exit Sub

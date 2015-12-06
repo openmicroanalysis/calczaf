@@ -47,14 +47,14 @@ End If
 
 ' Define #subset and #points
 tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(255, 255, 0, 0) ' red
+tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(255, 255, 0, 0)                                 ' red
 
-tForm.Pesgo1.Points = sample(1).EDSSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.points = sample(1).EDSSpectraNumberofChannels%(datarow%)
 
 ' Load y axis data subset 0 - eds data
 For i% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)
 If EDSIntensityOption% = 0 Then
-ytemp! = sample(1).EDSSpectraIntensities&(datarow%, i%)                                                ' raw counts
+ytemp! = sample(1).EDSSpectraIntensities&(datarow%, i%)                                            ' raw counts
 Else
 If sample(1).EDSSpectraLiveTime!(datarow%) <> 0# Then ytemp! = sample(1).EDSSpectraIntensities&(datarow%, i%) / sample(1).EDSSpectraLiveTime!(datarow%)      ' cps
 End If
@@ -64,13 +64,13 @@ tForm.Pesgo1.ydata(0, i% - 1) = ytemp!
 ' Load x axis data
 xtemp! = sample(1).EDSSpectraEVPerChannel!(datarow%) * (i% - 1) / EVPERKEV#
 If EDSSpectraInterfaceType% = 2 Then
-xtemp! = xtemp! + sample(1).EDSSpectraStartEnergy!(datarow%) ' Bruker zero spectrum starts at plus start energy in keV
+xtemp! = xtemp! + sample(1).EDSSpectraStartEnergy!(datarow%)                    ' Bruker zero spectrum starts at plus start energy in keV
 End If
 
 tForm.Pesgo1.xdata(0, i% - 1) = xtemp!
 
 ' Find max eV channel that contains ydata, also = Duane-Hunt limit
-If xtemp! * ytemp! > 0 Then EDSeVmaxdata! = xtemp! ' could use this to scale x if max eV with y data does not equal EDSSpectraAcceleratingVoltage!(datarow%)
+If xtemp! * ytemp! > 0 Then EDSeVmaxdata! = xtemp!                              ' could use this to scale x if max eV with y data does not equal EDSSpectraAcceleratingVoltage!(datarow%)
 
 If VerboseMode And DebugMode Then
 If EDSIntensityOption% = 0 Then
@@ -82,20 +82,20 @@ End If
 Next i%
 
 ' Define axis and graph properties and X extent
-tForm.Pesgo1.ManualScaleControlX = PEMSC_MINMAX ' Manually Control X Axis
+tForm.Pesgo1.ManualScaleControlX = PEMSC_MINMAX                                 ' Manually Control X Axis
 tForm.Pesgo1.ManualMinX = sample(1).EDSSpectraStartEnergy!(datarow%)
 'tForm.Pesgo1.ManualMaxX = sample(1).EDSSpectraEndEnergy!(datarow%)
-'tForm.Pesgo1.ManualMaxX = EDSeVmaxdata! ' max x axis is defined as last eV channel with Y data
+'tForm.Pesgo1.ManualMaxX = EDSeVmaxdata!                                        ' max x axis is defined as last eV channel with Y data
 tForm.Pesgo1.ManualMaxX = sample(1).EDSSpectraAcceleratingVoltage!(datarow%)
 
 TotalEnergyRange! = (sample(1).EDSSpectraEndEnergy!(datarow%) - sample(1).EDSSpectraStartEnergy!(datarow%))
 
 ' Define Y extent
-tForm.Pesgo1.ManualScaleControlY = PEMSC_MIN ' Autoscale Control Y Axis max, Manual Control min
+tForm.Pesgo1.ManualScaleControlY = PEMSC_MIN                                    ' autoscale Control Y Axis max, Manual Control min
 tForm.Pesgo1.ManualMinY = 0
 
 If EDSIntensityOption% = 0 Then
-tForm.Pesgo1.ManualMaxY = sample(1).EDSSpectraMaxCounts&(datarow%)                                                  ' raw counts
+tForm.Pesgo1.ManualMaxY = sample(1).EDSSpectraMaxCounts&(datarow%)              ' raw counts
 Else
 If sample(1).EDSSpectraLiveTime!(datarow%) <> 0# Then tForm.Pesgo1.ManualMaxY = sample(1).EDSSpectraMaxCounts&(datarow%) / sample(1).EDSSpectraLiveTime!(datarow%)        ' cps
 End If
@@ -138,8 +138,8 @@ On Error GoTo EDSInitDisplay_PEError
 
 ' Init graph properies
 tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.Points = 1
-tForm.Pesgo1.xdata(0, 0) = 0                    'for empty subset
+tForm.Pesgo1.points = 1
+tForm.Pesgo1.xdata(0, 0) = 0                    ' for empty subset
 tForm.Pesgo1.ydata(0, 0) = 0
 
 tForm.Pesgo1.RenderEngine = PERE_GDIPLUS&       ' PERE_DIRECT2D may screw xp people?
@@ -167,9 +167,9 @@ tForm.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
 
 tForm.Pesgo1.XAxisLabel = "keV"
 If EDSIntensityOption% = 0 Then
-tForm.Pesgo1.YAxisLabel = "Intensity" ' Axis labels
+tForm.Pesgo1.YAxisLabel = "Intensity"           ' y axis label
 Else
-tForm.Pesgo1.YAxisLabel = "Intensity (cps)" ' Axis labels
+tForm.Pesgo1.YAxisLabel = "Intensity (cps)"     ' y axis label
 End If
 
 ' Enable zoom

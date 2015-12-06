@@ -39,8 +39,8 @@ Dim temp1 As Single, temp2 As Single
 
 ' Define #subset and #points
 tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(255, 0, 0, 255) ' Blue
-tForm.Pesgo1.Points = sample(1).CLSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(255, 0, 0, 255)                      ' blue
+tForm.Pesgo1.points = sample(1).CLSpectraNumberofChannels%(datarow%)
 
 ' Display options for Y axis label
 If CLIntensityOption% = 0 Then
@@ -154,7 +154,7 @@ Dim astring As String
 
 ' Init graph properies
 tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.Points = 1
+tForm.Pesgo1.points = 1
 tForm.Pesgo1.xdata(0, 0) = 0                    'for empty subset
 tForm.Pesgo1.ydata(0, 0) = 0
 
