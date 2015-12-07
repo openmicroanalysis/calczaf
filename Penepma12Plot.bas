@@ -79,13 +79,13 @@ If j% = 0 Then
 FormPENEPMA12.Pesgo1.SubsetLabels(j%) = "K-Ratio %"
 FormPENEPMA12.Pesgo1.SubsetPointTypes(j%) = PEPT_UPTRIANGLESOLID&
 FormPENEPMA12.Pesgo1.SubsetLineTypes(j%) = PELT_THIN_SOLID&
-FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(255, 255, 0, 0)
+FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))     ' red
 End If
 If j% = 1 Then
 FormPENEPMA12.Pesgo1.SubsetLabels(j%) = "Calc. Wt.% (Ideal)"
 FormPENEPMA12.Pesgo1.SubsetPointTypes(j%) = PEPT_DOTSOLID&
 FormPENEPMA12.Pesgo1.SubsetLineTypes(j%) = PELT_THIN_SOLID&
-FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(255, 0, 255, 0)
+FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(0), Int(255), Int(0))     ' green
 End If
 If j% = 2 Then
 If ParameterFileA$ = ParameterFileB$ Then
@@ -95,7 +95,7 @@ FormPENEPMA12.Pesgo1.SubsetLabels(j%) = "Boundary Wt.% (from Mat B)"
 End If
 FormPENEPMA12.Pesgo1.SubsetPointTypes(j%) = PEPT_DOWNTRIANGLESOLID&
 FormPENEPMA12.Pesgo1.SubsetLineTypes(j%) = PELT_THIN_SOLID&
-FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(255, 0, 0, 255)
+FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(255))     ' blue
 End If
 If j% = 3 Then
 astring$ = "CalcZAF Wt.%"
@@ -103,7 +103,7 @@ astring$ = astring$ & " (" & zafstring$(izaf%) & ")"
 FormPENEPMA12.Pesgo1.SubsetLabels(j%) = astring$
 FormPENEPMA12.Pesgo1.SubsetPointTypes(j%) = PEPT_DIAMONDSOLID&
 FormPENEPMA12.Pesgo1.SubsetLineTypes(j%) = PELT_THIN_SOLID&
-FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(255, 255, 128, 0)
+FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(255), Int(128), Int(0))   ' orange
 End If
 Next j%
 
@@ -281,7 +281,7 @@ End If
 FormPENEPMA12.Pesgo1.MultiSubTitles(0) = VbSpace
 FormPENEPMA12.Pesgo1.MultiSubTitles(1) = VbSpace                                                        ' create some space
 FormPENEPMA12.Pesgo1.VertLineAnnotation(0) = 0                                                          ' vertical line at x=0 as place holder for annotation
-FormPENEPMA12.Pesgo1.VertLineAnnotationColor(0) = FormPENEPMA12.Pesgo1.PEargb(255, 0, 0, 0)             ' line black
+FormPENEPMA12.Pesgo1.VertLineAnnotationColor(0) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(0))             ' line black
 FormPENEPMA12.Pesgo1.VertLineAnnotationText(0) = "|H" & cstring$                                        ' centre justification wrt VertLine
 
 ' Annotations properties

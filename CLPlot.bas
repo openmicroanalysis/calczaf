@@ -39,7 +39,7 @@ Dim temp1 As Single, temp2 As Single
 
 ' Define #subset and #points
 tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(255, 0, 0, 255)                      ' blue
+tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(255))                      ' blue
 tForm.Pesgo1.points = sample(1).CLSpectraNumberofChannels%(datarow%)
 
 ' Display options for Y axis label
