@@ -174,6 +174,7 @@ Form=MsgBoxTi.frm
 Object={6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0; Pesgo32f.ocx
 Object={86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0; MSCOMCT2.OCX
 ResFile32="CalcZAF.RES"
+Module=CodeMiscPlot; MiscPlot.bas
 IconForm="FormMAIN"
 Startup="Sub Main"
 HelpFile="ProbeWin.chm"

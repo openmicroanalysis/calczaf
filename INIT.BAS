@@ -2023,72 +2023,72 @@ End If
 If UCase$(app.EXEName) = UCase$("CalcImage") Then
 gridxyfile$ = ApplicationCommonAppData$ & "GRIDXY_Custom1.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "GRIDXY_Custom2.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "GRIDXY_Custom3.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "GRIDXY_Custom4.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "SLICEXY_Custom1.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "SLICEXY_Custom2.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "POLYXY_Custom1.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "POLYXY_Custom2.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "STRIPXY1_Custom1.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "STRIPXY2_Custom1.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "STRIPXY3_Custom1.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "STRIPXY1_Custom2.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "STRIPXY2_Custom2.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 gridxyfile$ = ApplicationCommonAppData$ & "STRIPXY3_Custom2.BAS"
 If Dir$(gridxyfile$) = vbNullString Then
-msg$ = "The " & gridxyfile$ & " file was not found in the application folder. Please contact probe Software for an updated copy"
+msg$ = "The " & gridxyfile$ & " file was not found in the application data folder. Please contact Probe Software for an updated copy"
 Call IOWriteLog(msg$)
 End If
 End If
@@ -3372,49 +3372,49 @@ ierror = True
 Exit Sub
 
 InitDataNotFoundCrystalsFile:
-msg$ = "File " & CrystalsFile$ & " was not found in the application folder."
+msg$ = "File " & CrystalsFile$ & " was not found in the application data folder " & ApplicationCommonAppData$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
 
 InitDataNotFoundElementsFile:
-msg$ = "File " & ElementsFile$ & " was not found in the application folder."
+msg$ = "File " & ElementsFile$ & " was not found in the application folder " & ApplicationCommonAppData$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
 
 InitDataNotFoundMotorsFile:
-msg$ = "File " & MotorsFile$ & " was not found in the application folder."
+msg$ = "File " & MotorsFile$ & " was not found in the application data folder " & ApplicationCommonAppData$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
 
 InitDataNotFoundScalersFile:
-msg$ = "File " & ScalersFile$ & " was not found in the application folder."
+msg$ = "File " & ScalersFile$ & " was not found in the application data folder " & ApplicationCommonAppData$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
 
 InitDataNotFoundChargesFile:
-msg$ = "File " & ChargesFile$ & " was not found in the application folder."
+msg$ = "File " & ChargesFile$ & " was not found in the application data folder " & ApplicationCommonAppData$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
 
 InitDataNotFoundDensityFile:
-msg$ = "File " & DensityFile$ & " was not found in the application folder."
+msg$ = "File " & DensityFile$ & " was not found in the application data folder " & ApplicationCommonAppData$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
 
 InitDataNotFoundDensityFile2:
-msg$ = "File " & DensityFile2$ & " was not found in the application folder."
+msg$ = "File " & DensityFile2$ & " was not found in the application data folder " & ApplicationCommonAppData$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
 
 InitDataNotFoundDetectorsFile:
-msg$ = "File " & DetectorsFile$ & " was not found in the application folder."
+msg$ = "File " & DetectorsFile$ & " was not found in the application data folder " & ApplicationCommonAppData$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub

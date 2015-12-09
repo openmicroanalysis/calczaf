@@ -4461,7 +4461,7 @@ ierror = True
 Exit Sub
 
 InitINIImageNotFoundMotorsFile:
-msg$ = "File " & MotorsFile$ & " was not found in the application folder."
+msg$ = "File " & MotorsFile$ & " was not found in the application data folder."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 ierror = True
 Exit Sub

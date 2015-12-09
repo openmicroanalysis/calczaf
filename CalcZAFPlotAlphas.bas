@@ -156,18 +156,18 @@ End If
 Next k%
 
 ' Set symbols for each data set (use odd numbers from 3 to 13 for solid symbols)
-i% = 3
-For k% = 1 To nsets%
-FormPlotAlpha_GS.Graph1.SymbolData = i%
-i% = i% + 2
-If i% > 13 Then i% = 3
-Next k%
+Call MiscPlotGetSymbols_GS(nsets%, FormPlotAlpha_GS.Graph1)
+If ierror Then Exit Sub
 End If
 
 xmin! = MAXMINIMUM!
 xmax! = MAXMAXIMUM!
 FormPlotAlpha_GS.Graph1.GraphType = 9      ' scatter graph
-FormPlotAlpha_GS.Graph1.GraphStyle = 0     ' symbols only
+If nsets% = 1 Then
+FormPlotAlpha_GS.Graph1.GraphStyle = 2     ' symbols only
+Else
+FormPlotAlpha_GS.Graph1.GraphStyle = 3     ' lines and symbols
+End If
 FormPlotAlpha_GS.Graph1.SymbolSize = 100   ' 100% of default
 FormPlotAlpha_GS.Graph1.SymbolData = 13    ' solid circle
 FormPlotAlpha_GS.Graph1.Background = 15    ' use white background
@@ -506,19 +506,19 @@ End If
 End If
 Next k%
 
-' Set symbols for each data set (use odd numbers from 3 to 13 for solid symbols)
-i% = 3
-For k% = 1 To nsets%
-FormPlotAlpha_PE.Graph1.SymbolData = i%
-i% = i% + 2
-If i% > 13 Then i% = 3
-Next k%
+' Set symbols for each data set
+Call MiscPlotGetSymbols_PE(nsets%, FormPlotAlpha_PE.Pesgo1)
+If ierror Then Exit Sub
 End If
 
 xmin! = MAXMINIMUM!
 xmax! = MAXMAXIMUM!
-FormPlotAlpha_GS.Graph1.GraphType = 9       ' scatter graph
-FormPlotAlpha_GS.Graph1.GraphStyle = 0      ' symbols only
+FormPlotAlpha_GS.Graph1.GraphType = 9      ' scatter graph
+If nsets% = 1 Then
+FormPlotAlpha_GS.Graph1.GraphStyle = 2     ' symbols only
+Else
+FormPlotAlpha_GS.Graph1.GraphStyle = 3     ' lines and symbols
+End If
 FormPlotAlpha_PE.Graph1.SymbolSize = 100    ' 100% of default
 FormPlotAlpha_PE.Graph1.SymbolData = 13     ' solid circle
 FormPlotAlpha_PE.Graph1.Background = 15     ' use white background
