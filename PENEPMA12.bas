@@ -6,11 +6,11 @@ Global Const MICROGRAMSPERGRAM& = 1000000            ' micrograms per gram
 
 Global MaterialDensityA As Double
 Global MaterialDensityB As Double
-Global MaterialDensityBStd As Double   ' assume constant (just for k-ratio calculation)
+Global MaterialDensityBStd As Double            ' assume constant (just for k-ratio calculation)
 
-Global ParameterFileA As String     ' filename only, no path
-Global ParameterFileB As String     ' filename only, no path
-Global ParameterFileBStd As String     ' filename only, no path
+Global ParameterFileA As String                 ' filename only, no path
+Global ParameterFileB As String                 ' filename only, no path
+Global ParameterFileBStd As String              ' filename only, no path
 
 ' Graph variables
 Global UseLogScale As Boolean
@@ -21,8 +21,8 @@ Global PenepmaDataPlotted As Boolean
 Global TotalNumberOfSimulations As Long
 Global CurrentSimulationsNumber As Long
 
-Global BinaryMethod As Integer      ' need to be global for PenPFE
-Global ExtractMethod As Integer     ' need to be global for PenPFE
+Global BinaryMethod As Integer                  ' need to be global for PenPFE
+Global ExtractMethod As Integer                 ' need to be global for PenPFE
 
 Global CalculateRandomTable() As Integer
 Global ExtractRandomTable() As Integer
@@ -31,7 +31,7 @@ Global pAllAtomicWts(1 To MAXELM%) As Single    ' Penepma08/12 atomic weights
 
 Const PENEPMA_MINPERCENT! = 0.0001
 Const COL7% = 7
-Const NUMSIM& = 10      ' number of beam energy simulations per Penfluor calculation
+Const NUMSIM& = 10                      ' number of beam energy simulations per Penfluor calculation
 
 ' Module level variables
 Dim PenepmaTaskID As Long
@@ -2317,13 +2317,7 @@ End If
 End If
 End If
 
-' Double check that specific transition exists
-' "K L3" l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
-' "K M3" l% = 2          ' (Kb)
-' "L3 M5" l% = 3         ' (La)
-' "L2 M4" l% = 4         ' (Lb)
-' "M5 N7" l% = 5         ' (Ma)
-' "M4 N6" l% = 6         ' (Mb)
+' Double check that specific transition exists (see table 6.2 in Penelope-2006-NEA-pdf)
 Call PenepmaGetPDATCONFTransition(MaterialMeasuredElement%, MaterialMeasuredXray%, t1!, t2!)
 If ierror Then Exit Sub
 
@@ -4900,13 +4894,7 @@ If ierror Then Exit Sub
 ' Check for valid x-ray line (excitation energy must be less than beam energy) (and greater than PenepmaMinimumElectronEnergy!)
 If eng! <> 0# And edg! <> 0# And edg! < MaterialMeasuredEnergy# And edg! > PenepmaMinimumElectronEnergy! Then
 
-' Double check that specific transition exists
-' "K L3" l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
-' "K M3" l% = 2          ' (Kb)
-' "L3 M5" l% = 3         ' (La)
-' "L2 M4" l% = 4         ' (Lb)
-' "M5 N7" l% = 5         ' (Ma)
-' "M4 N6" l% = 6         ' (Mb)
+' Double check that specific transition exists (see table 6.2 in Penelope-2006-NEA-pdf)
 Call PenepmaGetPDATCONFTransition(MaterialMeasuredElement%, MaterialMeasuredXray%, t1!, t2!)
 If ierror Then Exit Sub
 
@@ -8748,13 +8736,7 @@ If MinimumOverVoltageType% = 3 Then tovervoltage! = MINIMUMOVERVOLTFRACTION_40!
 ' Check for valid x-ray line (excitation energy (plus a buffer to avoid ultra low overvoltage issues) must be less than beam energy) (and greater than PenepmaMinimumElectronEnergy!)
 If eng! <> 0# And edg! <> 0# And (edg! * (1# + tovervoltage!) < MaterialMeasuredEnergy#) And edg! > PenepmaMinimumElectronEnergy! Then
 
-' Double check that specific transition exists
-' "K L3" l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
-' "K M3" l% = 2          ' (Kb)
-' "L3 M5" l% = 3         ' (La)
-' "L2 M4" l% = 4         ' (Lb)
-' "M5 N7" l% = 5         ' (Ma)
-' "M4 N6" l% = 6         ' (Mb)
+' Double check that specific transition exists (see table 6.2 in Penelope-2006-NEA-pdf)
 Call PenepmaGetPDATCONFTransition(MaterialMeasuredElement%, l%, t1!, t2!)
 If ierror Then Exit Sub
 

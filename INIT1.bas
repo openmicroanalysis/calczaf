@@ -5685,9 +5685,9 @@ End If
 If mode% = 0 Then
 If Dir$(ApplicationCommonAppData$ & StageBitMapFile$(i%)) = vbNullString Then
 msg$ = "StageBitMapFile " & StageBitMapFile$(i%) & " in " & tfilename$ & " was not found" & vbCrLf & vbCrLf
-msg$ = msg$ & "Program will now end."
+'msg$ = msg$ & "Program will now end."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIStageBitmaps"
-End
+'End
 End If
 End If
 Next i%

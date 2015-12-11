@@ -150,22 +150,22 @@ Dim astring As String, bstring As String
 ' Clear graph -  this plots blank graph with simple axes!
 FormPENEPMA12.Pesgo1.Subsets = 1
 FormPENEPMA12.Pesgo1.Points = 1
-FormPENEPMA12.Pesgo1.xdata(0, 0) = 0 'for empty subset
+FormPENEPMA12.Pesgo1.xdata(0, 0) = 0                            ' for empty subset
 FormPENEPMA12.Pesgo1.ydata(0, 0) = 0
 FormPENEPMA12.Pesgo1.ShowAnnotations = False
-FormPENEPMA12.Pesgo1.MainTitle = VbSpace 'blank Chart title
+FormPENEPMA12.Pesgo1.MainTitle = VbSpace                        ' blank Chart title
 
-FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_MINMAX& ' Manually Control Y Axis - this requires resetting to 'NONE" in the PlotKRatio code
+FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_MINMAX&        ' manually control Y Axis - this requires resetting to 'NONE" in the PlotKRatio code
 FormPENEPMA12.Pesgo1.ManualMinY = 0
 FormPENEPMA12.Pesgo1.ManualMaxY = 100
-FormPENEPMA12.Pesgo1.ManualScaleControlX = PEMSC_MINMAX& ' Manually Control X Axis
+FormPENEPMA12.Pesgo1.ManualScaleControlX = PEMSC_MINMAX&        ' manually control X Axis
 FormPENEPMA12.Pesgo1.ManualMinX = -50
 FormPENEPMA12.Pesgo1.ManualMaxX = 0
 
-FormPENEPMA12.Pesgo1.YAxisLabel = "K Ratio %, or Conc %" ' Axis labels
+FormPENEPMA12.Pesgo1.YAxisLabel = "K Ratio %, or Conc %"        ' axis labels
 FormPENEPMA12.Pesgo1.XAxisLabel = "Distance um"
 
-FormPENEPMA12.Pesgo1.ImageAdjustRight = 100 ' ' Axis formatting
+FormPENEPMA12.Pesgo1.ImageAdjustRight = 100                     ' axis formatting
 FormPENEPMA12.Pesgo1.YAxisOnRight = True
 
 ' General settings

@@ -2079,7 +2079,6 @@ Global VerboseMode As Integer
 
 ' Plot globals
 Global SendDataToPrinterFlag As Integer
-Global ForceBlackandWhitePrintFlag As Integer
 Global OffPeakMarkerLabelFlag As Integer
 
 Global ErrorbarSigmaIndex As Integer

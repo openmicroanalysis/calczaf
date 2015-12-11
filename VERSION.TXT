@@ -18,6 +18,9 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+12/10/15	New unk/std plot graphics for Output menu using Pro Essentials code.
+v. 11.1.7
+
 12/08/15	Add index to MPB manual flag table (Poeml).
 
 	Add Display current alpha factors menu for selected sample in Analyze!
