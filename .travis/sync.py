@@ -6,6 +6,7 @@ Steps:
   * Pull repository from GitHub
   * Download ZIP containing CalcZAF source code from Probe Software website
   * Parse version text file and compare for new changes
+  * Extract files from ZIP
   * Add modified files, commit and push to GitHub
 """
 
@@ -72,7 +73,14 @@ def pull(workdir, reposurl):
     subprocess.check_call(args, cwd=workdir)
     logger.info('Running git pull/clone... DONE')
 
-def commit(workdir, message, tag, push=True):
+def has_changes(workdir):
+    logger.info('Running git status...')
+    args = ['git', 'status', '--porcelain']
+    output = subprocess.check_output(args, cwd=workdir, universal_newlines=True)
+    logger.info('Running git status... DONE')
+    return bool(output)
+
+def commit(workdir, message, tag, commit=True, push=True):
     logger.info('Running git add...')
     args = ['git', 'add', '.']
     subprocess.check_call(args, cwd=workdir)
@@ -80,20 +88,21 @@ def commit(workdir, message, tag, push=True):
 
     logger.info('Running git commit...')
     args = ['git', 'commit', '-m', message]
+    if not commit: args.append('--dry-run')
     subprocess.check_call(args, cwd=workdir)
     logger.info('Running git commit... DONE')
 
-    if tag is not None:
+    if tag is not None and commit:
         logger.info('Running git tag...')
         args = ['git', 'tag', tag]
         subprocess.check_call(args, cwd=workdir)
         logger.info('Running git tag... DONE')
 
-    if push:
-        logger.info('Running git push...')
-        args = ['git', 'push', '--all']
-        subprocess.check_call(args, cwd=workdir)
-        logger.info('Running git push... DONE')
+    logger.info('Running git push...')
+    args = ['git', 'push', '--all']
+    if not push: args.append('--dry-run')
+    subprocess.check_call(args, cwd=workdir)
+    logger.info('Running git push... DONE')
 
 def compare(filepath, workdir):
     logger.info('Reading current version...')
@@ -215,21 +224,19 @@ def main():
                         help='Do not push after commit')
     parser.add_argument('--no-commit', action='store_true', default=False,
                         help='Do not commit change')
-    parser.add_argument('--force-check-change', action='store_true', default=False,
-                        help='Force checking change even if the version is the same')
 
     args = parser.parse_args()
-
 
     level = logging.DEBUG if args.verbose else logging.INFO
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(level)
 
     no_pull = args.no_pull
+    if no_pull: logger.info('Pull disabled')
     no_commit = args.no_commit
-    force_check_change = args.force_check_change
-    logger.info(no_commit)
-    logger.info(force_check_change)
+    if no_commit: logger.info('Commit disabled')
+    no_push = args.no_push
+    if no_push: logger.info('Push disabled')
 
     workdir = args.workdir
     workdir, userworkdir = setup(workdir)
@@ -252,23 +259,19 @@ def main():
 
     # Compare versions
     changes, tag = compare(zipfilepath, workdir)
-    if not changes and not force_check_change:
-        teardown(workdir, userworkdir, zipfilepath, userzip)
-        logger.info('No change. Exiting.')
-        return
 
-    if changes or force_check_change:
+    # Extract zip in working directory
+    extract(zipfilepath, workdir)
+
+    # Commit changes, if any
+    if changes and has_changes(workdir):
         logger.info('%i new changes found', len(changes))
-
-        extract(zipfilepath, workdir)
 
         message = create_commit_message(changes)
         logger.info('Message: %s', message)
 
-        push = not args.no_push
-        if not no_commit:
-            logger.info('Commit change.')
-            commit(workdir, message, tag, push=push)
+        logger.info('Commit change.')
+        commit(workdir, message, tag, commit=not no_commit, push=not no_push)
 
     # Clean up
     teardown(workdir, userworkdir, zipfilepath, userzip)
