@@ -817,12 +817,12 @@ Global Const PEAZ_HORZANDVERT& = 3
 'Global Const PESC_ROSE& = 2
 'Global Const PESC_ADMITTANCE& = 3
 
-'Global Const PESA_ALL& = 0
-'Global Const PESA_AXISLABELS& = 1
-'Global Const PESA_GRIDNUMBERS& = 2
-'Global Const PESA_NONE& = 3
-'Global Const PESA_LABELONLY& = 4
-'Global Const PESA_EMPTY& = 5
+Global Const PESA_ALL& = 0
+Global Const PESA_AXISLABELS& = 1
+Global Const PESA_GRIDNUMBERS& = 2
+Global Const PESA_NONE& = 3
+Global Const PESA_LABELONLY& = 4
+Global Const PESA_EMPTY& = 5
 
 'Global Const PEMPS_NONE& = 0
 'Global Const PEMPS_SMALL& = 1

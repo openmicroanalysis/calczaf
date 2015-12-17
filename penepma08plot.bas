@@ -115,7 +115,7 @@ If Index% = 1 Then FormPENEPMA08_PE.Pesgo1.YAxisLabel = "Photon Intensity"
 If Index% = 2 Then FormPENEPMA08_PE.Pesgo1.YAxisLabel = "Electron Intensity"
 FormPENEPMA08_PE.Pesgo1.MainTitle = tBeamTitle$
 
-FormPENEPMA08_PE.Pesgo1.SubsetColors(0) = FormPENEPMA08_PE.Pesgo1.PEargb(255, 205, 0, 0)
+FormPENEPMA08_PE.Pesgo1.SubsetColors(0) = FormPENEPMA08_PE.Pesgo1.PEargb(Int(255), Int(205), Int(0), Int(0))    ' dark red
 
 ' Enable zoom
 FormPENEPMA08_PE.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&

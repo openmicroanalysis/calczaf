@@ -507,7 +507,7 @@ Dim tstring As String, tcomment As String
 Dim tPenepma_Root As String
 Dim tProbeWinINIFile As String
 
-' Use application folder for testing (!!! comment out for normal operation !!!)
+' Use application data folder for testing (!!! comment out for normal operation !!!)
 PenPFE_Path$ = ApplicationCommonAppData$
 
 ' Remove trailing backslash if necessary
@@ -520,7 +520,7 @@ If Dir$(astring$, vbDirectory) = vbNullString Then GoTo PenepmaRandomRunProgramF
 ' Create an instance for the application by copying the ProgramPath folder to a duplicate path (if not already existing)
 For n% = 1 To PenPFE_Instances%
 
-' Check if application folder already exists (use app.Path to avoid trailing backslash)
+' Check if application data folder already exists
 bstring$ = PenPFE_Path$ & "_" & Format$(n%)
 If Dir$(bstring$, vbDirectory) = vbNullString Then
 

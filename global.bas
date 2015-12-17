@@ -14,7 +14,7 @@ Option Explicit
 Global ierror As Integer                           ' global error for backing out gracefully from error events
 
 Global Const UseProEssentialsGraphics = False      ' global flag for Graphics Server form/code
-'Global Const UseProEssentialsGraphics = True       ' global flag for ProEssentials form/code
+'Global Const UseProEssentialsGraphics = True       ' global flag for ProEssentials form/code (for testing new graphic codes)
 
 ' Based on Cameca SX100 set times
 Global Const KILOVOLT_SET_TIME! = 6#
@@ -2079,7 +2079,6 @@ Global VerboseMode As Integer
 
 ' Plot globals
 Global SendDataToPrinterFlag As Integer
-Global ForceBlackandWhitePrintFlag As Integer
 Global OffPeakMarkerLabelFlag As Integer
 
 Global ErrorbarSigmaIndex As Integer
@@ -2890,3 +2889,6 @@ Global UseStageReproducibilityCorrectionFlag As Boolean
 Global ImageSizeIndex As Integer
 Global ImageChannelNumber As Integer
 
+Global ImageData_TDI_Ix As Long          ' for CalcImage TDI pixel arrays (always the same for all quant images)
+Global ImageData_TDI_Iy As Long          ' for CalcImage TDI pixel arrays (always the same for all quant images)
+Global ImageData_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to npts)

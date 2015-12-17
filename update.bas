@@ -1277,7 +1277,7 @@ ierror = True
 Exit Sub
 
 UpdateStdMANBackgroundsNegativeStd:
-msg$ = "Standard number " & Format$(sample(1).StdAssigns%(chan%)) & " " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " MAN background corrected counts are zero or negative on channel " & Format$(chan%)
+msg$ = "Standard number " & Format$(sample(1).StdAssigns%(chan%)) & " (set " & Format$(i%) & ") for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " MAN background corrected counts are zero or negative on channel " & Format$(chan%)
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateStdMANBackgrounds"
 Call AnalyzeStatusAnal(vbNullString)
 ierror = True
@@ -1802,6 +1802,12 @@ analysis.StdAssignsCounts!(chan%) = StdAssignsDriftCounts!(std1%, chan%) + delta
 analysis.StdAssignsTimes!(chan%) = StdAssignsDriftTimes!(std1%, chan%) + deltatimes! * elapsedtime / deltatime
 analysis.StdAssignsBeams!(chan%) = StdAssignsDriftBeams!(std1%, chan%) + deltatimes! * elapsedtime / deltatime
 analysis.StdAssignsBgdCounts!(chan%) = StdAssignsDriftBgdCounts!(std1%, chan%) + deltabgdcounts! * elapsedtime / deltatime
+
+' Print interpolated date/time
+If DebugMode And VerboseMode Then
+Call IOWriteLog("UpdateCalculateStdDrift, Std1: " & Format$(StdAssignsDriftCounts!(std1%, chan%)) & ", Std2: " & Format$(StdAssignsDriftCounts!(std2%, chan%)) & ", Interpolated: " & Format$(analysis.StdAssignsCounts!(chan%)))
+End If
+
 End If
 End If
 
