@@ -97,7 +97,7 @@ def commit(workdir, message, tag, push=True):
 
 def compare(filepath, workdir):
     logger.info('Reading current version...')
-    workfilepath = os.path.join(workdir, VERSION_FILENAME)
+    workfilepath = os.path.join(workdir, VERSION_FILENAME.lower())
     with open(workfilepath, 'r', errors='ignore') as fp:
         oldchanges, oldtags = parse_version(fp)
 
@@ -124,30 +124,20 @@ def compare(filepath, workdir):
 def extract(filepath, workdir):
     logger.info('Extracting %s...', filepath)
     with zipfile.ZipFile(filepath, 'r') as z:
-        z.extractall(workdir)
+        for info in z.infolist():
+            # Always use lower case
+            filename = info.filename.lower()
+
+            # Create directory if needed
+            dirname = os.path.join(workdir, os.path.dirname(filename))
+            os.makedirs(dirname, exist_ok=True)
+
+            # Write filename
+            dstpath = os.path.join(workdir, filename)
+            with z.open(info, 'r') as fi, open(dstpath, 'wb') as fo:
+                fo.write(fi.read())
+
     logger.info('Extracting %s... DONE', filepath)
-
-def all_files_lowercase(workdir):
-    logger.info("all_files_lowercase")
-
-    ignore_paths = [".git", ".travis"]
-    ignore_files = [".gitignore", ".travis.yml", "VERSION.TXT"]
-    rename_file_extentions = ['.bas', '.frm', '.frx', '.vbp', '*.vbw']
-
-    for root, dirs, files in os.walk(workdir):
-        for ignore_path in ignore_paths:
-            if ignore_path in root:
-                break
-
-            for filename in files:
-                if filename not in ignore_files:
-                    _root, extention = os.path.splitext(filename)
-                    if extention.lower() in rename_file_extentions and filename != filename.lower():
-                        srcpath = os.path.join(root, filename)
-                        dstpath = os.path.join(root, filename.lower())
-                        if os.path.isfile(srcpath):
-                            logger.info("Renaming %s to %s", filename, filename.lower())
-                            os.rename(srcpath, dstpath)
 
 def create_commit_message(changes):
     logger.info('Create commit message...')
@@ -219,6 +209,8 @@ def main():
                         default='http://probesoftware.com/download/CALCZAF_SOURCE-E2.ZIP',
                         help='Url to CalcZAF source zip file')
     parser.add_argument('--reposurl', default='git@github.com:openmicroanalysis/calczaf.git')
+    parser.add_argument('--no-pull', action='store_true', default=False,
+                        help='Do not pull in working directory')
     parser.add_argument('--no-push', action='store_true', default=False,
                         help='Do not push after commit')
     parser.add_argument('--no-commit', action='store_true', default=False,
@@ -233,6 +225,7 @@ def main():
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(level)
 
+    no_pull = args.no_pull
     no_commit = args.no_commit
     force_check_change = args.force_check_change
     logger.info(no_commit)
@@ -243,7 +236,8 @@ def main():
 
     # Pull repository
     reposurl = args.reposurl
-    pull(workdir, reposurl)
+    if userworkdir and not no_pull:
+        pull(workdir, reposurl)
 
     # Download zip
     url = args.url
@@ -267,8 +261,6 @@ def main():
         logger.info('%i new changes found', len(changes))
 
         extract(zipfilepath, workdir)
-
-        all_files_lowercase(workdir)
 
         message = create_commit_message(changes)
         logger.info('Message: %s', message)
