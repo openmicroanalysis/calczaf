@@ -248,14 +248,12 @@ def main():
 
     # Download zip
     url = args.url
-    userzip = True
-    if urllib.parse.urlparse(url).scheme == 'd':
-        zipfilepath = url
-    elif urllib.parse.urlparse(url).scheme != '':
+    try:
         zipfilepath = download(url)
         userzip = False
-    else:
+    except urllib.error.URLError:
         zipfilepath = url
+        userzip = True
 
     # Compare versions
     changes, tag = compare(zipfilepath, workdir)
