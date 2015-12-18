@@ -2889,3 +2889,6 @@ Global UseStageReproducibilityCorrectionFlag As Boolean
 Global ImageSizeIndex As Integer
 Global ImageChannelNumber As Integer
 
+Global ImageData_TDI_Ix As Long          ' for CalcImage TDI pixel arrays (always the same for all quant images)
+Global ImageData_TDI_Iy As Long          ' for CalcImage TDI pixel arrays (always the same for all quant images)
+Global ImageData_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to npts)

@@ -18,6 +18,10 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 	
 	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
 	
+12/15/15	Modify TDI plotting in Standard Assignments to display nth points if desired.
+
+12/14/15	Modify JEOL 8900/8200/8500 image shift set/get code to use micron units (Ma).
+
 12/10/15	New unk/std plot graphics for Output menu using Pro Essentials code.
 v. 11.1.7
 
