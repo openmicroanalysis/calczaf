@@ -4383,21 +4383,7 @@ ImageAlternateScaleBarUnits% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
-lpAppName$ = "Image"
-lpKeyName$ = "ImageShiftMinimumMag"
-lpDefault$ = "1267.0"     ' SX100/SXFive = 1267x for first mag coil switch
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-If Left$(lpReturnString$, valid&) <> vbNullString Then ImageShiftMinimumMag! = Val(Left$(lpReturnString$, valid&))
-If ImageShiftMinimumMag! < 1000# Or ImageShiftMinimumMag! > 2000# Then
-msg$ = "ImageShiftMinimumMag keyword value out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
-ImageShiftMinimumMag! = Val(lpDefault$)
-End If
-If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-
-' Read stage to micron conversion factors here for mosaic limits
+' Read stage to micron conversion factors here for image shift minimum mag and mosaic limits
 If Dir$(MotorsFile$) = vbNullString Then GoTo InitINIImageNotFoundMotorsFile
 Close #Temp1FileNumber%
 DoEvents
@@ -4405,6 +4391,22 @@ Open MotorsFile$ For Input As #Temp1FileNumber%
 Call InitMotors2(Int(5))
 Close #Temp1FileNumber%
 If ierror Then Exit Sub
+
+lpAppName$ = "Image"
+lpKeyName$ = "ImageShiftMinimumMag"
+lpDefault$ = "3200.0"                                                                                            ' assume JEOL (mm)
+If (InterfaceType% = 0 And MiscIsInstrumentStage("JEOL")) Or InterfaceType% = 2 Then lpDefault$ = "3200.0"       ' JEOL (3200x or 100 um FOV for image shift)
+If (InterfaceType% = 0 And MiscIsInstrumentStage("CAMECA")) Or InterfaceType% = 5 Then lpDefault$ = "1267.0"     ' SX100/SXFive = 1267x for first mag coil switch
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then ImageShiftMinimumMag! = Val(Left$(lpReturnString$, valid&))
+If ImageShiftMinimumMag! < 1000# Or ImageShiftMinimumMag! > 5000# Then
+msg$ = "ImageShiftMinimumMag keyword value out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
+ImageShiftMinimumMag! = Val(lpDefault$)
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 ' Load wide area mosaic parameters
 lpAppName$ = "Image"

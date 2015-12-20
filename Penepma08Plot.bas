@@ -3,7 +3,7 @@ Attribute VB_Name = "CodePenepma08Plot"
 ' Written by Gareth Seward under contract for Probe Software
 Option Explicit
 
-Sub Penepma08GraphLoad_PE(Index As Integer, tBeamTitle As String)
+Sub Penepma08GraphLoad_PE(Index As Integer, UseGridLines As Boolean, UseLogScale As Boolean, tBeamTitle As String)
 ' Load the specified graph (using Pro Essentials code)
 
 ierror = False
@@ -77,6 +77,12 @@ Dim ymin As Single, ymax As Single
 ' Get graph data
 Call Penepma08GraphGetData(Index%)
 If ierror Then Exit Sub
+
+If FormPENEPMA08_PE.CheckUseLogScale.Value = vbChecked Then
+FormPENEPMA08_PE.Pesgo1.YAxisScaleControl = PEAC_LOG&
+Else
+FormPENEPMA08_PE.Pesgo1.YAxisScaleControl = PEAC_NORMAL&
+End If
 
 If nPoints& < 1 Then Exit Sub
 FormPENEPMA08_PE.Pesgo1.Subsets = 1

@@ -4377,13 +4377,8 @@ If SimulationInProgress Then tForm.Timer1.Interval = PENEPMA_DISPLAY_SEC# * MSEC
 Call Penepma08GetPenepmaDAT        ' load current file specific data
 If ierror Then Exit Sub
 
-'If Not UseProEssentialsGraphics Then
-'Call Penepma08GraphLoad_GS(GraphDisplayOption%, BeamTitle$)       ' load graph GS parameters
-'If ierror Then Exit Sub
-'Else
-Call Penepma08GraphLoad_PE(GraphDisplayOption%, BeamTitle$)       ' load graph PE parameters
+Call Penepma08GraphLoad_PE(GraphDisplayOption%, UseGridLines, UseLogScale, BeamTitle$)       ' load graph PE parameters
 If ierror Then Exit Sub
-'End If
 
 tForm.OptionDisplayGraph(GraphDisplayOption%).Value = True
 DoEvents
@@ -4410,15 +4405,8 @@ ierror = False
 On Error GoTo Penepma08GraphUpdateError
 
 GraphDisplayOption% = Index% ' update if user clicked graph option
-
-' Call Graphics Server or ProEssentials graphing code
-'If Not UseProEssentialsGraphics Then
-'Call Penepma08GraphUpdate_GS(Index%, BeamEnergy#, BeamTitle$, nPoints&, xdata#(), ydata#())
-'If ierror Then Exit Sub
-'Else
 Call Penepma08GraphUpdate_PE(Index%, BeamEnergy#, BeamTitle$, nPoints&, xdata#(), ydata#())
 If ierror Then Exit Sub
-'End If
 
 Exit Sub
 
@@ -4437,13 +4425,8 @@ ierror = False
 On Error GoTo Penepma08GraphClearError
 
 ' Clear graph
-'If Not UseProEssentialsGraphics Then
-'Call Penepma08GraphClear_GS
-'If ierror Then Exit Sub
-'Else
 Call Penepma08GraphClear_PE
 If ierror Then Exit Sub
-'End If
 
 Exit Sub
 
@@ -4455,4 +4438,25 @@ Exit Sub
 
 End Sub
 
+Sub Penepma08PlotLog()
+' Plot y axis as log
+
+ierror = False
+On Error GoTo Penepma08PlotLogError
+
+If FormPENEPMA08_PE.CheckUseLogScale.Value = vbChecked Then
+UseLogScale = True
+Else
+UseLogScale = False
+End If
+
+Exit Sub
+
+' Errors
+Penepma08PlotLogError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08PlotLog"
+ierror = True
+Exit Sub
+
+End Sub
 

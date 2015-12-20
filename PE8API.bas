@@ -18,9 +18,14 @@ Option Explicit
 'Global Const PEANF_EXP_NOTATION& = 1
 'Global Const PEANF_EXP_NOTATION_3X& = 2
 'Global Const PERE_GDIPLUS& = 2
-'Global Const PEPGS_NONE& = 0
-'Global Const PEMPS_MEDIUM_LARGE& = 5
 'Global Const PELT_THIN_SOLID& = 0
+
+'Global Const PEPGS_NONE& = 0
+'Global Const PEMPS_SMALL& = 1
+'Global Const PEMPS_MEDIUM& = 2
+'Global Const PEMPS_LARGE& = 3
+'Global Const PEMPS_MEDIUM_SMALL& = 4
+'Global Const PEMPS_MEDIUM_LARGE& = 5
 
 'Global Const SGPM_LINE& = 0
 'Global Const SGPM_POINT& = 1

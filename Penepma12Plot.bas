@@ -226,13 +226,11 @@ ierror = False
 On Error GoTo Penepma12PlotUpdate_PEError
 
 Dim r As Long
-Dim astring As String, bstring As String, cstring As String         ' for mat. a/b labels
-Dim alen As Integer, blen As Integer, clen As Integer               'max length of x string$
-
-If Not PenepmaDataPlotted Then Exit Sub
+Dim astring As String, bstring As String, cstring As String         ' for material a/b labels
+Dim alen As Integer, blen As Integer, clen As Integer               ' max length of x string$
 
 ' With or w/o gridlines
-If UseGridLines Then
+If FormPENEPMA12.CheckUseGridLines.Value = vbChecked Then
 FormPENEPMA12.Pesgo1.GridLineControl = PEGLC_BOTH&          ' x and y grid
 FormPENEPMA12.Pesgo1.GridBands = True                       ' adds colour banding on background
 Else
@@ -241,14 +239,14 @@ FormPENEPMA12.Pesgo1.GridBands = False                      ' removes colour ban
 End If
 
 ' With or w/o log scale
-If UseLogScale Then
+If FormPENEPMA12.CheckUseLogScale.Value = vbChecked Then
 FormPENEPMA12.Pesgo1.YAxisScaleControl = PEAC_LOG&
 Else
 FormPENEPMA12.Pesgo1.YAxisScaleControl = PEAC_NORMAL&
 End If
 
 ' Boundary label a<->b string parse
-alen% = 8                                           ' if Mat a' string > a density not added
+alen% = 8                                           ' if Mat A string > A density not added
 blen% = 8
 clen% = 32                                          ' max character length for  cstring$
 If ParameterFileA$ <> ParameterFileB$ Then

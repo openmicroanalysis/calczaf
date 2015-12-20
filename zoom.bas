@@ -232,3 +232,37 @@ Exit Sub
 
 End Sub
 
+Sub ZoomTrack(mode As Integer, X As Single, Y As Single, fX As Double, fY As Double, tGraph As Pesgo)
+' Convert track data for Pro Essentials
+'  mode = 0 for entire graph control
+'  mode = 1 for just the plot area
+
+ierror = False
+On Error GoTo ZoomTrackError
+
+Dim nA As Long, nX As Long, nY As Long
+Dim nLeft As Integer, nTop As Integer
+Dim nRight As Integer, nBottom As Integer
+Dim pX As Integer, pY As Integer
+    
+' Get last mouse location within control
+tGraph.GetLastMouseMove pX%, pY%
+    
+' Test to see if this is within grid area
+tGraph.GetRectGraph nLeft%, nTop%, nRight%, nBottom%
+If mode% = 0 Or (mode% = 1 And pX% > nLeft% And pX% < nRight% And pY% > nTop% And pY% < nBottom%) Then
+   nA& = 0              ' initialize subset to use (if using OverlapMultiAxes)
+   nX& = CLng(pX%)      ' initialize nX and nY with mouse location
+   nY& = CLng(pY%)
+   tGraph.PEconvpixeltograph nA&, nX&, nY&, fX#, fY#, 0, 0, 0
+End If
+
+Exit Sub
+
+' Errors
+ZoomTrackError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZoomTrack"
+ierror = True
+Exit Sub
+
+End Sub
