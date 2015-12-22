@@ -21,6 +21,20 @@ v. 11.1.7
 12/06/15	New PE graphics for peaking and PHA scanning.  Updated matrix.mdb file with 32 new actinides, 12 REE and Ti-Pt binaries.
 v. 11.1.6
 	
+12/15/15	Modify TDI plotting in Standard Assignments to display nth points if desired.
+
+12/14/15	Modify JEOL 8900/8200/8500 image shift set/get code to use micron units (Ma).
+
+12/10/15	New unk/std plot graphics for Output menu using Pro Essentials code.
+v. 11.1.7
+
+12/08/15	Add index to MPB manual flag table (Poeml).
+
+	Add Display current alpha factors menu for selected sample in Analyze!
+
+12/06/15	New PE graphics for peaking and PHA scanning.  Updated matrix.mdb file with 32 new actinides, 12 REE and Ti-Pt binaries.
+v. 11.1.6
+	
 12/05/15	Work on converting GS plot controls to PE plot controls...
 
 	Improve Imaging beam scan calibration window code (Carpenter).

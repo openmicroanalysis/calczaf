@@ -12,6 +12,11 @@ Global ParameterFileA As String                 ' filename only, no path
 Global ParameterFileB As String                 ' filename only, no path
 Global ParameterFileBStd As String              ' filename only, no path
 
+' Graph variables
+Global UseLogScale As Boolean
+Global UseGridLines As Boolean
+Global PenepmaDataPlotted As Boolean
+
 ' Globals
 Global TotalNumberOfSimulations As Long
 Global CurrentSimulationsNumber As Long
