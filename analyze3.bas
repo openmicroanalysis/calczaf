@@ -1542,6 +1542,7 @@ On Error GoTo AnalyzeTypeResultsError
 Dim linerow As Integer
 Dim i As Integer, j As Integer, ii As Integer, jj As Integer, n As Integer
 Dim imin As Integer, imax As Integer, ip As Integer
+Dim nthpnt As Long, npixels As Long
 Dim sString As String
 Dim temp3 As Single, temp4 As Single
 Dim tmin As Single, tmax As Single
@@ -2408,10 +2409,16 @@ msg$ = "TDIT: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
 
-' Average the self volatile fit parameters (time and intercept)
+' Average the self volatile fit parameters (time and intercept). Check if called from Probe for EPMA (Nth sample rows) or CalcImage (Nth pixels)
 If sample(1).VolatileCorrectionUnks%(i%) < 0 Then
-Call VolatileCalculateFitSelfAll(txdata!(), tydata!(), ttdata!(), tedata!(), tldata%(), npts%, nrows%, i%, sample())
+nthpnt& = 1                        ' use all sample rows or all pixels
+If UCase$(Trim$(app.EXEName)) <> UCase$(Trim$("CalcImage")) Then
+Call VolatileCalculateFitSelfAll(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata%(), npts%, nrows%, i%, sample())
 If ierror Then Exit Sub
+Else
+'Call VolatileCalculateFitSelfAll_CI(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata%(), npts%, npixels&, i%, sample())
+'If ierror Then Exit Sub
+End If
 msg$ = msg$ & Format$(Format$(sample(1).VolatileFitAvgTime!(i%), f82$), a80$)
 
 ElseIf sample(1).VolatileCorrectionUnks%(i%) > 0 Then

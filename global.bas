@@ -14,7 +14,7 @@ Option Explicit
 Global ierror As Integer                           ' global error for backing out gracefully from error events
 
 Global Const UseProEssentialsGraphics = False      ' global flag for Graphics Server form/code
-'Global Const UseProEssentialsGraphics = True       ' global flag for ProEssentials form/code
+'Global Const UseProEssentialsGraphics = True       ' global flag for ProEssentials form/code (for testing new graphic codes)
 
 ' Based on Cameca SX100 set times
 Global Const KILOVOLT_SET_TIME! = 6#
@@ -2077,11 +2077,6 @@ Global RealTimePauseAutomation As Integer
 Global UseZeroPointCalibrationCurveFlag As Integer
 Global VerboseMode As Integer
 
-' Plot globals
-Global SendDataToPrinterFlag As Integer
-Global ForceBlackandWhitePrintFlag As Integer
-Global OffPeakMarkerLabelFlag As Integer
-
 Global ErrorbarSigmaIndex As Integer
 Global ErrorbarSigmaNumber As Integer
 Global ErrorbarSpacingIndex As Integer
@@ -2382,10 +2377,6 @@ Global ImageAutoBrightnessContrastBSEGain As Integer
 Global ImageAutoBrightnessContrastBSEOffset As Integer
 
 Global DisableSpectrometerNumber As Integer     ' spectrometer disable flag
-
-Global GraphXrayScale As Single
-Global GraphChannelNumber As Integer
-Global GraphWavescanType As Integer
 
 Global AnalBlankCorrectionPercents(1 To MAXCHAN%) As Single
 Global ImageAlternateScaleBarUnits As Integer   ' (0 = none, 1 = nm, 2 = um, 3 = mm, 4 = cm, 5 = meters, 6 = microinches, 7 = milliinches, 8 = inches)
@@ -2784,7 +2775,7 @@ Global MinimumOverVoltageType As Integer    ' 0 = 2%, 1 = 10%, 2 = 20%
 
 Global ProbeSoftwareInternetBrowseMethod As Integer  ' 0 = WWW, 1 = DVD
 
-Global ImageShiftMinimumMag As Single   ' SX100/SXFive only
+Global ImageShiftMinimumMag As Single
 
 Global UserSpecifiedOutputStandardPublishedValuesFlag As Boolean
 Global UserSpecifiedOutputStandardPercentVariancesFlag As Boolean
@@ -2889,4 +2880,13 @@ Global UseStageReproducibilityCorrectionFlag As Boolean
 
 Global ImageSizeIndex As Integer
 Global ImageChannelNumber As Integer
+
+Global ImageData_TDI_Ix As Long          ' for CalcImage TDI pixel arrays (always the same for all quant images)
+Global ImageData_TDI_Iy As Long          ' for CalcImage TDI pixel arrays (always the same for all quant images)
+
+Global ImageData_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to npts)
+Global ImageTime_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to npts)
+
+Global IntegrateEDSSpectrumImagingFlag As Boolean       ' for synchronized WDS and ED SI mapping
+Global IntegrateEDSSpectrumImagingFilename As String    ' for synchronized WDS and ED SI mapping
 

@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form FormADDSTD 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Add Standards to Run"
-   ClientHeight    =   4290
+   ClientHeight    =   4320
    ClientLeft      =   330
    ClientTop       =   1575
-   ClientWidth     =   8985
+   ClientWidth     =   10440
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -21,9 +21,18 @@ Begin VB.Form FormADDSTD
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   4290
-   ScaleWidth      =   8985
-   Begin VB.CommandButton CommandFindNext 
+   ScaleHeight     =   4320
+   ScaleWidth      =   10440
+   Begin VB.TextBox TextStandardNumber 
+      Height          =   285
+      Left            =   2040
+      TabIndex        =   15
+      TabStop         =   0   'False
+      ToolTipText     =   "Type a few characters of the standard name and the program will automatically select it"
+      Top             =   3480
+      Width           =   1695
+   End
+   Begin VB.CommandButton CommandFindNextNumber 
       BackColor       =   &H00C0FFFF&
       Caption         =   "Next Match"
       BeginProperty Font 
@@ -36,53 +45,72 @@ Begin VB.Form FormADDSTD
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   360
+      Left            =   2160
+      Style           =   1  'Graphical
+      TabIndex        =   14
+      Top             =   3840
+      Width           =   1455
+   End
+   Begin VB.CommandButton CommandFindNextString 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   "Next Match"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   240
       Style           =   1  'Graphical
       TabIndex        =   13
       Top             =   3840
-      Width           =   2295
+      Width           =   1455
    End
    Begin VB.CommandButton CommandHelpAddStd 
       BackColor       =   &H00FF8080&
       Caption         =   "Help"
-      Height          =   255
-      Left            =   6360
+      Height          =   375
+      Left            =   7320
       Style           =   1  'Graphical
       TabIndex        =   12
       ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
-      Top             =   3960
+      Top             =   3840
       Width           =   855
    End
    Begin VB.TextBox TextStandardString 
       Height          =   285
-      Left            =   240
+      Left            =   120
       TabIndex        =   8
       TabStop         =   0   'False
       ToolTipText     =   "Type a few characters of the standard name and the program will automatically select it"
       Top             =   3480
-      Width           =   2535
+      Width           =   1695
    End
    Begin VB.CommandButton Command4 
       Caption         =   "<< Remove Standard from Run"
       Height          =   375
-      Left            =   3000
+      Left            =   3840
       TabIndex        =   7
       TabStop         =   0   'False
       ToolTipText     =   "Remove a single standard from the run"
       Top             =   3840
-      Width           =   3015
+      Width           =   2775
    End
    Begin VB.CommandButton Command3 
       BackColor       =   &H0000FFFF&
       Caption         =   "Add Standard To Run >>"
-      Height          =   375
-      Left            =   3000
+      Height          =   495
+      Left            =   3840
       Style           =   1  'Graphical
       TabIndex        =   4
       TabStop         =   0   'False
       ToolTipText     =   "Add multiple selected standards to the run"
-      Top             =   3360
-      Width           =   3015
+      Top             =   3240
+      Width           =   2775
    End
    Begin VB.ListBox ListAvailableStandards 
       Height          =   2790
@@ -93,23 +121,23 @@ Begin VB.Form FormADDSTD
       TabStop         =   0   'False
       ToolTipText     =   "Double click to add a single standard to the run"
       Top             =   360
-      Width           =   4335
+      Width           =   5055
    End
    Begin VB.ListBox ListCurrentStandards 
       Height          =   2790
-      Left            =   4560
+      Left            =   5280
       Sorted          =   -1  'True
       TabIndex        =   6
       TabStop         =   0   'False
       ToolTipText     =   "Standards in the current run"
       Top             =   360
-      Width           =   4335
+      Width           =   5055
    End
    Begin VB.CommandButton Command2 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
-      Left            =   7560
+      Left            =   8880
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   3840
@@ -120,20 +148,37 @@ Begin VB.Form FormADDSTD
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   7560
+      Left            =   8880
       Style           =   1  'Graphical
       TabIndex        =   0
       TabStop         =   0   'False
       Top             =   3240
       Width           =   1335
    End
+   Begin VB.Label Label5 
+      Caption         =   "Enter Number To Find:"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   2040
+      TabIndex        =   16
+      Top             =   3240
+      Width           =   1695
+   End
    Begin VB.Label LabelNumberOfStds 
       Alignment       =   2  'Center
       BorderStyle     =   1  'Fixed Single
       Height          =   255
-      Left            =   6360
+      Left            =   7320
       TabIndex        =   11
-      Top             =   3720
+      Top             =   3480
       Width           =   855
    End
    Begin VB.Label Label4 
@@ -149,13 +194,13 @@ Begin VB.Form FormADDSTD
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   6120
+      Left            =   7080
       TabIndex        =   10
-      Top             =   3480
+      Top             =   3240
       Width           =   1335
    End
    Begin VB.Label Label3 
-      Caption         =   "Enter Standard To Find:"
+      Caption         =   "Enter String To Find:"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -166,10 +211,10 @@ Begin VB.Form FormADDSTD
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   240
+      Left            =   120
       TabIndex        =   9
       Top             =   3240
-      Width           =   2535
+      Width           =   1695
    End
    Begin VB.Label Label2 
       Alignment       =   2  'Center
@@ -233,9 +278,16 @@ Call AddStdRemove
 If ierror Then Exit Sub
 End Sub
 
-Private Sub CommandFindNext_Click()
+Private Sub CommandFindNextNumber_Click()
+If Not DebugMode Then On Error Resume Next
+Call StandardFindNumber(Int(1), FormADDSTD.TextStandardNumber.Text, FormADDSTD.ListAvailableStandards)
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandFindNextString_Click()
 If Not DebugMode Then On Error Resume Next
 Call StandardFindString(Int(1), FormADDSTD.TextStandardString.Text, FormADDSTD.ListAvailableStandards)
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandHelpAddStd_Click()
@@ -268,6 +320,12 @@ Private Sub ListCurrentStandards_DblClick()
 ' Remove the selected standard to the run
 If Not DebugMode Then On Error Resume Next
 Call AddStdRemove
+If ierror Then Exit Sub
+End Sub
+
+Private Sub TextStandardNumber_Change()
+If Not DebugMode Then On Error Resume Next
+Call StandardFindNumber(Int(0), FormADDSTD.TextStandardNumber.Text, FormADDSTD.ListAvailableStandards)
 If ierror Then Exit Sub
 End Sub
 

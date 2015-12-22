@@ -1,22 +1,22 @@
 PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
+		
+12/20/15	Minor bug fixes to Penepma GUI. Add check for minimum mag for image shift in JEOL code.
 
-	Note that I have released v. 11.0.1 which now installs PFE to the proper Windows locations of 
-	C:\ProgramData\Probe Software\Probe for EPMA and Program Files (x86)\Probe Software\Probe for EPMA. 
-	The new installer will install default files to the ProgramData folder but then when CalcZAF or PFE or 
-	whatever new app runs, it should copy your site specific config and data files over to the ProgramData|Probe 
-	Software\Probe for EPMA folder automatically.  But backup your original PFE folder (C:\Probe Software\Probe for EPMA) 
-	just to be safe!!!
-	
-	Version 11 (Spinal Tap edition!) of Probe for EPMA.msi and CalcZAF.msi must be downloaded manually from one of 
-	the ftp test sites. Eventually I will release on the ProbeSoftware.com Updates page, but first a little testing!!!
-	
-	Warning: The path statement in the Remote.ini file (SysWOW64 folder) will need to be edited by hand to
-	point to the new PFE app path (usually C:\Program Files (x86)\Probe Software\Probe for EPMA). Or simply delete the file 
-	and re-install Remote.msi.
-	
-	Warning: you may also need to manually move over to the ProgramData folder any special standard databases or sound files.
+12/15/15	Modify TDI plotting in Standard Assignments to display nth points if desired.
+
+12/14/15	Modify JEOL 8900/8200/8500 image shift set/get code to use micron units (Ma).
+
+12/10/15	New unk/std plot graphics for Output menu using Pro Essentials code.
+v. 11.1.7
+
+12/08/15	Add index to MPB manual flag table (Poeml).
+
+	Add Display current alpha factors menu for selected sample in Analyze!
+
+12/06/15	New PE graphics for peaking and PHA scanning.  Updated matrix.mdb file with 32 new actinides, 12 REE and Ti-Pt binaries.
+v. 11.1.6
 	
 12/05/15	Work on converting GS plot controls to PE plot controls...
 

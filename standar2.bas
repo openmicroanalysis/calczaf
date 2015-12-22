@@ -1200,3 +1200,65 @@ Exit Sub
 
 End Sub
 
+Sub StandardFindNumber(mode As Integer, astring As String, tList As ListBox)
+' Find standard based on standard number
+' mode = 0 start at beginning
+' mode = 1 start at standard found
+
+ierror = False
+On Error GoTo StandardFindNumberError
+
+Dim i As Integer, stdnum As Integer
+
+Static last_match As Integer
+
+If Trim$(astring$) = vbNullString Then Exit Sub
+
+' Find first match
+If mode% = 0 Then
+For i% = 1 To NumberOfAvailableStandards%
+If InStr(Format$(StandardIndexNumbers%(i%)), astring$) > 0 Then GoTo 1000
+Next i%
+
+Exit Sub
+
+' Load substance number found
+1000:
+stdnum% = StandardIndexNumbers%(i%)
+
+' Select item in list
+Call StandardSelectList(stdnum%, tList)
+If ierror Then Exit Sub
+
+last_match% = i%
+Exit Sub
+End If
+
+' Look for next match
+If mode% = 1 Then
+For i% = last_match% + 1 To NumberOfAvailableStandards%
+If InStr(Format$(StandardIndexNumbers%(i%)), astring) > 0 Then GoTo 2000
+Next i%
+
+' Load next substance number found
+2000:
+stdnum% = StandardIndexNumbers%(i%)
+
+' Select item in list
+Call StandardSelectList(stdnum%, tList)
+If ierror Then Exit Sub
+
+last_match% = i%
+End If
+
+Exit Sub
+
+' Errors
+StandardFindNumberError:
+MsgBox Error$, vbOKOnly + vbCritical, "StandardFindNumber"
+ierror = True
+Exit Sub
+
+End Sub
+
+

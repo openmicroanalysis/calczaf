@@ -15,7 +15,7 @@ Private Declare Function GSBox2D Lib "GSWDLL32.DLL" (ByVal fxOrg#, ByVal fyOrg#,
 Private Declare Function GSSetROP Lib "GSWDLL32.DLL" (ByVal nROP&) As Long
 
 Dim newbox As Integer, mousedown As Integer
-Dim X1 As Double, Y1 As Double
+Dim x1 As Double, y1 As Double
 Dim X2 As Double, Y2 As Double
 Dim xmax As Double, ymax As Double
 Dim xmin As Double, ymin As Double
@@ -38,8 +38,8 @@ Dim txmin As Double, tymin As Double
         newbox = True
         mousedown = True
         ' Save form coordinates
-        X1# = PressX#
-        Y1# = PressY#
+        x1# = PressX#
+        y1# = PressY#
         ' Save the intial position
         xmin# = PressDataX#
         ymax# = PressDataY#
@@ -49,7 +49,7 @@ Dim txmin As Double, tymin As Double
         If Not mousedown Then Exit Sub
         mousedown = False
         'Erase last box drawn
-        Call ZoomDrawBox(X1#, Y1#, X2#, Y2#)
+        Call ZoomDrawBox(x1#, y1#, X2#, Y2#)
         If ierror Then Exit Sub
         xmax# = PressDataX#
         ymin# = PressDataY#
@@ -103,7 +103,7 @@ Exit Sub
 
 End Sub
 
-Sub ZoomDrawBox(X1 As Double, Y1 As Double, X2 As Double, Y2 As Double)
+Sub ZoomDrawBox(x1 As Double, y1 As Double, X2 As Double, Y2 As Double)
 ' Draw a rectangle
 
 ierror = False
@@ -116,20 +116,20 @@ Dim r As Long
 nPatt% = 1
 nColor% = 15
 
-If X2# < X1# Then
+If X2# < x1# Then
 nX# = X2#
 Else
-nX# = X1#
+nX# = x1#
 End If
 
-If Y2# < Y1# Then
+If Y2# < y1# Then
 nY# = Y2#
 Else
-nY# = Y1#
+nY# = y1#
 End If
 
-nWidth# = Abs(X2# - X1#)
-nHeight# = Abs(Y2# - Y1#)
+nWidth# = Abs(X2# - x1#)
+nHeight# = Abs(Y2# - y1#)
 
 r& = GSBox2D(nX#, nY#, nWidth#, nHeight#, nPatt%, nColor%)
 Exit Sub
@@ -155,17 +155,17 @@ If mousedown Then
         ' Draw new box
         X2# = TrackX#
         Y2# = TrackY#
-        Call ZoomDrawBox(X1#, Y1#, X2#, Y2#)
+        Call ZoomDrawBox(x1#, y1#, X2#, Y2#)
         newbox = 0
     Else
         ' Redraw previous box
-        Call ZoomDrawBox(X1#, Y1#, X2#, Y2#)
+        Call ZoomDrawBox(x1#, y1#, X2#, Y2#)
         If ierror Then Exit Sub
         r& = GSSetROP(2)
         ' Draw new box
         X2# = TrackX#
         Y2# = TrackY#
-        Call ZoomDrawBox(X1#, Y1#, X2#, Y2#)
+        Call ZoomDrawBox(x1#, y1#, X2#, Y2#)
         If ierror Then Exit Sub
     End If
 End If
@@ -188,8 +188,8 @@ On Error GoTo ZoomPrintGraph_GSError
 
 If tGraph.NumSets < 1 Or tGraph.NumPoints < 1 Then Exit Sub
 
-tGraph.PrintInfo(11) = 1  ' landscape
-tGraph.PrintInfo(12) = 1  ' fit to page
+tGraph.PrintInfo(11) = 1    ' landscape
+tGraph.PrintInfo(12) = 1    ' fit to page
 
 tGraph.PrintInfo(6) = Printer.ScaleLeft
 tGraph.PrintInfo(7) = Printer.ScaleTop
@@ -197,12 +197,8 @@ tGraph.PrintInfo(8) = Printer.ScaleWidth
 tGraph.PrintInfo(9) = Printer.ScaleHeight
 
 ' Check if color printer is default and forcing B and W
-tGraph.PrintStyle = 3 ' print color with border
-If ForceBlackandWhitePrintFlag Then
-tGraph.PrintStyle = 2 ' print monochrome with border
-End If
-
-tGraph.DrawMode = 5   ' print
+tGraph.PrintStyle = 3       ' print color with border
+tGraph.DrawMode = 5         ' print
 Exit Sub
 
 ' Errors
@@ -221,10 +217,6 @@ On Error GoTo ZoomPrintGraph_PEError
 
 Dim bstatus As Boolean
 
-' Check if color printer is default and forcing B and W
-'If ForceBlackandWhitePrintFlag Then
-'End If
-
 ' Launch print dialog
 'bstatus = tGraph.PEprintgraph(CLng(0), CLng(0), CLng(0))      ' printer default
 bstatus = tGraph.PEprintgraph(CLng(0), CLng(0), CLng(1))      ' print landscape
@@ -240,3 +232,37 @@ Exit Sub
 
 End Sub
 
+Sub ZoomTrack(mode As Integer, X As Single, Y As Single, fX As Double, fY As Double, tGraph As Pesgo)
+' Convert track data for Pro Essentials
+'  mode = 0 for entire graph control
+'  mode = 1 for just the plot area
+
+ierror = False
+On Error GoTo ZoomTrackError
+
+Dim nA As Long, nX As Long, nY As Long
+Dim nLeft As Integer, nTop As Integer
+Dim nRight As Integer, nBottom As Integer
+Dim pX As Integer, pY As Integer
+    
+' Get last mouse location within control
+tGraph.GetLastMouseMove pX%, pY%
+    
+' Test to see if this is within grid area
+tGraph.GetRectGraph nLeft%, nTop%, nRight%, nBottom%
+If mode% = 0 Or (mode% = 1 And pX% > nLeft% And pX% < nRight% And pY% > nTop% And pY% < nBottom%) Then
+   nA& = 0              ' initialize subset to use (if using OverlapMultiAxes)
+   nX& = CLng(pX%)      ' initialize nX and nY with mouse location
+   nY& = CLng(pY%)
+   tGraph.PEconvpixeltograph nA&, nX&, nY&, fX#, fY#, 0, 0, 0
+End If
+
+Exit Sub
+
+' Errors
+ZoomTrackError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZoomTrack"
+ierror = True
+Exit Sub
+
+End Sub

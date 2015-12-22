@@ -1646,30 +1646,14 @@ End Sub
 
 Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
+Dim fX As Double, fY As Double      ' last mouse position
 
-Dim nA As Long
-Dim nX As Long
-Dim nY As Long
-Dim fX As Double
-Dim fY As Double
-Dim nLeft As Integer
-Dim nTop As Integer
-Dim nRight As Integer
-Dim nBottom As Integer
-Dim pX As Integer
-Dim pY As Integer
-    
-' Get last mouse location within control
-FormPENEPMA12.Pesgo1.GetLastMouseMove pX%, pY%
-    
-' Test to see if this is within grid area
-FormPENEPMA12.Pesgo1.GetRectGraph nLeft%, nTop%, nRight%, nBottom%
-If pX% > nLeft% And pX% < nRight% And pY% > nTop% And pY% < nBottom% Then
-   nA& = 0              ' initialize axis if using OverlapMultiAxes, else this function will
-                        ' return the axis if MultiAxesSubsets is used without OverlapMultiAxes
-   nX& = CLng(pX%)      ' initialize nX and nY with mouse location
-   nY& = CLng(pY%)
-   FormPENEPMA12.Pesgo1.PEconvpixeltograph nA&, nX&, nY&, fX#, fY#, 0, 0, 0
+' Get mouse position in data units
+Call ZoomTrack(Int(1), x!, Y!, fX#, fY#, FormPENEPMA12.Pesgo1)
+If ierror Then Exit Sub
+   
+' Format graph mouse position
+If fX# <> 0# And fY# <> 0# Then
    FormPENEPMA12.LabelXPos.Caption = MiscAutoFormat$(CSng(fX#))
    FormPENEPMA12.LabelYPos.Caption = MiscAutoFormat$(CSng(fY#))
 Else

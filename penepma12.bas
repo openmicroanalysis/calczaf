@@ -6,32 +6,31 @@ Global Const MICROGRAMSPERGRAM& = 1000000            ' micrograms per gram
 
 Global MaterialDensityA As Double
 Global MaterialDensityB As Double
-Global MaterialDensityBStd As Double   ' assume constant (just for k-ratio calculation)
+Global MaterialDensityBStd As Double            ' assume constant (just for k-ratio calculation)
 
-Global ParameterFileA As String     ' filename only, no path
-Global ParameterFileB As String     ' filename only, no path
-Global ParameterFileBStd As String     ' filename only, no path
-
-' Graph variables
-Global UseLogScale As Boolean
-Global UseGridLines As Boolean
-Global PenepmaDataPlotted As Boolean
+Global ParameterFileA As String                 ' filename only, no path
+Global ParameterFileB As String                 ' filename only, no path
+Global ParameterFileBStd As String              ' filename only, no path
 
 ' Globals
 Global TotalNumberOfSimulations As Long
 Global CurrentSimulationsNumber As Long
 
-Global BinaryMethod As Integer      ' need to be global for PenPFE
-Global ExtractMethod As Integer     ' need to be global for PenPFE
+Global BinaryMethod As Integer                  ' need to be global for PenPFE
+Global ExtractMethod As Integer                 ' need to be global for PenPFE
 
 Global CalculateRandomTable() As Integer
 Global ExtractRandomTable() As Integer
 
 Global pAllAtomicWts(1 To MAXELM%) As Single    ' Penepma08/12 atomic weights
 
+' Graph variables
+Dim UseLogScale As Boolean
+Dim UseGridLines As Boolean
+
 Const PENEPMA_MINPERCENT! = 0.0001
 Const COL7% = 7
-Const NUMSIM& = 10      ' number of beam energy simulations per Penfluor calculation
+Const NUMSIM& = 10                      ' number of beam energy simulations per Penfluor calculation
 
 ' Module level variables
 Dim PenepmaTaskID As Long
@@ -403,13 +402,8 @@ FormPENEPMA12.Timer1.Interval = BIT16&
 End If
 
 ' Load graph defaults
-'If Not UseProEssentialsGraphics Then
-'Call Penepma12PlotLoad_GS
-'If ierror Then Exit Sub
-'Else
 Call Penepma12PlotLoad_PE
 If ierror Then Exit Sub
-'End If
 
 Exit Sub
 
@@ -1274,8 +1268,6 @@ If n% = 1 Then FormPENEPMA12.TextParameterFileA.Text = ParameterFileA$
 If n% = 2 Then FormPENEPMA12.TextParameterFileB.Text = ParameterFileB$
 If n% = 3 Then FormPENEPMA12.TextParameterFileBStd.Text = ParameterFileBStd$
 
-' Cleared graph
-PenepmaDataPlotted = False
 Exit Sub
 
 ' Errors
@@ -2317,13 +2309,7 @@ End If
 End If
 End If
 
-' Double check that specific transition exists
-' "K L3" l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
-' "K M3" l% = 2          ' (Kb)
-' "L3 M5" l% = 3         ' (La)
-' "L2 M4" l% = 4         ' (Lb)
-' "M5 N7" l% = 5         ' (Ma)
-' "M4 N6" l% = 6         ' (Mb)
+' Double check that specific transition exists (see table 6.2 in Penelope-2006-NEA-pdf)
 Call PenepmaGetPDATCONFTransition(MaterialMeasuredElement%, MaterialMeasuredXray%, t1!, t2!)
 If ierror Then Exit Sub
 
@@ -2649,15 +2635,9 @@ Call Penepma12OutputKratios(tfolder$)
 If ierror Then Exit Sub
 
 ' Plot the k-ratio and modified results
-'If Not UseProEssentialsGraphics Then
-'Call Penepma12PlotKRatios_GS(nPoints&, nsets&, MaterialMeasuredEnergy#, MaterialMeasuredElement%, MaterialMeasuredXray%, _
-'yktotal#(), yctotal#(), yc_prix#(), ycb_only#(), yctotal_meas#(), xdist#())
-'If ierror Then Exit Sub
-'Else
 Call Penepma12PlotKRatios_PE(nPoints&, nsets&, MaterialMeasuredEnergy#, MaterialMeasuredElement%, MaterialMeasuredXray%, _
 yktotal#(), yctotal#(), yc_prix#(), ycb_only#(), yctotal_meas#(), xdist#())
 If ierror Then Exit Sub
-'End If
 
 ' Check if user wants to send modified data to Excel
 If FormPENEPMA12.CheckSendToExcel.Value = vbChecked Then
@@ -4900,13 +4880,7 @@ If ierror Then Exit Sub
 ' Check for valid x-ray line (excitation energy must be less than beam energy) (and greater than PenepmaMinimumElectronEnergy!)
 If eng! <> 0# And edg! <> 0# And edg! < MaterialMeasuredEnergy# And edg! > PenepmaMinimumElectronEnergy! Then
 
-' Double check that specific transition exists
-' "K L3" l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
-' "K M3" l% = 2          ' (Kb)
-' "L3 M5" l% = 3         ' (La)
-' "L2 M4" l% = 4         ' (Lb)
-' "M5 N7" l% = 5         ' (Ma)
-' "M4 N6" l% = 6         ' (Mb)
+' Double check that specific transition exists (see table 6.2 in Penelope-2006-NEA-pdf)
 Call PenepmaGetPDATCONFTransition(MaterialMeasuredElement%, MaterialMeasuredXray%, t1!, t2!)
 If ierror Then Exit Sub
 
@@ -8416,7 +8390,6 @@ If ierror Then Exit Sub
 MaterialDensityB# = Penepma12GetParFileDensityOnly!(PENEPMA_Root$ & "\Penfluor\" & ParameterFileB$)
 If ierror Then Exit Sub
 
-PenepmaDataPlotted = True
 Exit Sub
 
 ' Errors
@@ -8473,28 +8446,15 @@ Exit Sub
 End Sub
 
 Sub Penepma12PlotZoom(PressStatus As Integer, PressX As Double, PressY As Double, PressDataX As Double, PressDataY As Double, mode As Integer, tForm As Form)
-' Zoom the plot (use for both Graphics Server and Pro Essentials graphing)
+' Zoom the plot
 
 ierror = False
 On Error GoTo Penepma12PlotZoomError
 
-If Not PenepmaDataPlotted Then Exit Sub
-
 ' Check for valid points
 If nPoints& < 1 Then Exit Sub
-
-' Graphics Server code
-'If Not UseProEssentialsGraphics Then
-'Call Penepma12PlotUpdate_GS(Int(1), tForm)
-'If ierror Then Exit Sub
-'Call Penepma12PlotZoom_GS(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, mode%, tForm)
-'If ierror Then Exit Sub
-
-' Pro Essentials code (zoom handled internally)
-'Else
 Call Penepma12PlotUpdate_PE(Int(1), tForm)
 If ierror Then Exit Sub
-'End If
 
 Exit Sub
 
@@ -8748,13 +8708,7 @@ If MinimumOverVoltageType% = 3 Then tovervoltage! = MINIMUMOVERVOLTFRACTION_40!
 ' Check for valid x-ray line (excitation energy (plus a buffer to avoid ultra low overvoltage issues) must be less than beam energy) (and greater than PenepmaMinimumElectronEnergy!)
 If eng! <> 0# And edg! <> 0# And (edg! * (1# + tovervoltage!) < MaterialMeasuredEnergy#) And edg! > PenepmaMinimumElectronEnergy! Then
 
-' Double check that specific transition exists
-' "K L3" l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
-' "K M3" l% = 2          ' (Kb)
-' "L3 M5" l% = 3         ' (La)
-' "L2 M4" l% = 4         ' (Lb)
-' "M5 N7" l% = 5         ' (Ma)
-' "M4 N6" l% = 6         ' (Mb)
+' Double check that specific transition exists (see table 6.2 in Penelope-2006-NEA-pdf)
 Call PenepmaGetPDATCONFTransition(MaterialMeasuredElement%, l%, t1!, t2!)
 If ierror Then Exit Sub
 

@@ -142,33 +142,16 @@ End Sub
 Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
 Dim astring As String
-Dim nA As Long
-Dim nX As Long
-Dim nY As Long
-Dim fX As Double
-Dim fY As Double
-Dim nLeft As Integer
-Dim nTop As Integer
-Dim nRight As Integer
-Dim nBottom As Integer
-Dim pX As Integer
-Dim pY As Integer
-    
-' Get last mouse location within control
-FormCLDISPLAY.Pesgo1.GetLastMouseMove pX%, pY%
-    
-' Test to see if this is within grid area
-FormCLDISPLAY.Pesgo1.GetRectGraph nLeft%, nTop%, nRight%, nBottom%
-If pX% > nLeft% And pX% < nRight% And pY% > nTop% And pY% < nBottom% Then
-   nA& = 0              ' initialize axis if using OverlapMultiAxes, else this function will
-                        ' return the axis if MultiAxesSubsets is used without OverlapMultiAxes
-   nX& = CLng(pX%)      ' initialize nX and nY with mouse location
-   nY& = CLng(pY%)
-   FormCLDISPLAY.Pesgo1.PEconvpixeltograph nA&, nX&, nY&, fX#, fY#, 0, 0, 0
-        
+Dim fX As Double, fY As Double      ' last mouse position
+
+' Get mouse position in data units
+Call ZoomTrack(Int(1), X!, Y!, fX#, fY#, FormCLDISPLAY.Pesgo1)
+If ierror Then Exit Sub
+   
+' Format graph mouse position
+If fX# <> 0# And fY# <> 0# Then
    astring$ = FormCLDISPLAY.Pesgo1.XAxisLabel & " " & (CSng(fX#)) & ", " & FormCLDISPLAY.Pesgo1.YAxisLabel & " " & MiscAutoFormat$(CSng(fY#))
    FormCLDISPLAY.LabelTrack.Caption = astring$
-        
 Else
    FormCLDISPLAY.LabelTrack.Caption = vbNullString
 End If

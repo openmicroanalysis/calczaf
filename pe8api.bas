@@ -18,9 +18,14 @@ Option Explicit
 'Global Const PEANF_EXP_NOTATION& = 1
 'Global Const PEANF_EXP_NOTATION_3X& = 2
 'Global Const PERE_GDIPLUS& = 2
-'Global Const PEPGS_NONE& = 0
-'Global Const PEMPS_MEDIUM_LARGE& = 5
 'Global Const PELT_THIN_SOLID& = 0
+
+'Global Const PEPGS_NONE& = 0
+'Global Const PEMPS_SMALL& = 1
+'Global Const PEMPS_MEDIUM& = 2
+'Global Const PEMPS_LARGE& = 3
+'Global Const PEMPS_MEDIUM_SMALL& = 4
+'Global Const PEMPS_MEDIUM_LARGE& = 5
 
 'Global Const SGPM_LINE& = 0
 'Global Const SGPM_POINT& = 1
@@ -817,12 +822,12 @@ Global Const PEAZ_HORZANDVERT& = 3
 'Global Const PESC_ROSE& = 2
 'Global Const PESC_ADMITTANCE& = 3
 
-'Global Const PESA_ALL& = 0
-'Global Const PESA_AXISLABELS& = 1
-'Global Const PESA_GRIDNUMBERS& = 2
-'Global Const PESA_NONE& = 3
-'Global Const PESA_LABELONLY& = 4
-'Global Const PESA_EMPTY& = 5
+Global Const PESA_ALL& = 0
+Global Const PESA_AXISLABELS& = 1
+Global Const PESA_GRIDNUMBERS& = 2
+Global Const PESA_NONE& = 3
+Global Const PESA_LABELONLY& = 4
+Global Const PESA_EMPTY& = 5
 
 'Global Const PEMPS_NONE& = 0
 'Global Const PEMPS_SMALL& = 1

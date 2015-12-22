@@ -261,13 +261,7 @@ If MinimumOverVoltageType% = 3 Then tovervoltage! = MINIMUMOVERVOLTFRACTION_40!
 ' Check for valid x-ray line (excitation energy (plus a buffer to avoid ultra low overvoltage issues) must be less than beam energy) (and greater than PenepmaMinimumElectronEnergy!)
 If eng! <> 0# And edg! <> 0# And (edg! * (1# + tovervoltage!) < BeamEnergy!) And edg! > PenepmaMinimumElectronEnergy! Then
 
-' Double check that specific transition exists
-' "K L3" l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
-' "K M3" l% = 2          ' (Kb)
-' "L3 M5" l% = 3         ' (La)
-' "L2 M4" l% = 4         ' (Lb)
-' "M5 N7" l% = 5         ' (Ma)
-' "M4 N6" l% = 6         ' (Mb)
+' Double check that specific transition exists (see table 6.2 in Penelope-2006-NEA-pdf)
 Call PenepmaGetPDATCONFTransition(EmittingElement%, EmittingXray%, t1!, t2!)
 If ierror Then Exit Sub
 
@@ -674,13 +668,7 @@ If MinimumOverVoltageType% = 3 Then tovervoltage! = MINIMUMOVERVOLTFRACTION_40!
 ' Check for valid x-ray line (excitation energy (plus a buffer to avoid ultra low overvoltage issues) must be less than beam energy) (and greater than PenepmaMinimumElectronEnergy!)
 If eng! <> 0# And edg! <> 0# And (edg! * (1# + tovervoltage!) < BeamEnergy!) And edg! > PenepmaMinimumElectronEnergy! Then
 
-' Double check that specific transition exists
-' "K L3" l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
-' "K M3" l% = 2          ' (Kb)
-' "L3 M5" l% = 3         ' (La)
-' "L2 M4" l% = 4         ' (Lb)
-' "M5 N7" l% = 5         ' (Ma)
-' "M4 N6" l% = 6         ' (Mb)
+' Double check that specific transition exists (see table 6.2 in Penelope-2006-NEA-pdf)
 Call PenepmaGetPDATCONFTransition(EmittingElement%, EmittingXray%, t1!, t2!)
 If ierror Then Exit Sub
 

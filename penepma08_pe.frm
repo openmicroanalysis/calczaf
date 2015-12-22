@@ -1594,11 +1594,10 @@ End Sub
 
 Private Sub CheckUseLogScale_Click()
 If Not DebugMode Then On Error Resume Next
-If FormPENEPMA08_PE.CheckUseLogScale Then
-FormPENEPMA08_PE.Pesgo1.YAxisScaleControl = PEAC_LOG&
-Else
-FormPENEPMA08_PE.Pesgo1.YAxisScaleControl = PEAC_NORMAL&
-End If
+Call Penepma08PlotLog
+If ierror Then Exit Sub
+Call Penepma08GraphUpdate(GraphDisplayOption%)
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandAdjust_Click(Index As Integer)
@@ -1875,30 +1874,14 @@ End Sub
 
 Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
+Dim fX As Double, fY As Double      ' last mouse position
 
-Dim nA As Long
-Dim nX As Long
-Dim nY As Long
-Dim fX As Double
-Dim fY As Double
-Dim nLeft As Integer
-Dim nTop As Integer
-Dim nRight As Integer
-Dim nBottom As Integer
-Dim pX As Integer
-Dim pY As Integer
-    
-' Get last mouse location within control
-FormPENEPMA08_PE.Pesgo1.GetLastMouseMove pX%, pY%
-    
-' Test to see if this is within grid area
-FormPENEPMA08_PE.Pesgo1.GetRectGraph nLeft%, nTop%, nRight%, nBottom%
-If pX% > nLeft% And pX% < nRight% And pY% > nTop% And pY% < nBottom% Then
-   nA& = 0             ' initialize axis if using OverlapMultiAxes, else this function will
-                       ' return the axis if MultiAxesSubsets is used without OverlapMultiAxes
-   nX& = CLng(pX%)     ' initialize nX and nY with mouse location
-   nY& = CLng(pY%)
-   FormPENEPMA08_PE.Pesgo1.PEconvpixeltograph nA&, nX&, nY&, fX#, fY#, 0, 0, 0
+' Get mouse position in data units
+Call ZoomTrack(Int(1), x!, Y!, fX#, fY#, FormPENEPMA08_PE.Pesgo1)
+If ierror Then Exit Sub
+   
+' Format graph mouse position
+If fX# <> 0# And fY# <> 0# Then
    FormPENEPMA08_PE.LabelXPos.Caption = MiscAutoFormat$(CSng(fX#))
    FormPENEPMA08_PE.LabelYPos.Caption = MiscAutoFormat$(CSng(fY#))
 Else

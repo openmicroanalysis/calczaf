@@ -3,7 +3,7 @@ Attribute VB_Name = "CodePenepma08Plot"
 ' Written by Gareth Seward under contract for Probe Software
 Option Explicit
 
-Sub Penepma08GraphLoad_PE(Index As Integer, tBeamTitle As String)
+Sub Penepma08GraphLoad_PE(Index As Integer, UseGridLines As Boolean, UseLogScale As Boolean, tBeamTitle As String)
 ' Load the specified graph (using Pro Essentials code)
 
 ierror = False
@@ -78,6 +78,12 @@ Dim ymin As Single, ymax As Single
 Call Penepma08GraphGetData(Index%)
 If ierror Then Exit Sub
 
+If FormPENEPMA08_PE.CheckUseLogScale.Value = vbChecked Then
+FormPENEPMA08_PE.Pesgo1.YAxisScaleControl = PEAC_LOG&
+Else
+FormPENEPMA08_PE.Pesgo1.YAxisScaleControl = PEAC_NORMAL&
+End If
+
 If nPoints& < 1 Then Exit Sub
 FormPENEPMA08_PE.Pesgo1.Subsets = 1
 FormPENEPMA08_PE.Pesgo1.Points = nPoints&
@@ -115,7 +121,7 @@ If Index% = 1 Then FormPENEPMA08_PE.Pesgo1.YAxisLabel = "Photon Intensity"
 If Index% = 2 Then FormPENEPMA08_PE.Pesgo1.YAxisLabel = "Electron Intensity"
 FormPENEPMA08_PE.Pesgo1.MainTitle = tBeamTitle$
 
-FormPENEPMA08_PE.Pesgo1.SubsetColors(0) = FormPENEPMA08_PE.Pesgo1.PEargb(255, 205, 0, 0)
+FormPENEPMA08_PE.Pesgo1.SubsetColors(0) = FormPENEPMA08_PE.Pesgo1.PEargb(Int(255), Int(205), Int(0), Int(0))    ' dark red
 
 ' Enable zoom
 FormPENEPMA08_PE.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&

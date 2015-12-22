@@ -47,7 +47,7 @@ End If
 
 ' Define #subset and #points
 tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(255, 255, 0, 0)                                 ' red
+tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))             ' red
 
 tForm.Pesgo1.points = sample(1).EDSSpectraNumberofChannels%(datarow%)
 
@@ -235,14 +235,14 @@ For n& = 1 To num&
 tForm.Pesgo1.ShowAnnotations = True
 tForm.Pesgo1.GraphAnnotationX(EDSKLMCounter&) = earray!(n&)
 tForm.Pesgo1.GraphAnnotationY(EDSKLMCounter&) = 0
-tForm.Pesgo1.GraphAnnotationType(EDSKLMCounter&) = PEGAT_THIN_SOLIDLINE
-tForm.Pesgo1.GraphAnnotationColor(EDSKLMCounter&) = tForm.Pesgo1.PEargb(255, 0, 0, 255)
+tForm.Pesgo1.GraphAnnotationType(EDSKLMCounter&) = PEGAT_THIN_SOLIDLINE&
+tForm.Pesgo1.GraphAnnotationColor(EDSKLMCounter&) = tForm.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(255))
 EDSKLMCounter& = EDSKLMCounter& + 1
 
 ' End point
 tForm.Pesgo1.GraphAnnotationX(EDSKLMCounter&) = earray!(n&)
-tForm.Pesgo1.GraphAnnotationType(EDSKLMCounter&) = PEGAT_LINECONTINUE
-tForm.Pesgo1.GraphAnnotationColor(EDSKLMCounter&) = tForm.Pesgo1.PEargb(255, 0, 0, 255)
+tForm.Pesgo1.GraphAnnotationType(EDSKLMCounter&) = PEGAT_LINECONTINUE&
+tForm.Pesgo1.GraphAnnotationColor(EDSKLMCounter&) = tForm.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(255))
 
 ' Calculate Y axis height for KLM markers
 ydatamin! = tForm.Pesgo1.ManualMinY

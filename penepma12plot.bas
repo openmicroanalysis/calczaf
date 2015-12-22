@@ -79,13 +79,13 @@ If j% = 0 Then
 FormPENEPMA12.Pesgo1.SubsetLabels(j%) = "K-Ratio %"
 FormPENEPMA12.Pesgo1.SubsetPointTypes(j%) = PEPT_UPTRIANGLESOLID&
 FormPENEPMA12.Pesgo1.SubsetLineTypes(j%) = PELT_THIN_SOLID&
-FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(255, 255, 0, 0)
+FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))     ' red
 End If
 If j% = 1 Then
 FormPENEPMA12.Pesgo1.SubsetLabels(j%) = "Calc. Wt.% (Ideal)"
 FormPENEPMA12.Pesgo1.SubsetPointTypes(j%) = PEPT_DOTSOLID&
 FormPENEPMA12.Pesgo1.SubsetLineTypes(j%) = PELT_THIN_SOLID&
-FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(255, 0, 255, 0)
+FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(0), Int(255), Int(0))     ' green
 End If
 If j% = 2 Then
 If ParameterFileA$ = ParameterFileB$ Then
@@ -95,7 +95,7 @@ FormPENEPMA12.Pesgo1.SubsetLabels(j%) = "Boundary Wt.% (from Mat B)"
 End If
 FormPENEPMA12.Pesgo1.SubsetPointTypes(j%) = PEPT_DOWNTRIANGLESOLID&
 FormPENEPMA12.Pesgo1.SubsetLineTypes(j%) = PELT_THIN_SOLID&
-FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(255, 0, 0, 255)
+FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(255))     ' blue
 End If
 If j% = 3 Then
 astring$ = "CalcZAF Wt.%"
@@ -103,7 +103,7 @@ astring$ = astring$ & " (" & zafstring$(izaf%) & ")"
 FormPENEPMA12.Pesgo1.SubsetLabels(j%) = astring$
 FormPENEPMA12.Pesgo1.SubsetPointTypes(j%) = PEPT_DIAMONDSOLID&
 FormPENEPMA12.Pesgo1.SubsetLineTypes(j%) = PELT_THIN_SOLID&
-FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(255, 255, 128, 0)
+FormPENEPMA12.Pesgo1.SubsetColors(j%) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(255), Int(128), Int(0))   ' orange
 End If
 Next j%
 
@@ -150,22 +150,22 @@ Dim astring As String, bstring As String
 ' Clear graph -  this plots blank graph with simple axes!
 FormPENEPMA12.Pesgo1.Subsets = 1
 FormPENEPMA12.Pesgo1.Points = 1
-FormPENEPMA12.Pesgo1.xdata(0, 0) = 0 'for empty subset
+FormPENEPMA12.Pesgo1.xdata(0, 0) = 0                            ' for empty subset
 FormPENEPMA12.Pesgo1.ydata(0, 0) = 0
 FormPENEPMA12.Pesgo1.ShowAnnotations = False
-FormPENEPMA12.Pesgo1.MainTitle = VbSpace 'blank Chart title
+FormPENEPMA12.Pesgo1.MainTitle = VbSpace                        ' blank Chart title
 
-FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_MINMAX& ' Manually Control Y Axis - this requires resetting to 'NONE" in the PlotKRatio code
+FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_MINMAX&        ' manually control Y Axis - this requires resetting to 'NONE" in the PlotKRatio code
 FormPENEPMA12.Pesgo1.ManualMinY = 0
 FormPENEPMA12.Pesgo1.ManualMaxY = 100
-FormPENEPMA12.Pesgo1.ManualScaleControlX = PEMSC_MINMAX& ' Manually Control X Axis
+FormPENEPMA12.Pesgo1.ManualScaleControlX = PEMSC_MINMAX&        ' manually control X Axis
 FormPENEPMA12.Pesgo1.ManualMinX = -50
 FormPENEPMA12.Pesgo1.ManualMaxX = 0
 
-FormPENEPMA12.Pesgo1.YAxisLabel = "K Ratio %, or Conc %" ' Axis labels
+FormPENEPMA12.Pesgo1.YAxisLabel = "K Ratio %, or Conc %"        ' axis labels
 FormPENEPMA12.Pesgo1.XAxisLabel = "Distance um"
 
-FormPENEPMA12.Pesgo1.ImageAdjustRight = 100 ' ' Axis formatting
+FormPENEPMA12.Pesgo1.ImageAdjustRight = 100                     ' axis formatting
 FormPENEPMA12.Pesgo1.YAxisOnRight = True
 
 ' General settings
@@ -226,13 +226,11 @@ ierror = False
 On Error GoTo Penepma12PlotUpdate_PEError
 
 Dim r As Long
-Dim astring As String, bstring As String, cstring As String         ' for mat. a/b labels
-Dim alen As Integer, blen As Integer, clen As Integer               'max length of x string$
-
-If Not PenepmaDataPlotted Then Exit Sub
+Dim astring As String, bstring As String, cstring As String         ' for material a/b labels
+Dim alen As Integer, blen As Integer, clen As Integer               ' max length of x string$
 
 ' With or w/o gridlines
-If UseGridLines Then
+If FormPENEPMA12.CheckUseGridLines.Value = vbChecked Then
 FormPENEPMA12.Pesgo1.GridLineControl = PEGLC_BOTH&          ' x and y grid
 FormPENEPMA12.Pesgo1.GridBands = True                       ' adds colour banding on background
 Else
@@ -241,14 +239,14 @@ FormPENEPMA12.Pesgo1.GridBands = False                      ' removes colour ban
 End If
 
 ' With or w/o log scale
-If UseLogScale Then
+If FormPENEPMA12.CheckUseLogScale.Value = vbChecked Then
 FormPENEPMA12.Pesgo1.YAxisScaleControl = PEAC_LOG&
 Else
 FormPENEPMA12.Pesgo1.YAxisScaleControl = PEAC_NORMAL&
 End If
 
 ' Boundary label a<->b string parse
-alen% = 8                                           ' if Mat a' string > a density not added
+alen% = 8                                           ' if Mat A string > A density not added
 blen% = 8
 clen% = 32                                          ' max character length for  cstring$
 If ParameterFileA$ <> ParameterFileB$ Then
@@ -281,7 +279,7 @@ End If
 FormPENEPMA12.Pesgo1.MultiSubTitles(0) = VbSpace
 FormPENEPMA12.Pesgo1.MultiSubTitles(1) = VbSpace                                                        ' create some space
 FormPENEPMA12.Pesgo1.VertLineAnnotation(0) = 0                                                          ' vertical line at x=0 as place holder for annotation
-FormPENEPMA12.Pesgo1.VertLineAnnotationColor(0) = FormPENEPMA12.Pesgo1.PEargb(255, 0, 0, 0)             ' line black
+FormPENEPMA12.Pesgo1.VertLineAnnotationColor(0) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(0))             ' line black
 FormPENEPMA12.Pesgo1.VertLineAnnotationText(0) = "|H" & cstring$                                        ' centre justification wrt VertLine
 
 ' Annotations properties
