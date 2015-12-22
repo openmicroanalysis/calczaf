@@ -254,6 +254,9 @@ def main():
     except urllib.error.URLError:
         zipfilepath = url
         userzip = True
+    except ValueError:
+        zipfilepath = url
+        userzip = True
 
     # Compare versions
     changes, tag = compare(zipfilepath, workdir)
