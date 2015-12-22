@@ -66,7 +66,7 @@ Type TypeZAF
     d As Single                         ' diameter (in cm, divide microns by MICRONSPERCM&)
     rho As Single                       ' density (in g/cm^3)
     j9 As Single                        ' particle thickness factor
-    x1 As Single                        ' integration step length (in g/cm^2)
+    X1 As Single                        ' integration step length (in g/cm^2)
     
     ' Particle calculations
     intnum(1 To MAXCHAN1%) As Long
@@ -422,13 +422,17 @@ aflur! = flurow.fraction!(i2%)
 Close #XLineFileNumber%
 Close #XFlurFileNumber%
 
-' Open x-ray edge file (for original lines)
+' Open x-ray edge file (for additional lines)
 Else
 
 ' Open x-ray line file
+If Dir$(XLineFile2$) = vbNullString Then GoTo ZAFLoadXrayNotFoundXLINE2DAT
+If FileLen(XLineFile2$) = 0 Then GoTo ZAFLoadXrayZeroSizeXLINE2DAT
 Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray flur file
+If Dir$(XFlurFile2$) = vbNullString Then GoTo ZAFLoadXrayNotFoundXFLUR2DAT
+If FileLen(XFlurFile2$) = 0 Then GoTo ZAFLoadXrayZeroSizeXFLUR2DAT
 Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Read emission lines (convert to keV)
@@ -451,6 +455,53 @@ MsgBox Error$, vbOKOnly + vbCritical, "ZAFLoadXray"
 Close #XLineFileNumber%
 Close #XFlurFileNumber%
 Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+ZAFLoadXrayNotFoundXLINE2DAT:
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFLoadXray"
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+ZAFLoadXrayNotFoundXFLUR2DAT:
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFLoadXray"
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+ZAFLoadXrayZeroSizeXLINE2DAT:
+Kill XLineFile2$
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFLoadXray"
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+ZAFLoadXrayZeroSizeXFLUR2DAT:
+Kill XFlurFile2$
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFLoadXray"
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
 ierror = True
 Exit Sub
 
@@ -600,9 +651,13 @@ Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECO
 Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray line file for additional x-rays
+If Dir$(XLineFile2$) = vbNullString Then GoTo ZAFReadLnNotFoundXLINE2DAT
+If FileLen(XLineFile2$) = 0 Then GoTo ZAFReadLnZeroSizeXLINE2DAT
 Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Open x-ray flur file for additional x-rays
+If Dir$(XFlurFile2$) = vbNullString Then GoTo ZAFReadLnNotFoundXFLUR2DAT
+If FileLen(XFlurFile2$) = 0 Then GoTo ZAFReadLnZeroSizeXFLUR2DAT
 Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 
 ' Loop on each emitter in matrix
@@ -700,7 +755,7 @@ If im4% = 8 Then im5% = 3    ' Lg
 If im4% = 9 Then im5% = 3    ' Lv
 If im4% = 10 Then im5% = 4   ' Ll
 If im4% = 11 Then im5% = 7   ' Mg
-If im4% = 12 Then im5% = 8   ' Mz
+If im4% = 12 Then im5% = 9   ' Mz
 
 ' Calculate overvoltages
 zaf.eC!(i%) = zaf.edg!(im5%, i%)
@@ -747,6 +802,56 @@ MsgBox Error$, vbOKOnly + vbCritical, "ZAFReadLn"
 Close #XEdgeFileNumber%
 Close #XLineFileNumber%
 Close #XFlurFileNumber%
+ierror = True
+Exit Sub
+
+ZAFReadLnNotFoundXLINE2DAT:
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFReadLn"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+ZAFReadLnNotFoundXFLUR2DAT:
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFReadLn"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+ZAFReadLnZeroSizeXLINE2DAT:
+Kill XLineFile2$
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFReadLn"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+ZAFReadLnZeroSizeXFLUR2DAT:
+Kill XFlurFile2$
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFReadLn"
+Close #XEdgeFileNumber%
+Close #XLineFileNumber%
+Close #XFlurFileNumber%
+Close #XLineFileNumber2%
+Close #XFlurFileNumber2%
 ierror = True
 Exit Sub
 

@@ -110,11 +110,6 @@ DoEvents
 icancel = True
 End Sub
 
-Private Sub Form_Activate()
-If Not DebugMode Then On Error Resume Next
-FormFORMULA.TextFormulaString.SetFocus
-End Sub
-
 Private Sub Form_Load()
 If Not DebugMode Then On Error Resume Next
 icancel = False

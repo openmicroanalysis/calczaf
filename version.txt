@@ -1,7 +1,10 @@
 PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
-		
+
+12/21/15	Implement CL spectrum acquisition for Probe for EPMA.
+v. 11.1.8
+
 12/20/15	Minor bug fixes to Penepma GUI. Add check for minimum mag for image shift in JEOL code.
 
 12/15/15	Modify TDI plotting in Standard Assignments to display nth points if desired.

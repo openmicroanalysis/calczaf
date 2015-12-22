@@ -27,6 +27,8 @@ Global Const BEAMMODE_SET_TIME! = 1#
 
 Global Const PENEPMA_STARTUP_TIME# = 16#       ' in seconds to init Penepma for demo EDS
 
+Global Const CLSpectrumAcquisitionOverhead! = 2.7   ' CL acquisition overhead (Ocean Optics driver using RealTimeInterval! acquisition intervals)
+
 ' Special folders for system
 Global Const SpecialFolder_CommonAppData = &H23  ' for all Windows users on this computer [Windows 2000 or later]
 Global Const SpecialFolder_AppData = &H1A        ' for the current Windows user (roaming), on any computer on the network [Windows 98 or later]

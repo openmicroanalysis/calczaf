@@ -346,6 +346,7 @@ Dim in8 As Integer, i As Integer, i1 As Integer, i2 As Integer, i4 As Integer
 Dim n2 As Single, n3 As Single, n4 As Single
 Dim n5 As Single, n6 As Single, m8 As Single
 Dim FLUD As Single, FLUX As Single, FLUA As Single, FLUB As Single, FLUC As Single
+Dim flu_yield_emitter As Single, flu_yield_matrix As Single
 
 ReDim m7(1 To MAXCHAN1%) As Single
 
@@ -356,7 +357,7 @@ If zafinit% = 1 Then GoTo 7200
 For i% = 1 To zaf.in1%  ' for each emitter element
     For i1% = 1 To zaf.in0% ' for each absorber (matrix) element
         For i2% = 1 To MAXRAY% - 1 ' for each absorber (matrix) x-ray
-        rela_line_wts2!(i%, i1%, i2%) = 0#
+        rela_line_wts2!(i%, i1%, i2%) = 0.001       ' assume small relative line weight
         Next i2%
     Next i1%
 Next i%
@@ -495,7 +496,9 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
             If ierror Then Exit Sub
            
             ' Load Z correlated relative line weights to improve accuracy (i% = emitter, i1% = matrix, i2% = matrix (fluorescing) xray)
-            'Call ZAFFLULoadLineWeightsPenepma(zaf.TOA!, zaf.eO!(i%), zaf.Z%(i%), zaf.il%(i%), zaf.TOA!, zaf.eO!(i1%), zaf.Z%(i1%), i2%, rela_line_wts2!(i%, i1%, i2%))
+            'flu_yield_emitter! = ZAFFLUGetFluYield(fluor_type2%(i%, i1%, i2%), i1%, zaf)        ' not correct?
+            'flu_yield_matrix! = ZAFFLUGetFluYield(fluor_type2%(i%, i1%, i2%), i1%, zaf)        ' not correct?
+            'Call ZAFFLULoadLineWeightsPenepma(i%, i1%, zaf.TOA!, zaf.eO!(i%), zaf.Z%(i%), zaf.il%(i%), zaf.TOA!, zaf.eO!(i1%), zaf.Z%(i1%), i2%, rela_line_wts2!(i%, i1%, i2%), flu_yield_emitter!, flu_yield_matrix!, zaf)
             'If ierror Then Exit Sub
             
             End If
@@ -981,40 +984,135 @@ Exit Sub
 
 End Sub
 
-Sub ZAFFLULoadLineWeightsPenepma(iemitter_takeoff As Single, iemitter_keV As Single, iemitter_elem As Integer, iemitter_xray As Integer, imatrix_takeoff As Single, imatrix_keV As Single, imatrix_elem As Integer, imatrix_xray As Integer, tLineWeightRatio As Single)
+Sub ZAFFLULoadLineWeightsPenepma(iemitter As Integer, imatrix As Integer, iemitter_takeoff As Single, iemitter_keV As Single, iemitter_elem As Integer, iemitter_xray As Integer, imatrix_takeoff As Single, imatrix_keV As Single, imatrix_elem As Integer, imatrix_xray As Integer, tLineWeightRatio As Single, flu_yield_emitter As Single, flu_yield_matrix As Single, zaf As TypeZAF)
 ' Load the relative line weights calculated from the ratio of the pure element generated intensities from Penfluor/Fanal
 ' Relative emission intensity based on the emitter element, emitter x-ray, matrix element causing fluorescence, and matrix element x-ray and takeoff and keV
+'  iemitter% = array index for emitting element (fluoresced)
+'  imatrix% = array index for matrix element (fluorescing)
+'  iemitter_elem% = atomic number for emitting element (fluoresced)
+'  imatrix_elem% = atomic number for matrix element (fluorescing)
 
 ierror = False
 On Error GoTo ZAFFLULoadLineWeightsPenepmaError
 
 Dim notfound1 As Boolean, notfound2 As Boolean
+Dim iray As Integer
+
+Dim notfoundA As Boolean, notfoundB As Boolean
+
+Dim emitter_generated_single As Double, emitter_emitted_single As Double
+Dim matrix_generated_single As Double, matrix_emitted_single As Double
+
+Dim emitter_corrected As Double, matrix_corrected As Double
+
 Dim emitter_generated As Double, emitter_emitted As Double
 Dim matrix_generated As Double, matrix_emitted As Double
+
+Dim emitter_generated_sum As Double, matrix_generated_sum As Double
+
+' First print default relative line weight
+If VerboseMode Then
+Call IOWriteLog(vbNullString)
+Call IOWriteLog(vbNullString)
+tmsg$ = "Default relative line weight for emitter " & Trim$(Symup$(iemitter_elem%)) & " " & Trim$(Xraylo$(iemitter_xray%)) & " by " & Trim$(Symup$(imatrix_elem%)) & " " & Trim$(Xraylo$(imatrix_xray%)) & " is " & MiscAutoFormat$(tLineWeightRatio!)
+Call IOWriteLog(tmsg$)
+End If
            
-' Get pure element intensities for emitter (fluorsced)
-Call Penepma12PureReadMDB2(iemitter_takeoff!, iemitter_keV!, iemitter_elem%, iemitter_xray%, emitter_generated#, emitter_emitted#, notfound1)
+' Get pure element intensities for emitter element (the fluoresced x-ray line)
+Call Penepma12PureReadMDB2(iemitter_takeoff!, iemitter_keV!, iemitter_elem%, iemitter_xray%, emitter_generated_single#, emitter_emitted_single#, notfound1)
 If ierror Then Exit Sub
 
-' Get pure element intensities for matrix (fluorescer)
-Call Penepma12PureReadMDB2(imatrix_takeoff!, imatrix_keV!, imatrix_elem%, imatrix_xray%, matrix_generated#, matrix_emitted#, notfound2)
+' Get pure element intensities for matrix element (the fluorescing x-ray line)
+Call Penepma12PureReadMDB2(imatrix_takeoff!, imatrix_keV!, imatrix_elem%, imatrix_xray%, matrix_generated_single#, matrix_emitted_single#, notfound2)
 If ierror Then Exit Sub
 
 ' Check if values were found
 If notfound1 Then Exit Sub
 If notfound2 Then Exit Sub
 
-' Check and debug output
-If matrix_generated# > 0# And emitter_generated# > 0# Then
-If DebugMode Then
-tmsg$ = "Pure element generated intensity for emitter " & Format$(Symup$(iemitter_elem%), a20$) & " " & Format$(Xraylo$(iemitter_xray%), a20$) & " is " & MiscAutoFormatD$(emitter_generated#) & ", "
-tmsg$ = tmsg$ & "and for matrix fluorescer " & Format$(Symup$(imatrix_elem%), a20$) & " " & Format$(Xraylo$(imatrix_xray%), a20$) & " is " & MiscAutoFormatD$(matrix_generated#) & ", " & vbCrLf
-tmsg$ = tmsg$ & "and the relative line weight (fluorescer/emitter) from (improved) Reed is " & Format$(tLineWeightRatio!) & ", and from Penfluor/Fanal is " & MiscAutoFormat$(CSng(matrix_generated# / emitter_generated#))
+If VerboseMode Then
+tmsg$ = "Raw (generated) intensity for emitter " & Trim$(Symup$(iemitter_elem%)) & " " & Trim$(Xraylo$(iemitter_xray%)) & " : " & MiscAutoFormat$(CSng(emitter_generated_single))
+Call IOWriteLog(tmsg$)
+tmsg$ = "Raw (generated) intensity for matrix " & Trim$(Symup$(imatrix_elem%)) & " " & Trim$(Xraylo$(imatrix_xray%)) & " : " & MiscAutoFormat$(CSng(matrix_generated_single))
+Call IOWriteLog(tmsg$)
+tmsg$ = "Uncorrected relative line weight for emitter " & Trim$(Symup$(iemitter_elem%)) & " " & Trim$(Xraylo$(iemitter_xray%)) & " by " & Trim$(Symup$(imatrix_elem%)) & " " & Trim$(Xraylo$(imatrix_xray%)) & " is " & MiscAutoFormat$(emitter_generated_single# / matrix_generated_single#)
 Call IOWriteLog(tmsg$)
 End If
 
-' Calculate generated pure element intensity ratio if pure element intensities found (Reed uses fluorescer / emitter for relative line weight ratios, that is W La / Fe Ka)
-tLineWeightRatio! = CSng(matrix_generated# / emitter_generated#)
+' Get intensities for all x-ray lines for this family for the emitter element
+If VerboseMode Then Call IOWriteLog(vbNullString)
+For iray% = 1 To MAXRAY% - 1
+If ZAFFLUCheckIfSameFamily(iray%, iemitter_xray%) Then
+Call Penepma12PureReadMDB2(iemitter_takeoff!, iemitter_keV!, iemitter_elem%, iray%, emitter_generated#, emitter_emitted#, notfoundA)
+If ierror Then Exit Sub
+
+' Sum the generated intensities for this emitter family
+If Not notfoundA Then
+emitter_generated_sum# = emitter_generated_sum# + emitter_generated#
+If VerboseMode Then
+tmsg$ = "Emitter family intensity for " & Trim$(Symup$(iemitter_elem%)) & " " & Trim$(Xraylo$(iray%)) & ": " & MiscAutoFormat$(CSng(emitter_generated#))
+Call IOWriteLog(tmsg$)
+End If
+End If
+End If
+Next iray%
+
+' Get intensities for all x-ray lines for this family for the matrix element
+For iray% = 1 To MAXRAY% - 1
+If ZAFFLUCheckIfSameFamily(iray%, imatrix_xray%) Then
+Call Penepma12PureReadMDB2(imatrix_takeoff!, imatrix_keV!, imatrix_elem%, iray%, matrix_generated#, matrix_emitted#, notfoundB)
+If ierror Then Exit Sub
+
+' Sum the generated intensities for this matrix family
+If Not notfoundB Then
+matrix_generated_sum# = matrix_generated_sum# + matrix_generated#
+If VerboseMode Then
+tmsg$ = "Matrix family intensity for " & Trim$(Symup$(imatrix_elem%)) & " " & Trim$(Xraylo$(iray%)) & ": " & MiscAutoFormat$(CSng(matrix_generated#))
+Call IOWriteLog(tmsg$)
+End If
+End If
+End If
+Next iray%
+
+' Print emission and matrix line and family intensities (only used for original Reed K by L, L by K relative line weight calculations)
+If VerboseMode Then
+tmsg$ = "Emitter family (sum) intensity for all " & Trim$(Left$(Xraylo$(iemitter_xray%), 1)) & " lines: " & MiscAutoFormat$(CSng(emitter_generated_sum#))
+Call IOWriteLog(tmsg$)
+tmsg$ = "Matrix family (sum) intensity for all " & Trim$(Left$(Xraylo$(imatrix_xray%), 1)) & " lines: " & MiscAutoFormat$(CSng(matrix_generated_sum#))
+Call IOWriteLog(tmsg$)
+tmsg$ = "Uncorrected relative (family) line weight for emitter " & Trim$(Symup$(iemitter_elem%)) & " " & Trim$(Xraylo$(iemitter_xray%)) & " by " & Trim$(Symup$(imatrix_elem%)) & " " & Trim$(Xraylo$(imatrix_xray%)) & " is " & MiscAutoFormat$(emitter_generated_sum# / matrix_generated_sum#)
+Call IOWriteLog(tmsg$)
+End If
+
+' Now calculate improved Reed relative line weights for individual lines
+If VerboseMode Then
+Call IOWriteLog(vbNullString)
+tmsg$ = "Corrections for emitter " & Symup$(iemitter_elem%) & " " & Xraylo$(iemitter_xray%) & ", A: " & MiscAutoFormat$(zaf.atwts!(iemitter%)) & ", U: " & MiscAutoFormat$(zaf.v!(iemitter%))
+Call IOWriteLog(tmsg$)
+tmsg$ = "Corrections for matrix " & Symup$(imatrix_elem%) & " " & Xraylo$(imatrix_xray%) & ", A: " & MiscAutoFormat$(zaf.atwts!(imatrix%)) & ", U: " & MiscAutoFormat$(zaf.v!(imatrix%))
+Call IOWriteLog(tmsg$)
+End If
+
+' Correct for individual lines for matrix effects (Reed and Goemann)
+'emitter_corrected# = emitter_generated_single# * zaf.atwts!(iemitter%) * zaf.s!(imatrix%, iemitter%) / ((zaf.v!(iemitter%) - 1#) ^ 1.67 * flu_yield_emitter! * zaf.r!(imatrix%, iemitter%))
+'matrix_corrected# = matrix_generated_single# * zaf.atwts!(imatrix%) * zaf.s!(iemitter%, imatrix%) / ((zaf.v!(imatrix%) - 1#) ^ 1.67 * flu_yield_matrix! * zaf.r!(iemitter%, imatrix%))
+emitter_corrected# = emitter_generated_single# * zaf.atwts!(iemitter%) / ((zaf.v!(iemitter%) - 1#) ^ 1.67 * flu_yield_emitter!)
+matrix_corrected# = matrix_generated_single# * zaf.atwts!(imatrix%) / ((zaf.v!(imatrix%) - 1#) ^ 1.67 * flu_yield_matrix!)
+
+' Check and debug output
+If VerboseMode Then
+tmsg$ = "Corrected intensity for emitter " & Trim$(Symup$(iemitter_elem%)) & " " & Trim$(Xraylo$(iemitter_xray%)) & " is " & MiscAutoFormat$(CSng(emitter_corrected#))
+Call IOWriteLog(tmsg$)
+tmsg$ = "Corrected intensity for matrix " & Trim$(Symup$(imatrix_elem%)) & " " & Trim$(Xraylo$(imatrix_xray%)) & " is " & MiscAutoFormat$(CSng(matrix_corrected#))
+Call IOWriteLog(tmsg$)
+End If
+
+' Calculate relative line weight for this emitter-matrix pair (Reed uses emitter/fluorescer for relative line weight ratios, that is Fe Ka / W La)
+tLineWeightRatio! = CSng(emitter_corrected# / matrix_corrected#)
+
+If VerboseMode Then
+tmsg$ = "Corrected relative line weight for emitter " & Trim$(Symup$(iemitter_elem%)) & " " & Trim$(Xraylo$(iemitter_xray%)) & " by " & Trim$(Symup$(imatrix_elem%)) & " " & Trim$(Xraylo$(imatrix_xray%)) & " is " & MiscAutoFormat$(tLineWeightRatio!)
+Call IOWriteLog(tmsg$)
 End If
 
 Exit Sub
@@ -1033,3 +1131,42 @@ Exit Sub
 
 End Sub
 
+Function ZAFFLUCheckIfSameFamily(iray As Integer, pray As Integer) As Boolean
+' Check if the next x-ray line (iray%) is in the same family as the line in question (pray%).
+'  Xraylo$(1) = "ka"
+'  Xraylo$(2) = "kb"
+'  Xraylo$(3) = "la"
+'  Xraylo$(4) = "lb"
+'  Xraylo$(5) = "ma"
+'  Xraylo$(6) = "mb"
+
+'  Xraylo$(7) = "Ln"
+'  Xraylo$(8) = "Lg"
+'  Xraylo$(9) = "Lv"
+'  Xraylo$(10) = "Ll"
+'  Xraylo$(11) = "Mg"
+'  Xraylo$(12) = "Mz"
+
+ierror = False
+On Error GoTo ZAFFLUCheckIfSameFamilyError
+
+ZAFFLUCheckIfSameFamily = False
+
+' Check for K family
+If (iray% = 1 Or iray% = 2) And (pray% = 1 Or pray% = 2) Then ZAFFLUCheckIfSameFamily = True
+
+' Check for L family
+If (iray% = 3 Or iray% = 4 Or iray% = 7 Or iray% = 8 Or iray% = 9 Or iray% = 10) And (pray% = 3 Or pray% = 4 Or pray% = 7 Or pray% = 8 Or pray% = 9 Or pray% = 10) Then ZAFFLUCheckIfSameFamily = True
+
+' Check for M family
+If (iray% = 5 Or iray% = 6 Or iray% = 11 Or iray% = 12) And (pray% = 5 Or pray% = 6 Or iray% = 11 Or iray% = 12) Then ZAFFLUCheckIfSameFamily = True
+
+Exit Function
+
+' Errors
+ZAFFLUCheckIfSameFamilyError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFFLUCheckIfSameFamily"
+ierror = True
+Exit Function
+
+End Function
