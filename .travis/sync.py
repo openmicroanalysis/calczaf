@@ -2,10 +2,11 @@
 Script to synchronize CalcZAF source code from Probe Software with GitHub using
 Travis CI.
 Steps:
-  
+
   * Pull repository from GitHub
   * Download ZIP containing CalcZAF source code from Probe Software website
   * Parse version text file and compare for new changes
+  * Extract files from ZIP
   * Add modified files, commit and push to GitHub
 """
 
@@ -72,7 +73,14 @@ def pull(workdir, reposurl):
     subprocess.check_call(args, cwd=workdir)
     logger.info('Running git pull/clone... DONE')
 
-def commit(workdir, message, tag, push=True):
+def has_changes(workdir):
+    logger.info('Running git status...')
+    args = ['git', 'status', '--porcelain']
+    output = subprocess.check_output(args, cwd=workdir, universal_newlines=True)
+    logger.info('Running git status... DONE')
+    return bool(output)
+
+def commit(workdir, message, tag, commit=True, push=True):
     logger.info('Running git add...')
     args = ['git', 'add', '.']
     subprocess.check_call(args, cwd=workdir)
@@ -80,24 +88,25 @@ def commit(workdir, message, tag, push=True):
 
     logger.info('Running git commit...')
     args = ['git', 'commit', '-m', message]
+    if not commit: args.append('--dry-run')
     subprocess.check_call(args, cwd=workdir)
     logger.info('Running git commit... DONE')
 
-    if tag is not None:
+    if tag is not None and commit:
         logger.info('Running git tag...')
         args = ['git', 'tag', tag]
         subprocess.check_call(args, cwd=workdir)
         logger.info('Running git tag... DONE')
 
-    if push:
-        logger.info('Running git push...')
-        args = ['git', 'push', '--all']
-        subprocess.check_call(args, cwd=workdir)
-        logger.info('Running git push... DONE')
+    logger.info('Running git push...')
+    args = ['git', 'push', '--all']
+    if not push: args.append('--dry-run')
+    subprocess.check_call(args, cwd=workdir)
+    logger.info('Running git push... DONE')
 
 def compare(filepath, workdir):
     logger.info('Reading current version...')
-    workfilepath = os.path.join(workdir, VERSION_FILENAME)
+    workfilepath = os.path.join(workdir, VERSION_FILENAME.lower())
     with open(workfilepath, 'r', errors='ignore') as fp:
         oldchanges, oldtags = parse_version(fp)
 
@@ -124,7 +133,19 @@ def compare(filepath, workdir):
 def extract(filepath, workdir):
     logger.info('Extracting %s...', filepath)
     with zipfile.ZipFile(filepath, 'r') as z:
-        z.extractall(workdir)
+        for info in z.infolist():
+            # Always use lower case
+            filename = info.filename.lower()
+
+            # Create directory if needed
+            dirname = os.path.join(workdir, os.path.dirname(filename))
+            os.makedirs(dirname, exist_ok=True)
+
+            # Write filename
+            dstpath = os.path.join(workdir, filename)
+            with z.open(info, 'r') as fi, open(dstpath, 'wb') as fo:
+                fo.write(fi.read())
+
     logger.info('Extracting %s... DONE', filepath)
 
 def create_commit_message(changes):
@@ -197,8 +218,12 @@ def main():
                         default='http://probesoftware.com/download/CALCZAF_SOURCE-E2.ZIP',
                         help='Url to CalcZAF source zip file')
     parser.add_argument('--reposurl', default='git@github.com:openmicroanalysis/calczaf.git')
+    parser.add_argument('--no-pull', action='store_true', default=False,
+                        help='Do not pull in working directory')
     parser.add_argument('--no-push', action='store_true', default=False,
                         help='Do not push after commit')
+    parser.add_argument('--no-commit', action='store_true', default=False,
+                        help='Do not commit change')
 
     args = parser.parse_args()
 
@@ -206,38 +231,45 @@ def main():
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(level)
 
+    no_pull = args.no_pull
+    if no_pull: logger.info('Pull disabled')
+    no_commit = args.no_commit
+    if no_commit: logger.info('Commit disabled')
+    no_push = args.no_push
+    if no_push: logger.info('Push disabled')
+
     workdir = args.workdir
     workdir, userworkdir = setup(workdir)
 
     # Pull repository
     reposurl = args.reposurl
-    pull(workdir, reposurl)
+    if userworkdir and not no_pull:
+        pull(workdir, reposurl)
 
     # Download zip
     url = args.url
-    userzip = True
-    if urllib.parse.urlparse(url).scheme != '':
+    try:
         zipfilepath = download(url)
         userzip = False
-    else:
+    except urllib.error.URLError:
         zipfilepath = url
+        userzip = True
 
     # Compare versions
     changes, tag = compare(zipfilepath, workdir)
-    if not changes:
-        teardown(workdir, userworkdir, zipfilepath, userzip)
-        logger.info('No change. Exiting.')
-        return
 
-    if changes:
+    # Extract zip in working directory
+    extract(zipfilepath, workdir)
+
+    # Commit changes, if any
+    if changes and has_changes(workdir):
         logger.info('%i new changes found', len(changes))
 
-        extract(zipfilepath, workdir)
-
         message = create_commit_message(changes)
+        logger.info('Message: %s', message)
 
-        push = not args.no_push
-        commit(workdir, message, tag, push=push)
+        logger.info('Commit change.')
+        commit(workdir, message, tag, commit=not no_commit, push=not no_push)
 
     # Clean up
     teardown(workdir, userworkdir, zipfilepath, userzip)

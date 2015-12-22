@@ -1,0 +1,5 @@
+[stage]
+screen reference point1 (twips)=60,60
+screen reference point2 (twips)=15060,15060
+stage reference point1=29.59942,37.92727
+stage reference point2=18.95546,45.51539
