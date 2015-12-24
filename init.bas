@@ -12,7 +12,7 @@ Option Explicit
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Private Declare Function GetWindowsDirectory Lib "kernel32.dll" Alias "GetWindowsDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
-Private Declare Function GetModuleFileName Lib "kernel32" Alias "GetModuleFileNameA" (ByVal hModule As Long, ByVal lpFileName As String, ByVal nSize As Long) As Long
+Private Declare Function GetModuleFileName Lib "Kernel32" Alias "GetModuleFileNameA" (ByVal hModule As Long, ByVal lpFileName As String, ByVal nSize As Long) As Long
 
 Global ScalersFile As String
 Global MotorsFile As String
@@ -3324,6 +3324,18 @@ ProbeImageSampleSetupNumber% = 0
 
 UseStageReproducibilityCorrectionFlag = False
 ImageSizeIndex% = -1            ' to force loading of default image size
+
+If CLSpectraInterfaceType% = 0 Then
+CLSpectrumAcquisitionOverhead = 1#          ' demo mode
+ElseIf CLSpectraInterfaceType% = 1 Then
+CLSpectrumAcquisitionOverhead = 2.7         ' CL acquisition overhead (Ocean Optics driver using RealTimeInterval! acquisition intervals)
+ElseIf CLSpectraInterfaceType% = 2 Then
+CLSpectrumAcquisitionOverhead = 1#          ' Gatan
+ElseIf CLSpectraInterfaceType% = 3 Then
+CLSpectrumAcquisitionOverhead = 1#          ' Newport
+ElseIf CLSpectraInterfaceType% = 4 Then
+CLSpectrumAcquisitionOverhead = 1#          ' unused
+End If
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

@@ -1,5 +1,6 @@
 VERSION 5.00
 Object = "{A8B3B723-0B5A-101B-B22E-00AA0037B2FC}#1.0#0"; "grid32.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
 Begin VB.Form FormZAF 
    Appearance      =   0  'Flat
    BorderStyle     =   1  'Fixed Single
@@ -32,6 +33,19 @@ Begin VB.Form FormZAF
       TabIndex        =   0
       Top             =   120
       Width           =   9375
+      Begin MSFlexGridLib.MSFlexGrid MSFlexGrid1 
+         Height          =   2295
+         Left            =   120
+         TabIndex        =   19
+         Top             =   360
+         Visible         =   0   'False
+         Width           =   2775
+         _ExtentX        =   4895
+         _ExtentY        =   4048
+         _Version        =   393216
+         Rows            =   73
+         Cols            =   8
+      End
       Begin VB.CommandButton CommandHelpCalcZAF 
          BackColor       =   &H00FF8080&
          Caption         =   "Help"
@@ -144,6 +158,15 @@ Begin VB.Form FormZAF
          _ExtentY        =   5106
          _StockProps     =   77
          BackColor       =   16777215
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Rows            =   73
          Cols            =   8
          ScrollBars      =   2

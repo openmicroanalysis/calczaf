@@ -27,8 +27,6 @@ Global Const BEAMMODE_SET_TIME! = 1#
 
 Global Const PENEPMA_STARTUP_TIME# = 16#       ' in seconds to init Penepma for demo EDS
 
-Global Const CLSpectrumAcquisitionOverhead! = 2.7   ' CL acquisition overhead (Ocean Optics driver using RealTimeInterval! acquisition intervals)
-
 ' Special folders for system
 Global Const SpecialFolder_CommonAppData = &H23  ' for all Windows users on this computer [Windows 2000 or later]
 Global Const SpecialFolder_AppData = &H1A        ' for the current Windows user (roaming), on any computer on the network [Windows 98 or later]
@@ -2079,13 +2077,6 @@ Global RealTimePauseAutomation As Integer
 Global UseZeroPointCalibrationCurveFlag As Integer
 Global VerboseMode As Integer
 
-<<<<<<< HEAD
-=======
-' Plot globals
-Global SendDataToPrinterFlag As Integer
-Global OffPeakMarkerLabelFlag As Integer
-
->>>>>>> f5d5947b291b9070c6daa43a7a08034c2df62f15
 Global ErrorbarSigmaIndex As Integer
 Global ErrorbarSigmaNumber As Integer
 Global ErrorbarSpacingIndex As Integer
@@ -2898,3 +2889,6 @@ Global ImageTime_TDI() As Single         ' for CalcImage TDI pixel arrays (dimen
 
 Global IntegrateEDSSpectrumImagingFlag As Boolean       ' for synchronized WDS and ED SI mapping
 Global IntegrateEDSSpectrumImagingFilename As String    ' for synchronized WDS and ED SI mapping
+
+Global CLSpectrumAcquisitionOverhead As Single
+
