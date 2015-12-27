@@ -15,8 +15,7 @@ Sub GetCmpLoadGrid()
 ierror = False
 On Error GoTo GetCmpLoadGridError
 
-Call MiscBlankGrid(FormGETCMP.GridElementList)
-If ierror Then Exit Sub
+FormGETCMP.GridElementList.Clear
 
 ' Load grid
 FormGETCMP.GridElementList.row = 0

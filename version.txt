@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/26/15	Convert Grid32.ocx to MSFlexGrid.ocx controls.  Add check for disable acq flag in Drift.exe (Carpenter).
+
 12/23/15	Implement new graphics for wavescan acquisition and plot windows.
 
 12/21/15	Implement CL spectrum acquisition for Probe for EPMA.

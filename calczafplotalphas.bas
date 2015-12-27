@@ -759,9 +759,9 @@ If sxmin# = 0# Then GoTo CalcZAFPlotAlphaFit_GSZeroData
 
 ' Constant fit (assume 50:50 composition only)
 If tCorrectionFlag% = 1 Then
-FormPlotAlpha_GS.Graph1.ThisPoint = 6
-symin# = CDbl(FormPlotAlpha_GS.Graph1.GraphData)
-symax# = CDbl(FormPlotAlpha_GS.Graph1.GraphData)
+tForm.Graph1.ThisPoint = 6
+symin# = CDbl(tForm.Graph1.GraphData)
+symax# = CDbl(tForm.Graph1.GraphData)
 
 ' Linear fit
 ElseIf tCorrectionFlag% = 2 Then
@@ -819,11 +819,10 @@ ierror = False
 On Error GoTo CalcZAFPlotAlphaFit_PEError
 
 Dim i As Integer
-Dim r As Long
+Dim linecount As Long
 
 Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
 Dim sxmin As Double, sxmax As Double, symin As Double, symax As Double
-Dim txmin As Double, txmax As Double, tymin As Double, tymax As Double
 
 Dim npts As Integer
 Dim xdata() As Single, ydata() As Single, acoeff() As Single, stddev As Single
@@ -835,11 +834,11 @@ Call AFactorReturnAFactors(Int(1), npts%, xdata!(), ydata!(), acoeff!(), stddev!
 If ierror Then Exit Sub
 
 ' Determine min and max of graph (in user data units)
-xmin# = tForm.Graph1.SDKInfo(2)
-xmax# = tForm.Graph1.SDKInfo(1)
+xmin# = tForm.Pesgo1.ManualMinX
+xmax# = tForm.Pesgo1.ManualMaxX
 
-ymin# = tForm.Graph1.SDKInfo(4)
-ymax# = tForm.Graph1.SDKInfo(3)
+ymin# = tForm.Pesgo1.ManualMinY
+ymax# = tForm.Pesgo1.ManualMaxY
 
 ' Calculate line to draw based on fit coefficients
 sxmax# = xmin#
@@ -854,9 +853,8 @@ If sxmin# = 0# Then GoTo CalcZAFPlotAlphaFit_PEZeroData
 
 ' Constant fit (assume 50:50 composition only)
 If tCorrectionFlag% = 1 Then
-FormPlotAlpha_GS.Graph1.ThisPoint = 6
-symin# = CDbl(FormPlotAlpha_GS.Graph1.GraphData)
-symax# = CDbl(FormPlotAlpha_GS.Graph1.GraphData)
+symin# = CDbl(tForm.Pesgo1.ydata(0, 5))      ' use 50: 50 point
+symax# = CDbl(tForm.Pesgo1.ydata(0, 5))      ' use 50: 50 point
 
 ' Linear fit
 ElseIf tCorrectionFlag% = 2 Then
@@ -881,14 +879,13 @@ If symax# > ymax# Then symax# = ymax#
 If symin# > ymax# Then symin# = ymax#
 If symax# < ymin# Then symax# = ymin#
 
-' Convert to graph units
-Call XrayPlotConvert(tForm, sxmin#, symin#, txmin#, tymin#)
+If i% = 1 Then
+Call ScanDataPlotLine(tForm.Pesgo1, linecount&, sxmin#, symin#, sxmax#, symax#, False, True, Int(255), Int(128), Int(0), Int(0))     ' brown
 If ierror Then Exit Sub
-
-Call XrayPlotConvert(tForm, sxmax#, symax#, txmax#, tymax#)
+Else
+Call ScanDataPlotLine(tForm.Pesgo1, linecount&, sxmin#, symin#, sxmax#, symax#, True, True, Int(255), Int(128), Int(0), Int(0))      ' brown
 If ierror Then Exit Sub
-
-r& = GSLineAbs(txmin#, tymin#, txmax#, tymax#, 4, 2, 4)     ' draw thick red line
+End If
 Next i%
 
 Exit Sub

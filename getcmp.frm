@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{A8B3B723-0B5A-101B-B22E-00AA0037B2FC}#1.0#0"; "grid32.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
 Begin VB.Form FormGETCMP 
    Appearance      =   0  'Flat
    BorderStyle     =   3  'Fixed Dialog
@@ -29,7 +29,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Delete CL Spectrum"
       Height          =   495
       Left            =   5040
-      TabIndex        =   41
+      TabIndex        =   40
       Top             =   9120
       Width           =   1935
    End
@@ -37,7 +37,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Delete EDS Spectrum"
       Height          =   495
       Left            =   2880
-      TabIndex        =   40
+      TabIndex        =   39
       Top             =   9120
       Width           =   2055
    End
@@ -47,7 +47,7 @@ Begin VB.Form FormGETCMP
       Height          =   495
       Left            =   5040
       Style           =   1  'Graphical
-      TabIndex        =   39
+      TabIndex        =   38
       Top             =   8640
       Width           =   1935
    End
@@ -57,21 +57,21 @@ Begin VB.Form FormGETCMP
       Height          =   495
       Left            =   2880
       Style           =   1  'Graphical
-      TabIndex        =   38
+      TabIndex        =   37
       Top             =   8640
       Width           =   2055
    End
    Begin VB.ListBox ListCLSpectra 
       Height          =   1425
       Left            =   7080
-      TabIndex        =   37
+      TabIndex        =   36
       Top             =   8160
       Width           =   2655
    End
    Begin VB.ListBox ListEDSSpectra 
       Height          =   1425
       Left            =   120
-      TabIndex        =   36
+      TabIndex        =   35
       Top             =   8160
       Width           =   2655
    End
@@ -79,7 +79,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Import CL Spectrum"
       Height          =   495
       Left            =   5040
-      TabIndex        =   35
+      TabIndex        =   34
       Top             =   8160
       Width           =   1935
    End
@@ -87,7 +87,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Import EDS Spectrum"
       Height          =   495
       Left            =   2880
-      TabIndex        =   34
+      TabIndex        =   33
       Top             =   8160
       Width           =   2055
    End
@@ -105,7 +105,7 @@ Begin VB.Form FormGETCMP
       EndProperty
       Height          =   495
       Left            =   8040
-      TabIndex        =   33
+      TabIndex        =   32
       TabStop         =   0   'False
       Top             =   2040
       Width           =   1455
@@ -116,12 +116,6 @@ Begin VB.Form FormGETCMP
       TabIndex        =   3
       Top             =   1680
       Width           =   1455
-   End
-   Begin VB.Timer Timer1 
-      Enabled         =   0   'False
-      Interval        =   100
-      Left            =   6600
-      Top             =   3960
    End
    Begin VB.CommandButton CommandUpdateExcess 
       Appearance      =   0  'Flat
@@ -171,7 +165,7 @@ Begin VB.Form FormGETCMP
          Caption         =   "Add <cr>"
          Height          =   255
          Left            =   6480
-         TabIndex        =   42
+         TabIndex        =   41
          ToolTipText     =   "Add a carriage return to the text description (place cursor and hit Add <cr>)"
          Top             =   600
          Width           =   975
@@ -296,27 +290,16 @@ Begin VB.Form FormGETCMP
       TabIndex        =   5
       Top             =   2640
       Width           =   9615
-      Begin MSGrid.Grid GridElementList 
+      Begin MSFlexGridLib.MSFlexGrid GridElementList 
          Height          =   2415
          Left            =   120
-         TabIndex        =   27
+         TabIndex        =   42
          TabStop         =   0   'False
          Top             =   360
          Width           =   9375
-         _Version        =   65536
          _ExtentX        =   16536
          _ExtentY        =   4260
-         _StockProps     =   77
-         BackColor       =   16777215
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
+         _Version        =   393216
          Rows            =   73
          Cols            =   8
       End
@@ -332,7 +315,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Density (gm/cm3"
       Height          =   255
       Left            =   8040
-      TabIndex        =   32
+      TabIndex        =   31
       Top             =   1440
       Width           =   1455
    End
@@ -343,7 +326,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   8520
-      TabIndex        =   31
+      TabIndex        =   30
       ToolTipText     =   "Total oxygen minus oxygen equivalent from halogens"
       Top             =   7200
       Width           =   1095
@@ -352,7 +335,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Halogen Corrected Oxygen"
       Height          =   255
       Left            =   5640
-      TabIndex        =   30
+      TabIndex        =   29
       Top             =   7200
       Width           =   2655
    End
@@ -363,7 +346,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   8520
-      TabIndex        =   29
+      TabIndex        =   28
       ToolTipText     =   "Total oxygen equivalent from halogens (F, Cl, Br, I)"
       Top             =   6840
       Width           =   1095
@@ -372,7 +355,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Total Oxygen from Halogens"
       Height          =   255
       Left            =   5640
-      TabIndex        =   28
+      TabIndex        =   27
       Top             =   6840
       Width           =   2655
    End
@@ -599,8 +582,15 @@ End Sub
 
 Private Sub GridElementList_Click()
 If Not DebugMode Then On Error Resume Next
-' Workaround for grid_click event-modal form bug
-Timer1.Enabled = True
+Dim elementrow As Integer
+
+' Determine current element row number
+elementrow% = FormGETCMP.GridElementList.row
+If elementrow% < 1 Or elementrow% > MAXCHAN% Then Exit Sub
+
+' Load element row for FormSETCMP
+Call GetCmpSetCmpLoadElement(elementrow%)
+If ierror Then Exit Sub
 End Sub
 
 Private Sub OptionDisplayAsOxide_Click()
@@ -661,19 +651,3 @@ If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
-Private Sub Timer1_Timer()
-If Not DebugMode Then On Error Resume Next
-' Workaround for grid_click event-modal form bug
-Timer1.Enabled = False
-
-Dim elementrow As Integer
-
-' Determine current element row number
-elementrow% = FormGETCMP.GridElementList.row
-If elementrow% < 1 Or elementrow% > MAXCHAN% Then Exit Sub
-
-' Load element row for FormSETCMP
-Call GetCmpSetCmpLoadElement(elementrow%)
-If ierror Then Exit Sub
-
-End Sub

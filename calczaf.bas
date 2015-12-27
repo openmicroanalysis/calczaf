@@ -1120,8 +1120,7 @@ tmsg$ = tmsg$ & Str$(CalcZAFOldSample(1).kilovolts!) & " KeV"
 FormZAF.Frame1.Caption = tmsg$
 
 ' Blank the element grid
-Call MiscBlankGrid(FormZAF.GridElementList)
-If ierror Then Exit Sub
+FormZAF.GridElementList.Clear
 
 ' Initialize the Element List Grid Width
 For i% = 0 To FormZAF.GridElementList.cols - 1

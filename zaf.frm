@@ -1,5 +1,4 @@
 VERSION 5.00
-Object = "{A8B3B723-0B5A-101B-B22E-00AA0037B2FC}#1.0#0"; "grid32.ocx"
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
 Begin VB.Form FormZAF 
    Appearance      =   0  'Flat
@@ -33,15 +32,15 @@ Begin VB.Form FormZAF
       TabIndex        =   0
       Top             =   120
       Width           =   9375
-      Begin MSFlexGridLib.MSFlexGrid MSFlexGrid1 
-         Height          =   2295
+      Begin MSFlexGridLib.MSFlexGrid GridElementList 
+         Height          =   2895
          Left            =   120
-         TabIndex        =   19
+         TabIndex        =   18
+         TabStop         =   0   'False
          Top             =   360
-         Visible         =   0   'False
-         Width           =   2775
-         _ExtentX        =   4895
-         _ExtentY        =   4048
+         Width           =   9135
+         _ExtentX        =   16113
+         _ExtentY        =   5106
          _Version        =   393216
          Rows            =   73
          Cols            =   8
@@ -52,7 +51,8 @@ Begin VB.Form FormZAF
          Height          =   375
          Left            =   4080
          Style           =   1  'Graphical
-         TabIndex        =   18
+         TabIndex        =   17
+         TabStop         =   0   'False
          ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
          Top             =   4320
          Width           =   1455
@@ -70,7 +70,7 @@ Begin VB.Form FormZAF
          EndProperty
          Height          =   255
          Left            =   6240
-         TabIndex        =   17
+         TabIndex        =   16
          ToolTipText     =   "Calculate results using all available matrix corrections"
          Top             =   3960
          Width           =   2535
@@ -80,7 +80,8 @@ Begin VB.Form FormZAF
          Enabled         =   0   'False
          Height          =   375
          Left            =   4080
-         TabIndex        =   15
+         TabIndex        =   14
+         TabStop         =   0   'False
          ToolTipText     =   "Output the current data results to the currently open Excel sheet (see Output menu to open a link to Excel)"
          Top             =   3960
          Width           =   1455
@@ -89,7 +90,8 @@ Begin VB.Form FormZAF
          Caption         =   "Excel Options"
          Height          =   495
          Left            =   4080
-         TabIndex        =   16
+         TabIndex        =   15
+         TabStop         =   0   'False
          ToolTipText     =   "Specify which calculation results to output to the currently open Excel spreadsheet (see Output menu to open an Excel link)"
          Top             =   3480
          Width           =   1455
@@ -107,7 +109,8 @@ Begin VB.Form FormZAF
          EndProperty
          Height          =   495
          Left            =   5880
-         TabIndex        =   14
+         TabIndex        =   13
+         TabStop         =   0   'False
          ToolTipText     =   "Modify the analytical conditions for each element (TKCS)"
          Top             =   5160
          Width           =   1935
@@ -116,7 +119,8 @@ Begin VB.Form FormZAF
          Caption         =   "Enter Composition From Database"
          Height          =   375
          Left            =   240
-         TabIndex        =   11
+         TabIndex        =   10
+         TabStop         =   0   'False
          ToolTipText     =   "Specify a sample composition based on a standard composition from the standard composition database"
          Top             =   4080
          Width           =   3495
@@ -125,7 +129,7 @@ Begin VB.Form FormZAF
          Caption         =   "Enter Composition as Weight String"
          Height          =   375
          Left            =   240
-         TabIndex        =   12
+         TabIndex        =   11
          TabStop         =   0   'False
          ToolTipText     =   "Specify a sample composition based on a weight fraction formula"
          Top             =   3720
@@ -135,41 +139,11 @@ Begin VB.Form FormZAF
          Caption         =   "Enter Composition as Formula String"
          Height          =   375
          Left            =   240
-         TabIndex        =   13
+         TabIndex        =   12
          TabStop         =   0   'False
          ToolTipText     =   "Specify a sample composition based on an atomic fraction formula"
          Top             =   3360
          Width           =   3495
-      End
-      Begin VB.Timer Timer1 
-         Enabled         =   0   'False
-         Interval        =   100
-         Left            =   6840
-         Top             =   1440
-      End
-      Begin MSGrid.Grid GridElementList 
-         Height          =   2895
-         Left            =   120
-         TabIndex        =   10
-         Top             =   360
-         Width           =   9135
-         _Version        =   65536
-         _ExtentX        =   16113
-         _ExtentY        =   5106
-         _StockProps     =   77
-         BackColor       =   16777215
-         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Rows            =   73
-         Cols            =   8
-         ScrollBars      =   2
       End
       Begin VB.CommandButton CommandNext 
          BackColor       =   &H0080FFFF&
@@ -341,7 +315,7 @@ End Sub
 
 Private Sub CommandCopyToClipboard_Click()
 If Not DebugMode Then On Error Resume Next
-Call MiscCopyGrid(Int(1), FormZAF.GridElementList)
+Call MiscCopyGrid2(FormZAF.GridElementList)
 If ierror Then Exit Sub
 End Sub
 
@@ -411,23 +385,6 @@ Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
 Private Sub GridElementList_Click()
-If Not DebugMode Then On Error Resume Next
-' Workaround for grid_click event-modal form bug
-Timer1.Enabled = True
-Exit Sub
-End Sub
-
-Private Sub OptionCalculate_Click(Index As Integer)
-If Not DebugMode Then On Error Resume Next
-Call CalcZAFGetMode(Index%)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Timer1_Timer()
-If Not DebugMode Then On Error Resume Next
-' Workaround for grid_click event-modal form bug
-Timer1.Enabled = False
-
 Dim elementrow As Integer
 
 ' Determine current element row number
@@ -446,3 +403,10 @@ If ierror Then Exit Sub
 Call CalcZAFLoadList
 If ierror Then Exit Sub
 End Sub
+
+Private Sub OptionCalculate_Click(Index As Integer)
+If Not DebugMode Then On Error Resume Next
+Call CalcZAFGetMode(Index%)
+If ierror Then Exit Sub
+End Sub
+

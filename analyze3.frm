@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{A8B3B723-0B5A-101B-B22E-00AA0037B2FC}#1.0#0"; "grid32.ocx"
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
 Begin VB.Form FormANALYZE 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Analyze!"
@@ -16,6 +16,33 @@ Begin VB.Form FormANALYZE
    ScaleWidth      =   6210
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
+   Begin MSFlexGridLib.MSFlexGrid GridData 
+      Height          =   855
+      Left            =   3240
+      TabIndex        =   19
+      TabStop         =   0   'False
+      Top             =   2160
+      Width           =   2415
+      _ExtentX        =   4260
+      _ExtentY        =   1508
+      _Version        =   393216
+      Rows            =   501
+      Cols            =   76
+   End
+   Begin MSFlexGridLib.MSFlexGrid GridStat 
+      Height          =   975
+      Left            =   120
+      TabIndex        =   18
+      TabStop         =   0   'False
+      Top             =   2160
+      Width           =   2655
+      _ExtentX        =   4683
+      _ExtentY        =   1720
+      _Version        =   393216
+      Rows            =   8
+      Cols            =   76
+      ScrollBars      =   1
+   End
    Begin VB.TextBox TextDescription 
       BackColor       =   &H8000000B&
       Height          =   615
@@ -23,7 +50,7 @@ Begin VB.Form FormANALYZE
       Locked          =   -1  'True
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   18
+      TabIndex        =   16
       TabStop         =   0   'False
       ToolTipText     =   "Sample description information"
       Top             =   1320
@@ -162,64 +189,11 @@ Begin VB.Form FormANALYZE
          Strikethrough   =   0   'False
       EndProperty
    End
-   Begin MSGrid.Grid GridStat 
-      Height          =   735
-      Left            =   120
-      TabIndex        =   16
-      TabStop         =   0   'False
-      ToolTipText     =   "Analyzed sample statistics grid"
-      Top             =   2160
-      Width           =   3015
-      _Version        =   65536
-      _ExtentX        =   5318
-      _ExtentY        =   1296
-      _StockProps     =   77
-      ForeColor       =   -2147483640
-      BackColor       =   16777215
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Rows            =   8
-      Cols            =   76
-      ScrollBars      =   1
-   End
-   Begin MSGrid.Grid GridData 
-      Height          =   735
-      Left            =   3240
-      TabIndex        =   17
-      TabStop         =   0   'False
-      ToolTipText     =   "Analyzed sample data grid (column format). Double-click to see row format."
-      Top             =   2160
-      Width           =   2775
-      _Version        =   65536
-      _ExtentX        =   4895
-      _ExtentY        =   1296
-      _StockProps     =   77
-      ForeColor       =   -2147483640
-      BackColor       =   16777215
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Rows            =   501
-      Cols            =   76
-   End
    Begin VB.Label LabelDataType 
       ForeColor       =   &H00FF0000&
       Height          =   255
       Left            =   1200
-      TabIndex        =   19
+      TabIndex        =   17
       Top             =   3840
       Width           =   4095
    End
@@ -290,10 +264,10 @@ Begin VB.Form FormANALYZE
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   735
+      Height          =   495
       Left            =   1800
       TabIndex        =   3
-      Top             =   3000
+      Top             =   3240
       Visible         =   0   'False
       Width           =   2415
    End
@@ -308,7 +282,7 @@ Option Explicit
 
 Private Sub StatusBarAnal_PanelClick(ByVal Panel As ComctlLib.Panel)
 If Not DebugMode Then On Error Resume Next
-Select Case Panel.key
+Select Case Panel.Key
 Case "status"
     Exit Sub
 Case "cancel"
