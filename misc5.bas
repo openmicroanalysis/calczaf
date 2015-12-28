@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMISC5"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -181,7 +181,7 @@ Exit Function
 
 End Function
 
-Function MiscIsDifferent4(lchan As Integer, sArray() As String) As Boolean
+Function MiscIsDifferent4(lchan As Integer, sarray() As String) As Boolean
 ' Check for differences in string array
 
 ierror = False
@@ -191,7 +191,7 @@ Dim i As Integer
 
 MiscIsDifferent4 = False
 For i% = 1 To lchan%
-If UCase$(Trim$(sArray$(i%))) <> UCase$(Trim$(sArray$(1))) Then MiscIsDifferent4 = True
+If UCase$(Trim$(sarray$(i%))) <> UCase$(Trim$(sarray$(1))) Then MiscIsDifferent4 = True
 Next i%
 
 ' If only one element, set true
@@ -278,7 +278,7 @@ Exit Function
 
 End Function
 
-Sub MiscGetArrayMinMax(n As Long, sArray() As Single, imin As Long, imax As Long, tmin As Single, tmax As Single)
+Sub MiscGetArrayMinMax(n As Long, sarray() As Single, imin As Long, imax As Long, tmin As Single, tmax As Single)
 ' Return the min and max array indices found in a one dimensional single precision array
 
 ierror = False
@@ -293,13 +293,13 @@ tmin! = MAXMINIMUM!
 tmax! = MAXMAXIMUM!
 
 For i& = 1 To n&
-If sArray!(i&) < tmin! Then
-tmin! = sArray!(i&)
+If sarray!(i&) < tmin! Then
+tmin! = sarray!(i&)
 imin& = i&
 End If
 
-If sArray!(i&) > tmax! Then
-tmax! = sArray!(i&)
+If sarray!(i&) > tmax! Then
+tmax! = sarray!(i&)
 imax& = i&
 End If
 Next i&
@@ -314,7 +314,7 @@ Exit Sub
 
 End Sub
 
-Sub MiscGetArrayMinMaxZero(n As Long, sArray() As Single, imin As Long, imax As Long, tmin As Single, tmax As Single)
+Sub MiscGetArrayMinMaxZero(n As Long, sarray() As Single, imin As Long, imax As Long, tmin As Single, tmax As Single)
 ' Return the min and max array indices found in a one dimensional single precision array (indexed 0 to n - 1)
 
 ierror = False
@@ -329,13 +329,13 @@ tmin! = MAXMINIMUM!
 tmax! = MAXMAXIMUM!
 
 For i& = 0 To n& - 1
-If sArray!(i&) < tmin! Then
-tmin! = sArray!(i&)
+If sarray!(i&) < tmin! Then
+tmin! = sarray!(i&)
 imin& = i&
 End If
 
-If sArray!(i&) > tmax! Then
-tmax! = sArray!(i&)
+If sarray!(i&) > tmax! Then
+tmax! = sarray!(i&)
 imax& = i&
 End If
 Next i&
@@ -383,7 +383,7 @@ Exit Sub
 
 End Sub
 
-Function MiscGetArrayMax(n As Integer, sArray() As Integer) As Integer
+Function MiscGetArrayMax(n As Integer, sarray() As Integer) As Integer
 ' Return the max value found in a one dimensional integer array
 
 ierror = False
@@ -393,8 +393,8 @@ Dim i As Integer, tmax As Integer
 
 tmax% = MAXMAXIMUM3%
 For i% = 1 To n%
-If sArray%(i%) > tmax% Then
-tmax% = sArray%(i%)
+If sarray%(i%) > tmax% Then
+tmax% = sarray%(i%)
 End If
 Next i%
 
@@ -409,7 +409,7 @@ Exit Function
 
 End Function
 
-Function MiscGetArrayMin(n As Integer, sArray() As Integer) As Integer
+Function MiscGetArrayMin(n As Integer, sarray() As Integer) As Integer
 ' Return the min value found in a one dimensional integer array
 
 ierror = False
@@ -419,8 +419,8 @@ Dim i As Integer, tmin As Integer
 
 tmin% = MAXMINIMUM3%
 For i% = 1 To n%
-If sArray%(i%) < tmin% Then
-tmin% = sArray%(i%)
+If sarray%(i%) < tmin% Then
+tmin% = sarray%(i%)
 End If
 Next i%
 
@@ -564,14 +564,14 @@ Exit Function
 
 End Function
 
-Function MiscConvertLog10(x As Double) As Double
+Function MiscConvertLog10(X As Double) As Double
 ' Calculate a Base 10 log
 
 ierror = False
 On Error GoTo MiscConvertLog10Error
 
-If x# <= 0 Then Exit Function
-MiscConvertLog10# = Log(x#) / Log(10#)
+If X# <= 0 Then Exit Function
+MiscConvertLog10# = Log(X#) / Log(10#)
 Exit Function
 
 ' Errors
@@ -582,16 +582,16 @@ Exit Function
 
 End Function
 
-Function MiscMin(x As Variant, Y As Variant) As Variant
+Function MiscMin(X As Variant, Y As Variant) As Variant
 ' Finds the minimum of two values passed
 
 ierror = False
 If ierror Then GoTo MiscMinError
 
-If x > Y Then
+If X > Y Then
       MiscMin = Y
  Else
-      MiscMin = x
+      MiscMin = X
 End If
 
 Exit Function
@@ -604,16 +604,16 @@ Exit Function
 
 End Function
 
-Function MiscMax(x As Variant, Y As Variant) As Variant
+Function MiscMax(X As Variant, Y As Variant) As Variant
 ' Finds the maximum of two values passed
 
 ierror = False
 If ierror Then GoTo MiscMaxError
 
-If x < Y Then
+If X < Y Then
     MiscMax = Y
  Else
-    MiscMax = x
+    MiscMax = X
 End If
 
 Exit Function

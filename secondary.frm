@@ -700,7 +700,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Dim ImageX1 As Single, ImageY1 As Single
@@ -799,24 +799,24 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
-ImageX1! = x!    ' store for boundary draw
+ImageX1! = X!    ' store for boundary draw
 ImageY1! = Y!    ' store for boundary draw
 Call SecondaryGetBoundary(Int(1), ImageX1!, ImageY1!, ImageX2!, ImageY2!, FormSECONDARY)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
 ' Update the stage cursor
-Call SecondaryUpdateCursor(x!, Y!, FormSECONDARY)
+Call SecondaryUpdateCursor(X!, Y!, FormSECONDARY)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
-ImageX2! = x!
+ImageX2! = X!
 ImageY2! = Y!
 Call SecondaryGetBoundary(Int(2), ImageX1!, ImageY1!, ImageX2!, ImageY2!, FormSECONDARY)
 If ierror Then Exit Sub

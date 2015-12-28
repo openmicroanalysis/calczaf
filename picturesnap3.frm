@@ -45,7 +45,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Dim BitMapX As Single
@@ -77,9 +77,9 @@ Call PictureSnapStageMove2(BitMapX!, BitMapY!)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
-BitMapX! = x!
+BitMapX! = X!
 BitMapY! = Y!   ' store for double-click
 End Sub
 

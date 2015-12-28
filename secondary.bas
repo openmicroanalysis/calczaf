@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSECONDARY"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 ' Horizontal filed width for non-graphical methods (in microns)
@@ -80,9 +80,9 @@ End If
 
 ' Load form
 If SecondaryFluorescenceFlag Then
-FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.Value = vbChecked     ' this control is invisible in CalcZAF
+FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbChecked     ' this control is invisible in CalcZAF
 Else
-FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.Value = vbUnchecked
+FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbUnchecked
 End If
 
 FormSECONDARY.TextHFW.Text = Format$(ImageHFW!)                        ' in um
@@ -129,8 +129,8 @@ tmsg$ = TypeWeight$(Int(2), SecondaryMatBSample())
 FormSECONDARY.TextMaterialBComposition.Text = tmsg$
 
 ' Load options
-FormSECONDARY.OptionCorrectionMethod(SecondaryFluorescenceCorrectionMethod%).Value = True
-FormSECONDARY.OptionDistanceMethod(SecondaryFluorescenceDistanceMethod%).Value = True
+FormSECONDARY.OptionCorrectionMethod(SecondaryFluorescenceCorrectionMethod%).value = True
+FormSECONDARY.OptionDistanceMethod(SecondaryFluorescenceDistanceMethod%).value = True
 
 ' Load k-ratio file if already specified
 If SecondaryFluorescenceCorrectionMethod% = 0 And BoundaryKratiosDATFile$ <> vbNullString Then
@@ -169,7 +169,7 @@ On Error GoTo SecondarySaveError
 
 Dim radians As Single
 
-If FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.Value = vbChecked Then    ' this control is invisible in CalcZAF
+If FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbChecked Then    ' this control is invisible in CalcZAF
 SecondaryFluorescenceFlag = True                            ' module level flag
 UseSecondaryBoundaryFluorescenceCorrectionFlag = True       ' set global flag if any element is true (PFE only)
 Else
@@ -188,11 +188,11 @@ End If
 
 ' Save distance option
 SecondaryFluorescenceDistanceMethod% = 0
-If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).value = True Then
 SecondaryFluorescenceDistanceMethod% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
 SecondaryFluorescenceDistanceMethod% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
 SecondaryFluorescenceDistanceMethod% = 3
 End If
 
@@ -280,7 +280,7 @@ End If
 ' Graphical method is saved during mouse up/mouse down events (just check for inbounds below)
 
 ' Save correction option
-If FormSECONDARY.OptionCorrectionMethod(0).Value = True Then
+If FormSECONDARY.OptionCorrectionMethod(0).value = True Then
 SecondaryFluorescenceCorrectionMethod% = 0
 Else
 SecondaryFluorescenceCorrectionMethod% = 1
@@ -791,11 +791,11 @@ Dim fractionx As Single, fractiony As Single
 
 ' Get current distance mode
 mode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).value = True Then
 mode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
 mode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
 mode% = 3
 End If
 
@@ -851,11 +851,11 @@ Dim fractionx2 As Single, fractiony2 As Single
 
 ' Check if proper mode and image is loaded
 dmode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).value = True Then
 dmode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
 dmode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
 dmode% = 3
 End If
 
@@ -1041,11 +1041,11 @@ Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Sin
 
 ' Get current distance mode
 dmode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).value = True Then
 dmode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
 dmode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
 dmode% = 3
 End If
 
@@ -1210,13 +1210,13 @@ Dim fractionx As Single, fractiony As Single
 Dim radius As Single
 
 Dim n As Long
-Dim x() As Single, Y() As Single, Z() As Single
+Dim X() As Single, Y() As Single, Z() As Single
 
 ' Check if a calibration is loaded
 If Not PictureSnapCalibrated Then Exit Sub
 
 ' Get coordinate points
-Call SecondaryGetCoordinates(n&, x!(), Y!(), Z!())
+Call SecondaryGetCoordinates(n&, X!(), Y!(), Z!())
 If ierror Then Exit Sub
 
 ' Check for valid points to plot
@@ -1224,7 +1224,7 @@ If n& < 1 Then Exit Sub
 
 ' Loop on all points
 For i& = 1 To n&
-stx! = x!(i&)
+stx! = X!(i&)
 sty! = Y!(i&)
 stz! = Z!(i&)
 

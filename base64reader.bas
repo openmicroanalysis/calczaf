@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeBase64Reader"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -19,7 +19,7 @@ Private Type TypeByt4
 strval(1 To 4) As Byte
 End Type
 
-Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sArray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scan As Double)
+Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scan As Double)
 ' Open prbimg and read in some parameters
 
 Dim lpDefault As String
@@ -174,7 +174,7 @@ Screen.MousePointer = vbHourglass
 ' Dimension float array for returned data
 ix% = ImageWidth%
 iy% = ImageHeight%
-ReDim sArray(1 To ix%, 1 To iy%) As Single
+ReDim sarray(1 To ix%, 1 To iy%) As Single
 
 ' Return other parameters
 beamcurrent1! = beamcurrent1! * NAPA#
@@ -254,7 +254,7 @@ If tWidth% <> ImageWidth% * 4 Then GoTo Base64ReaderInputBadScanLine
 
 ' Convert bytes to single precision floats (note that Y dimension needs to be inverted!)
 Screen.MousePointer = vbHourglass
-Call Base64ReaderConvertLine(barray(), ix%, ImageHeight% - (j% - 1), sArray!())
+Call Base64ReaderConvertLine(barray(), ix%, ImageHeight% - (j% - 1), sarray!())
 If ierror Then
 Screen.MousePointer = vbDefault
 Exit Sub
@@ -318,7 +318,7 @@ Exit Function
 
 End Function
 
-Sub Base64ReaderConvertLine(barray() As Byte, ix As Integer, j As Integer, sArray() As Single)
+Sub Base64ReaderConvertLine(barray() As Byte, ix As Integer, j As Integer, sarray() As Single)
 ' Converts a single scan line from 4 1 byte values into a 4 byte float
 
 ierror = False
@@ -342,7 +342,7 @@ tstr.strval(4) = barray((4 + 4 * (i% - 1)) - 1)
 LSet treal = tstr
 
 ' Load return array
-sArray!(i%, j%) = treal.realval!
+sarray!(i%, j%) = treal.realval!
 Next i%
 
 Exit Sub

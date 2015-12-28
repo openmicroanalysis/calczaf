@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGETZAF"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -22,50 +22,50 @@ Dim i As Integer
 ' Load the ZAF selection strings in the form
 For i% = 0 To UBound(zafstring$)    ' note izaf is indexed from zero (0 = individual selections)
 FormGETZAF.OptionZaf(i%).Caption = zafstring(i%)
-If i% = izaf% Then FormGETZAF.OptionZaf(i%).Value = True
+If i% = izaf% Then FormGETZAF.OptionZaf(i%).value = True
 Next i%
 
 ' Load the ZAF selection strings in the form
 For i% = 1 To UBound(mipstring$)
 FormGETZAF.OptionMip(i% - 1).Caption = mipstring(i%)
-If i% = imip% Then FormGETZAF.OptionMip(i% - 1).Value = True
+If i% = imip% Then FormGETZAF.OptionMip(i% - 1).value = True
 Next i%
 
 For i% = 1 To UBound(bscstring$)
 FormGETZAF.OptionBsc(i% - 1).Caption = bscstring(i%)
-If i% = ibsc Then FormGETZAF.OptionBsc(i% - 1).Value = True
+If i% = ibsc Then FormGETZAF.OptionBsc(i% - 1).value = True
 Next i%
 
 For i% = 1 To UBound(phistring$)
 FormGETZAF.OptionPhi(i% - 1).Caption = phistring(i%)
-If i% = iphi% Then FormGETZAF.OptionPhi(i% - 1).Value = True
+If i% = iphi% Then FormGETZAF.OptionPhi(i% - 1).value = True
 Next i%
 
 For i% = 1 To UBound(stpstring$)
 FormGETZAF.OptionStp(i% - 1).Caption = stpstring(i%)
-If i% = istp Then FormGETZAF.OptionStp(i% - 1).Value = True
+If i% = istp Then FormGETZAF.OptionStp(i% - 1).value = True
 Next i%
 
 For i% = 0 To UBound(bksstring$)    ' note ibks is indexed from zero
 FormGETZAF.OptionBks(i%).Caption = bksstring(i%)
-If i% = ibks Then FormGETZAF.OptionBks(i%).Value = True
+If i% = ibks Then FormGETZAF.OptionBks(i%).value = True
 Next i%
 
 For i% = 1 To UBound(absstring$)
 FormGETZAF.OptionAbs(i% - 1).Caption = absstring(i%)
-If i% = iabs% Then FormGETZAF.OptionAbs(i% - 1).Value = True
+If i% = iabs% Then FormGETZAF.OptionAbs(i% - 1).value = True
 Next i%
 
 For i% = 1 To UBound(flustring$)
 FormGETZAF.OptionFlu(i% - 1).Caption = flustring(i%)
-If i% = iflu Then FormGETZAF.OptionFlu(i% - 1).Value = True
+If i% = iflu Then FormGETZAF.OptionFlu(i% - 1).value = True
 Next i%
 
 ' Set beta fluorescence flag
 If UseFluorescenceByBetaLinesFlag Then
-FormGETZAF.CheckUseFluorescenceByBetaLines.Value = vbChecked
+FormGETZAF.CheckUseFluorescenceByBetaLines.value = vbChecked
 Else
-FormGETZAF.CheckUseFluorescenceByBetaLines.Value = vbUnchecked
+FormGETZAF.CheckUseFluorescenceByBetaLines.value = vbUnchecked
 End If
 
 Exit Sub
@@ -88,40 +88,40 @@ Dim i As Integer
 
 ' Load the ZAF selection strings in the form
 For i% = 0 To UBound(zafstring$)    ' note ibks is indexed from zero
-If FormGETZAF.OptionZaf(i%).Value Then izaf% = i%
+If FormGETZAF.OptionZaf(i%).value Then izaf% = i%
 Next i%
 
 ' Save the ZAF selection strings from the form
 For i% = 1 To UBound(mipstring$)
-If FormGETZAF.OptionMip(i% - 1).Value Then imip% = i%
+If FormGETZAF.OptionMip(i% - 1).value Then imip% = i%
 Next i%
 
 For i% = 1 To UBound(bscstring$)
-If FormGETZAF.OptionBsc(i% - 1).Value Then ibsc = i%
+If FormGETZAF.OptionBsc(i% - 1).value Then ibsc = i%
 Next i%
 
 For i% = 1 To UBound(phistring$)
-If FormGETZAF.OptionPhi(i% - 1).Value Then iphi% = i%
+If FormGETZAF.OptionPhi(i% - 1).value Then iphi% = i%
 Next i%
 
 For i% = 1 To UBound(stpstring)
-If FormGETZAF.OptionStp(i% - 1).Value Then istp = i%
+If FormGETZAF.OptionStp(i% - 1).value Then istp = i%
 Next i%
 
 For i% = 0 To UBound(bksstring$)    ' note ibks is indexed from zero
-If FormGETZAF.OptionBks(i%).Value Then ibks = i%
+If FormGETZAF.OptionBks(i%).value Then ibks = i%
 Next i%
 
 For i% = 1 To UBound(absstring$)
-If FormGETZAF.OptionAbs(i% - 1).Value Then iabs% = i%
+If FormGETZAF.OptionAbs(i% - 1).value Then iabs% = i%
 Next i%
 
 For i% = 1 To UBound(flustring$)
-If FormGETZAF.OptionFlu(i% - 1).Value Then iflu = i%
+If FormGETZAF.OptionFlu(i% - 1).value Then iflu = i%
 Next i%
 
 ' Set beta fluorescence flag
-If FormGETZAF.CheckUseFluorescenceByBetaLines.Value = vbChecked Then
+If FormGETZAF.CheckUseFluorescenceByBetaLines.value = vbChecked Then
 UseFluorescenceByBetaLinesFlag = True
 Else
 UseFluorescenceByBetaLinesFlag = False
@@ -175,7 +175,7 @@ Dim i As Integer, j As Integer
 
 ' Load predefined zaf correction
 For j% = 0 To UBound(zafstring$)
-If FormGETZAF.OptionZaf(j%).Value Then
+If FormGETZAF.OptionZaf(j%).value Then
 izaf% = j%
 End If
 Next j%
@@ -186,152 +186,152 @@ If izaf% = 0 Then
 ' Select the default (Armstrong/Love-Scott)ZAF matrix correction algorithms
 ElseIf izaf% = 1 Then
 i% = 2
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 1
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 2
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 9
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 
 ' Conventional Philibert/Duncumb Reed
 ElseIf izaf% = 2 Then
 i% = 1
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 2
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 5
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 1
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 1
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 1
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 
 ' Heinrich/Duncumb-Reed
 ElseIf izaf% = 3 Then
 i% = 1
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 1
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 5
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 1
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 1
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 2
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 
 ' Love-Scott I
 ElseIf izaf% = 4 Then
 i% = 2
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 1
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 2
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 
 ' Love-Scott II
 ElseIf izaf% = 5 Then
 i% = 2
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 1
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 2
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 6
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 
 ' Packwood Phi(PZ) (EPQ-91)
 ElseIf izaf% = 6 Then
 i% = 1
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 5
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 7
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 14
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 6
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 0
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 
 ' Bastin original Phi(PZ)
 ElseIf izaf% = 7 Then
 i% = 2
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 3
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 2
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 10
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 6
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 0
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 
 ' Bastin PROZA Phi(PZ) (EPQ-91)
 ElseIf izaf% = 8 Then
 i% = 3
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 3
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 15
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 5
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 7
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 
 ' Pouchout & Pichoir - Full
 ElseIf izaf% = 9 Then
 i% = 3
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 3
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 12
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 5
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 7
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 
 ' Pouchout & Pichoir - Simplified
 ElseIf izaf% = 10 Then
 i% = 3
-FormGETZAF.OptionBsc(i% - 1).Value = True
+FormGETZAF.OptionBsc(i% - 1).value = True
 i% = 3
-FormGETZAF.OptionMip(i% - 1).Value = True
+FormGETZAF.OptionMip(i% - 1).value = True
 i% = 4
-FormGETZAF.OptionPhi(i% - 1).Value = True
+FormGETZAF.OptionPhi(i% - 1).value = True
 i% = 13
-FormGETZAF.OptionAbs(i% - 1).Value = True
+FormGETZAF.OptionAbs(i% - 1).value = True
 i% = 5
-FormGETZAF.OptionStp(i% - 1).Value = True
+FormGETZAF.OptionStp(i% - 1).value = True
 i% = 7
-FormGETZAF.OptionBks(i%).Value = True   ' note ibks is indexed from zero
+FormGETZAF.OptionBks(i%).value = True   ' note ibks is indexed from zero
 End If
 
 Exit Sub
@@ -353,7 +353,7 @@ On Error GoTo GetZAFSetEnablesError
 Dim i As Integer
 
 ' Enable all
-If FormGETZAF.OptionZaf(0).Value = True Then
+If FormGETZAF.OptionZaf(0).value = True Then
 
 For i% = 1 To UBound(mipstring$)
 FormGETZAF.OptionMip(i% - 1).Enabled = True

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMonitors"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -26,13 +26,13 @@ Private Type TypeMONITORINFO
 End Type
 
 Private Declare Function GetWindowRect Lib "user32" (ByVal hWnd As Long, lpRect As TypeRECT) As Long
-Private Declare Function OffsetRect Lib "user32" (lpRect As TypeRECT, ByVal x As Long, ByVal Y As Long) As Long
+Private Declare Function OffsetRect Lib "user32" (lpRect As TypeRECT, ByVal X As Long, ByVal Y As Long) As Long
 
 Private Declare Function EnumDisplayMonitors Lib "user32" (ByVal hdc As Long, lprcClip As Any, ByVal lpfnEnum As Long, dwdata As Any) As Long
 Private Declare Function MonitorFromRect Lib "user32" (ByRef lprc As TypeRECT, ByVal dwFlags As Long) As Long
 Private Declare Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As Long, ByRef lpmi As TypeMONITORINFO) As Long
 Private Declare Function UnionRect Lib "user32" (lprcDst As TypeRECT, lprcSrc1 As TypeRECT, lprcSrc2 As TypeRECT) As Long
-Private Declare Function MoveWindow Lib "user32" (ByVal hWnd As Long, ByVal x As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal bRepaint As Long) As Long
+Private Declare Function MoveWindow Lib "user32" (ByVal hWnd As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal bRepaint As Long) As Long
 
 Const MONITOR_DEFAULTTONEAREST = &H2
 

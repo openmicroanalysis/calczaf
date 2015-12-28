@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma08a"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -519,7 +519,7 @@ Exit Sub
 
 End Sub
 
-Sub Penepma08GraphGetPenepma(npoints As Long, xdata() As Double, ydata() As Double)
+Sub Penepma08GraphGetPenepma(nPoints As Long, xdata() As Double, ydata() As Double)
 ' Load spectrum data from spectrum file (PENEPMA_CONVOLG_File$)
 
 ierror = False
@@ -532,24 +532,24 @@ If Dir$(Trim$(PENEPMA_CONVOLG_File$)) = vbNullString Then Exit Sub
 Open PENEPMA_CONVOLG_File$ For Input As #Temp1FileNumber%
 
 ' Load array (npts&, xdata#(), ydata#())
-npoints& = 0
+nPoints& = 0
 Do Until EOF(Temp1FileNumber%)
 Line Input #Temp1FileNumber%, astring$
 If Len(Trim$(astring$)) > 0 And InStr(astring$, "#") = 0 Then            ' skip to first data line
 
 ' Load total spectrum
-npoints& = npoints& + 1
+nPoints& = nPoints& + 1
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
-ReDim Preserve xdata(1 To npoints&) As Double
-ReDim Preserve ydata(1 To npoints&) As Double
-xdata#(npoints&) = Val(Trim$(bstring$))
+ReDim Preserve xdata(1 To nPoints&) As Double
+ReDim Preserve ydata(1 To nPoints&) As Double
+xdata#(nPoints&) = Val(Trim$(bstring$))
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
-ydata#(npoints&) = Val(Trim$(bstring$))
+ydata#(nPoints&) = Val(Trim$(bstring$))
 
 If VerboseMode And DebugMode Then
-Call IOWriteLog("N=" & Format$(npoints&) & ", X=" & Format$(xdata#(npoints&)) & ", Y=" & Format$(ydata#(npoints&), e104$))
+Call IOWriteLog("N=" & Format$(nPoints&) & ", X=" & Format$(xdata#(nPoints&)) & ", Y=" & Format$(ydata#(nPoints&), e104$))
 End If
 
 End If

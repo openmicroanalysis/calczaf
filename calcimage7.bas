@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeCalcImage7"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -14,7 +14,7 @@ Option Explicit
 ' Output data for GRD files
 Dim PrbImgData(1 To 1) As TypeImageData
 
-Sub CalcImageCreateGRDFromArray(tfilename As String, ix As Integer, iy As Integer, sArray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double)
+Sub CalcImageCreateGRDFromArray(tfilename As String, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double)
 ' Create and save a GRD file from the passed array to the passed filename
 
 ierror = False
@@ -47,7 +47,7 @@ Screen.MousePointer = vbHourglass
 ' Load data image data
 For j% = 1 To iy%
 For i% = 1 To ix%
-PrbImgData(1).gData!(i%, j%) = sArray!(i%, j%)
+PrbImgData(1).gData!(i%, j%) = sarray!(i%, j%)
 Next i%
 Next j%
 
@@ -85,7 +85,7 @@ Exit Sub
 
 End Sub
 
-Sub CalcImageCreateGRDFromArray2(tfilename As String, ix As Long, iy As Long, sArray() As Double, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double)
+Sub CalcImageCreateGRDFromArray2(tfilename As String, ix As Long, iy As Long, sarray() As Double, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double)
 ' Create and save a GRD file from the passed double precision array to the passed filename
 
 ierror = False
@@ -118,7 +118,7 @@ Screen.MousePointer = vbHourglass
 ' Load data image data
 For j& = 1 To iy&
 For i& = 1 To ix&
-PrbImgData(1).gData!(i&, j&) = CSng(sArray#(i&, j&))
+PrbImgData(1).gData!(i&, j&) = CSng(sarray#(i&, j&))
 Next i&
 Next j&
 

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeCalcZAF2"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -16,7 +16,7 @@ Dim arraysize As Integer
 Dim filenamearray() As String
 
 Dim tlabel(1 To MAXCHAN% + 2) As String
-Dim tdata(1 To MAXCHAN% + 2) As Double
+Dim tData(1 To MAXCHAN% + 2) As Double
 
 Dim InputLineCount As Integer
 Dim OutputLineCount As Long
@@ -165,55 +165,55 @@ astring$ = SampleGetString2$(sample())
 nCol% = 1
 tlabel$(nCol%) = "Line"
 OutputLineCount& = OutputLineCount& + 1
-tdata#(nCol%) = CDbl(OutputLineCount&)
+tData#(nCol%) = CDbl(OutputLineCount&)
 
 ' Load elemental data
 For chan% = 1 To sample(1).LastChan%
 nCol% = nCol% + 1
 tlabel$(nCol%) = vbNullString
-tdata#(nCol%) = CDbl(0#)
+tData#(nCol%) = CDbl(0#)
 
 If ExcelMethodOption% = 0 Then
 tlabel$(nCol%) = sample(1).Elsyup$(chan%)
-tdata#(nCol%) = CDbl(analysis.WtPercents!(chan%))   ' load weight percents
+tData#(nCol%) = CDbl(analysis.WtPercents!(chan%))   ' load weight percents
 
 ElseIf ExcelMethodOption% = 1 Then
 tlabel$(nCol%) = sample(1).Elsyup$(chan%) & " " & sample(1).Xrsyms$(chan%)
 
 If CalcZAFMode% = 0 Then    ' intensities from concentrations
 If CorrectionFlag% = 0 Or CorrectionFlag% = 5 Or CorrectionFlag% = MAXCORRECTION% Then
-tdata#(nCol%) = CDbl(analysis.StdAssignsKfactors!(chan%))   ' load k-ratios
+tData#(nCol%) = CDbl(analysis.StdAssignsKfactors!(chan%))   ' load k-ratios
 Else
-tdata#(nCol%) = CDbl(analysis.StdAssignsBetas!(chan%))   ' load beta factors
+tData#(nCol%) = CDbl(analysis.StdAssignsBetas!(chan%))   ' load beta factors
 End If
 
 Else                        ' concentrations from intensities
 If CorrectionFlag% = 0 Or CorrectionFlag% = 5 Or CorrectionFlag% = MAXCORRECTION% Then
-tdata#(nCol%) = CDbl(analysis.UnkKrats!(chan%))   ' load k-ratios
+tData#(nCol%) = CDbl(analysis.UnkKrats!(chan%))   ' load k-ratios
 Else
-tdata#(nCol%) = CDbl(analysis.UnkBetas!(chan%))   ' load beta factors
+tData#(nCol%) = CDbl(analysis.UnkBetas!(chan%))   ' load beta factors
 End If
 End If
 
 ElseIf ExcelMethodOption% = 2 Then
 tlabel$(nCol%) = sample(1).Elsyup$(chan%)
-tdata#(nCol%) = CDbl(analysis.AtPercents!(chan%))   ' load atomic percents
+tData#(nCol%) = CDbl(analysis.AtPercents!(chan%))   ' load atomic percents
 
 ElseIf ExcelMethodOption% = 3 Then
 tlabel$(nCol%) = sample(1).Oxsyup$(chan%)
-tdata#(nCol%) = CDbl(analysis.OxPercents!(chan%))   ' load oxide percents
+tData#(nCol%) = CDbl(analysis.OxPercents!(chan%))   ' load oxide percents
 
 ElseIf ExcelMethodOption% = 4 Then
 tlabel$(nCol%) = sample(1).Elsyup$(chan%)
-tdata#(nCol%) = CDbl(analysis.Formulas!(chan%))     ' load formulas
+tData#(nCol%) = CDbl(analysis.Formulas!(chan%))     ' load formulas
 
 ElseIf ExcelMethodOption% = 5 Then
 tlabel$(nCol%) = sample(1).Elsyup$(chan%)
-tdata#(nCol%) = CDbl(analysis.NormElPercents!(chan%))     ' load normalized elemental
+tData#(nCol%) = CDbl(analysis.NormElPercents!(chan%))     ' load normalized elemental
 
 ElseIf ExcelMethodOption% = 6 Then
 tlabel$(nCol%) = sample(1).Oxsyup$(chan%)
-tdata#(nCol%) = CDbl(analysis.NormOxPercents!(chan%))     ' load normalized oxide
+tData#(nCol%) = CDbl(analysis.NormOxPercents!(chan%))     ' load normalized oxide
 End If
 
 Next chan%
@@ -221,31 +221,31 @@ Next chan%
 ' Load total
 nCol% = nCol% + 1
 tlabel$(nCol%) = vbNullString
-tdata#(nCol%) = CDbl(0#)
+tData#(nCol%) = CDbl(0#)
 
 If ExcelMethodOption% = 0 Then
 tlabel$(nCol%) = "Total"
-tdata#(nCol%) = CDbl(analysis.TotalPercent!)   ' load weight percents
+tData#(nCol%) = CDbl(analysis.TotalPercent!)   ' load weight percents
 bstring$ = astring$ & ", Elemental weight percents"
 
 ElseIf ExcelMethodOption% = 1 Then
 tlabel$(nCol%) = vbNullString
-tdata#(nCol%) = CDbl(0#)                        ' load k-ratios
+tData#(nCol%) = CDbl(0#)                        ' load k-ratios
 bstring$ = astring$ & ", K-ratios"
 
 ElseIf ExcelMethodOption% = 2 Then
 tlabel$(nCol%) = "Total"
-tdata#(nCol%) = CDbl(100#)   ' load atomic percents
+tData#(nCol%) = CDbl(100#)   ' load atomic percents
 bstring$ = astring$ & ", Atomic Percents"
 
 ElseIf ExcelMethodOption% = 3 Then
 tlabel$(nCol%) = "Total"
-tdata#(nCol%) = CDbl(analysis.TotalPercent!)   ' load oxide percents
+tData#(nCol%) = CDbl(analysis.TotalPercent!)   ' load oxide percents
 bstring$ = astring$ & ", Oxide Percents"
 
 ElseIf ExcelMethodOption% = 4 Then
 tlabel$(nCol%) = "Sum"
-tdata#(nCol%) = CDbl(analysis.TotalCations!)     ' load formulas
+tData#(nCol%) = CDbl(analysis.TotalCations!)     ' load formulas
 If sample(1).FormulaElement <> vbNullString Then
 bstring$ = astring$ & ", Formula Atoms based on " & Str$(sample(1).FormulaRatio!) & " Atoms of " & MiscAutoUcase$(sample(1).FormulaElement$)
 Else
@@ -254,12 +254,12 @@ End If
 
 ElseIf ExcelMethodOption% = 5 Then
 tlabel$(nCol%) = "Total"
-tdata#(nCol%) = CDbl(100#)     ' load normalized elemental
+tData#(nCol%) = CDbl(100#)     ' load normalized elemental
 bstring$ = astring$ & ", Normalized Elemental Percents"
 
 ElseIf ExcelMethodOption% = 6 Then
 tlabel$(nCol%) = "Total"
-tdata#(nCol%) = CDbl(100#)     ' load normalized oxides
+tData#(nCol%) = CDbl(100#)     ' load normalized oxides
 bstring$ = astring$ & ", Normalized Oxide Percents"
 End If
 
@@ -268,7 +268,7 @@ Call ExcelSendLabelToSpreadsheet(Int(0), nCol%, bstring$, tlabel$())
 If ierror Then Exit Sub
 
 ' Send data to Excel
-Call ExcelSendDataToSpreadsheet(nCol%, tdata#())
+Call ExcelSendDataToSpreadsheet(nCol%, tData#())
 If ierror Then Exit Sub
 
 Exit Sub

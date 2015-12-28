@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeBMP"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -418,7 +418,7 @@ Exit Sub
 
 End Sub
 
-Sub BMPConvertSingleArrayToByteArray(ix As Integer, iy As Integer, sArray() As Single, jarray() As Byte)
+Sub BMPConvertSingleArrayToByteArray(ix As Integer, iy As Integer, sarray() As Single, jarray() As Byte)
 ' Converts an single precision array to a byte array (normalizes the data to 0 to 255)
 
 ierror = False
@@ -434,9 +434,9 @@ smax# = CSng(MINSINGLE!)
 smin# = CSng(MAXSINGLE!)
 For j% = 1 To iy%
 For i% = 1 To ix%
-If sArray!(i%, j%) <> BLANKINGVALUE! Then
-If sArray!(i%, j%) > smax# Then smax# = CSng(sArray!(i%, j%))
-If sArray!(i%, j%) < smin# Then smin# = CSng(sArray!(i%, j%))
+If sarray!(i%, j%) <> BLANKINGVALUE! Then
+If sarray!(i%, j%) > smax# Then smax# = CSng(sarray!(i%, j%))
+If sarray!(i%, j%) < smin# Then smin# = CSng(sarray!(i%, j%))
 End If
 Next i%
 Next j%
@@ -447,8 +447,8 @@ minmax# = (smax# - smin#)
 If minmax# <> 0# Then
 For j% = 1 To iy%
 For i% = 1 To ix%
-If sArray!(i%, j%) <> BLANKINGVALUE! Then
-stemp# = MAXLEVELS& * (sArray!(i%, j%) - smin#) / minmax#
+If sarray!(i%, j%) <> BLANKINGVALUE! Then
+stemp# = MAXLEVELS& * (sarray!(i%, j%) - smin#) / minmax#
 If stemp# < 0 Then stemp# = 0
 If stemp# > BIT8& Then stemp# = BIT8&
 jarray(i%, j%) = CByte(stemp#)
@@ -657,7 +657,7 @@ Dim bitmap_info As BITMAPINFO
 Dim pixels() As Byte
 Dim bytes_per_scanLine As Long
 Dim pad_per_scanLine As Long
-Dim x As Integer
+Dim X As Integer
 Dim Y As Integer
 Dim ave_color As Byte
 Dim nBytes As Long
@@ -690,12 +690,12 @@ If CSng(picColor.ScaleWidth) * CSng(picColor.ScaleHeight) * 4# < MAXLONG& Then E
 
     ' Modify the pixels
     For Y = 1 To picColor.ScaleHeight
-        For x = 1 To picColor.ScaleWidth
-            ave_color = CByte((CInt(pixels(pixR, x, Y)) + pixels(pixG, x, Y) + pixels(pixB, x, Y)) \ 3)
-            pixels(pixR, x, Y) = ave_color
-            pixels(pixG, x, Y) = ave_color
-            pixels(pixB, x, Y) = ave_color
-        Next x
+        For X = 1 To picColor.ScaleWidth
+            ave_color = CByte((CInt(pixels(pixR, X, Y)) + pixels(pixG, X, Y) + pixels(pixB, X, Y)) \ 3)
+            pixels(pixR, X, Y) = ave_color
+            pixels(pixG, X, Y) = ave_color
+            pixels(pixB, X, Y) = ave_color
+        Next X
     Next Y
 
     ' Display the result
@@ -721,7 +721,7 @@ On Error GoTo BMPMakeColoredError
 Dim bitmap_info As BITMAPINFO
 Dim bytes_per_scanLine As Long
 Dim pad_per_scanLine As Long
-Dim x As Integer
+Dim X As Integer
 Dim Y As Integer
 Dim tR As Long
 Dim tG As Long
@@ -751,14 +751,14 @@ Const pixB& = 3
 
     ' Modify the non black pixels
     For Y% = 1 To picColor.ScaleHeight
-        For x% = 1 To picColor.ScaleWidth
-        If pixels(pixR, x, Y) <> 0 And pixels(pixG, x, Y) <> 0 And pixels(pixB, x, Y) <> 0 Then
+        For X% = 1 To picColor.ScaleWidth
+        If pixels(pixR, X, Y) <> 0 And pixels(pixG, X, Y) <> 0 And pixels(pixB, X, Y) <> 0 Then
             Call BMPUnRGB(tRGB&, tR&, tG&, tB&)
-            pixels(pixR, x, Y) = CByte(tR)
-            pixels(pixG, x, Y) = CByte(tG)
-            pixels(pixB, x, Y) = CByte(tB)
+            pixels(pixR, X, Y) = CByte(tR)
+            pixels(pixG, X, Y) = CByte(tG)
+            pixels(pixB, X, Y) = CByte(tB)
         End If
-        Next x%
+        Next X%
     Next Y%
 
     ' Display the result

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscSystem"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -220,7 +220,7 @@ Private Declare Function IsWow64Process Lib "Kernel32" (ByVal hProc As Long, ByR
 Global Const FWP_STARTSWITH As Long = 0
 Global Const FWP_CONTAINS As Long = 1
 
-Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 Declare Function OSFindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 Declare Function OSGetWindow Lib "user32" Alias "GetWindow" (ByVal hWnd As Long, ByVal wCmd As Long) As Long
 'Declare Function OSSetActiveWindow Lib "user32" Alias "SetForegroundWindow" (ByVal hWnd As Long) As Long

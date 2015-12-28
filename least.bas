@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeLEAST"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -529,14 +529,14 @@ Exit Sub
 
 End Sub
 
-Sub LeastSplineInterpolate(npts%, axdata() As Single, aydata() As Single, ycoeff() As Double, x As Single, Y As Single)
+Sub LeastSplineInterpolate(npts%, axdata() As Single, aydata() As Single, ycoeff() As Double, X As Single, Y As Single)
 ' Return the y-value for the passed x value
 
 ierror = False
 On Error GoTo LeastSplineInterpolateError
 
 ' Return the interpolated value
-Call SplineInterpolate(axdata!(), aydata!(), ycoeff#(), CLng(npts%), x!, Y!)
+Call SplineInterpolate(axdata!(), aydata!(), ycoeff#(), CLng(npts%), X!, Y!)
 If ierror Then Exit Sub
 
 Exit Sub
@@ -914,7 +914,7 @@ Exit Sub
 
 End Sub
 
-Sub LeastGauss(kmax As Integer, x() As Double, Y() As Double, a() As Double)
+Sub LeastGauss(kmax As Integer, X() As Double, Y() As Double, a() As Double)
 ' This routine solves a set of kmax simultaneous algebraic equations of the form A*x = y.
 ' The method used is gaussian elimination with back row substitution.  A full search for
 ' pivot elements is done and row and column interchange is done.
@@ -936,7 +936,7 @@ ReDim c(1 To MAXCOEFF9%) As Double
 
 ' Zero the returned coefficients array
 For i% = 1 To MAXCOEFF9%
-x#(i%) = 0#
+X#(i%) = 0#
 Next i%
 
 ' Variable "ktemp%(i%)" keeps track of column interchanges
@@ -1025,7 +1025,7 @@ Next i%
 ' Put everything back in the correct order
 For i% = 1 To kmax%
 ii% = ktemp%(i%)
-x#(ii%) = c#(i%)
+X#(ii%) = c#(i%)
 Next i%
 
 Exit Sub

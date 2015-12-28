@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMODAL3"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Dim ModalAnalysis As TypeAnalysis
@@ -71,7 +71,7 @@ ReDim phasemaxendmember(1 To MAXPHASE%, 1 To MAXEND%) As Single
 ReDim phasemaxweights(1 To MAXPHASE%, 1 To MAXCHAN%) As Single
 
 ReDim upercents(1 To MAXCHAN%) As Double
-ReDim tpercents(1 To MAXCHAN%) As Single
+ReDim tPercents(1 To MAXCHAN%) As Single
 ReDim apercents(1 To MAXCHAN%) As Single
 
 ReDim spercents(1 To MAXCHAN%, 1 To MAXSTD%) As Double  ' note reversed column-row order
@@ -150,14 +150,14 @@ End If
 ' Zero parameters
 For chan% = 1 To MAXCHAN%
 upercents#(chan%) = 0#
-tpercents!(chan%) = 0#
+tPercents!(chan%) = 0#
 apercents!(chan%) = 0#
 Next chan%
 
 ' Load unknown weights from ASCII input data file
 For chan% = 1 To ModalOldSample(1).LastElm%
 If Not EOF(ModalInputDataFileNumber%) Then
-Input #ModalInputDataFileNumber%, tpercents!(chan%)
+Input #ModalInputDataFileNumber%, tPercents!(chan%)
 End If
 Next chan%
 
@@ -165,13 +165,13 @@ Next chan%
 totaloxygen! = 0#
 For chan% = 1 To ModalOldSample(1).LastChan%
 If ModalOldSample(1).OxideOrElemental% = 1 Then
-upercents#(chan%) = CDbl(ConvertOxdToElm!(tpercents!(chan%), ModalOldSample(1).Elsyms$(chan%), ModalOldSample(1).numcat%(chan%), ModalOldSample(1).numoxd%(chan%)))
+upercents#(chan%) = CDbl(ConvertOxdToElm!(tPercents!(chan%), ModalOldSample(1).Elsyms$(chan%), ModalOldSample(1).numcat%(chan%), ModalOldSample(1).numoxd%(chan%)))
 If ierror Then Exit Sub
-totaloxygen! = totaloxygen! + (tpercents!(chan%) - upercents#(chan%))
+totaloxygen! = totaloxygen! + (tPercents!(chan%) - upercents#(chan%))
 
 ' Just load to unknown array
 Else
-upercents#(chan%) = CDbl(tpercents!(chan%))
+upercents#(chan%) = CDbl(tPercents!(chan%))
 End If
 Next chan%
 
@@ -203,7 +203,7 @@ msg$ = msg$ & Format$(Format$(0#, f80$), a80$)
 End If
 msg$ = msg$ & Format$(Format$(sum!, f82$), a80$)
 For chan% = 1 To ModalOldSample(1).LastElm%
-msg$ = msg$ & Format$(Format$(tpercents!(chan%), f82$), a80$)
+msg$ = msg$ & Format$(Format$(tPercents!(chan%), f82$), a80$)
 Next chan%
 
 Call IOWriteLog(msg$)
@@ -281,7 +281,7 @@ End If
 
 msg$ = msg$ & Format$(Format$(sum!, f82$), a80$)
 For chan% = 1 To ModalOldSample(1).LastElm%
-msg$ = msg$ & Format$(Format$(tpercents!(chan%), f82$), a80$)
+msg$ = msg$ & Format$(Format$(tPercents!(chan%), f82$), a80$)
 Next chan%
 
 ' Phase matched unknown composition
@@ -361,17 +361,17 @@ End If
 
 ' Load original weight percents from file
 For chan% = 1 To ModalOldSample(1).LastElm%
-msg$ = msg$ & Format$(Format$(tpercents!(chan%), f82$), a80$)
+msg$ = msg$ & Format$(Format$(tPercents!(chan%), f82$), a80$)
 
 ' Calculate running average and standard deviations for weight percents
-Call ModalAccumulateSums(tpercents!(chan%), phaseaverageweights!(phasenumber%, chan%), phasestddevweights!(phasenumber%, chan%))
+Call ModalAccumulateSums(tPercents!(chan%), phaseaverageweights!(phasenumber%, chan%), phasestddevweights!(phasenumber%, chan%))
 If ierror Then Exit Sub
 
-If tpercents!(chan%) < phaseminweights!(phasenumber%, chan%) Then
-phaseminweights!(phasenumber%, chan%) = tpercents!(chan%)
+If tPercents!(chan%) < phaseminweights!(phasenumber%, chan%) Then
+phaseminweights!(phasenumber%, chan%) = tPercents!(chan%)
 End If
-If tpercents!(chan%) > phasemaxweights!(phasenumber%, chan%) Then
-phasemaxweights!(phasenumber%, chan%) = tpercents!(chan%)
+If tPercents!(chan%) > phasemaxweights!(phasenumber%, chan%) Then
+phasemaxweights!(phasenumber%, chan%) = tPercents!(chan%)
 End If
 
 Next chan%

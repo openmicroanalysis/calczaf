@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMODAL2"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Sub ModalFitModal(numelms As Integer, numstds As Integer, upercents() As Double, spercents() As Double, fitcoeff As Double, weightflag As Integer)
@@ -70,7 +70,7 @@ Exit Sub
 
 End Sub
 
-Sub ModalGetStats(tdata() As Double, n As Integer, mean As Double, stddev As Double)
+Sub ModalGetStats(tData() As Double, n As Integer, mean As Double, stddev As Double)
 ' A vector of data (tdata) is received which has n data points.  The mean (mean) and second moment (stddev)
 ' are computed.  These are used in scaled regression.
 
@@ -83,14 +83,14 @@ Dim sum As Double
 ' Compute mean
 sum# = 0#
 For i% = 1 To n%
-sum# = sum# + tdata#(i%)
+sum# = sum# + tData#(i%)
 Next i%
 mean# = sum# / n%
  
 ' Compute second moment
 sum# = 0#
 For i% = 1 To n%
-sum# = sum# + (tdata#(i%) - mean#) * (tdata#(i%) - mean#)
+sum# = sum# + (tData#(i%) - mean#) * (tData#(i%) - mean#)
 Next i%
 stddev# = Sqr(sum#)
 
@@ -148,10 +148,10 @@ ReDim mean(1 To np%) As Double
 ReDim indx(1 To np%) As Integer
 ReDim indxf(1 To np%) As Integer
 
-ReDim X1(1 To mp%, 1 To np%) As Double
+ReDim x1(1 To mp%, 1 To np%) As Double
 ReDim xt(1 To np%, 1 To mp%) As Double
 ReDim x2t(1 To np%, 1 To mp%) As Double
-ReDim Y1(1 To mp%) As Double
+ReDim y1(1 To mp%) As Double
 ReDim stddev(1 To np%) As Double
 
 ReDim temp(1 To p%) As Double
@@ -198,18 +198,18 @@ If ierror Then Exit Sub
 
 For i% = 1 To n%
 For j% = 1 To p% - 1
-X1#(i%, j%) = (x#(i%, j% + 1) - mean#(j%)) / stddev#(j%)
+x1#(i%, j%) = (x#(i%, j% + 1) - mean#(j%)) / stddev#(j%)
 Next j%
-Y1#(i) = (Y#(i) - meany#) / stdy#
+y1#(i) = (Y#(i) - meany#) / stdy#
 Next i%
 newp% = p% - 1
 
 Else
 For i% = 1 To n%
 For j% = 1 To p%
-X1#(i%, j%) = x#(i%, j%)
+x1#(i%, j%) = x#(i%, j%)
 Next j%
-Y1#(i) = Y#(i%)
+y1#(i) = Y#(i%)
 Next i%
 newp% = p%
 End If
@@ -217,7 +217,7 @@ End If
 ' Compute the transpose of the design matrix
 For i% = 1 To n%
 For j% = 1 To newp%
-xt#(j%, i%) = X1#(i%, j%)
+xt#(j%, i%) = x1#(i%, j%)
 Next j%
 Next i%
 
@@ -226,7 +226,7 @@ For i% = 1 To newp%
 For j% = 1 To newp%
 f#(i%, j%) = 0#
 For k% = 1 To n%
-f#(i%, j%) = f#(i%, j%) + xt#(i%, k%) * X1#(k%, j%)
+f#(i%, j%) = f#(i%, j%) + xt#(i%, k%) * x1#(k%, j%)
 Next k%
 Next j%
 Next i%
@@ -242,9 +242,9 @@ Next j%
 ' Perform regression using SVD (Press, et al., 1986)
 For i% = 1 To n%
 For j% = 1 To newp%
-u#(i%, j%) = X1#(i%, j%) / sig#(i%)
+u#(i%, j%) = x1#(i%, j%) / sig#(i%)
 Next j%
-b#(i%) = Y1#(i%) / sig#(i%)
+b#(i%) = y1#(i%) / sig#(i%)
 Next i%
 
 Call ModalSVDCMP(u#(), n%, newp%, mp%, np%, w#(), v#())

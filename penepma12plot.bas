@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma12Plot"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 ' Written by Gareth Seward under contract for Probe Software
 Option Explicit
 

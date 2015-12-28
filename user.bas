@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeUSER"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -108,7 +108,7 @@ Exit Sub
 
 End Sub
 
-Sub UserOpenNewFile(Filename As String)
+Sub UserOpenNewFile(tfilename As String)
 ' The routine opens a new user database file (USER.MDB)
 
 ierror = False
@@ -117,7 +117,7 @@ On Error GoTo UserOpenNewFileError
 Dim UsDb As Database
 
 ' Specify the user database variables
-Dim user As New TableDef
+Dim UserTable As New TableDef
 
 Dim UserRows As New Field
 Dim UserNames As New Field
@@ -138,116 +138,129 @@ Dim UserTotalAcquisitionTime As New Field
 
 Dim NameIndex As New Index
 
+' Note that because of DAO 3.5 compatibility issues, we cannot create new SETUP*.MDB files at this time (DB data control compatibility)
+msg$ = "Unable to create a new user database: " & UserDataFile$ & " due to DAO 3.50 compatibility issues." & vbCrLf & vbCrLf
+msg$ = msg$ & "To obtain a new user database file please download the default USER.MDB files from our ftp servers or contact Probe Software."
+MsgBox msg$, vbOKOnly + vbInformation, "UserOpenNewFile"
+Exit Sub
+
 ' Check for blank file
-If Trim$(Filename$) = vbNullString Then GoTo UserOpenNewFileBlankName
+If Trim$(tfilename$) = vbNullString Then GoTo UserOpenNewFileBlankName
 
 ' If file exists, erase it
-If Dir$(Filename$) <> vbNullString Then
-Kill Filename$
+If Dir$(tfilename$) <> vbNullString Then
+Kill tfilename$
 
 ' Else inform user
 Else
-msg$ = "Creating a new User database: " & Filename$
+msg$ = "Creating a new User database: " & tfilename$
 MsgBox msg$, vbOKOnly + vbInformation, "UserOpenNewFile"
 End If
 
 ' Open the new database and create the tables and index
 Screen.MousePointer = vbHourglass
-Set UsDb = CreateDatabase(Filename$, dbLangGeneral)
-If UsDb Is Nothing Or Err <> 0 Then GoTo UserOpenNewFileError
+'Set UsDb = CreateDatabase(tfilename$, dbLangGeneral)
+'If UsDb Is Nothing Or Err <> 0 Then GoTo UserOpenNewFileError
+
+' Open a new database by copying from existing MDB template
+Call FileInfoCreateDatabase(tfilename$)
+If ierror Then Exit Sub
+
+' Open as existing database
+Set UsDb = OpenDatabase(tfilename$, DatabaseExclusiveAccess%, False)
 
 ' Specify the user database "User" table
-user.Name = "User"
+UserTable.Name = "User"
 
 UserRows.Name = "Rows"
 UserRows.Type = dbLong
-user.Fields.Append UserRows
+UserTable.Fields.Append UserRows
 
 UserNames.Name = "Names"
 UserNames.Type = dbText
 UserNames.Size = DbTextUserNameLength%
 UserNames.AllowZeroLength = True
-user.Fields.Append UserNames
+UserTable.Fields.Append UserNames
 
 UserFiles.Name = "Files"
 UserFiles.Type = dbText
 UserFiles.Size = DbTextFilenameLength%
 UserFiles.AllowZeroLength = True
-user.Fields.Append UserFiles
+UserTable.Fields.Append UserFiles
 
 UserCreatedDates.Name = "CreatedDates"
 UserCreatedDates.Type = dbDate
-user.Fields.Append UserCreatedDates
+UserTable.Fields.Append UserCreatedDates
 
 UserModifiedDates.Name = "ModifiedDates"
 UserModifiedDates.Type = dbDate
-user.Fields.Append UserModifiedDates
+UserTable.Fields.Append UserModifiedDates
 
 UserVersions.Name = "Versions"
 UserVersions.Type = dbSingle
-user.Fields.Append UserVersions
+UserTable.Fields.Append UserVersions
 
 UserTitles.Name = "Titles"
 UserTitles.Type = dbText
 UserTitles.Size = DbTextDescriptionLength%
 UserTitles.AllowZeroLength = True
-user.Fields.Append UserTitles
+UserTable.Fields.Append UserTitles
 
 UserDescriptions.Name = "Descriptions"
 UserDescriptions.Type = dbText
 UserDescriptions.Size = DbTextDescriptionLength%
 UserDescriptions.AllowZeroLength = True
-user.Fields.Append UserDescriptions
+UserTable.Fields.Append UserDescriptions
 
 UserStartDateTimes.Name = "StartDateTimes"
 UserStartDateTimes.Type = dbDate
-user.Fields.Append UserStartDateTimes
+UserTable.Fields.Append UserStartDateTimes
 
 UserStopdateTimes.Name = "StopDateTimes"
 UserStopdateTimes.Type = dbDate
-user.Fields.Append UserStopdateTimes
+UserTable.Fields.Append UserStopdateTimes
 
 ' Add custom fields
 UserCustom1.Name = "Custom1"
 UserCustom1.Type = dbText
 UserCustom1.Size = DbTextNameLength%
 UserCustom1.AllowZeroLength = True
-user.Fields.Append UserCustom1
+UserTable.Fields.Append UserCustom1
 
 UserCustom2.Name = "Custom2"
 UserCustom2.Type = dbText
 UserCustom2.Size = DbTextNameLength%
 UserCustom2.AllowZeroLength = True
-user.Fields.Append UserCustom2
+UserTable.Fields.Append UserCustom2
 
 UserCustom3.Name = "Custom3"
 UserCustom3.Type = dbText
 UserCustom3.Size = DbTextNameLength%
 UserCustom3.AllowZeroLength = True
-user.Fields.Append UserCustom3
+UserTable.Fields.Append UserCustom3
 
 ' New to version 7.45 (see UserUpdateMDBFile)
 UserTotalAcquisitionTime.Name = "TotalAcquisitionTime"
 UserTotalAcquisitionTime.Type = dbDouble
-user.Fields.Append UserTotalAcquisitionTime
+UserTable.Fields.Append UserTotalAcquisitionTime
 
 ' Specify the user database "NameIndex" index
 NameIndex.Name = "User Names"
 NameIndex.Fields = "Names"
-user.Indexes.Append NameIndex
+UserTable.Indexes.Append NameIndex
 
-UsDb.TableDefs.Append user
+UsDb.TableDefs.Append UserTable
 
 ' Close the user database
 UsDb.Close
 Screen.MousePointer = vbDefault
 
 ' Create new File table for user database
-Call FileInfoMakeNewTable(Int(4), Filename$)
+Call FileInfoMakeNewTable(Int(4), tfilename$)
 If ierror Then Exit Sub
 
 ' No errors, load file name
-UserDataFile$ = Filename$
+UserDataFile$ = tfilename$
 
 Exit Sub
 

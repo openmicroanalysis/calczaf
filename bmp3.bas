@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeBMP3"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -15,7 +15,7 @@ Private Const SRCCOPY& = &HCC0020 ' (DWORD) dest = source
 Private Const CF_BITMAP& = 2
 
 ' GDI functions
-Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
+Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
 
 ' Creates a memory DC
 Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As Long
@@ -204,7 +204,7 @@ Exit Sub
 
 End Sub
 
-Sub BMPInvertSingleArray(mode As Integer, ix As Integer, iy As Integer, sArray() As Single)
+Sub BMPInvertSingleArray(mode As Integer, ix As Integer, iy As Integer, sarray() As Single)
 ' Invert a single precision variable array in X (mode=0) or Y (mode=1)
 
 ierror = False
@@ -217,10 +217,10 @@ If mode% = 0 Then
 ReDim aarray(1 To ix%) As Single
 For j% = 1 To iy%
 For i% = 1 To ix%
-aarray!(ix% - (i% - 1)) = sArray!(i%, j%)
+aarray!(ix% - (i% - 1)) = sarray!(i%, j%)
 Next i%
 For i% = 1 To ix%
-sArray!(i%, j%) = aarray!(i%)
+sarray!(i%, j%) = aarray!(i%)
 Next i%
 Next j%
 End If
@@ -230,10 +230,10 @@ If mode% = 1 Then
 ReDim aarray(1 To iy%) As Single
 For i% = 1 To ix%
 For j% = 1 To iy%
-aarray!(iy% - (j% - 1)) = sArray!(i%, j%)
+aarray!(iy% - (j% - 1)) = sarray!(i%, j%)
 Next j%
 For j% = 1 To iy%
-sArray!(i%, j%) = aarray!(j%)
+sarray!(i%, j%) = aarray!(j%)
 Next j%
 Next i%
 End If

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeXray5"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -423,8 +423,15 @@ End If
 
 ' Open the new database and create the tables
 Screen.MousePointer = vbHourglass
-Set StDb = CreateDatabase(XrayDataFile$, dbLangGeneral)
-If StDb Is Nothing Or Err <> 0 Then GoTo XrayOpenNewMDBError
+'Set StDb = CreateDatabase(XrayDataFile$, dbLangGeneral)
+'If StDb Is Nothing Or Err <> 0 Then GoTo XrayOpenNewMDBError
+
+' Open a new database by copying from existing MDB template
+Call FileInfoCreateDatabase(XrayDataFile$)
+If ierror Then Exit Sub
+
+' Open as existing database
+Set StDb = OpenDatabase(XrayDataFile$, DatabaseExclusiveAccess%, False)
 
 ' Specify the xray database "Xray" table
 Set Xray = StDb.CreateTableDef("NewTableDef")

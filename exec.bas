@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeExec"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Private Type STARTUPINFO

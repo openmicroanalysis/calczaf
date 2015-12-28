@@ -86,7 +86,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Private Sub Form_Load()
@@ -103,7 +103,7 @@ End Sub
 
 Private Sub StatusBarPlot_PanelClick(ByVal Panel As ComctlLib.Panel)
 If Not DebugMode Then On Error Resume Next
-Select Case Panel.key
+Select Case Panel.Key
 Case "status"
     Exit Sub
 Case "cancel"

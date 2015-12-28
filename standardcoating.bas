@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeStandardCoating"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -55,9 +55,9 @@ FormSTANDARDCOATING.ComboCoatingElementAll.AddItem Symlo$(i% + 1)
 Next i%
 
 If DefaultStandardCoatingFlag% = 1 Then
-FormSTANDARDCOATING.CheckCoatingFlagAll.Value = vbChecked
+FormSTANDARDCOATING.CheckCoatingFlagAll.value = vbChecked
 Else
-FormSTANDARDCOATING.CheckCoatingFlagAll.Value = vbUnchecked
+FormSTANDARDCOATING.CheckCoatingFlagAll.value = vbUnchecked
 End If
 FormSTANDARDCOATING.ComboCoatingElementAll.Text = Symlo$(DefaultStandardCoatingElement%)
 FormSTANDARDCOATING.TextCoatingDensityAll.Text = Format$(DefaultStandardCoatingDensity!)
@@ -150,9 +150,9 @@ If FormSTANDARDCOATING.ListStandard.ListIndex < 0 Then Exit Sub
 ip% = FormSTANDARDCOATING.ListStandard.ListIndex + 1
 If ip% > 0 Then
 If tStandardCoatingFlag%(ip%) = 1 Then
-FormSTANDARDCOATING.CheckCoatingFlag.Value = vbChecked
+FormSTANDARDCOATING.CheckCoatingFlag.value = vbChecked
 Else
-FormSTANDARDCOATING.CheckCoatingFlag.Value = vbUnchecked
+FormSTANDARDCOATING.CheckCoatingFlag.value = vbUnchecked
 End If
 
 FormSTANDARDCOATING.ComboCoatingElement.Text = Symlo$(tStandardCoatingElement%(ip%))
@@ -185,7 +185,7 @@ If FormSTANDARDCOATING.ListStandard.ListIndex < 0 Then Exit Sub
 ' Calculate standard
 ip% = FormSTANDARDCOATING.ListStandard.ListIndex + 1
 If ip% > 0 Then
-If FormSTANDARDCOATING.CheckCoatingFlag.Value = vbChecked Then
+If FormSTANDARDCOATING.CheckCoatingFlag.value = vbChecked Then
 tStandardCoatingFlag%(ip%) = 1
 Else
 tStandardCoatingFlag%(ip%) = 0
@@ -236,7 +236,7 @@ On Error GoTo StandardCoatingAssignToAllError
 Dim i As Integer, ipp As Integer
 Dim sym As String
 
-If FormSTANDARDCOATING.CheckCoatingFlagAll.Value = vbChecked Then
+If FormSTANDARDCOATING.CheckCoatingFlagAll.value = vbChecked Then
 tFlag% = 1
 Else
 tFlag% = 0

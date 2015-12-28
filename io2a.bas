@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeIO2"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -116,7 +116,7 @@ Exit Sub
 
 End Sub
 
-Sub IOSendEMail(Mode As Integer, errstring As String, procstring As String)
+Sub IOSendEMail(mode As Integer, errstring As String, procstring As String)
 ' Send e-mail message to specified address (in INI file)
 ' mode = 0 error message
 ' mode = 1 normal message
@@ -180,14 +180,14 @@ FormMAIN.MailMessage1.From = Trim$(SMTPAddressFrom$)
 FormMAIN.MailMessage1.To = Trim$(SMTPAddressTo$)
 FormMAIN.MailMessage1.date = FormMAIN.SmtpClient1.CurrentDate
 
-If Mode% = 0 Then
+If mode% = 0 Then
 FormMAIN.MailMessage1.Subject = "Automation error from Probe for EPMA, at " & Now
 Else
 FormMAIN.MailMessage1.Subject = "Automation message from Probe for EPMA, at " & Now
 End If
 
 ' Construct message
-If Mode% = 0 Then
+If mode% = 0 Then
 tmsg$ = "An error occured during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
 Else
 tmsg$ = "A message occured during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
@@ -201,7 +201,7 @@ tmsg$ = tmsg$ & "User: " & MDBUserName$ & vbCrLf
 tmsg$ = tmsg$ & "File Description : " & MDBFileDescription$ & vbCrLf & vbCrLf
 
 ' Send additional info
-If Mode% = 0 Then
+If mode% = 0 Then
 tmsg$ = tmsg$ & "Procedure : " & procstring$ & vbCrLf
 tmsg$ = tmsg$ & "Error : " & errstring$ & vbCrLf
 Else

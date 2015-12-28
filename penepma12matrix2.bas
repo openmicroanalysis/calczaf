@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma12Matrix2"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Sub Penepma12MatrixNewMDB()
@@ -43,8 +43,15 @@ End If
 
 ' Open the new database and create the tables
 Screen.MousePointer = vbHourglass
-Set MtDb = CreateDatabase(MatrixMDBFile$, dbLangGeneral)
-If MtDb Is Nothing Or Err <> 0 Then GoTo Penepma12MatrixNewMDBError
+'Set MtDb = CreateDatabase(MatrixMDBFile$, dbLangGeneral)
+'If MtDb Is Nothing Or Err <> 0 Then GoTo Penepma12MatrixNewMDBError
+
+' Open a new database by copying from existing MDB template
+Call FileInfoCreateDatabase(MatrixMDBFile$)
+If ierror Then Exit Sub
+
+' Open as existing database
+Set MtDb = OpenDatabase(MatrixMDBFile$, DatabaseExclusiveAccess%, False)
 
 ' Specify the Matrix database "Matrix" table
 Set Matrix = MtDb.CreateTableDef("NewTableDef")
@@ -480,8 +487,15 @@ End If
 
 ' Open the new database and create the tables
 Screen.MousePointer = vbHourglass
-Set PrDb = CreateDatabase(PureMDBFile$, dbLangGeneral)
-If PrDb Is Nothing Or Err <> 0 Then GoTo Penepma12PureNewMDBError
+'Set PrDb = CreateDatabase(PureMDBFile$, dbLangGeneral)
+'If PrDb Is Nothing Or Err <> 0 Then GoTo Penepma12PureNewMDBError
+
+' Open a new database by copying from existing MDB template
+Call FileInfoCreateDatabase(PureMDBFile$)
+If ierror Then Exit Sub
+
+' Open as existing database
+Set PrDb = OpenDatabase(PureMDBFile$, DatabaseExclusiveAccess%, False)
 
 ' Specify the Pure database "Pure" table
 Set Pure = PrDb.CreateTableDef("NewTableDef")

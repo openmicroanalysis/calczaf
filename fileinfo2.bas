@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeFILEINFO2"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -555,3 +555,37 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub FileInfoCreateDatabase(tfilename As String)
+' Creates a new MDB database file from an existing MDB template
+
+ierror = False
+On Error GoTo FileInfoCreateDatabaseError
+
+' Check that passed filename is not blank
+If Trim$(tfilename$) = vbNullString Then GoTo FileInfoCreateDatabaseBlankFilename
+
+' Check if file already exists, if so, delete it first
+If Dir$(tfilename$) <> vbNullString Then
+Kill tfilename$
+DoEvents
+End If
+
+FileCopy MDB_Template$, tfilename$
+
+Exit Sub
+
+' Errors
+FileInfoCreateDatabaseError:
+MsgBox Error$, vbOKOnly + vbCritical, "FileInfoCreateDatabase"
+ierror = True
+Exit Sub
+
+FileInfoCreateDatabaseBlankFilename:
+msg$ = "Passed database file name is blank"
+MsgBox msg$, vbOKOnly + vbExclamation, "FileInfoCreateDatabase"
+ierror = True
+Exit Sub
+
+End Sub
+

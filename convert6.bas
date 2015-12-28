@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeCONVERT6"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Sub ConvertBiotite(percents() As Single, sample() As TypeSample)

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGridFile"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -57,7 +57,7 @@ Dim gX_Polarity As Integer
 Dim gY_Polarity As Integer
 Dim gStage_Units As String
 
-Dim sArray() As Single
+Dim sarray() As Single
 
 Sub GridFileReadWrite(mode As Integer, findex As Integer, idata() As TypeImageData, tfilename As String)
 ' Read or write grid data from or to  disk (Surfer v. 6 and earlier)
@@ -169,7 +169,7 @@ Dim i As Integer, j As Integer
 ' Version 7 structures for reading and writing
 Dim theader As TypeGridHeader
 Dim tGrid As TypeGridGrid
-Dim tdata As TypeGridData
+Dim tData As TypeGridData
 
 If Trim$(tfilename$) = vbNullString Then Exit Sub
 
@@ -232,16 +232,16 @@ idata(findex%).zmin# = tGrid.zmin#
 idata(findex%).zmax# = tGrid.zmax#
 
 ' Dimension data array
-ReDim tdata.hdata(1 To tGrid.nCol&, 1 To tGrid.nRow&) As Double
+ReDim tData.hdata(1 To tGrid.nCol&, 1 To tGrid.nRow&) As Double
 
 ' Load data section
-Get #Temp1FileNumber%, , tdata.tag&
+Get #Temp1FileNumber%, , tData.tag&
 
 ' Check for version 7 data section (hex  0x41544144) (note typo in Surfer help file)
-If tdata.tag& <> 1096040772 Then GoTo GridFileReadWrite2BadFile
+If tData.tag& <> 1096040772 Then GoTo GridFileReadWrite2BadFile
 
-Get #Temp1FileNumber%, , tdata.Size&
-Get #Temp1FileNumber%, , tdata.hdata#
+Get #Temp1FileNumber%, , tData.Size&
+Get #Temp1FileNumber%, , tData.hdata#
 Close #Temp1FileNumber%
 
 ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Single
@@ -249,7 +249,7 @@ ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As 
 '  Load image array and set out of range values to min and max (to avoid "blanking values")
 For j% = 1 To idata(findex%).iy%
 For i% = 1 To idata(findex%).ix%
-idata(findex%).gData!(i%, j%) = CSng(tdata.hdata#(i%, j%))
+idata(findex%).gData!(i%, j%) = CSng(tData.hdata#(i%, j%))
 If idata(findex%).gData!(i%, j%) <> BLANKINGVALUE! Then
 If idata(findex%).gData(i%, j%) < idata(findex%).zmin# Then idata(findex%).gData(i%, j%) = idata(findex%).zmin#
 If idata(findex%).gData(i%, j%) > idata(findex%).zmax# Then idata(findex%).gData(i%, j%) = idata(findex%).zmax#
@@ -294,16 +294,16 @@ tGrid.rotation# = 0#
 tGrid.BlankValue# = BLANKINGVALUE!
 
 ' Dimension output data array
-ReDim tdata.hdata(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Double
+ReDim tData.hdata(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Double
 
 ' Version 7 data section (hex  0x41544144) (note typo in old versions of Surfer help file)
-tdata.tag& = 1096040772
-tdata.Size& = tGrid.nRow& * tGrid.nCol& * 8
+tData.tag& = 1096040772
+tData.Size& = tGrid.nRow& * tGrid.nCol& * 8
 
 ' Load data for writing
 For j% = 1 To idata(findex%).iy%
 For i% = 1 To idata(findex%).ix%
-tdata.hdata#(i%, j%) = CDbl(idata(findex%).gData!(i%, j%))
+tData.hdata#(i%, j%) = CDbl(idata(findex%).gData!(i%, j%))
 Next i%
 Next j%
 
@@ -327,10 +327,10 @@ Put #Temp1FileNumber%, , tGrid.zmax#
 Put #Temp1FileNumber%, , tGrid.rotation#
 Put #Temp1FileNumber%, , tGrid.BlankValue#
 
-Put #Temp1FileNumber%, , tdata.tag&
-Put #Temp1FileNumber%, , tdata.Size&
+Put #Temp1FileNumber%, , tData.tag&
+Put #Temp1FileNumber%, , tData.Size&
 
-Put #Temp1FileNumber%, , tdata.hdata#
+Put #Temp1FileNumber%, , tData.hdata#
 Close #Temp1FileNumber%
 
 Screen.MousePointer = vbDefault
@@ -687,10 +687,10 @@ End If
 End If
 
 ' Dimension temp array
-ReDim sArray(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Single
+ReDim sarray(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Single
 
 ' Load temp array
-sArray = idata(findex%).gData
+sarray = idata(findex%).gData
 
 ' Check for flipping data
 iy% = idata(findex%).iy%
@@ -701,16 +701,16 @@ If iy% = 0 Then GoTo GridCheckGRDConvertBadIy
 For j% = 1 To iy%
 For i% = 1 To ix%
 If tX_Polarity = 0 And tY_Polarity = 0 Then
-idata(findex%).gData!(i%, j%) = sArray!(i%, j%)
+idata(findex%).gData!(i%, j%) = sarray!(i%, j%)
 
 ElseIf tX_Polarity <> 0 And tY_Polarity = 0 Then
-idata(findex%).gData!(i%, j%) = sArray!(ix% - (i% - 1), j%)
+idata(findex%).gData!(i%, j%) = sarray!(ix% - (i% - 1), j%)
 
 ElseIf tX_Polarity = 0 And tY_Polarity <> 0 Then
-idata(findex%).gData!(i%, j%) = sArray!(i%, iy% - (j% - 1))
+idata(findex%).gData!(i%, j%) = sarray!(i%, iy% - (j% - 1))
 
 ElseIf tX_Polarity <> 0 And tY_Polarity <> 0 Then
-idata(findex%).gData!(i%, j%) = sArray!(ix% - (i% - 1), iy% - (j% - 1))
+idata(findex%).gData!(i%, j%) = sarray!(ix% - (i% - 1), iy% - (j% - 1))
 End If
 Next i%
 Next j%

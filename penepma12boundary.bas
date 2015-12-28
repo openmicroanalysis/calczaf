@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma12Boundary"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 ' Boundary globals
@@ -57,8 +57,15 @@ End If
 
 ' Open the new database and create the tables
 Screen.MousePointer = vbHourglass
-Set MtDb = CreateDatabase(BoundaryMDBFile$, dbLangGeneral)
-If MtDb Is Nothing Or Err <> 0 Then GoTo Penepma12BoundaryNewMDBError
+'Set MtDb = CreateDatabase(BoundaryMDBFile$, dbLangGeneral)
+'If MtDb Is Nothing Or Err <> 0 Then GoTo Penepma12BoundaryNewMDBError
+
+' Open a new database by copying from existing MDB template
+Call FileInfoCreateDatabase(BoundaryMDBFile$)
+If ierror Then Exit Sub
+
+' Open as existing database
+Set MtDb = OpenDatabase(BoundaryMDBFile$, DatabaseExclusiveAccess%, False)
 
 ' Specify the Boundary database "Boundary" table
 Set Boundary = MtDb.CreateTableDef("NewTableDef")

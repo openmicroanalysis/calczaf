@@ -299,12 +299,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Private Sub CheckPenepmaKratioLimit_Click()
 If Not DebugMode Then On Error Resume Next
-If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
+If FormGETZAFALL.CheckPenepmaKratioLimit.value = vbChecked Then
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = True
 Else
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
@@ -312,7 +312,7 @@ End If
 End Sub
 
 Private Sub CheckUsePenepmaKratios_Click()
-If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked Then
+If FormGETZAFALL.CheckUsePenepmaKratios.value = vbChecked Then
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
 Else
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False

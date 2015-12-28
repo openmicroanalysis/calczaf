@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePictureSnap"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -151,7 +151,7 @@ On Error GoTo PictureSnapCalibrateLoadError
 If Not MiscStringsAreSame(app.EXEName, "CalcImage") And Not RealTimeMode Then Exit Sub
 
 ' Load PictureSnap mode
-FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).Value = True
+FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).value = True
 
 ' Load current stage positions
 FormPICTURESNAP2.TextXStage1.Text = RealTimeMotorPositions!(XMotor%)
@@ -488,7 +488,7 @@ On Error GoTo PictureSnapLoadCalibrationError
 Dim tfilename As String, tfilename2 As String
 
 ' Load PictureSnapMode
-FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).Value = True
+FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).value = True
 
 ' Read calibration points to INI style ACQ file
 tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".ACQ"
@@ -847,10 +847,10 @@ tulefty! = FormPICTURESNAP.ScaleHeight - 1000
 
 ' Add scroll offset to keep scale bar in view
 If FormPICTURESNAP.HScroll1.Max > 0 Then
-x1! = FormPICTURESNAP.HScroll1.Value / FormPICTURESNAP.HScroll1.Max
+x1! = FormPICTURESNAP.HScroll1.value / FormPICTURESNAP.HScroll1.Max
 End If
 If FormPICTURESNAP.VScroll1.Max > 0 Then
-y1! = FormPICTURESNAP.VScroll1.Value / FormPICTURESNAP.VScroll1.Max
+y1! = FormPICTURESNAP.VScroll1.value / FormPICTURESNAP.VScroll1.Max
 End If
 
 tuleftx! = tuleftx! + x1! * (FormPICTURESNAP.Picture2.ScaleWidth - FormPICTURESNAP.Picture1.ScaleWidth)

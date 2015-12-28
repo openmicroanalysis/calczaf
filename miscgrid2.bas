@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscGrid2"
-' (c) Copyright 1995-2015 by John J. Donovan
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -18,27 +18,25 @@ ierror = False
 On Error GoTo MiscCopyGrid2Error
 
 Dim i As Integer, j As Integer
+Dim tcols As Integer, trows As Integer
 
-' Select the non blank rows
-tGrid.col = 0
-For i% = 0 To tGrid.rows - 1
-tGrid.row = i%
-If Trim$(tGrid.Text) = vbNullString Or i% = tGrid.rows - 1 Then
-
-tGrid.row = 0
-For j% = 0 To tGrid.cols - 1
-tGrid.col = j%
-If Trim$(tGrid.Text) = vbNullString Or j% = tGrid.cols - 1 Then
-tGrid.col = 0
-tGrid.RowSel = i% - 1
-tGrid.ColSel = j% - 1
-Exit For
-End If
-Next j%
-Exit For
+' Determine number of nonblank rows and columns
+For j% = 0 To tGrid.rows - 1
+tGrid.row = j%
+For i% = 0 To tGrid.cols - 1
+tGrid.col = i%
+If Trim$(tGrid.Text) <> vbNullString Then
+trows% = j%
+tcols% = i%
 End If
 Next i%
+Next j%
 
+' Select the nonblank cells (assumes that the zeroth row and column are non-blank!)
+tGrid.row = 0
+tGrid.col = 0
+tGrid.RowSel = trows%
+tGrid.ColSel = tcols%
 tGrid.TopRow = 1
 
 ' Copy the selection and put it on the Clipboard
