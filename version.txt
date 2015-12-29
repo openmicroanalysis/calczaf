@@ -2,8 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/28/15	Implement stage reproducibility correction code in Automate! window fror beam deflection mode (Wark and Ruscitto).
+v. 11.2.1
+
 12/27/15	Create new MDB template code for new files, using MS Access 2010 (still need to convert setup*.mdb and user.mdb files
 v. 11.1.9	which still depend on the old VB5 data control).
+
+	Update copyright notice for 2016.  Remove spin32.ocx control from deployment. Convert more grid32.ocx controls to MSFlexGrid controls.
 
 12/26/15	Convert Grid32.ocx to MSFlexGrid.ocx controls.  Add check for disable acq flag in Drift.exe (Carpenter).
 
