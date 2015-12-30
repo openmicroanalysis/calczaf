@@ -531,6 +531,59 @@ Exit Sub
 
 End Sub
 
+Sub BMPConvertDoubleArrayToByteArray(ix As Integer, iy As Integer, iarray() As Double, jarray() As Byte)
+' Converts a zero based double precision array to a byte array (normalizes the data to 0 to 255)
+
+ierror = False
+On Error GoTo BMPConvertDoubleArrayToByteArrayError
+
+Dim i As Integer, j As Integer
+Dim imax As Long, imin As Long, itemp As Long
+Dim minmax As Single
+
+' Find minimum and maximum of data
+imax& = MINLONG&
+imin& = MAXLONG&
+For j% = 1 To iy%
+For i% = 1 To ix%
+If iarray#(i% - 1, j% - 1) > imax& Then imax& = iarray#(i% - 1, j% - 1)
+If iarray#(i% - 1, j% - 1) < imin& Then imin& = iarray#(i% - 1, j% - 1)
+Next i%
+Next j%
+DoEvents
+
+' Normalize data and load into byte array (this is time consuming!)
+minmax! = (imax& - imin&)
+If minmax! <> 0 Then
+For j% = 1 To iy%
+For i% = 1 To ix%
+itemp& = MAXLEVELS& * ((iarray#(i% - 1, j% - 1) - imin&) / minmax!)
+If itemp& < 0 Then itemp& = 0
+If itemp& > BIT8& Then itemp& = BIT8&
+jarray(i%, j%) = CByte(itemp&)
+Next i%
+Next j%
+
+' No data
+Else
+For j% = 1 To iy%
+For i% = 1 To ix%
+jarray(i%, j%) = 0
+Next i%
+Next j%
+End If
+
+Exit Sub
+
+' Errors
+BMPConvertDoubleArrayToByteArrayError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "BMPConvertDoubleArrayToByteArray"
+ierror = True
+Exit Sub
+
+End Sub
+
 Sub BMPGetBitmapInfo(ByVal hBitmap As Long, Return_Width As Long, Return_Height As Long, _
  Return_BitsPerPixel As Integer, Return_Size As Double, Return_PointerToBits As Long)
 ' This function takes a given picture and finds out all possible information about it and returns the

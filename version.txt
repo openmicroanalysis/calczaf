@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/29/15	Improve stage reproducibility correction code. Fix FormLOCATE.
+v. 11.2.2
+
 12/28/15	Implement stage reproducibility correction code in Automate! window fror beam deflection mode (Wark and Ruscitto).
 v. 11.2.1
 
