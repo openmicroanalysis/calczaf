@@ -1,7 +1,6 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
-Object = "{6FBA474E-43AC-11CE-9A0E-00AA0062BB4C}#1.0#0"; "SYSINFO.OCX"
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
 Object = "{7ED47906-67D7-4D60-ABCD-66C3BA9E3452}#1.0#0"; "csmtpctl.ocx"
 Object = "{959AC9FE-B2CE-4117-9CE6-56B273C5848F}#1.0#0"; "csmsgctl.ocx"
@@ -96,13 +95,6 @@ Begin VB.Form FormMAIN
       FontSize        =   0
       MaxFileSize     =   256
    End
-   Begin SysInfoLib.SysInfo SysInfo1 
-      Left            =   960
-      Top             =   0
-      _ExtentX        =   1005
-      _ExtentY        =   1005
-      _Version        =   393216
-   End
    Begin RichTextLib.RichTextBox TextLog 
       Height          =   4335
       Left            =   0
@@ -112,7 +104,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   7858
       _ExtentY        =   7646
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"CALCZAF.frx":59D8A
    End

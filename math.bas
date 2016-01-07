@@ -1667,4 +1667,20 @@ Exit Function
 
 End Function
 
+Function MathIsPowerOf2(dblNum As Long) As Boolean
+' Check if a number is a power of two.
 
+ierror = False
+On Error GoTo MathIsPowerOf2Error
+
+MathIsPowerOf2 = ((dblNum& And (dblNum& - 1)) = 0)
+
+Exit Function
+
+' Errors
+MathIsPowerOf2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "MathIsPowerOf2"
+ierror = True
+Exit Function
+
+End Function

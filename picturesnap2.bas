@@ -1127,7 +1127,7 @@ On Error GoTo PictureSnapImportPrbImgError
 
 Dim beamcurrent1 As Single, beamcurrent2 As Single, keV As Single, counttime As Single
 Dim timeofacq1 As Double, timeofacq2 As Double
-Dim mag As Double, scan As Double
+Dim mag As Double, scanrota As Double
 
 Dim sarray() As Single
 Dim response As Integer
@@ -1150,7 +1150,7 @@ Screen.MousePointer = vbHourglass
 ' Extract data from PrbImg
 Call IOStatusAuto("Reading PrbImg file " & tfilename$ & "...")
 DoEvents
-Call Base64ReaderInput(tfilename$, keV!, counttime!, beamcurrent1!, beamcurrent2!, timeofacq1#, timeofacq2#, ix%, iy%, sarray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#, mag#, scan#)
+Call Base64ReaderInput(tfilename$, keV!, counttime!, beamcurrent1!, beamcurrent2!, timeofacq1#, timeofacq2#, ix%, iy%, sarray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#, mag#, scanrota#)
 If ierror Then Exit Sub
 
 ' Create GRD file from extracted data and save to folder

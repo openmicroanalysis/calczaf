@@ -138,12 +138,6 @@ Dim UserTotalAcquisitionTime As New Field
 
 Dim NameIndex As New Index
 
-' Note that because of DAO 3.5 compatibility issues, we cannot create new SETUP*.MDB files at this time (DB data control compatibility)
-msg$ = "Unable to create a new user database: " & UserDataFile$ & " due to DAO 3.50 compatibility issues." & vbCrLf & vbCrLf
-msg$ = msg$ & "To obtain a new user database file please download the default USER.MDB files from our ftp servers or contact Probe Software."
-MsgBox msg$, vbOKOnly + vbInformation, "UserOpenNewFile"
-Exit Sub
-
 ' Check for blank file
 If Trim$(tfilename$) = vbNullString Then GoTo UserOpenNewFileBlankName
 
@@ -157,12 +151,8 @@ msg$ = "Creating a new User database: " & tfilename$
 MsgBox msg$, vbOKOnly + vbInformation, "UserOpenNewFile"
 End If
 
-' Open the new database and create the tables and index
-Screen.MousePointer = vbHourglass
-'Set UsDb = CreateDatabase(tfilename$, dbLangGeneral)
-'If UsDb Is Nothing Or Err <> 0 Then GoTo UserOpenNewFileError
-
 ' Open a new database by copying from existing MDB template
+Screen.MousePointer = vbHourglass
 Call FileInfoCreateDatabase(tfilename$)
 If ierror Then Exit Sub
 

@@ -1420,6 +1420,7 @@ Global ProbeImageFile As String   ' image data (flat binary file)
 Global OldProbeDataFile As String
 
 Global StandardDataFile As String
+Global CurrentSetupDataFile As String
 Global SetupDataFile As String      ' standard intensity database
 Global SetupDataFile2 As String     ' MAN standard intensity database
 Global SetupDataFile3 As String     ' interference standard intensity database
@@ -2299,7 +2300,6 @@ Global UseCurrentConditionsAlwaysFlag As Integer        ' for Paul Carpenter
 Global UseROMBasedSpectrometerScanFlag As Integer
 Global DisplayPHAParameterDialogPriorFlag As Integer
 Global DisplayPHAParameterDialogAfterFlag As Integer
-Global DisplayPHAParameterDialogChannel As Integer
 
 Global DoNotDisplayStandardImagesDuringDigitizationFlag As Integer
 Global NumberOfScans As Long    ' number of scans in run

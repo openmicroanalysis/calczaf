@@ -55,12 +55,8 @@ MsgBox msg$, vbOKOnly + vbInformation, "Penepma12BoundaryNewMDB"
 End If
 End If
 
-' Open the new database and create the tables
-Screen.MousePointer = vbHourglass
-'Set MtDb = CreateDatabase(BoundaryMDBFile$, dbLangGeneral)
-'If MtDb Is Nothing Or Err <> 0 Then GoTo Penepma12BoundaryNewMDBError
-
 ' Open a new database by copying from existing MDB template
+Screen.MousePointer = vbHourglass
 Call FileInfoCreateDatabase(BoundaryMDBFile$)
 If ierror Then Exit Sub
 

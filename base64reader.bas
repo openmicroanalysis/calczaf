@@ -19,7 +19,7 @@ Private Type TypeByt4
 strval(1 To 4) As Byte
 End Type
 
-Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scan As Double)
+Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scanrota As Double)
 ' Open prbimg and read in some parameters
 
 Dim lpDefault As String
@@ -141,7 +141,7 @@ If ierror Then Exit Sub
 If PrbImgVerNum! >= 1.1 Then
 mag# = Val(Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "Magnification", Format$(mag#)))
 If ierror Then Exit Sub
-scan# = Val(Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "ScanRotation", Format$(scan#)))
+scanrota# = Val(Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "ScanRotation", Format$(scanrota#)))
 If ierror Then Exit Sub
 End If
 

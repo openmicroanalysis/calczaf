@@ -421,11 +421,6 @@ msg$ = "Creating a new xray database: " & XrayDataFile$
 MsgBox msg$, vbOKOnly + vbInformation, "XrayOpenNewMDB"
 End If
 
-' Open the new database and create the tables
-Screen.MousePointer = vbHourglass
-'Set StDb = CreateDatabase(XrayDataFile$, dbLangGeneral)
-'If StDb Is Nothing Or Err <> 0 Then GoTo XrayOpenNewMDBError
-
 ' Open a new database by copying from existing MDB template
 Call FileInfoCreateDatabase(XrayDataFile$)
 If ierror Then Exit Sub

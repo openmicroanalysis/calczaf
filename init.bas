@@ -1439,6 +1439,7 @@ PositionDataFile$ = ApplicationCommonAppData$ & "POSITION.MDB"       ' position 
 SetupDataFile$ = ApplicationCommonAppData$ & "SETUP.MDB"             ' element setup database
 SetupDataFile2$ = ApplicationCommonAppData$ & "SETUP2.MDB"             ' MAN element setup database
 SetupDataFile3$ = ApplicationCommonAppData$ & "SETUP3.MDB"             ' interference element setup database
+CurrentSetupDataFile$ = SetupDataFile$
 
 ProbeErrorLogFile$ = ApplicationCommonAppData$ & app.EXEName & ".ERR"      ' error log
 ProbeElmFile$ = ApplicationCommonAppData$ & "PROBEWIN.ELM"    ' wds element/parameter file
@@ -1453,7 +1454,7 @@ CalibratePeakCenterFiles$(3) = ApplicationCommonAppData$ & "PROBEWIN-LB.CAL"
 CalibratePeakCenterFiles$(4) = ApplicationCommonAppData$ & "PROBEWIN-MA.CAL"
 CalibratePeakCenterFiles$(5) = ApplicationCommonAppData$ & "PROBEWIN-MB.CAL"
 
-MDB_Template$ = ApplicationCommonAppData$ & "Database.mdb"          ' MDB template for new MDB databases
+MDB_Template$ = ApplicationCommonAppData$ & "MDB_Database.mdb"      ' MDB template for new MDB databases
 MatrixMDBFile$ = ApplicationCommonAppData$ & "Matrix.mdb"           ' penepma matrix correction k-ratio database
 PureMDBFile$ = ApplicationCommonAppData$ & "Pure.mdb"               ' penepma pure element k-ratio database
 BoundaryMDBFile$ = ApplicationCommonAppData$ & "Boundary.mdb"       ' Penepma boundary fluorescence k-ratio database
@@ -3147,7 +3148,6 @@ End If
 UseROMBasedSpectrometerScanFlag = False
 DisplayPHAParameterDialogPriorFlag = False
 DisplayPHAParameterDialogAfterFlag = False
-DisplayPHAParameterDialogChannel = False
 
 AutomatedPHAParameterDialogPriorFlag = False
 AutomatedPHAParameterDialogAfterFlag = True     ' changed 12/3/2014
@@ -3357,7 +3357,7 @@ Else
 tmsg$ = "Welcome to " & app.EXEName & ", Probe for EPMA (Xtreme Edition) v. " & ProgramVersionString$
 End If
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD% Or FONT_UNDERLINE%), Int(0))
-tmsg$ = "Copyright (c) 1995-2015 John J. Donovan"
+tmsg$ = "Copyright (c) 1995-2016 John J. Donovan"
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD%), Int(0))
 tmsg$ = vbCrLf & "This software is registered to :"
 Call IOWriteLog(tmsg$)
