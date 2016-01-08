@@ -243,7 +243,7 @@ def main():
 
     # Pull repository
     reposurl = args.reposurl
-    if userworkdir and not no_pull:
+    if not no_pull:
         pull(workdir, reposurl)
 
     # Download zip
@@ -259,16 +259,19 @@ def main():
         userzip = True
 
     # Compare versions
-    changes, tag = compare(zipfilepath, workdir)
+    version_changes, tag = compare(zipfilepath, workdir)
+    logger.info('%i new changes found in VERSION.TXT', len(version_changes))
+    
+    has_repos_changes = has_changes(workdir)
+    if has_repos_changes:
+        logger.info('has changes found in repository')
 
     # Extract zip in working directory
     extract(zipfilepath, workdir)
 
     # Commit changes, if any
-    if changes and has_changes(workdir):
-        logger.info('%i new changes found', len(changes))
-
-        message = create_commit_message(changes)
+    if version_changes or has_repos_changes:
+        message = create_commit_message(version_changes)
         logger.info('Message: %s', message)
 
         logger.info('Commit change.')
