@@ -2,14 +2,16 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/08/16	Fix Load File Setup bug (Goemann).
+
 01/06/16	Fix minor bugs in Automate! window regarding deleting/updating selected lines (Splide).
 
-01/05/15	Remove VB5 Gauge controls.  Replace with progress bar and shape controls.
+01/05/16	Remove VB5 Gauge controls.  Replace with progress bar and shape controls.
 
-01/04/15	Remove old VB Data controls for user.mdb and setup.mdb files in Userwin and Probewin.
+01/04/16	Remove old VB Data controls for user.mdb and setup.mdb files in Userwin and Probewin.
 v. 11.2.4
 
-01/01/15	Remove/replace all grid32.ocx code and deployment. Use MSFlexGrid.ocx instead.
+01/01/16	Remove/replace all grid32.ocx code and deployment. Use MSFlexGrid.ocx instead.
 v. 11.2.3
 
 12/29/15	Improve stage reproducibility correction code. Fix FormLOCATE.
