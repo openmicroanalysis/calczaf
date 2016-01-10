@@ -2893,3 +2893,27 @@ Global IntegrateEDSSpectrumImagingFilename As String    ' for synchronized WDS a
 Global CLSpectrumAcquisitionOverhead As Single
 
 Global MDB_Template As String
+
+Global OffPeakMarkerLabelFlag As Integer
+Global ShowPeakMarkers As Integer, ShowDateTimeStamp As Integer, ShowGridLines As Integer
+Global KLMOption As Integer, SGNumPointsPerSide As Integer
+
+Global SlopePolyChanged As Integer  ' flag for changed background model (for all background types)
+Global SlopePolyNumberofSamples As Integer
+Global SlopePolyChannel As Integer
+
+Global SlopePolySymbol As String
+Global SlopePolyXray As String
+Global SlopePolyCrystal As String
+Global SlopePolyMotor As Integer
+
+Global SlopePolyOffPeakType As Integer
+Global SlopePolySampleRows() As Integer
+Global ExponentialBase As Single
+Global SlopeCoeff() As Single
+Global PolyCoeff() As Single
+Global PolyNominalBeam As Single
+Global PolynomialIndex As Integer
+
+Global ModelPeakingFitType As Integer
+

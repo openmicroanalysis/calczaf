@@ -738,3 +738,95 @@ Exit Sub
 
 End Sub
 
+Sub XrayPlotGetKLM(mode As Integer, tGraphWavescanType As Integer, chan As Integer, npts As Long, xdata() As Single, ydata() As Single, tData() As String, adata() As String, sdata() As Single, odata() As Integer, edata() As String, sample() As TypeSample, tList As ListBox)
+' Get the arrays of KLM markers from passed list box
+'  mode = 0  normal call from XrayPlotXray (convert selected xdata as necessary based on graph x-axis)
+'  mode = 1  xdata() is angstroms (refraction corrected), sdata() is spec position (also refraction corrected)
+
+ierror = False
+On Error GoTo XrayPlotGetKLMError
+
+Dim j As Integer, order As Integer
+Dim lambda As Single, intens As Single
+Dim xlabel As String, xedge As String, tmsg As String
+Dim esym As String, xsym As String
+
+npts& = 0
+For j% = 0 To tList.ListCount - 1
+If tList.Selected(j%) Or mode% = 1 Then
+npts& = npts& + 1
+End If
+Next j%
+
+' Dimension module level data, if any to plot
+If npts& > 0 Then
+ReDim xdata(1 To npts&) As Single   ' lambda
+ReDim ydata(1 To npts&) As Single   ' relative intensity
+ReDim tData(1 To npts&) As String   ' x-ray label
+ReDim adata(1 To npts&) As String   ' absorption edge label (ABS)
+ReDim sdata(1 To npts&) As Single   ' spec position (always)
+ReDim odata(1 To npts&) As Integer  ' x-ray order
+ReDim edata(1 To npts&) As String   ' element symbol
+
+' Load data for selected lines
+npts& = 0
+For j% = 0 To tList.ListCount - 1
+
+' Extract x-ray label if selected or using all lines
+If tList.Selected(j%) Or mode% = 1 Then
+tmsg$ = tList.List(j%)
+Call XrayExtractListString(tmsg$, esym$, xsym$, order%, lambda!, intens!, xlabel$, xedge$)
+If ierror Then Exit Sub
+
+' Load new KLM point
+npts& = npts& + 1
+xdata!(npts&) = lambda!
+ydata!(npts&) = intens!
+xlabel$ = Replace$(xlabel$, "  ", " ")     ' remove extra spaces from label
+xlabel$ = Replace$(xlabel$, "  ", " ")     ' remove extra spaces from label
+xlabel$ = Replace$(xlabel$, "  ", " ")     ' remove extra spaces from label
+xlabel$ = Replace$(xlabel$, "  ", " ")     ' remove extra spaces from label
+tData$(npts&) = xlabel$
+adata$(npts&) = xedge$
+odata%(npts&) = order%
+edata$(npts&) = esym$
+
+' Convert KLM angstroms to spectrometer if needed (and correct for refraction in both cases)
+If mode% = 0 Then
+If tGraphWavescanType% = 1 Then  ' graph is spectrometer positions so convert from angstroms
+If ierror Then Exit Sub
+xdata!(npts&) = XrayConvertSpecAng(Int(2), chan%, xdata!(npts&), order%, sample())
+If ierror Then Exit Sub
+
+ElseIf tGraphWavescanType% = 2 Then  ' graph is angstroms so only do refraction correction
+If ierror Then Exit Sub
+xdata!(npts&) = XrayConvertSpecAng(Int(5), chan%, xdata!(npts&), order%, sample())
+If ierror Then Exit Sub
+
+Else  ' graph is kilovolts so convert from angstroms (also do refraction correction)
+xdata!(npts&) = XrayConvertSpecAng(Int(6), chan%, xdata!(npts&), order%, sample())
+If ierror Then Exit Sub
+End If
+
+' Return both angstroms and spec positions
+Else
+xdata!(npts&) = XrayConvertSpecAng(Int(5), chan%, xdata!(npts&), order%, sample())
+If ierror Then Exit Sub
+sdata!(npts&) = XrayConvertSpecAng(Int(2), chan%, xdata!(npts&), order%, sample())
+If ierror Then Exit Sub
+End If
+End If
+
+Next j%
+End If
+
+Exit Sub
+
+' Errors
+XrayPlotGetKLMError:
+MsgBox Error$, vbOKOnly + vbCritical, "XrayPlotGetKLM"
+ierror = True
+Exit Sub
+
+End Sub
+

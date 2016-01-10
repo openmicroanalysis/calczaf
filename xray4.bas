@@ -17,10 +17,8 @@ Sub XrayPlotConvert(tForm As Form, dx As Double, dy As Double, convdx As Double,
 ierror = False
 On Error GoTo XrayPlotConvertError
 
-If Not UseProEssentialsGraphics Then
 Call XrayPlotConvert_GS(tForm, dx#, dy#, convdx#, convdy#)
 If ierror Then Exit Sub
-End If
 
 Exit Sub
 
@@ -108,10 +106,8 @@ Sub XrayPlotConvertGraph(tGraph As Graph, dx As Double, dy As Double, convdx As 
 ierror = False
 On Error GoTo XrayPlotConvertGraphError
 
-If Not UseProEssentialsGraphics Then
 Call XrayPlotConvertGraph_GS(tGraph, dx#, dy#, convdx#, convdy#)
 If ierror Then Exit Sub
-End If
 
 Exit Sub
 

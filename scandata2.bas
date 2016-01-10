@@ -159,7 +159,7 @@ Exit Sub
 
 End Sub
 
-Sub ScanDataPlotFitCurve_PE(tGraph As Pesgo, mode As Integer, acoeff1 As Single, acoeff2 As Single, acoeff3 As Single, centroid As Single, threshold As Single, currentonpeak As Single)
+Sub ScanDataPlotFitCurve_PE(tGraph As Pesgo, mode As Integer, LineCount As Long, acoeff1 As Single, acoeff2 As Single, acoeff3 As Single, centroid As Single, threshold As Single, currentonpeak As Single)
 ' Display the ROM and parabolic peak fit centroid and threshold on the graph (Pro Essentials code)
 ' mode: 1 = parabolic, 2 = gaussian, 3 = maxima, 4 = maximum value, 5 = cubic spline, 6 = (multi-point) exponential
 
@@ -168,7 +168,6 @@ On Error GoTo ScanDataPlotFitCurve_PEError
 
 Dim i As Integer
 Dim tX As Single, tY As Single
-Dim linecount As Long
 
 Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
 Dim sxmin As Double, sxmax As Double, symin As Double, symax As Double
@@ -230,10 +229,10 @@ If symin# < ymin# Then symin# = ymin#
 If symax# > ymax# Then symax# = ymax#
 
 If i% = 1 Then
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, True, Int(255), Int(128), Int(0), Int(0))     ' brown
+Call ScanDataPlotLine(tGraph, LineCount&, sxmin#, symin#, sxmax#, symax#, False, True, Int(255), Int(128), Int(0), Int(0))     ' brown
 If ierror Then Exit Sub
 Else
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, True, True, Int(255), Int(128), Int(0), Int(0))      ' brown
+Call ScanDataPlotLine(tGraph, LineCount&, sxmin#, symin#, sxmax#, symax#, True, True, Int(255), Int(128), Int(0), Int(0))      ' brown
 If ierror Then Exit Sub
 End If
 Next i%
@@ -241,19 +240,19 @@ End If
 
 ' Plot centroid
 If centroid! <> 0# Then
-Call ScanDataPlotLine(tGraph, linecount&, CDbl(centroid!), ymin#, CDbl(centroid!), ymax#, False, True, Int(255), Int(255), Int(0), Int(0))              ' red
+Call ScanDataPlotLine(tGraph, LineCount&, CDbl(centroid!), ymin#, CDbl(centroid!), ymax#, False, True, Int(255), Int(255), Int(0), Int(0))              ' red
 If ierror Then Exit Sub
 End If
 
 ' Plot threshold
 If threshold! <> 0# Then
-Call ScanDataPlotLine(tGraph, linecount&, xmin#, CDbl(threshold!), xmax#, CDbl(threshold!), False, True, Int(255), Int(0), Int(255), Int(255))          ' cyan
+Call ScanDataPlotLine(tGraph, LineCount&, xmin#, CDbl(threshold!), xmax#, CDbl(threshold!), False, True, Int(255), Int(0), Int(255), Int(255))          ' cyan
 If ierror Then Exit Sub
 End If
 
 ' Plot current on-peak
 If currentonpeak! <> 0# Then
-Call ScanDataPlotLine(tGraph, linecount&, CDbl(currentonpeak!), ymin#, CDbl(currentonpeak!), ymax#, False, True, Int(255), Int(0), Int(255), Int(0))    ' green
+Call ScanDataPlotLine(tGraph, LineCount&, CDbl(currentonpeak!), ymin#, CDbl(currentonpeak!), ymax#, False, True, Int(255), Int(0), Int(255), Int(0))    ' green
 If ierror Then Exit Sub
 End If
 
@@ -352,7 +351,7 @@ Exit Sub
 
 End Sub
 
-Sub ScanDataPlotOnPeak_PE(tGraph As Pesgo, onpeak As Single)
+Sub ScanDataPlotOnPeak_PE(tGraph As Pesgo, LineCount As Long, onpeak As Single)
 ' Display the selected on-peak position (Pro Essentials code)
 
 ierror = False
@@ -360,8 +359,6 @@ On Error GoTo ScanDataPlotOnPeak_PEError
 
 Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
 Dim txmin As Double, txmax As Double, tymin As Double, tymax As Double
-
-Dim linecount As Long
 
 ' Determine min and max of graph
 xmin# = tGraph.ManualMinX
@@ -372,7 +369,7 @@ ymax# = tGraph.ManualMaxY
 
 ' Plot on-peak position
 If onpeak! <> 0# Then
-Call ScanDataPlotLine(tGraph, linecount&, CDbl(onpeak!), tymin#, CDbl(onpeak!), tymax#, False, True, Int(255), Int(0), Int(255), Int(0))   ' light green
+Call ScanDataPlotLine(tGraph, LineCount&, CDbl(onpeak!), tymin#, CDbl(onpeak!), tymax#, False, True, Int(255), Int(0), Int(255), Int(0))   ' light green
 If ierror Then Exit Sub
 End If
 
@@ -386,7 +383,7 @@ Exit Sub
 
 End Sub
 
-Sub ScanDataPlotLine(tGraph As Pesgo, linecount As Long, txmin As Double, tymin As Double, txmax As Double, tymax As Double, tContinue As Boolean, tBold As Boolean, tAlpha As Integer, tRed As Integer, tGreen As Integer, tBlue As Integer)
+Sub ScanDataPlotLine(tGraph As Pesgo, LineCount As Long, txmin As Double, tymin As Double, txmax As Double, tymax As Double, tContinue As Boolean, tBold As Boolean, tAlpha As Integer, tRed As Integer, tGreen As Integer, tBlue As Integer)
 ' Plots a line on the passed graph using the passed color
 
 ierror = False
@@ -395,35 +392,35 @@ On Error GoTo ScanDataPlotLineError
 tGraph.ShowAnnotations = True
 
 ' Start point
-tGraph.GraphAnnotationX(linecount&) = txmin#
-tGraph.GraphAnnotationY(linecount&) = tymin#
+tGraph.GraphAnnotationX(LineCount&) = txmin#
+tGraph.GraphAnnotationY(LineCount&) = tymin#
 If Not tContinue Then
 If Not tBold Then
-tGraph.GraphAnnotationType(linecount&) = PEGAT_THIN_SOLIDLINE&
+tGraph.GraphAnnotationType(LineCount&) = PEGAT_THIN_SOLIDLINE&
 Else
-tGraph.GraphAnnotationType(linecount&) = PEGAT_MEDIUM_SOLIDLINE&
+tGraph.GraphAnnotationType(LineCount&) = PEGAT_MEDIUM_SOLIDLINE&
 'tGraph.GraphAnnotationType(linecount&) = PEGAT_THICK_SOLIDLINE&
 End If
 Else
-tGraph.GraphAnnotationType(linecount&) = PEGAT_LINECONTINUE&
+tGraph.GraphAnnotationType(LineCount&) = PEGAT_LINECONTINUE&
 End If
-tGraph.GraphAnnotationColor(linecount&) = tGraph.PEargb(tAlpha%, tRed%, tGreen%, tBlue%)
+tGraph.GraphAnnotationColor(LineCount&) = tGraph.PEargb(tAlpha%, tRed%, tGreen%, tBlue%)
 
 ' No text (at this time)
-tGraph.GraphAnnotationText(linecount&) = ""
+tGraph.GraphAnnotationText(LineCount&) = ""
 'tGraph.GraphAnnotationText(linecount&) = vbNullString      ' this does not work!!!
 
 ' End point
-linecount& = linecount& + 1
-tGraph.GraphAnnotationX(linecount&) = txmax#
-tGraph.GraphAnnotationY(linecount&) = tymax#
-tGraph.GraphAnnotationType(linecount&) = PEGAT_LINECONTINUE&
-tGraph.GraphAnnotationColor(linecount&) = tGraph.PEargb(tAlpha%, tRed%, tGreen%, tBlue%)
+LineCount& = LineCount& + 1
+tGraph.GraphAnnotationX(LineCount&) = txmax#
+tGraph.GraphAnnotationY(LineCount&) = tymax#
+tGraph.GraphAnnotationType(LineCount&) = PEGAT_LINECONTINUE&
+tGraph.GraphAnnotationColor(LineCount&) = tGraph.PEargb(tAlpha%, tRed%, tGreen%, tBlue%)
 
 ' No text (at this time)
-tGraph.GraphAnnotationText(linecount&) = ""
+tGraph.GraphAnnotationText(LineCount&) = ""
 'tGraph.GraphAnnotationText(linecount&) = vbNullString      ' this does not work!!!
-linecount& = linecount& + 1
+LineCount& = LineCount& + 1
 
 Exit Sub
 

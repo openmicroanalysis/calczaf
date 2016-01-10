@@ -353,7 +353,7 @@ If FormPlotAlpha_GS.OptionBenceAlbee(2).Value Then tfilename$ = "Alpha-factors, 
 If FormPlotAlpha_GS.CheckAllOptions.Value = vbChecked Then tfilename$ = tfilename$ & ", AllZAFs"
 If FormPlotAlpha_GS.CheckAllMacs.Value = vbChecked Then tfilename$ = tfilename$ & ", AllMACs"
 
-Call MiscSaveDataSets(tfilename$, FormPlotAlpha_GS.Graph1.GraphTitle, FormPlotAlpha_GS.Graph1.BottomTitle, FormPlotAlpha_GS.Graph1.LeftTitle, sString$(), FormPlotAlpha_GS.Graph1, tForm)
+Call MiscSaveDataSets_GS(tfilename$, FormPlotAlpha_GS.Graph1.GraphTitle, FormPlotAlpha_GS.Graph1.BottomTitle, FormPlotAlpha_GS.Graph1.LeftTitle, sString$(), FormPlotAlpha_GS.Graph1, tForm)
 If ierror Then Exit Sub
 
 Exit Sub
@@ -704,7 +704,7 @@ If FormPlotAlpha_PE.OptionBenceAlbee(2).Value Then tfilename$ = "Alpha-factors, 
 If FormPlotAlpha_PE.CheckAllOptions.Value = vbChecked Then tfilename$ = tfilename$ & ", AllZAFs"
 If FormPlotAlpha_PE.CheckAllMacs.Value = vbChecked Then tfilename$ = tfilename$ & ", AllMACs"
 
-Call MiscSaveDataSets(tfilename$, FormPlotAlpha_PE.Graph1.GraphTitle, FormPlotAlpha_PE.Graph1.BottomTitle, FormPlotAlpha_PE.Graph1.LeftTitle, sString$(), FormPlotAlpha_PE.Graph1, tForm)
+Call MiscSaveDataSets_PE(tfilename$, FormPlotAlpha_PE.Pesgo1.MainTitle, FormPlotAlpha_PE.Pesgo1.XAxisLabel, FormPlotAlpha_PE.Pesgo1.YAxisLabel, sString$(), FormPlotAlpha_PE.Pesgo1, tForm)
 If ierror Then Exit Sub
 
 Exit Sub

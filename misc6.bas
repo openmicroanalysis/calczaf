@@ -11,11 +11,11 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Sub MiscSaveData(gstring As String, xstring As String, ystring As String, tGraph As Graph, tForm As Form)
-' Open file to save graph data to disk
+Sub MiscSaveData_GS(gstring As String, xstring As String, ystring As String, tGraph As Graph, tForm As Form)
+' Open file to save graph data to disk (Graphics Server code)
 
 ierror = False
-On Error GoTo MiscSaveDataError
+On Error GoTo MiscSaveData_GSError
 
 Dim tfilename As String, tmsg As String
 
@@ -32,26 +32,62 @@ DoEvents
 Open tfilename$ For Output As #Temp1FileNumber%
 
 ' Save all data
-Call MiscWriteData(xstring$, ystring$, tGraph)
+Call MiscWriteData_GS(xstring$, ystring$, tGraph)
 Close #Temp1FileNumber%
 
 If ierror Then Exit Sub
 Exit Sub
 
 ' Errors
-MiscSaveDataError:
-MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveData"
+MiscSaveData_GSError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveData_GS"
 Close #Temp1FileNumber%
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub MiscSaveDataSets(tbasename As String, gstring As String, xstring As String, ystring As String, sString() As String, tGraph As Graph, tForm As Form)
-' Open file to save graph data (multiple sets) to disk
+Sub MiscSaveData_PE(gstring As String, xstring As String, ystring As String, tGraph As Pesgo, tForm As Form)
+' Open file to save graph data to disk (Pro Esentials code)
 
 ierror = False
-On Error GoTo MiscSaveDataSetsError
+On Error GoTo MiscSaveData_PEError
+
+Dim tfilename As String, tmsg As String
+
+' Get filename to save data
+tmsg$ = gstring$
+tfilename$ = MiscGetFileNameNoExtension(ProbeDataFile$) & "_" & tmsg$ & ".dat"
+Call IOGetFileName(Int(1), "DAT", tfilename$, tForm)
+If ierror Then Exit Sub
+
+' Open file
+Close #Temp1FileNumber%
+Screen.MousePointer = vbHourglass
+DoEvents
+Open tfilename$ For Output As #Temp1FileNumber%
+
+' Save all data
+Call MiscWriteData_PE(xstring$, ystring$, tGraph)
+Close #Temp1FileNumber%
+
+If ierror Then Exit Sub
+Exit Sub
+
+' Errors
+MiscSaveData_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveData_PE"
+Close #Temp1FileNumber%
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub MiscSaveDataSets_GS(tbasename As String, gstring As String, xstring As String, ystring As String, sString() As String, tGraph As Graph, tForm As Form)
+' Open file to save graph data (multiple sets) to disk (Graphics Server code)
+
+ierror = False
+On Error GoTo MiscSaveDataSets_GSError
 
 Dim tfilename As String, tmsg As String
 
@@ -68,7 +104,7 @@ DoEvents
 Open tfilename$ For Output As #Temp1FileNumber%
 
 ' Save all data
-Call MiscWriteDataSets(gstring$, xstring$, ystring$, sString$(), tGraph)
+Call MiscWriteDataSets_GS(gstring$, xstring$, ystring$, sString$(), tGraph)
 Close #Temp1FileNumber%
 If ierror Then Exit Sub
 
@@ -76,24 +112,61 @@ Screen.MousePointer = vbDefault
 Exit Sub
 
 ' Errors
-MiscSaveDataSetsError:
-MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveDataSets"
+MiscSaveDataSets_GSError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveDataSets_GS"
 Close #Temp1FileNumber%
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub MiscWriteData(xstring As String, ystring As String, tGraph As Graph)
-' Write graph data to disk
+Sub MiscSaveDataSets_PE(tbasename As String, gstring As String, xstring As String, ystring As String, sString() As String, tGraph As Pesgo, tForm As Form)
+' Open file to save graph data (multiple sets) to disk (Pro Essentials code)
 
 ierror = False
-On Error GoTo MiscWriteDataError
+On Error GoTo MiscSaveDataSets_PEError
+
+Dim tfilename As String, tmsg As String
+
+' Get filename to save data
+tmsg$ = gstring$
+tfilename$ = MiscGetFileNameNoExtension(tbasename$) & "_" & tmsg$ & ".dat"
+Call IOGetFileName(Int(1), "DAT", tfilename$, tForm)
+If ierror Then Exit Sub
+
+' Open file
+Close #Temp1FileNumber%
+Screen.MousePointer = vbHourglass
+DoEvents
+Open tfilename$ For Output As #Temp1FileNumber%
+
+' Save all data
+Call MiscWriteDataSets_PE(gstring$, xstring$, ystring$, sString$(), tGraph)
+Close #Temp1FileNumber%
+If ierror Then Exit Sub
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+MiscSaveDataSets_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveDataSets_PE"
+Close #Temp1FileNumber%
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub MiscWriteData_GS(xstring As String, ystring As String, tGraph As Graph)
+' Write graph data to disk (Graphics Server code)
+
+ierror = False
+On Error GoTo MiscWriteData_GSError
 
 Dim i As Integer
 Dim xdata As Single, ydata As Single
 
-If tGraph.NumPoints = 0 Or tGraph.NumSets = 0 Then GoTo MiscWriteDataNoData
+If tGraph.NumPoints = 0 Or tGraph.NumSets = 0 Then GoTo MiscWriteData_GSNoData
 
 ' Write column labels
 Screen.MousePointer = vbHourglass
@@ -117,32 +190,78 @@ Screen.MousePointer = vbDefault
 Exit Sub
 
 ' Errors
-MiscWriteDataError:
+MiscWriteData_GSError:
 Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteData"
+MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteData_GS"
 Close #Temp1FileNumber%
 ierror = True
 Exit Sub
 
-MiscWriteDataNoData:
+MiscWriteData_GSNoData:
 Screen.MousePointer = vbDefault
 msg$ = "No graph data to write to disk"
-MsgBox msg$, vbOKOnly + vbExclamation, "MiscWriteData"
+MsgBox msg$, vbOKOnly + vbExclamation, "MiscWriteData_GS"
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub MiscWriteDataSets(gstring As String, xstring As String, ystring As String, sString$(), tGraph As Graph)
-' Write graph data to disk (multiple sets)
+Sub MiscWriteData_PE(xstring As String, ystring As String, tGraph As Pesgo)
+' Write graph data to disk (Pro Essentials code)
 
 ierror = False
-On Error GoTo MiscWriteDataSetsError
+On Error GoTo MiscWriteData_PEError
+
+Dim i As Integer
+Dim xdata As Single, ydata As Single
+
+If tGraph.points = 0 Or tGraph.Subsets = 0 Then GoTo MiscWriteData_PENoData
+
+' Write column labels
+Screen.MousePointer = vbHourglass
+msg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$
+Print #Temp1FileNumber%, msg$
+
+' Loop on graphs
+For i% = 1 To tGraph.points
+ydata! = tGraph.ydata(0, i% - 1)
+xdata! = tGraph.xdata(0, i% - 1)
+msg$ = MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!)
+
+' Write to disk
+Print #Temp1FileNumber%, msg$
+Next i%
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+MiscWriteData_PEError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteData_PE"
+Close #Temp1FileNumber%
+ierror = True
+Exit Sub
+
+MiscWriteData_PENoData:
+Screen.MousePointer = vbDefault
+msg$ = "No graph data to write to disk"
+MsgBox msg$, vbOKOnly + vbExclamation, "MiscWriteData_PE"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub MiscWriteDataSets_GS(gstring As String, xstring As String, ystring As String, sString$(), tGraph As Graph)
+' Write graph data to disk (multiple sets) (Graphics Server code)
+
+ierror = False
+On Error GoTo MiscWriteDataSets_GSError
 
 Dim i As Integer, j As Integer
 Dim xdata As Single, ydata As Single
 
-If tGraph.NumPoints = 0 Or tGraph.NumSets = 0 Then GoTo MiscWriteDataSetsNoData
+If tGraph.NumPoints = 0 Or tGraph.NumSets = 0 Then GoTo MiscWriteDataSets_GSNoData
 
 ' Write y-data title if multiple data sets
 Screen.MousePointer = vbHourglass
@@ -185,20 +304,84 @@ Screen.MousePointer = vbDefault
 Exit Sub
 
 ' Errors
-MiscWriteDataSetsError:
+MiscWriteDataSets_GSError:
 Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteDataSets"
+MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteDataSets_GS"
 Close #Temp1FileNumber%
 ierror = True
 Exit Sub
 
-MiscWriteDataSetsNoData:
+MiscWriteDataSets_GSNoData:
 Screen.MousePointer = vbDefault
 msg$ = "No graph data to write to disk"
-MsgBox msg$, vbOKOnly + vbExclamation, "MiscWriteDataSets"
+MsgBox msg$, vbOKOnly + vbExclamation, "MiscWriteDataSets_GS"
 ierror = True
 Exit Sub
 
 End Sub
 
+Sub MiscWriteDataSets_PE(gstring As String, xstring As String, ystring As String, sString$(), tGraph As Pesgo)
+' Write graph data to disk (multiple sets) (Pro Essentials code)
 
+ierror = False
+On Error GoTo MiscWriteDataSets_PEError
+
+Dim i As Integer, j As Integer
+Dim xdata As Single, ydata As Single
+
+If tGraph.points = 0 Or tGraph.Subsets = 0 Then GoTo MiscWriteDataSets_PENoData
+
+' Write y-data title if multiple data sets
+Screen.MousePointer = vbHourglass
+If tGraph.Subsets > 1 Then
+msg$ = VbDquote$ & Format$(ystring$, a80$) & VbDquote$
+Print #Temp1FileNumber%, msg$
+
+' Write column labels
+msg$ = vbNullString
+For j% = 1 To tGraph.Subsets
+msg$ = msg$ & VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(sString$(j%), a80$) & VbDquote$ & vbTab
+Next j%
+Print #Temp1FileNumber%, msg$
+
+' Single data set
+Else
+msg$ = VbDquote$ & gstring$ & VbDquote$
+Print #Temp1FileNumber%, msg$
+msg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$ & vbTab
+Print #Temp1FileNumber%, msg$
+End If
+
+' Loop on graphs
+For i% = 1 To tGraph.points
+msg$ = vbNullString
+
+For j% = 1 To tGraph.Subsets
+ydata! = tGraph.ydata(j% - 1, i% - 1)
+xdata! = tGraph.xdata(j% - 1, i% - 1)
+msg$ = msg$ & MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!) & vbTab
+Next j%
+
+' Write to disk
+Print #Temp1FileNumber%, msg$
+Next i%
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+MiscWriteDataSets_PEError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteDataSets_PE"
+Close #Temp1FileNumber%
+ierror = True
+Exit Sub
+
+MiscWriteDataSets_PENoData:
+Screen.MousePointer = vbDefault
+msg$ = "No graph data to write to disk"
+MsgBox msg$, vbOKOnly + vbExclamation, "MiscWriteDataSets_PE"
+ierror = True
+Exit Sub
+
+End Sub
