@@ -2,8 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/10/16	Implement KLM markers for MPB plotting.
+
 01/09/16	Add more plot wavescan options to save/load to/from MDB file.
 v. 11.2.5
+		Implement PE graphics for MultiPoint dialog.
 
 01/08/16	Fix Load File Setup bug (Goemann).
 
@@ -20,13 +23,13 @@ v. 11.2.3
 12/29/15	Improve stage reproducibility correction code. Fix FormLOCATE.
 v. 11.2.2
 
-12/28/15	Implement stage reproducibility correction code in Automate! window fror beam deflection mode (Wark and Ruscitto).
+12/28/15	Implement stage reproducibility correction code in Automate! window for beam deflection mode (Wark and Ruscitto).
 v. 11.2.1
 
 12/27/15	Create new MDB template code for new files, using MS Access 2010 (still need to convert setup*.mdb and user.mdb files
 v. 11.1.9	which still depend on the old VB5 data control).
 
-	Update copyright notice for 2016.  Remove spin32.ocx control from deployment. Convert more grid32.ocx controls to MSFlexGrid controls.
+		Update copyright notice for 2016.  Remove spin32.ocx control from deployment. Convert more grid32.ocx controls to MSFlexGrid controls.
 
 12/26/15	Convert Grid32.ocx to MSFlexGrid.ocx controls.  Add check for disable acq flag in Drift.exe (Carpenter).
 
@@ -46,18 +49,18 @@ v. 11.1.7
 
 12/08/15	Add index to MPB manual flag table (Poeml).
 
-	Add Display current alpha factors menu for selected sample in Analyze!
+		Add Display current alpha factors menu for selected sample in Analyze!
 
 12/06/15	New PE graphics for peaking and PHA scanning.  Updated matrix.mdb file with 32 new actinides, 12 REE and Ti-Pt binaries.
 v. 11.1.6
 	
 12/05/15	Work on converting GS plot controls to PE plot controls...
 
-	Improve Imaging beam scan calibration window code (Carpenter).
+		Improve Imaging beam scan calibration window code (Carpenter).
 	
 12/03/15	Fix calculation of traverse distance in DigitizeImage and fix file problem in compact database code (Poeml).
 
-	Modify Penepma12CalculateBinaries code to check for missing x-ray lines in binary.
+		Modify Penepma12CalculateBinaries code to check for missing x-ray lines in binary.
 	
 12/02/15	Update reference manual.
 	
@@ -66,9 +69,9 @@ v. 11.1.6
 11/30/15	Add Imaging button to Stage Mosaic window (Seward and von der Handt).
 
 11/29/15	Work on FormSCAN graphics conversion.  Add better warning if 2048 imaging selected for Sx100 and not in 
-	single channel mode (Seward).
-	
-	Fix Stage.exe mosiac corner updating for move to buttons (Seward).
+		single channel mode (Seward).
+		
+		Fix Stage.exe mosiac corner updating for move to buttons (Seward).
 
 11/27/15	Fix minor bug in Standard and StartWin X-Ray menus and CalcZAF x-ray transmission code (Neill).
 v. 11.1.5
@@ -79,9 +82,9 @@ v. 11.1.5
 
 11/23/15	Remove nominal beam from load file setup save/restore code.
 
-11/20/15	New code to save and restore miscellaneous Run table paramters when loading a file setup (Seward).
+11/20/15	New code to save and restore miscellaneous Run table parameters when loading a file setup (Seward).
 v. 11.1.4
-	Start work on implementing Ocean Optics OmniDriver calls.
+		Start work on implementing Ocean Optics OmniDriver calls.
 
 11/19/15	Work on testCL.exe test app.  Re-work some EDS display code and TestEDS.
 
@@ -89,31 +92,31 @@ v. 11.1.4
 
 11/17/15	Add code to check for proper JEOL EIKS ini file values.
 
-	Fix DataGetVirtual file locking error (Poeml).
+		Fix DataGetVirtual file locking error (Poeml).
 
 11/16/15	Enable new detection limits for MAN and Nth point background methods.
 
-	Work on relative line weight code (Goemann).  Work on stage reproducibility correction code.
+		Work on relative line weight code (Goemann).  Work on stage reproducibility correction code.
 
 11/13/15	Work on new stage reproducibility feature (almost there!).
 v. 11.1.3
 	
 11/11/15	Add check for no WDS driver versions and warn user if found.
 
-	Move TestEDS to ProbeForEPMA.msi installer.
+		Move TestEDS to ProbeForEPMA.msi installer.
 
 11/10/15	Add JEOL EIKS to PFE installer (also needed for PI, NSS and Esprit installers).
 
 	
 11/09/15	Improve Cameca sx.mdb import for standard compositions (Seward)
 
-	Add proper signal type when importing PrbImg files.
+		Add proper signal type when importing PrbImg files.
 
 11/08/15	Add code to automatically move JEOL EIKS files to new app folder if necessary when updating from v. 10.x (Seward).
 	
 11/06/15	Add button to load PrbImg file for automation digitizing in Digitize Image (Locock).
 
-	Add menu in PictureSnap to only display the currently selected sample in Automate!
+		Add menu in PictureSnap to only display the currently selected sample in Automate!
 
 11/05/15	Add cancel button to Imaging/Digitize Imaging window when saving image (Neill).
 v. 11.1.2
@@ -122,7 +125,7 @@ v. 11.1.2
 	
 11/03/15	Add check for v. 2.0.3 drivers if old app folder not present.
 
-	Add alt key support for small MPB adjustment (Poeml) in Model Backgrounds.
+		Add alt key support for small MPB adjustment (Poeml) in Model Backgrounds.
 
 11/02/15	Fix small bug in standard drift correction in CalcImage analysis code.
 
@@ -132,11 +135,11 @@ v. 11.1.1
 	
 10/29/15	Fix user specified output bug when using sample averages.
 v. 11.0.9
-	Modify detection limit calculations for Nth point acquisitions.
+		Modify detection limit calculations for Nth point acquisitions.
 	
 10/28/15	Fix CalcZAF emitter absorber MAC pair output (Buse).
 
-	Fix Excel formatting bug (column spacing) when using no sample name, line or number and using average output.
+		Fix Excel formatting bug (column spacing) when using no sample name, line or number and using average output.
 
 10/27/15	Improve CalcImage behavior for multiple quant runs. Fix init of PI automation from PFE.
 
@@ -146,16 +149,16 @@ v. 11.0.9
 
 10/23/15	Fix raw intensity Surfer label (Carpenter).
 
-	Replace all old Spin controls with new UpDown controls.
+		Replace all old Spin controls with new UpDown controls.
 
 10/22/15	Implement shape control for elapsed time gauge (Acquire).
 v. 11.0.8
-	Add new controls to installer.
+		Add new controls to installer.
 	
-	Save PFE path to restore after running PI.
+		Save PFE path to restore after running PI.
 	
-	Move EDS init code in Calculation Options so it doesn't get called unless one clicks the EDS Quant 
-	Method button (Chouinard).
+		Move EDS init code in Calculation Options so it doesn't get called unless one clicks the EDS Quant 
+		Method button (Chouinard).
 
 10/21/15	Implement new PE graphics by Seward for EDS and CL data.
 
@@ -165,34 +168,34 @@ v. 11.0.8
 
 10/16/15	Add Excel tab delimited format for amphibole recalculations (Lowers).  See new AMPHI.DAT file.
 
-	Replace old spin button controls with new MS UpDown controls in Standard and CalcZAF.
+		Replace old spin button controls with new MS UpDown controls in Standard and CalcZAF.
 
 10/13/15	Add Print Log and Print Setup menus to the CalcImage log window.
 	
-	Implement rigorous calculation of pixel acquisition time in CalcImage for
-	standard drift correction on a channel by channel basis (in case utilizing multiple mapping sets).
+		Implement rigorous calculation of pixel acquisition time in CalcImage for
+		standard drift correction on a channel by channel basis (in case utilizing multiple mapping sets).
 	
-	Also implement pixel drift time interpolation for beam drift also in CalcImage.
+		Also implement pixel drift time interpolation for beam drift also in CalcImage.
 	
 10/12/15	Update Quick Start manual in distribution. 
 
-	Update Getting Started manual (by Karsten Goemann).
+		Update Getting Started manual (by Karsten Goemann).
 	
 10/10/15	Work on new MAN precision expressions from Singer.
 v. 10.0.7
-	Add calculate image statistics menu to CalcImage log window for currently open images.
+		Add calculate image statistics menu to CalcImage log window for currently open images.
 
 10/04/15	Add element by stoichiometry and element relative to output .DAT files (Seward).
 	
 09/30/15	Add new pure element k-ratios to Penepma12 distribution.  Work on new MAN sensitivity expressions from Singer.
 	
 09/27/15	Change k-ratio error distribution .DAT files (Pouchou, NIST, etc) absorber only from 7 to 13 (additional x-ray lines
-	means that 13 is now the absorber only integer flag, not 7).  Add to distribution files.
+		means that 13 is now the absorber only integer flag, not 7).  Add to distribution files.
  
 09/26/15	Improve TDI time estimation (Gopon).
 	
 09/23/15	Enable options in Automate! to allow Probe Image to be launched after the completion of 
-	the automated samples in PFE.  Requires v. 1.2.2 of Probe Image.
+		the automated samples in PFE.  Requires v. 1.2.2 of Probe Image.
 	
 09/22/15	Add "hi/lo" text to Elements/Cations dialog interference output (Poeml).
 
@@ -200,18 +203,18 @@ v. 10.0.7
 
 09/20/15	Add XLINE2.TXT and XFLUR2.TXT (all zero) text files for updating additional x-rays files.
 
-	Add Cancel button to ZAFFLU3 negative MAC errors.
+		Add Cancel button to ZAFFLU3 negative MAC errors.
 
 09/19/15	Updated XEDGE.DAT file
 
 09/18/15	First release of additional x-ray lines (Ln, Lg, Lv, ll, Mg, Mz) (Gopon).
 v. 11.0.6
-	Fix CalcZAF "standard" output format.
+		Fix CalcZAF "standard" output format.
 
-	New matrix.mdb.
+		New matrix.mdb.
 	
-	Add new kratio table in standard MDB files for storing measured k-ratios on standards (for future error 
-	distribution calculations).
+		Add new kratio table in standard MDB files for storing measured k-ratios on standards (for future error 
+		distribution calculations).
 	
 09/16/15	New matrix mdb. Improved output for x-ray tables.	
 	
@@ -221,7 +224,7 @@ v. 11.0.6
 	
 09/13/15	Fix beam scan calibration interpolation to use log-log relation (Carpenter).
 
-	Add additional absorbers to FFAST2.DAT MAC table (Gopon).
+		Add additional absorbers to FFAST2.DAT MAC table (Gopon).
 	
 09/12/15	Add more debug statements to function RealTimeGetBeamScanCalibration for advanced beam scan calibrations.
 
@@ -241,15 +244,15 @@ v. 11.04
 	
 08/29/15	Add dialog for selection of Bruker quantification method (Pinard and Goemann).
 
-	Add update code for modified beam scan calibration parameters in Probewin.ini file (Carpenter).
+		Add update code for modified beam scan calibration parameters in Probewin.ini file (Carpenter).
 	
-	Fix element atomic charge saving in GetElm code (Neill). 
+		Fix element atomic charge saving in GetElm code (Neill). 
 	
-	Modify sort order options (Neill).
+		Modify sort order options (Neill).
 	
 08/27/15	Add code to support PI automation from PFE. Fix NS update (probesoftware) ftp folder issue.
 
-	Change "reading glasses" buttons to normal "Read" buttons in conditions dialogs (Hanson).
+		Change "reading glasses" buttons to normal "Read" buttons in conditions dialogs (Hanson).
 
 08/26/15	Fix stoich. oxygen problem in CalcImage caused by disabled quant fix (Buse).	
 v. 11.0.3
@@ -261,33 +264,33 @@ v. 11.0.2
 	
 08/21/15	Move application files to Program Files and config and data files to ProgramData folder.
 v. 11.0.1
-	Add code to auto-update config and data files from old installation location.
+		Add code to auto-update config and data files from old installation location.
 
 08/16/15	Add checkbox for only display samples with data (von der Handt)
 v. 10.9.9
-	Start moving config files to ProgramData folder.
+		Start moving config files to ProgramData folder.
 	
-	Add UseConfirmDuringAcquisitionFlag to INI file (von der Handt)
+		Add UseConfirmDuringAcquisitionFlag to INI file (von der Handt)
 
 08/15/15	Add check for DisableQuant flag in CalcImage output to Surfer (von der Handt).
 
-	Add debug statements to beam scan calibration calculation code (Carpenter).
+		Add debug statements to beam scan calibration calculation code (Carpenter).
 
 08/10/15	Re-arrange Acquire! buttons. (von der Handt).
 
-	Fix Combine Lines code (von der Handt)
+		Fix Combine Lines code (von der Handt)
 
 08/09/15	Copy Standard Assignments button to Acquire! (remove ratemeter window) (von der Handt).
 
-	Fix ZAFMip overflow error on epoxy.
+		Fix ZAFMip overflow error on epoxy.
 	
-	Fix standard assignment combo order (Goemann).
+		Fix standard assignment combo order (Goemann).
 
 08/07/15	Move JTA x-ray files to CITZAF folder. Modify conversion code in CalcZAF to use new path.
 
 07/30/15	Fix problem with scale bar in Imaging if "Do not set Conditions" checkbox is checked (Seward).
 
-	Modify code to improve sample memory allocations (Chouinard, Seward, etc).
+		Modify code to improve sample memory allocations (Chouinard, Seward, etc).
 
 07/28/15	New matrix.mdb.
 
@@ -299,7 +302,7 @@ v. 10.9.7
 07/20/15	Add new 52.5 degree takeoff binaries to matrix database.
 v. 10.9.6
 
-	Minor bugs fixes in EMSA output and Automate! confirm dialog (Carpenter).
+		Minor bugs fixes in EMSA output and Automate! confirm dialog (Carpenter).
 
 07/19/15	Fix .ELM file parsing bug (Roberts).
 
@@ -322,106 +325,106 @@ v. 10.9.5
 
 06/27/15	Fix minor display bug in ImageDisplay form (Chouinard).
 v. 10.9.4
-	Finish EDS and CL import to Standard.exe.
+		Finish EDS and CL import to Standard.exe.
 
 06/25/15	Start adding code for importing EDS and CL spectra into standard compositional database.
 
 06/24/15	Fix "out of memory" errors when using integrated intensity acquisitions (Goemann, Steele)
 v. 10.9.3
-	Begin adding feature to import EDS and CL spectra to standard database.
+		Begin adding feature to import EDS and CL spectra to standard database.
 
-6/22/15	Fix integrated (APF) intensity calculation bug in Model Backgrounds (Goemann).
+6/22/15		Fix integrated (APF) intensity calculation bug in Model Backgrounds (Goemann).
 
-	Add additional debug info for SX100SetPHAParameters (Morgan).
+		Add additional debug info for SX100SetPHAParameters (Morgan).
 
-6/20/15	Update documentation for new CL INI keywords.  Tweak CL dialog GUI.
+6/20/15		Update documentation for new CL INI keywords.  Tweak CL dialog GUI.
 
-6/19/15	Add CL spectrum acquisition to PFE (currently demo mode only). Now let's spec a 
+6/19/15		Add CL spectrum acquisition to PFE (currently demo mode only). Now let's spec a 
 v. 10.9.2	hardware interface such as Ocean Optics, Newport Instruments, etc.
 
-6/17/15	Fix increment import bug (Carpenter).
+6/17/15		Fix increment import bug (Carpenter).
 
 06/14/15	Finish implementing image math in CalcImage.  Very cool!  Try it out!
 
 06/13/15	Start implementing image math in CalcImage.
 
-	Fix nasty but easy to fix bug in Elements/Cations when unanalyzed oxygen is present (Cathey and Steele).
+		Fix nasty but easy to fix bug in Elements/Cations when unanalyzed oxygen is present (Cathey and Steele).
 
 06/10/15	Add EDS acquisition to wavescan samples also!
 v. 10.9.1
 
-06/09/5	Add option for image vs. sample conditions in Run | Display Images dialog.
+06/09/15	Add option for image vs. sample conditions in Run | Display Images dialog.
 v. 10.8.9
 
 06/08/15	Fix MPB flag with MAN problem in DataCorrectBackground (Creighton).
 
 06/05/15	Minor fixes for new EDS/WDS array integration. One can now perform interferences corrections 
-	between WDS and EDS elements! See PS user forum for more info.
+		between WDS and EDS elements! See PS user forum for more info.
 
-06/04/15 Combine EDS elements into WDS arrays for all analytical calculations (interferences, 
+06/04/15 	Combine EDS elements into WDS arrays for all analytical calculations (interferences, 
 v. 10.8.8	etc) (Steele and Chouinard). Many changes to many code modules.
 
-5/25/15	Fix sin thickness display for coating correction (Seward).
+5/25/15		Fix sin thickness display for coating correction (Seward).
 
-5/23/15	Improve calibration curve display (from Run menu) code.
+5/23/15		Improve calibration curve display (from Run menu) code.
 
-5/21/15	Implement new non-linear alpha factor matrix corrections. Note: PFE runs that were previously assigned the 
-	calibration curve correction method will now automatically be changed to these new non-linear alpha factors.
-	This is a less than ideal consequence of adding another alpha factor method (in addition to the previous one,
-	two and three regression coefficients) since this new non-linear method utilizes four (yes four!) regression 
-	coefficients! 
+5/21/15		Implement new non-linear alpha factor matrix corrections. Note: PFE runs that were previously assigned the 
+		calibration curve correction method will now automatically be changed to these new non-linear alpha factors.
+		This is a less than ideal consequence of adding another alpha factor method (in addition to the previous one,
+		two and three regression coefficients) since this new non-linear method utilizes four (yes four!) regression 
+		coefficients! 
 	
-	So any existing runs using the calibration curve correction method will have to be switched
-	manually to the calibration curve method using the Analytical | ZAF, Phi-Rho-Z, Alpha Factor and Calibration 
-	Curve menu. I am truly sorry about that but there was no other way to do it in the code...
+		So any existing runs using the calibration curve correction method will have to be switched
+		manually to the calibration curve method using the Analytical | ZAF, Phi-Rho-Z, Alpha Factor and Calibration 
+		Curve menu. I am truly sorry about that but there was no other way to do it in the code...
 
-5/18/15	Fix std assignment bug (Buse).
+5/18/15		Fix std assignment bug (Buse).
 
-5/15/15	Updated help and docs
+5/15/15		Updated help and docs
 v. 10.8.7
 
-5/13/15	Add formula by difference to alpha factor calculations.
+5/13/15		Add formula by difference to alpha factor calculations.
 
-	Start new EDS mods (Steele and Chouinard).
+		Start new EDS mods (Steele and Chouinard).
 
-5/12/15	Fix nominal beam measurement in Count Times dialog (Roberts).
+5/12/15		Fix nominal beam measurement in Count Times dialog (Roberts).
 
-5/11/15	Add EDS standard arrays to List Report output.
+5/11/15		Add EDS standard arrays to List Report output.
 
-5/6/15	Improve time estimation for automation. Improve ZAFFLU2 code.
+5/6/15		Improve time estimation for automation. Improve ZAFFLU2 code.
 
-	Fix wavescan file output (Poeml).
+		Fix wavescan file output (Poeml).
 
-5/4/15	Improve automation time estimate.
+5/4/15		Improve automation time estimate.
 
-5/3/15	Prune dead code from projects. Improve Penepma k-ratio matrix scan code to save test .dat files.
+5/3/15		Prune dead code from projects. Improve Penepma k-ratio matrix scan code to save test .dat files.
 v. 10.8.6
 
-4/28/15	Improve ZAFFLU2 code. Minor improvements to output.
+4/28/15		Improve ZAFFLU2 code. Minor improvements to output.
 
-4/27/15	Modify aggregate code so sample disable flags are *not* applied to non aggregate std elements (Lowers).
+4/27/15		Modify aggregate code so sample disable flags are *not* applied to non aggregate std elements (Lowers).
 
-4/25/15	Fix subscript problem in user specified output (Pankhurst).
+4/25/15		Fix subscript problem in user specified output (Pankhurst).
 
-	Fix end member flag not saved.
+		Fix end member flag not saved.
 
-4/24/15	Modify TimeUpdateElements control array loading (Steele). Improve EDS output to log window.
+4/24/15		Modify TimeUpdateElements control array loading (Steele). Improve EDS output to log window.
 
-4/23/15	Modify Elements/Cations dialog to support editing of "Always Use" and 
-	"Never Use" manual flags for all selected samples for MultiPoint Backgrounds (Poeml and Allaz).
+4/23/15		Modify Elements/Cations dialog to support editing of "Always Use" and 
+		"Never Use" manual flags for all selected samples for MultiPoint Backgrounds (Poeml and Allaz).
 
-4/22/15	Fix pre-peaking issue for subsequent elements on a spectrometer (Santos).
+4/22/15		Fix pre-peaking issue for subsequent elements on a spectrometer (Santos).
 
-	Fix coating parameters for analysis of standards (Goemann).
+		Fix coating parameters for analysis of standards (Goemann).
 	
-	Fix MPB positions problem if using different config files for off-line processing (Neill).
+		Fix MPB positions problem if using different config files for off-line processing (Neill).
 
 04/20/15	Implement new fluorescence by beta line code.
 v. 10.8.5
 
 04/18/15	Make not used shape and label controls for elements in Time display invisible (Lowers).
 
-04/16/15	Fix coating correction for when standard is being analyuzed as an unknown (Goemann).
+04/16/15	Fix coating correction for when standard is being analyzed as an unknown (Goemann).
 
 04/13/15	Finish "Do not normalize specified elements" feature for particle corrections (Chouinard).
 v. 10.8.4
@@ -432,53 +435,53 @@ v. 10.8.4
 
 04/09/15	Enable Tip of the Day feature.
 
-	Update matrix.mdb (Penelope fast MC) with 229K binary compositional k-ratios.
+		Update matrix.mdb (Penelope fast MC) with 229K binary compositional k-ratios.
 	
-	Update CalcZAF source.
+		Update CalcZAF source.
 
 04/08/15	Add formula by difference feature to PFE.
 
-04/7/15	Modify Combined Sample feature to automatically handle TDI table data (Neill).
+04/7/15		Modify Combined Sample feature to automatically handle TDI table data (Neill).
 
 04/03/15	Add code to model time for averaging in faraday and absorbed current measurements (Goemann).
 
 04/02/15	Add debug code for AcquireDoTunableWavescanSpecROM.
 v. 10.8.3
-	Start removing temp file number globals and replace with local variables.
+		Start removing temp file number globals and replace with local variables.
 
 04/01/15	Numerous small tweaks.
 
 03/31/15	Modify StageMap calibration to automatically save to INI file.
 v. 10.8.2
-	Fix MAN output bug (Carpenter).
+		Fix MAN output bug (Carpenter).
 
 03/27/15	Have TDI absorbed current acquisition respect Measure Absorbed Current flag (Goemann).
 
 03/26/15	Add extra error trapping for wavescan acquisitions.
 
-	Fix scan rotation convention in beam calibration code.
+		Fix scan rotation convention in beam calibration code.
 
 03/24/15	Add image rotation homography code to calculate beam scan image rotation in CalcImage.
 
 03/22/15	Add batch code to update demo INI files automatically.
 v. 10.8.1
-	Update screen shots in PFE Reference manual.
+		Update screen shots in PFE Reference manual.
 
 03/21/15	Add CLR (Golden Software color file) conversion to PFE .FC color file (Roberts).
 
-	Improve Grapher/Surfer determine Scripter app code and load from InitINISoftware code.
+		Improve Grapher/Surfer determine Scripter app code and load from InitINISoftware code.
 
 03/18/15	Fix MPB code for "shared" bgds (Lowers).
 
-	Fix sample setups for EDS specified elements (Steele).
+		Fix sample setups for EDS specified elements (Steele).
 
 03/16/15	Fix INI read/write issues (Steele/Roberts).  Sorry about that guys!
 v. 10.7.9
 
 03/15/15	Fix missing trapping for disable quant and disable acq flags in shared bgd 
-	multi-point backgrounds (Lowers).
+		multi-point backgrounds (Lowers).
 	
-	Fix setup.mdb issue for MPBs.
+		Fix setup.mdb issue for MPBs.
 
 03/13/15	Work more on RGB window. 24 bit RGB BMP file output now working.
 
@@ -486,11 +489,11 @@ v. 10.7.9
 
 03/10/15	Add LUT to FC convert (Roberts). Add no beam blank option for Automate! Go button.
 
-	Add Save To Clipboard in RGB feature. Finish removing wavescan code for FormPLOT.
+		Add Save To Clipboard in RGB feature. Finish removing wavescan code for FormPLOT.
 
 03/08/15	First release of RGB window in CalcImage.  New pre-peaking code for acquisition in PFE.
 
-	First release of new wavescan Plot! window. See output menu for old std/unk dialog.
+		First release of new wavescan Plot! window. See output menu for old std/unk dialog.
 
 03/07/15	Fix graph type control issue (Allaz).
 
@@ -498,18 +501,18 @@ v. 10.7.9
 
 03/05/15	Add all INI file keywords update.
 
-	Add graphic elements for fitted MPB data.
+		Add graphic elements for fitted MPB data.
 
 03/04/15	Modify beam mode and image shift code to handle Bruker/Thermo imaging calls (Seward).
 
-	Start adding INI keyword "write backs".
+		Start adding INI keyword "write backs".
 
 03/03/15	Add output for new beam and absorbed current output.
 v. 10.7.7
 
 03/02/15	Fix faraday/absorbed current printout.
 v. 10.7.6
-	Start formula by difference feature.
+		Start formula by difference feature.
 
 02/28/15	Fix absorbed current read for JEOL.
 
@@ -517,9 +520,9 @@ v. 10.7.6
 
 02/26/15	Fix Calibrate Set Beam Current bug (Lowers and Carpenter).
 v. 10.7.5
-	Fix bug if using TDI and then switch to Alternating On/Off peaks and second point fails.
+		Fix bug if using TDI and then switch to Alternating On/Off peaks and second point fails.
 	
-	Add code for TDI and Alt on/off absorbed current measurements (Fournelle).
+		Add code for TDI and Alt on/off absorbed current measurements (Fournelle).
 
 02/24/15	Add maxtime label controls to GetOPT dialog.
 
@@ -528,9 +531,9 @@ v. 10.7.5
 02/21/15	Utilize error handing in DataOpenDatabase code even in DataGetMDBSample to try and 
 v. 10.7.4	eliminate "Could not lock file" errors on some computers (Kelly and Seward).
 	
-	Fix Acquire codes to handle dual faraday and absorbed current measurements.
+		Fix Acquire codes to handle dual faraday and absorbed current measurements.
 	
-	Modify Nth point element flags (Buse)
+		Modify Nth point element flags (Buse)
 	
 		Add warning to CalcZAF.ERR if Penepma binary not found in matrix.mdb.
 
@@ -542,14 +545,14 @@ v. 10.7.2
 
 02/18/15	Add plots per page and page delay menus to CalcImage (Roberts).
 v. 10.7.1
-	Fix minor time calculation issues with decontamination time.
+		Fix minor time calculation issues with decontamination time.
 
 02/17/15	A number of small fixes applied during AMAS 2015 (Goemann).
 
 02/04/15	Fix EDS only bug in TimecalculateChangeTime (Chouinard).
 
-	Comment out second faraday cup code measurement in AcquireDoTunable and AcquireDoTunable2 for now for
-	combined condition samples (Neill).
+		Comment out second faraday cup code measurement in AcquireDoTunable and AcquireDoTunable2 for now for
+		combined condition samples (Neill).
 
 02/03/15	Adjust beta line fluorescence code using Pouchou2.dat. Enable beta fluorescence flag again.
 
@@ -562,13 +565,13 @@ v. 10.6.9
 
 01/28/15	Final testing of v. 10.6.8 complete (Neill and Seward).
 
-	Additional k-ratios for matrix.mdb. Currently 200K k-ratios.
+		Additional k-ratios for matrix.mdb. Currently 200K k-ratios.
 
 01/26/15	Add beam and sample current output to TDI format (Fournelle).
 
-	Fix CalcImage raw intensity title (Buse)
+		Fix CalcImage raw intensity title (Buse)
 	
-	Fix faraday cup isse (Neill)
+		Fix faraday cup issue (Neill)
 
 01/25/15	New "2nd generation" acquisition code is finally ready for beta testing.
 v. 10.6.8
@@ -583,40 +586,40 @@ v. 10.6.6
 
 01/11/15	Work on new combined conditions code.
 v. 10.6.5
-	Add absorbed current to user specified output (Hanson).
+		Add absorbed current to user specified output (Hanson).
 
 01/06/15	Fix file/path error in PenepmaCreateMaterialBatch.
 v. 10.6.3
 
 01/05/15	Fix intensity display issue in TypeNewCounts.
 
-	Add EDS form to CalcImage.
+		Add EDS form to CalcImage.
 
 01/03/15	Add custom templates to TRAVXY in PFE and right click auto traverse and ternary 
-	menus to Analyze!  Update .msi.
+		menus to Analyze!  Update .msi.
 
 01/02/15	Finish auto traverse presentation output using Grapher scripting in PFE.
 
-	Finish CalcImage output currently displayed images.
+		Finish CalcImage output currently displayed images.
 
 12/31/14	Work on GS/PE code in Standard for future conversion of graph control (von der Handt/Mulcahy).
 v. 10.6.2
-	Add PE v8 controls to deployment. Remove Penepma 2006 code and form.
+		Add PE v8 controls to deployment. Remove Penepma 2006 code and form.
 
 12/30/14	Begin adding v 7 ProEssentials graphing controls to Standard and CalcZAF.
 v. 10.6.1
 
 12/27/14	Fix index bug in crystal list in CalcZAF.
 v. 10.5.9
-	Modify Penepma12 GUI code and create separate Graphics Server and Pro Essentials graphing procedures
-	for eventual conversion to Pro Essentials graphing control. Same for CalcZAF alpha factor plotting code.
+		Modify Penepma12 GUI code and create separate Graphics Server and Pro Essentials graphing procedures
+		for eventual conversion to Pro Essentials graphing control. Same for CalcZAF alpha factor plotting code.
 	
-	Update makcalczaf.bat for new source files.
+		Update makcalczaf.bat for new source files.
 
 12/26/14	Improve handling of formula calculation errors during quant in CalcImage. Work on XYTRAV 
-	Grapher presentation output code.
+		Grapher presentation output code.
 	
-	Fix StageMap stage limits control code.
+		Fix StageMap stage limits control code.
 
 12/25/14	Implement "aggregate" feature for CalcImage (McFadden and von der Handt).
 
@@ -626,9 +629,9 @@ v. 10.5.9
 
 12/21/14	Fix geological sort bug for averages, standard deviation in user specified output (Buse).
 
-	Work on aggregate code for CalcImage (McFadden and von der Handt)
+		Work on aggregate code for CalcImage (McFadden and von der Handt)
 	
-	Work of auto traverse presentation output.
+		Work of auto traverse presentation output.
 
 12/20/14	Update PFE Reference manual. Work on auto traverse output.
 
@@ -636,68 +639,68 @@ v. 10.5.9
 
 12/17/14	Minor improvements to CalcImage. Work on new XYTrav code.
 v. 10.5.8
-	Add some error trapping for Thermo interface for get net intensity call during EDS 
-	acquisition (Chouinard).
+		Add some error trapping for Thermo interface for get net intensity call during EDS 
+		acquisition (Chouinard).
 	
-	Fix labels in FormGETOPT for EDS max energy and pulse width if Thermo (Severin).
+		Fix labels in FormGETOPT for EDS max energy and pulse width if Thermo (Severin).
 	
-	Check for Thermo NSS version before calling  TEVB_ProjectExplorerDisplay and TEVB_SetBaseName 
-	functions (Steele).
+		Check for Thermo NSS version before calling  TEVB_ProjectExplorerDisplay and TEVB_SetBaseName 
+		functions (Steele).
 
 12/14/14	Fix List button in CalcImage.
 
-	Fix .ACQ file for Demo3_Cameca BMP file.
+		Fix .ACQ file for Demo3_Cameca BMP file.
 
 12/12/14	Add scan rotation field to image structure and .ACQ file output.
 v.10.5.7
-	Work on converting .Line, .Circle, .Text graphics calls to Shape controls.
+		Work on converting .Line, .Circle, .Text graphics calls to Shape controls.
 
 12/11/14	Add [ColumnConditions] section to ACQ file for saving keV and mag for CalcImage 
-	calibrate beam scan calibration procedure.
+		calibrate beam scan calibration procedure.
 	
-	Add List button to BeamCalibrate form.
+		Add List button to BeamCalibrate form.
 	
-	Add automation pause if realtime during updates.
+		Add automation pause if realtime during updates.
 
 12/10/14	Important update to fix right click update of on-peak position in Run | Display
 v. 10.5.6	PHA, Peaking dialog (Chouinard).
 	
-	Fix for rare problem that can cause files in the C:\Userdata folder (but not sub folders) to 
-	get deleted (Lowers).
+		Fix for rare problem that can cause files in the C:\Userdata folder (but not sub folders) to 
+		get deleted (Lowers).
 	
-	New features for beam scan calibration window in CalcImage.  Additional error trapping in 
-	AcquireDoSampleTunable.
+		New features for beam scan calibration window in CalcImage.  Additional error trapping in 
+		AcquireDoSampleTunable.
 
-12/9/14	Add additional error trapping for divide by zero countime in AcquireDoSampleTunable (Lowers).
+12/9/14		Add additional error trapping for divide by zero counttime in AcquireDoSampleTunable (Lowers).
 
-	New matrix.mdb.
+		New matrix.mdb.
 
-12/8/14	Bump version. Add pause for k-ratio calculations in Standard.exe
+12/8/14		Bump version. Add pause for k-ratio calculations in Standard.exe
 v. 10.5.5
 
-12/7/14	Preliminary release of CalcImage beam scan calibration feature.
+12/7/14		Preliminary release of CalcImage beam scan calibration feature.
 
-12/6/14	Work more on CalcImage beam scan calibration feature.
+12/6/14		Work more on CalcImage beam scan calibration feature.
 
-	Add default RGB parameters to probewin.ini file.
+		Add default RGB parameters to probewin.ini file.
 
-12/5/14	Add version keyword in probewin.ini for StrataGEM $END output flag. V. 6 and higher of StrataGEM
-	need this flag, earlier versions must *not* have this flag in the import file! New keyword is
-	StrataGEMVersion=6 is the default in the [software] section.
+12/5/14		Add version keyword in probewin.ini for StrataGEM $END output flag. V. 6 and higher of StrataGEM
+		need this flag, earlier versions must *not* have this flag in the import file! New keyword is
+		StrataGEMVersion=6 is the default in the [software] section.
 	
-	See documentation update in Help file.
+		See documentation update in Help file.
 	
-	Work more on beam scan calibration code... getting close!
+		Work more on beam scan calibration code... getting close!
 
-12/3/14	Add code to check for DefaultAperture (MiscIsInstrumentStage function not initialized (Severin).
+12/3/14		Add code to check for DefaultAperture (MiscIsInstrumentStage function not initialized (Severin).
 
-	Disable electron fraction flag (will implement in future "rigorous" analytical matrix corrections. 
+		Disable electron fraction flag (will implement in future "rigorous" analytical matrix corrections. 
 	
-	Add relative offset for interferences (Poeml).
+		Add relative offset for interferences (Poeml).
 
-12/2/14	Fix duplicate element/disable quant issue in ZAFSTD (Poeml).
+12/2/14		Fix duplicate element/disable quant issue in ZAFSTD (Poeml).
 v. 10.5.4
-	Modify Help | Update code (remove ZIP updates).
+		Modify Help | Update code (remove ZIP updates).
 	
 		Fix MAN vs. off-peak menu to force analysis reload
 		
@@ -709,7 +712,7 @@ v. 10.5.4
 
 11/23/14	Fix StrataGEM import file format due to changes by JFT (Fournelle).
 
-	Add JEOL 100 mm and Cameca 180 mm options to CalcZAF for secptrometer position calculation (Allaz).
+		Add JEOL 100 mm and Cameca 180 mm options to CalcZAF for spectrometer position calculation (Allaz).
 
 11/22/14	Add refractive index fields to CalcZAF calculate Spectrometer Positions window.
 v. 10.5.3
@@ -718,26 +721,26 @@ v. 10.5.3
 
 11/20/14	Fix clipboard errors in Edit | Copy menu (all apps).
 
-	Move hysteresis command to before set beam current in SX100SetConditions code (Poeml).
+		Move hysteresis command to before set beam current in SX100SetConditions code (Poeml).
 	
-	Handle cancel on start Thermo connection better.
+		Handle cancel on start Thermo connection better.
 	
-	Re-write acquisition order dialog (Steele).
+		Re-write acquisition order dialog (Steele).
 	
-	Update matrix.mdb with some light element binaries.
+		Update matrix.mdb with some light element binaries.
 
 11/18/14	Modify log window output to handle all EDS elements (no WDS) better and cleaner.
 v. 10.5.2
 
 11/17/14	Fix mineral end member calculations for elements by EDS (Steele).
 
-	Fix polygon 3 per page script code (Chouinard).
+		Fix polygon 3 per page script code (Chouinard).
 
 11/14/14	Add Penepma update menu to CalcZAF, remove Penepma source files from CalcZAF distribution (Llovet).
 v. 10.5.1
-	Fix mineral end member check for handling elements by EDS (Goemann and Steele).
+		Fix mineral end member check for handling elements by EDS (Goemann and Steele).
 	
-	Work on beam calibrate window in CalcImage... and conversion of .Line and .Circle calls to shape controls.
+		Work on beam calibrate window in CalcImage... and conversion of .Line and .Circle calls to shape controls.
 
 11/11/14	Add check for .in file (if it exists) before Fanal k-ratio extraction.
 
@@ -748,75 +751,75 @@ v. 10.4.9
 
 11/08/14	Add code to automatically save Penfluor.in file with .PAR filename.
 
-	Finish Thermo pulse processing function calls. Work more on beam scan calibration.
+		Finish Thermo pulse processing function calls. Work more on beam scan calibration.
 
 11/06/14	Add automatic adjustment of penfluor minimum electron/photon energy to ensure properly
-	calculated .PAR files.
+		calculated .PAR files.
 	
-	Work on auto beam calibration code.
+		Work on auto beam calibration code.
 
 11/03/14	Tweak DCD input format to support three fiducials (Geomann).
 
 11/01/14	Add calls for setting EDS MCS input labels for WDS pulses (Thermo only at the moment).
-	New Probewin.ini keyword: EDSMCSInputsPresent=0. Set non-zero to enable.
+		New Probewin.ini keyword: EDSMCSInputsPresent=0. Set non-zero to enable.
 
-	Add call to ask user to open Thermo project before get net intensity call (Seward).
+		Add call to ask user to open Thermo project before get net intensity call (Seward).
 
 10/30/14	Move SX100/SXFive hysteresis call to before set beam current to save time (Poeml).
 
-	Also new Probewin.ini keyword for getting/setting max energy and pulse throughput: 
-	EDSMaxEnergyThroughput=0. Set non-zero to enable (Pinard).
-
-	Write import filter for .DCD stage digitizing position files (Goemann). Movbe both import
-	*.LEP and *.DCD from PFE and Stage Output menus to Automate! window buttons.
+		Also new Probewin.ini keyword for getting/setting max energy and pulse throughput: 
+		EDSMaxEnergyThroughput=0. Set non-zero to enable (Pinard).
+	
+		Write import filter for .DCD stage digitizing position files (Goemann). Move both import
+		*.LEP and *.DCD from PFE and Stage Output menus to Automate! window buttons.
 
 10/28/14	Add Karsten's "How to do quant mapping..." tutorial as pdf to 
 v. 10.4.8	CalcImage Help menu.
 
-	Fix free CalcZAF download from epmalab.uoregon.edu (server appears to be case sensitive now).
+		Fix free CalcZAF download from epmalab.uoregon.edu (server appears to be case sensitive now).
 	
-	Add EDS detector insert/retract calls (Pinard). New keyword in Probewin.ini [hardware] section:
-	EDSInsertRetractPresent=0       ; indicate EDS detector insert/retract hardware
+		Add EDS detector insert/retract calls (Pinard). New keyword in Probewin.ini [hardware] section:
+		EDSInsertRetractPresent=0       ; indicate EDS detector insert/retract hardware
 
 10/25/14	Update PFE documentation and CalcImage context sensitive help.
 
-	Remove alpha tables from boundary.mdb and add secondary index.
+		Remove alpha tables from boundary.mdb and add secondary index.
 
 10/24/14	Fix "overlap" issue in auto mosaic.
 
-	Modify Fiducial Select form (Seward and Goemann).
+		Modify Fiducial Select form (Seward and Goemann).
 	
-	Remove Matrix.mdb alpha factor and coefficient tables (faster).
+		Remove Matrix.mdb alpha factor and coefficient tables (faster).
 
 10/14/14	Fix PHA scan display for count normalization (Chouinard). Repair test apps (TestProbe.msi).
 
 10/13/14	Fix problem with folders on open file error (Steele and Goemann).
 v. 10.4.7
-	Add better debug errors for Penepma path not consistent with UserData path.
+		Add better debug errors for Penepma path not consistent with UserData path.
 
 10/11/14	Fix broken code in Secondary.bas (SF correction in CalcZAF).                                  
 
 10/10/14	Improve mosaic imaging. Modify automated image acquisition in PFE to
-	use kilovolts and magnification from position sample.
+		use kilovolts and magnification from position sample.
 
 10/09/14	Fix Mosaic feature to handle two or three calibration points in 
-	arbitrary positions (Goemann).
-
-	Improve calibration display in PictureSnap.
+		arbitrary positions (Goemann).
+	
+		Improve calibration display in PictureSnap.
 
 10/07/14	Fix image file browse (Carpenter).
 
-	Improve deployment code to remove duplication (Donovan and Gaynor).
+		Improve deployment code to remove duplication (Donovan and Gaynor).
 
 10/05/14	Add FANAL.TXT output file for parameters (instead of parsing folder name). 
 
-	Fix loading of Fanal couples in CalcZAF. Add better error message to PositionDeleteSample (Chouinard)
+		Fix loading of Fanal couples in CalcZAF. Add better error message to PositionDeleteSample (Chouinard)
 	
 10/04/14	Add light on/off to fiducial confirm dialog (Chouinard, Barkman)
 
-	Fix SF correction bug in CalcZAF (underscore characters in Couple sub folder name).
+		Fix SF correction bug in CalcZAF (underscore characters in Couple sub folder name).
 	
-	Start a TipOfTheDay.txt feature. When we get enough tips we'll show it!
+		Start a TipOfTheDay.txt feature. When we get enough tips we'll show it!
 
 10/03/14	Improve mosaic code. Clean up globals for off-peak strings.
 v. 10.4.6
@@ -828,15 +831,15 @@ v. 10.4.6
 
 09/23/14	Add demo1.bmp and demo4.bmp back into distribution (needed for demo image acquisition)
 	
-	Add Z position to mosaic feature (not used for output yet)
+		Add Z position to mosaic feature (not used for output yet)
 
 09/22/14	Modify PictureSnap image load to show all image files.
 	
-	Tweak mosaic feature in Stage.
+		Tweak mosaic feature in Stage.
 
 09/21/14	Modify demo image filenames to show stage type (JEOL vs. Cameca).
 v. 10.4.5
-	Improve Mosaic image load.
+		Improve Mosaic image load.
 
 09/18/14	Tweak mosaic feature to allow user specified images.
 
@@ -844,13 +847,13 @@ v. 10.4.5
 
 09/16/14	Fix code for saving slope coefficients (Walshaw).
 
-	Work on Mosaic feature (Stage.exe)
+		Work on Mosaic feature (Stage.exe)
 
 09/15/14	Modify JEOL image shift code to set and return in um units (Carpenter).
 
 09/14/14	Fix image shift scaling for JEOLs (Pinard).
 
-	Add disables for non-scan beam modes (image shift) (Pinard).
+		Add disables for non-scan beam modes (image shift) (Pinard).
 
 09/13/14	Add yellow box to show stage limits on stage maps.
 
@@ -858,25 +861,25 @@ v. 10.4.5
 
 09/09/14	Fix Fanal input bug for takeoff angle.
 
-	Add takeoff to Fanal output folder name. Modify CalcZAF SF correction for this change.
+		Add takeoff to Fanal output folder name. Modify CalcZAF SF correction for this change.
 
 09/04/14	Improve "shared" bgds feature. Fix penepma batch folder display issue.
 
 08/29/14	Work on mosaic acquisition in Stage.exe (Topa).
 
 08/28/14	Slight tweak to Update CalculateUpdateStandard to always load standard concentrations
-	in all standard elements, even if disabled quant in unknown (Buse).
+		in all standard elements, even if disabled quant in unknown (Buse).
 	
-	Fix Pene4pma GUI to load detector geometry based on PDANGL parameters.
+		Fix Pene4pma GUI to load detector geometry based on PDANGL parameters.
 
 08/27/14	Add code to create pure element bulk standard input files in Penepma GUI. Add
-	detector geometry options (annular and N,E,S,W).
+		detector geometry options (annular and N,E,S,W).
 
 08/24/14	Add additional Report output for Excel table (von der Handt).
 
 08/20/14	Fix update MPB option bug in Plot! wavescan graph dialog (M. Williams).
 	
-	Fix TDI assignment bug for manual samples (M. Williams).
+		Fix TDI assignment bug for manual samples (M. Williams).
 
 08/18/14	Improve Penepma GUI.
 
@@ -898,46 +901,46 @@ v. 10.4.3	weight/atom string material filename issue in Penepma weight/atom stri
 
 07/18/14	Modify calibration curve display to keep same element.
 
-	Fix Goemann-Carpenter wavescan output. Allow user to browse for standard database if standard
-	number is not found in default database (Goemann).
+		Fix Goemann-Carpenter wavescan output. Allow user to browse for standard database if standard
+		number is not found in default database (Goemann).
 	
-	Disable MACs button if calibration curve.
+		Disable MACs button if calibration curve.
 
 07/17/14	Improve Penepma alpha factors. Fix Standard Filter feature.
 
 07/16/2014	Improve Extract K-Ratios code in Standard.exe.
 v. 10.4.2
-	Add new Filter Standards feature to Standard.exe Options | Find window.
+		Add new Filter Standards feature to Standard.exe Options | Find window.
 
 07/14/14	Fix acquisition time bug for standards (related to fix for Meier).
 
-	Add code to automatically extract k-ratios from Penepma batch runs.
+		Add code to automatically extract k-ratios from Penepma batch runs.
 	
-	New Penepma binary k-ratios for high speed Monte-Carlo calculations.
+		New Penepma binary k-ratios for high speed Monte-Carlo calculations.
 
 07/11/14	New wavescan output format for Goemann-Carpenter.
 
-	Fix replicate issue in Automate time calculation (Meier).
+		Fix replicate issue in Automate time calculation (Meier).
 
 07/09/14	Allow TDI and Alternating On and Off peak Acquisition flags on same sample as long 
-	as the 1 pass elements (TDI), are all MAN (not off-peak or MPB) (Chouinard).
+		as the 1 pass elements (TDI), are all MAN (not off-peak or MPB) (Chouinard).
 	
-	Improve TDI and Alt On/Off display in TDI dialog.
+		Improve TDI and Alt On/Off display in TDI dialog.
 	
-	Add interactive Help buttons to Calculation Options.
+		Add interactive Help buttons to Calculation Options.
 	
-	Fix problem in modification of MPB parameters (Jercinovic).
+		Fix problem in modification of MPB parameters (Jercinovic).
 
 07/04/14	Fix plot title positioning in CalcImage output when 1 plot per page is specified (Carpenter).
 v. 10.4.1
-	Minor mods to ZAFFlu for beta lines. Add beta line fluorescence flag to Probewin.ini file.
+		Minor mods to ZAFFlu for beta lines. Add beta line fluorescence flag to Probewin.ini file.
 
 07/03/14	Fix interpolated background intensity in Model Background dialog when exponential
-	fix is selected for multi-point backgrounds (Poeml).
+		fix is selected for multi-point backgrounds (Poeml).
 
 07/02/14	Compile new Penepma k-ratios for Matrix.mdb (now 155K k-ratios).
 
-	Work on GunAlign.
+		Work on GunAlign.
 
 06/29/14	More work on GunAlign for better click response.
 
@@ -945,14 +948,14 @@ v. 10.4.1
 
 06/26/14	Modify GunAlign to support turning HV on and off for JEOL instruments (Wang).
 v. 10.3.9
-	Add CaF2 particle test data to CalcZAF distribution (Carpenter).
+		Add CaF2 particle test data to CalcZAF distribution (Carpenter).
 	
-	Modify right click Analyze! output code to disable unneeded controls.
+		Modify right click Analyze! output code to disable unneeded controls.
 	
-	Add editable sample name to CalcImage dialog (Carpenter).
+		Add editable sample name to CalcImage dialog (Carpenter).
 
 06/23/14	Modify Browse Input File (Penepma08.bas) to copy over all necessary files if not Penepma
-	folder.
+		folder.
                                   
 06/20/14	Add additional "interactive help" buttons to PFE dialogs.
 
@@ -963,51 +966,51 @@ v. 10.3.9
 06/12/14	Minor tweaks to Penepma GUI.
 
 06/10/14	Slight tweak to improve log scale display in Standard. Add 20 more alpha binaries
-	from Penfluor/Fanal.
+		from Penfluor/Fanal.
 
 06/09/14	Modify Penepma extraction code to deal with low Z elements without a K L3 
-	transition (Vicenzi). Also disable all Penepma controls during calculation.
+		transition (Vicenzi). Also disable all Penepma controls during calculation.
 
 06/08/14	Fix graph mouse data cursor when in log10 scale for Fanal calculations in Standard.
 
 06/07/14	Add relative line number output to user specified output (von der Handt)
 v. 10.3.8
-	Modify User Specified Output dialog to be wider and less tall for laptops.
+		Modify User Specified Output dialog to be wider and less tall for laptops.
 	
-	Update documentation and help file.
+		Update documentation and help file.
 	
-	Enable more "interactive help" buttons to user forum.
+		Enable more "interactive help" buttons to user forum.
 	
-06/02/14	Modify penepma binary extraction form to jutilize several overvoltages.
+06/02/14	Modify penepma binary extraction form to utilize several overvoltages.
 
 05/29/14	Add data bar option to image display and output (Morgan).
 v. 10.3.7
-	Make StrataGEM output window modeless.
+		Make StrataGEM output window modeless.
 	
-	Add raw intensity output (on-peak) to Surfer output menu.
+		Add raw intensity output (on-peak) to Surfer output menu.
 	
-	Fix minor issue in standard name update in DataStandard for standard coating parameter table names.
+		Fix minor issue in standard name update in DataStandard for standard coating parameter table names.
 
 05/26/14	Add call to MonitorUpdate in RealTimeInit to fix problem for older JEOL instruments
-	from out of bounds check on startup (Neill).
+		from out of bounds check on startup (Neill).
 
 05/23/14	Minor tweaks. Update PFE documentation and Help file.
 
 05/20/14	Add output of excess oxygen and element by difference to classify output in CalcImage (Seward).
 
-	Add check for spectros in range (Carpenter) and warn user on startup.
+		Add check for spectros in range (Carpenter) and warn user on startup.
 	
-	Force update analysis flag if unknown coating changed in Calculation Options.
+		Force update analysis flag if unknown coating changed in Calculation Options.
 	
-	Modify Penepma batch code to display all parameters in main window as each input file is processed.
+		Modify Penepma batch code to display all parameters in main window as each input file is processed.
 	
-	Fix check for geometry file in PenepmaBrowseGeometryFile and PenepmaSaveInput.
+		Fix check for geometry file in PenepmaBrowseGeometryFile and PenepmaSaveInput.
 
 05/16/14	Implement Kerrick at al. (1973) Amer. Min. coating correction per John Armstrong.
 v. 10.3.6
 
 05/13/14	Fix minor bug in time calculation when Use Alternating On and Off Peak option is combined 
-	with MAN elements (Chouinard).
+		with MAN elements (Chouinard).
 
 05/12/14	Improve coating absorption correction.
 
@@ -1015,86 +1018,86 @@ v. 10.3.6
 
 05/08/14	Modify default multi-point backgrounds to spread over a wider range.
 
-	Adjust MPB acquisition time estimate.
+		Adjust MPB acquisition time estimate.
 	
-	Add button to Peak/Scan Options to set wavescan range to multi-point bgd range.
+		Add button to Peak/Scan Options to set wavescan range to multi-point bgd range.
 
 05/02/14	Make MPB wavescan form "always on top".
 
-	Fix Plot! (PlotGetSelectedData) for plotting z stage positions (Severin and Neill).
+		Fix Plot! (PlotGetSelectedData) for plotting z stage positions (Severin and Neill).
 	
-	Add linear beam drift correction to CalcImage quantification.
+		Add linear beam drift correction to CalcImage quantification.
 	
-	Improve CalcZAF ZAFSMP output (ZAF4.bas).
+		Improve CalcZAF ZAFSMP output (ZAF4.bas).
 
 05/01/14	Fix save of modified standard compositions in CalcImage. Fix assignment of multi-points 
-	in GetElmAll if multi-point data not acquired (Carpenter).
+		in GetElmAll if multi-point data not acquired (Carpenter).
                                   
 04/30/14	Fix geological sort order for Mo (Carpenter).
 
 04/29/14	Tweak CalcZAF debug output in ZAFStd.
 
 04/28/14	Fix missing file error message in Penepma code. Modify CalcZAF output to use 
-	MiscAutoFormat for better readability.
+		MiscAutoFormat for better readability.
 
 04/21/14	Modify total cation output and add total atom output to User Specified (Carpenter).
 v. 10.3.5
 
 04/16/14	Add new binaries to Matrix.mdb for fast Monte-Carlo calculations. See latest Calculated Alpha 
-	Binaries.txt file for all binary pairs.
+		Binaries.txt file for all binary pairs.
 
 04/15/14	Significant modifications to improve calculation of standard k-factors when multiple duplicate elements
-	are present (non aggregated and/or EDS). Changes to ZAFStd and UpdateCalculateUpdateStandard code (Kuehn).
+		are present (non aggregated and/or EDS). Changes to ZAFStd and UpdateCalculateUpdateStandard code (Kuehn).
 	
-	Fix default sample name in New Sample dialog (Roberts) if no samples.
+		Fix default sample name in New Sample dialog (Roberts) if no samples.
 
-04/12/14	Fix close EDS server client interface if only off-line processing (Thermo and bruker).
+04/12/14	Fix close EDS server client interface if only off-line processing (Thermo and Bruker).
 v. 10.3.4
-	Add code to skip MAN stds missing for disable quant elements.
+		Add code to skip MAN stds missing for disable quant elements.
 	
-	Fix problem in UpdateCalculateUpdateStandard when duplicate elements with EDS with disable quant 
-	flag interactions (Kuehn).
+		Fix problem in UpdateCalculateUpdateStandard when duplicate elements with EDS with disable quant 
+		flag interactions (Kuehn).
 
 04/11/14	Add trap for zero counts in TypeAnomalousData code (Goemann).
 
 04/10/14	Add off-peak adjustment when adjusting on-peak in ScanData code (Poeml).
 
-	Modify AcquireDoFaraday and AcquireDoSampleTunable and AcquireDoSampleTunable2 to
-	fix TDI latency for combined condition samples (Goeman/Sherrin). No changes to 
-	AcquireDoFaraday2 (for wavescans).
+		Modify AcquireDoFaraday and AcquireDoSampleTunable and AcquireDoSampleTunable2 to
+		fix TDI latency for combined condition samples (Goemann/Sherrin). No changes to 
+		AcquireDoFaraday2 (for wavescans).
 	
-	Also fix AcquireStartVolatile and AcquireDoVolatileElements for assigned TDI samples when
-	using combined conditions.
+		Also fix AcquireStartVolatile and AcquireDoVolatileElements for assigned TDI samples when
+		using combined conditions.
 	
-	Modify Penepma12Matrix code to read binary k-ratios faster (new indices).
+		Modify Penepma12Matrix code to read binary k-ratios faster (new indices).
 
 04/08/14	Minor adjustments to Cameca MCA PHA to allow 256 point acquisitions (Goemann).
 
-	Slight tweak to MANFitData.bas.
+		Slight tweak to MANFitData.bas.
 
 04/05/14	Modify Re-standardization error trapping from Automate! window (von der Handt).
 
-	Fix geological sorting issue when duplicate elements are present (von der Handt). 
+		Fix geological sorting issue when duplicate elements are present (von der Handt). 
 
 04/02/14	Add PHA keywords for MCA PHA (Cameca Sx100/SXFive only) (Seward and Goemann).
 v.10.3.3
-	Modify email error text (von der Handt)
+		Modify email error text (von der Handt)
 
 03/31/14	Modify Cameca MCA PHA code (Chouinard).
 
 03/27/14	Fix remaining monitor stopped issue (von der Handt).
 
-	Fix SX MCA PHA subscript issue (Chouinard).
+		Fix SX MCA PHA subscript issue (Chouinard).
 
 03/26/14	Make JEOL 8x30 "same command executed" error silent.
 
-	Use 0 to 5 volts for Cameca MCA PHA range (older PeakSight erroneously displays 0.5 to 5.5) (Seward).
+		Use 0 to 5 volts for Cameca MCA PHA range (older PeakSight erroneously displays 0.5 to 5.5) (Seward).
 
 03/25/14	Improve Cameca MCA PHA. Work on JEOL 8900/8200/8500 monitor stopped issue.
 
 03/24/14	Tweak JEOL error codes to allow for normal monitor stop events (von der Handt).
 
-	Fix code that checks for internal and externally stored standard compositions (Goemann) in DataStandard.
+		Fix code that checks for internal and externally stored standard compositions (Goemann) in DataStandard.
 
 03/21/14	Implement new double exponential fit for TDI extrapolations.
 v. 10.3.2
@@ -1105,22 +1108,22 @@ v. 10.3.2
 
 03/17/14	Add code to automatically fix missing standard compositions in PFE database (Chouinard)
 
-	Add slight delay after unloading form GETELM to allow form to be re-loaded for default standard 
-	assignments. Previously the form changes were sometimes getting erased (Goemann).
+		Add slight delay after unloading form GETELM to allow form to be re-loaded for default standard 
+		assignments. Previously the form changes were sometimes getting erased (Goemann).
 
 03/13/14	Add extra error trap for JEOL micro-code error trap.
 v. 10.3.1
-	Remove obsolete XYSCAN.* files from distribution.
+		Remove obsolete XYSCAN.* files from distribution.
 	
-	Add separate error codes for JEOL 8x30 in some cases.
+		Add separate error codes for JEOL 8x30 in some cases.
 
 03/07/14	Add ImageShiftPresent and ImageShiftType keywords to INI file.
 
 03/06/14	Finish implementing new code for PHA MCA acquisition (SX100/SXFive only!). Also requires a new Cameca
 v. 10.2.9	driver update to v. 1.9.x.
 
-	Modify DataStandard to handle the situation where the standard name was modified in the standard database. basically,
-	allow the user the option to update the internally stored standard name when the probe data base is opened.
+		Modify DataStandard to handle the situation where the standard name was modified in the standard database. basically,
+		allow the user the option to update the internally stored standard name when the probe data base is opened.
 
 03/01/14	Add code for PHA MCA (Seward).
 v. 10.2.8
@@ -1133,15 +1136,15 @@ v. 10.2.8
 
 02/24/14	Fix digitized point size code for image digitizing.
 
-	Change BitBlit to normal redraw for wavescan and PHA scan plots to avoid Win8 problem (Seward).
+		Change BitBlit to normal redraw for wavescan and PHA scan plots to avoid Win8 problem (Seward).
 
 02/22/14	Add StartWin to TestProbe installer (JEOL Japan).
 v. 10.2.7
-	Begin coding new PHA MCA acquisition code for Sx100/SXFive (and demo). (re-define PHAHardwareType INI keyword)
+		Begin coding new PHA MCA acquisition code for Sx100/SXFive (and demo). (re-define PHAHardwareType INI keyword)
 	
-	Fix minor bug in automatic standard assignments in Elements/Cations from Acquire! window.
+		Fix minor bug in automatic standard assignments in Elements/Cations from Acquire! window.
 	
-	Modify TDI printout for samples.
+		Modify TDI printout for samples.
 
 02/21/14	Add standard output new keywords to INI documentation.
 
@@ -1159,63 +1162,63 @@ v. 10.2.6	difference output.
 02/11/14	Modify SETELM and SETSTD forms for laptops (Allaz).
                                   
 02/10/14	Authenticode sign all executable files also. Add "Do not overwrite" to xline.dat also in WIX code
-	for CalcZAF.msi.
+		for CalcZAF.msi.
 
 02/08/14	Add ImageShiftMinimumMag keyword for Probewin.ini to allow warning to user (SX100/SXFive only) 
 v. 10.2.5	if mag is too low for image shift.  Update captions in Analytical Conditions dialogs on the fly.
 
 02/07/14	Modify Load File Setup code to also load EDS spectrum intensities when loading standard samples 
-	with EDS spectrum data (Kuehn).
+		with EDS spectrum data (Kuehn).
 
 02/03/14	Add 200 msec delay before reading scan status structure in SX100SetImageShift to prevent spurious error (Seward).
 
 02/01/14	Fix Bruker GetNetIntensity call (Kuehn).
 
-	Move some extraneous code (Command, MakeXray) to separate folders. Change name of Test_SX100 to TestSX100.
+		Move some extraneous code (Command, MakeXray) to separate folders. Change name of Test_SX100 to TestSX100.
 
-	Add JEOL code to check for too large image shift (Pinard).
+		Add JEOL code to check for too large image shift (Pinard).
 
 01/29/14	Minor improvements to CalcZAF.
 
 01/28/14	Add additional options for viewing instrument config tables.
 
-	Modify standard composition handling on opening old file.
+		Modify standard composition handling on opening old file.
 
 01/26/14	Add additional code to handle if local standard.mdb does not contain standards for the run. Warn user
-	and create a temporary standard database for this session.
+		and create a temporary standard database for this session.
 	
-	Add dialog to allow user to select the instrument configuration files to export from the probe database.
+		Add dialog to allow user to select the instrument configuration files to export from the probe database.
                                 
 
 01/24/14	Remove Remote and Matrix update ZIPs.  Just use Matrix and Remote msi files for updates now.
 v. 10.2.4
-	Add tables to store all PFE config files in each MDB file. This will allow export of the config files for various
-	purposes.
+		Add tables to store all PFE config files in each MDB file. This will allow export of the config files for various
+		purposes.
                                                                
 01/23/14	Modify acquisition code to utilize UseCurrentConditionsAlways flag more intelligently (Hanson).
 v. 10.2.3
-	Re-scan Fanal matrix files for new matrix.mdb (now over 100K binary k-ratios stored).
+		Re-scan Fanal matrix files for new matrix.mdb (now over 100K binary k-ratios stored).
 
 01/21/14	Minor tweak to Bruker and Thermo EDS get net intensity code. Fix EDS k-ratio precision issue (Severin).
 
 01/18/14	Add line, spectro and crystal to other output types if intensity data.
 
-	Modify web site and links to web site for off-line browsing from all apps.
+		Modify web site and links to web site for off-line browsing from all apps.
 
 01/17/14	Add support for DVD local browsing from DVD media for labs that cannot have Internet 
-	connections (subscription based browsing and updates).
+		connections (subscription based browsing and updates).
 	
-	Modify Init1.bas code to more accurately report bad INI keywords.
+		Modify Init1.bas code to more accurately report bad INI keywords.
 
 01/15/14	Modify MAN custom output to include line, spectro and crystal. Modify UpdateMANStandards
-	code to respect disable quant flag (Carpenter).
+		code to respect disable quant flag (Carpenter).
 
 01/12/14	Modify open/save file dialogs to utilize original parent window handle to prevent Modeless 
 v. 10.2.2	file open/save dialogs.
 
 01/09/14	Modify ROM wavescans to store modified dwell time per point when speed is out of range.
 
-	Improve ROM scan demo intensities for multiple scans.
+		Improve ROM scan demo intensities for multiple scans.
 
 01/07/14	Minor tweaks for pre/post scan labels (Cathey/Fournelle).
 
@@ -1224,46 +1227,46 @@ v. 10.2.2	file open/save dialogs.
 
 01/04/14	Fix duplicate element problem for alpha factor calculations.
 
-	Add warning output to TypeWarnings that specifies duplicate elements and x-ray lines.
+		Add warning output to TypeWarnings that specifies duplicate elements and x-ray lines.
 
 01/02/14	Fix bug if CalcZAF dat file sample name contains a comma. See SiIr1.dat
 
 12/31/13	A plethora of small tweaks for PFE and CI after spending the weekend with John Fournelle and 
 v. 10.2.1	Gareth Seward- thank-you guys!
 
-	Happy New Year!
+		Happy New Year!
 	
-	Fix Pre/Post ROM wavescan bug (Fournelle).
+		Fix Pre/Post ROM wavescan bug (Fournelle).
 
 12/23/13	Update DHZ.MDB to include densities and page references (by Barkman).
 
 12/22/13	Add Chemical age output (for calculated Pb) in PPM (Allaz) in CalcImage.
 
 12/21/13	Add additional FOV fields to some conditions dialogs. Add beam scan calibrations to DataRun so they will stay
-	with the MDB file. Update reference manual. Update all copyright notices.
+		with the MDB file. Update reference manual. Update all copyright notices.
 
-	Modify CalcImage output to support all quant types for polygon, slice and strip operations.
+		Modify CalcImage output to support all quant types for polygon, slice and strip operations.
 
 12/20/1013	Modify beam scan calibration Probewin.ini parameters into arrays to calibrate beam scan images based
 v. 10.1.9	on current keV and mag to produce interpolated X and Y scan size and rotation (up to 32 calibrations).
 
 12/18/13	Fix MAN search for elements with Bragg orders greater than 1 (Hanson).
 
-	Skip off-peak warning during peaking if MAN (Carpenter).
+		Skip off-peak warning during peaking if MAN (Carpenter).
 	
-	Fix labels on U-Th-Pb x-ray output maps to Surfer (Allaz).
+		Fix labels on U-Th-Pb x-ray output maps to Surfer (Allaz).
 
 12/16/13	Add check for too large image shift for given analytical mag (Cameca only).
 
-	Fix title too long bug in Standard for fanal plot.
+		Fix title too long bug in Standard for fanal plot.
 	
-	Fix CalcImage Base64Reader bug for 1 pixel Cameca input.
+		Fix CalcImage Base64Reader bug for 1 pixel Cameca input.
 
 12/14/13	Fix bug in CalcImage mineral end-member calculation. Fix image loading in CalcZAF Correction secondary fluorescence.
 
 12/05/13	Modify resize code to handle all aspect ratio circumstances in CalcImage.
 
-	Modify GRIDXY.BAS script to handle short or tall x-ray maps for output to Surfer.
+		Modify GRIDXY.BAS script to handle short or tall x-ray maps for output to Surfer.
 
 12/04/13	Fix image resize for wide or tall images (Ma and Hatton).
 
@@ -1273,451 +1276,451 @@ v. 10.1.9	on current keV and mag to produce interpolated X and Y scan size and r
 
 12/01/13	Fix minor issue when saving ACQ file from Classify operation (save existing PictureSnap filename).
 
-	Fix ghosting of "gunsight" cursor in PictureSnap after using some Save As methods  (Carpenter).
+		Fix ghosting of "gunsight" cursor in PictureSnap after using some Save As methods  (Carpenter).
 
 11/30/13	Minor tweaks to loading BMP Cameca files when in JEOL mode in PictureSnap.
 
-	Add check for edge energies below default penfluor modeling energy and warn user.
+		Add check for edge energies below default penfluor modeling energy and warn user.
 	
-	Add some 500 eV files to Penepma12 distribution (Wade).
+		Add some 500 eV files to Penepma12 distribution (Wade).
 	
-	Change "Meas. Wt.%" to "CalcZAF wt.%" in Penepma/Fanal plots and add ZAF mode to label.
+		Change "Meas. Wt.%" to "CalcZAF wt.%" in Penepma/Fanal plots and add ZAF mode to label.
 
 11/29/13	Minor changes to TestEDS and Bruker code. Bruker spectrum acquisition is again working with latest 
-	Bruker RTIfcClient.dll file. QuantifySpectrum (for net intensities) is also working but the ShowSpectrum
-	function still always returns -1.
+		Bruker RTIfcClient.dll file. QuantifySpectrum (for net intensities) is also working but the ShowSpectrum
+		function still always returns -1.
 	
-	Fix Cameca vs. JEOL conversions in Classify and PictureSnap. Whew again!
+		Fix Cameca vs. JEOL conversions in Classify and PictureSnap. Whew again!
 	
-	Add x-ray line to TDI plots.
+		Add x-ray line to TDI plots.
 	
-	Force reload of standard intensity arrays if TDI assignment changed on standard.
+		Force reload of standard intensity arrays if TDI assignment changed on standard.
 
 11/26/13	Fix bug when peaking on combined conditions sample and using assigned standards for peaking (Barkman).
 
-	Fix bug in Report from Analyze! window for some combined condition samples (Barkman).
+		Fix bug in Report from Analyze! window for some combined condition samples (Barkman).
 	
-	Add EDS interface type to TestEDS.exe main window.
+		Add EDS interface type to TestEDS.exe main window.
 	
-	Modify Penepma08 Batch form for bigger label fields.
+		Modify Penepma08 Batch form for bigger label fields.
 
 11/22/13	Modify FormScandata to allow user to change on-peak position for current sample by right clicking graph.(von der Handt)
 
-	Add display of last loaded POS file in FormAUTOMATE.
+		Add display of last loaded POS file in FormAUTOMATE.
 	
-	Modify caption of Decontamination Time checkbox in Acquisition Options to include "Incubation Time".
+		Modify caption of Decontamination Time checkbox in Acquisition Options to include "Incubation Time".
 	
-	Modify TDI plot labels to include keV, nA, um and TDI interval time.
+		Modify TDI plot labels to include keV, nA, um and TDI interval time.
 	
-	Fix problem with using digitized conditions from Automate! window with combined condition samples (Barkman).
+		Fix problem with using digitized conditions from Automate! window with combined condition samples (Barkman).
 
 11/18/13	Fix PenepmaExtractMatrix code to zero undervoltage arrays.
 
-	Modify "large matrix correction" criteria in Penepma matrix scan MDB file code.
+		Modify "large matrix correction" criteria in Penepma matrix scan MDB file code.
 
 11/16/13	Modify TDI display code to properly plot TDI intervals at 1/2 interval time (Hanson).
-	The TDI quant analysis was being calculated correctly. This change will propagate to all output modes.
+		The TDI quant analysis was being calculated correctly. This change will propagate to all output modes.
 
 11/15/13	Add Excel output option to Plot! window if Send Data To ASCII File option is selected. (Poeml)
 
-	Fix Plot! window when both Average Only *and* Minimum Total are used together with multiple samples (Poeml).
+		Fix Plot! window when both Average Only *and* Minimum Total are used together with multiple samples (Poeml).
 
 11/14/13	Fix geological sort function for some parameters that are only real-time. (Feig)
 v. 10.1.8
-	Add warning to CalcZAF range calculations if edge is greater or equal to keV.
+		Add warning to CalcZAF range calculations if edge is greater or equal to keV.
 	
-	Fix Cameca config loading JEOL files in CalcImage.
+		Fix Cameca config loading JEOL files in CalcImage.
 
 11/12/13	Fix minor CalcImage CPQ bugs for quant.
 
-	Improve stage unit output for CalcImage Polygon.
+		Improve stage unit output for CalcImage Polygon.
 
 11/09/13	Modify loading and saving of BMP files when converting from Cameca to JEOL or JEOL to Cameca.
 
 11/08/13	Fix loading problem in GridCheckGRDInfo (not finding ACQ file and not returning "g" defaults when creating 
-	new GRDInfo.ini) (Carpenter).
+		new GRDInfo.ini) (Carpenter).
 	
-	Make sure all icancelauto flags are initialized properly.
+		Make sure all icancelauto flags are initialized properly.
 	
-	Add additional "Interactive Help" buttons.
+		Add additional "Interactive Help" buttons.
 	
-	New Matrix.mdb file with 104K binaries.
+		New Matrix.mdb file with 104K binaries.
 
 11/04/13	Go back to old code for closing DigitizeImage, because of possible problems with 8900 image acquisition.
-	Instead set scan mode after image acquisition in JEOL and Cameca) HAL code. For Lowers and Carpenter.
+		Instead set scan mode after image acquisition in JEOL and Cameca) HAL code. For Lowers and Carpenter.
 
 11/03/13		Add automatic output of ACQ files when outputting BMP images from CalcImage Classify menu (so they can be 
-	loaded stage calibrated into PictureSnap).
+		loaded stage calibrated into PictureSnap).
 	
-	Finally completely fix saving and loading of PictureSnap images when loading images 
-	from different stage systems.
+		Finally completely fix saving and loading of PictureSnap images when loading images 
+		from different stage systems.
 
 11/01/13	Fix Bruker GetNetIntesities (and GetQuantificationMethods) call (Rossek).
 
-	Tweak CalcImage pixel indexing for normal and "hyper-cursor". Works on both Cameca and JEOL orientations.
+		Tweak CalcImage pixel indexing for normal and "hyper-cursor". Works on both Cameca and JEOL orientations.
 	
-	Add automatic output of TXT and ACQ files when outputting BMP images from PFE Output menu (so they can be 
-	loaded stage calibrated into PictureSnap), Barkman/Chouinard.
+		Add automatic output of TXT and ACQ files when outputting BMP images from PFE Output menu (so they can be 
+		loaded stage calibrated into PictureSnap), Barkman/Chouinard.
 	
-	Add feature to allow user to automatically select elements based on their spectrometer order numbers in
-	the Peaking Options dialog. This could have a number useful applications, but I added it so I can easily
-	select the next set of elements for automating WDS mapping acquisitions in Probe Image when more than 5 
-	elements need to be acquired in Probe Image for complete characterization.
+		Add feature to allow user to automatically select elements based on their spectrometer order numbers in
+		the Peaking Options dialog. This could have a number useful applications, but I added it so I can easily
+		select the next set of elements for automating WDS mapping acquisitions in Probe Image when more than 5 
+		elements need to be acquired in Probe Image for complete characterization.
 
 10/31/13	Fix hyper-cursor z data indexing in CalcImageUpdateXYZ
 
 10/29/13	Add oxide mole percent calculations to user specified output (Hanson).
 v. 10.1.7
-	Fix minor bug in CalcImage Surfer output.
+		Fix minor bug in CalcImage Surfer output.
 
 10/26/13	Minor tweaks to CalcImage for better saving of std assignments.
 
 10/25/13	Modify calls in FormIMAGE QueryUnload event to set beam deflection center before setting beam mode (Carpenter).
 
-10/22/13 Fix Penepma input file issue when data line runs into comments.
+10/22/13 	Fix Penepma input file issue when data line runs into comments.
 
-	Add empirical MAC and APF menus to CalcImage.
+		Add empirical MAC and APF menus to CalcImage.
 	
-	Modify CalcImage to set pixel dimension square if image is only one pixel wide or tall (was always forced to 1 um previously).
+		Modify CalcImage to set pixel dimension square if image is only one pixel wide or tall (was always forced to 1 um previously).
 
 10/18/13	Add image extents in stage units to pop up help in CalcImage MDI windows and map extents 
-	in Classify window in um.
+		in Classify window in um.
 	
-	Add EDS interface types to GUI in PFE.
+		Add EDS interface types to GUI in PFE.
 	
-	Add image extents in stage units to CalcImage Surfer export scripts (Poeml).
+		Add image extents in stage units to CalcImage Surfer export scripts (Poeml).
 	
-	First Hyper-Imaging code release in CalcImage. See Processing | Classify Image menu.
+		First Hyper-Imaging code release in CalcImage. See Processing | Classify Image menu.
 	
-	Fix time and beam display in log window for EDS elements.
+		Fix time and beam display in log window for EDS elements.
 	
-	Updated matrix.mdb file (Ruscitto).
+		Updated matrix.mdb file (Ruscitto).
 
 10/14/13	Modify Fanal overvoltage check code in Penepma12ExtractMatrix.
 
 10/11/13	Work on CalcImage Hyper-Imaging feature.
 v. 10.1.6
 
-10/9/13	Remove Probewin.cor file code (not needed any longer) (Feig).
+10/9/13		Remove Probewin.cor file code (not needed any longer) (Feig).
 
-	Disable Beam and Stage buttons in Digitize Image form (Andersen).
+		Disable Beam and Stage buttons in Digitize Image form (Andersen).
 
-	Reset channel number to zero in VolatileData.bas (for opening new run data).
+		Reset channel number to zero in VolatileData.bas (for opening new run data).
 
-10/8/13	Fix TDI Display Run menu load. Make sample channel "sticky". (Barkman)
+10/8/13		Fix TDI Display Run menu load. Make sample channel "sticky". (Barkman)
 
-10/7/13	Fix bug for saving current peak positions in GetElmAll.
+10/7/13		Fix bug for saving current peak positions in GetElmAll.
 
-	Fix oxygen equiv. of halogen subtraction from oxide analyses (Andersen).
+		Fix oxygen equiv. of halogen subtraction from oxide analyses (Andersen).
 
-10/5/13	Fix time estimate during acquisition if using peaking on unknowns.
+10/5/13		Fix time estimate during acquisition if using peaking on unknowns.
 
-	Prevent update on real time sample parameters in GetElmAll if sample has no data but is being acquired.
+		Prevent update on real time sample parameters in GetElmAll if sample has no data but is being acquired.
 
-10/4/13	Add relative cursor for wavescan plots (Andersen).
+10/4/13		Add relative cursor for wavescan plots (Andersen).
 
-	Fix TDI display bug if no TDI data in last sample selected and plot fit is clicked.
+		Fix TDI display bug if no TDI data in last sample selected and plot fit is clicked.
 	
-	Do not update off-peaks if current sample is being acquired (and no data yet).
+		Do not update off-peaks if current sample is being acquired (and no data yet).
 
-9/28/13	Add "Interactive Help" buttons to Digitize Image and Polygon Grid dialogs to connect to 
-	appropriate user forum topics.
+9/28/13		Add "Interactive Help" buttons to Digitize Image and Polygon Grid dialogs to connect to 
+		appropriate user forum topics.
 
-9/26/13	Make Help buttons blue.
+9/26/13		Make Help buttons blue.
 
-9/25/13	Bump version to force updates
+9/25/13		Bump version to force updates
 v. 10.1.5
-	Add Help button to MAN dialog.
+		Add Help button to MAN dialog.
 
-9/24/13	Add more Help menus to CalcImage and add Help button to CalcZAF SF correction window.
-
-9/23/13	Default minimum mag on JEOLs to 12x (Carpenter).
-
-	Copy some exe and other files from CalcZAF.msi to ProbeForEPMA.msi so they get updated just with PFE.
-
-9/22/13	Fixed standard database import/export density bug. (Pinard).
-
-9/21/13	Add Help links to Penepma GUI windows. Improve error handling in CalcImage and ZAFSmp code.
-
-	Start work on Hyper-Imaging feature.
-
-9/20/13	Modify ZAFSmp to handle negative k-ratios better (Spilde).
-
-	Make several improvements to the Penpma GUI in Standard. Now it can read existing input files among
-	other changes.
-
-	Fix display if one side multi-points and display peak intensities checked. (Wade).
+9/24/13		Add more Help menus to CalcImage and add Help button to CalcZAF SF correction window.
 	
-	Add min/max magnification to Probewin.ini [hardware] section (Severin), so user can customize it.
+9/23/13		Default minimum mag on JEOLs to 12x (Carpenter).
 
-9/18/13	Add bilayer_100nm.geo file to Penepma folder for default thin film calculations.
+		Copy some exe and other files from CalcZAF.msi to ProbeForEPMA.msi so they get updated just with PFE.
 
-	Fix labeling issue for thin film MC Penepma window.
+9/22/13		Fixed standard database import/export density bug. (Pinard).
 
-9/17/13	Modify EDS init and close functions to better support dual interfaces.
+9/21/13		Add Help links to Penepma GUI windows. Improve error handling in CalcImage and ZAFSmp code.
+
+		Start work on Hyper-Imaging feature.
+
+9/20/13		Modify ZAFSmp to handle negative k-ratios better (Spilde).
+
+		Make several improvements to the Penepma GUI in Standard. Now it can read existing input files among
+		other changes.
+	
+		Fix display if one side multi-points and display peak intensities checked. (Wade).
+	
+		Add min/max magnification to Probewin.ini [hardware] section (Severin), so user can customize it.
+
+9/18/13		Add bilayer_100nm.geo file to Penepma folder for default thin film calculations.
+
+		Fix labeling issue for thin film MC Penepma window.
+
+9/17/13		Modify EDS init and close functions to better support dual interfaces.
 v. 10.1.4
-	Add Elements/Cations forms and code and Standard Assignments forms and code to CalcImage.
+		Add Elements/Cations forms and code and Standard Assignments forms and code to CalcImage.
 
-	Fix CalcImage CalcImageCorrectData "subscript out of range" bug (Hatton).
+		Fix CalcImage CalcImageCorrectData "subscript out of range" bug (Hatton).
 	
-	Fix PFE TimeCalculate "subscript out of range" (Wade).
+		Fix PFE TimeCalculate "subscript out of range" (Wade).
 	
-	Modify SETELM form for multipoint controls (to match Plot! Model Background form).
+		Modify SETELM form for multipoint controls (to match Plot! Model Background form).
 
-9/16/13	Modify Penepma MC window to improve instructions and tool help.
+9/16/13		Modify Penepma MC window to improve instructions and tool help.
 
-	Add statistics output to convert routines (CalcImage).
+		Add statistics output to convert routines (CalcImage).
 
-9/14/13	Automatically load density when user selects alternative match to composition in CalcImage modal window.
+9/14/13		Automatically load density when user selects alternative match to composition in CalcImage modal window.
                                   
-9/13/13	Modify 8530 analog signal selection to match PI (Gaynor).
+9/13/13		Modify 8530 analog signal selection to match PI (Gaynor).
 
-	Fix composition match when no match is found in CalcImage.
+		Fix composition match when no match is found in CalcImage.
 
-9/12/13	Fix Chem Age flag behavior in Options.bas.
+9/12/13		Fix Chem Age flag behavior in Options.bas.
 
-	Fix detection limit and analytical sensitivity calculations in CalcImage if specified sample setup has no valid data.
+		Fix detection limit and analytical sensitivity calculations in CalcImage if specified sample setup has no valid data.
 
-9/11/13 Fix excess oxygen printout in match window.
+9/11/13 	Fix excess oxygen printout in match window.
 
-        Add force faraday insert for Read Conditions buttons in forms (Cathey).
+        	Add force faraday insert for Read Conditions buttons in forms (Cathey).
         
-        Fix end-member calculations in CalcImage
+        	Fix end-member calculations in CalcImage
 
-9/09/13	Add export menus to CalcImage.
+9/09/13		Add export menus to CalcImage.
 
-	Add delay after image souce selection for 8530. (Ruscitto)
+		Add delay after image source selection for 8530. (Ruscitto)
 
-9/08/13	Make missing data pixels gray in CalcImage analytical sensitivity output to Surfer (Barkman).
+9/08/13		Make missing data pixels gray in CalcImage analytical sensitivity output to Surfer (Barkman).
 
-	Fix Log wt% output in CalcImage.
+		Fix Log wt% output in CalcImage.
 	
-	Center beam deflection when closing Imaging window.
+		Center beam deflection when closing Imaging window.
 
-9/07/13	Fix issue with reading GRDInfo.INI files (CIP,GRD,DAT versus ACQ)
+9/07/13		Fix issue with reading GRDInfo.INI files (CIP,GRD,DAT versus ACQ)
 
-	Start implementation of beam deflection read from instrument for PCSEM deflection and PFE acquisition (Pinard).
+		Start implementation of beam deflection read from instrument for PCSEM deflection and PFE acquisition (Pinard).
 
-9/06/13	Implement element by difference image in CalcImage.
+9/06/13		Implement element by difference image in CalcImage.
 v. 10.1.3
-	Implement detection limit and analytical sensitivity image output in CalcImage.
+		Implement detection limit and analytical sensitivity image output in CalcImage.
 	
-	Improve 8530 beam modes code.(Pinard).
+		Improve 8530 beam modes code.(Pinard).
 
-9/02/13	Tweak code for 8530 beam modes, al la Pinard.
+9/02/13		Tweak code for 8530 beam modes, al la Pinard.
 
-8/28/13	Add call to save new file to INI recently opened file list.
+8/28/13		Add call to save new file to INI recently opened file list.
 
-8/27/13	Add code in CalcImage to handle single pixel line scans.
+8/27/13		Add code in CalcImage to handle single pixel line scans.
 
-	Add check for crystal flipping flags for flip position in InitScalers. (Carpenter)
+		Add check for crystal flipping flags for flip position in InitScalers. (Carpenter)
 
-8/26/13 Fix one pixel dimension output bug in CalcImage.
+8/26/13 	Fix one pixel dimension output bug in CalcImage.
 
-8/24/13	Modify large bias voltage change warning to only apply to Cameca instruments (Carpenter).
+8/24/13		Modify large bias voltage change warning to only apply to Cameca instruments (Carpenter).
 
-	Update Matrix.mdb.
+		Update Matrix.mdb.
 
-8/23/13	Trap situation where user specifies "quick stds" and sample setups, which
-	conflicted by overloading the last unknown count times for the quick stds. (Goemann).
+8/23/13		Trap situation where user specifies "quick stds" and sample setups, which
+		conflicted by overloading the last unknown count times for the quick stds. (Goemann).
 
-	Fix loading of Remote help file from Help menu.
+		Fix loading of Remote help file from Help menu.
 	
-	Modify PictureSnap to save stage polarity and units to .ACQ files, so JEOL and 
-	Cameca stage coordinate systems are automatically handled.
+		Modify PictureSnap to save stage polarity and units to .ACQ files, so JEOL and 
+		Cameca stage coordinate systems are automatically handled.
 	
-	Modify PictureSnap calibration dialog to show Z stage positions when using 3 point calibration 
-	for Z tilt correction. (Seward)
+		Modify PictureSnap calibration dialog to show Z stage positions when using 3 point calibration 
+		for Z tilt correction. (Seward)
 
-8/20/13	Update Matrix.mdb for newly calculated Penepma Monte Carlo derived k-ratios
+8/20/13		Update Matrix.mdb for newly calculated Penepma Monte Carlo derived k-ratios
 v. 10.1.2	for polynomial alpha factors.
 
-	Add Np and Pu emission line energies and fluorescence yield values (Poeml).
-	From Hubbell, et al. Xline.dat and Xflur.dat.
+		Add Np and Pu emission line energies and fluorescence yield values (Poeml).
+		From Hubbell, et al. Xline.dat and Xflur.dat.
+		
+		Save standard table automatically after adding/removing standards and update recently
+		opened file list after opening file. (Barkman)
+
+8/17/13		Reverse sort version.txt (this file). Post to forum as "sticky"
+
+		Update INI file comments.
+
+8/16/13		Fix PictureSnap analysis position display bug on rotated images.
+
+8/15/13		Fix 8530 beam deflection bug.  (Severin).	
+
+		Add code for 8530 beam modes, al la Pinard.
+
+8/12/13		Improve error checking and enables for beam deflection controls.
 	
-	Save standard table automatically after adding/removing standards and update recently
-	opened file list after opening file. (Barkman)
-
-8/17/13	Reverse sort version.txt (this file). Post to forum as "sticky"
-
-	Update INI file comments.
-
-8/16/13	Fix PictureSnap analysis position display bug on rotated images.
-
-8/15/13	Fix 8530 beam deflection bug.  (Severin).	
-
-	Add code for 8530 beam modes, al la Pinard.
-
-8/12/13	Improve error checking and enables for beam deflection controls.
+		Fix bug when no WDS elements are selected and using EDS acquisition in demo mode (for Penepma material file input).
 	
-	Fix bug when no WDS elements are selected and using EDS acquisition in demo mode (for Penepma material file input).
+8/11/13		Allow beam deflection when using column conditions. Print warning. (Poeml)
 	
-8/11/13	Allow beam deflection when using column conditions. Print warning. (Poeml)
+		Allow beam deflection on stds (add controls to FormAUTOMATE). Tested in demo mode, so it should be good to go. (Poeml)
 	
-	Allow beam deflection on stds (add controls to FormAUTOMATE). Tested in demo mode, so it should be good to go. (Poeml)
+		Change 8200/8500 and 8230/8530 fine condenser iteration increment to (only) 2 times 8900 increment.
 	
-	Change 8200/8500 and 8230/8530 fine condenser iteration increment to (only) 2 times 8900 increment.
-	
-	Modify analytical/column conditions dialogs (Wright).
+		Modify analytical/column conditions dialogs (Wright).
 
-	Add Penepma12.zip to CalcZAF distribution (ZIP and MSI). Now unzips Penepma12.zip automatically when necessary.
+		Add Penepma12.zip to CalcZAF distribution (ZIP and MSI). Now unzips Penepma12.zip automatically when necessary.
 
-8/10/13	Add Connect To Probe Software user forum menu to the in CalcZAF and PFE Help menus.
+8/10/13		Add Connect To Probe Software user forum menu to the in CalcZAF and PFE Help menus.
 v. 10.1.1
-	Modify Thermo init routine to search for NSSMachineSettings.ini properly.
+		Modify Thermo init routine to search for NSSMachineSettings.ini properly.
 
-8/2/13	Modify light on/off behavior for JEOL auto-focus (move above HAL). (Severin)
+8/2/13		Modify light on/off behavior for JEOL auto-focus (move above HAL). (Severin)
 	
-	Fix negative log in PAP routines for x-ray quant mapping (Fournelle).
+		Fix negative log in PAP routines for x-ray quant mapping (Fournelle).
 
-7/31/13	Add output of MinimumFaradayCurrent in low beam current warning (Severin).
+7/31/13		Add output of MinimumFaradayCurrent in low beam current warning (Severin).
 
-	Add spectro and stage position returned if error returned from instrument in JEOLGetMotorPosition.
+		Add spectro and stage position returned if error returned from instrument in JEOLGetMotorPosition.
 
-7/24/13	Add probe scan on/off to 8530 beam mode (if not digital spot) (Adams and Carpenter).
+7/24/13		Add probe scan on/off to 8530 beam mode (if not digital spot) (Adams and Carpenter).
 
-7/23/13	Modify JEOL beam current limits for condenser lens values (Carpenter).	
+7/23/13		Modify JEOL beam current limits for condenser lens values (Carpenter).	
 	
-	Also missing Probewin.chm and CalcImage.chm files.	
+		Also missing Probewin.chm and CalcImage.chm files.	
 
-7/22/13	Add TestEDS.exe to ProbeForEPMA.msi installer (Carpenter).
+7/22/13		Add TestEDS.exe to ProbeForEPMA.msi installer (Carpenter).
 
-	Modify CalcImage to auto load convert quant images (end-members). Add end-member images to open quant images.
+		Modify CalcImage to auto load convert quant images (end-members). Add end-member images to open quant images.
 	
-	Remove some obsolete fixed spectrometer code.
+		Remove some obsolete fixed spectrometer code.
 
-7/19/13	Add output of mineral end members to user specified output (Carpenter).
+7/19/13		Add output of mineral end members to user specified output (Carpenter).
 v. 10.0.7
 
-7/16/13	Fix Matrix and Remote CHM paths.
+7/16/13		Fix Matrix and Remote CHM paths.
 v. 10.0.6
-	Add calculation options (end-members, chem age and log wt%) for quant images in CalcImage.
+		Add calculation options (end-members, chem age and log wt%) for quant images in CalcImage.
 	
-	Modify Run | Display TDI menu dialog to not indicate elements that are not TDI or alternating on/off. (Barkman)
+		Modify Run | Display TDI menu dialog to not indicate elements that are not TDI or alternating on/off. (Barkman)
 	
-	Increase MAXSTDS from 80 to 128 per run. (Goemann)
+		Increase MAXSTDS from 80 to 128 per run. (Goemann)
 
-7/13/13	Add check for matching Bragg order in Update.bas load std, std interf and MAN stds code. (Seward)
+7/13/13		Add check for matching Bragg order in Update.bas load std, std interf and MAN stds code. (Seward)
 v. 10.0.5
-	Increase MAXSTDS from 64 to 80 per run.
+		Increase MAXSTDS from 64 to 80 per run.
 
-7/9/13	Modify classification iteration tolerance range.	
+7/9/13		Modify classification iteration tolerance range.	
 
-	Add CHM help to apps.
+		Add CHM help to apps.
 	
-	Modify InitScalers to print spectro number for bad data.
+		Modify InitScalers to print spectro number for bad data.
 
-7/3/13	Modify VolatileDataLoadSampleChans code to list TDI channels, even if turned off (Barkman).
+7/3/13		Modify VolatileDataLoadSampleChans code to list TDI channels, even if turned off (Barkman).
 v. 10.0.4
 
-7/2/13	Fix typo in User Specified Output preventing proper loading of sample description flag.
+7/2/13		Fix typo in User Specified Output preventing proper loading of sample description flag.
 	
-	Modify user specified output to use form options for standard and unknown output selection (Carpenter).
+		Modify user specified output to use form options for standard and unknown output selection (Carpenter).
 	
-	Add updated help file.
+		Add updated help file.
 
-7/1/13	Add spectro number to RealTimeSetPHAParameters invalid parameter error message.	
+7/1/13		Add spectro number to RealTimeSetPHAParameters invalid parameter error message.	
 	
-	Add CHM help files to distribution- not implemented yet.
+		Add CHM help files to distribution- not implemented yet.
 
-6/29/13	Remove fixed spectrometer code and parameters.
+6/29/13		Remove fixed spectrometer code and parameters.
 v. 10.0.3
-	Modify Output menu again.
+		Modify Output menu again.
 	
-	Save wavescan stage step increment automatically when using X/Y spin buttons.	
+		Save wavescan stage step increment automatically when using X/Y spin buttons.	
 
-6/26/13	Increase maximum analytical mag to 800K (Seward).
+6/26/13		Increase maximum analytical mag to 800K (Seward).
 10.0.2
 
-6/24/13	Remove CalcImage examples from Source.	
+6/24/13		Remove CalcImage examples from Source.	
 
-	Reference manual updated.
+		Reference manual updated.
 	
-	Only JEOL 8900/8200/8500/8x30 and SX100/SXFive and Axioscope interfaces still supported!!!
+		Only JEOL 8900/8200/8500/8x30 and SX100/SXFive and Axioscope interfaces still supported!!!
 
-6/22/12	End of support for some instrument interfaces including AM (1), Sesame (3), Tracor (4), SX50/51 (6), 
+6/22/12		End of support for some instrument interfaces including AM (1), Sesame (3), Tracor (4), SX50/51 (6), 
 v. 10.0.1	Thermo TN (7), JEOL 6300/6400 (9). 
 		
-	Fix loading of sample name for automated image acquisition (Whan).
+		Fix loading of sample name for automated image acquisition (Whan).
 	
-	Fix geological sort bug in User Specified output (Carpenter).
+		Fix geological sort bug in User Specified output (Carpenter).
 	
-	Fix software stage backlash when using beam deflection (Poeml).
+		Fix software stage backlash when using beam deflection (Poeml).
 
-6/20/13	Fix MAN disable quant flag stuff (Carpenter).
+6/20/13		Fix MAN disable quant flag stuff (Carpenter).
 v. 9.5.5
-	Update Reference manual and help.
+		Update Reference manual and help.
 	
-	Fix FormLOCATE for MAXROW=500.
+		Fix FormLOCATE for MAXROW=500.
 	
-	Modify Output menu.
+		Modify Output menu.
 
-6/17/13	Modify case of msi download files.
+6/17/13		Modify case of msi download files.
 v. 9.5.4
 
-6/14/13	Add geological order sorting in User Specified Output (Lowers- you owe me two beers!).
+6/14/13		Add geological order sorting in User Specified Output (Lowers- you owe me two beers!).
 
-6/13/13	Add delays for load column condition (Poeml).  Adjust using ColumnConditionChangeDelay keyword.
+6/13/13		Add delays for load column condition (Poeml).  Adjust using ColumnConditionChangeDelay keyword.
 v. 9.5.3
-	Modify ProbFormLoadDemoCounts to allow EDS spectra to be calculated even if no WDS elements.
+		Modify ProbFormLoadDemoCounts to allow EDS spectra to be calculated even if no WDS elements.
 	
-	Modify Update batch files to exit on completion of msi install.
+		Modify Update batch files to exit on completion of msi install.
 	
-	Add call to Call RealTimeGetAllPositions(Int(1)) when unloading FormCONFIRM (Barkman).
+		Add call to Call RealTimeGetAllPositions(Int(1)) when unloading FormCONFIRM (Barkman).
 
 06/12/13	Modify IOStatusAuto to write status strings to log window if debugmode (Poeml).
 	
-	Add unit conversion to CalcImage BMP Save and PictureSnap BMP load.
+		Add unit conversion to CalcImage BMP Save and PictureSnap BMP load.
 
 06/11/13	Modify Help Update form to allow ZIP update if ExtendedMenu in [software] section is true
 
-	Modify tiling aspect calculations in CalcImage (Poeml).
+		Modify tiling aspect calculations in CalcImage (Poeml).
 
 06/09/13	Add PictureSnap cursor update to Classify and MDI forms.
 v. 9.5.2
-	Add PictureSnap to CalcImage.
+		Add PictureSnap to CalcImage.
 	
-	Turn off hyper cursor in CalcImage if on and Classify window is closed.
+		Turn off hyper cursor in CalcImage if on and Classify window is closed.
 	
-	Fix title of Temperature calculation dialog in CalcZAF.
+		Fix title of Temperature calculation dialog in CalcZAF.
 	
-	Disable ZIP (quick) update option.
+		Disable ZIP (quick) update option.
 
-6/08/13	Update PFE FAQ document.
+6/08/13		Update PFE FAQ document.
 
-	Add menu for loading stage calibrated BMP file into CalcImage (unfinished).
+		Add menu for loading stage calibrated BMP file into CalcImage (unfinished).
 	
-	Add code to re-send PHA in Return To On Peak button in the Peaking dialog in case crystal flip caused a re-set
-	of the PHA parameters (SX100/SXFive only?) (Seward).
+		Add code to re-send PHA in Return To On Peak button in the Peaking dialog in case crystal flip caused a re-set
+		of the PHA parameters (SX100/SXFive only?) (Seward).
+		
+5/30/13		Add code to check that all GRD output files are available for Surfer script (Spilde).
 
-5/30/13	Add code to check that all GRD output files are available for Surfer script (Spilde).
-
-5/29/13	Modify user specified description field to convert crlf to comma for proper input into Excel.
+5/29/13		Modify user specified description field to convert crlf to comma for proper input into Excel.
 	
-	Add check for numberoftunable specs in DataMotor if RealTimeMode (in case config does not match).
+		Add check for numberoftunable specs in DataMotor if RealTimeMode (in case config does not match).
 
-5/28/13	Add sample description to user specified output (Lowers).
+5/28/13		Add sample description to user specified output (Lowers).
 v. 9.5.1
 
-5/27/13	New msi and doc files.
+5/27/13		New msi and doc files.
 v. 9.4.9
-	Add check for disable acq flag in DataMANLoadAll (Carpenter).
+		Add check for disable acq flag in DataMANLoadAll (Carpenter).
 	
-	Add sample specific flag for chemical age calculations (Allaz). Global flag in Analysis Options is still there 
-	for toggling on/off and for backward compatibility.
+		Add sample specific flag for chemical age calculations (Allaz). Global flag in Analysis Options is still there 
+		for toggling on/off and for backward compatibility.
+		
+		Fix CalcImage modal output for Surfer to display classify map in JEOL orientation.
 	
-	Fix CalcImage modal output for Surfer to display classify map in JEOL orientation.
-	
-	Fix Plot! button in Automate! window to display JEOL coordinates with anti-cartesian orientation.
+		Fix Plot! button in Automate! window to display JEOL coordinates with anti-cartesian orientation.
 
-5/24/13	Comment out line in BrukerEDSSpectraGet to get live display of Bruker EDS intensities.
+5/24/13		Comment out line in BrukerEDSSpectraGet to get live display of Bruker EDS intensities.
 v. 9.4.8
 
-5/22/13	Fix CalcImage Close Off-Peak Images menu code to handle windows loaded out of order.	
+5/22/13		Fix CalcImage Close Off-Peak Images menu code to handle windows loaded out of order.	
 	
-	Show EDS display if Bruker EDS acquisition (Bruker client may not be visible and does not display data by other clients).
+		Show EDS display if Bruker EDS acquisition (Bruker client may not be visible and does not display data by other clients).
 
-5/21/13	Modify code and add SX100 (SXFive) delays for spectro scans (Goemann).
+5/21/13		Modify code and add SX100 (SXFive) delays for spectro scans (Goemann).
 v. 9.4.7
 		SX100ScanSpectroMilliSecDelayAfter=200
 		SX100ScanSpectroMilliSecDelayBefore=200
@@ -1729,451 +1732,449 @@ v. 9.4.7
 		SX100MoveSpectroMilliSecDelayBefore=100
 
 
-5/20/13	Change SX100Velocity Z axis speed limits to 1 to 200 (SXFive = 1 to 10, SX100 10 to 200) (Goemann).
+5/20/13		Change SX100Velocity Z axis speed limits to 1 to 200 (SXFive = 1 to 10, SX100 10 to 200) (Goemann).
 
-	Fix Run | Type Standard Compositions to print "n.a." for elements not in standard (Carpenter).
+		Fix Run | Type Standard Compositions to print "n.a." for elements not in standard (Carpenter).
 	
-	Add new delay flags for Sx100 (Poeml and Seward instruments only):
+		Add new delay flags for Sx100 (Poeml and Seward instruments only):
 
 		SX100MoveStageMilliSecDelayBefore=100
 		SX100MoveSpectroMilliSecDelayBefore=100
 	
-	Add all output data types (NetInt, BgdInt, Kratio, Quant, Atomic, Oxide and Formula Basis) to CalcImage "Polygon" 
-	and Strip output menus.
+		Add all output data types (NetInt, BgdInt, Kratio, Quant, Atomic, Oxide and Formula Basis) to CalcImage "Polygon" 
+		and Strip output menus.
 	
-	Fix default GEO browse folder (change to Penepma_Root folder).
+		Fix default GEO browse folder (change to Penepma_Root folder).
 	
-	Make hyper-cursor not visible if outside stage extents.
+		Make hyper-cursor not visible if outside stage extents.
 
-5/19/13	Fix column labels for all data types in classification DAT file.
+5/19/13		Fix column labels for all data types in classification DAT file.
 	
-	Add all output data types (NetInt, BgdInt, Kratio, Quant, Atomic, Oxide and Formula Basis) to CalcImage "Slice" output menu.
+		Add all output data types (NetInt, BgdInt, Kratio, Quant, Atomic, Oxide and Formula Basis) to CalcImage "Slice" output menu.
 
-5/18/13	Add call to ElementGetData in CalcImage for loading oxide symbols for output.	
-v. 9.46	coordinate system and writing to the original (e.g., JEOL vs. Cameca). See new GridCheckGRDInfo code in CalcImageOutputDataAll.
+5/18/13		Add call to ElementGetData in CalcImage for loading oxide symbols for output.	
+v. 9.46		coordinate system and writing to the original (e.g., JEOL vs. Cameca). See new GridCheckGRDInfo code in CalcImageOutputDataAll.
 	
-5/3/13	Darn!  Had to do a quick tweak to handle situations when re-calculating quant data obtained from one instrument 
+5/3/13		Darn!  Had to do a quick tweak to handle situations when re-calculating quant data obtained from one instrument 
 
-5/2/13	Add hyper cursor menu in CalcImage.	
+5/2/13		Add hyper cursor menu in CalcImage.	
 v. 9.45
 
-v. 9.44	Modify Matrix and Remote to *not* check for registration!
+v. 9.44		Modify Matrix and Remote to *not* check for registration!
 
-	Add Getting Started and Advanced Topics menus to PFE ZIP.  Add GS and AT menus to Help in PFE.
+		Add Getting Started and Advanced Topics menus to PFE ZIP.  Add GS and AT menus to Help in PFE.
 
-4/28/13	Add Getting Started and Advanced Topics pdfs to distribution msi files.
+4/28/13		Add Getting Started and Advanced Topics pdfs to distribution msi files.
 v. 9.43	
-	New installation msi files.
+		New installation msi files.
 	
-	Add SX100MoveMilliSecDelayBefore=100 keyword for Sx100 instruments using software backlash (Poeml and Seward).
+		Add SX100MoveMilliSecDelayBefore=100 keyword for Sx100 instruments using software backlash (Poeml and Seward).
 
-4/27/13	Modify InitUserDataDirectory to test for all folders and print out more info if error (Mace).
+4/27/13		Modify InitUserDataDirectory to test for all folders and print out more info if error (Mace).
 	
-	Modify CalcImage to output classification (multi-column) DAT files for all output types (Carpenter).
+		Modify CalcImage to output classification (multi-column) DAT files for all output types (Carpenter).
 
-4/26/13	Add mag and beam mode controls to FormCOND2 for combined condition samples (Vigoroux)
+4/26/13		Add mag and beam mode controls to FormCOND2 for combined condition samples (Vigoroux)
 v. 9.42
 
-4/25/13	Fix off-peak time control disable bug in GetTimSetTimLoad if MAN.
+4/25/13		Fix off-peak time control disable bug in GetTimSetTimLoad if MAN.
 
-4/23/13	Add call to read positions during FormCONFIRM even if stage map is not visible to service driver.
+4/23/13		Add call to read positions during FormCONFIRM even if stage map is not visible to service driver.
 
-	Increase minimum overvoltage for Fanal binary extractions.
+		Increase minimum overvoltage for Fanal binary extractions.
 
-4/22/13	Fix rounding error in SX100MoveMotor. 
+4/22/13		Fix rounding error in SX100MoveMotor. 
 
-4/20/13	Add debug statement if skipping motor move (SX100/SXFive) because target and current position are the same.
-
-
-4/19/13	Add code to SX100 HAL (in SX100MoveMotor and Sx100GetMotorStatus) to check current position and if the same as target, 
-v. 9.41	just exit (Poeml).
+4/20/13		Add debug statement if skipping motor move (SX100/SXFive) because target and current position are the same.
 
 
-4/18/13	Add code in SX100GetMotorStatus to allow automation to proceed if target = position even if motion compete 
-	status is not returned (Poeml).	
+4/19/13		Add code to SX100 HAL (in SX100MoveMotor and Sx100GetMotorStatus) to check current position and if the same as target, 
+v. 9.41		just exit (Poeml).
+
+
+4/18/13		Add code in SX100GetMotorStatus to allow automation to proceed if target = position even if motion compete 
+		status is not returned (Poeml).	
 	
-	Add oxide formula to CalcImage oxide output.
+		Add oxide formula to CalcImage oxide output.
 	
-	Fix Penepma12 k-ratio calculations code.
+		Fix Penepma12 k-ratio calculations code.
 
-4/17/13	Add Excess Oxyggen examples to CalcImage.zip.	
+4/17/13		Add Excess Oxygen examples to CalcImage.zip.	
 
-	Modify Surfer scripts to output axis invert flag for JEOL images (Carpenter).
+		Modify Surfer scripts to output axis invert flag for JEOL images (Carpenter).
 	
-	Add better error trapping in Penepma12CalculateKratios.
+		Add better error trapping in Penepma12CalculateKratios.
 
-4/14/13	Add fix for Sx100 count status.
+4/14/13		Add fix for Sx100 count status.
 	
-	Add check for counting time out (count time complete but no completion status).	
+		Add check for counting time out (count time complete but no completion status).	
 	
-	CalcZAF alpha factors now support SF boundary correction.
+		CalcZAF alpha factors now support SF boundary correction.
 	
-	Add "hyper-imaging" cursor to CalcImage.
+		Add "hyper-imaging" cursor to CalcImage.
 
-4/12/13	Fix menu disable during quant in CalcImage.	
+4/12/13		Fix menu disable during quant in CalcImage.	
 
-	Skip material calculations in Penepma12CalculateKratios if skip flag is set and PAR exists.
+		Skip material calculations in Penepma12CalculateKratios if skip flag is set and PAR exists.
 
-4/9/13	Show log window from CalcImage if double clicking on match.
+4/9/13		Show log window from CalcImage if double clicking on match.
 	
-	Add density field to Standard table in PFE.
+		Add density field to Standard table in PFE.
 	
-	Fix CalcImage bug when canceling project and disable Project menus when running quant calculations.
+		Fix CalcImage bug when canceling project and disable Project menus when running quant calculations.
 
-4/7/13	Add density load for CalcImage modal match (Barkman).
+4/7/13		Add density load for CalcImage modal match (Barkman).
 v. 9.3.9
 
-4/6/13	Add net intensity, bgd intensity, kratio, atomic, oxide and formula calculation and output to CalcImage.
+4/6/13		Add net intensity, bgd intensity, kratio, atomic, oxide and formula calculation and output to CalcImage.
 
-
-4/5/13	Start adding output options to CalcImage for atomic, oxide, formula and excess and bgd and kratio intensities.
+4/5/13		Start adding output options to CalcImage for atomic, oxide, formula and excess and bgd and kratio intensities.
 v. 9.3.8	
-	Modify CalcZAFBinary to print problematic binaries after all binary calculations.
+		Modify CalcZAFBinary to print problematic binaries after all binary calculations.
 	
-	Fix Standard Penepma12 batch mode dialog issue (Gopon).
+		Fix Standard Penepma12 batch mode dialog issue (Gopon).
 
-4/3/13	Fix TestEDS (Carpenter).
+4/3/13		Fix TestEDS (Carpenter).
 
-4/2/13	Modify error trapping and file close statements.
+4/2/13		Modify error trapping and file close statements.
 	
-	Add code to check for missing Penepma folders.
+		Add code to check for missing Penepma folders.
 
-4/1/13	Fix Penepma12MatrixScanMDB to handle txt files with 52.5 degrees takeoff angle.
+4/1/13		Fix Penepma12MatrixScanMDB to handle txt files with 52.5 degrees takeoff angle.
 	
-	Add error trapping to Penepma08 code (Gopon).
+		Add error trapping to Penepma08 code (Gopon).
 	
-	Work on PFE SF code (almost finished).
+		Work on PFE SF code (almost finished).
 
-3/29/13	Add pixel dwell (count) time to CalcImage dialogs for information purposes (not used since intensities are already in cps).
+3/29/13		Add pixel dwell (count) time to CalcImage dialogs for information purposes (not used since intensities are already in cps).
 v. 9.3.7
-	Fix normalize code in FormulaWeightToSample.
+		Fix normalize code in FormulaWeightToSample.
 
 03/27/13	Fix minor bug in Standard in Penepma12Save for saving default x-ray line.
 	
-	Fix minor Penepma/Penfluor alpha factor bug when one binary (or the binary pair) wasn't found in the matrix.mdb file.
+		Fix minor Penepma/Penfluor alpha factor bug when one binary (or the binary pair) wasn't found in the matrix.mdb file.
 
 v. 9.3.6	New SF boundary code.
 
 v. 9.3.5	New SF boundary code.
 
-	New distribution of CalcZAF and PFE
+		New distribution of CalcZAF and PFE
 	
-	Add Pouchou2.dat (more complete k-ratio database from Pinard).
+		Add Pouchou2.dat (more complete k-ratio database from Pinard).
 	
-	If using default beam blank = false, use timed msgbox to confirm beam unblank (Goemann).
+		If using default beam blank = false, use timed msgbox to confirm beam unblank (Goemann).
 	
-	Fix duplicate element display for standard published values in Analyze! average grid.
+		Fix duplicate element display for standard published values in Analyze! average grid.
 
-3/22/13	Add warning to Acquire code if user tries to change analytical conditions or perform peak centering
-	on standard or wavescan samples. (Meir)
+3/22/13		Add warning to Acquire code if user tries to change analytical conditions or perform peak centering
+		on standard or wavescan samples. (Meir)
+	
+3/20/13		Add support for alpha factors calculations in CalcZAF binary k-ratio calculations.
 
-3/20/13	Add support for alpha factors calculations in CalcZAF binary k-ratio calculations.
-
-3/16/13	Work on saving and reading k-ratio files for secondary fluorescence boundary corrections.  Almost working!
+3/16/13		Work on saving and reading k-ratio files for secondary fluorescence boundary corrections.  Almost working!
 v. 9.3.5
-	Add size zero default after automation (Barkman).
+		Add size zero default after automation (Barkman).
 	
-	Add Z data cursor to FormANALOG.
+		Add Z data cursor to FormANALOG.
 
-3/15/13	Work on PFE SF database tables
+3/15/13		Work on PFE SF database tables
 
-	Fix default focus- call after MoveReturnToPeaks.
+		Fix default focus- call after MoveReturnToPeaks.
 
-3/14/13	Fix loading of default palette- call first during init.
+3/14/13		Fix loading of default palette- call first during init.
 	
-	Add CalcImage PDF to Help menu.
+		Add CalcImage PDF to Help menu.
 	
-	Add new global to force beam size to zero when finished with acquisition (Wykes).	
+		Add new global to force beam size to zero when finished with acquisition (Wykes).	
 
-3/13/13	Fix cluster color display bug (Wykes).
+3/13/13		Fix cluster color display bug (Wykes).
 
-	Work on secondary fluorescence boundary correction code for PFE.  This is a lot of work- I sure hope 
-	someone uses it!
+		Work on secondary fluorescence boundary correction code for PFE.  This is a lot of work- I sure hope 
+		someone uses it!
+	
+3/8/13		Modify InitFiles to check for decimal and thousands separator (Lowers).	
 
-3/8/13	Modify InitFiles to check for decimal and thousands separator (Lowers).	
+		Add more correction factors to user specified output (Kuehn).
+	
+		Make additional changes in reading/writing probewin.cor for language issues. (Lowers)
 
-	Add more correction factors to user specified output (Kuehn).
-	
-	Make additional changes in reading/writing probewin.cor for language issues. (Lowers)
+3/7/13		Modify Probewin.elm file to use tabs between values (does not affect Probe Image).
 
-3/7/13	Modify Probewin.elm file to use tabs between values (does not affect Probe Image).
+3/6/13		Fix CalcImage classify bug where non default features selections were not saved. (Carpenter).	
+	
+		Modify window size/position InitWindow code to not save if window is 
+		not visible (Carpenter).
+		
+		Fix tool tip help in Acquisition Options.
 
-3/6/13	Fix CalcImage classify bug where non default features selections were not saved. (Carpenter).	
+3/5/13		Fix aspect ratio calculation in CalcImage (Pinard).
 	
-	Modify window size/position InitWindow code to not save if window is 
-	not visible (Carpenter).
+		Finish user specified average parameter output (Poeml).
 	
-	Fix tool tip help in Acquisition Options.
+		Add Move Selected elements to on-peak in Peaking Options (for PI).
+	
+		Add image number field to position database for drift correction feature (Wark).
+	
+		Disable "Do not output deviations" checkbox in Modal form if deviation fields are not 
+		available (Goemann).
+		
+		Add output of OPTF (on-peak time fraction) parameter (Jercinovic).
 
-3/5/13	Fix aspect ratio calculation in CalcImage (Pinard).
-	
-	Finish user specified average parameter output (Poeml).
-	
-	Add Move Selected elements to on-peak in Peaking Options (for PI).
-	
-	Add image number field to position database for drift correction feature (Wark).
-	
-	Disable "Do not output deviations" checkbox in Modal form if deviation fields are not 
-	available (Goemann).
-	
-	Add output of OPTF (on-peak time fraction) parameter (Jercinovic).
-
-3/1/13	Fix bug in CalcImageLoadSample (Carpenter).
+3/1/13		Fix bug in CalcImageLoadSample (Carpenter).
 v. 9.3.2	
-	Fix EMSA spectra output confirm message.
+		Fix EMSA spectra output confirm message.
 	
-	Fix minor issues in CalcImage with using MAN for off-peak elements.
+		Fix minor issues in CalcImage with using MAN for off-peak elements.
 
-2/28/13	Update CalcImage context ID help (Goemann).
+2/28/13		Update CalcImage context ID help (Goemann).
 
-2/25/13	Fix random fraction output and BMP mask output (Goemann).
+2/25/13		Fix random fraction output and BMP mask output (Goemann).
 
-	Start work on sample average output for user specified output (Poeml).
+		Start work on sample average output for user specified output (Poeml).
 	
-	Improve Penepma (08 and 12) cancel code to automatically kill Penepma background task.
+		Improve Penepma (08 and 12) cancel code to automatically kill Penepma background task.
 	
-	Fix EDS time calculation in TIME.BAS.
+		Fix EDS time calculation in TIME.BAS.
 	
-2/23/13	Add code to terminate Penepma if user clicks cancel.
+2/23/13		Add code to terminate Penepma if user clicks cancel.
 	
-	Fix EDS initialization and demo mode motion timeout check code.
+		Fix EDS initialization and demo mode motion timeout check code.
 	
-	Add minimum electron energy field for Penepma binary extractions (FormPENEPMA12Random).
+		Add minimum electron energy field for Penepma binary extractions (FormPENEPMA12Random).
 
-2/22/13	Fix splash screen on 30" monitors (Carpenter).	
+2/22/13		Fix splash screen on 30" monitors (Carpenter).	
 	
-	Fix oscillator defaults in Penepma08 (and 06) code.
+		Fix oscillator defaults in Penepma08 (and 06) code.
 
-2/21/13	Modify Digitize Image form (FormIMAGE) to load modeless.
+2/21/13		Modify Digitize Image form (FormIMAGE) to load modeless.
 
 
-2/19/13	Add call to ImageLoadPalette in CalcImageReadProbeDataFile (Goemann).
+2/19/13		Add call to ImageLoadPalette in CalcImageReadProbeDataFile (Goemann).
 v. 9.2.9	Add EDS unknown count factor to acquisition options to allow different count time for unknowns and standards.
 
-	Fix project palette issue in CalcImage (Goemann).
+		Fix project palette issue in CalcImage (Goemann).
 
-2/16/13	Fix InitLine bug in Standard (Fournelle).	
+2/16/13		Fix InitLine bug in Standard (Fournelle).	
 v.9.2.8
 	
-	Fix material file default Browse path.
+		Fix material file default Browse path.
 
-2/14/13	Fix Penepma default oscillator parameters in PenepmaCreateMaterialINP (Llovet).
+2/14/13		Fix Penepma default oscillator parameters in PenepmaCreateMaterialINP (Llovet).
 v. 9.2.7
-	Add fix for TC card (Kuehn).
+		Add fix for TC card (Kuehn).
 
-2/13/13	Modify Penepma EDS demo code.
+2/13/13		Modify Penepma EDS demo code.
 
-2/12/13	Change Penepma solid angle in Demo interface to match Bruker SDD on JEOL 8530 (Pinard).
+2/12/13		Change Penepma solid angle in Demo interface to match Bruker SDD on JEOL 8530 (Pinard).
 	
-	Add Bragg Order to GetElmSetStd nominal interference section.
+		Add Bragg Order to GetElmSetStd nominal interference section.
 	
-	Add menus to CalcImage.
+		Add menus to CalcImage.
 
-2/11/13	Add fix for DataEDSElementsAdd is blank symbols passed (Kuehn).	Add output of elapsed time if negative TCReadTimerCounter.
+2/11/13		Add fix for DataEDSElementsAdd is blank symbols passed (Kuehn).	Add output of elapsed time if negative TCReadTimerCounter.
 
-2/10/13	Add code for specify by unknown and blank correction to CalcImage (probably no one will ever use, but it's there).
+2/10/13		Add code for specify by unknown and blank correction to CalcImage (probably no one will ever use, but it's there).
 
-	Fix CalcImage to properly handle import of PrbImg files between different systems and files.
+		Fix CalcImage to properly handle import of PrbImg files between different systems and files.
 
-2/8/13	Modify init files slightly.
+2/8/13		Modify init files slightly.
 	
-	New msi files.
+		New msi files.
 	
-	Improve demo counting code to use actual elapsed time.
+		Improve demo counting code to use actual elapsed time.
 			
-2/6/13	Add new INI parameter EDSSpectraNetIntensityInterfaceType% in [hardware]. This is so the user can define the EDS net intensity
+2/6/13		Add new INI parameter EDSSpectraNetIntensityInterfaceType% in [hardware]. This is so the user can define the EDS net intensity
 v. 9.2.3	calculation type for off-line work. This will allow acquisition with an OEM but net intensity calculations using another method,
-	for example an internal peak stripping method. This internal peak stripping method will be available once the new peak stripping code is ready.
+		for example an internal peak stripping method. This internal peak stripping method will be available once the new peak stripping code is ready.
 
 v. 9.2.2	Work on "look" of GUI.	
 	
-	Include EDS count time in time calculations.
+		Include EDS count time in time calculations.
 	
-	Increase offsets for LDEs over 100 angstroms.
+		Increase offsets for LDEs over 100 angstroms.
 	
-	Fix EDS element issue (Kuehn).
+		Fix EDS element issue (Kuehn).
 	
-2/4/13	Add re-sizable window for EDS spectra display in Calculation Options.
+2/4/13		Add re-sizable window for EDS spectra display in Calculation Options.
 
-	Add "specified" EDS countime to database fields.
+		Add "specified" EDS counttime to database fields.
 	
-	Add EDS display in demo mode to PFE using Penepma MC.
+		Add EDS display in demo mode to PFE using Penepma MC.
 
-2/3/13	Add TOPO fix for 8530 if no AUX is present (Pinard).
+2/3/13		Add TOPO fix for 8530 if no AUX is present (Pinard).
 v. 9.2.1	
-	Announcing the new Probe for EPMA XTREME edition!  New looks and new features!
+		Announcing the new Probe for EPMA XTREME edition!  New looks and new features!
 	
-	EDSSpectraInterfaceType=0
-	[hardware]
+		EDSSpectraInterfaceType=0
+		[hardware]
 
-	for a 500 eV lower limit.  Also be sure the EDSSpectraInterfaceType is in demo mode, e.g,
+		for a 500 eV lower limit.  Also be sure the EDSSpectraInterfaceType is in demo mode, e.g.,
 	
-	PenepmaMinimumElectronEnergy=0.5
-	[software] 
-	
-	Implement Penepma12 MC code for EDS spectra "acquisition" in demo mode. Uses actual standard compositions and random
-	compositions for unknowns. Uses Comvolg.exe for spectrum convolution. User can set minimum energy of calculated spectrum
-	in Probewin.ini, e.g.,
+		PenepmaMinimumElectronEnergy=0.5
+		[software] 
+		
+		Implement Penepma12 MC code for EDS spectra "acquisition" in demo mode. Uses actual standard compositions and random
+		compositions for unknowns. Uses Comvolg.exe for spectrum convolution. User can set minimum energy of calculated spectrum
+		in Probewin.ini, e.g.,
 
-	Remove Elionix interface.	
+		Remove Elionix interface.	
 	
-	Work on new demo EDS spectra acquisition using Penepma12.
+		Work on new demo EDS spectra acquisition using Penepma12.
 
-2/1/13	Skip warning (GetElmCheckStdAssigns) on interfering element if present in interference standard at 
+2/1/13		Skip warning (GetElmCheckStdAssigns) on interfering element if present in interference standard at 
 v. 9.1.9	zero concentration.
 
-1/29/13	Fix icons for form, task bar and taskswitching.
+1/29/13		Fix icons for form, task bar and taskswitching.
 v. 9.1.8
 
-1/28/13	Start adding new icons for PFE apps.
+1/28/13		Start adding new icons for PFE apps.
 v. 9.1.7
 	
-	Add user specified output to right click menu in Analyze! (Goemann).
+		Add user specified output to right click menu in Analyze! (Goemann).
 
-	Fix Penepma processing code to handle hydrogen and helium in matrix.	
+		Fix Penepma processing code to handle hydrogen and helium in matrix.	
 1/27/13	
 	
-	Beam deflection polarity fixed for 8230/8530 (Pinard).
+		Beam deflection polarity fixed for 8230/8530 (Pinard).
 
-1/26/13	Finish testing 8230/8530 for beam current set. To utilize make sure the JeolCoarseCondenserCalibrationDelay in the
+1/26/13		Finish testing 8230/8530 for beam current set. To utilize make sure the JeolCoarseCondenserCalibrationDelay in the
 v. 9.1.6	Probewin.ini file is set to 1 sec (Pinard). Requires driver 1.6.1 and the JEOLEIKSVersionNumber should be set to 5.
 	
-	Add new INI keywords for Surfer script output (Carpenter).
+		Add new INI keywords for Surfer script output (Carpenter).
 	
-	New rainbow false color palette- do you like it or hate it?
+		New rainbow false color palette- do you like it or hate it?
 	
-	Add special treatment for condenser iteration for set beam current code (Pinard).
+		Add special treatment for condenser iteration for set beam current code (Pinard).
 	
-1/25/13	Add Excel output to CalcImage Points window.
+1/25/13		Add Excel output to CalcImage Points window.
 v. 9.1.5
-	Slight modification to CPQ section of the CalcImage CIP file.  If you haven't used the "correlated pixel
-	quantification" (CPQ) feature, just ignore this.  If you have used it (Pinard) you will have to re-create the
-	CIP file.
-
-	Fix CalcImage Procesing window control enables.
+		Slight modification to CPQ section of the CalcImage CIP file.  If you haven't used the "correlated pixel
+		quantification" (CPQ) feature, just ignore this.  If you have used it (Pinard) you will have to re-create the
+		CIP file.
 	
-	Fix CalcZAF File menu enables.
+		Fix CalcImage Processing window control enables.
 	
-	Modify open/save file dialog to use system to avoid Win 7 bug with long file names.
+		Fix CalcZAF File menu enables.
+	
+		Modify open/save file dialog to use system to avoid Win 7 bug with long file names.
 
-1/24/13	Add extract range for CalcImage based on total sum column (Carpenter).	
+1/24/13		Add extract range for CalcImage based on total sum column (Carpenter).	
 v. 9.1.4
-	Modify CalcImage classify display.
+		Modify CalcImage classify display.
 	
-	Modify Surfer BAS scripts.
+		Modify Surfer BAS scripts.
 
-1/23/13	Add debug statements to JEOL beam deflection code (8230/8530).
+1/23/13		Add debug statements to JEOL beam deflection code (8230/8530).
 v. 9.1.3	
-	Fix alignment of BAS output plots.
+		Fix alignment of BAS output plots.
 
-1/22/13	Fix cluster color for blanked GRD files.
+1/22/13		Fix cluster color for blanked GRD files.
 v. 9.1.2	
-	Fix set beam current code for 8530 (Pinard) in JeolSetBeamCurrentMDA.	
+		Fix set beam current code for 8530 (Pinard) in JeolSetBeamCurrentMDA.	
 
-	Modify batch files.
+		Modify batch files.
 	
-	Modify version string.
+		Modify version string.
 
-1/21/13	Add automatic BAS script execution from PFE and CalcImage.	
+1/21/13		Add automatic BAS script execution from PFE and CalcImage.	
 	
-	Fix aspect ratio for non-square maps in slice script and polygon extraction scripts.
+		Fix aspect ratio for non-square maps in slice script and polygon extraction scripts.
 	
-	Add flag to CalcImage modal Surfer script BAS output to not output Dev.%" columns.
+		Add flag to CalcImage modal Surfer script BAS output to not output Dev.%" columns.
 	
-	Modify Recalb code to handle write locking with fail-safe code.
+		Modify Recalb code to handle write locking with fail-safe code.
 	
-	Fix filename bug in PFE Surfer BAS output (Poeml).
+		Fix filename bug in PFE Surfer BAS output (Poeml).
 
-1/18/13	Add debug output for JEOL set/get condenser lenses (Pinard).
+1/18/13		Add debug output for JEOL set/get condenser lenses (Pinard).
 v. 9.11
-
-1/17/13	Work on quantmeter.
-
-	Modify PictureSnap to save to GRD as gray scale (if not too large!).
-
-1/16/13	Work on CalcImage.
-v. 9.09
-	Modify Surfer scripts to use 2048 pixel width for JPG export.
 	
-	Add support for "humimeters".
+1/17/13		Work on quantmeter.
 
-1/12/13	Add palette and remaining time code to CalcImage. Fix window sizing issues.
+		Modify PictureSnap to save to GRD as gray scale (if not too large!).
+
+1/16/13		Work on CalcImage.
+v. 9.09
+		Modify Surfer scripts to use 2048 pixel width for JPG export.
+	
+		Add support for "humimeters".
+
+1/12/13		Add palette and remaining time code to CalcImage. Fix window sizing issues.
 v. 9.08	
-	Fix JPG export aspect ratio issues from Surfer scripter.
+		Fix JPG export aspect ratio issues from Surfer scripter.
 
-1/8/13	Work on CPQ MAN code.
+1/8/13		Work on CPQ MAN code.
 v. 9.07
 
-1/7/13	Complete initial testing of CPQ feature (primary and MAN std images) for (Richter).
+1/7/13		Complete initial testing of CPQ feature (primary and MAN std images) for (Richter).
 v.9.06	
-	Auto-save of palette number.
+		Auto-save of palette number.
 
-1/6/13	Add auto-saving and loading of quant images.
+1/6/13		Add auto-saving and loading of quant images.
 
-
-1/5/13	Complete work on new GRD orientation mechanism. See GRDInfo.INI file in folders containing GRD files.
+1/5/13		Complete work on new GRD orientation mechanism. See GRDInfo.INI file in folders containing GRD files.
 v. 9.05
 
-1/2/13	Work on new GRD orientation mechanism.
+1/2/13		Work on new GRD orientation mechanism.
 
-	Work on CPQ standard image intensity feature.
+		Work on CPQ standard image intensity feature.
 	
-	Add CalcImage_Quant_Classify.pdf to CalcImage Help menu.
+		Add CalcImage_Quant_Classify.pdf to CalcImage Help menu.
 
 12/30/12	Add check for valid beam currents on all images in CalcImageStartAnalysis.	
 	
-	Add image extents to FormANALOG.
+		Add image extents to FormANALOG.
 
 12/29/12	Work on CPQ interface in CalcImage (Pinard and Richter).
 v. 9.04
 
 12/28/12	Modify CalcImage to use absolute paths internally for image files so files from different projects 
-	can be loaded at the same time.
+		can be loaded at the same time.
 
 12/26/12	Work on CalcImage CPQ feature for Pinard and Richter.
 
-	Improve CalcImage analog signal loading and unloading.Modify New Project Wizard to automatically convert and copy analog
-	signal file (_VS1 or _COMP).
-	
-	New help and pdfs.
+		Improve CalcImage analog signal loading and unloading.Modify New Project Wizard to automatically convert and copy analog
+		signal file (_VS1 or _COMP).
+		
+		New help and pdfs.
 	
 12/22/12	Add auto store and reload classification parameters and classify results from previous classification
-	in CalcImage.
+		in CalcImage.
 	
-	Add Barkman to "special users".
+		Add Barkman to "special users".
 	
-	Add SX100 error 66 (axis disabled).
+		Add SX100 error 66 (axis disabled).
 	
-	Work on new Hyper-Imaging feature.
+		Work on new Hyper-Imaging feature.
 	
-	Edit copyright 1995-2013.
+		Edit copyright 1995-2013.
 
 
 12/21/12	Modify column labels for CalcImage classify input from PFE.
 v. 9.03
-	Modify MoveLoadElementButtons to skip loading from ELM file if crystal is missing.
+		Modify MoveLoadElementButtons to skip loading from ELM file if crystal is missing.
 
 12/19/12	Add % deviation of calculated centroids to classify feature TXT output.
 	
-	Add automatic pre-load of on and off-peaks in CalcImage if present (and not specified as MAN in MDB file).
+		Add automatic pre-load of on and off-peaks in CalcImage if present (and not specified as MAN in MDB file).
 	
 12/16/12	Start working on CalcImage modification for using correlated pixel quantification (CPQ) for
-	analysis of carbon in Fe and other alloys (Richter, Pinard). This is to allow user to specify x-ray maps for 
-	the standard intensities rather than the MDB file. The MDB file will still be used for define the element 
-	setup.
+		analysis of carbon in Fe and other alloys (Richter, Pinard). This is to allow user to specify x-ray maps for 
+		the standard intensities rather than the MDB file. The MDB file will still be used for define the element 
+		setup.
 	
 12/15/12	Add code in InitWindow to check if saved window position is outside visible screen area.
 
-	Fix XYMODAL.BAS and MODALXY.BAS for aspect ratio issues.	
+		Fix XYMODAL.BAS and MODALXY.BAS for aspect ratio issues.	
 	
-	Fix some minor bugs in CalcImage create new project wizard. Add save analog image to GRD during prbimg conversion.
+		Fix some minor bugs in CalcImage create new project wizard. Add save analog image to GRD during prbimg conversion.
 	
-	Modify polygon extraction and slice scripts for Surfer output to allow user to easily edit the GRD file to use
-	for digitizing (Carpenter).
+		Modify polygon extraction and slice scripts for Surfer output to allow user to easily edit the GRD file to use
+		for digitizing (Carpenter).
 	
-	Improve AvgText output in XYPOLY.BAS for Surfer output.
+		Improve AvgText output in XYPOLY.BAS for Surfer output.
 	
-	Add #cluster/precision variation output for TXT files also (Barkman).
+		Add #cluster/precision variation output for TXT files also (Barkman).
 
 12/14/12	Tweak Surfer BAS code for modal presentation output.
 v. 9.02
@@ -2185,43 +2186,43 @@ v. 9.02
 
 12/10/12	Minor bug fixes to CalcImage.
 	
-	Add new keywords to Probewin.ini, UserImagesDirectory, SurferPlotsPerPage in [software] section.
+		Add new keywords to Probewin.ini, UserImagesDirectory, SurferPlotsPerPage in [software] section.
 
-12/9/12 Add Prbimg direct import to CalcImage Create New Project Wizard menu.
+12/9/12 	Add Prbimg direct import to CalcImage Create New Project Wizard menu.
+	
+12/8/12		Add base64 decoding to CalcImage.
 
-12/8/12	Add base64 decoding to CalcImage.
+	
+		Work on editing density and match fields in FormMODAL2 (CalcImage).
+	
+		Update help and pdfs.
+	
+		Add Penepma references to Analyze! Report button.
+	
+		Add automatic Save Report to TXT file.
+	
+		Improve MsgBoxDoEvents activate event handling of timer enable.
+	
+		Add option for saving cluster/tolerance variations to GRD and BMP (Barkman).
 
-	
-	Work on editing density and match fields in FormMODAL2 (CalcImage).
-	
-	Update help and pdfs.
-	
-	Add Penepma references to Analyze! Report button.
-	
-	Add automatic Save Report to TXT file.
-	
-	Improve MsgBoxDoEvents activate event handling of timer enable.
-	
-	Add option for saving cluster/tolerance variations to GRD and BMP (Barkman).
-
-12/7/12	Improvments to CalcImage GUI.
+12/7/12		Improvements to CalcImage GUI.
 v. 9.01		
-	Add new output menu to PFE for exporting quant data for cluster classification in CalcImage (Classify Points).
+		Add new output menu to PFE for exporting quant data for cluster classification in CalcImage (Classify Points).
 
-12/4/12	Add "_Quant_Image_Classify" string to CalcImageOutputDataAll DAT filename.
+12/4/12		Add "_Quant_Image_Classify" string to CalcImageOutputDataAll DAT filename.
 	
-	Work on Drag and drop VB6 IDE issues in CalcImage.
+		Work on Drag and drop VB6 IDE issues in CalcImage.
 	
-12/1/12	Continue work on modal abundance calculations in CalcImage (Carpenter).
+12/1/12		Continue work on modal abundance calculations in CalcImage (Carpenter).
 
 
 11/31/12	Finally fix modal/modeless issue in IOMsgBox.
 	
-	Modify Thermo start code to handle v3 NSS.
+		Modify Thermo start code to handle v3 NSS.
 	
-	Work on arbitrary point classify feature for data from PFE (or other source).
+		Work on arbitrary point classify feature for data from PFE (or other source).
 	
-	Add ability to input polygon extraction data for classify feature (Carpenter).
+		Add ability to input polygon extraction data for classify feature (Carpenter).
 
 11/30/12	Improve CalcImage strip BAS output.
 
@@ -2229,640 +2230,640 @@ v. 9.01
 
 11/25/12	Add % area and default density columns to TXT output in CalcImage in prep for modal calculations (Carpenter).
 	
-	Add centroid quant mask output to CalcImage.	
+		Add centroid quant mask output to CalcImage.	
 
 11/24/12	Add drag and drop capability to CalcImage for opening GRD files.	
 	
-	Add code to disable Acquire controls during Window menu Set Analytical Conditions.
+		Add code to disable Acquire controls during Window menu Set Analytical Conditions.
 	
-	Improve faraday out time delay for AcquireDoVolatileElement (assigned TDI).
+		Improve faraday out time delay for AcquireDoVolatileElement (assigned TDI).
 	
-	Modify faraday cup out code in AcquireStartsample and AcquireStartVolatile to not remove faraday if combined conditions 
-	samples. This will improve TDI correction for combined condition samples (Cathey).
+		Modify faraday cup out code in AcquireStartsample and AcquireStartVolatile to not remove faraday if combined conditions 
+		samples. This will improve TDI correction for combined condition samples (Cathey).
 	
-	Work on CalcImage classify code more.
+		Work on CalcImage classify code more.
 	
-	Fix CalcZAF ExportAll cancel issue.
+		Fix CalcZAF ExportAll cancel issue.
 	
-	Update PFE reference manual, pdfs and help.
+		Update PFE reference manual, pdfs and help.
 			
-	Modify CalcImage to use "NK" for cluster number column label. Add code to check on input.
+		Modify CalcImage to use "NK" for cluster number column label. Add code to check on input.
 	
-	Modify JeolStringWriteRead2 to display string command which caused the error (Allaz).
+		Modify JeolStringWriteRead2 to display string command which caused the error (Allaz).
 	
 11/23/12	Modify Penfluor code (Penepma12CreatePenfluorInput) to utilize PenepmaMinimumElectronEnergy (Gainsforth), 
-	to automatically edit the Penfluor.in file for lower energy calculations.
+		to automatically edit the Penfluor.in file for lower energy calculations.
 
-	Fix Penepma12 skip P-Pr code for compounds.
+		Fix Penepma12 skip P-Pr code for compounds.
 	
-	Fix multipoint zero issue again (force to small number) (Goemann).
+		Fix multipoint zero issue again (force to small number) (Goemann).
 
 11/20/12	Fix crystal flip issue for subsequent elements (caused by mod for reducing cup out time) (Kremser).
 
-	Update PFWBETA.BAT and PFE MSI build solution.
+		Update PFWBETA.BAT and PFE MSI build solution.
 	
-	Add sample data file for classify operations.
+		Add sample data file for classify operations.
 
 11/18/12	Work on cluster mask output in CalcImage Classify feature.
 
-	Update probesoftware.com web site.
+		Update probesoftware.com web site.
 	
-	Work on CalcImage phase clustering code.
+		Work on CalcImage phase clustering code.
 	
-	Add code to skip matrix.mdb and boundary.mdb scan code when overvoltage is less than specified minimum (currently 1.02).
+		Add code to skip matrix.mdb and boundary.mdb scan code when overvoltage is less than specified minimum (currently 1.02).
 
 11/17/12	Add "timeout" command in update batch files to delay ZIP extraction to give applications time to unload.
 
-	Work on Kmeans cluster code in CalcImage.
+		Work on Kmeans cluster code in CalcImage.
 
 11/16/12	Fix AMB code to handle crystal flip completion check (Kremser).
 	
-	Add time for hysteresis set (SX100/SXFIVE only).
+		Add time for hysteresis set (SX100/SXFIVE only).
 	
-	Fix column label bug in CalcImage quant output array.
+		Fix column label bug in CalcImage quant output array.
 
 11/15/12	Add x and y stage values to quant array output in CalcImage.	
 	
-	Add code to preselect sample setup(s), if selected from Automate! window.
+		Add code to preselect sample setup(s), if selected from Automate! window.
 	
-	Modify error trapping to allow non-pure element standard for secondary boundary fluorescence.
+		Modify error trapping to allow non-pure element standard for secondary boundary fluorescence.
 
 11/12/12	Fix stage coordinate output in PFE (CalcZAF output).
 	
-	Add Matrix and Remote .cnt files to msi installers.
+		Add Matrix and Remote .cnt files to msi installers.
 	
-	Add x and y min and max and zero place holder for kmeans cluster number in CalcImage.
+		Add x and y min and max and zero place holder for kmeans cluster number in CalcImage.
 
-	Add button to create material file from last analyzed sample in FormANALYZE.
+		Add button to create material file from last analyzed sample in FormANALYZE.
 	
-	Update documentation including Matrix and Remote COM servers.
+		Update documentation including Matrix and Remote COM servers.
 	
 		HysteresisPresent=1
 	
-11/9/12	Add HysteresisPresent keyword to INI (SX100/SXFIVE only at the moment). Note: this
-	flag is defaulted to be "false", so if SX100/SXFIVE users want the hysteresis sent after
-	the beam size is set, please add the following keyword to the [hardware] section
-	of your PROBEWION.INI file:
+11/9/12		Add HysteresisPresent keyword to INI (SX100/SXFIVE only at the moment). Note: this
+		flag is defaulted to be "false", so if SX100/SXFIVE users want the hysteresis sent after
+		the beam size is set, please add the following keyword to the [hardware] section
+		of your PROBEWIN.INI file:
 
-	Add automatic ASCII output from CalcImage for all calculated quant data.
+		Add automatic ASCII output from CalcImage for all calculated quant data.
 	
-	Fix realtime error when modal dialog loads on modal dialog (Fournelle).	
+		Fix realtime error when modal dialog loads on modal dialog (Fournelle).	
 	
-	Fix tab order in FormGetCmp.
+		Fix tab order in FormGetCmp.
 	
-	Add density output to Standard log window.
+		Add density output to Standard log window.
 	
-	Fix skip TXT file option in binary extraction code.
+		Fix skip TXT file option in binary extraction code.
 	
-	Fix Penepma minimum electron energy in help file to remove double quotes (Carpenter).
+		Fix Penepma minimum electron energy in help file to remove double quotes (Carpenter).
 	
-	Add Ca-Ge to list of problematic binaries for Penfluor.
+		Add Ca-Ge to list of problematic binaries for Penfluor.
 
-11/7/12	Add density load to Penepma08 form when user clicks standard in list.
+11/7/12		Add density load to Penepma08 form when user clicks standard in list.
 	
-	Add more error trapping in ImportExport.bas.
+		Add more error trapping in ImportExport.bas.
 	
-	Add new procedure for loading stored 2 point boundary to FormSECONDARY controls. See 
-	Secondary.bas.
+		Add new procedure for loading stored 2 point boundary to FormSECONDARY controls. See 
+		Secondary.bas.
 	
-	Add new secondary boundary fluorescence table to MDB file. Add DataBoundary.bas.
+		Add new secondary boundary fluorescence table to MDB file. Add DataBoundary.bas.
 	
-	Changes to GetElmAll.bas to allow TDI assignments to be skipped with a warning if TDI data 
-	is missing.	
+		Changes to GetElmAll.bas to allow TDI assignments to be skipped with a warning if TDI data 
+		is missing.	
 	
-	Add Julien Allaz to technical Support page in PFE documentation.
+		Add Julien Allaz to technical Support page in PFE documentation.
 	
-	Modify Test3D.exe and Plan3D.bas to utilize subset Legendre surface fitting for secondary 
-	boundary fluorescence correction calculations from Boundary.mdb file.
-	
-	Add "density" column label to Standard.exe single line export format.
+		Modify Test3D.exe and Plan3D.bas to utilize subset Legendre surface fitting for secondary 
+		boundary fluorescence correction calculations from Boundary.mdb file.
+		
+		Add "density" column label to Standard.exe single line export format.
 
 
-11/2/12	Change pe-inten-01.dat to pe-intens-01.dat in Penepma08 code (for Penepma08 or Penepma12)	
-v. 8.98	to match changed Penepma 2012 FORTRAN output.
-
-	Add Angus Netting to SXFIVE beta testers in About dialog.
+11/2/12		Change pe-inten-01.dat to pe-intens-01.dat in Penepma08 code (for Penepma08 or Penepma12)	
+v. 8.98		to match changed Penepma 2012 FORTRAN output.
 	
-	Modify multi-point code to just log zero intensities to log window.
+		Add Angus Netting to SXFIVE beta testers in About dialog.
 	
-	Add cancel code for automation time calculation.
+		Modify multi-point code to just log zero intensities to log window.
 	
-	Fix Stage Map problem if data file is closed.
+		Add cancel code for automation time calculation.
 	
-	Fix Penepma 12 Penepma08SaveMaterial call for density update for Formula.
+		Fix Stage Map problem if data file is closed.
 	
-	New CalcImage help file (Goemann). Add .CNT files for PFE and CI help contents. Add to 
-	CalcZAF and PFE updates and msi installers.
-
+		Fix Penepma 12 Penepma08SaveMaterial call for density update for Formula.
+	
+		New CalcImage help file (Goemann). Add .CNT files for PFE and CI help contents. Add to 
+		CalcZAF and PFE updates and msi installers.
+	
 10/26/12	Update PFE Reference manual.
 v. 8.97
-	Fix SEI issue for 8200/8500 (Kremser).
+		Fix SEI issue for 8200/8500 (Kremser).
 
 10/22/12	Allow zero intensities for multipoint bgds when running automation (Goemann).
 	
-	Fix bug in change to AcquireSpecTunable and AcquireSpecTunable2 for Cathey (Goemann).
+		Fix bug in change to AcquireSpecTunable and AcquireSpecTunable2 for Cathey (Goemann).
 	
-	Add new element variables to GetElmSave.
+		Add new element variables to GetElmSave.
 
 10/21/12	Fix Excel version check code if a version of Excel is already running (Carpenter).	
 	
-	Add Use Boundary Correction flag to globals and save to Run table and also add sample specific 
-	flags and parameters.
+		Add Use Boundary Correction flag to globals and save to Run table and also add sample specific 
+		flags and parameters.
 	
-	Add code to reduce delay with asynchronous mode for TDI (Cathey).
+		Add code to reduce delay with asynchronous mode for TDI (Cathey).
 	
 10/19/12	Modify boundary.mdb to NOT store fit coefficients (need to calculate "on the fly" 
-v. 8.96	using hyperbolic subset fit- see Test3d).
+v. 8.96		using hyperbolic subset fit- see Test3d).
 
 10/14/12	Work on import/export.	
 
 10/13/12	Work on import/export.	
 	
-	Add Bruker ShowSpectrum call.
+		Add Bruker ShowSpectrum call.
 	
-	Work on import/export.
+		Work on import/export.
 
 10/12/12	Fix problem with disable quant in alpha factor codes.	
 	
-	Add additional output for alpha factor calculations.
+		Add additional output for alpha factor calculations.
 	
-	Modify SX50 write string error messages (Fournelle).
+		Modify SX50 write string error messages (Fournelle).
 
 10/10/12	Modify Standard penepma code to avoid problematic elements until FORTRAN resolved.
 v. 8.95
 	
-	Update documentation and help.
+		Update documentation and help.
 
-10/7/12	Fix 8230/8530 auto focus code issues for pre/post code.
+10/7/12		Fix 8230/8530 auto focus code issues for pre/post code.
 
-	Add calls for 8230/8530 auto-focus EIKS routines.
+		Add calls for 8230/8530 auto-focus EIKS routines.
 	
-	Add calls for read/set coarse and fine condenser lenses for 8230/8530 set bean current.
+		Add calls for read/set coarse and fine condenser lenses for 8230/8530 set bean current.
 
-	Start work on sample import/export (Allaz).
+		Start work on sample import/export (Allaz).
 	
-	Create new updated Matrix.mdb.
+		Create new updated Matrix.mdb.
 	
-	Modify TimeCalculate to calculate time for average of multiple analyses (FormGETTIM) or specific 
-	analysis (Acquire! display) when Nth point features are utilized.
+		Modify TimeCalculate to calculate time for average of multiple analyses (FormGETTIM) or specific 
+		analysis (Acquire! display) when Nth point features are utilized.
 	
-	Finish implementing fraction on-peak count time for Nth point acquisition (normal background and 
-	multi-point) (Jercinovic and Allaz).
+		Finish implementing fraction on-peak count time for Nth point acquisition (normal background and 
+		multi-point) (Jercinovic and Allaz).
 	
-	Add additional error trapping std_int zero intensities (e.g., ca Ka in Sc) in Extract Matrix code.
+		Add additional error trapping std_int zero intensities (e.g., ca Ka in Sc) in Extract Matrix code.
 	
-	Fix issue with CurrentUpdateSample created by adding code for updating quickscan limits.
+		Fix issue with CurrentUpdateSample created by adding code for updating quickscan limits.
 
-10/5/12	Trap zero std intensity in Penepma12Extractmatrix code (NaNs with Ca Ka in Sc).
+10/5/12		Trap zero std intensity in Penepma12Extractmatrix code (NaNs with Ca Ka in Sc).
 v. 8.94	
-	Add current record indicator to FormSETUP datacontrol reposition event.
+		Add current record indicator to FormSETUP datacontrol reposition event.
 	
-	Add units to MAN and Evaluate plots (Poeml).
+		Add units to MAN and Evaluate plots (Poeml).
 	
-	Fix context ID in CalcImage save As BMP (Goemann).
+		Fix context ID in CalcImage save As BMP (Goemann).
 	
-	Modify CurrentUpdateSample to adjust quickscan ranges if out of range.
+		Modify CurrentUpdateSample to adjust quickscan ranges if out of range.
 
-10/01/12	Fix missing line of code in SX100GetError (accidently deleted).
+10/01/12	Fix missing line of code in SX100GetError (accidentally deleted).
 v. 8.93	
-	Work on implementing secondary fluorescence correction in PFE.
+		Work on implementing secondary fluorescence correction in PFE.
 	
-	Fix JEOL set OM light calls to use default volume if zero (Eckert).
+		Fix JEOL set OM light calls to use default volume if zero (Eckert).
 	
-	Update context IDs in PFE reference manual and CalcImage section of Probehlp.ini (Goemann).
+		Update context IDs in PFE reference manual and CalcImage section of Probehlp.ini (Goemann).
 	
-	Fix TDI output menu issue if not all samples are TDI (Cathey).
+		Fix TDI output menu issue if not all samples are TDI (Cathey).
 
-9/28/12	Fix Pt La/Ma at 5 keV disable quant problem (Fournelle).
+9/28/12		Fix Pt La/Ma at 5 keV disable quant problem (Fournelle).
 v. 8.92	
-	Fix problem with loading zero "Cameca" deadtimes for SX50 (Fournelle).
+		Fix problem with loading zero "Cameca" deadtimes for SX50 (Fournelle).
 	
-	Fix Type Current Alphas problem.
+		Fix Type Current Alphas problem.
 	
-9/26/12	Fix DefaultZAF loading from INI file- needed to comment out sub ZAF flag code in InitData (Fournelle).
+9/26/12		Fix DefaultZAF loading from INI file- needed to comment out sub ZAF flag code in InitData (Fournelle).
 	
-	Fix double click in Analyze! data grid if user clicks on bad line or no data.
+		Fix double click in Analyze! data grid if user clicks on bad line or no data.
 	
-	Modify FormMODEL to allow Enter or <esc> to close dialog (Karen Wright).
+		Modify FormMODEL to allow Enter or <esc> to close dialog (Karen Wright).
 	
-	Add new PenepmaMinimumElectronEnergy="1.0" keyword to Probewin.ini file (Buse).	
+		Add new PenepmaMinimumElectronEnergy="1.0" keyword to Probewin.ini file (Buse).	
 
-9/18/12	Fix Plot! window list string issue and loading of default ZAF from INI file (Fournelle).
+9/18/12		Fix Plot! window list string issue and loading of default ZAF from INI file (Fournelle).
 v. 8.91	
 
-9/16/12	Modify Penepma12.bas in Standard to allow modeling of electron energies below 1 keV (if PAR files were generated using MSIMPA
-	values below 1000 eV). (Buse)
+9/16/12		Modify Penepma12.bas in Standard to allow modeling of electron energies below 1 keV (if PAR files were generated using MSIMPA
+		values below 1000 eV). (Buse)
 	
-	Update PFE Reference manual Help and pdf.
+		Update PFE Reference manual Help and pdf.
 	
-	Update Matrix.mdb file for more binary pairs.
+		Update Matrix.mdb file for more binary pairs.
 	
-	Add Karsten and Gareth to About box.
+		Add Karsten and Gareth to About box.
 	
-	Modify CalcImage to not automatically load analog signal images when using Create new Project Wizard.
+		Modify CalcImage to not automatically load analog signal images when using Create new Project Wizard.
 
-9/15/12	Update scripts to confirm output and check for missing BLN file (slice scripts).
+9/15/12		Update scripts to confirm output and check for missing BLN file (slice scripts).
 v. 8.89	
-	New msi distribution files.
+		New msi distribution files.
 	
-	Make browse buttons in Standard penepma more easily seen.
+		Make browse buttons in Standard penepma more easily seen.
 	
-	Add reflected and transmitted light functions on 8x30 JEOL probes.
+		Add reflected and transmitted light functions on 8x30 JEOL probes.
 	
-	Modify EIKSVersionNumber checking so tested functions are enabled with v 4 and functions to be tested are enabled
-	with v 5 (edit in Probewin.ini).
+		Modify EIKSVersionNumber checking so tested functions are enabled with v 4 and functions to be tested are enabled
+		with v 5 (edit in Probewin.ini).
 	
-	Fix Userwin to import without creating new user.mdb.
+		Fix Userwin to import without creating new user.mdb.
 	
-	Fix null "atime" in MiscConvertTimeToClockTime (when importing old version user.dat database fields).
+		Fix null "atime" in MiscConvertTimeToClockTime (when importing old version user.dat database fields).
 	
-	Grey out threshold fields if not one of ROM methods using them.
+		Grey out threshold fields if not one of ROM methods using them.
 	
-	Modify Standard multi-line import to handle if density field is missing from old versions.	
+		Modify Standard multi-line import to handle if density field is missing from old versions.	
 	
-	Fix image calibration ReLoad INI to update Cal Mag display too.
+		Fix image calibration ReLoad INI to update Cal Mag display too.
 	
-	Change SEI channel from 2 to 1 for JEOL instruments because it doesn't work on 8230/8530 instruments.
+		Change SEI channel from 2 to 1 for JEOL instruments because it doesn't work on 8230/8530 instruments.
 
-9/14/12	Fix zaf.bks initialization in ZAFBKS for FRAME backscatter corection!
+9/14/12		Fix zaf.bks initialization in ZAFBKS for FRAME backscatter correction!
 v. 8.88
 
-9/13/12	Add Samples6 folder to MakCalcImage.bat.
+9/13/12		Add Samples6 folder to MakCalcImage.bat.
 
-9/9/12	Update CalcImage help and pdf.
+9/9/12		Update CalcImage help and pdf.
 
-	Add code to check that user assigned all on-peak images to analyzed elements in CalcImage before output. Not all analyzed elements 
-	have to	be assigned to an on-peak image, but all on-peak images need to be assigned to an analyzed element.
+		Add code to check that user assigned all on-peak images to analyzed elements in CalcImage before output. Not all analyzed elements 
+		have to	be assigned to an on-peak image, but all on-peak images need to be assigned to an analyzed element.
 
-9/7/12	"Double up" sleep delay and monitor update on check crystal flip code in RealTimeGetCrystalStatus (Perry-Carpenter).
+9/7/12		"Double up" sleep delay and monitor update on check crystal flip code in RealTimeGetCrystalStatus (Perry-Carpenter).
 v. 8.87
 
-9/5/12	Fix copy GRD bug in CalcImage Create New Project Wizard code.  Fix spurious "No MAN Stds" warning in Type Sample Parameters.
+9/5/12		Fix copy GRD bug in CalcImage Create New Project Wizard code.  Fix spurious "No MAN Stds" warning in Type Sample Parameters.
 	
-	New msi installer (fixes issue with DAO350.dll).	
+		New msi installer (fixes issue with DAO350.dll).	
 
-	Modify CalcImage menu order and automatically load beam current from prbimg file (in case different from MDB).
+		Modify CalcImage menu order and automatically load beam current from prbimg file (in case different from MDB).
 
-9/4/12	Modify Sx100 hysteresis command to run after set beam size.
+9/4/12		Modify Sx100 hysteresis command to run after set beam size.
 v. 8.86
 
-9/1/12	Add Dim astring as String statements to Surfer scripts (version check code) (Carpenter).
+9/1/12		Add Dim astring as String statements to Surfer scripts (version check code) (Carpenter).
 v. 8.85
-	Add polyxy.bas, stripxy1.bas and stripxy2.bas to update ZIPs and MSI distributions.
+		Add polyxy.bas, stripxy1.bas and stripxy2.bas to update ZIPs and MSI distributions.
 	
-	Fix zero peak error handling for CurrentUpdateMultiPoint (Fournelle).
+		Fix zero peak error handling for CurrentUpdateMultiPoint (Fournelle).
 	
-	Put Sx100 hysteresis command so it only is called if the beam size changes (Poeml).
+		Put Sx100 hysteresis command so it only is called if the beam size changes (Poeml).
 	
-	Add new polygon and strip script files to update and msi files.
+		Add new polygon and strip script files to update and msi files.
 
-8/31/12	Add Create Project Wizard menu in CalcImage.
+8/31/12		Add Create Project Wizard menu in CalcImage.
 v. 8.84
 
-8/29/12	Add strip script generation to CalcImage. See CalcImage.zip for examples.
+8/29/12		Add strip script generation to CalcImage. See CalcImage.zip for examples.
 
-8/28/12	Integrate new polygon extraction scripts into CalcImage.	
+8/28/12		Integrate new polygon extraction scripts into CalcImage.	
 	
-	Allow zero integer deadtimes for Sx50 (Fournelle).
+		Allow zero integer deadtimes for Sx50 (Fournelle).
 	
-	RealTimeStartIntegratedCounts (Goemann).
+		RealTimeStartIntegratedCounts (Goemann).
 
-	Add wait for motion complete for starting integrated intensity acquisition in
+		Add wait for motion complete for starting integrated intensity acquisition in
 	
-	Add Sx100 hysteresis command (v. 1.7.0 of Sx100 driver required). (Poeml)
+		Add Sx100 hysteresis command (v. 1.7.0 of Sx100 driver required). (Poeml)
 	
-	Modify IOAutomationPause and code to handle MSGBOXDOEVENTS3 and MSGBOXDOEVENTS4 forms to handle bad interface initialization 
-	better (Carpenter).
+		Modify IOAutomationPause and code to handle MSGBOXDOEVENTS3 and MSGBOXDOEVENTS4 forms to handle bad interface initialization 
+		better (Carpenter).
 		
-8/23/12	Increase delay (from 40 to 500 msec) in RealTimeGetCrystalStatus before checking for new 
-v. 8.83	crystal position (Perry	and Carpenter). Also add calls to refresh monitor packet for JEOL
-	instruments.
+8/23/12		Increase delay (from 40 to 500 msec) in RealTimeGetCrystalStatus before checking for new 
+v. 8.83		crystal position (Perry	and Carpenter). Also add calls to refresh monitor packet for JEOL
+		instruments.
 	
-	Fix tool tip help on FormUpdate.
+		Fix tool tip help on FormUpdate.
 
-8/20/12	Fix minor issues with CalcImage.
+8/20/12		Fix minor issues with CalcImage.
 
-8/19/12	Move to VB6 version. Update new updates.
+8/19/12		Move to VB6 version. Update new updates.
 v. 8.82		
-	Add support for JEOL driver errors codes (20 to 24). Driver version. 1.6.0.
+		Add support for JEOL driver errors codes (20 to 24). Driver version. 1.6.0.
 	
-	Force Add/Remove Standards to reload standard compositions in case they were edited.
+		Force Add/Remove Standards to reload standard compositions in case they were edited.
 	
-	Allow standard samples to utilize "blank" correction (GETELM.BAS).
+		Allow standard samples to utilize "blank" correction (GETELM.BAS).
 	
-	Add VB6 update code for msi files (full update).
+		Add VB6 update code for msi files (full update).
 
-	Make FormREGISTER "always on top".
-	
-	Update makzip.bat comment to note running under admin command prompt for Win7.
+		Make FormREGISTER "always on top".
+		
+		Update makzip.bat comment to note running under admin command prompt for Win7.
 
-8/19/12	Add new "full" update option using msi files. Add new update batch files to update ZIPs.
+8/19/12		Add new "full" update option using msi files. Add new update batch files to update ZIPs.
 v. 8.81	
-	Remove Setup stuff from UpdateSetup.exe. Only update VBP version.
+		Remove Setup stuff from UpdateSetup.exe. Only update VBP version.
 
-8/15/12	Remove remaining VB Wizard stuff- using .msi files now!
+8/15/12		Remove remaining VB Wizard stuff- using .msi files now!
 	
-	Remove Vista specific distributions.
+		Remove Vista specific distributions.
 
-8/14/12	Remove TestTyp32-e.zip from distribution. Fix typo in CalcZAFBeta.bat (modeal.dat).
+8/14/12		Remove TestTyp32-e.zip from distribution. Fix typo in CalcZAFBeta.bat (modeal.dat).
 	
-	Modify CalcZAF alpha factor plot code for Penepma k-ratios.
+		Modify CalcZAF alpha factor plot code for Penepma k-ratios.
 	
-	Add Bruker beam deflection code for beam position in BrukerImageBeamDeflection2 (Kuehn and Pinard).
+		Add Bruker beam deflection code for beam position in BrukerImageBeamDeflection2 (Kuehn and Pinard).
 	
-	Modify getZAFAll form to allow user to utilize new Penepma k-ratio limit options.
+		Modify getZAFAll form to allow user to utilize new Penepma k-ratio limit options.
 	
-	Add new globals UsePenepmaKratiosLimitFlag, PenepmaKratiosLimitValue and JEOLEIKSVersionNumber to Probewin.INI.
+		Add new globals UsePenepmaKratiosLimitFlag, PenepmaKratiosLimitValue and JEOLEIKSVersionNumber to Probewin.INI.
 	
-	Update FormSETUP for label background colors (change to Button face).
+		Update FormSETUP for label background colors (change to Button face).
 	
-	Modify CalcZAF correct secondary fluorescence to load JEOL or Cameca demo image as necessary.
+		Modify CalcZAF correct secondary fluorescence to load JEOL or Cameca demo image as necessary.
+		
+		Update sample scripts for CalcImage.ZIP.
 	
-	Update sample scripts for CalcImage.ZIP.
-	
-	Add Sleep(200) statements to slice scripts XYSLICE2.BAS and XYSLICE.BAS.	
+		Add Sleep(200) statements to slice scripts XYSLICE2.BAS and XYSLICE.BAS.	
 
-	Add check for 32 vs 64 bit systems and modify Surfer script output for Directory$ statement.
+		Add check for 32 vs 64 bit systems and modify Surfer script output for Directory$ statement.
 	
-	Fix AnalyzeUpdateList to handle list getting updated (called from SetupLoadStandardIntensityFromDatabase)
+		Fix AnalyzeUpdateList to handle list getting updated (called from SetupLoadStandardIntensityFromDatabase)
 	
-	Increase MAXROW to 500 data lines (Poeml).
+		Increase MAXROW to 500 data lines (Poeml).
 
-8/11/12	Add sleep call after load clipboard in ExcelSendFileToExcelSheet to avoid issue with clipboard in Win7.
+8/11/12		Add sleep call after load clipboard in ExcelSendFileToExcelSheet to avoid issue with clipboard in Win7.
 v. 8.79	
-	Slight change to CalcZAF | Analytical menu text.
+		Slight change to CalcZAF | Analytical menu text.
 	
-8/5/12	Small tweak to Penepma12CalculateMatrix code to properly call GetElmSaveSampleOnly sort code after all elements
-	have been checked for absorber only issues.
+8/5/12		Small tweak to Penepma12CalculateMatrix code to properly call GetElmSaveSampleOnly sort code after all elements
+		have been checked for absorber only issues.
+		
+		Modify Windows version code in MiscSystem and BAS script creation codes in PFE and CalcImage.
+
+7/25/12		Fix minor issues in Surfer scripts for CalcImage. Update CalcImage.ZIP samples files.
+
+7/23/12		Fix MoveDoMotorCrystal subscript issue.
+
+7/22/12		Work on multiple crystal flip issue (Carpenter).
+
+		Add fit routine for boundary k-ratios.
+
+7/21/12		Add more error message details in RealTimeGetCrystalStatus for "bad flip".
 	
-	Modify Windows version code in MiscSystem and BAS script creation codes in PFE and CalcImage.
-
-7/25/12	Fix minor issues in Surfer scripts for CalcImage. Update CalcImage.ZIP samples files.
-
-7/23/12	Fix MoveDoMotorCrystal subscript issue.
-
-7/22/12	Work on multiple crystal flip issue (Carpenter).
-
-	Add fit routine for boundary k-ratios.
-
-7/21/12	Add more error message details in RealTimeGetCrystalStatus for "bad flip".
+		Add more debug statements for Thermo TE portal init. (Perry)
 	
-	Add more debug statements for Thermo TE portal init. (Perry)
+		Add stage increment spin buttons to FormGRID for rectangular grids (Poeml).	
+
+7/17/12		Fix "Automation Completed" timer code for processing driver TCP/IP stack. (Poeml).
+
+7/15/12		Work on boundary MDB code and read call.
+
+		FORTRAN scientific notation with missing "E", e.g., "1.0824-101".
+
+		Deal with low overvoltage situations and add DVal function to handle
 	
-	Add stage increment spin buttons to FormGRID for rectangular grids (Poeml).	
+		Add code to check for reasonable k-ratios in Penepma12MatrixScanMDB.
 
-7/17/12	Fix "Automation Completed" timer code for processing driver TCP/IP stack. (Poeml).
-
-7/15/12	Work on boundary MDB code and read call.
-
-	FORTRAN scientific notation with missing "E", e.g., "1.0824-101".
-
-	Deal with low overvoltage situations and add DVal function to handle
+7/12/12		Modify Standard binary extraction to allow skipping of existing .TXT files.
 	
-	Add code to check for reasonable k-ratios in Penepma12MatrixScanMDB.
+		Edit labels in Standard SF window and add copy to clipboard for CalcZAF SF image.
 
-7/12/12	Modify Standard binary extraction to allow skipping of existing .TXT files.
+7/10/12		Add double check for all necessary shell transitions in Penepma extract matrix and boundary code.
 	
-	Edit labels in Standard SF window and add copy to clipboard fopr CalcZAF SF image.
+		Add JEOL and Cameca specific demo3 files for update and distribution.
 
-7/10/12	Add double check for all necessary shell transitions in Penepma extract matrix and boundary code.
+7/8/12		Minor tweak to SF GUI.
 	
-	Add JEOL and cameca specific demo3 files for update and distribution.
+		Update documentation and help file.
 
-7/8/12	Minor tweak to SF GUI.
-	
-	Update documentation and help file.
-
-7/7/12	CalcZAF SF correction is now working.
+7/7/12		CalcZAF SF correction is now working.
 v. 8.78
 
-7/6/12	Fix browse problem in CalcZAF SF code.
+7/6/12		Fix browse problem in CalcZAF SF code.
 
-7/4/12	Work on secondary fluorescence GUI in CalcZAF.
+7/4/12		Work on secondary fluorescence GUI in CalcZAF.
 
-	Add debug code for ROM peaking (Carpenter).
+		Add debug code for ROM peaking (Carpenter).
 
-7/3/12	Work on secondary fluorescence.
+7/3/12		Work on secondary fluorescence.
 
-7/2/12	Update makzip.bat to copy penepma files. Create new updatepenepma batch to update all.
+7/2/12		Update makzip.bat to copy penepma files. Create new updatepenepma batch to update all.
 
-7/2/12	New Penepma source and exe files from Llovet to fix complex composition issues, e.g., monazite (Jercinovic)).	
+7/2/12		New Penepma source and exe files from Llovet to fix complex composition issues, e.g., monazite (Jercinovic)).	
 	
-	Work on secondary fluorescence correction in CalcZAF. Add boundary correction to alpha factor method.
+		Work on secondary fluorescence correction in CalcZAF. Add boundary correction to alpha factor method.
 	
-	Add debug statement for security code printout in JEOLInitInterface (Adams).
+		Add debug statement for security code printout in JEOLInitInterface (Adams).
 
-7/1/12	Modify ratemeter code to use monitor packet for JEOL 8900/8200/8500 (Perry).
+7/1/12		Modify ratemeter code to use monitor packet for JEOL 8900/8200/8500 (Perry).
 
-6/30/12	Work on CalcZAF secondary fluorescence testing code.	
+6/30/12		Work on CalcZAF secondary fluorescence testing code.	
 	
-	Add demo3.bmp and acq to update and distribution for secondary fluorescence demo.
+		Add demo3.bmp and acq to update and distribution for secondary fluorescence demo.
 	
-	Fix range of extraction (matrix) code to use both binary elements as emitter.
+		Fix range of extraction (matrix) code to use both binary elements as emitter.
 
 06/29/12	Work on k-ratio fitting for SF corrections.
 
 06/26/12	Modify TestRegistration and remove catalyst smtp and email controls- not needed.	
 	
-	Finish CalcZAF CalculateExportAll code (Carpenter).
+		Finish CalcZAF CalculateExportAll code (Carpenter).
 	
-	Modify Formula and Weight dialogs to warn user about decimal points (Jercinovic).  Also retain last string 
-	entered and normalize weight percents to 100% if over 110% (entering weight percent strings such as
-	Fe742 Mg2980 Si1907 O4360).
+		Modify Formula and Weight dialogs to warn user about decimal points (Jercinovic).  Also retain last string 
+		entered and normalize weight percents to 100% if over 110% (entering weight percent strings such as
+		Fe742 Mg2980 Si1907 O4360).
 	
-	CalcZAF format (in PFE) to separate files for each sample.
+		CalcZAF format (in PFE) to separate files for each sample.
 	
-	Add stage coordinates to CalcZAF export format in PFE and import format in CalcZAF.  Add option to export 
+		Add stage coordinates to CalcZAF export format in PFE and import format in CalcZAF.  Add option to export 
 	
-	Make command prompt batch files for JEOL EDS "hidden" (Carpenter) except for get spectrum and get net
-	intensities which are not implemented.
+		Make command prompt batch files for JEOL EDS "hidden" (Carpenter) except for get spectrum and get net
+		intensities which are not implemented.
 	
-	Work on secondary fluorescence in CalcZAF.
+		Work on secondary fluorescence in CalcZAF.
 
-6/25/12	Add new file import/export options to CalcZAF for processing all data points (Carpenter).
-	
-	New CalcZAF and PFE distribution files.
+6/25/12		Add new file import/export options to CalcZAF for processing all data points (Carpenter).
+		
+		New CalcZAF and PFE distribution files.
 
-6/23/12	Add null character to pParams structure for Bruker EDS.
+6/23/12		Add null character to pParams structure for Bruker EDS.
 	
-	Start work on new routine for grid and traverse Surfer/Grapher script output of selected samples 
-	from Analyze!
+		Start work on new routine for grid and traverse Surfer/Grapher script output of selected samples 
+		from Analyze!
 	
-	Add doevents statements in IOUpdate.bas for log window output.
+		Add doevents statements in IOUpdate.bas for log window output.
 	
-	Fix problem in >>Excel button where counts were not output. Add faraday units to output strings.
+		Fix problem in >>Excel button where counts were not output. Add faraday units to output strings.
 	
-	Fix user specified bug for unassigned standard (Perry).
+		Fix user specified bug for unassigned standard (Perry).
 
-6/20/12	Add separate function for getting Excel version to Excel.bas. Use in OutputSaveCustomUserSpecified
-v. 8.77	to only warn if using older Excel version and more than 256 columns.
+6/20/12		Add separate function for getting Excel version to Excel.bas. Use in OutputSaveCustomUserSpecified
+v. 8.77		to only warn if using older Excel version and more than 256 columns.
+		
+		Work Penepma12 boundary database code.
 	
-	Work Penepma12 boundary database code.
+		Add alpha factor calculation to K-Raws button if binary standard.
+		
+		Add check in TypeNewCounts if sample is a standard and standard deviation is excessive (Carpenter).
 	
-	Add alpha factor calculation to K-Raws button if binary standard.
-	
-	Add check in TypeNewCounts if sample is a standard and standard deviation is excessive (Carpenter).
-	
-	Remove code Penepma12RunFanalMatrix (call was commented out in Penepma12RunFanalOutput, so was 
-	not used apparently). "Measured concentration" calculations are done in Penepma12OutputKratios3.
+		Remove code Penepma12RunFanalMatrix (call was commented out in Penepma12RunFanalOutput, so was 
+		not used apparently). "Measured concentration" calculations are done in Penepma12OutputKratios3.
 
-6/16/12	Fix Penepma12ExtractBoundary code to handle "swapped" elements for binary PAR files. Yeah!
+6/16/12		Fix Penepma12ExtractBoundary code to handle "swapped" elements for binary PAR files. Yeah!
 	
-	Remove TestTelnet, TestJEOLTelnet, and TestJEOLRlogin apps.
+		Remove TestTelnet, TestJEOLTelnet, and TestJEOLRlogin apps.
 	
-	Disable 2nd plot option in FormPenepma08 if using Penepma12 or later.
+		Disable 2nd plot option in FormPenepma08 if using Penepma12 or later.
 
-6/15/12	Fix problem in StartWin with renamed LabelProgressBeamDeflection.
+6/15/12		Fix problem in StartWin with renamed LabelProgressBeamDeflection.
 	
-	Change Penepma default time to 100,000 secs. Default voltage to 15 keV. Need to edit Cu_Cha.in file.
+		Change Penepma default time to 100,000 secs. Default voltage to 15 keV. Need to edit Cu_Cha.in file.
 	
-	Modify IOMsgBox to use MsgBoxDoevents modal to process driver events if realtime errors.
+		Modify IOMsgBox to use MsgBoxDoevents modal to process driver events if realtime errors.
 	
-	Add note to warning message about single standard for calibration curve to add zero point (Carpenter).
+		Add note to warning message about single standard for calibration curve to add zero point (Carpenter).
 	
-	Add units for drift intensities output.
+		Add units for drift intensities output.
 	
-	Add explanation to APF dialog.
+		Add explanation to APF dialog.
 	
-6/13/12	Fix line in InitFilesUserData to handle line properly.
+6/13/12		Fix line in InitFilesUserData to handle line properly.
 		
 		If FileLen(PENDBASE_Path$ & "\pdfiles\pdgph29.p12") > 0 Then
 
-	Add button to only send EDS spectra to OEM system (do not calculate net intensities).	
+		Add button to only send EDS spectra to OEM system (do not calculate net intensities).	
 	
-	Improve warning messages for bad x-ray lines in Penepma calculations (Penepma12RunFanal).
+		Improve warning messages for bad x-ray lines in Penepma calculations (Penepma12RunFanal).
 	
-	Fix matrix calculations in Penepma12 code to load current takeoff and keV for modeling "measured 
-	concentrations" in Penepma12GetParFileComposition.
+		Fix matrix calculations in Penepma12 code to load current takeoff and keV for modeling "measured 
+		concentrations" in Penepma12GetParFileComposition.
 	
-	Increase number of boundary points to 2000.
+		Increase number of boundary points to 2000.
 	
-	Fix CalcImage menu for msgboxes.
+		Fix CalcImage menu for msgboxes.
 	
-	Add boundary.mdb to distributions (and updates for now).
+		Add boundary.mdb to distributions (and updates for now).
 	
-	Remove TestFid distribution (use Probewin from now on).
+		Remove TestFid distribution (use Probewin from now on).
 
 06/10/12	Work on adding material B densities to boundary database, etc.
 	
-	Add spectro acq flag for synchronous motion to Acquire window (Fournelle).
+		Add spectro acq flag for synchronous motion to Acquire window (Fournelle).
 	
-	Make error 1003 (JEOL) Mechanical ID a warning- not error (Adams).
+		Make error 1003 (JEOL) Mechanical ID a warning- not error (Adams).
 
 06/07/12	Add binary density calculator for pure element normalized densities to FormPenepma12Binary.
 	
-	Add SysWOW64 folders to Remote and Matrix ZIP update files.
+		Add SysWOW64 folders to Remote and Matrix ZIP update files.
 
 06/06/12	Fix issue with XLSX file save in IOGetFilename.
 	
-	Add debug statements to BrukerEDSSpectraGetNetIntensities.
+		Add debug statements to BrukerEDSSpectraGetNetIntensities.
 
 06/05/12	Fix Copy to clipboard and Plot Output issues with Penepma12 code.
 	
-	Update CalcZAF source distribution.
+		Update CalcZAF source distribution.
 	
-	Work on mass distance and density boundary code.
+		Work on mass distance and density boundary code.
 	
-	Update CalcImage and PFE documentation and help.
+		Update CalcImage and PFE documentation and help.
 	
-	Modify code to automatically detect Excel 11 versus 12 for .XLS versus .XLSX.
+		Modify code to automatically detect Excel 11 versus 12 for .XLS versus .XLSX.
 	
-	Fix problem where Analyze list was not updated automatically after combining samples into a new 
-	sample (Poeml).
+		Fix problem where Analyze list was not updated automatically after combining samples into a new 
+		sample (Poeml).
 	
-	Fix TDI%: display issue when all counts are negative.
+		Fix TDI%: display issue when all counts are negative.
 	
-	Add flag and value for Nth Point on-peak acquisition time fraction (Jercinovic). Acquisition code
-	not yet implemented.
+		Add flag and value for Nth Point on-peak acquisition time fraction (Jercinovic). Acquisition code
+		not yet implemented.
 
 06/02/12	Update "specialusers" holiday greeting list.
 
 06/01/12	Modify PFWBETA.BAT and CALCZAFBETA.BAT to not include Penepma source files.
 	
-	Modify Probewin and CalcZAF SWT files to remove MQ and Penepma source codes. Those are now distributed
-	with the PFE and Penepma source ZIPs.
+		Modify Probewin and CalcZAF SWT files to remove MQ and Penepma source codes. Those are now distributed
+		with the PFE and Penepma source ZIPs.
 	
-	Add display of material A and B densities to Penepma12 plot.
+		Add display of material A and B densities to Penepma12 plot.
 	
-	Turn off email notification flag once automation has finished to prevent extra messages (AcquireStop).
+		Turn off email notification flag once automation has finished to prevent extra messages (AcquireStop).
 	
-	New code checking for files in InitFilesUserData.
+		New code checking for files in InitFilesUserData.
 	
-	New mass distance and density parameters for boundary intensity extraction calculations.
+		New mass distance and density parameters for boundary intensity extraction calculations.
 
-5/31/12	New penepma/penfluor source and executables.
+5/31/12		New penepma/penfluor source and executables.
 v. 8.75	
-	Add code to check if Penfluor.exe crashes at the beginning of its execution in Penepma12RunPenfluor by
-	checking some .dat files.
-	
-	Update everything. Wait... NOM=600 works OK. No, something is broken in Xavier's latest Material.f
+		Add code to check if Penfluor.exe crashes at the beginning of its execution in Penepma12RunPenfluor by
+		checking some .dat files.
+		
+		Update everything. Wait... NOM=600 works OK. No, something is broken in Xavier's latest Material.f
 
-5/28/12	Change Penelope.f NOM=1000 statement back to NOM=400 because it causes problems for Material.exe. 
-	Penfluor.f code.  Going back to old executables.
+5/28/12		Change Penelope.f NOM=1000 statement back to NOM=400 because it causes problems for Material.exe. 
+		Penfluor.f code.  Going back to old executables.
 	
-	Add display of sample parameters after bgd over-ride in CalcImage (CalcImageCorrectData).
+		Add display of sample parameters after bgd over-ride in CalcImage (CalcImageCorrectData).
 	
-	Add new Material.exe Penepma file for complex compositions (change NOM=400 to NOM=1000) in 
-	Penelope.f.
-
-	Add cross section scripting to CalcImage (Barkman). Add example XYSLICE.BAS to distributions.
+		Add new Material.exe Penepma file for complex compositions (change NOM=400 to NOM=1000) in 
+		Penelope.f.
 	
-	Work on secondary fluorescence boundary database code to include mass distance and other proper fields.
+		Add cross section scripting to CalcImage (Barkman). Add example XYSLICE.BAS to distributions.
 	
-	Fix goldarn "assigned" TDI correction because someone just had to try it (Seward). Seriously,
-	it works now and now includes a beam drift correction also.
+		Work on secondary fluorescence boundary database code to include mass distance and other proper fields.
+	
+		Fix goldarn "assigned" TDI correction because someone just had to try it (Seward). Seriously,
+		it works now and now includes a beam drift correction also.
 
 05/26/12	Fix display of Email Report Interval time in AutomateConfirmSelected.	
 	
-	Add boundary distance fields to Boundary.mdb and other supporting code.
+		Add boundary distance fields to Boundary.mdb and other supporting code.
 	
-	Add messagebox for calculation of binary alphafactors.
+		Add messagebox for calculation of binary alphafactors.
 	
 05/25/12	Add call to re-calculate a-factors if necessary in AFactorListCurrentAFactors.	
 
-	Remove doevents statements from Formula, Weight and StdComp dialogs (causes issue in Win7?) (Seward).
+		Remove doevents statements from Formula, Weight and StdComp dialogs (causes issue in Win7?) (Seward).
 	
-	Add display of all, empirical and Penepma 2012 calculated alpha factors to CalcZAF and PFE (Run menu).
+		Add display of all, empirical and Penepma 2012 calculated alpha factors to CalcZAF and PFE (Run menu).
 	
-	Add more error messages to Penepma08LoadPenepmaDAT file issues.
+		Add more error messages to Penepma08LoadPenepmaDAT file issues.
 	
-	Add target and actual motor position info to time-out error in SX100GetMotorStatus (Grant).
+		Add target and actual motor position info to time-out error in SX100GetMotorStatus (Grant).
 	
-	Add icancelauto = False statements to calculation routines in case user canceled previous calculation.
+		Add icancelauto = False statements to calculation routines in case user canceled previous calculation.
 	
-	Fix extract matrix k-ratio range option for Penepma12.
+		Fix extract matrix k-ratio range option for Penepma12.
 	
-	Penepma12: Clear graph after choosing new PAR file.
+		Penepma12: Clear graph after choosing new PAR file.
 	
-	Add check for read only for BIM file when writing image data in DataImageSaveImageData.
+		Add check for read only for BIM file when writing image data in DataImageSaveImageData.
 	
-	Update GRIDCC.BAS to use new version check code for Surfer app (Poeml).
+		Update GRIDCC.BAS to use new version check code for Surfer app (Poeml).
 	
-	Fix display issue for count time in TypeWaveCounts.
+		Fix display issue for count time in TypeWaveCounts.
 	
 05/23/12	Add text to "State was running" error text to indicate the error may also be caused by too 
-	many clients trying to connect to Bruker EDS server.
+		many clients trying to connect to Bruker EDS server.
 	
-	Update XYSCAN and XYSCAN2 .BAS files for using CurDir$() & "\" and also new version check 
-	code (XYSCAN2.BAS only). 
+		Update XYSCAN and XYSCAN2 .BAS files for using CurDir$() & "\" and also new version check 
+		code (XYSCAN2.BAS only). 
 	
-	Modify RealtimeGetMotorPositions to warn user of out of range even if demo or JEOL interface (Carpenter).
+		Modify RealtimeGetMotorPositions to warn user of out of range even if demo or JEOL interface (Carpenter).
 	
-	Add kratio difference and relative% error to binary plot output for Penepma12 boundary calculations.
+		Add kratio difference and relative% error to binary plot output for Penepma12 boundary calculations.
 	
-	Improve Penepma12 graph options.
+		Improve Penepma12 graph options.
 	
-	Change ZAF Selections menu to ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections.
+		Change ZAF Selections menu to ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections.
 
-	Add check for readonly data file for opening various databases. (Eckert).
+		Add check for readonly data file for opening various databases. (Eckert).
 
 05/18/11	Modify DataEDSElementsLoadSample to use non exclusive access for reading.
 v. 8.71	
-	Work on secondary fluorescence boundary code.
+		Work on secondary fluorescence boundary code.
 	
-	Add more status output for first time PHA delay.
+		Add more status output for first time PHA delay.
 	
-	Add UseFilamentStandbyFlag = False to InitData call for opening new runs.
+		Add UseFilamentStandbyFlag = False to InitData call for opening new runs.
 	
 	Modify Penfluor simulation overhead from 65 to 75 seconds per voltage.
 	

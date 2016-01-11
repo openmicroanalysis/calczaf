@@ -134,7 +134,7 @@ Sub XrayLoadDatabase(method As Integer, klm As Single, keV As Single, xstart As 
 ' method = 0 load just x-ray lines
 ' method = 1 load x-ray lines and absorption edges
 ' klm = minimum x-ray intensity (normalized to 100 or 150)
-' kev = minimum x-ray energy
+' kev = maximum x-ray energy
 ' xstart = angstrom start
 ' xstop = angstrom end
 
@@ -333,7 +333,7 @@ DefaultMaximumOrder% = FormXRAY.ComboMaximumOrder.ListIndex + 1
 
 ' Save defaults
 DefaultMinimumKLMDisplay! = klm!
-DefaultKiloVolts! = keV!
+If Not RealTimeMode Then DefaultKiloVolts! = keV!
 DefaultXrayStart! = xstart!
 DefaultXrayStop! = xstop!
 DefaultAbsorptionEdgeDisplay = method%

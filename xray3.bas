@@ -279,6 +279,7 @@ Function XrayConvertSpecAng(mode As Integer, chan As Integer, pos As Single, ord
 '  mode = 4  convert angstroms to spectrometer (w/o offset)
 '  mode = 5  convert angstroms to angstroms (refraction correction only)
 '  mode = 6  convert angstroms to kilovolts (with refraction correction)
+'  mode = 7  convert kilovolts to angstroms (with refraction correction)
 
 ierror = False
 On Error GoTo XrayConvertSpecAngError
@@ -408,9 +409,20 @@ End If
 If mode% = 6 Then
 temp2! = 1# - (k - (k! / order% ^ 2))
 temp! = pos! * temp2!
-temp! = order% * ANGKEV! / temp! ' convert to actual keV
+temp! = order% * ANGKEV! / temp!        ' convert to actual keV
 If DebugMode And VerboseMode Then
 msg$ = "Passed position (angstroms): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (keV): " & Str$(temp!)
+Call IOWriteLog(msg$)
+End If
+End If
+
+' Kilovolts to angstroms (with refractive order correction)
+If mode% = 7 Then
+temp2! = 1# - (k - (k! / order% ^ 2))
+temp! = pos! * temp2!
+temp! = order% / (temp! * ANGKEV!)        ' convert to angstroms
+If DebugMode And VerboseMode Then
+msg$ = "Passed position (keV): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (angstroms): " & Str$(temp!)
 Call IOWriteLog(msg$)
 End If
 End If
