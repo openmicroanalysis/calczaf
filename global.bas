@@ -505,6 +505,17 @@ Global Const DASHED5$ = "-----"
 Global Const EDS_CRYSTAL$ = "EDS"        ' EDS crystal (not WDS)
 Global Const CONTINUED$ = "continued"
 
+Type TypeXray
+    atnum As Integer
+    syme As String * 2
+    n As Integer
+    xline As String * 8
+    abedg As String * 3
+    xwave As Double
+    xints As Double
+    refer As String * 5
+End Type
+
 ' User defined data types
 Type TypeEnergy
     energy(1 To MAXRAY_OLD%) As Single

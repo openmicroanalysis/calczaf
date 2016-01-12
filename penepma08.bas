@@ -2211,7 +2211,7 @@ ierror = False
 On Error GoTo Penepma08GetElementError
 
 Dim i As Integer
-Dim elmarray(1 To MAXELM%) As Integer
+Dim elmarray(1 To MAXELM) As Boolean
 
 ' Clear sample
 Call InitSample(sample())
@@ -2226,12 +2226,12 @@ Exit Sub
 End If
 
 ' Get selected elements
-Call Periodic2Return(elmarray%())
+Call Periodic2Return(elmarray())
 If ierror Then Exit Sub
 
 ' Load sample
 For i% = 1 To MAXCHAN%
-If elmarray%(i%) Then
+If elmarray(i%) Then
 sample(1).LastChan% = sample(1).LastChan% + 1
 sample(1).Elsyms$(sample(1).LastChan%) = Symlo$(i%)
 End If

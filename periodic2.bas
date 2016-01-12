@@ -11,7 +11,7 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Dim PeriodicElement(1 To MAXELM%) As Integer
+Dim PeriodicElement(1 To MAXELM%) As Boolean
 
 Sub Periodic2Load()
 ' Load the periodic table form for multiple element selection
@@ -103,7 +103,7 @@ Exit Sub
 
 End Sub
 
-Sub Periodic2Return(elmarray() As Integer)
+Sub Periodic2Return(elmarray() As Boolean)
 ' Return the periodic selections to calling procedure
 
 ierror = False
@@ -113,7 +113,7 @@ Dim i As Integer
 
 ' Save element symbols based on current selections
 For i% = 1 To MAXELM%
-elmarray%(i%) = PeriodicElement%(i%)
+elmarray(i%) = PeriodicElement(i%)
 Next i%
 
 Exit Sub
@@ -121,6 +121,29 @@ Exit Sub
 ' Errors
 Periodic2ReturnError:
 MsgBox Error$, vbOKOnly + vbCritical, "Periodic2Return"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub Periodic2To(elmarray() As Boolean)
+' Loads the periodic selections from calling procedure
+
+ierror = False
+On Error GoTo Periodic2ToError
+
+Dim i As Integer
+
+' Load element symbols based on passed array
+For i% = 1 To MAXELM%
+PeriodicElement(i%) = elmarray(i%)
+Next i%
+
+Exit Sub
+
+' Errors
+Periodic2ToError:
+MsgBox Error$, vbOKOnly + vbCritical, "Periodic2To"
 ierror = True
 Exit Sub
 

@@ -217,7 +217,7 @@ Begin VB.Form FormXRAY
       End
       Begin VB.Label Label10 
          Alignment       =   2  'Center
-         Caption         =   $"XRAY2.frx":0000
+         Caption         =   $"Xray2.frx":0000
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -473,7 +473,7 @@ End Sub
 
 Private Sub CommandPeriodic_Click()
 If Not DebugMode Then On Error Resume Next
-Call XrayGetKLMElements
+Call XrayGetKLMElements0
 If ierror Then Exit Sub
 End Sub
 

@@ -11,17 +11,6 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Type TypeXray
-    atnum As Integer
-    syme As String * 2
-    n As Integer
-    xline As String * 8
-    abedg As String * 3
-    xwave As Double
-    xints As Double
-    refer As String * 5
-End Type
-
 Sub XrayGetDatabase()
 ' Loads the xray database for the user to browse
 
@@ -564,7 +553,7 @@ Sub XraySpecifyRange(mode As Integer)
 ' Specify spectrum range in FormXRAY list
 ' mode = 1 element change
 ' mode = 2 xray change
-' mode = order change
+' mode = 3 order change
 
 ierror = False
 On Error GoTo XraySpecifyRangeError
@@ -698,14 +687,17 @@ Exit Sub
 
 End Sub
 
-Sub XrayGetKLMElements()
+Sub XrayGetKLMElements2(elmarray() As Boolean)
 ' Loads the periodic table for the user to browse for KLM elements
 
 ierror = False
-On Error GoTo XrayGetKLMElementsError
+On Error GoTo XrayGetKLMElements2Error
 
 Dim i As Integer, j As Integer
-Dim elmarray(1 To MAXELM%) As Integer
+
+' Pass user selected elements
+Call Periodic2To(elmarray())
+If ierror Then Exit Sub
 
 ' Load form
 icancelload = False
@@ -713,14 +705,14 @@ Call Periodic2Load
 If icancelload = True Then Exit Sub
 
 ' Get selected elements
-Call Periodic2Return(elmarray%())
+Call Periodic2Return(elmarray())
 If ierror Then Exit Sub
 
-' Unselect and select selected element
+' Unselect and select selected elements
 For i% = 0 To FormXRAY.ListXray.ListCount - 1
 FormXRAY.ListXray.Selected(i%) = False
 For j% = 1 To MAXELM%
-If elmarray%(j%) Then
+If elmarray(j%) Then
 If MiscStringsAreSame(Left$(FormXRAY.ListXray.List(i%), 2), Symlo$(j%)) Then
 FormXRAY.ListXray.Selected(i%) = True
 End If
@@ -731,102 +723,49 @@ Next i%
 Exit Sub
 
 ' Errors
-XrayGetKLMElementsError:
-MsgBox Error$, vbOKOnly + vbCritical, "XrayGetKLMElements"
+XrayGetKLMElements2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "XrayGetKLMElements2"
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub XrayPlotGetKLM(mode As Integer, tGraphWavescanType As Integer, chan As Integer, npts As Long, xdata() As Single, ydata() As Single, tData() As String, adata() As String, sdata() As Single, odata() As Integer, edata() As String, sample() As TypeSample, tList As ListBox)
-' Get the arrays of KLM markers from passed list box
-'  mode = 0  normal call from XrayPlotXray (convert selected xdata as necessary based on graph x-axis)
-'  mode = 1  xdata() is angstroms (refraction corrected), sdata() is spec position (also refraction corrected)
+Sub XrayGetKLMElements0()
+' Loads the periodic table for the user to browse for KLM elements (only used by CalcZAF and Standard)
 
 ierror = False
-On Error GoTo XrayPlotGetKLMError
+On Error GoTo XrayGetKLMElements0Error
 
-Dim j As Integer, order As Integer
-Dim lambda As Single, intens As Single
-Dim xlabel As String, xedge As String, tmsg As String
-Dim esym As String, xsym As String
+Dim i As Integer, j As Integer
+Dim elmarray(1 To MAXELM%) As Boolean
 
-npts& = 0
-For j% = 0 To tList.ListCount - 1
-If tList.Selected(j%) Or mode% = 1 Then
-npts& = npts& + 1
+' Load form
+icancelload = False
+Call Periodic2Load
+If icancelload = True Then Exit Sub
+
+' Get selected elements
+Call Periodic2Return(elmarray())
+If ierror Then Exit Sub
+
+' Unselect and select selected element
+For i% = 0 To FormXRAY.ListXray.ListCount - 1
+FormXRAY.ListXray.Selected(i%) = False
+For j% = 1 To MAXELM%
+If elmarray(j%) Then
+If MiscStringsAreSame(Left$(FormXRAY.ListXray.List(i%), 2), Symlo$(j%)) Then
+FormXRAY.ListXray.Selected(i%) = True
+End If
 End If
 Next j%
-
-' Dimension module level data, if any to plot
-If npts& > 0 Then
-ReDim xdata(1 To npts&) As Single   ' lambda
-ReDim ydata(1 To npts&) As Single   ' relative intensity
-ReDim tData(1 To npts&) As String   ' x-ray label
-ReDim adata(1 To npts&) As String   ' absorption edge label (ABS)
-ReDim sdata(1 To npts&) As Single   ' spec position (always)
-ReDim odata(1 To npts&) As Integer  ' x-ray order
-ReDim edata(1 To npts&) As String   ' element symbol
-
-' Load data for selected lines
-npts& = 0
-For j% = 0 To tList.ListCount - 1
-
-' Extract x-ray label if selected or using all lines
-If tList.Selected(j%) Or mode% = 1 Then
-tmsg$ = tList.List(j%)
-Call XrayExtractListString(tmsg$, esym$, xsym$, order%, lambda!, intens!, xlabel$, xedge$)
-If ierror Then Exit Sub
-
-' Load new KLM point
-npts& = npts& + 1
-xdata!(npts&) = lambda!
-ydata!(npts&) = intens!
-xlabel$ = Replace$(xlabel$, "  ", " ")     ' remove extra spaces from label
-xlabel$ = Replace$(xlabel$, "  ", " ")     ' remove extra spaces from label
-xlabel$ = Replace$(xlabel$, "  ", " ")     ' remove extra spaces from label
-xlabel$ = Replace$(xlabel$, "  ", " ")     ' remove extra spaces from label
-tData$(npts&) = xlabel$
-adata$(npts&) = xedge$
-odata%(npts&) = order%
-edata$(npts&) = esym$
-
-' Convert KLM angstroms to spectrometer if needed (and correct for refraction in both cases)
-If mode% = 0 Then
-If tGraphWavescanType% = 1 Then  ' graph is spectrometer positions so convert from angstroms
-If ierror Then Exit Sub
-xdata!(npts&) = XrayConvertSpecAng(Int(2), chan%, xdata!(npts&), order%, sample())
-If ierror Then Exit Sub
-
-ElseIf tGraphWavescanType% = 2 Then  ' graph is angstroms so only do refraction correction
-If ierror Then Exit Sub
-xdata!(npts&) = XrayConvertSpecAng(Int(5), chan%, xdata!(npts&), order%, sample())
-If ierror Then Exit Sub
-
-Else  ' graph is kilovolts so convert from angstroms (also do refraction correction)
-xdata!(npts&) = XrayConvertSpecAng(Int(6), chan%, xdata!(npts&), order%, sample())
-If ierror Then Exit Sub
-End If
-
-' Return both angstroms and spec positions
-Else
-xdata!(npts&) = XrayConvertSpecAng(Int(5), chan%, xdata!(npts&), order%, sample())
-If ierror Then Exit Sub
-sdata!(npts&) = XrayConvertSpecAng(Int(2), chan%, xdata!(npts&), order%, sample())
-If ierror Then Exit Sub
-End If
-End If
-
-Next j%
-End If
+Next i%
 
 Exit Sub
 
 ' Errors
-XrayPlotGetKLMError:
-MsgBox Error$, vbOKOnly + vbCritical, "XrayPlotGetKLM"
+XrayGetKLMElements0Error:
+MsgBox Error$, vbOKOnly + vbCritical, "XrayGetKLMElements0"
 ierror = True
 Exit Sub
 
 End Sub
-
