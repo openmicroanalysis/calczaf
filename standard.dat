@@ -1,0 +1,3626 @@
+ 1            "Schott Cover Slip Glass (D 263)"
+"From Schott"
+ 0             9 
+   "si"    "na"     "b"    "al"     "k"     "o"    "zn"    "ti"    "sb" 
+       1       2       2       2       2       1       1       1       2
+       2       1       3       3       1       0       1       2       3
+  29.962   4.748   2.609   2.223   5.728  47.509   4.740   2.398    .084
+ 2            "Soda-Lime Glass"
+"Microscope slide glass
+Nominal composition only"
+-1             9 
+   "si"    "na"    "ca"    "mg"    "al"     "k"     "s"    "fe"     "o" 
+       1       2       1       1       2       2       1       1       1
+       2       1       2       1       3       1       3       1       0
+  33.748  10.608   3.559   2.593    .635    .996    .012    .023  48.373
+ 3            "Soda Glass (Microscope slide)"
+"'Chinese made'"
+-1             8 
+   "si"    "na"     "k"    "ca"    "mg"    "al"    "fe"     "o" 
+       1       2       2       1       1       2       2       1
+       2       1       1       1       1       3       3       0
+  33.655  10.757    .249   5.039   2.382    .873    .042  46.513
+ 4            "Shultenite, HPbAsO4"
+"Assumed stoichiometric"
+ 0             4 
+   "Pb"    "As"     "O"     "H" 
+       1       2       1       2
+       1       3       0       1
+  59.688  21.584  18.437    .290
+ 5            "Rathite, (PbS)3 (As2S3)2"
+"Assumed stoichiometric"
+ 0             3 
+   "Pb"    "As"     "S" 
+       1       2       1
+       1       3       3
+  51.376  24.771  23.853
+ 6            "Baumhauerite, (PbS)4 (As2S3)3"
+"Assumed stoichiometric"
+ 0             3 
+   "Pb"    "As"     "S" 
+       1       2       1
+       1       3       3
+  48.891  26.519  24.590
+ 7            "Sartorite, PbS As2S3"
+"Assumed stoichiometric"
+ 0             3 
+   "Pb"    "As"     "S" 
+       1       2       1
+       1       3       3
+  42.694  30.877  26.429
+ 8            "Jordanite, (PbS)4 As2S3"
+"Assumed stoichiometric"
+ 0             3 
+   "Pb"    "As"     "S" 
+       1       2       1
+       1       3       3
+  68.888  12.455  18.657
+ 9            "NaCF3SO3"
+"Lonergan Lab"
+ 0             5 
+    "S"    "Na"     "F"     "O"     "C" 
+       1       2       1       1       1
+       3       1       0       0       2
+  18.635  13.362  33.125  27.897   6.981
+ 10           "BRI Polymer"
+"C26H25F9N2O4"
+ 0             5 
+    "F"     "O"     "N"     "C"     "H" 
+       1       1       2       1       2
+       0       0       5       2       1
+  28.474  10.658   4.665  52.006   4.197
+ 11           "SiO"
+"Alfa Aesar
+99.9% metals basis, Lot# K14T034
+Stock #41711"
+ 0             2 
+   "Si"     "O" 
+       1       1
+       2       0
+  63.707  36.293
+ 12           "MgO synthetic"
+"1. UCB # M3567, 99.8%, EPMA (UCB): Ca ~ 0.2%
+2. C. M. Taylor, 99.98%, EPMA (UCB) Ca ~ 0.02%"
+-1             6 
+   "mg"    "si"    "ca"    "fe"    "mn"     "o" 
+       1       1       1       1       1       1
+       1       2       1       1       1       0
+  60.280    .005    .140    .008    .000  39.693
+ 13           "Al2O3 synthetic"
+"Specimen from Baikowski Int'l, North Carolina
+'crackle' from seed crystal, 99.99%"
+-1             2 
+   "al"     "o" 
+       2       1
+       3       0
+  52.926  47.074
+ 14           "SiO2 synthetic"
+"Specimen from ESPI, 99.99%, EPMA (UCB): Al2O3 ~ 0.01%
+Catalog #K4699M
+Atomic Absorption (Chris Lewis): 
+Al=15 ppm +/- 5
+Fe=6 ppm +/- 3
+Mn=1.5 ppm +/- 0.3
+Na=5 ppm +/- 3
+Li= 2.3 ppm +/- 0.2"
+-1             3 
+   "si"    "al"     "o" 
+       1       2       1
+       2       3       0
+  46.740    .005  53.255
+ 15           "UO2"
+"Grown by John Hanchar (synthetic)
+Assumed stoichiometric"
+ 0             2 
+    "U"     "O" 
+       1       1
+       2       0
+  88.149  11.851
+ 16           "ThSiO4 (Thorite)"
+"Grown by John Hanchar (synthetic)
+Assumed stoichiometric"
+ 0             3 
+   "Th"    "Si"     "O" 
+       1       1       1
+       2       2       0
+  71.589   8.665  19.746
+ 17           "PbCO3"
+"Specimen from John Hanchar
+(Natural) from Tsumeb
+Assumed stoichiometric"
+ 0             3 
+   "Pb"     "O"     "C" 
+       1       1       1
+       1       0       2
+  77.541  17.964   4.495
+ 18           "ThO2"
+"Grown by John Hanchar (synthetic)
+Assumed stoichiometric"
+ 0             2 
+   "Th"     "O" 
+       1       1
+       2       0
+  87.881  12.119
+ 19           "HfSiO4 (Hafnon)"
+"Synthetic material
+Flux grown by John Hanchar"
+ 0             3 
+   "Hf"    "Si"     "O" 
+       1       1       1
+       2       2       0
+  65.967  10.380  23.653
+ 20           "ThSiO4 (Huttonite)"
+"Grown by John Hanchar (synthetic)
+Assumed stoichiometric"
+ 0             3 
+   "Th"    "Si"     "O" 
+       1       1       1
+       2       2       0
+  71.589   8.665  19.746
+ 21           "USiO4 (Coffinite)"
+"Synthetic material
+Flux grown by John Hanchar"
+ 0             3 
+    "U"    "Si"     "O" 
+       1       1       1
+       2       2       0
+  72.105   8.508  19.387
+ 22           "TiO2 synthetic"
+"Specimen from Mimports, Lafayette, CA
+Assumed stoichiometric
+EPMA (UCB): Al2O3=0.02 (interference corrected)"
+-1             3 
+   "ti"    "al"     "o" 
+       1       2       1
+       2       3       0
+  59.939    .011  40.050
+ 23           "V2O3 synthetic"
+"Grown by Michael Wittenaur (Purdue University)
+Starting mat'l 99.9% V2O3, 'skull melt' process
+SM # 171 (25% CO2)
+See Harrison, et al. 1980, Mat. Res. Bull., v. 15, pp. 571-580
+Assumed stoichiometric"
+-1             2 
+    "v"     "o" 
+       2       1
+       3       0
+  67.977  32.023
+ 24           "Cr2O3 (synthetic)"
+"1. Specimen from Dr. Sawada (Kyoto University)
+99.99%
+Assumed stoichiometric
+2. Specimen from unknown source (USGS?)
+Assumed stoichiometric
+3. Specimen from Mimports, Lafayette, CA
+Material lost (?)"
+-1             4 
+   "cr"     "o"     "f"    "ni" 
+       2       1       1       1
+       3       0       0       1
+  68.337  31.576    .000    .079
+ 25           "MnO synthetic"
+"Specimen from Michael Wittenauer (Purdue Univ.)
+Starting mat'l 99.999%, SM # 317, 'skull melt' process
+Mat. Res. Bull. 15, p 571, 1980
+(possible intergrowths of Mn3O4 and small inclusions of Mn metal)
+EPMA (UCB): SiO2=0.00, FeO=0.00, CaO=0.00, Al2O3=0"
+-1             2 
+   "mn"     "o" 
+       1       1
+       1       0
+  77.446  22.554
+ 26           "Fe2O3 synthetic hematite"
+"Shannon, Dupont
+Obtained from George Rossman, CalTech"
+ 0             2 
+   "Fe"     "O" 
+       1       1
+       1       0
+  69.943  30.057
+ 27           "CoO synthetic"
+"1. Specimen from Michael Wittenauer (Purdue Univ.)
+Starting mat'l 99.5%, SM # 130
+Mat. Res. Bull. 15, p 571, 1980
+(possible intergrowths of Co3O4)
+2. Specimen from Dr. Sawada (Kyoto Univ. Japan)
+EPMA (UCB): FeO=0.00"
+-1             2 
+   "co"     "o" 
+       1       1
+       1       0
+  78.649  21.351
+ 28           "NiO synthetic"
+"1. Specimen from Michael Wittenauer (Purdue Univ.)
+Starting mat'l 99.999%, Boule WI, Arc Transfer
+2. Specimen from G. Czemanske, USGS (Oct 12, 1984)
+EPMA (UCB): FeO=0.05%
+-----------------------------
+All material assumed stoichiometric"
+-1             2 
+   "ni"     "o" 
+       1       1
+       1       0
+  78.585  21.415
+ 30           "ZnO synthetic"
+"Specimen from ESPI, 99.999%
+(Bright green CL)
+Assumed stoichiometric"
+-1             2 
+   "zn"     "o" 
+       1       1
+       1       0
+  80.338  19.662
+ 99           "Kapton Polyamide"
+"Thin film substrate/Detector window material
+C22H10N2O5"
+ 0             4 
+    "O"     "N"     "C"     "H" 
+       1       2       1       2
+       0       5       2       1
+  20.924   7.327  69.113   2.636
+ 110          "Biotite 23a"
+"1. Specimen from P. Blattner (Switzerland locality)
+(old standard #125)
+Analysis by Geological Survey, Canada, O'Hawa
+Traces: Li=230 ppm, Rb=410 ppm, Ba=850 ppm, V=220 ppm, Cr=70 ppm
+Fe2O3=5.52%, FeO=20.90% (as FeO=25.87% + 0.55% O)"
+-1             14 
+   "si"    "al"    "fe"    "mg"    "ca"     "k"    "na"    "ti"    "mn"     "f"     "h"     "o"    "ba"    "rb" 
+       1       2       1       1       1       2       2       1       1       1       2       1       1       2
+       2       3       1       1       1       1       1       2       1       0       1       0       1       1
+  16.384   7.775  20.109   4.095    .107   7.505    .059   2.332    .302    .360    .354  40.652    .081    .046
+ 112          "Biotite #3"
+"UCB Collection #15724 A, analyzed by ISE Carmichael
+(AL and Si slightly variable; coupled substitution)
+Al2O3 (Eastier): 10.60
+EPMA (UCB, J. Donovan): BaO=0.11%, Rb2O=0.03%, F=4.02%
+Fe2O3=1.80%, FeO=16.51% (as FeO=18.12% + 0.20% O)"
+-1             15 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"    "mn"    "ba"    "rb"    "cl"     "f"     "h"     "o" 
+       1       2       1       1       1       2       2       1       1       1       2       1       1       2       1
+       2       3       1       1       1       1       1       2       1       1       1       0       0       1       0
+  18.053   5.674  14.093   8.449    .014    .512   7.646   1.373    .736    .099    .027    .020   4.020    .298  40.674
+ 113          "Muscovite (U.C. #15463)"
+"From Evans, 1965, Amer. Jour. Sci
+(Pegmatite locality, N.Y.)
+Analysis by ISE Carmichael
+Fe2O3=4.87%, FeO=0.99% (as FeO=5.13% + 0.45% O)"
+-1             11 
+   "si"    "al"    "ti"    "fe"    "mg"    "ca"    "na"     "k"    "mn"     "h"     "o" 
+       1       2       1       1       1       1       2       2       1       2       1
+       2       3       2       1       1       1       1       1       1       1       0
+  20.890  16.672    .522   3.988    .597    .014    .497   8.675    .023    .552  47.300
+ 116          "Biotite (GHC 305)"
+"K-Ar standard (analyzed for K and Na only)
+K+=7.71%, Na+=0.08%)"
+ 0             2 
+    "k"    "na" 
+       2       2
+       1       1
+   9.290    .110
+ 135          "Calcite (analyzed)"
+"Locality: unknown
+XRF (UCB), ICP-MS (Washington Univ, D. Kremser)
+Element    XRF-EDS    ICP-MS (ppm)
+Sr            150       165
+Mn            130       166
+Fe            n.d.        4
+Mg            n.d.       21"
+-1             4 
+   "ca"    "sr"     "c"     "o" 
+       1       1       1       1
+       1       1       2       0
+  40.031    .017  12.000  47.952
+ 138          "Calcite (Harvard #97189)"
+"Specimen from Harvard Mineralogical Museum (Carl Francis)
+Locality: Oberdorf, Austria
+EPMA (UCB): MnO=0.01, FeO=0.00, MgO=0.00
+See Garrels, et al., 1980 AJS 258, 402-418"
+-1             6 
+   "ca"    "mn"    "fe"    "mg"     "c"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       2       0
+  40.038    .008    .000    .000  12.000  47.954
+ 139          "Magnesite (Harvard #105090)"
+"Specimen from Harvard Mineralogical Museum (Carl Francis)
+Locality: Oberdorf, Styria, Austria
+See Garrels, et al., 1980 AJS 258, 402-418"
+-1             6 
+   "ca"    "mg"    "mn"    "fe"     "c"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       2       0
+    .071  28.548    .039    .404  14.159  56.668
+ 140          "Rhodocrosite (Harvard #89794)"
+"Specimen from Harvard Mineralogical Museum (Carl Francis)
+Locality: Franklin, NJ
+See Garrels, et al., 1980 AJS 258, 402-418"
+-1             6 
+   "ca"    "mg"    "mn"    "fe"     "c"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       2       0
+   1.487    .416  45.128    .210  10.565  42.215
+ 141          "Dolomite (Harvard #105064)"
+"Specimen from Harvard Mineralogical Museum (Carl Francis)
+Locality: Oberdorf, Austria
+See Garrels, et al., 1980 AJS 258, 402-418
+Also J. V. Smith, Am, Jour. Sci., 1960"
+-1             6 
+   "ca"    "mg"    "mn"    "fe"     "c"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       2       0
+  21.841  13.195    .015    .062  12.986  52.021
+ 143          "Kutnahorite (Harvard #85670)"
+"Specimen from Harvard Mineralogical Museum (Carl Francis)
+Locality: Franklin, NJ
+See Garrels, et al., 1980 AJS 258, 402-418
+Also J. V. Smith, Am. Jour. Sci. 1960"
+-1             6 
+   "ca"    "mg"    "mn"    "fe"     "c"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       2       0
+  19.612   1.333  21.925    .389  11.408  45.594
+ 145          "Siderite (Harvard #96217)"
+"Specimen from Harvard Mineralogical Museum (Carl Francis)
+Locality: St. Just, Cornwall, England
+See Garrels, et al., 1980 AJS 258, 402-418"
+-1             6 
+   "fe"    "mn"    "ca"    "mg"     "c"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       2       0
+  47.782    .271    .050    .072  10.368  41.457
+ 147          "Celestine (U.C. #4593)"
+"Specimen from Reeder (UCB # 4593)
+EPMA (UCB): CaO=2.53, MgO=0.09, FeO=0.00
+Originally labeled as Strontianite"
+-1             6 
+   "sr"    "mg"    "fe"    "ca"     "s"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       3       0
+  43.802    .054    .000   1.808  18.118  35.900
+ 160          "NBS K-412 mineral glass"
+"SRM 470, NIST
+C.M. Taylor (Photometry?) FeO 2.77, Fe2O3 8.15
+Total as FeO 10.10, Excess O 0.815
+Na = 430 PPM (EPMA by JJD)"
+-1             8 
+   "si"    "fe"    "mg"    "ca"    "al"    "mn"     "o"    "na" 
+       1       1       1       1       2       1       1       2
+       2       1       1       1       3       1       0       1
+  21.199   7.742  11.657  10.899   4.906    .077  43.597    .043
+ 162          "NBS K-411 mineral glass"
+"SRM 470, NIST
+C.M. Taylor (Photometry?) FeO 4.39, Fe2O3 11.23
+Total as FeO 14.49, Excess O 1.12"
+-1             7 
+   "si"    "fe"    "mg"    "ca"    "al"    "mn"     "o" 
+       1       1       1       1       2       1       1
+       2       1       1       1       3       1       0
+  25.382  11.209   8.847  11.057    .053    .077  43.558
+ 177          "Corning 1737 Glass"
+"Flat Panel Display glass
+(SiO2)690(Al2O3)115(B2O3)73(CaO)50(BaO)44(MgO)14(SrO)12(As2O3)2"
+-1             9 
+   "Ba"    "Sr"    "As"    "Ca"    "Si"    "Al"    "Mg"     "O"     "B" 
+       1       1       2       1       1       2       1       1       2
+       1       1       3       1       2       3       1       0       3
+   8.630   1.502    .428   2.862  27.676   8.863    .486  47.299   2.254
+ 180          "An00 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             4 
+   "si"    "al"    "na"     "o" 
+       1       2       2       1
+       2       3       1       0
+  32.132  10.289   8.769  48.810
+ 181          "An10 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  30.908  11.464   1.444   7.893  48.732
+ 182          "An20 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  29.744  12.109   2.880   7.018  48.249
+ 183          "An30 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  28.552  13.020   4.324   6.135  47.969
+ 184          "An40 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  27.355  13.930   5.761   5.260  47.685
+ 185          "An50 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  26.163  14.840   7.204   4.384  47.408
+ 186          "An60 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  24.971  15.751   8.648   3.509  47.131
+ 187          "An70 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  23.774  16.661  10.085   2.634  46.846
+ 188          "An80 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  22.582  17.571  11.528   1.751  46.567
+ 189          "An90 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  21.386  18.482  12.965    .875  46.282
+ 190          "An100 feldspar glass"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+-1             4 
+   "si"    "al"    "ca"     "o" 
+       1       2       1       1
+       2       3       1       0
+  20.194  19.392  14.366  45.989
+ 195          "U-1 (5.075% UO2 in diopside glass)"
+"Specimen from S. Flexer (LBL)"
+-1             5 
+   "si"    "ca"    "mg"     "u"     "o" 
+       1       1       1       1       1
+       2       1       1       2       0
+  24.625  17.567  10.656   4.474  42.683
+ 196          "U-2 (10.00% UO2 in diopside glass)"
+"Specimen from S. Flexer (LBL)"
+-1             5 
+   "si"    "ca"    "mg"     "u"     "o" 
+       1       1       1       1       1
+       2       1       1       2       0
+  23.344  16.660  10.101   8.815  41.080
+ 197          "Th-1 (4.91% ThO2 in diopside glass)"
+"Specimen from S. Flexer (LBL)"
+-1             5 
+   "si"    "ca"    "mg"    "th"     "o" 
+       1       1       1       1       1
+       2       1       1       2       0
+  24.667  17.596  10.674   4.315  42.748
+ 200          "Rare Earth glass 'D'"
+"Nominal composition only"
+-1             5 
+    "y"    "er"    "li"     "b"     "o" 
+       2       2       2       2       1
+       3       3       1       3       0
+  15.749   4.373  10.461  16.299  53.119
+ 201          "Rare Earth glass 'F'"
+"Nominal composition: ThO2=5.0%, UO2=5.0%, HfO2=5.0%
+Made by ISE Carmichael, UCB Geology
+Th, U and Hf by AA (T. Morrison, UCB Chem. Dept.)"
+-1             6 
+   "th"     "u"    "hf"    "li"     "b"     "o" 
+       1       1       1       2       2       1
+       2       2       2       1       3       0
+   5.528   5.174   4.605  11.492  17.911  55.291
+ 202          "Rare Earth glass 'A'"
+"Nominal composition only
+Made by ISE Carmichael"
+-1             4 
+   "ce"    "li"     "b"     "o" 
+       2       2       2       1
+       3       1       3       0
+  17.075  11.157  17.386  54.381
+ 203          "Rare Earth glass 'C'"
+"Nominal composition only
+Made by ISE Carmichael"
+-1             4 
+   "ta"    "li"     "b"     "o" 
+       2       2       2       1
+       5       1       3       0
+  27.272   9.299  14.498  48.931
+ 204          "Rare Earth glass 'B'"
+"Nominal composition only
+Made by ISE Carmichael"
+-1             4 
+   "nb"    "li"     "b"     "o" 
+       2       2       2       1
+       5       1       3       0
+  23.278   9.299  14.498  52.925
+ 205          "Fe-Ta-Nb glass"
+"Made by ISE Carmichael (?)"
+-1             6 
+   "ta"    "nb"    "fe"     "o"    "li"     "b" 
+       2       2       1       1       2       2
+       5       5       1       0       1       3
+  11.719   6.809   7.711  50.595   9.053  14.113
+ 209          "Rare Earth glass 'Z'"
+"Nominal composition only
+Made by ISE Carmichael"
+-1             9 
+   "la"    "ce"     "y"    "nd"    "sm"    "eu"    "li"     "b"     "o" 
+       2       2       2       2       2       2       2       2       1
+       3       3       3       3       3       3       1       3       0
+   4.263   4.269   3.937   4.287   4.312   4.318   9.759  15.215  49.640
+ 211          "REE-1 glass"
+"REE elements in An glass made by D. Weill
+Eu 3.90 wt.% elemental by isotope dilution
+Tb 3.96 wt.% elemental by isotope dilution"
+-1             8 
+   "al"    "si"    "ca"    "eu"    "gd"    "tb"    "tm"     "o" 
+       2       1       1       2       2       2       2       1
+       3       2       1       3       3       3       3       0
+  16.153  12.602  17.982   3.627   3.869   3.779   3.809  38.178
+ 212          "REE-2 glass"
+"REE elements in An glass made by D. Weill
+Nd 3.60 wt.% elemental by isotope dilution
+Sm 3.72 wt.% elemental by isotope dilution
+Yb 3.58 wt.% elemental by isotope dilution
+Lu 3.75 wt.% elemental by isotope dilution"
+-1             8 
+   "al"    "si"    "ca"    "nd"    "sm"    "yb"    "lu"     "o" 
+       2       1       1       2       2       2       2       1
+       3       2       1       3       3       3       3       0
+  16.211  12.654  18.053   3.652   3.674   3.741   3.746  38.268
+ 213          "REE-3 glass"
+"REE elements in An glass made by D. Weill
+La 3.91 wt.% elemental by isotope dilution
+Ce 3.67 wt.% elemental by isotope dilution
+Pr 3.93 wt.% elemental by isotope dilution"
+-1             8 
+   "al"    "si"    "ca"     "y"    "la"    "ce"    "pr"     "o" 
+       2       1       1       2       2       2       2       1
+       3       2       1       3       3       3       3       0
+  16.259  12.691  18.104   3.213   3.650   3.415   3.794  38.875
+ 214          "BK-7 glass"
+"Specimen from Schott Glass, Ger.
+EPMA analysis (UCB, by J. Donovan)"
+-1             10 
+   "si"     "b"    "na"     "k"    "ca"    "sr"     "p"    "ba"    "al"     "o" 
+       1       2       2       2       1       1       2       1       2       1
+       2       3       1       1       1       1       5       1       3       0
+  32.974   3.106   7.300   6.641    .143    .051    .000   1.791    .042  48.672
+ 215          "BIR-16 Glass"
+"USGS
+see Meeker, et. al. 'A Basalt Glass Standard for Multiple Microanalytical Techniques'"
+-1             10 
+   "na"    "mg"    "al"    "si"     "k"    "ca"    "ti"    "mn"    "fe"     "o" 
+       2       1       2       1       2       1       1       1       1       1
+       1       1       3       2       1       1       2       1       1       0
+   1.269   5.747   8.150  22.109    .033   9.362    .576    .132   7.773  43.060
+ 216          "REE-4 glass"
+"REE elements in An glass made by D. Weill
+Ho 3.81 wt.% elemental by isotope dilution"
+-1             7 
+   "al"    "si"    "ca"    "dy"    "ho"    "er"     "o" 
+       2       1       1       2       2       2       1
+       3       2       1       3       3       3       0
+  16.978  13.247  18.904   3.799   3.850   3.813  39.410
+ 219          "CaMgSi2O6 glass"
+"Specimen from Carnegie Institute"
+-1             4 
+   "si"    "mg"    "ca"     "o" 
+       1       1       1       1
+       2       1       1       0
+  25.934  11.229  18.511  44.327
+ 222          "MgSiO3 glass"
+"Specimen from Carnegie Institute"
+-1             3 
+   "si"    "mg"     "o" 
+       1       1       1
+       2       1       0
+  27.967  24.224  47.809
+ 226          "MgSiO3(+20% Al2O3) glass"
+"Specimen from Carnegie Institute"
+-1             4 
+   "si"    "mg"    "al"     "o" 
+       1       1       2       1
+       2       1       3       0
+  22.377  19.376  10.585  47.662
+ 245          "Corning 'V' glass (MAS/Cal Tech)"
+"Specimen from Art Chodos, Cal Tech
+Major elements by wet chemistry (by Corning and Gene Jarosewich)
+Minor elements by AA (by Ian Steele), and Isotope dilution (by student)"
+-1             12 
+   "si"    "al"    "ca"    "mg"    "fe"     "k"    "ti"    "cr"    "ce"    "hf"     "b"     "o" 
+       1       2       1       1       1       2       1       2       2       1       2       1
+       2       3       1       1       1       1       2       3       3       2       3       0
+  26.972   9.416   4.517   5.313    .552    .689    .480    .520    .632    .628   1.379  48.544
+ 246          "Corning 'W' glass (MAS/Cal Tech)"
+"Specimen from Art Chodos, Cal Tech
+Major elements by wet chemistry (by Corning and Gene Jarosewich)
+Minor elements by AA (by Ian Steele), and Isotope dilution (by student)"
+-1             14 
+   "si"    "al"    "ca"    "mg"     "b"    "cs"     "v"    "mn"    "cu"    "co"    "ba"    "la"    "th"     "o" 
+       1       2       1       1       2       2       2       1       2       1       1       2       1       1
+       2       3       1       1       3       1       3       1       1       1       1       3       2       0
+  26.598   9.283   4.453   5.240   1.363    .679    .442    .503    .604    .566    .699    .674    .694  47.732
+ 247          "Corning 'X' glass (MAS/Cal Tech)"
+"Specimen from Art Chodos, Cal Tech
+Major elements by wet chemistry (by Corning and Gene Jarosewich)
+Minor elements by AA (by Ian Steele), and Isotope dilution (by student)"
+-1             14 
+   "si"    "al"    "ca"    "mg"     "b"    "rb"    "zr"    "sr"     "y"    "pb"    "zn"     "u"    "ni"     "o" 
+       1       2       1       1       2       2       1       1       2       1       1       1       1       1
+       2       3       1       1       3       1       2       1       3       1       1       2       1       0
+  26.598   9.289   4.460   5.246   1.351    .457    .563    .660    .622    .696    .635    .670    .574  47.781
+ 251          "Strontium titanate (SrTiO3)"
+"Specimen from Mimports, Lafayette, CA
+EPMA (UCB, by J. Donovan): BaO less than 0.01% (interf. corr.)
+Assumed stoichiometric"
+-1             5 
+   "sr"    "ti"    "ba"    "si"     "o" 
+       1       1       1       1       1
+       1       2       1       2       0
+  47.742  26.103    .000    .005  26.154
+ 252          "YAG (synthetic)"
+"Yttrium Aluminium Garnet
+Specimen from: Mimports, Lafayette, CA
+Assumed stoichiometric"
+-1             3 
+    "y"    "al"     "o" 
+       2       2       1
+       3       3       0
+  44.939  22.721  32.339
+ 253          "Gadolinium gallium garnet (GGG)"
+"Specimen from Mimports, Lafayette, CA
+Assumed stoichiometric"
+-1             3 
+   "gd"    "ga"     "o" 
+       2       2       1
+       3       3       0
+  46.598  34.437  18.965
+ 255          "LiNbO3 (lithium niobate)"
+"Specimen from Cerac-Pure Inc, 99.99%, L-1111, LOt # 393
+Wet Chem (by Cerac): Li2O=10.05
+Not stoichiomteric (stoichiometric LiNbO3 is Li = 4.67, Nb = 62.88, O = 32.45)
+"
+-1             3 
+   "li"    "nb"     "o" 
+       2       2       1
+       1       5       0
+   4.570  63.030  32.400
+ 256          "Zircon crystal (grown by J. Hanchar)"
+"Undoped, flux grown at GW University, 9/2001"
+ 0             3 
+   "Zr"    "Si"     "O" 
+       1       1       1
+       2       2       0
+  49.764  15.322  34.914
+ 257          "Zircon crystal (synthetic)"
+"Specimen made by Lynn Boatner, ORNL, Solid State Div.
+Flux grown, may contain some Mo impurities"
+-1             3 
+   "zr"    "si"     "o" 
+       1       1       1
+       2       2       0
+  49.764  15.323  34.913
+ 258          "YIG (yttrium iron garnet)"
+"Specimen from K. Kannan, NCEM, LBL"
+-1             3 
+    "y"    "fe"     "o" 
+       2       1       1
+       3       1       0
+  36.144  37.840  26.017
+ 259          "Be4Al2O4"
+"Specimen from Aesar
+(single crystal)"
+ 0             3 
+   "be"    "al"     "o" 
+       1       2       1
+       1       3       0
+   7.097  42.499  50.403
+ 260          "Al2O3 + 0.40 % Cr"
+"Specimen from Jeanloz (single crystal)
+Nominal minor composition: 5000 ppm Cr (7310 ppm Cr2O3)
+EPMA of Cr = ~4000 ppm Cr (5840 ppm Cr2O3)
+EPMA of Cr = ~3600 ppm Cr JJD"
+-1             3 
+   "al"    "cr"     "o" 
+       2       2       1
+       3       3       0
+  52.617    .400  46.983
+ 263          "Fe2SiO4 (synthetic fayalite)"
+"Specimen from Lynn Boatner, ORNL
+See Abraham and kopp, 1982, Am. Min., v. 67, p 349
+Fe3+ ~ 10 ppm (0.001%) by colorimetry"
+-1             3 
+   "fe"    "si"     "o" 
+       1       1       1
+       1       2       0
+  54.809  13.785  31.407
+ 269          "Anorthite (synthetic)"
+"Specimen from Art Chodos, Cal Tech"
+-1             4 
+   "si"    "al"    "ca"     "o" 
+       1       2       1       1
+       2       3       1       0
+  20.189  19.403  14.408  46.010
+ 272          "Ni2SiO4 (synthetic)"
+"Specimen grown by Dr. M. Ojima, Tokyo Univ.
+Flux method (may contain some Mo and Li)"
+-1             3 
+   "ni"    "si"     "o" 
+       1       1       1
+       1       2       0
+  56.047  13.406  30.547
+ 273          "Mg2SiO4 (magnesium olivine) synthetic"
+"Specimen grown by H. Takei
+Institute for Solid State Physics, Univ of Tokyo
+See Takei, Jour. Crys. Growth, v. 23, 1974"
+-1             3 
+   "si"    "mg"     "o" 
+       1       1       1
+       2       1       0
+  19.960  34.554  45.486
+ 274          "Co2SiO4 (cobalt olivine) synthetic"
+"Specimen grown by H. Takei, Institute for Solid State Physics, Univ of Tokyo
+See Takei, Jour. Crys. Growth, v. 23, 1974"
+-1             3 
+   "si"    "co"     "o" 
+       1       1       1
+       2       1       0
+  13.378  56.139  30.482
+ 275          "Mn2SiO4 (manganese olivine) synthetic"
+"Specimen grown by H. Takei, Institute for Solid State Physics, Univ of Tokyo
+See Takei, Jour. Crys. Growth, v. 23, 1974
+Also Takei, H., Journal of Crystal Growth, vol. 34, issue 1, pp. 125-131"
+-1             3 
+   "si"    "mn"     "o" 
+       1       1       1
+       2       1       0
+  13.907  54.406  31.688
+ 276          "Fe2SiO4 (iron olivine) synthetic"
+"Specimen grown by H. Takei, Institute for Solid State Physics, Univ of Tokyo
+See Takei, Jour. Crys. Growth, v. 23, 1974
+Note: some minor Fe metal blebs are present"
+-1             3 
+   "si"    "fe"     "o" 
+       1       1       1
+       2       1       0
+  13.785  54.809  31.407
+ 282          "Fluor-phlogopite (synthetic)"
+"Grown by S. Wones, Univ of Tenn"
+-1             6 
+   "si"    "mg"    "al"     "k"     "f"     "o" 
+       1       1       2       2       1       1
+       2       1       3       1       0       0
+  20.002  17.307   6.404   9.281   9.020  41.775
+ 283          "Ca10(PO4)6Cl2 (synthetic chlor-apatite)"
+"Specimen from Alan Baumer, Univ of Nice, France
+Hydrothermally grown
+See Argiolas and Baumer, Can. Min., v. 16, pp 285-290, 1978"
+-1             4 
+   "ca"     "p"    "cl"     "o" 
+       1       2       1       1
+       1       5       0       0
+  38.444  17.859   6.820  38.407
+ 284          "Fluor-phlogopite (halogen corrected)"
+"Grown by S. Wones, Univ of Tenn
+(applied F=O equivalence)"
+-1             6 
+   "si"    "mg"    "al"     "k"     "f"     "o" 
+       1       1       2       2       1       1
+       2       1       3       1       0       0
+  20.002  17.307   6.404   9.281   9.020  37.980
+ 285          "Ca10(PO4)6Cl2 (halogen corrected)"
+"Specimen from Alan Baumer, Univ of Nice, France
+Hydrothermally grown
+See Argiolas and Baumer, Can. Min., v. 16, pp 285-290, 1978"
+-1             4 
+   "Ca"    "Cl"     "P"     "O" 
+       1       1       2       1
+       1       0       5       0
+  38.481   6.808  17.843  36.868
+ 286          "Hydroxy-apatite (ideal)"
+""
+-1             4 
+   "Ca"     "P"     "O"     "H" 
+       1       2       1       2
+       1       5       0       1
+  39.894  18.498  41.407    .201
+ 298          "Glass, VG-2 USNM 111240/52"
+"Juan de Fuca Basaltic Glass
+F = 260 PPM (EPMA by JJD), 210 PPM (SIMS)"
+-1             13 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"     "p"    "mn"     "o"     "s"     "f" 
+       1       2       1       1       1       2       2       1       2       1       1       1       1
+       2       3       1       1       1       1       1       2       5       1       0       3       0
+  23.750   7.441   9.203   4.046   7.947   1.944    .158   1.109    .087    .170  43.764    .135    .045
+ 299          "Glass, VG-A99 USNM 113498/1"
+"Kilauea Basaltic Glass
+F = 780 PPM (EPMA by JJD), 709 PPM (SIMS)"
+-1             12 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"     "p"    "mn"     "o"     "s" 
+       1       2       1       1       1       2       2       1       2       1       1       1
+       2       3       1       1       1       1       1       2       5       1       0       3
+  23.811   6.610  10.338   3.063   6.647   1.973    .681   2.434    .166    .116  43.341    .010
+ 301          "Albite (cazadero)"
+"Specimen from HR Wenk, UC Berkeley, Geology
+See Wenk and Kroll, Bull. Mineral. (1984), 107, 467-487
+K=140 ppm, Sr=9 ppm, Rb=0.14 ppm (Isotope dilution)"
+-1             6 
+   "si"    "al"    "na"     "k"    "ca"     "o" 
+       1       2       2       2       1       1
+       2       3       1       1       1       0
+  31.898  10.532   8.858    .033    .021  48.807
+ 302          "Basaltic glass (JDFD2)"
+"Juan De Fuca (MORB glass)
+Specimen from Lamont Geological Observ.
+Analysis by ISE Carmichael
+Wet chemistry (Carmichael): 1320 +/- 50 ppm elemental S)
+Fe2O3=1.14%, FeO=11.11% (as FeO=12.14% + 0.11% O)"
+-1             11 
+   "si"    "ti"    "al"    "fe"    "mn"    "mg"    "ca"    "na"     "k"     "p"     "o" 
+       1       1       2       1       1       1       1       2       2       2       1
+       2       2       3       1       1       1       1       1       1       5       0
+  23.662   1.175   7.283   9.437    .170   3.980   7.676   2.048    .158    .105  43.651
+ 303          "Albite, Amelia"
+"D. Weill"
+-1             10 
+   "si"    "al"    "na"     "o"    "ti"    "mg"    "mn"    "fe"    "ca"     "k" 
+       1       2       2       1       1       1       1       1       1       2
+       2       3       1       0       2       1       1       1       1       1
+  31.820  10.470   8.490  48.650    .006    .012    .008    .047    .121    .183
+ 304          "Olivine G-94 (thingmuli lava)"
+"Specimen from ISE Carmichael, UC Berkeley, Geology
+Analysis by ISE Carmichael"
+-1             7 
+   "si"    "mg"    "fe"    "mn"    "ca"    "ni"     "o" 
+       1       1       1       1       1       1       1
+       2       1       1       1       1       1       0
+  18.843  28.361   9.304    .147    .172    .204  42.969
+ 305          "Labradorite (Lake Co.)"
+"Specimen from HR Wenk, UC Berkeley, Geology
+See Wenk and Kroll, Bull. Mineral. (1984), 107, 467-487"
+-1             9 
+   "si"    "al"    "ca"    "na"     "k"    "fe"    "mg"    "mn"     "o" 
+       1       2       1       2       2       1       1       1       1
+       2       3       1       1       1       1       1       1       0
+  23.957  16.359   9.577   2.841    .100    .319    .084    .000  46.823
+ 306          "Anorthite (Grass Valley) U.C.#16706"
+"Specimen from HR Wenk, UC Berkeley, Geology
+See Wenk and Kroll, Bull. Mineral. (1984), 107, 467-487"
+-1             8 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"     "o" 
+       1       2       1       1       1       2       2       1
+       2       3       1       1       1       1       1       0
+  20.647  18.498    .451    .000  13.315    .586    .042  45.632
+ 308          "Obsidian CAMM 112"
+"Rhyolite, from Napa, CA
+(Analysis by Carmichael, wet chemistry)
+'Very homogeneous', JJD"
+-1             12 
+   "si"    "ti"    "al"    "fe"    "mg"    "mn"     "p"    "ca"     "k"    "na"     "h"     "o" 
+       1       1       2       1       1       1       2       1       2       2       2       1
+       2       2       3       1       1       1       5       1       1       1       1       0
+  35.512    .060   6.563    .909    .018    .015    .003    .322   3.761   3.242    .086  49.326
+ 310          "Beryl, white (U.C. # 13904)"
+"Auburn, Maine
+Assume: Be3Al2(SiO3)6"
+-1             4 
+   "be"    "al"    "si"     "o" 
+       1       2       1       1
+       1       3       2       0
+   5.030  10.040  31.352  53.578
+ 315          "Rhodonite"
+"Broken Hill, N-SW
+Australia
+Fe, Mn by Carmichael
+Fe2O3=0.00%, FeO=11.14%"
+-1             11 
+   "si"    "al"    "fe"    "ca"    "mg"    "ti"     "p"    "zn"     "s"    "mn"     "o" 
+       1       2       1       1       1       1       2       1       1       1       1
+       2       3       1       1       1       2       5       1       3       1       0
+  22.218    .011   8.659   5.632    .199    .000    .048    .297    .140  25.580  37.976
+ 316          "Jadeite (san benito)"
+"Contains interstitial albite?
+(Na2O = 14.02%, K2O=0.06%, by Flame Photometry, by J. Hampel)"
+-1             10 
+   "si"    "al"    "ti"    "fe"    "mn"    "mg"    "ca"    "na"     "k"     "o" 
+       1       2       1       1       1       1       1       2       2       1
+       2       3       2       1       1       1       1       1       1       0
+  27.790  13.348    .000    .016    .000    .006    .014  11.291    .050  47.486
+ 318          "Obsidian CAMM 66"
+"Rhyolite, from Medicino, CA
+(Analysis by Carmichael, wet chemistry)
+Fe2O3 = 0.49%, FeO = 1.24% (as FeO = 1.68%)
+'Except for Fe/Mg, it is fairly homogeneous', JJD"
+-1             13 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"     "p"    "mn"    "ba"     "h"     "o" 
+       1       2       1       1       1       2       2       1       2       1       1       2       1
+       2       3       1       1       1       1       1       2       5       1       1       1       0
+  34.329   7.267   1.306    .199    .872   3.108   3.603    .186    .022    .031    .099    .055  48.854
+ 325          "Barite (UC #5393)"
+"Assumed stoichiometric minus measured SrO"
+-1             5 
+   "ba"     "s"     "o"    "sr"    "na" 
+       1       1       1       1       2
+       1       3       0       1       1
+  55.650  14.000  27.935   2.326    .100
+ 326          "Celestite (SrSO4) UC # 5466"
+"Assumed stoichiometric"
+-1             3 
+   "sr"     "s"     "o" 
+       1       1       1
+       1       3       0
+  47.692  17.462  34.847
+ 327          "Anhydrite (CaSO4) UC # 5555"
+"'slightly soluble in alcohol', JJD"
+-1             4 
+   "ca"     "s"     "o"    "sr" 
+       1       1       1       1
+       1       3       0       1
+  29.127  23.499  46.881    .493
+ 330          "Aenigmatite (Kola)"
+"Khibmite Quarry
+c. 38074
+(East of Kirovsk, Kola Peninsula)
+See Kelsey and Mckie, 1964, Min. Mag. v. 33, p 986
+Fe2O3 = 4.64%, FeO = 33.92% (as FeO = 38.10% + 0.47% O)"
+-1             12 
+   "si"    "ti"    "al"    "fe"    "mn"    "mg"    "ca"    "na"     "k"     "h"    "cl"     "o" 
+       1       1       2       1       1       1       1       2       2       2       1       1
+       2       2       3       1       1       1       1       1       1       1       0       0
+  18.520   5.791    .339  29.616   1.905    .995    .314   5.341    .033    .006    .020  37.469
+ 334          "Anorthoclase 5748"
+"Specimen from ISE Carmichael (Min. Mag. 1962)
+Pantelleria
+Fe2O3 = 0.74% (0.66% as FeO)"
+-1             8 
+   "si"    "al"    "fe"    "ca"    "na"     "k"     "h"     "o" 
+       1       2       1       1       2       2       2       1
+       2       3       1       1       1       1       1       0
+  31.183   9.982    .521    .021   5.668   4.915    .017  47.673
+ 336          "Nepheline (partial anal.)"
+"Analysis by ISE Carmichael (Na, K)
+Ca = 750 PPM (EPMA by JJD)"
+-1             7 
+   "na"     "k"    "si"    "al"    "fe"     "o"    "ca" 
+       2       2       1       2       1       1       1
+       1       1       2       3       1       0       1
+  12.552   4.657  20.329  17.868    .155  44.418    .075
+ 337          "Leucite 16682 (ISE Carmichael)"
+"Analysis by ISE Carmichael
+Fe2O3=0.30% (as FeO=0.27% + 0.03% O)"
+-1             6 
+   "si"    "al"    "fe"     "k"    "na"     "o" 
+       1       2       1       2       2       1
+       2       3       1       1       1       0
+  25.794  12.035    .210  16.803    .608  43.830
+ 340          "Analcime (Carmichael)"
+"Analysis by ISE Carmichael (Na, K)
+(Analcite)
+EPMA (by JJD): Al2O3=23.1%, SiO2=56.2%"
+-1             6 
+   "si"    "al"    "na"     "k"     "h"     "o" 
+       1       2       2       2       2       1
+       2       3       1       1       1       0
+  26.270  12.226   9.785    .033    .895  51.320
+ 342          "Sodalite (Ingamells)"
+"#4.296-8
+Specimen from Ingamells and Muysson (preliminary analysis)
+(Wet chemistry): Fe2O3=0.14%, FeO=0.54% (as FeO=0.67% + 0.01% O)
+Stoichiometry Na8Al6Si6O24Cl2
+"
+-1             14 
+   "si"    "al"    "ti"    "fe"    "mn"    "mg"    "ca"    "na"     "k"     "h"     "c"     "s"    "cl"     "o" 
+       1       2       1       1       1       1       1       2       2       2       1       1       1       1
+       2       3       2       1       1       1       1       1       1       1       2       3       0       0
+  17.146  16.688    .288    .521    .085    .103    .186  17.768    .066    .044    .085    .040   6.840  41.722
+ 345          "Hornblende MMhb-1"
+"Analysis by F. Flanagan (USGS, Reston)
+See: A New 40Ar-39Ar Dating Standard, by Mickelson and Lanphere"
+-1             11 
+   "si"    "ti"    "fe"    "al"    "ca"    "mg"    "na"     "k"    "mn"     "p"     "o" 
+       1       1       1       2       1       1       2       2       1       2       1
+       2       2       1       3       1       1       1       1       1       5       0
+  17.370   2.206  15.982   6.838   7.276   3.872   2.137   1.577    .581    .022  38.640
+ 348          "Topaz, F bearing"
+"Specimen from Todd Solberg
+Thomas Range Utah 
+"
+-1             5 
+   "si"    "al"     "f"     "h"     "o" 
+       1       2       1       2       1
+       2       3       0       1       0
+  14.925  29.775  20.370    .021  43.650
+ 349          "Topaz, F bearing (halogen corrected)"
+"Specimen from Todd Solberg
+Thomas Range Utah 
+"
+-1             5 
+   "si"    "al"     "f"     "h"     "o" 
+       1       2       1       2       1
+       2       3       0       1       0
+  14.925  29.775  20.370    .021  35.080
+ 350          "Enstatite 25-25"
+"Specimen from Dick White
+(note some olivine in mount)
+Fe2O3=0.64%, Fe=5.77% (as FeO = 6.35 + 0.06 O)
+NiO=0.07%  (EPMA by JJD)"
+-1             11 
+   "si"    "al"    "ti"    "fe"    "mg"    "ca"    "na"    "mn"    "cr"    "ni"     "o" 
+       1       2       1       1       1       1       2       1       2       1       1
+       2       3       2       1       1       1       1       1       3       1       0
+  25.387   2.297    .102   4.936  20.093    .600    .059    .124    .205    .055  46.141
+ 357          "Kaersutite (Korath)"
+"Korath Range, SW Ethopia
+See Brown and carmichael, 1969, Lithos.
+(Old std #157)
+Fe2O3=4.71%, FeO=4.66% (as FeO=8.90% + 0.47%)
+F=0.26%"
+-1             13 
+   "si"    "ti"    "al"    "fe"    "mn"    "mg"    "ca"    "na"     "k"     "p"     "h"     "f"     "o" 
+       1       1       2       1       1       1       1       2       2       2       2       1       1
+       2       2       3       1       1       1       1       1       1       5       1       0       0
+  18.375   2.482   8.135   6.918    .077   8.376   8.962   1.751   1.129    .017    .154    .260  43.482
+ 358          "Diopside (Chesterman)"
+"Twin Lakes, Fresno Co., CA
+From Charles Chesterman (Ca Div. Mines)"
+-1             9 
+   "si"    "ti"    "al"    "fe"    "mn"    "mg"    "ca"    "na"     "o" 
+       1       1       2       1       1       1       1       2       1
+       2       2       3       1       1       1       1       1       0
+  25.925    .000    .016    .047    .000  11.192  18.489    .015  44.316
+ 359          "Orthoclase (Ingamell)"
+"from Ingamells (Boyd's)
+#Or-1 (5-168)"
+-1             16 
+   "si"    "al"    "ti"    "fe"    "mn"    "mg"    "ca"    "sr"    "ba"    "na"     "k"    "rb"     "p"     "f"     "h"     "o" 
+       1       2       1       1       1       1       1       1       1       2       2       2       2       1       2       1
+       2       3       2       1       1       1       1       1       1       1       1       1       5       0       1       0
+  30.099   9.834    .000    .016    .000    .006    .007    .025    .734    .816  12.386    .027    .000    .000    .009  46.030
+ 365          "Garnet, almandine"
+"(U.C. #12552)
+(assumed stoichiometric and EPMA analysis)"
+-1             9 
+   "si"    "ti"    "al"    "cr"    "fe"    "mn"    "mg"    "ca"     "o" 
+       1       1       2       2       1       1       1       1       1
+       2       2       3       3       1       1       1       1       0
+  18.660    .036  11.951    .000  17.396    .379   6.537   3.002  42.508
+ 366          "Grossular"
+"Standard Description"
+-1             5 
+   "Fe"    "Ca"    "Si"    "Al"     "O" 
+       1       1       1       2       1
+       1       1       2       3       0
+   3.073  24.256  18.543  11.876  42.253
+ 370          "Hematite (Sennin)"
+"Specimen from Dr. Morita, Univ of Kyoto
+Sennin Mine, Japan
+Collected by Dr. K. Tomita
+(Assumed stoichiometric)"
+-1             8 
+   "fe"    "al"    "mn"    "ti"    "mg"    "cr"    "si"     "o" 
+       1       2       1       1       1       2       1       1
+       1       3       1       2       1       3       2       0
+  69.749    .127    .008    .000    .000    .000    .000  30.117
+ 372          "Cassiterite (U.C. #2889)"
+"No detectable Fe, Mn, W or Ta (XRF by J. Hampel)"
+-1             2 
+   "sn"     "o" 
+       1       1
+       2       0
+  78.765  21.235
+ 373          "Ilmenite (U.C. #2704)"
+"Sawyer, California
+Leake (partial analysis)
+Y. Chiba (full analysis)"
+-1             7 
+   "fe"    "ti"    "si"    "mg"    "al"    "mn"     "o" 
+       1       1       1       1       2       1       1
+       1       2       2       1       3       1       0
+  36.378  30.755    .000    .151    .011   1.394  31.481
+ 374          "Orthoclase MAD-10"
+"Specimen from Chuck Taylor
+Fe2O3=2.01% (EPMA by J. Donovan) (as FeO=1.88% + 0.13% O)
+K2O=15.49%, Na2O=1.07% (Flame photometry by J. Hampel)
+BaO=0.06%, Rb2O=0.03% (EPMA by J. Donovan)
+Sr=12 ppm, Rb=600 ppm (Isotope dilution)"
+-1             8 
+   "si"    "al"    "fe"     "k"    "na"    "ba"    "rb"     "o" 
+       1       2       1       2       2       1       2       1
+       2       3       1       1       1       1       1       0
+  30.286   8.849   1.461  12.859    .675    .054    .027  45.798
+ 376          "Benitoite (white)"
+"From UC collection (no number)
+(Assume analysis by Louderbeck, 1907)"
+-1             4 
+   "si"    "ba"    "ti"     "o" 
+       1       1       1       1
+       2       1       2       0
+  20.385  33.148  11.691  34.896
+ 377          "Hematite (U.C. #8093)"
+"Elba
+(analysis by Y. Chiba)
+Al2O3=1.96%, TiO2=0.41% (wet chemistry)
+Al2O3=0.005%, TiO2=0.10% (EPMA, by J. Donovan)"
+-1             7 
+   "fe"    "ti"    "al"    "ca"    "mg"    "si"     "o" 
+       1       1       2       1       1       1       1
+       1       2       3       1       1       2       0
+  69.811    .060    .026    .014    .000    .000  30.089
+ 380          "Rutile (U.C. #8142)"
+"(EPMA analysis only)"
+-1             4 
+   "ti"    "al"    "fe"     "o" 
+       1       2       1       1
+       2       3       1       0
+  59.754    .011    .241  39.995
+ 386          "Alamosite (PbSiO3)"
+"Tsumeb, South West Africa
+From Mineralogical Research, CA
+(assumed stoichiometric)"
+-1             3 
+   "pb"    "si"     "o" 
+       1       1       1
+       1       2       0
+  73.151   9.910  16.939
+ 387          "Wulfenite (PbMoO4)"
+"(Assumed stoichiometric)
+U.C. #9344"
+-1             3 
+   "pb"    "mo"     "o" 
+       1       1       1
+       1       3       0
+  56.349  26.195  17.456
+ 391          "Lawsonite (Pabst)"
+"Blake Gardens, Kensington, CA
+Specimen collected by John Donovan
+See Davis and Pabst, Am, Min. 1960, p695
+(LOI=11.40%)
+Fe2O3=1.56%, FeO=0.13% (as FeO=1.53% + 0.16% O)"
+-1             11 
+   "si"    "al"    "ti"    "fe"    "mg"    "ca"    "na"     "k"    "mn"     "h"     "o" 
+       1       2       1       1       1       1       2       2       1       2       1
+       2       3       2       1       1       1       1       1       1       1       0
+  17.828  16.359    .174   1.189    .018  12.536    .045    .116    .008   1.200  50.062
+ 395          "Magnetite U.C. #3380"
+"Port Henry, NY
+FeO=30.93% (ISE Carmichael) 
+Fe2O3=68.85%, FeO=30.92% (as FeO=92.73% + 6.90% O)
+(Total FeO=92.73%, by EPMA, JJD)"
+-1             9 
+   "fe"    "al"    "ti"    "mg"    "mn"    "cr"    "ca"    "si"     "o" 
+       1       2       1       1       1       2       1       1       1
+       1       3       2       1       1       3       1       2       0
+  72.080    .201    .012    .072    .054    .007    .000    .000  27.803
+ 396          "Chromite (UC # 523-9)"
+"Stillwater Complex
+Collected by Richard L. Nielsen and F. Fisher
+See Geol. Soc. of Amer., Pub #80, 1960
+Excess oxygen calc by B. Lange
+Mn (interference corrected for Cr Kb by JJD)"
+-1             9 
+   "cr"    "ti"    "al"    "fe"    "mn"    "mg"     "v"     "o"    "si" 
+       2       1       2       1       1       1       2       1       1
+       3       2       3       1       1       1       3       0       2
+  31.905    .300   7.690  20.692    .148   6.290    .122  33.042    .005
+ 397          "Moacyr monazite"
+"Brazil"
+-1             25 
+   "pb"     "u"    "as"    "la"    "ce"    "pr"    "nd"    "sm"    "eu"    "gd"    "tb"    "dy"    "ho"    "er"    "tm"    "yb"    "si"    "sr"     "y"     "p"     "s"    "th"    "ca"     "k"     "o" 
+       1       1       2       2       2       2       2       2       2       2       2       2       2       2       2       2       1       1       2       2       1       1       1       2       1
+       1       2       3       3       3       3       3       3       3       3       3       3       3       3       3       3       2       1       3       5       3       2       1       1       0
+    .149    .075    .000  12.237  25.102   2.620   9.960    .933    .396    .758    .072    .205    .000    .043    .184    .014    .159    .000   1.109  12.203    .028   6.632    .325    .035  26.134
+ 451          "Anothoclase, Kakanui  USNM 133868"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             7 
+   "si"    "al"    "fe"    "ca"    "na"     "k"     "o" 
+       1       2       1       1       2       2       1
+       2       3       1       1       1       1       0
+  31.057  10.649    .155    .622   6.907   1.951  47.949
+ 452          "Fluor-apatite USNM 104021"
+"Analysis (wet chem.) by G. Jarosewich
+Analysis (isotope dil.) by B. Griffin
+Ce=.47%, Dy=.01%, Er=.005%, Eu=.002%
+La=.34%, Nd=.11%, Sm=.016%, Yb=.004%
+Borate Fus./Ion Sel. Elec. F=3.37%
+Colorimetry F=3.23%
+Ion elec. Cl=.46%
+AA Fe=.06, Mg=.01, Mn=.01"
+-1             16 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"     "p"    "mn"    "sr"     "c"    "th"     "h"     "f"    "cl"     "o" 
+       1       2       1       1       1       2       2       2       1       1       1       1       2       1       1       1
+       2       3       1       1       1       1       1       5       1       1       2       2       1       0       0       0
+    .159    .037    .039    .006  38.608    .171    .008  17.798    .008    .059    .014    .018    .001   3.530    .410  38.745
+ 453          "Augite, Kakanui USNM 122142"
+"Analysis (wet chemistry) by Gene Jarosewich (modifed)
+Original analysis: Al2O3=7.86%, Fe2O3=3.69%, FeO=3.45%"
+-1             10 
+   "mg"    "ca"    "na"    "ti"    "mn"    "cr"     "o"    "si"    "al"    "fe" 
+       1       1       2       1       1       2       1       1       2       1
+       1       1       1       2       1       3       0       2       3       1
+  10.125  11.392    .994    .492    .108    .089  44.198  23.714   4.620   4.928
+ 455          "Chromite USNM 117075"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             10 
+   "cr"    "fe"    "al"    "mg"    "ca"    "mn"    "ti"    "ni"    "si"     "o" 
+       2       1       2       1       1       1       1       1       1       1
+       3       1       3       1       1       1       2       1       2       0
+  41.395  10.136   5.250   9.166    .086    .178    .072    .126    .023  33.208
+ 457          "Diopside, NY  USNM 11733"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             8 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"    "mn"     "o" 
+       1       2       1       1       1       2       1       1
+       2       3       1       1       1       1       1       0
+  25.649    .058    .187  11.036  18.318    .252    .031  44.000
+ 458          "Fayalite  Rockport, MA  USNM 85276"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             5 
+   "si"    "fe"    "ti"    "mn"     "o" 
+       1       1       1       1       1
+       2       1       2       1       0
+  13.659  52.508    .024   1.657  31.102
+ 460          "Garnet USNM 87375"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             9 
+   "si"    "al"    "fe"    "mg"    "ca"    "ti"    "mn"     "h"     "o" 
+       1       2       1       1       1       1       1       2       1
+       2       3       1       1       1       2       1       1       0
+  18.450  11.787  12.631   3.950  10.285    .234    .457    .001  42.405
+ 461          "Garnet USNM 110752"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             10 
+   "si"    "al"    "fe"    "mg"    "ca"    "ti"    "mn"    "cr"     "h"     "o" 
+       1       2       1       1       1       1       1       2       2       1
+       2       3       1       1       1       2       1       3       1       0
+  18.773  12.014   8.791   4.324  12.950    .210    .147    .000    .001  43.019
+ 462          "Obsidian USNM 111240/52 VG-2"
+"Analysis (wet chemistry) by Gene Jarosewich
+F = 0.045 (EPMA by JJD)"
+-1             13 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"     "p"    "mn"     "h"     "o"     "f" 
+       1       2       1       1       1       2       2       1       2       1       2       1       1
+       2       3       1       1       1       1       1       2       5       1       1       0       0
+  23.751   7.441   9.203   4.046   7.948   1.944    .158   1.109    .087    .170    .002  43.780    .045
+ 463          "Glass, basaltic USNM 113498"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             11 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"     "p"    "mn"     "o" 
+       1       2       1       1       1       2       2       1       2       1       1
+       2       3       1       1       1       1       1       2       5       1       0
+  23.812   6.610  10.338   3.063   6.647   1.973    .681   2.434    .166    .116  43.339
+ 464          "Obsidian USNM 113716"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             12 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"     "p"    "mn"     "h"     "o" 
+       1       2       1       1       1       2       2       1       2       1       2       1
+       2       3       1       1       1       1       1       2       5       1       1       0
+  24.083   8.145   7.097   4.951   8.083   1.840    .075    .779    .052    .132    .020  44.753
+ 465          "Obsidian USNM 72854"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             12 
+   "si"    "al"    "fe"    "ca"    "na"     "k"    "ti"    "mn"     "p"     "h"    "cl"     "o" 
+       1       2       1       1       2       2       1       1       2       2       1       1
+       2       3       1       1       1       1       2       1       5       1       0       0
+  35.858   6.383    .956    .357   2.782   4.060    .072    .023    .004    .013    .130  48.961
+ 466          "Glass, synthetic tektite USNM 2213"
+""
+-1             10 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"    "mn"     "o" 
+       1       2       1       1       1       2       2       1       1       1
+       2       3       1       1       1       1       1       2       1       0
+  35.409   6.002   3.793    .911   1.901    .786   1.561    .300    .085  48.942
+ 467          "Hornblende (Arenal) USNM 111356"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             11 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"    "mn"     "h"     "o" 
+       1       2       1       1       1       2       2       1       1       2       1
+       2       3       1       1       1       1       1       2       1       1       0
+  19.380   8.188   8.916   8.587   8.255   1.417    .174    .845    .116    .191  44.070
+ 468          "Hornblende (Kakanui) USNM 143965"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             11 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"    "mn"     "h"     "o" 
+       1       2       1       1       1       2       2       1       1       2       1
+       2       3       1       1       1       1       1       2       1       1       0
+  18.871   7.886   8.488   7.719   7.361   1.929   1.702   2.830    .070    .105  43.059
+ 469          "Hypersthene, johnstown USNM #746"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             9 
+   "si"    "al"    "fe"    "mg"    "ca"    "ti"    "mn"    "cr"     "o" 
+       1       2       1       1       1       1       1       2       1
+       2       3       1       1       1       2       1       3       0
+  25.284    .651  11.831  16.155   1.086    .096    .379    .513  44.254
+ 470          "Ilmenite USNM 96189"
+"Analysis (wet chemistry) by Gene Jarosewich
+FeO=36.1%, Fe2O3=11.6% (as FeO=46.54% + 1.16% O)"
+-1             10 
+   "cr"    "nb"     "u"     "o"    "fe"    "ti"    "mg"    "mn"    "al"    "si" 
+       2       2       1       1       1       1       1       1       2       1
+       3       5       2       0       1       2       1       1       3       2
+    .014    .643    .123  31.356  36.176  27.398    .211   3.477    .011    .061
+ 471          "Magnetite (minas gerais) USNM 114887"
+"Analysis (wet chemistry) by Gene Jarosewich
+Fe2O3=67.5%, FeO=30.2% (as FeO=90.9% + 6.80% O)"
+-1             8 
+   "fe"    "mg"    "ti"    "cr"    "si"    "al"    "mn"     "o" 
+       1       1       1       2       1       2       1       1
+       1       1       2       3       2       3       1       0
+  70.658    .030    .096    .171    .051    .026    .077  27.310
+ 473          "Olivine (Fo90) USNM 111312/444"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             8 
+   "si"    "fe"    "mg"    "ca"     "p"    "mn"    "ni"     "o" 
+       1       1       1       1       2       1       1       1
+       2       1       1       1       5       1       1       0
+  19.076   7.423  29.802    .036    .000    .108    .291  43.603
+ 474          "Olivine USNM 2566 (Fo 83) Springwater"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             6 
+   "si"    "fe"    "mg"    "mn"    "cr"     "o" 
+       1       1       1       1       2       1
+       2       1       1       1       3       0
+  18.207  12.919  26.281    .232    .014  41.817
+ 475          "Omphacite USNM 110607"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             11 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"    "mn"     "h"     "o" 
+       1       2       1       1       1       2       2       1       1       2       1
+       2       3       1       1       1       1       1       2       1       1       0
+  25.906   3.874   3.591   6.977   9.827   3.858    .125    .222    .077    .002  44.201
+ 477          "Plagioclase (Lake County) USNM 115900"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             10 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"    "mn"     "o" 
+       1       2       1       1       1       2       2       1       1       1
+       2       3       1       1       1       1       1       2       1       0
+  23.957  16.359    .358    .084   9.749   2.559    .149    .030    .008  46.837
+ 478          "Garnet USNM 143968"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             9 
+   "si"    "al"    "fe"    "mg"    "ca"    "ti"    "mn"     "h"     "o" 
+       1       2       1       1       1       1       1       2       1
+       2       3       1       1       1       2       1       1       0
+  19.380  12.559   8.302  11.162   3.695    .282    .217    .001  44.712
+ 480          "Scapolite USNM R6600-1"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             11 
+   "si"    "al"    "fe"    "ca"    "na"     "k"     "c"     "h"    "cl"     "s"     "o" 
+       1       2       1       1       2       2       1       2       1       1       1
+       2       3       1       1       1       1       2       1       0       3       0
+  23.269  13.258    .132   9.706   3.858    .780    .682    .024   1.430    .529  46.512
+ 505          "Boron metal"
+"Alpha-Aesar, 99.5%"
+ 0             1 
+    "B" 
+       2
+       3
+ 100.000
+ 506          "Carbon (graphite/diamond)"
+"1. single crystal (synthetic) from Union Carbide
+Grade 2YA, serial #8403, contains ~2% oxygen (from H2O?)
+2. natural diamond, gem quality
+Source unknown, oxygen < 0.1%"
+ 0             2 
+    "c"     "o" 
+       1       1
+       2       0
+  99.900    .100
+ 512          "Magnesium metal"
+""
+ 0             1 
+   "Mg" 
+       1
+       1
+ 100.000
+ 513          "Aluminum metal"
+"From Reactor Experiments, lot #616, 99.9914%
+Fe=.0008%, Cu=.0009%, Ni=.0005%, Cr=.0001%
+Pb=.001%, Sn=.001%, Mn=.001%, Si=.001%
+Ag=.0001%, Mg=.001%, Ca=.002%, Ti=.001%"
+ 0             6 
+   "al"    "ca"    "mg"    "mn"    "ti"     "o" 
+       2       1       1       1       1       1
+       3       1       1       1       2       0
+  99.000    .002    .001    .001    .001   1.000
+ 514          "Silicon metal"
+"From Aesar (Johnson-Matthey)
+Cat #12684, 99.99999+% pure"
+ 0             1 
+   "si" 
+       1
+       2
+ 100.000
+ 521          "Scandium metal"
+"no material"
+ 0             1 
+   "sc" 
+       2
+       3
+ 100.000
+ 522          "Titanium metal"
+"From Tony Tomsia, LBL
+1/16' wire, 99.995%"
+ 0             2 
+   "ti"     "o" 
+       1       1
+       2       0
+  99.500    .500
+ 523          "Vanadium metal"
+"From Aesar, #143594, Lot #19778
+99.95%, 1.0 mm wire"
+ 0             1 
+    "v" 
+       2
+       3
+ 100.000
+ 524          "Chromium metal"
+"From Aesar (Johnson-Matthey)
+Lot #16937, 99.996%,
+Chip form, 1.5 mm thick"
+ 0             3 
+   "cr"    "fe"     "o" 
+       2       1       1
+       3       1       0
+  99.000    .010   1.000
+ 525          "Manganese metal"
+"From Aesar, Batch #S96590, 99.99%
+Mg 50 ppm, Ti 30 ppm, Cr 3 ppm, Fe 1 ppm
+Al, Ca, Cu, Ni, Si < 1 ppm"
+ 0             1 
+   "mn" 
+       1
+       1
+ 100.000
+ 526          "Iron metal"
+"From Johnson-Matthey, Vacuum remelted, Batch BM1664
+Optical emission: Al < 1ppm, Ca < 1 ppm,
+Cr 2 ppm, Co 20 ppm, Cu 3 ppm, Ni 3 ppm
+Si 60 ppm, Sn 10 ppm, Ag < 1 ppm
+Oxygen 310 ppm, Nitrogen 10 ppm"
+ 0             1 
+   "fe" 
+       1
+       1
+ 100.000
+ 527          "Cobalt metal"
+"From Aesar (Johnson-Matthey)
+1.0 mm wire, 99.997%"
+ 0             2 
+   "co"     "o" 
+       1       1
+       1       0
+  99.000   1.000
+ 528          "Nickel metal"
+"1. From Johnson-Matthey, batch #W7330
+99.99%, 1 mm wire
+Cu 7ppm, Fe 7ppm, Cr 1ppm, Ag 1ppm
+Al, Ca, Mg, Si < 1 ppm
+2. From Puratronic, Batch NM11879
+5 mm rod
+Sb 30ppm, As 100ppm, Nb 10ppm
+W 30ppm, Zn 30ppm, Zr 3ppm
+"
+ 0             1 
+   "ni" 
+       1
+       1
+ 100.000
+ 529          "Copper metal"
+"1. From NBS ~1mm wire, 99.999
+SRM 482
+2. from Reactor Experiments, sheet
+99.9936%, Fe .001%, Ag .002%"
+ 0             2 
+   "cu"     "o" 
+       2       1
+       1       0
+  99.800    .200
+ 530          "Zinc metal"
+"From Johnson-Matthey, Batch #WZ1298
+99.999%, 1 mm wire
+Sn 7ppm, Cd 1ppm, Pb 1ppm
+Ca, Cu, Mg, Ni, Si < 1ppm"
+ 0             4 
+   "zn"    "sn"    "cd"    "pb" 
+       1       1       1       1
+       1       2       1       1
+  99.999    .001    .000    .000
+ 532          "Germanium metal"
+"99.999% pure, Aesar"
+ 0             1 
+   "ge" 
+       1
+       2
+ 100.000
+ 534          "Selenium metal"
+"99.99%"
+ 0             1 
+   "se" 
+       1
+       2
+ 100.000
+ 539          "Yttrium metal"
+"99.99%"
+ 0             1 
+    "y" 
+       2
+       3
+ 100.000
+ 540          "Zirconium metal"
+"Specimen from LBL, T. Tomsia
+Low Hafnium"
+ 0             2 
+   "zr"     "o" 
+       1       1
+       2       0
+  99.500    .500
+ 541          "Niobium metal"
+"Aesar, 99.99%, 0.25mm sheet
+Lot #10258
+Possible 0.19 wt% Ta (?)"
+ 0             2 
+   "nb"     "o" 
+       2       1
+       5       0
+  99.400    .600
+ 542          "Molybedenum metal"
+"Aesar (Johnson-Matthey)
+5mm rod, Batch #31825
+Spectroscopic (in ppm):
+Cr 30, Fe 25, Al 15, Ni 15, Mg 10.5
+Cu 7.5, Mn 7.5, Ca 7.5"
+ 0             2 
+   "mo"     "o" 
+       1       1
+       3       0
+  99.200    .800
+ 544          "Ruthenium metal"
+"1. Alfa Aesar 99.997% 
+(before arc melt by Stacy Group)
+2. Pure Tech (Williams Advanced Materials)
+99.95% Lot# 00-17740/01"
+ 0             2 
+   "ru"     "o" 
+       1       1
+       2       0
+  99.700    .300
+ 545          "Rhodium metal"
+"Specimen from LBL, 99.99%"
+ 0             2 
+   "rh"     "o" 
+       2       1
+       3       0
+  99.700    .300
+ 546          "Palladium metal"
+"99.999%"
+ 0             1 
+   "pd" 
+       1
+       1
+ 100.000
+ 547          "Silver metal"
+"From NBS (NIST), SRM 481
+99.999%"
+ 0             2 
+   "ag"     "o" 
+       2       1
+       1       0
+  99.200    .800
+ 548          "Cadmium metal"
+"From Johnson-Matthey, Batch W21200, 2mm wire
+99.999%
+Sn 10 ppm, Si, Mg, Cu, Fe, Ag < 1 ppm"
+ 0             7 
+   "cd"    "sn"    "si"    "mg"    "cu"    "fe"    "ag" 
+       1       1       1       1       2       1       2
+       1       2       2       1       1       1       1
+  99.999    .001    .000    .000    .000    .000    .000
+ 549          "Indium metal"
+"99.99%"
+ 0             1 
+   "in" 
+       2
+       1
+ 100.000
+ 550          "Tin metal"
+"From Johnson-Matthey, lumps
+99.999%"
+ 0             1 
+   "sn" 
+       1
+       2
+  99.999
+ 551          "Antimony metal"
+"Johnson-Matthey, Lot #17318
+1-3mm shot, 99.9999%"
+ 0             1 
+   "sb" 
+       2
+       3
+ 100.000
+ 552          "Tellurium metal"
+"99.99%"
+ 0             1 
+   "te" 
+       1
+       2
+ 100.000
+ 564          "Gadolinium metal"
+""
+ 0             1 
+   "gd" 
+       2
+       3
+ 100.000
+ 565          "Terbium metal"
+""
+ 0             1 
+   "tb" 
+       2
+       3
+ 100.000
+ 566          "Dysprosium metal"
+""
+ 0             1 
+   "dy" 
+       2
+       3
+ 100.000
+ 567          "Holmium metal"
+""
+ 0             1 
+   "ho" 
+       2
+       3
+ 100.000
+ 568          "Erbium metal"
+""
+ 0             1 
+   "er" 
+       2
+       3
+ 100.000
+ 569          "Thulium metal"
+""
+ 0             1 
+   "tm" 
+       2
+       3
+ 100.000
+ 570          "Ytterbium metal"
+""
+ 0             1 
+   "yb" 
+       2
+       3
+ 100.000
+ 571          "Lutetium metal"
+""
+ 0             1 
+   "lu" 
+       2
+       3
+ 100.000
+ 572          "Hafnium metal"
+"From LBL
+Zr by EPMA (J. Donovan)"
+ 0             2 
+   "hf"    "zr" 
+       1       1
+       2       2
+  96.400   3.600
+ 573          "Tantalum metal"
+"Aesar (Johnson-Matthey), 0.25mm wire
+Lot #16943, 99.95%"
+ 0             2 
+   "ta"     "o" 
+       2       1
+       5       0
+  99.400    .600
+ 574          "Tungsten Metal"
+""
+ 0             2 
+    "w"     "o" 
+       1       1
+       3       0
+  99.740    .260
+ 575          "Rhenium metal"
+"From Aesar, Lot# 14169, 99.97%
+1.0mm wire"
+ 0             1 
+   "re" 
+       1
+       2
+ 100.000
+ 576          "Osmium metal"
+"YAG (60w) laser fused (P. Renne at BGC)
+Powder prepared by H2 reduction by E. Tulsky (UCB Chemistry)"
+ 0             1 
+   "os" 
+       1
+       2
+ 100.000
+ 577          "Iridium metal"
+""
+ 0             2 
+   "ir"     "o" 
+       1       1
+       2       0
+  99.700    .300
+ 578          "Platinum metal"
+"Aesar (Johnson-Matthey), #10957, lot# 17779
+0.5mm wire, batch W07169
+Fe 3ppm, Cr 2ppm, Pb 1ppm"
+ 0             2 
+   "pt"     "o" 
+       1       1
+       1       0
+  99.700    .300
+ 579          "Gold metal"
+"1. From NBS (NIST) SRM 481
+99.99%
+2. Aesar (Johnson-Matthey)
+Lot # 050786, 1.4mm wire
+99.9999%"
+ 0             2 
+   "au"    "ag" 
+       2       2
+       3       1
+  98.000   2.000
+ 582          "Lead metal"
+"from Johnson-Matthey, batch #4528
+99.999%
+Bi 7ppm, Ag < 1ppm, Na < 1ppm"
+ 0             1 
+   "pb" 
+       1
+       1
+ 100.000
+ 583          "Bismuth metal"
+"From Johnson-Matthey, 10781A, 25G
+Lot # 11174, 99.9999%
+Tear-drop shot"
+ 0             1 
+   "bi" 
+       2
+       3
+ 100.000
+ 600          "Al-Mg-P NBS glass (K-496)"
+"From NBS (NIST), Microanalysis glasses
+2 x 2 x 20 mm rod
+Traces by EPMA (NBS) by R. Marinenko
+Oxygen by difference"
+ 0             4 
+   "al"    "mg"     "p"     "o" 
+       2       1       2       1
+       3       1       5       0
+   6.470   6.650  32.980  53.900
+ 601          "Al-Mg-P NBS trace glass (K-497)"
+"From NBS (NIST), Microanalysis glasses
+2 x 2 x 20 mm rod
+Traces by EPMA (NBS) by R. Marinenko
+Oxygen by difference
+Neutron activation: Ta = 0.83%"
+ 0             11 
+   "al"    "mg"     "p"     "o"    "pb"    "si"    "ti"    "fe"    "zr"    "ce"    "ta" 
+       2       1       2       1       1       1       1       1       1       2       2
+       3       1       5       0       1       2       2       1       2       3       5
+   5.970   6.490  31.590  52.460    .860    .130    .220    .260    .320    .940    .071
+ 602          "Al-Mg-P NBS trace glass (K-1013)"
+"From NBS (NIST), Microanalysis glasses
+2 x 2 x 20 mm rod
+Traces by EPMA (NBS) by R. Marinenko
+Oxygen by difference"
+ 0             13 
+   "al"    "mg"     "p"     "o"    "ti"    "cr"    "ni"    "ge"    "zr"    "ba"    "eu"    "th"     "u" 
+       2       1       2       1       1       2       1       1       1       1       2       1       1
+       3       1       5       0       2       3       1       2       2       1       3       2       2
+   6.080   5.860  32.260  53.050    .210    .140    .310    .340    .450    .520    .530    .100    .150
+ 604          "Boron Nitride (BN)"
+"MAC Block"
+ 0             4 
+    "N"     "B"     "O"     "C" 
+       2       2       1       1
+       5       3       0       2
+  47.800  36.800    .400  15.000
+ 608          "GaN"
+"Gallium Nitride"
+ 0             2 
+   "Ga"     "N" 
+       2       2
+       3       5
+  83.271  16.729
+ 610          "NiTe (synthetic)"
+"Obtained from Paul Hlava, Sandia Nat'l Lab."
+ 0             2 
+   "Te"    "Ni" 
+       1       1
+       2       1
+  68.488  31.512
+ 611          "SmS (synthetic)"
+"Source unknown"
+ 0             2 
+   "sm"     "s" 
+       2       1
+       3       3
+  81.400  18.570
+ 612          "SRM 612 (trace element glass)"
+"Nominal composition only
+Approximately 40 ppm of the following elements:
+Ba, Co, Cu, Dy, Er, Fe, Mn, Nd, Ni, Sm, 
+Th, Ti, B, Ce, Eu, Gd, La, Pb, Rb, U, Yt
+Approximately 20 ppm Ag, Th
+Au = 5 ppm
+"
+ 0             5 
+   "si"    "ca"    "na"    "al"     "o" 
+       1       1       2       2       1
+       2       1       1       3       0
+  33.650   8.576  10.385   1.059  46.330
+ 617          "PbS (synthetic)"
+"From Czemanske
+(assumed stoichiometric)"
+ 0             2 
+   "pb"     "s" 
+       1       1
+       1       3
+  86.590  13.400
+ 620          "CuFeS2 (synthetic)"
+"From Czemanske (Chalcopyrite)
+(assumed stoichiometric)"
+ 0             3 
+   "cu"    "fe"     "s" 
+       2       1       1
+       1       1       3
+  34.620  30.430  34.950
+ 624          "Ag2S (synthetic)"
+"From Alpha Aesar (#89473)
+99.9+%, Lot #030281
+Assumed stoichiometric"
+ 0             2 
+   "ag"     "s" 
+       2       1
+       1       3
+  87.060  12.940
+ 625          "AgBiS2 (synthetic)"
+"From Czemanske"
+ 0             3 
+   "Bi"    "Ag"     "S" 
+       2       2       1
+       3       1       3
+  54.854  28.314  16.833
+ 626          "As2S3 (synthetic)"
+"From Czemanske
+May be AsS (orange color)
+Large grains, difficult to see in reflection"
+ 0             2 
+   "As"     "S" 
+       2       1
+       3       3
+  60.903  39.097
+ 627          "Sb2S3"
+"Alpha Products, #89343, lot # 012981"
+ 0             2 
+   "Sb"     "S" 
+       2       1
+       3       3
+  71.683  28.317
+ 630          "EuSi2 (europium silicide)"
+"Cerac, Inc., 1/4' pieces, 99.9%
+Stock # E-1039, Lot #24249-A-2
+Al=0.03%, Ca=0.0005%"
+ 0             3 
+   "eu"    "si"    "al" 
+       2       1       2
+       3       2       3
+  73.010  26.990    .030
+ 632          "NBS K-458 glass (Si-Ba-Zn)"
+"NBS (NIST) SRM 1873"
+ 0             4 
+   "si"    "ba"    "zn"     "o" 
+       1       1       1       1
+       2       1       1       0
+  23.050  41.790   3.010  31.860
+ 634          "NBS K-489 glass (Si-Ba-Zn-Pb)"
+"NBS (NIST) SRM 1873"
+ 0             11 
+   "si"    "ba"    "zn"    "pb"    "al"    "zr"    "ti"    "ce"    "ta"    "fe"     "o" 
+       1       1       1       1       2       1       1       2       2       1       1
+       2       1       1       1       3       2       2       3       5       1       0
+  22.230  39.530   2.930   1.320    .110    .400    .270    .800    .950    .350  31.700
+ 636          "NBS K-963 glass (Si-Ba-Zn)"
+"NBS (NIST) SRM 1873"
+ 0             14 
+   "si"    "ba"    "zn"    "ge"     "p"    "mg"    "zr"    "ti"    "ni"    "eu"     "u"    "th"    "cr"     "o" 
+       1       1       1       1       2       1       1       1       1       2       1       1       2       1
+       2       1       1       2       5       1       2       2       1       3       2       2       3       0
+  21.960  39.210   2.930    .470    .330    .340    .610    .320    .330    .950    .160    .060    .310  32.000
+ 640          "Lanthanum hexaboride (LaB6)"
+"From LBL, filament grade
+Assumed stoichiometric"
+ 0             2 
+   "la"     "b" 
+       2       2
+       3       3
+  68.170  31.830
+ 642          "Lanthanum Nickel eutectic"
+"Johnson-Matthey, #13399
+Batch # BM1871"
+ 0             2 
+   "la"    "ni" 
+       2       1
+       3       1
+  88.000  12.000
+ 644          "Lanthanum Aluminum alloy"
+"Johnson-Matthey, #13400A
+Lot # BM1409
+Analyzed for Al only (5.0% +/- 0.3)"
+ 0             2 
+   "la"    "al" 
+       2       2
+       3       3
+  95.000   5.000
+ 648          "NiAl"
+"single crystal from Lifshin (GE)"
+ 0             2 
+   "Ni"    "Al" 
+       1       2
+       1       3
+  68.513  31.487
+ 649          "NBS SRM 1132 Lead alloy"
+"NBS (NIST)
+Lead base bearing metal
+Fe < 0.001%"
+ 0             8 
+   "sb"    "sn"    "cu"    "bi"    "as"    "ni"    "fe"    "pb" 
+       2       1       2       2       2       1       1       1
+       3       2       1       3       3       1       1       1
+  10.260   5.840    .054    .052    .057    .003    .001  83.733
+ 650          "Si3N4 (ceramic)"
+"From LBL (T. Tomsia), synthetic
+Modified for oxygen from stoichiometry"
+ 0             6 
+   "si"     "n"     "o"    "mg"     "y"    "al" 
+       1       2       1       1       2       2
+       2       5       0       1       3       3
+  57.000  38.000   2.000   3.000    .200    .100
+ 651          "NIST SRM C2402 (Hastelloy C)"
+"High temperature alloy"
+ 0             13 
+   "ni"    "mo"    "cr"    "fe"     "w"    "co"    "si"    "mn"     "v"    "cu"     "s"     "p"     "c" 
+       1       1       2       1       1       1       1       1       2       2       1       2       1
+       1       3       3       1       3       1       2       1       3       1       3       5       2
+  51.500  17.100  16.150   7.300   4.290   1.500    .850    .640    .220    .190    .018    .007    .010
+ 652          "AuSb2 (synthetic)"
+"Source unknown"
+ 0             2 
+   "au"    "sb" 
+       2       2
+       3       3
+  44.680  55.320
+ 653          "81.3 % Mn + Cu alloy"
+"From Reactor Experiments, Inc.
+Lot # 348, 0.01' sheet, 99.797%
+Ni=0.15%, Fe=0.03%, Si=0.015%, Al=0.002%, Cr=0.0001%"
+ 0             6 
+   "mn"    "cu"    "ni"    "fe"    "si"    "al" 
+       1       2       1       1       1       2
+       1       1       1       1       2       3
+  81.300  18.600    .150    .030    .015    .002
+ 654          "NBS SRM-654b"
+"NBS (NIST), Ti base alloy"
+ 0             11 
+   "ti"    "al"     "v"    "fe"    "sn"    "cu"    "ni"    "cr"    "si"    "mo"    "zr" 
+       1       2       2       1       1       2       1       2       1       1       1
+       2       3       3       1       2       1       1       3       2       3       2
+  88.974   6.340   4.310    .230    .023    .004    .028    .025    .045    .013    .008
+ 655          "NiFe NBS alloy"
+"NBS (NIST) SRM 1159"
+ 0             8 
+   "ni"    "fe"    "mn"    "si"    "cr"    "mo"    "co"    "cu" 
+       1       1       1       1       2       1       1       2
+       1       1       1       2       3       3       1       1
+  48.200  51.000    .300    .320    .060    .010    .022    .038
+ 656          "Au(0.127%) in aluminum"
+"From Reactor Experiments, Inc, 99.9348%, lot #584
+Fe=0.003%, Cu=0.02%, Ni=0.001%, Cr=0.0003%
+Mn=0.01%, Si=0.005%, Ag=0.01%, Mg=0.0006%
+Ca=0.0003%, Ti=0.002%"
+ 0             5 
+   "al"    "au"    "cu"    "mn"    "ag" 
+       2       2       2       1       2
+       3       3       1       1       1
+  99.935    .127    .020    .010    .010
+ 657          "0.155% Au in Al"
+"From Reactor Experiments, Inc, lot #35, 0.005' sheet
+Si=0.003%, Mn=0.005%, Mg=0.002%, Fe=0.006%
+Ni=0.004%, Cu=0.025%, Co=0.002%"
+ 0             3 
+   "cu"    "au"    "al" 
+       2       2       2
+       1       3       3
+    .025    .155  99.820
+ 658          "ZnTe (synthetic)"
+"From ESPI, KSC 7083
+99.999%, single crystal"
+ 0             2 
+   "zn"    "te" 
+       1       1
+       1       2
+  33.880  66.120
+ 660          "ZnSe (synthetic)"
+"From Alpha Products, #88298
+Optical grade, 99.999%"
+ 0             2 
+   "zn"    "se" 
+       1       1
+       1       2
+  45.290  54.710
+ 661          "CuTe2"
+"Aesar, 99.5%, #13140
+Lot # 073085"
+ 0             2 
+   "Te"    "Cu" 
+       1       2
+       2       1
+  50.100  49.900
+ 662          "GaAs (synthetic)"
+"Alpha Products, #88458
+99.999%, poly-crystalline
+Electronic grade"
+ 0             2 
+   "ga"    "as" 
+       2       2
+       3       3
+  48.200  51.800
+ 663          "NiTe (synthetic)"
+"From Aesar, #13105, Lot # 102885
+99.9%"
+ 0             2 
+   "Te"    "Ni" 
+       1       1
+       2       1
+  68.488  31.512
+ 664          "InP (synthetic)"
+"Source unknown
+Single crystal
+Trace Fe, Cu, Zn ?"
+ 0             3 
+   "in"     "p"     "n" 
+       2       2       2
+       1       5       5
+  78.760  21.240    .010
+ 666          "GaP (synthetic)"
+"From Alpha Products, #88459
+99.999%, electronic grade"
+ 0             2 
+   "ga"     "p" 
+       2       2
+       3       5
+  69.240  30.760
+ 668          "CdS (synthetic)"
+"From C. Taylor, single crystal?"
+ 0             2 
+   "cd"     "s" 
+       1       1
+       1       3
+  77.800  22.200
+ 669          "GaSb (synthetic)"
+"(MAC block)"
+ 0             2 
+   "Sb"    "Ga" 
+       2       2
+       3       3
+  63.587  36.413
+ 670          "HgTe (synthetic)"
+"From C. Taylor, single crystal
+Assumed stoichiometric"
+ 0             2 
+   "hg"    "te" 
+       1       1
+       1       2
+  61.120  38.880
+ 671          "Silicon carbide (SiC)"
+"No material"
+ 0             2 
+   "si"     "c" 
+       1       1
+       2       2
+  70.045  29.955
+ 672          "AlN ceramic"
+"From LBL, T. Tomisa
+Assumed stoichiometric"
+ 0             3 
+   "al"     "n"     "o" 
+       2       2       1
+       3       5       0
+  65.820  34.070    .100
+ 673          "VC (synthetic vanadium carbide)"
+"from LBL (K. Kannan, NCEM)
+Single crystal, not stoichiometric?"
+ 0             2 
+    "v"     "c" 
+       2       1
+       3       2
+  84.130  15.870
+ 674          "TiC (titanium carbide)"
+"from LBL (K. Kannan, NCEM)
+Single crystal
+Possible minor Zr contamination?"
+ 0             2 
+   "ti"     "c" 
+       1       1
+       2       2
+  80.000  20.000
+ 675          "0.491% Co in Al"
+"From Reactor Experiments, Inc., 0.005' sheet, lot #980
+Fe=0.04%, Cu=0.001%, Ni=0.005%, Cr=0.0001%, Pb<0.001%
+Sn<0.001%, Mn=0.002%, Si=0.04%, Ag<0.0001%, V=0.002%
+Ca=0.0004%, Ti<0.001%, Ga=0.004%"
+ 0             4 
+   "fe"    "si"    "co"    "al" 
+       1       1       1       2
+       1       2       1       3
+    .040    .040    .491  99.429
+ 676          "Dy (7.9%) in Al"
+"From Reactor Experiments
+cat # 807B, Lot # 417
+99.901%
+Fe=0.02%, Cu-0.005%, Ni=0.002%, Cr=0.002%, Mn=0.007%
+Si=0.05%, Mg=0.006%, Ca=0.005%, Ti=0.002%"
+ 0             11 
+   "dy"    "fe"    "cu"    "ni"    "cr"    "mn"    "si"    "mg"    "ca"    "ti"    "al" 
+       2       1       2       1       2       1       1       1       1       1       2
+       3       1       1       1       3       1       2       1       1       2       3
+   7.900    .020    .005    .002    .002    .007    .050    .006    .005    .002  92.000
+ 677          "Lu (5.2%) in Al"
+"From Reactor Experiments
+Cat #808, Lot# 529
+99.7838%
+Ni<0.001%. Ca=0.0002%"
+ 0             9 
+   "lu"    "fe"    "cu"    "cr"    "mn"    "si"    "mg"    "ti"    "al" 
+       2       1       2       2       1       1       1       1       2
+       3       1       1       3       1       2       1       2       3
+   5.200    .002    .003    .002    .001    .200    .002    .005  94.585
+ 680          "Au80-Cu20 alloy"
+"NBS (NIST) SRM 481/482 alloys"
+ 0             2 
+   "au"    "cu" 
+       2       2
+       3       1
+  80.150  19.830
+ 681          "Au60-Cu40 alloy"
+"NBS (NIST) SRM 481/482 alloys"
+ 0             2 
+   "au"    "cu" 
+       2       2
+       3       1
+  60.360  39.640
+ 682          "Au40-Cu60 alloy"
+"NBS (NIST) SRM 481/482 alloys"
+ 0             2 
+   "au"    "cu" 
+       2       2
+       3       1
+  40.100  59.920
+ 683          "Au20-Cu80 alloy"
+"NBS (NIST) SRM 481/482 alloys"
+ 0             2 
+   "au"    "cu" 
+       2       2
+       3       1
+  20.120  79.850
+ 690          "Au80-Ag20 alloy"
+"NBS (NIST) SRM 481/482 alloys"
+ 0             2 
+   "au"    "ag" 
+       2       2
+       3       1
+  80.050  19.960
+ 691          "Au60-Ag40 alloy"
+"NBS (NIST) SRM 481/482 alloys"
+ 0             2 
+   "au"    "ag" 
+       2       2
+       3       1
+  60.050  39.920
+ 692          "Au40-Ag60 alloy"
+"NBS (NIST) SRM 481/482 alloys"
+ 0             2 
+   "au"    "ag" 
+       2       2
+       3       1
+  40.030  59.930
+ 693          "Au20-Ag80 alloy"
+"NBS (NIST) SRM 481/482 alloys"
+ 0             2 
+   "au"    "ag" 
+       2       2
+       3       1
+  22.430  77.580
+ 694          "0.3 C in Fe"
+"From Art Chodos, Cal Tech.
+(made by Gordon Fisher at International Nickel)
+See page 2294, Anal. Chem., vol 43, Nov, 1973"
+ 0             2 
+   "fe"     "c" 
+       1       1
+       1       2
+  99.700    .300
+ 695          "0.62 C in Fe"
+"From Art Chodos, Cal Tech.
+(made by Gordon Fisher at International Nickel)
+See page 2294, Anal. Chem., vol 43, Nov, 1973"
+ 0             2 
+   "fe"     "c" 
+       1       1
+       1       2
+  99.380    .620
+ 696          "1.01 C in Fe"
+"From Art Chodos, Cal Tech.
+(made by Gordon Fisher at International Nickel)
+See page 2294, Anal. Chem., vol 43, Nov, 1973"
+ 0             2 
+   "fe"     "c" 
+       1       1
+       1       2
+  98.990   1.010
+ 697          "1.29 C in Fe"
+"From Art Chodos, Cal Tech.
+(made by Gordon Fisher at International Nickel)
+See page 2294, Anal. Chem., vol 43, Nov, 1973"
+ 0             2 
+   "fe"     "c" 
+       1       1
+       1       2
+  98.710   1.290
+ 698          "Carbon-steel alloy #9"
+"From Art Chodos, Cal Tech.
+(made by Gordon Fisher at International Nickel)
+See page 2294, Anal. Chem., vol 43, Nov, 1973"
+ 0             3 
+    "c"    "ni"    "fe" 
+       1       1       1
+       2       1       1
+    .310   9.800  89.890
+ 702          "Carbon-steel alloy #13"
+"From Art Chodos, Cal Tech.
+(made by Gordon Fisher at International Nickel)
+See page 2294, Anal. Chem., vol 43, Nov, 1973"
+ 0             3 
+    "c"    "ni"    "fe" 
+       1       1       1
+       2       1       1
+    .270  20.700  79.030
+ 707          "Chalcopyrite U.C. #1232"
+"Morococha, Cerro de Pasco, Peru
+Assumed stoichiometric"
+ 0             3 
+   "cu"    "fe"     "s" 
+       2       1       1
+       1       1       3
+  34.620  30.430  34.950
+ 709          "Bornite U.C. #827"
+"Great Bear Lake, Canada"
+ 0             3 
+   "cu"    "fe"     "s" 
+       2       1       1
+       1       1       3
+  63.400  11.150  25.550
+ 710          "Sphalerite, Bingham"
+"Lark Mine, Bingham, Utah
+Low Fe, ~1000 ppm"
+ 0             5 
+   "zn"     "s"    "fe"    "pb"    "cd" 
+       1       1       1       1       1
+       1       3       1       1       1
+  67.000  32.920    .110    .170    .500
+ 722          "Orpiment U.C. #1597"
+"Zirneihbad, near Kirmanshah, Turkey"
+ 0             2 
+   "as"     "s" 
+       2       1
+       3       3
+  60.900  39.090
+ 725          "Pyrite, Elba (#1811)"
+"Arsenic ~ 0.04% (variable)"
+ 0             3 
+   "fe"     "s"    "as" 
+       1       1       2
+       1       3       3
+  46.550  53.450    .020
+ 729          "Cinnabar U.C. #7584"
+"Riano, Leon, Spain"
+ 0             2 
+   "hg"     "s" 
+       1       1
+       1       3
+  86.200  13.800
+ 730          "Pyrite UC # 21334"
+"Leadville, Colorado
+Excellent standard for Fe and S
+AA (by C. Lewis): Cu=0.005%, Au=0.00%, Ag=0.00%, Zn=0.004%
+XRF (by J. Hampel): Ni=0.00%, Co=0.00%, Cu=0.01%, As=0.009%
+Zn=0.0009%, Pb=0.010%, Ga=0.0001%, Cr=0.00%, Ti=0.058%"
+ 0             10 
+   "fe"     "s"    "ni"    "co"    "cu"    "as"    "zn"    "pb"    "cr"    "ti" 
+       1       1       1       1       2       2       1       1       2       1
+       1       3       1       1       1       3       1       1       3       2
+  46.550  53.450    .000    .000    .010    .009    .009    .010    .000    .058
+ 731          "Galena U.C. #7400"
+"Franklin Co., Mo"
+ 0             2 
+   "pb"     "s" 
+       1       1
+       1       3
+  86.600  13.400
+ 732          "Stibnite U.C. #1605"
+"Ichinokawa Mine, Chime Pref., Shikoku, Japan"
+ 0             2 
+   "sb"     "s" 
+       2       1
+       3       3
+  71.680  28.320
+ 733          "Covellite, (Butte)"
+"Butte, Mo
+(some chalcocite)"
+ 0             2 
+   "cu"     "s" 
+       2       1
+       1       3
+  66.400  33.600
+ 734          "Chalcocite U.C. #7339"
+"Plumas Co, California
+AA (by C. Lewis): Fe 1.28%, Ag 0.07%, Au 0.003%
+EPMA (by J. Donovan): Ag 0.58% ?, As 0.76% ?"
+ 0             2 
+   "cu"     "s" 
+       2       1
+       1       3
+  79.850  20.150
+ 757          "FeS (Pyrrhotite)"
+"Fe(1-x)S, where x = 0.13"
+ 0             2 
+   "Fe"     "S" 
+       1       1
+       1       3
+  59.808  39.580
+ 758          "Arsenopyrite (ASP 200)"
+"from S. D. Scott (Univ. Toronto)
+See Krctschmar and Scott, 1976, Cand. Min., v. 14, p. 370
+(Note Co rich phase)"
+ 0             4 
+   "as"    "fe"     "s"    "co" 
+       2       1       1       1
+       3       1       3       1
+  44.440  34.510  21.030    .020
+ 800          "Rare Earth glass 'F' (#201)"
+"Nominal composition: ThO2=5.0%, UO2=5.0%, HfO2=5.0%
+Made by ISE Carmichael, UCB Geology
+Th, U and Hf by AA (T. Morrison, UCB Chem. Dept.)"
+ 0             6 
+   "th"    "hf"     "u"    "li"     "b"     "o" 
+       1       1       1       2       2       1
+       2       2       2       1       3       0
+   5.530   4.600   5.170  11.490  17.910  55.290
+ 801          "Cazadero albite (#301)"
+"Specimen from HR Wenk, UC Berkeley, Geology
+See Wenk and Kroll, Bull. Mineral. (1984), 107, 467-487
+K=140 ppm, Sr=9 ppm, Rb=0.14 ppm (Isotope dilution)"
+ 0             5 
+   "si"    "al"    "na"     "k"     "o" 
+       1       2       2       2       1
+       2       3       1       1       0
+  31.900  10.530   8.860    .030  48.680
+ 802          "JDFD2 basaltic glass (#302)"
+"Juan De Fuca (MORB glass)
+Specimen from Lamont Geological Observ.
+Analysis by ISE Carmichael
+Wet chemistry (Carmichael): 1320 +/- 50 ppm elemental S)
+Fe2O3=1.14%, FeO=11.11% (as FeO=12.14% + 0.11% O)"
+ 0             11 
+   "si"    "ti"    "al"    "fe"    "mn"    "mg"    "ca"    "na"     "k"     "p"     "o" 
+       1       1       2       1       1       1       1       2       2       2       1
+       2       2       3       1       1       1       1       1       1       5       0
+  23.660   1.180   7.820   9.440    .170   3.980   7.680   2.050    .160    .100  43.760
+ 803          "Anorthite (#306)"
+"Specimen from HR Wenk, UC Berkeley, Geology
+See Wenk and Kroll, Bull. Mineral. (1984), 107, 467-487"
+ 0             8 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"     "o" 
+       1       2       1       1       1       2       2       1
+       2       3       1       1       1       1       1       0
+  20.650  18.500    .450    .000  13.320    .590    .040  45.630
+ 804          "Rare Earth glass 'B' (#204)"
+"Nominal composition only
+Made by ISE Carmichael"
+ 0             4 
+   "nb"    "li"     "b"     "o" 
+       2       2       2       1
+       5       1       3       0
+  23.278   9.299  14.497  52.930
+ 806          "U-2 glass (#196)"
+"Specimen from S. Flexer (LBL)"
+ 0             5 
+   "si"    "ca"    "mg"     "u"     "o" 
+       1       1       1       1       1
+       2       1       1       2       0
+  23.340  16.660  10.100   8.820  41.080
+ 807          "NBS K-412 mineral glass (#160)"
+"SRM 470, NIST
+C.M. Taylor (Photometry?) FeO 2.77, Fe2O3 8.15
+Total as FeO 10.10, Excess O 0.815
+Na = 430 PPM (EPMA by JJD)"
+-1             8 
+   "si"    "fe"    "mg"    "ca"    "al"    "mn"     "o"    "na" 
+       1       1       1       1       2       1       1       2
+       2       1       1       1       3       1       0       1
+  21.190   7.740  11.650  10.900   4.910    .070  43.597    .043
+ 808          "NBS K-411 mineral glass (#162)"
+"SRM 470, NIST"
+ 0             7 
+   "si"    "fe"    "mg"    "ca"    "al"    "mn"     "o" 
+       1       1       1       1       2       1       1
+       2       1       1       1       3       1       0
+  25.620  11.310   8.930  11.160    .050    .080  42.840
+ 809          "Rare Earth glass 'Z' (#209)"
+"Nominal composition only
+Made by ISE Carmichael"
+ 0             9 
+   "la"    "ce"     "y"    "nd"    "sm"    "eu"    "li"     "b"     "o" 
+       2       2       2       2       2       2       2       2       1
+       3       3       3       3       3       3       1       3       0
+   4.329   4.269   3.937   4.287   4.312   4.318   9.760  15.213  49.574
+ 812          "NdSi2 (Cerac)"
+"1/4' pieces from Cerac, Inc,
+Lot # 2382, 99.9%"
+ 0             2 
+   "nd"    "si" 
+       2       1
+       3       2
+  71.500  28.500
+ 825          "Barite UC 5393 (#325)"
+"Assumed stoichiometric minus measured SrO"
+ 0             4 
+   "ba"    "sr"     "s"     "o" 
+       1       1       1       1
+       1       1       3       0
+  56.300   2.500  13.740  27.420
+ 827          "Anhydrite UC 5555 (#327)"
+"'slightly soluble in alcohol', JJD"
+ 0             3 
+   "ca"     "s"     "o" 
+       1       1       1
+       1       3       0
+  29.440  23.550  47.010
+ 828          "Tl(Br,I)"
+"From Claudio Cermignani (U of Toronto)
+TlI-Tl-Br mixture (TlBr 42%, TlI 58%)
+Mac block"
+ 0             3 
+   "Tl"     "I"    "Br" 
+       2       2       2
+       3       5       5
+  65.601  23.626  10.772
+ 829          "Tl(Br,I)"
+"From Claudio Cermignani (U of Toronto)
+TlI-Tl-Br mixture
+XRF analysis by M. Gordon 
+(75% total, recalculated to 100%)
+Approx. half of Fe is machine blank"
+ 0             13 
+   "tl"     "I"    "br"    "na"    "mg"    "si"     "p"     "s"     "k"    "ca"    "fe"    "zn"    "ga" 
+       2       2       2       2       1       1       2       1       2       1       1       1       2
+       3       5       5       1       1       2       5       3       1       1       1       1       3
+  61.441  25.828  11.197    .966    .060    .083    .008    .075    .110    .130    .025    .017    .017
+ 830          "NaF (sodium fluoride)"
+"Crystalline
+Very soluble in H2O"
+ 0             2 
+   "na"     "f" 
+       2       1
+       1       0
+  54.750  45.250
+ 831          "Fluorite U.C. #20011"
+"Assumed stoichiometric"
+ 0             2 
+   "ca"     "f" 
+       1       1
+       1       0
+  51.200  48.800
+ 832          "NaF (synthetic)"
+"Fused 'glass' prepared by J. Hampel
+Very soluble in H2O"
+ 0             2 
+   "na"     "f" 
+       2       1
+       1       0
+  54.750  45.250
+ 833          "RbCl (synthetic)"
+"Single crystal
+Very soluble in H2O"
+ 0             3 
+   "rb"    "cl"     "k" 
+       2       1       2
+       1       0       1
+  70.680  29.320    .030
+ 834          "CsBr (synthetic)"
+"Single crystal, very soluble in H2O
+0.14 wt. % S (EPMA, by JJD)"
+ 0             3 
+   "cs"    "br"     "o" 
+       2       2       1
+       1       5       0
+  62.450  37.550    .350
+ 835          "BaF2 (barium fluoride)"
+"Single crystal, fluorescent"
+ 0             2 
+   "ba"     "f" 
+       1       1
+       1       0
+  78.330  21.670
+ 836          "LaF3 lanthanum fluoride"
+"Single crystal, optical grade"
+ 0             2 
+   "La"     "F" 
+       2       1
+       3       0
+  70.907  29.093
+ 837          "Leucite (#337)"
+"Analysis by ISE Carmichael"
+ 0             6 
+   "si"    "al"    "na"     "k"    "fe"     "o" 
+       1       2       2       2       1       1
+       2       3       1       1       1       0
+  25.790  12.040    .610  16.800    .210  44.550
+ 838          "Nepheline (#336)"
+"Analysis by ISE Carmichael (Na, K)
+Ca = 750 PPM (EPMA by JJD)"
+ 0             7 
+   "si"    "al"    "na"     "k"    "fe"     "o"    "ca" 
+       1       2       2       2       1       1       1
+       2       3       1       1       1       0       1
+  20.330  17.870  12.550   4.650    .160  44.440    .075
+ 839          "CsI"
+"Cesium Iodide, single crystal
+Very soluble in H2O"
+ 0             2 
+   "Cs"     "I" 
+       2       2
+       1       5
+  51.156  48.844
+ 840          "Rhodochrosite Harvard #89794 (#140)"
+"Specimen from Harvard Mineralogical Museum (Carl Francis)
+Locality: Franklin, NJ
+See Garrels, et al., 1980 AJS 258, 402-418"
+ 0             6 
+   "ca"    "mg"    "mn"    "fe"     "c"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       2       0
+   1.487    .416  45.126    .210  10.565  42.200
+ 843          "Chlor-apatite synthetic (#283)"
+"Specimen from Alan Baumer, Univ of Nice, France
+Hydrothermally grown
+See Argiolas and Baumer, Can. Min., v. 16, pp 285-290, 1978"
+ 0             4 
+    "p"    "ca"     "o"    "cl" 
+       2       1       1       1
+       5       1       0       0
+  17.860  38.550  36.940   6.820
+ 844          "Calcite (#135)"
+"Locality: unknown
+XRF (UCB), ICP-MS (Washington Univ, D. Kremser)
+Element    XRF-EDS    ICP-MS (ppm)
+Sr            150       165
+Mn            130       166
+Fe            n.d.        4
+Mg            n.d.       21"
+ 0             4 
+   "ca"     "c"    "sr"     "o" 
+       1       1       1       1
+       1       2       1       0
+  40.030  12.000    .017  47.953
+ 845          "Siderite Harvard 96217 (#145)"
+"Specimen from Harvard Mineralogical Museum (Carl Francis)
+Locality: St. Just, Cornwall, England
+See Garrels, et al., 1980 AJS 258, 402-418"
+ 0             6 
+   "fe"    "mn"    "ca"    "mg"     "c"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       2       0
+  47.780    .271    .050    .072  10.370  41.460
+ 846          "'W' Corning glass (#246)"
+"Specimen from Art Chodos, Cal Tech
+Major elements by wet chemistry (by Corning and Gene Jarosewich)
+Minor elements by AA (by Ian Steele), and Isotope dilution (by student)"
+ 0             14 
+   "si"    "al"    "ca"    "mg"     "b"    "cs"     "v"    "mn"    "cu"    "co"    "ba"    "la"    "th"     "o" 
+       1       2       1       1       2       2       2       1       2       1       1       2       1       1
+       2       3       1       1       3       1       3       1       1       1       1       3       2       0
+  26.595   9.283   4.453   5.240   1.363    .679    .442    .503    .604    .566    .699    .674    .694  48.205
+ 847          "'X' Corning glass (#247)"
+"Specimen from Art Chodos, Cal Tech
+Major elements by wet chemistry (by Corning and Gene Jarosewich)
+Minor elements by AA (by Ian Steele), and Isotope dilution (by student)"
+ 0             14 
+   "ni"     "o"    "si"    "al"    "ca"    "mg"     "b"    "rb"    "zr"    "sr"     "y"    "pb"    "zn"     "u" 
+       1       1       1       2       1       1       2       2       1       1       2       1       1       1
+       1       0       2       3       1       1       3       1       2       1       3       1       1       2
+    .574  48.182  26.595   9.289   4.460   5.246   1.351    .457    .563    .660    .622    .696    .635    .670
+ 850          "Zircon SL13-shrimp std"
+"From G. Brimhall, UCB, Geology"
+ 0             3 
+   "zr"    "si"     "o" 
+       1       1       1
+       2       2       0
+  49.764  15.322  34.914
+ 851          "SrTiO3 (strontium titanate)"
+"Specimen from Mimports, Lafayette, CA
+EPMA (UCB, by J. Donovan): BaO less than 0.01% (interf. corr.)
+Assumed stoichiometric"
+ 0             3 
+   "sr"    "ti"     "o" 
+       1       1       1
+       1       2       0
+  47.740  26.100  26.150
+ 852          "YAG single crystal (#252)"
+"Yttrium Aluminium Garnet
+Specimen from: Mimports, Lafayette, CA
+Assumed stoichiometric"
+ 0             3 
+    "y"    "al"     "o" 
+       2       2       1
+       3       3       0
+  44.930  22.720  32.350
+ 853          "GGG single crystal (#253)"
+"Yttrium Aluminium Garnet
+Specimen from: Mimports, Lafayette, CA
+Assumed stoichiometric"
+ 0             3 
+   "gd"    "ga"     "o" 
+       2       2       1
+       3       3       0
+  46.600  34.430  18.970
+ 854          "YIG single crystal (#258)"
+"Specimen from K. Kannan, NCEM, LBL"
+ 0             3 
+    "y"    "fe"     "o" 
+       2       1       1
+       3       1       0
+  36.140  37.840  26.020
+ 855          "Zircon synthetic ORNL (#257)"
+"Specimen made by Lynn Boatner, ORNL, Solid State Div.
+Flux grown, may contain some Mo impurities"
+ 0             3 
+   "zr"    "si"     "o" 
+       1       1       1
+       2       2       0
+  49.760  15.320  34.920
+ 856          "Chromite USNM 117075 (#455)"
+"Analysis (wet chemistry) by Gene Jarosewich"
+ 0             10 
+   "cr"    "fe"    "al"    "mg"    "ca"    "mn"    "ti"    "ni"    "si"     "o" 
+       2       1       2       1       1       1       1       1       1       1
+       3       1       3       1       1       1       2       1       2       0
+  41.540  10.170   5.270   9.200    .086    .180    .072    .126    .023  33.330
+ 857          "Kaersutite Korath (#357)"
+"Korath Range, SW Ethopia
+See Brown and carmichael, 1969, Lithos.
+(Old std #157)
+Fe2O3=4.71%, feO=4.66% (as FeO=8.90% + 0.47%)
+F=0.26%"
+ 0             13 
+   "si"    "ti"    "al"    "fe"    "mn"    "mg"    "ca"    "na"     "k"     "p"     "h"     "f"     "o" 
+       1       1       2       1       1       1       1       2       2       2       2       1       1
+       2       2       3       1       1       1       1       1       1       5       1       0       0
+  18.370   2.480   8.140   6.920    .060   8.370   8.960   1.750   1.130    .020    .170    .260  43.380
+ 858          "Diopside Chesterman (#358)"
+"Twin Lakes, Fresno Co., CA
+From Charles Chesterman (Ca Div. Mines)"
+ 0             7 
+   "al"    "fe"    "na"    "mg"    "ca"    "si"     "o" 
+       2       1       2       1       1       1       1
+       3       1       1       1       1       2       0
+    .020    .047    .020  11.190  18.500  25.920  44.300
+ 859          "LiNbO3 (#255)"
+"Specimen from Cerac-Pure Inc, 99.99%, L-1111, LOt # 393
+Wet Chem (by Cerac): Li2O=10.05
+Not stoichiomteric (stoichiometric LiNbO3 is Li = 4.67, Nb = 62.88, O = 32.45)
+"
+ 0             3 
+   "li"    "nb"     "o" 
+       2       2       1
+       1       5       0
+   4.668  62.870  32.450
+ 860          "Al2O3 + 0.40 Cr single crystal (#260)"
+"Specimen from Jeanloz
+Nominal minor composition: 4000 ppm Cr
+EPMA of Cr = ~3600 ppm Cr (JJD)"
+ 0             3 
+   "al"    "cr"     "o" 
+       2       2       1
+       3       3       0
+  52.630    .400  46.970
+ 861          "Ilmenite USNM (#470)"
+"Analysis (wet chemistry) by Gene Jarosewich"
+ 0             10 
+   "fe"    "ti"    "mg"    "mn"    "al"    "si"    "cr"    "nb"     "u"     "o" 
+       1       1       1       1       2       1       2       2       1       1
+       1       2       1       1       3       2       3       5       2       0
+  36.180  27.400    .210   3.480    .011    .061    .014    .643    .123  31.360
+ 863          "Fayalite ORNL single crystal (#263)"
+"Specimen from Lynn Boatner, ORNL
+See Abraham and kopp, 1982, Am. Min., v. 67, p 349
+Fe3+ ~ 10 ppm (0.001%) by colorimetry"
+ 0             3 
+   "fe"    "si"     "o" 
+       1       1       1
+       1       2       0
+  54.790  13.770  31.440
+ 865          "Obsidian glass USNM (#465)"
+"Analysis (wet chemistry) by Gene Jarosewich"
+ 0             10 
+   "si"    "al"    "fe"    "mg"    "ca"    "na"     "k"    "ti"    "mn"     "o" 
+       1       2       1       1       1       2       2       1       1       1
+       2       3       1       1       1       1       1       2       1       0
+  35.400   6.000   3.790    .911   1.900    .786   1.561    .300    .085  48.944
+ 866          "Olivine (Fo90) USNM 111312/444"
+"Analysis (wet chemistry) by Gene Jarosewich"
+-1             8 
+   "si"    "fe"    "mg"    "ca"     "p"    "mn"    "ni"     "o" 
+       1       1       1       1       2       1       1       1
+       2       1       1       1       5       1       1       0
+  19.076   7.423  29.802    .036    .000    .108    .291  43.603
+ 867          "Olivine (Fo 83) USNM 2566"
+"Analysis (wet chemistry) by Gene Jarosewich
+Springwater"
+ 0             6 
+   "si"    "fe"    "mg"    "mn"    "cr"     "o" 
+       1       1       1       1       2       1
+       2       1       1       1       3       0
+  18.207  12.919  26.280    .232    .014  41.817
+ 870          "Hematite Sennin (#370)"
+"Specimen from Dr. Morita, Univ of Kyoto
+Sennin Mine, Japan
+Collected by Dr. K. Tomita
+(Assumed stoichiometric)"
+ 0             3 
+   "fe"    "al"     "o" 
+       1       2       1
+       1       3       0
+  69.813    .127  30.060
+ 872          "Cassiterite UC 2889 (#372)"
+"No detectable Fe, Mn, W or Ta (XRF by J. Hampel)"
+ 0             2 
+   "sn"     "o" 
+       1       1
+       2       0
+  78.800  21.200
+ 873          "Ilmenite UC 2704 (#373)"
+"Sawyer, California
+Leake (partial analysis)
+Y. Chiba (full analysis)"
+ 0             6 
+   "fe"    "ti"    "mn"    "mg"    "al"     "o" 
+       1       1       1       1       2       1
+       1       2       1       1       3       0
+  36.360  30.780   1.400    .150    .010  31.990
+ 874          "Orthoclase MAD-10 (#374)"
+"Specimen from Chuck Taylor
+K2O=15.49%, Na2O=1.07% (Flame photometry by J. Hampel)
+BaO=0.06%, Rb2O=0.03% (EPMA by J. Donovan)
+Sr=12 ppm, Rb=600 ppm (Isotope dilution)"
+ 0             8 
+   "si"    "al"    "fe"    "na"     "k"    "ba"    "rb"     "o" 
+       1       2       1       2       2       1       2       1
+       2       3       1       1       1       1       1       0
+  30.290   8.860   1.460    .680  12.860    .050    .030  45.770
+ 875          "MgSiO4 single crystal (#273)"
+"Specimen grown by H. Takei
+Institute for Solid State Physics, Univ of Tokyo
+See Takei, Jour. Crys. Growth, v. 23, 1974"
+ 0             3 
+   "mg"    "si"     "o" 
+       1       1       1
+       1       2       0
+  34.750  19.810  45.430
+ 876          "Benitoite white (#376)"
+"From UC collection (no number)
+(Assume analysis by Louderbeck, 1907)"
+ 0             4 
+   "si"    "ba"    "ti"     "o" 
+       1       1       1       1
+       2       1       2       0
+  20.380  33.140  11.690  34.790
+ 882          "Fluor-phlogopite synthetic (#282)"
+"Grown by S. Wones, Univ of Tenn"
+ 0             6 
+   "si"    "mg"    "al"     "k"     "f"     "o" 
+       1       1       2       2       1       1
+       2       1       3       1       0       0
+  20.001  17.307   6.404   9.281   9.020  37.987
+ 886          "Alamosite (PbSiO3)"
+"From Mineralogical Research, Inc.
+Tsuneb, South West Africa
+Very pure, excellent Pb standard"
+ 0             3 
+   "pb"    "si"     "o" 
+       1       1       1
+       1       2       0
+  73.000  10.000  17.000
+ 887          "Wulfenite UC 9344 (#387)"
+"(Assumed stoichiometric)
+U.C. #9344"
+ 0             3 
+   "pb"    "mo"     "o" 
+       1       1       1
+       1       3       0
+  56.440  26.130  17.430
+ 888          "An80 feldspar glass (#188)"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+ 0             5 
+   "si"    "al"    "ca"    "na"     "o" 
+       1       2       1       2       1
+       2       3       1       1       0
+  22.582  17.571  11.528   1.751  46.568
+ 890          "An100 feldspar glass (#190)"
+"Made by D. Ludaley
+Specimen from J. V. Smith"
+ 0             4 
+   "si"    "al"    "ca"     "o" 
+       1       2       1       1
+       2       3       1       0
+  20.193  19.392  14.365  46.050
+ 895          "Magnetite (std #395)"
+"Port Henry, NY
+FeO=30.93% (ISE Carmichael)
+(Total FeO=92.73%, by EPMA, JJD)"
+ 0             8 
+   "fe"    "al"    "ti"    "ca"    "si"    "mn"    "cr"     "o" 
+       1       2       1       1       1       1       2       1
+       1       3       2       1       2       1       3       0
+  72.080    .200    .010    .000    .020    .040    .010  27.640
+ 896          "Chromite (#396)"
+"Stillwater Complex
+Collected by Richard L. Nielsen and F. Fisher
+See Geol. Soc. of Amer., Pub #80, 1960
+Mn (interference corrected for Cr Kb by JJD)"
+-1             7 
+   "fe"    "cr"    "mg"    "ti"    "al"     "o"    "mn" 
+       1       2       1       1       2       1       1
+       1       3       1       2       3       0       1
+  20.080  31.130   7.100    .300   7.920  33.184    .148
+ 912          "MgO (elemental) (#12)"
+"1. UCB # M3567, 99.8%, EPMA (UCB): Ca ~ 0.2%
+2. C. M. Taylor, 99.98%, EPMA (UCB) Ca ~ 0.02%"
+ 0             3 
+   "mg"     "o"    "ca" 
+       1       1       1
+       1       0       1
+  60.310  39.690    .140
+ 913          "Al2O3 (elemental) (#13)"
+"Specimen from Baikowski Int'l, North Carolina
+'crackle' from seed crystal, 99.99%"
+ 0             2 
+   "al"     "o" 
+       2       1
+       3       0
+  52.920  47.080
+ 914          "SiO2 (elemental) (#14)"
+"Specimen from ESPI, 99.99%, EPMA (UCB): Al2O3 ~ 0.01%
+Catalog #K4699M
+Atomic Absorption (Chris Lewis): 
+Al=15 ppm +/- 5
+Fe=6 ppm +/- 3
+Mn=1.5 ppm +/- 0.3
+Na=5 ppm +/- 3
+Li= 2.3 ppm +/- 0.2"
+ 0             2 
+   "si"     "o" 
+       1       1
+       2       0
+  46.740  53.260
+ 922          "TiO2 (elemental) (#22)"
+"Specimen from Mimports, Lafayette, CA
+Assumed stoichiometric
+EPMA (UCB): Al2O3=0.02 (interference corrected)"
+ 0             3 
+   "ti"    "al"     "o" 
+       1       2       1
+       2       3       0
+  59.990    .010  40.000
+ 923          "V2O3 (elemental) (#23)"
+"Grown by Michael Wittenaur (Purdue University)
+Starting mat'l 99.9% V2O3, 'skull melt' process
+SM # 171 (25% CO2)
+See Harrison, et al. 1980, Mat. Res. Bull., v. 15, pp. 571-580
+Assumed stoichiometric"
+ 0             2 
+    "v"     "o" 
+       2       1
+       3       0
+  67.980  32.100
+ 924          "Cr2O3 (elemental) (#24)"
+"1. Specimen from Dr. Sawada (Kyoto University)
+99.99%
+Assumed stoichiometric
+2. Specimen from unknown source (USGS?)
+Assumed stoichiometric
+3. Specimen from Mimports, Lafayette, CA
+Material lost (?)"
+ 0             2 
+   "cr"     "o" 
+       2       1
+       3       0
+  68.419  31.581
+ 925          "MnO (elemental) (#25)"
+"Specimen from Michael Wittenauer (Purdue Univ.)
+Starting mat'l 99.999%, SM # 317, 'skull melt' process
+Mat. Res. Bull. 15, p 571, 1980
+(possible intergrowths of Mn3O4 and small inclusions of Mn metal)
+EPMA (UCB): SiO2=0.00, FeO=0.00, CaO=0.00, Al2O3=0"
+ 0             2 
+   "mn"     "o" 
+       1       1
+       1       0
+  77.450  22.550
+ 927          "CoO (elemental) (#27)"
+"1. Specimen from Michael Wittenauer (Purdue Univ.)
+Starting mat'l 99.5%, SM # 130
+Mat. Res. Bull. 15, p 571, 1980
+(possible intergrowths of Co3O4)
+2. Specimen from Dr. Sawada (Kyoto Univ. Japan)
+EPMA (UCB): FeO=0.00"
+ 0             2 
+   "co"     "o" 
+       1       1
+       1       0
+  78.650  21.350
+ 928          "NiO (elemental) (#28)"
+"1. Specimen from Michael Wittenauer (Purdue Univ.)
+Starting mat'l 99.999%, Boule WI, Arc Transfer
+2. Specimen from G. Czemanske, USGS (Oct 12, 1984)
+EPMA (UCB): FeO=0.05%
+-----------------------------
+All material assumed stoichiometric"
+ 0             2 
+   "ni"     "o" 
+       1       1
+       1       0
+  78.580  21.420
+ 930          "ZnO (elemental) (#30)"
+"Specimen from ESPI, 99.999%
+(Bright green CL)
+Assumed stoichiometric"
+ 0             2 
+   "zn"     "o" 
+       1       1
+       1       0
+  80.340  19.660
+ 994          "CeF3"
+"(for Ce on O ka interference)"
+ 0             2 
+   "Ce"     "F" 
+       2       1
+       3       0
+  71.086  28.914
+ 995          "NdBFe (alloy)"
+"From Johnson Matthey, BM1889"
+ 0             3 
+   "nd"     "b"    "fe" 
+       2       2       1
+       3       3       1
+  33.000   1.200  65.800
+ 996          "Neodymium Fluoride (NdF3)"
+"From Cerac, Lot 36130-F-1A
+99.9%, 1/4' - 1/8' pieces"
+ 0             2 
+   "nd"     "f" 
+       2       1
+       3       0
+  71.910  28.090
+ 997          "EuNi5P3"
+"From Stacy group, UCB Chemistry
+Assumed stoichiometric, single crystal"
+ 0             3 
+   "eu"    "ni"     "p" 
+       2       1       2
+       3       1       5
+  28.220  54.520  17.260
+ 998          "TiO (Titanium Monoxide)"
+"Aesar (johnson-Matthey)
+#14714A, Lot # 19675
+99.9% (optical grade)"
+ 0             2 
+   "ti"     "o" 
+       1       1
+       1       0
+  74.961  25.040
+ 999          "V2O5 (USGS)"
+"From G. Czemanske, USGS
+EPMA (USGS): Al2O3=0.76%, SiO2=1.5%"
+-1             4 
+    "v"     "o"    "si"    "al" 
+       2       1       1       2
+       3       0       2       3
+  54.840  44.000    .700    .460
+ 1001         "CePO4 (USNM 168484)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+ 0             4 
+   "ce"     "p"     "o"    "pb" 
+       1       1       1       1
+       0       4       0       1
+  58.280  13.110  27.100   1.540
+ 1002         "DyPO4 (USNM 168485)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             4 
+   "dy"     "p"     "o"    "pb" 
+       1       1       1       1
+       0       4       0       1
+  63.110  12.031  24.859    .000
+ 1003         "ErPO4 (USNM 168486)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             4 
+   "er"     "p"     "o"    "pb" 
+       1       1       1       1
+       0       4       0       1
+  63.780  11.812  24.406    .009
+ 1004         "EuPO4 (USNM 168487)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             3 
+   "eu"     "p"     "o" 
+       1       1       1
+       0       4       0
+  61.539  12.543  25.918
+ 1005         "GdPO4 (USNM 168488)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             4 
+   "gd"     "p"     "o"    "pb" 
+       1       1       1       1
+       0       4       0       1
+  61.980  12.268  25.350    .406
+ 1006         "HoPO4 (USNM 168489)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             3 
+   "ho"     "p"     "o" 
+       1       1       1
+       0       4       0
+  63.458  11.917  24.624
+ 1007         "LaPO4 (USNM 168490)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             4 
+   "la"     "p"     "o"    "pb" 
+       1       1       1       1
+       0       4       0       1
+  58.650  13.205  27.285    .860
+ 1008         "LuPO4 (USNM 168491)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             3 
+   "lu"     "p"     "o" 
+       1       1       1
+       0       4       0
+  64.817  11.474  23.709
+ 1009         "NdPO4 (USNM 168492)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             4 
+   "nd"     "p"     "o"    "pb" 
+       1       1       1       1
+       0       4       0       1
+  59.754  12.925  26.705    .615
+ 1010         "PrPO4 (USNM 168493)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             4 
+   "pr"     "p"     "o"    "pb" 
+       1       1       1       1
+       0       4       0       1
+  59.065  13.099  27.065    .767
+ 1011         "SmPO4 (USNM 168494)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             4 
+   "sm"     "p"     "o"    "pb" 
+       1       1       1       1
+       0       4       0       1
+  60.770  12.608  26.049    .573
+ 1012         "ScPO4 (USNM 168495)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             3 
+   "sc"     "p"     "o" 
+       1       1       1
+       0       4       0
+  32.127  22.135  45.737
+ 1013         "TbPO4 (USNM 168496)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             3 
+   "tb"     "p"     "o" 
+       1       1       1
+       0       4       0
+  62.594  12.199  25.207
+ 1014         "TmPO4 (USNM 168497)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             3 
+   "tm"     "p"     "o" 
+       1       1       1
+       0       4       0
+  64.012  11.737  24.251
+ 1015         "YbPO4 (USNM 168498)"
+"Smithsonian REE Orthophosphate
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             3 
+   "yb"     "p"     "o" 
+       1       1       1
+       0       4       0
+  64.564  11.557  23.879
+ 1016         "YPO4 (USNM 168499)"
+"Smithsonian REE Orthophosphate
+(note Y LG3 first order interference on Pb)
+Pb flux grown by Lynn Boatner, Oak Ridge
+Pb analysis by J. Donovan (EPMA)"
+-1             4 
+    "y"     "p"     "o"    "pb" 
+       1       1       1       1
+       0       4       0       1
+  48.350  16.845  34.805    .000
+ 1020         "RbCaF3 (ORNL)"
+"Synthetic from Lynn Boatner
+Oak Ridge, TN, Solid State Div."
+ 0             3 
+   "Rb"    "Ca"     "F" 
+       2       1       1
+       1       1       0
+  46.822  21.956  31.222
+ 1021         "KTaO3 (ORNL)"
+"Synthetic from Lynn Boatner
+Oak Ridge, TN, Solid State Div."
+ 0             3 
+   "Ta"     "K"     "O" 
+       2       2       1
+       5       1       0
+  67.505  14.588  17.907
+ 1022         "Cryolite (Ivigtuk)"
+"Na3AlF6 UC # M3401"
+ 0             3 
+   "Al"    "Na"     "F" 
+       2       2       1
+       3       1       0
+  12.852  32.852  54.296
+ 1023         "RbTiOPO4"
+"Rubidium Titano-Phosphate
+Grown by Marc Schirer (UCB Chemistry)
+Excellent Rb standard"
+ 0             4 
+   "Rb"    "Ti"     "P"     "O" 
+       2       1       2       1
+       1       2       5       0
+  34.979  19.604  12.676  32.741
+ 1100         "SRM 1259 (Al alloy)"
+"NIST Al alloy 7075"
+ 0             12 
+   "mn"    "si"    "cu"    "ni"    "cr"    "ti"    "ga"    "fe"    "mg"    "zn"    "be"    "al" 
+       1       1       2       1       2       1       2       1       1       1       1       2
+       1       2       1       1       3       2       3       1       1       1       1       3
+    .079    .180   1.600    .063    .173    .040    .022    .205   2.480   5.440    .002  89.716
+ 1101         "SRM 446 (SS alloy)"
+"NIST (446, 846, D846) stainless steel"
+ 0             16 
+   "mn"    "si"    "cu"    "ni"    "cr"    "mo"    "nb"    "ti"    "ta"     "w"     "v"    "sn"     "c"     "p"     "s"    "fe" 
+       1       1       2       1       2       1       2       1       2       1       2       1       1       2       1       1
+       1       2       1       1       3       3       5       2       5       3       3       2       2       5       3       1
+    .530   1.190    .190   9.110  18.350    .430    .600    .340    .030    .040    .030    .020    .080    .030    .020  69.010
+ 1110         "NiAl"
+"from E. Lifshin (GE)"
+ 0             2 
+   "Ni"    "Al" 
+       1       2
+       1       3
+  68.513  31.487
+ 1111         "HfSiO4, synthetic"
+"from J. Hanchar, George Washington Univ."
+ 0             3 
+   "Hf"    "Si"     "O" 
+       1       1       1
+       2       2       0
+  65.967  10.380  23.653
+ 1112         "ZrSiO4, synthetic"
+"from J. Hanchar, George Washington Univ."
+ 0             3 
+   "Zr"    "Si"     "O" 
+       1       1       1
+       2       2       0
+  49.764  15.322  34.914
+ 1113         "PbWO4, synthetic"
+"from C. Evans, Evans and Associates, Inc."
+ 0             3 
+   "Pb"     "W"     "O" 
+       1       1       1
+       1       3       0
+  45.532  40.403  14.065
+ 1120         "Glass S-253"
+"Specimen from Peter Roeder
+Sc, Y, Pb and P from EPMA (analysis by J. Donovan)"
+-1             22 
+   "ca"    "al"    "si"    "lu"    "yb"    "tm"    "er"    "ho"    "dy"    "tb"    "gd"    "eu"    "sm"    "nd"    "pr"    "ce"    "la"     "o"    "sc"     "y"    "pb"     "p" 
+       1       2       1       2       2       2       2       2       2       2       2       2       2       2       2       2       2       1       1       2       1       2
+       1       3       2       3       3       3       3       3       3       3       3       3       3       3       3       3       3       0       2       3       1       5
+  20.800  16.260  18.090    .080    .080    .080    .080    .080    .080    .080    .080    .080    .080    .080    .080    .080    .080  43.550    .060    .080    .000    .000
+ 1121         "Glass S-254"
+"Specimen from Peter Roeder
+Sc, Y, Pb and P from EPMA (analysis by J. Donovan)"
+-1             22 
+   "ca"    "al"    "si"    "lu"    "yb"    "tm"    "er"    "ho"    "dy"    "tb"    "gd"    "eu"    "sm"    "nd"    "pr"    "ce"    "la"     "o"    "sc"     "y"    "pb"     "p" 
+       1       2       1       2       2       2       2       2       2       2       2       2       2       2       2       2       2       1       2       2       1       2
+       1       3       2       3       3       3       3       3       3       3       3       3       3       3       3       3       3       0       3       3       1       5
+  16.900  12.900  15.090   1.040   1.040   1.040   1.040   1.040   1.040   1.040   1.040   1.040   1.040   1.040   1.040   1.040   1.040  37.657    .930    .950    .000    .000
+ 1122         "Na5Al3F14"
+"Cerac (99.5%)"
+ 0             3 
+   "Al"    "Na"     "F" 
+       2       2       1
+       3       1       0
+  17.526  24.888  57.586
+ 1123         "Cs2ReCl6"
+"Eric Tulsky (UC Chem.)"
+ 0             3 
+   "Re"    "Cs"    "Cl" 
+       1       2       1
+       2       1       0
+  28.011  39.989  32.000
+ 1124         "Salesite (Cu(IO3)(OH)"
+"Chuquicamata, Chile
+UCSB Woodhouse Coll.
+Amer. Min. 1978, v. 63, p 172"
+ 0             4 
+    "I"    "Cu"     "O"     "H" 
+       2       2       1       2
+       5       1       0       1
+  49.677  24.875  25.053    .395
+ 1125         "Pollucite, PA-031"
+"From University of Manitoba, Canada, Ron Chapman, P. Cerny
+Originally from R.B. Ferguson Museum of Mineralogy (M47)
+Collected near Norway, Maine"
+-1             11 
+   "si"    "al"    "fe"     "p"    "na"     "k"    "rb"    "cs"    "ca"     "h"     "o" 
+       1       2       2       2       2       2       2       2       1       2       1
+       2       3       3       5       1       1       1       1       1       1       0
+  22.329   8.479    .000    .144   1.239    .017    .265  30.674    .014    .190  36.989
+ 1126         "Pollucite (Rossman)"
+"Daprok, Konar Province, Afghanistan
+Assumed: (Cs,Na)2Al2Si4O12(H2O)
+Typical: Cs0.6Na0.2Rb0.04Al0.9Si2.1O6(H2O)"
+ 0             6 
+   "Cs"    "Si"    "Al"    "Na"     "O"     "H" 
+       2       1       2       2       1       2
+       1       2       3       1       0       1
+  38.630  16.326   7.842   6.682  30.227    .293
+ 2001         "Sb2Te3 (synthetic)"
+"U of O collection"
+ 0             2 
+   "Te"    "Sb" 
+       1       2
+       2       3
+  61.121  38.879
+ 2002         "InAs (synthetic)"
+"MAC standard block"
+ 0             2 
+   "In"    "As" 
+       2       2
+       1       3
+  60.514  39.486
+ 2003         "InSb (synthetic)"
+"In Mac block with InAs"
+ 0             2 
+   "Sb"    "In" 
+       2       2
+       3       1
+  51.465  48.535
+ 2100         "Dahlheim glass, enstatite"
+"UofO, GL-48"
+-1             3 
+   "si"    "mg"     "o" 
+       1       1       1
+       2       1       0
+  27.976  24.212  47.810
+ 2101         "Dahlheim glass, 'A'"
+"UofO, GL-A"
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  23.240   8.510   6.670  16.550  45.030
+ 2102         "Dahlheim glass, 'B'"
+"UofO, GL-B"
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  22.900   8.500   8.440  14.990  45.170
+ 2103         "Dahlheim glass, 'C'"
+"UofO, GL-C
+Note: Si/Al and Ca/Mg ratios are significantly different from stated values."
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  24.370   7.400  10.210  12.120  45.900
+ 2104         "Dahlheim glass, 'D'"
+"UofO, GL-D"
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  21.070  11.090  10.840  11.430  45.570
+ 2105         "Dahlheim glass, 'E'"
+"UofO, GL-E
+MgO = 5.95, Al2O3 = 9.25, SiO2 = 78.72, CaO = 5.04 (EPMA by Carpenter)"
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  37.380   4.760   3.620   3.600  50.640
+ 2106         "Dahlheim glass, 'F'"
+"UofO, GL-F"
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  24.340  16.370   6.070   4.960  48.260
+ 2107         "Dahlheim glass, 'G'"
+"UofO, GL-G"
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  28.570   1.750  19.710   2.060  47.910
+ 2108         "Dahlheim glass, 'H'"
+"UofO, GL-H"
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  14.450  22.170   3.150  15.700  44.530
+ 2109         "Dahlheim glass, 'I'"
+"UofO, GL-I"
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  24.750   1.060  11.480  18.590  44.120
+ 2110         "Dahlheim glass, 'J'"
+"UofO, GL-J"
+-1             5 
+   "si"    "al"    "mg"    "ca"     "o" 
+       1       2       1       1       1
+       2       3       1       1       0
+  20.090  10.070    .610  26.440  42.790
+ 2200         "PrPO4 (Goncalves)"
+"from Mike Jercinovic (U. Mass.)
+Pb free"
+-1             3 
+   "Pr"     "P"     "O" 
+       2       2       1
+       3       5       0
+  59.736  13.131  27.132
+ 2201         "SmPO4 (Goncalves)"
+"from Mike Jercinovic (U. Mass.)
+Pb free"
+-1             3 
+   "Sm"     "P"     "O" 
+       2       2       1
+       3       5       0
+  61.286  12.626  26.088
+ 2202         "LaPO4 (Goncalves)"
+"from Mike Jercinovic (U. Mass.)
+Pb free"
+-1             3 
+   "La"     "P"     "O" 
+       2       2       1
+       3       5       0
+  59.393  13.243  27.364
+ 2203         "NdPO4 (Goncalves)"
+"from Mike Jercinovic (U. Mass.)
+Pb free"
+-1             3 
+   "Nd"     "P"     "O" 
+       2       2       1
+       3       5       0
+  60.297  12.948  26.754
+ 2204         "LaCeNdPO4 (Goncalves)"
+"from Mike Jercinovic (U. Mass.)
+Pb free
+(not analyzed)"
+-1             5 
+   "Nd"    "Ce"    "La"     "P"     "O" 
+       2       2       2       2       1
+       3       3       3       5       0
+  20.367  19.786  19.615  13.121  27.111
+ 2301         "Harvard- Quartz"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=53.25"
+ 0             2 
+   "si"     "o" 
+       1       1
+       2       0
+  46.740  53.550
+ 2302         "Harvard-Sillimanite"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=49.37
+"
+ 0             3 
+   "si"    "al"     "o" 
+       1       2       1
+       2       3       0
+  17.340  33.290  49.750
+ 2303         "Harvard-Kaersutite"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=49.37
+Fe 2+=.56; Fe 3+=8.63"
+ 0             12 
+   "si"    "al"    "fe"    "mg"    "mn"    "ti"    "cr"    "ca"    "na"     "k"     "h"     "o" 
+       1       2       1       1       1       1       2       1       2       2       2       1
+       2       3       1       1       1       2       3       1       1       1       1       0
+  18.510   7.820   9.190   7.490    .090   3.110    .000   7.450   2.090   1.190    .010  42.870
+ 2304         "Harvard-Albite"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=48.65
+Fe 3+=.06
+"
+ 0             7 
+   "si"    "al"    "fe"    "ca"    "na"     "k"     "o" 
+       1       2       1       1       2       2       1
+       2       3       1       1       1       1       0
+  31.820  10.470    .060    .170   8.490    .220  49.830
+ 2305         "Harvard-Olivine"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=43.98
+Fe 2+=6.86"
+ 0             8 
+   "si"    "fe"    "mg"    "mn"    "ca"    "na"    "ni"     "o" 
+       1       1       1       1       1       2       1       1
+       2       1       1       1       1       1       1       0
+  19.580   6.860  29.760    .100    .020    .010    .340  44.800
+ 2306         "Harvard-Gahnite"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=34.92
+Fe 2+=1.53"
+ 0             5 
+   "al"    "fe"    "mn"    "zn"     "o" 
+       2       1       1       1       1
+       3       1       1       1       0
+  29.280   1.530    .290  34.140  35.200
+ 2307         "Harvard-Corundum"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=47.08"
+ 0             2 
+   "al"     "o" 
+       2       1
+       3       0
+  52.920  47.100
+ 2308         "Harvard-Dolomite"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=51.79
+Fe 2+=.06"
+ 0             6 
+   "fe"    "mg"    "mn"    "ca"     "c"     "o" 
+       1       1       1       1       1       1
+       1       1       1       1       2       0
+    .060  13.130    .020  21.750  12.930  51.850
+ 2309         "Harvard-Hematite"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=30.25
+Fe 2+=2.03
+Fe 3+=67.03"
+ 0             6 
+   "Fe"    "mn"    "Ti"    "cr"    "ca"     "o" 
+       1       1       1       2       1       1
+       1       1       2       3       1       0
+  69.060    .010   1.250    .020    .040  30.200
+ 2310         "Harvard-Almandine"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=41.87
+Fe 2+=19.78
+Fe 3+=.83"
+ 0             10 
+   "si"    "al"    "fe"    "mg"    "mn"    "ti"    "cr"    "ca"    "na"     "o" 
+       1       2       1       1       1       1       2       1       2       1
+       2       3       1       1       1       2       3       1       1       0
+  17.950  11.910  20.610   5.030   1.690    .030    .030   1.240    .090  41.940
+ 2311         "Harvard-Muscovite"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=47.78
+Fe 2+=1.35"
+ 0             10 
+   "si"    "al"    "fe"    "mg"    "mn"    "ti"    "na"     "k"     "h"     "o" 
+       1       2       1       1       1       1       2       2       2       1
+       2       3       1       1       1       2       1       1       1       0
+  20.900  19.050   1.350    .260    .040    .090    .370   8.970    .430  50.150
+ 2312         "Harvard-Biotite"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=39.54
+Fe 2+=15.28
+Fe 3+=5.09"
+ 0             10 
+   "si"    "al"    "fe"    "mg"    "mn"    "ti"    "na"     "k"     "h"     "o" 
+       1       2       1       1       1       1       2       2       2       1
+       2       3       1       1       1       2       1       1       1       0
+  16.050   7.850  20.370   3.680   1.000   1.610    .070   7.780    .310  42.370
+ 2313         "Harvard-Enstatite"
+"From Carl Francis; Harvard Mineralogical Museum
+American Mineralogist, Volume 77, pages 1087-1091, 1992
+O(calc)=47.64
+Fe 2+=.10"
+ 0             6 
+   "si"    "al"    "fe"    "mg"    "ca"     "o" 
+       1       2       1       1       1       1
+       2       3       1       1       1       0
+  27.060    .980    .100  24.120    .080  49.330
+ 2401         "Wollastonite (Willsboro, NY)"
+"Ward's Natural Sciences
+Ti = 0.0013, Fe = 0.021, Al = 0.000, Mn = 0.011, Mg = 0.036 (EPMA by JJD)"
+ 0             8 
+   "Ca"    "Si"     "O"    "Ti"    "fe"    "mn"    "mg"    "al" 
+       1       1       1       1       1       1       1       2
+       1       2       0       2       1       1       1       3
+  34.502  24.177  41.320    .001    .021    .011    .036    .000
