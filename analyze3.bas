@@ -314,18 +314,19 @@ If ip% > 0 Then
 If chan% <> sample(1).OxygenChannel% Then
 ippp% = IPOS1(sample(1).LastElm%, sample(1).Elsyms$(chan%), sample(1).Elsyms$())    ' is element already analysed?
 If ippp% = 0 Then
-analysis.WtPercents!(chan%) = stdsample(1).ElmPercents!(ip%)        ' no, so load
+analysis.WtPercents!(chan%) = stdsample(1).ElmPercents!(ip%)            ' no, so load
 Else
 If sample(1).DisableQuantFlag%(ippp%) = 1 Then analysis.WtPercents!(chan%) = stdsample(1).ElmPercents!(ip%)     ' if analyzed but disabled, then load anway
+'If sample(1).DisableQuantFlag%(ippp%) = 1 And chan% <= sample(1).LastElm% Then analysis.WtPercents!(chan%) = stdsample(1).ElmPercents!(ip%)     ' if analyzed but disabled, then load anway (this line handles the situation when element is present as disabled WDS, enabled EDS and also specified)
 End If
 
 ' Zero if analyzing oxygen and sample is a standard (3/1/2004 code changes)
 If sample(1).Type% = 1 Then
 If sample(1).OxygenChannel% > 0 And sample(1).OxygenChannel% <= sample(1).LastElm% Then
 If UCase$(Trim$(sample(1).Elsyms$(chan%))) = UCase$(Trim$(Symlo$(8))) Then
-analysis.WtPercents!(chan%) = 0#    ' zero specified value
+analysis.WtPercents!(chan%) = 0#                                        ' zero specified value
 ippp% = IPOS2(NumberofStandards%, sample(1).number%, StandardNumbers%())
-analysis.StdPercents!(ippp%, chan%) = 0#    ' fix PUBL: values
+analysis.StdPercents!(ippp%, chan%) = 0#                                ' fix PUBL: values
 End If
 End If
 End If

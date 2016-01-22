@@ -322,6 +322,7 @@ Sub LeastDeviation(mode As Integer, avgdev As Single, npts As Integer, txdata() 
 ' mode% = 2 use gaussian expression
 ' mode% = 3 use logarithmic expression
 ' mode% = 4 use logarithmic2 expression
+' mode% = 5 use exponential expression (y data is in log units)
 
 ierror = False
 On Error GoTo LeastDeviationError
@@ -347,7 +348,11 @@ sum! = 0#
 For i% = 1 To npts%
 
 ' Sum values
+If mode% = 5 Then
+sum! = sum! + NATURALE# ^ tydata!(i%)                           ' if exponential, convert log intensities to base 10
+Else
 sum! = sum! + tydata!(i%)
+End If
 
 ' Calculate absolute deviation from fit
 If mode% = 1 Then       ' quadratic
@@ -363,10 +368,18 @@ temp! = acoeff!(1) + acoeff!(2) * Log(txdata!(i%))
 
 ElseIf mode% = 4 Then   ' logarithmic2
 temp! = acoeff!(1) + acoeff!(2) * Log(txdata!(i%)) + acoeff!(3) * Log(txdata!(i%)) ^ 2
+
+ElseIf mode% = 5 Then   ' exponential
+temp! = acoeff!(1) + acoeff!(2) * txdata!(i%) + acoeff!(3) * txdata!(i%) ^ 2
 End If
 
 ' Calculate difference squared
+If mode% = 5 Then
+temp! = (NATURALE# ^ tydata!(i%) - NATURALE# ^ temp!) ^ 2       ' if exponential, convert log intensities to base 10
+
+Else
 temp! = (tydata!(i%) - temp!) ^ 2
+End If
 
 ' Sum the relative deviations
 avgdev! = avgdev! + temp!
