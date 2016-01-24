@@ -31,6 +31,7 @@ xydist! = 0#
 firstline = False
 End If
 
+' Calculate x and y distance (ignore Z)
 incr! = (xold - sample(1).StagePositions!(sampleline%, 1)) ^ 2 + (yold - sample(1).StagePositions!(sampleline%, 2)) ^ 2
 incr! = Sqr(incr!)
 xydist! = xydist! + incr! * MotUnitsToAngstromMicrons!(XMotor%)
