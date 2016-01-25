@@ -2,7 +2,7 @@ Attribute VB_Name = "CodeScanData2"
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Const MAXSEGMENTS% = 100
+Const MAXSEGMENTS% = 400
 
 ' Load colors
 Const CURVECOLOR% = 4           ' red

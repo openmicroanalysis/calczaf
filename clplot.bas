@@ -152,7 +152,7 @@ On Error GoTo CLInitDisplay_PEError
 
 Dim astring As String
 
-' Init graph properies
+' Init graph properties
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.points = 1
 tForm.Pesgo1.xdata(0, 0) = 0                    'for empty subset
@@ -187,7 +187,7 @@ tForm.Pesgo1.ImageAdjustLeft = 100              ' axis formatting - create a lit
 tForm.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&
 tForm.Pesgo1.ZoomStyle = PEZS_RO2_NOT&
 
-' allow scroll after zoom
+' Allow scroll after zoom
 tForm.Pesgo1.ScrollingHorzZoom = True
 tForm.Pesgo1.ScrollingVertZoom = True
 tForm.Pesgo1.MouseDraggingX = True
