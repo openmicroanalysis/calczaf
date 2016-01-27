@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/26/16	Fix Automate! bug when selecting positions to delete from bottom to top (Chouinard). 
+v. 11.2.7		
+		New matrix.mdb (over 300K k-ratios)
+
 01/25/16	Fix count time display bug (Chouinard).   Convert Peak Scan dialog to Pro Essentials graphics.
 
 01/24/16	New Pro Essentials graphics for integrated intensity plot dialog. Work on FormAUTOFOCUS code for PE graphics.
