@@ -4,13 +4,6 @@ Option Explicit
 
 Const MAXSEGMENTS% = 400
 
-' Load colors
-Const CURVECOLOR% = 4           ' red
-Const THRESHOLDCOLOR% = 11      ' cyan
-Const CENTROIDCOLOR% = 12       ' light red
-Const CURRENTCOLOR% = 10        ' light green
-Const ONPEAKCOLOR% = 5          ' magenta
-
 ' Special arrays for spline fit data and coefficients
 Dim nPoints As Integer
 Dim xdata() As Single, ydata() As Single

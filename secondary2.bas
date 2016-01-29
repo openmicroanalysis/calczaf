@@ -616,7 +616,7 @@ Exit Sub
 
 End Sub
 
-Sub SecondaryGetCoordinates(n As Long, X() As Single, Y() As Single, Z() As Single)
+Sub SecondaryGetCoordinates(n As Long, x() As Single, Y() As Single, Z() As Single)
 ' Get the currently analyzed data point coordinates
 
 ierror = False
@@ -628,12 +628,12 @@ Dim i As Long
 If apoints& < 1 Then Exit Sub
 
 ' Dimension
-ReDim X(1 To apoints&) As Single
+ReDim x(1 To apoints&) As Single
 ReDim Y(1 To apoints&) As Single
 ReDim Z(1 To apoints&) As Single
 
 For i& = 1 To apoints&
-X!(i&) = xcoord!(i&)
+x!(i&) = xcoord!(i&)
 Y!(i&) = ycoord!(i&)
 Z!(i&) = zcoord!(i&)
 Next i&
