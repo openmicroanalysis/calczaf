@@ -286,6 +286,17 @@ If ierror Then Exit Sub
 GoTo SkipThisRecord         ' skip saving all MAXBINARY% k-ratios for this beam energy and x-ray line situation
 End If
 
+' Check for valid k-ratios (crazy large matrix correction)
+temp! = BinaryRanges!(i%) / CSng(Binary_ZAF_Kratios#(l%, i%))
+If temp! < 0.01 Or temp! > 100# Then
+errorsfound = True
+msg$ = "Penepma12MatrixScanMDB: K-ratio number " & Format$(i%) & " (" & Format$(Binary_ZAF_Kratios#(l%, i%)) & ") produces a crazy matrix correction (" & Format$(temp!) & ") for " & Symup$(EmittingElement%) & " " & Xraylo$(EmittingXray%) & " in " & Symup$(MatrixElement%) & " at " & Format$(BeamEnergy!) & " keV : " & tfilename$ & " (skipping this binary record)..."
+If DebugMode Then MiscMsgBoxTim FormMSGBOXTIME, "Penepma12MatrixScanMDB", msg$, 5#
+Call IOWriteError(msg$, "Penepma12MatrixScanMDB")
+If ierror Then Exit Sub
+GoTo SkipThisRecord         ' skip saving all MAXBINARY% k-ratios for this beam energy and x-ray line situation
+End If
+
 ' Warn if very large ZAF correction
 temp! = BinaryRanges!(i%) / CSng(Binary_ZAF_Kratios#(l%, i%))
 If temp! < 0.6 Or temp! > 5# Then
@@ -302,15 +313,18 @@ End If
 End If
 
 ' Now check for binary output suitable for error histogram calculations in CalcZAF
-' Data file format assumes one line for each binary. The first two columns are the atomic numbers of the two binary components
-' to be calculated. The second two columns are the xray lines to use. ( 1 = Ka, 2 = Kb, 3 = La, 4 = Lb, 5 = Ma, 6 = Mb, 7 = by difference). The next
-' two columns are the operating voltage and take-off angle. The next two columns are the wt. fractions of the binary components. The
-' last two columns contains the k-exp values for calculation of k-calc/k-exp.
+' Data file format assumes one line for each binary. The first two columns are the
+' atomic numbers of the two binary components to be calculated. The second two columns
+' are the xray lines to use (1 = Ka, 2 = Kb, 3 = La, 4 = Lb, 5 = Ma, 6 = Mb,
+' 7 = Ln, 8 = Lg, 9 = Lv, 10 = Ll, 11 = Mg, 12 = Mz, 13 = by difference). The next
+' two columns are the operating voltage and take-off angle. The next two columns are
+' the wt. fractions of the binary components. The last two columns contains the k-exp
+' values for calculation of k-calc/k-exp.
 '
-'       79     29     5    7    15.     52.5    .8015   .1983   .7400   .0
-'       79     29     5    7    15.     52.5    .6036   .3964   .5110   .0
-'       79     29     5    7    15.     52.5    .4010   .5992   .3120   .0
-'       79     29     5    7    15.     52.5    .2012   .7985   .1450   .0
+'       79     29     5    13    15.     52.5    .8015   .1983   .7400   .0
+'       79     29     5    13    15.     52.5    .6036   .3964   .5110   .0
+'       79     29     5    13    15.     52.5    .4010   .5992   .3120   .0
+'       79     29     5    13    15.     52.5    .2012   .7985   .1450   .0
 
 ' Only concentration greater than 5% and overvoltages greater than 1.5 for resonable precision
 If BinaryRanges!(i%) > 5# And BeamEnergy! / edg! >= 1.5 Then

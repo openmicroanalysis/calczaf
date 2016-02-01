@@ -1200,7 +1200,7 @@ Else
 'x2! = 3.98352 * uu! ^ -0.0516861 * (1.2276233 - uu! ^ (-1.225558 * zz! ^ -0.1424549))  ' original typo
 X2! = 3.98352 * uu! ^ -0.0516861 * (1.276233 - uu! ^ (-1.25558 * zz! ^ -0.1424549))     ' fixed from "green book", 7-14-2011, Carpenter
 End If
-If v1! < 0.7 Then X2! = X2 * v1! / (-0.041878 + 1.05975 * v1!)
+If v1! < 0.7 Then X2! = X2! * v1! / (-0.041878 + 1.05975 * v1!)
 End If
 
 ' End of all procedures, now calculate phi expression ("rr")
@@ -1219,7 +1219,7 @@ If iabs% = 15 Then
 qeO! = Log(zaf.v!(i%)) / (zaf.eC!(i%) * zaf.eC!(i%) * Exp(em!(i%) * Log(zaf.v!(i%))))
 xp! = xp! / (zipi!(i%) * 66892#) * zaf.atwts!(i%)
 ff! = xp! / qeO!
-rbas! = (X2 - x4 * ff / spi!) / x5!
+rbas! = (X2! - x4! * ff! / spi!) / x5!
 
 If rbas! <= 0# Or rbas! >= 1# Then
 x4! = (rr! + X2!) * spi! / (4# * ff!)   ' used to be (2# * ff!), fixed 7/14/2011, Carpenter
@@ -3984,7 +3984,7 @@ p4! = xx! * zaf.t1! * er1!
 p5! = Exp(-p4!)
 p6! = Exp(-xx! * zaf.g! * er1!)
 r4! = er1! * 10000!
-b9! = X2 * (1# - x5 * Exp(-x3 * er1!)) * Exp(-x4 * x4 * er1! * er1!)
+b9! = X2! * (1# - x5 * Exp(-x3 * er1!)) * Exp(-x4! * x4! * er1! * er1!)
 If b9! < 0.000001 Then
 zaf.erange!(ii%) = er1!
 Exit Sub

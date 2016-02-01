@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/31/16	Create "stubs" for remaining GS and PE graphics procedures (FormPOLYGON).
+
+		New Pro Essentials graphics in FormSETPHA and FormSETPHA2.
+
 01/28/16	Modify PHA (re-entrant) code to improve parallel acquisition on multiple spectrometers (Buse).
 
 		New TDI display graphics.

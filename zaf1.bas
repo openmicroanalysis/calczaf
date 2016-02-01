@@ -24,7 +24,7 @@ Type TypeZAF
     eO(1 To MAXCHAN1%) As Single    ' array for kilovolts
 
     p1(1 To MAXCHAN1%) As Single    ' stoichiometric proportion
-    il(1 To MAXCHAN1%) As Integer   ' x-ray line number (0 = stoichiometric element, 1 = ka, 2 = kb, 3 = la, 4 = lb, 5 = ma, 6 = mb)
+    il(1 To MAXCHAN1%) As Integer   ' x-ray line number (1 = ka, 2 = kb, 3 = la, 4 = lb, 5 = ma, 6 = mb, 7 = Ln, 8 = Lg, 9 = Lv, 10 = Ll, 11 = Mg, 12 = Mz, 13 = by difference)
     Z(1 To MAXCHAN1%) As Integer    ' atomic number
 
     atwts(1 To MAXCHAN1%) As Single     ' atomic weights

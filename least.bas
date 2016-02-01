@@ -646,7 +646,7 @@ yd#(i%) = tydata!(i%)
 sig#(i%) = 1#    ' weighting of data for fit (use 1.0 for no weighting)
 Next i%
 
-' Determine the gaussian fit coefficients: y = b * Log(x) + a
+' Determine the fit coefficients: y = b * Log(x) + a
 Call RegressLINREG(xd#(), yd#(), nmax%, MAXFITS%, MAXDATA%, MAXFITS%, sig#(), determinate#, chisq#, avsumsq#, predicated#(), residual#(), fitparam#(), cvm#(), se#())
 If ierror Then Exit Sub
 
@@ -738,7 +738,7 @@ yd#(i%) = tydata!(i%)
 sig#(i%) = 1#    ' weighting of data for fit (use 1.0 for no weighting)
 Next i%
 
-' Determine the gaussian fit coefficients: y = b * Log(x) + a
+' Determine the fit coefficients: y = b * Log(x) + a
 Call RegressLINREG(xd#(), yd#(), nmax%, MAXFITS%, MAXDATA%, MAXFITS%, sig#(), determinate#, chisq#, avsumsq#, predicated#(), residual#(), fitparam#(), cvm#(), se#())
 If ierror Then Exit Sub
 
