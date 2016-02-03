@@ -1219,22 +1219,35 @@ If iabs% = 15 Then
 qeO! = Log(zaf.v!(i%)) / (zaf.eC!(i%) * zaf.eC!(i%) * Exp(em!(i%) * Log(zaf.v!(i%))))
 xp! = xp! / (zipi!(i%) * 66892#) * zaf.atwts!(i%)
 ff! = xp! / qeO!
-rbas! = (X2! - x4! * ff! / spi!) / x5!
+'rbas! = (X2! - x4! * ff! / spi!) / x5!              ' original code from CITZAF
+rbas! = (X2! - 2 * x4! * ff! / spi!) / x5!          ' corrcted by Brian Joy, 01-2016
 
 If rbas! <= 0# Or rbas! >= 1# Then
 x4! = (rr! + X2!) * spi! / (4# * ff!)   ' used to be (2# * ff!), fixed 7/14/2011, Carpenter
 rbas! = 0.5
 End If
 
-If rbas! >= 0.9 And rbas! < 1 Then x3! = 0.9628832 - 0.964244 * rbas!
-If rbas! > 0.8 And rbas! <= 0.9 Then x3! = 1.122405 - 1.141942 * rbas!
-If rbas! > 0.7 And rbas! <= 0.8 Then x3! = 13.4381 * Exp(-5.180503 * rbas!)
-If rbas! > 0.57 And rbas! <= 0.7 Then x3! = 5.909606 * Exp(-4.015891 * rbas!)
-If rbas! > 0.306 And rbas! <= 0.57 Then x3! = 4.852357 * Exp(-3.680818 * rbas!)
-If rbas! > 0.102 And rbas! <= 0.306 Then x3! = (1 - 0.5379956 * rbas!) / (1.685638 * rbas!)
-If rbas! > 0.056 And rbas! <= 0.102 Then x3! = (1 - 1.043744 * rbas!) / (1.60482 * rbas!)
-If rbas! > 0.03165 And rbas! <= 0.056 Then x3! = (1 - 2.749786 * rbas!) / (1.447465 * rbas!)
-If rbas! > 0# And rbas! <= 0.03165 Then x3! = (1 - 4.894396 * rbas!) / (1.341313 * rbas!)
+' Original CITZAF code
+'If rbas! >= 0.9 And rbas! < 1 Then x3! = 0.9628832 - 0.964244 * rbas!
+'If rbas! > 0.8 And rbas! <= 0.9 Then x3! = 1.122405 - 1.141942 * rbas!
+'If rbas! > 0.7 And rbas! <= 0.8 Then x3! = 13.4381 * Exp(-5.180503 * rbas!)
+'If rbas! > 0.57 And rbas! <= 0.7 Then x3! = 5.909606 * Exp(-4.015891 * rbas!)
+'If rbas! > 0.306 And rbas! <= 0.57 Then x3! = 4.852357 * Exp(-3.680818 * rbas!)
+'If rbas! > 0.102 And rbas! <= 0.306 Then x3! = (1 - 0.5379956 * rbas!) / (1.685638 * rbas!)
+'If rbas! > 0.056 And rbas! <= 0.102 Then x3! = (1 - 1.043744 * rbas!) / (1.60482 * rbas!)
+'If rbas! > 0.03165 And rbas! <= 0.056 Then x3! = (1 - 2.749786 * rbas!) / (1.447465 * rbas!)
+'If rbas! > 0# And rbas! <= 0.03165 Then x3! = (1 - 4.894396 * rbas!) / (1.341313 * rbas!)
+
+' Corrected by Brian Joy, 01-2016
+If rbas! >= 0.9 And rbas! < 1 Then x3! = (0.9628832 - 0.964244 * rbas!) * 2 * x4!
+If rbas! > 0.8 And rbas! <= 0.9 Then x3! = (1.122405 - 1.141942 * rbas!) * 2 * x4!
+If rbas! > 0.7 And rbas! <= 0.8 Then x3! = (13.4381 * Exp(-5.180503 * rbas!)) * 2 * x4!
+If rbas! > 0.57 And rbas! <= 0.7 Then x3! = (5.909606 * Exp(-4.015891 * rbas!)) * 2 * x4!
+If rbas! > 0.306 And rbas! <= 0.57 Then x3! = (4.852357 * Exp(-3.680818 * rbas!)) * 2 * x4!
+If rbas! > 0.102 And rbas! <= 0.306 Then x3! = ((1 - 0.5379956 * rbas!) / (1.685638 * rbas!)) * 2 * x4!
+If rbas! > 0.056 And rbas! <= 0.102 Then x3! = ((1 - 1.043744 * rbas!) / (1.60482 * rbas!)) * 2 * x4!
+If rbas! > 0.03165 And rbas! <= 0.056 Then x3! = ((1 - 2.749786 * rbas!) / (1.447465 * rbas!)) * 2 * x4!
+If rbas! > 0# And rbas! <= 0.03165 Then x3! = ((1 - 4.894396 * rbas!) / (1.341313 * rbas!)) * 2 * x4!
 End If
  
 ' Calculate error function

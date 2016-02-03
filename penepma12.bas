@@ -2236,7 +2236,7 @@ ierror = False
 On Error GoTo Penepma12RunFanalError
 
 Dim ip As Integer
-Dim tfilename As String, pstring As String
+Dim tfilename As String, pstring As String, astring As String
 Dim eng As Single, edg As Single, temp As Single
 
 Dim t1 As Single, t2 As Single
@@ -2255,10 +2255,12 @@ PENEPMA_Sample(1).Elsyms$(1) = Symlo$(MaterialMeasuredElement%)
 PENEPMA_Sample(1).Xrsyms$(1) = Xraylo$(MaterialMeasuredXray%)
 
 ' Fill element arrays
+astring = "loading element arrays"
 Call ElementLoadArrays(PENEPMA_Sample())
 If ierror Then Exit Sub
 
 ' Get x-ray data
+astring = "getting x-ray data"
 Call XrayGetEnergy(MaterialMeasuredElement%, MaterialMeasuredXray%, eng!, edg!)
 If ierror Then Exit Sub
 
@@ -2268,6 +2270,7 @@ If edg! = 0# Then GoTo Penepma12RunFanalNoEdgeData
 If edg! > MaterialMeasuredEnergy# Then GoTo Penepma12RunFanalBelowEdge
 
 ' Check for .IN file in all three files and if found check MSIMPA parameters (minimum electron/photon energy)
+astring = "checking parameter A .in file"
 If Dir$(PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(ParameterFileA$) & ".in") <> vbNullString Then
 Call Penepma12RunFanalCheckINFile("MSIMPA", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(ParameterFileA$) & ".in", pstring$)
 If ierror Then Exit Sub
@@ -2276,6 +2279,7 @@ temp! = temp! / EVPERKEV#
 If edg! < temp! Then GoTo Penepma12RunFanalBadMinimumEnergyA
 End If
 
+astring = "checking parameter B .in file"
 If Dir$(PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(ParameterFileB$) & ".in") <> vbNullString Then
 Call Penepma12RunFanalCheckINFile("MSIMPA", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(ParameterFileB$) & ".in", pstring$)
 If ierror Then Exit Sub
@@ -2284,6 +2288,7 @@ temp! = temp! / EVPERKEV#
 If edg! < temp! Then GoTo Penepma12RunFanalBadMinimumEnergyB
 End If
 
+astring = "checking parameter BStd .in file"
 If Dir$(PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(ParameterFileBStd$) & ".in") <> vbNullString Then
 Call Penepma12RunFanalCheckINFile("MSIMPA", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(ParameterFileBStd$) & ".in", pstring$)
 If ierror Then Exit Sub
@@ -2293,6 +2298,7 @@ If edg! < temp! Then GoTo Penepma12RunFanalBadMinimumEnergyBStd
 End If
 
 ' Check if edge is less than Penfluor default modeling energy
+astring = "checking edge energy and Penfluor minimum energy"
 If Dir$(PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(ParameterFileA$) & ".in") = vbNullString Then
 If Dir$(PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(ParameterFileB$) & ".in") = vbNullString Then
 If Dir$(PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(ParameterFileBStd$) & ".in") = vbNullString Then
@@ -2317,32 +2323,45 @@ If ierror Then Exit Sub
 If t1! = 0# Or t2! = 0# Then GoTo Penepma12RunFanalBadTransitions
 
 ' Check overvoltage (again)
+astring = "checking overvoltage"
 Call ElementCheckXray(Int(1), PENEPMA_Sample())
 If ierror Then Exit Sub
 
 ' Check for each material .par file in penfluor folder (copy original .par file even though the temp is copied)
+astring = "checking parameter A file"
 tfilename$ = PENEPMA_Root$ & "\Penfluor\" & ParameterFileA$
 If Dir$(tfilename$) = vbNullString Then GoTo Penepma12RunFanalParameterFileNotFound
 FileCopy tfilename$, PENEPMA_Root$ & "\Fanal\db\" & ParameterFileA$
+DoEvents
 If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Fanal\db\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(ParameterFileA$)) & ".in"
 
+astring = "checking parameter B file"
 tfilename$ = PENEPMA_Root$ & "\Penfluor\" & ParameterFileB$
 If Dir$(tfilename$) = vbNullString Then GoTo Penepma12RunFanalParameterFileNotFound
 FileCopy tfilename$, PENEPMA_Root$ & "\Fanal\db\" & ParameterFileB$
+DoEvents
 If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Fanal\db\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(ParameterFileB$)) & ".in"
 
+astring = "checking parameter BStd file"
 tfilename$ = PENEPMA_Root$ & "\Penfluor\" & ParameterFileBStd$
 If Dir$(tfilename$) = vbNullString Then GoTo Penepma12RunFanalParameterFileNotFound
 FileCopy tfilename$, PENEPMA_Root$ & "\Fanal\db\" & ParameterFileBStd$
+DoEvents
 If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Fanal\db\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(ParameterFileBStd$)) & ".in"
 
 ' Modify .par files and copy as temp files to fanal\db folder
+astring = "modifying parameter A file"
 Call Penepma12ModifyParFiles(Int(1), Int(1))
 If ierror Then Exit Sub
+DoEvents
+astring = "modifying parameter B file"
 Call Penepma12ModifyParFiles(Int(2), Int(1))
 If ierror Then Exit Sub
+DoEvents
+astring = "modifying parameter BStd file"
 Call Penepma12ModifyParFiles(Int(3), Int(1))
 If ierror Then Exit Sub
+DoEvents
 
 ' Check that measured element is present in material B (not absolutely necessary)
 'tfilename$ = PENEPMA_Root$ & "\Fanal\db\" & "material2.par"        ' material B
@@ -2352,6 +2371,7 @@ If ierror Then Exit Sub
 'If ip% = 0 Then GoTo Penepma12RunFanalNotFoundMaterialB
 
 ' Check that measured element is present in material BStd
+astring = "checking measured element in BStd file"
 tfilename$ = PENEPMA_Root$ & "\Fanal\db\" & "material3.par"        ' material B Std
 Call Penepma12GetParFileComposition(Int(3), tfilename$, PENEPMA_Sample())
 If ierror Then Exit Sub
@@ -2362,7 +2382,7 @@ Exit Sub
 
 ' Errors
 Penepma12RunFanalError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma12RunFanal"
+MsgBox Error$ & ", during, " & astring$ & " (the Fanal\db folder may need to be cleared of .PAR and .IN files on some systems)", vbOKOnly + vbCritical, "Penepma12RunFanal"
 ierror = True
 Exit Sub
 
@@ -5393,8 +5413,8 @@ Call IOWriteLog(msg$)
 Call InitKratios
 If ierror Then Exit Sub
 
-' Loop on each valid x-ray
-For l% = 1 To MAXRAY_OLD% - 1
+' Loop on each valid x-ray line (Ka, Kb, La, Lb, Ma, Mb only at this time)
+For l% = 1 To MAXRAY_OLD%
 'For l% = 1 To 1         ' testing purposes (Ka only)
 'For l% = 2 To 2         ' testing purposes (Kb only)
 Call XrayGetEnergy(MaterialMeasuredElement%, l%, eng!, edg!)

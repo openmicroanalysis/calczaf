@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/02/16	Corrections to Proza code per Brian Joy. 
+v. 11.2.8
+
+02/01/16	Fix bug in digitize cluster code.
+
 01/31/16	Create "stubs" for remaining GS and PE graphics procedures (FormPOLYGON).
 
 		New Pro Essentials graphics in FormSETPHA and FormSETPHA2.
