@@ -1,5 +1,4 @@
 VERSION 5.00
-Object = "{827E9F53-96A4-11CF-823E-000021570103}#1.0#0"; "graphs32.ocx"
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
 Begin VB.Form FormPlotAlpha_PE 
    BorderStyle     =   3  'Fixed Dialog
@@ -30,19 +29,19 @@ Begin VB.Form FormPlotAlpha_PE
       Height          =   615
       Index           =   3
       Left            =   8760
-      TabIndex        =   22
+      TabIndex        =   21
       Top             =   3720
       Width           =   1815
    End
    Begin Pesgo32fLib.Pesgo Pesgo1 
-      Height          =   5895
+      Height          =   7335
       Left            =   120
-      TabIndex        =   19
+      TabIndex        =   18
       Top             =   120
-      Width           =   6255
+      Width           =   8415
       _Version        =   65536
-      _ExtentX        =   11033
-      _ExtentY        =   10398
+      _ExtentX        =   14843
+      _ExtentY        =   12938
       _StockProps     =   96
       _AllProps       =   "PlotAlpha_PE.frx":0000
    End
@@ -59,15 +58,15 @@ Begin VB.Form FormPlotAlpha_PE
       EndProperty
       Height          =   375
       Left            =   8760
-      TabIndex        =   18
+      TabIndex        =   17
       Top             =   7440
       Width           =   1815
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandZoomFull 
       Caption         =   "Zoom Full"
       Height          =   375
       Left            =   8760
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   7920
       Width           =   1815
    End
@@ -84,7 +83,7 @@ Begin VB.Form FormPlotAlpha_PE
       EndProperty
       Height          =   375
       Left            =   8760
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   7080
       Width           =   1815
    End
@@ -101,7 +100,7 @@ Begin VB.Form FormPlotAlpha_PE
       EndProperty
       Height          =   375
       Left            =   8760
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   6720
       Width           =   1815
    End
@@ -118,7 +117,7 @@ Begin VB.Form FormPlotAlpha_PE
       EndProperty
       Height          =   375
       Left            =   8880
-      TabIndex        =   11
+      TabIndex        =   10
       Top             =   4680
       Width           =   1575
    End
@@ -126,7 +125,7 @@ Begin VB.Form FormPlotAlpha_PE
       Caption         =   "Plot All Options"
       Height          =   255
       Left            =   8760
-      TabIndex        =   17
+      TabIndex        =   16
       Top             =   4440
       Width           =   1815
    End
@@ -143,7 +142,7 @@ Begin VB.Form FormPlotAlpha_PE
       EndProperty
       Height          =   375
       Left            =   8880
-      TabIndex        =   15
+      TabIndex        =   14
       Top             =   5400
       Width           =   1575
    End
@@ -151,7 +150,7 @@ Begin VB.Form FormPlotAlpha_PE
       Caption         =   "Plot All MACs"
       Height          =   255
       Left            =   8760
-      TabIndex        =   16
+      TabIndex        =   15
       Top             =   5160
       Width           =   1695
    End
@@ -160,7 +159,7 @@ Begin VB.Form FormPlotAlpha_PE
       Height          =   615
       Index           =   2
       Left            =   8760
-      TabIndex        =   14
+      TabIndex        =   13
       Top             =   2880
       Width           =   1815
    End
@@ -169,7 +168,7 @@ Begin VB.Form FormPlotAlpha_PE
       Height          =   615
       Index           =   1
       Left            =   8760
-      TabIndex        =   13
+      TabIndex        =   12
       Top             =   2160
       Width           =   1815
    End
@@ -178,7 +177,7 @@ Begin VB.Form FormPlotAlpha_PE
       Height          =   615
       Index           =   0
       Left            =   8760
-      TabIndex        =   12
+      TabIndex        =   11
       Top             =   1440
       Width           =   1815
    End
@@ -186,7 +185,7 @@ Begin VB.Form FormPlotAlpha_PE
       Height          =   315
       Left            =   8880
       Style           =   2  'Dropdown List
-      TabIndex        =   8
+      TabIndex        =   7
       Top             =   960
       Width           =   1575
    End
@@ -203,31 +202,12 @@ Begin VB.Form FormPlotAlpha_PE
       EndProperty
       Height          =   255
       Left            =   8880
-      TabIndex        =   7
+      TabIndex        =   6
       Top             =   6360
+      Value           =   1  'Checked
       Width           =   1095
    End
-   Begin GraphsLib.Graph Graph1 
-      Height          =   3735
-      Left            =   2880
-      TabIndex        =   3
-      TabStop         =   0   'False
-      Top             =   3720
-      Width           =   5655
-      _Version        =   327680
-      _ExtentX        =   9975
-      _ExtentY        =   6588
-      _StockProps     =   96
-      BorderStyle     =   1
-      Background      =   "15~-1~-1~-1~-1~-1~-1"
-      GraphType       =   0
-      SymbolData      =   "13"
-      SymbolSize      =   75
-      ThickLines      =   0
-      Toolbar         =   3
-      LabelYFormat    =   ""
-   End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H0000C000&
       Cancel          =   -1  'True
       Caption         =   "Close"
@@ -244,7 +224,7 @@ Begin VB.Form FormPlotAlpha_PE
       BorderStyle     =   1  'Fixed Single
       Height          =   735
       Left            =   120
-      TabIndex        =   10
+      TabIndex        =   9
       Top             =   7560
       Width           =   8415
    End
@@ -253,7 +233,7 @@ Begin VB.Form FormPlotAlpha_PE
       Caption         =   "Binary Alpha"
       Height          =   255
       Left            =   8880
-      TabIndex        =   9
+      TabIndex        =   8
       Top             =   720
       Width           =   1575
    End
@@ -288,7 +268,7 @@ Begin VB.Form FormPlotAlpha_PE
       EndProperty
       Height          =   255
       Left            =   9600
-      TabIndex        =   20
+      TabIndex        =   19
       Top             =   6120
       Width           =   1095
    End
@@ -306,7 +286,7 @@ Begin VB.Form FormPlotAlpha_PE
       EndProperty
       Height          =   255
       Left            =   9600
-      TabIndex        =   21
+      TabIndex        =   20
       Top             =   5880
       Width           =   1095
    End
@@ -348,12 +328,12 @@ End Sub
 Private Sub CheckUseGridlines_Click()
 If Not DebugMode Then On Error Resume Next
 If FormPlotAlpha_PE.CheckUseGridlines.Value = vbChecked Then
-FormPlotAlpha_PE.Graph1.GridStyle = graphHorizontal_Vertical
-FormPlotAlpha_PE.Graph1.GridLineStyle = graphDotted
+FormPlotAlpha_PE.Pesgo1.GridLineControl = PEGLC_BOTH&          ' x and y grid
+FormPlotAlpha_PE.Pesgo1.GridBands = True                       ' adds colour banding on background
 Else
-FormPlotAlpha_PE.Graph1.GridStyle = 0
+FormPlotAlpha_PE.Pesgo1.GridLineControl = PEGLC_NONE&
+FormPlotAlpha_PE.Pesgo1.GridBands = False                      ' removes colour banding on background
 End If
-FormPlotAlpha_PE.Graph1.DrawMode = 2
 End Sub
 
 Private Sub ComboPlotAlpha_Click()
@@ -361,28 +341,17 @@ If Not DebugMode Then On Error Resume Next
 Call CalcZAFPlotAlphaFactors_PE
 End Sub
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-If CorrectionFlag% = 4 Then CorrectionFlag% = 3     ' force to polynomial alpha factors for now
-Unload FormPlotAlpha_PE
-End Sub
-
-Private Sub Command2_Click()
-' Zoom full
-If Not DebugMode Then On Error Resume Next
-' Change to variable origin
-FormPlotAlpha_PE.Graph1.XAxisStyle = 1
-FormPlotAlpha_PE.Graph1.YAxisStyle = 1
-' Redraw graph
-FormPlotAlpha_PE.Graph1.MousePointer = 0
-FormPlotAlpha_PE.Graph1.DrawMode = 2
-End Sub
-
 Private Sub CommandClipBoard_Click()
 If Not DebugMode Then On Error Resume Next
-FormPlotAlpha_PE.Graph1.DrawMode = 3     ' blit to put in bitmap format (otherwise metafile format does not work correctly)
-DoEvents
-FormPlotAlpha_PE.Graph1.DrawMode = 4     ' copy to clipboard
+FormPlotAlpha_PE.Pesgo1.AllowExporting = True
+FormPlotAlpha_PE.Pesgo1.ExportImageLargeFont = False
+FormPlotAlpha_PE.Pesgo1.ExportImageDpi = 400
+Call FormPlotAlpha_PE.Pesgo1.PEcopybitmaptoclipboard(FormPlotAlpha_PE.Pesgo1.Width / 10, FormPlotAlpha_PE.Pesgo1.Height / 10)
+End Sub
+
+Private Sub CommandClose_Click()
+If Not DebugMode Then On Error Resume Next
+Unload FormPlotAlpha_PE
 End Sub
 
 Private Sub CommandMACs_Click()
@@ -415,6 +384,11 @@ Call CalcZAFPlotAlphaFactors_PE
 If ierror Then Exit Sub
 End Sub
 
+Private Sub CommandZoomFull_Click()
+If Not DebugMode Then On Error Resume Next
+FormPlotAlpha_PE.Pesgo1.PEactions = UNDO_ZOOM&
+End Sub
+
 Private Sub Form_Load()
 If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(2), MDBUserName$, Me)
@@ -427,42 +401,6 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub Graph1_SDKPaint()
-If Not DebugMode Then On Error Resume Next
-Call CalcZAFPlotAlphaFit(Int(1))    ' plot using Pro Essentials code
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Graph1_SDKPress(PressStatus As Integer, PressX As Double, PressY As Double, PressDataX As Double, PressDataY As Double)
-If Not DebugMode Then On Error Resume Next
-Call ZoomSDKPress(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, Int(1), FormPlotAlpha_PE)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Graph1_SDKTrack(TrackX As Double, TrackY As Double, TrackDataX As Double, TrackDataY As Double)
-If Not DebugMode Then On Error Resume Next
-
-Dim astring As String
-Dim tempx As Single, tempy As Single
-
-' Tracking, load current graph data
-tempx! = TrackDataX#
-tempy! = TrackDataY#
-
-' Format spectrometer position
-astring$ = MiscAutoFormat$(tempx!)
-FormPlotAlpha_PE.LabelXPos.Caption = astring$
-
-' Format counts
-astring$ = MiscAutoFormat$(tempy!)
-FormPlotAlpha_PE.LabelYPos.Caption = astring$
-
-' Zoom rectangle
-Call ZoomSDKTrack(TrackX#, TrackY#)
-If ierror Then Exit Sub
-
-End Sub
-
 Private Sub OptionBenceAlbee_Click(Index As Integer)
 If Not DebugMode Then On Error Resume Next
 CorrectionFlag% = Index% + 1
@@ -470,3 +408,26 @@ Call CalcZAFPlotAlphaFactors_PE
 If ierror Then Exit Sub
 End Sub
 
+Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+If Not DebugMode Then On Error Resume Next
+Dim fX As Double, fY As Double      ' last mouse position
+
+' Get mouse position in data units
+Call ZoomTrack(Int(1), X!, Y!, fX#, fY#, FormPlotAlpha_PE.Pesgo1)
+If ierror Then Exit Sub
+   
+' Format graph mouse position
+If fX# <> 0# And fY# <> 0# Then
+   FormPlotAlpha_PE.LabelXPos.Caption = MiscAutoFormat$(CSng(fX#))
+   FormPlotAlpha_PE.LabelYPos.Caption = MiscAutoFormat$(CSng(fY#))
+Else
+   FormPlotAlpha_PE.LabelXPos.Caption = vbNullString
+   FormPlotAlpha_PE.LabelYPos.Caption = vbNullString
+End If
+End Sub
+
+Private Sub Pesgo1_ZoomOut()
+If Not DebugMode Then On Error Resume Next
+FormPlotAlpha_PE.Pesgo1.ManualScaleControlX = PEMSC_NONE&        ' automatically control X Axis
+FormPlotAlpha_PE.Pesgo1.ManualScaleControlY = PEMSC_NONE&        ' automatically control Y Axis
+End Sub

@@ -2,6 +2,16 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/06/16	Convert CalcZAF plot alphas dialog.  Removed digitized pouints when starting new sample in Digitize Image (von der Handt)
+v. 11.2.9
+		Convert Evaluate to new graphics.
+
+02/04/16	Enable Zoom Full button in FormGRAPH and FormGRAPH_WAVE when using expand/contract and shift updown controls.
+
+		Improve speed of MPB update from Elements/Cations dialog (Chouinard).  Fix icon loading for Calibrate.exe
+
+02/02/16	Fix display bug in peaking/PHA dialog (Buse).
+
 02/02/16	Corrections to Proza code per Brian Joy. 
 v. 11.2.8
 

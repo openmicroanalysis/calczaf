@@ -159,6 +159,7 @@ factor% = 1
 Do While maxrec& > MAXLIST%
 
 ' Load just x-ray lines
+If GraphWavescanType < 3 Then
 If method% = 0 Then
 SQLQ$ = "SELECT Xray.* FROM Xray WHERE XrayIntensity >= " & Str$(klm! * factor%) & " AND XrayEnergy <= " & Str$(keV!) & " AND XrayLambda > " & Str$(tempmin!) & " AND XrayLambda < " & Str$(tempmax!) & " AND XrayOrder <= " & Str$(DefaultMaximumOrder%)
 
@@ -166,6 +167,20 @@ SQLQ$ = "SELECT Xray.* FROM Xray WHERE XrayIntensity >= " & Str$(klm! * factor%)
 Else
 SQLQ$ = "SELECT Xray.* FROM Xray WHERE (XrayIntensity >= " & Str$(klm! * factor%) & " AND XrayEnergy <= " & Str$(keV!) & " AND XrayLambda > " & Str$(tempmin!) & " AND XrayLambda < " & Str$(tempmax!) & " AND XrayOrder <= " & Str$(DefaultMaximumOrder%) & ")"
 SQLQ$ = SQLQ$ & " OR (XrayAbsEdge = 'ABS' AND XrayEnergy <= " & Str$(keV!) & " AND XrayLambda > " & Str$(tempmin!) & " AND XrayLambda < " & Str$(tempmax!) & ")"
+End If
+
+' Convert back to keV
+Else
+tempmin! = ANGKEV! / xstart!       ' convert to max keV
+tempmax! = ANGKEV! / xstop!       ' convert to min keV
+If method% = 0 Then
+SQLQ$ = "SELECT Xray.* FROM Xray WHERE XrayIntensity >= " & Str$(klm! * factor%) & " AND XrayEnergy <= " & Str$(keV!) & " AND XrayEnergy > " & Str$(tempmin!) & " AND XrayEnergy < " & Str$(tempmax!) & " AND XrayOrder <= " & Str$(DefaultMaximumOrder%)
+
+' Load x-ray lines and absorption edges
+Else
+SQLQ$ = "SELECT Xray.* FROM Xray WHERE (XrayIntensity >= " & Str$(klm! * factor%) & " AND XrayEnergy <= " & Str$(keV!) & " AND XrayEnergy > " & Str$(tempmin!) & " AND XrayEnergy < " & Str$(tempmax!) & " AND XrayOrder <= " & Str$(DefaultMaximumOrder%) & ")"
+SQLQ$ = SQLQ$ & " OR (XrayAbsEdge = 'ABS' AND XrayEnergy <= " & Str$(keV!) & " AND XrayEnergy > " & Str$(tempmin!) & " AND XrayEnergy < " & Str$(tempmax!) & ")"
+End If
 End If
 
 ' Add skip for forbidden elements

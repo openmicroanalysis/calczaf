@@ -230,7 +230,8 @@ For i% = 1 To zaf.in1%
 For i1% = 1 To zaf.in0%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 pz!(i%, i1%) = 216140# * zaf.Z%(i1%) ^ 1.163 / ((zaf.eO!(i%) / zaf.eC!(i%) - 1) ^ 0.5 * zaf.eO!(i%) ^ 1.25 * zaf.atwts!(i1%))
-pz!(i%, i1%) = pz!(i%, i1%) * (Log(1.166 * zaf.eO!(i%) / jm!(i%)) / zaf.eC!(i%)) ^ 0.5
+'pz!(i%, i1%) = pz!(i%, i1%) * (Log(1.166 * zaf.eO!(i%) / jm!(i%)) / zaf.eC!(i%)) ^ 0.5       ' original CITZAF code
+pz!(i%, i1%) = pz!(i%, i1%) * (Log(1.166 * zaf.eO!(i%) / jm!(i1%)) / zaf.eC!(i%)) ^ 0.5      ' corrected by Brian Joy (02-2016)
 End If
 Next i1%
 Next i%

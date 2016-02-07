@@ -146,6 +146,7 @@ If UCase$(app.EXEName) = UCase$("Stage") Then App_Icon_Name$ = "Stage_Icon"
 If UCase$(app.EXEName) = UCase$("Standard") Then App_Icon_Name$ = "Standard_Icon"
 If UCase$(app.EXEName) = UCase$("Startwin") Then App_Icon_Name$ = "Startwin_Icon"
 
+If UCase$(app.EXEName) = UCase$("Calibrate") Then App_Icon_Name$ = "Calibrate_Icon"
 If UCase$(app.EXEName) = UCase$("CalMAC") Then App_Icon_Name$ = "CalMAC_Icon"
 If UCase$(app.EXEName) = UCase$("Coat") Then App_Icon_Name$ = "Coat_Icon"
 If UCase$(app.EXEName) = UCase$("Drift") Then App_Icon_Name$ = "Drift_Icon"

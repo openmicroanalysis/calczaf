@@ -228,3 +228,39 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub ScanDataPlotBar(tGraph As Pesgo, linecount As Long, txmin As Double, tymin As Double, txmax As Double, tymax As Double, tText As String, tAlpha As Integer, tRed As Integer, tGreen As Integer, tBlue As Integer)
+' Plots a (scale) bar (and text striong) on the passed graph using the passed color
+
+ierror = False
+On Error GoTo ScanDataPlotBarError
+
+tGraph.ShowAnnotations = True
+
+' Start point
+tGraph.GraphAnnotationX(linecount&) = txmin#
+tGraph.GraphAnnotationY(linecount&) = tymin#
+tGraph.GraphAnnotationType(linecount&) = PEGAT_MEDIUM_SOLIDLINE&
+tGraph.GraphAnnotationColor(linecount&) = tGraph.PEargb(tAlpha%, tRed%, tGreen%, tBlue%)
+
+' End point
+linecount& = linecount& + 1
+tGraph.GraphAnnotationX(linecount&) = txmax#
+tGraph.GraphAnnotationY(linecount&) = tymax#
+tGraph.GraphAnnotationType(linecount&) = PEGAT_LINECONTINUE&
+tGraph.GraphAnnotationColor(linecount&) = tGraph.PEargb(tAlpha%, tRed%, tGreen%, tBlue%)
+
+' Load text if passed
+If tText$ <> vbNullString Then tGraph.GraphAnnotationText(linecount&) = tText$
+
+linecount& = linecount& + 1
+Exit Sub
+
+' Errors
+ScanDataPlotBarError:
+MsgBox Error$, vbOKOnly + vbCritical, "ScanDataPlotBar"
+ierror = True
+Exit Sub
+
+End Sub
+

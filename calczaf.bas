@@ -4729,13 +4729,8 @@ Sub CalcZAFPlotAlphas()
 ierror = False
 On Error GoTo CalcZAFPlotAlphasError
 
-If Not UseProEssentialsGraphics Then
-Call CalcZAFLoadAlphas_GS(CalcZAFOldSample())
-If ierror Then Exit Sub
-Else
 Call CalcZAFLoadAlphas_PE(CalcZAFOldSample())
 If ierror Then Exit Sub
-End If
 
 Exit Sub
 

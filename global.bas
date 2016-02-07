@@ -25,7 +25,8 @@ Global Const HYSTERESIS_SET_TIME! = 12#
 Global Const COLUMNCONDITION_SET_TIME! = 25#
 Global Const BEAMMODE_SET_TIME! = 1#
 
-Global Const PENEPMA_STARTUP_TIME# = 16#       ' in seconds to init Penepma for demo EDS
+Global Const PENEPMA_STARTUP_TIME# = 16#         ' in seconds to init Penepma for demo EDS
+Global Const BOUNDARYNUMBEROFPOINTS& = 100       ' number of boaundary points for cluster digitize
 
 ' Special folders for system
 Global Const SpecialFolder_CommonAppData = &H23  ' for all Windows users on this computer [Windows 2000 or later]
@@ -2184,7 +2185,6 @@ Global DefaultReplicates As Integer
 Global ReplicatesStep As Integer
 
 Global PlotGraphWithSectors As Integer
-Global BoundaryNumberofPoints As Long
 Global DisplayCountIntensitiesUnnormalizedFlag As Integer
 
 Global JeolEOSInterfaceType As Long     ' 1 = 8200, 2 = 8900, 3 = 8230/8530
@@ -2927,4 +2927,6 @@ Global PolyNominalBeam As Single
 Global PolynomialIndex As Integer
 
 Global ModelPeakingFitType As Integer
+
+Global GraphWavescanType As Integer         ' 1 = spectrometer, 2 = angstroms, 3 = keV
 

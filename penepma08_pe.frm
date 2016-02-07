@@ -607,7 +607,7 @@ Begin VB.Form FormPENEPMA08_PE
          Height          =   375
          Index           =   1
          Left            =   6480
-         Picture         =   "PENEPMA08_PE.frx":6104
+         Picture         =   "PENEPMA08_PE.frx":6114
          Style           =   1  'Graphical
          TabIndex        =   60
          TabStop         =   0   'False
@@ -631,7 +631,7 @@ Begin VB.Form FormPENEPMA08_PE
          Left            =   5880
          TabIndex        =   57
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA08_PE.frx":6808
+         ToolTipText     =   $"PENEPMA08_PE.frx":6818
          Top             =   4320
          Width           =   615
       End
@@ -648,7 +648,7 @@ Begin VB.Form FormPENEPMA08_PE
          Height          =   375
          Index           =   0
          Left            =   6480
-         Picture         =   "PENEPMA08_PE.frx":68A3
+         Picture         =   "PENEPMA08_PE.frx":68B3
          Style           =   1  'Graphical
          TabIndex        =   59
          TabStop         =   0   'False
@@ -672,7 +672,7 @@ Begin VB.Form FormPENEPMA08_PE
          Left            =   5880
          TabIndex        =   58
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA08_PE.frx":6FA7
+         ToolTipText     =   $"PENEPMA08_PE.frx":6FB7
          Top             =   5040
          Width           =   615
       End
@@ -763,7 +763,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   1
          Left            =   120
          TabIndex        =   50
-         ToolTipText     =   $"PENEPMA08_PE.frx":7042
+         ToolTipText     =   $"PENEPMA08_PE.frx":7052
          Top             =   5040
          Width           =   2775
       End
@@ -989,7 +989,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   0
          Left            =   120
          TabIndex        =   23
-         ToolTipText     =   $"PENEPMA08_PE.frx":70D5
+         ToolTipText     =   $"PENEPMA08_PE.frx":70E5
          Top             =   4320
          Width           =   2775
       End
@@ -1536,7 +1536,7 @@ Begin VB.Form FormPENEPMA08_PE
    End
    Begin VB.Label Label17 
       Alignment       =   2  'Center
-      Caption         =   $"PENEPMA08_PE.frx":7161
+      Caption         =   $"PENEPMA08_PE.frx":7171
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -1554,7 +1554,7 @@ Begin VB.Form FormPENEPMA08_PE
    End
    Begin VB.Label Label15 
       Alignment       =   2  'Center
-      Caption         =   $"PENEPMA08_PE.frx":72B3
+      Caption         =   $"PENEPMA08_PE.frx":72C3
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -1888,16 +1888,6 @@ Else
    FormPENEPMA08_PE.LabelXPos.Caption = vbNullString
    FormPENEPMA08_PE.LabelYPos.Caption = vbNullString
 End If
-End Sub
-
-Private Sub Pesgo1_ZoomIn()
-If Not DebugMode Then On Error Resume Next
-CommandZoomFull.Enabled = True
-End Sub
-
-Private Sub Pesgo1_ZoomOut()
-If Not DebugMode Then On Error Resume Next
-CommandZoomFull.Enabled = False
 End Sub
 
 Private Sub UpDownXray_DownClick(Index As Integer)

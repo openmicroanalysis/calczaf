@@ -176,7 +176,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   65
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":6104
+         ToolTipText     =   $"PENEPMA12_PE.frx":6114
          Top             =   2040
          Width           =   2775
       End
@@ -267,7 +267,7 @@ Begin VB.Form FormPENEPMA12
          Left            =   3120
          TabIndex        =   59
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":6197
+         ToolTipText     =   $"PENEPMA12_PE.frx":61A7
          Top             =   1320
          Width           =   3135
       End
@@ -295,7 +295,7 @@ Begin VB.Form FormPENEPMA12
          Height          =   285
          Left            =   4080
          TabIndex        =   11
-         ToolTipText     =   $"PENEPMA12_PE.frx":6225
+         ToolTipText     =   $"PENEPMA12_PE.frx":6235
          Top             =   1680
          Width           =   615
       End
@@ -807,7 +807,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   49
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":62C6
+         ToolTipText     =   $"PENEPMA12_PE.frx":62D6
          Top             =   4440
          Width           =   2895
       End
@@ -829,7 +829,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   41
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":635B
+         ToolTipText     =   $"PENEPMA12_PE.frx":636B
          Top             =   5160
          Width           =   2895
       End
@@ -884,7 +884,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   25
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":63F8
+         ToolTipText     =   $"PENEPMA12_PE.frx":6408
          Top             =   4440
          Width           =   2895
       End
@@ -930,7 +930,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   23
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":6489
+         ToolTipText     =   $"PENEPMA12_PE.frx":6499
          Top             =   5160
          Width           =   2895
       End
@@ -951,7 +951,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   15
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":6540
+         ToolTipText     =   $"PENEPMA12_PE.frx":6550
          Top             =   4440
          Width           =   2895
       End
@@ -987,7 +987,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   14
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":65D1
+         ToolTipText     =   $"PENEPMA12_PE.frx":65E1
          Top             =   5160
          Width           =   2895
       End
@@ -1244,7 +1244,7 @@ Begin VB.Form FormPENEPMA12
    End
    Begin VB.Label Label25 
       Alignment       =   2  'Center
-      Caption         =   $"PENEPMA12_PE.frx":6688
+      Caption         =   $"PENEPMA12_PE.frx":6698
       Height          =   855
       Left            =   240
       TabIndex        =   80
@@ -1660,16 +1660,6 @@ Else
    FormPENEPMA12.LabelXPos.Caption = vbNullString
    FormPENEPMA12.LabelYPos.Caption = vbNullString
 End If
-End Sub
-
-Private Sub Pesgo1_ZoomIn()
-If Not DebugMode Then On Error Resume Next
-CommandZoomFull.Enabled = True
-End Sub
-
-Private Sub Pesgo1_ZoomOut()
-If Not DebugMode Then On Error Resume Next
-CommandZoomFull.Enabled = False
 End Sub
 
 Private Sub TextBeamEnergy_GotFocus()
