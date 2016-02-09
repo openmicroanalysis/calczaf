@@ -40,7 +40,7 @@ Dim temp1 As Single, temp2 As Single
 ' Define #subset and #points
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(255))                      ' blue
-tForm.Pesgo1.points = sample(1).CLSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.Points = sample(1).CLSpectraNumberofChannels%(datarow%)
 
 ' Display options for Y axis label
 If CLIntensityOption% = 0 Then
@@ -154,17 +154,17 @@ Dim astring As String
 
 ' Init graph properties
 tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.points = 1
-tForm.Pesgo1.xdata(0, 0) = 0                    'for empty subset
+tForm.Pesgo1.Points = 1
+tForm.Pesgo1.xdata(0, 0) = 0                    ' for empty subset
 tForm.Pesgo1.ydata(0, 0) = 0
 
-tForm.Pesgo1.RenderEngine = PERE_GDIPLUS&       ' PERE_DIRECT2D may screw xp people?
-tForm.Pesgo1.AntiAliasText = True               ' needed?
+tForm.Pesgo1.RenderEngine = PERE_GDIPLUS&
+tForm.Pesgo1.AntiAliasText = True
 tForm.Pesgo1.DataShadows = PEDS_NONE&           ' no data shadows
 
 ' Plot type
 tForm.Pesgo1.PlottingMethod = SGPM_BAR&         ' bargraph subset
-tForm.Pesgo1.AdjoinBars = True                  ' bar always full width of bin, yes or no?
+tForm.Pesgo1.AdjoinBars = True                  ' bar always full width of bin
 
 ' Title Properties
 tForm.Pesgo1.MainTitle = vbNullString

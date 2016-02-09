@@ -14,6 +14,14 @@ Begin VB.Form FormPlotHistoConc
    ScaleWidth      =   9960
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton CommandZoomFull 
+      Caption         =   "Zoom Full"
+      Height          =   495
+      Left            =   9000
+      TabIndex        =   3
+      Top             =   1560
+      Width           =   855
+   End
    Begin VB.CommandButton CommandClipboard 
       Caption         =   "Copy To Clipboard"
       Height          =   615
@@ -57,6 +65,11 @@ Option Explicit
 Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormPlotHistoConc
+End Sub
+
+Private Sub CommandZoomFull_Click()
+If Not DebugMode Then On Error Resume Next
+FormPlotHistoConc.Pesgo1.PEactions = UNDO_ZOOM&
 End Sub
 
 Private Sub Form_Load()

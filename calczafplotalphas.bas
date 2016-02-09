@@ -158,7 +158,7 @@ FormPlotAlpha_PE.Pesgo1.NullDataValueX = 0
 FormPlotAlpha_PE.Pesgo1.NullDataValueY = 0
 
 If FormPlotAlpha_PE.CheckAllOptions.Value = vbUnchecked And FormPlotAlpha_PE.CheckAllMacs.Value = vbUnchecked Then
-FormPlotAlpha_PE.Pesgo1.PlottingMethod = SGPM_POINT&      ' controls point or point plus line, etc
+FormPlotAlpha_PE.Pesgo1.PlottingMethod = SGPM_POINT&               ' controls point or point plus line, etc
 FormPlotAlpha_PE.Pesgo1.PointSize = PEPS_LARGE&
 FormPlotAlpha_PE.Pesgo1.MinimumPointSize = PEMPS_MEDIUM_LARGE&     ' helps readability if sizing
 Else
@@ -313,12 +313,12 @@ FormPlotAlpha_PE.Pesgo1.SimplePointLegend = True                              ' 
 
 FormPlotAlpha_PE.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE&
 
-FormPlotAlpha_PE.Pesgo1.ManualScaleControlX = PEMSC_MINMAX&         ' manually Control X Axis
-FormPlotAlpha_PE.Pesgo1.ManualScaleControlY = PEMSC_NONE&           ' autoscale Y Axis
+FormPlotAlpha_PE.Pesgo1.ManualScaleControlX = PEMSC_MINMAX&         ' manually control x axis
+FormPlotAlpha_PE.Pesgo1.ManualScaleControlY = PEMSC_NONE&           ' autoscale y axis
 FormPlotAlpha_PE.Pesgo1.ManualMinX = 0.01
 FormPlotAlpha_PE.Pesgo1.ManualMaxX = 0.99
 
-FormPlotAlpha_PE.Pesgo1.GraphAnnotationX(-1) = 0              ' empty annotation array
+FormPlotAlpha_PE.Pesgo1.GraphAnnotationX(-1) = 0                    ' empty annotation array
 FormPlotAlpha_PE.Pesgo1.GraphAnnotationY(-1) = 0
 
 ' Plot regression fit line

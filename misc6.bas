@@ -11,42 +11,6 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Sub MiscSaveData_GS(gstring As String, xstring As String, ystring As String, tGraph As Graph, tForm As Form)
-' Open file to save graph data to disk (Graphics Server code)
-
-ierror = False
-On Error GoTo MiscSaveData_GSError
-
-Dim tfilename As String, tmsg As String
-
-' Get filename to save data
-tmsg$ = gstring$
-tfilename$ = MiscGetFileNameNoExtension(ProbeDataFile$) & "_" & tmsg$ & ".dat"
-Call IOGetFileName(Int(1), "DAT", tfilename$, tForm)
-If ierror Then Exit Sub
-
-' Open file
-Close #Temp1FileNumber%
-Screen.MousePointer = vbHourglass
-DoEvents
-Open tfilename$ For Output As #Temp1FileNumber%
-
-' Save all data
-Call MiscWriteData_GS(xstring$, ystring$, tGraph)
-Close #Temp1FileNumber%
-
-If ierror Then Exit Sub
-Exit Sub
-
-' Errors
-MiscSaveData_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveData_GS"
-Close #Temp1FileNumber%
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub MiscSaveData_PE(gstring As String, xstring As String, ystring As String, tGraph As Pesgo, tForm As Form)
 ' Open file to save graph data to disk (Pro Esentials code)
 
@@ -77,43 +41,6 @@ Exit Sub
 ' Errors
 MiscSaveData_PEError:
 MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveData_PE"
-Close #Temp1FileNumber%
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub MiscSaveDataSets_GS(tbasename As String, gstring As String, xstring As String, ystring As String, sString() As String, tGraph As Graph, tForm As Form)
-' Open file to save graph data (multiple sets) to disk (Graphics Server code)
-
-ierror = False
-On Error GoTo MiscSaveDataSets_GSError
-
-Dim tfilename As String, tmsg As String
-
-' Get filename to save data
-tmsg$ = gstring$
-tfilename$ = MiscGetFileNameNoExtension(tbasename$) & "_" & tmsg$ & ".dat"
-Call IOGetFileName(Int(1), "DAT", tfilename$, tForm)
-If ierror Then Exit Sub
-
-' Open file
-Close #Temp1FileNumber%
-Screen.MousePointer = vbHourglass
-DoEvents
-Open tfilename$ For Output As #Temp1FileNumber%
-
-' Save all data
-Call MiscWriteDataSets_GS(gstring$, xstring$, ystring$, sString$(), tGraph)
-Close #Temp1FileNumber%
-If ierror Then Exit Sub
-
-Screen.MousePointer = vbDefault
-Exit Sub
-
-' Errors
-MiscSaveDataSets_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveDataSets_GS"
 Close #Temp1FileNumber%
 ierror = True
 Exit Sub
@@ -152,55 +79,6 @@ Exit Sub
 MiscSaveDataSets_PEError:
 MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveDataSets_PE"
 Close #Temp1FileNumber%
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub MiscWriteData_GS(xstring As String, ystring As String, tGraph As Graph)
-' Write graph data to disk (Graphics Server code)
-
-ierror = False
-On Error GoTo MiscWriteData_GSError
-
-Dim i As Integer
-Dim xdata As Single, ydata As Single
-
-If tGraph.NumPoints = 0 Or tGraph.NumSets = 0 Then GoTo MiscWriteData_GSNoData
-
-' Write column labels
-Screen.MousePointer = vbHourglass
-msg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$
-Print #Temp1FileNumber%, msg$
-
-' Loop on graphs
-For i% = 1 To tGraph.NumPoints
-tGraph.ThisSet = 1
-tGraph.ThisPoint = i%
-ydata! = tGraph.GraphData
-tGraph.ThisPoint = i%
-xdata! = tGraph.XPosData
-msg$ = MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!)
-
-' Write to disk
-Print #Temp1FileNumber%, msg$
-Next i%
-
-Screen.MousePointer = vbDefault
-Exit Sub
-
-' Errors
-MiscWriteData_GSError:
-Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteData_GS"
-Close #Temp1FileNumber%
-ierror = True
-Exit Sub
-
-MiscWriteData_GSNoData:
-Screen.MousePointer = vbDefault
-msg$ = "No graph data to write to disk"
-MsgBox msg$, vbOKOnly + vbExclamation, "MiscWriteData_GS"
 ierror = True
 Exit Sub
 
@@ -247,74 +125,6 @@ MiscWriteData_PENoData:
 Screen.MousePointer = vbDefault
 msg$ = "No graph data to write to disk"
 MsgBox msg$, vbOKOnly + vbExclamation, "MiscWriteData_PE"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub MiscWriteDataSets_GS(gstring As String, xstring As String, ystring As String, sString$(), tGraph As Graph)
-' Write graph data to disk (multiple sets) (Graphics Server code)
-
-ierror = False
-On Error GoTo MiscWriteDataSets_GSError
-
-Dim i As Integer, j As Integer
-Dim xdata As Single, ydata As Single
-
-If tGraph.NumPoints = 0 Or tGraph.NumSets = 0 Then GoTo MiscWriteDataSets_GSNoData
-
-' Write y-data title if multiple data sets
-Screen.MousePointer = vbHourglass
-If tGraph.NumSets > 1 Then
-msg$ = VbDquote$ & Format$(ystring$, a80$) & VbDquote$
-Print #Temp1FileNumber%, msg$
-
-' Write column labels
-msg$ = vbNullString
-For j% = 1 To tGraph.NumSets
-msg$ = msg$ & VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(sString$(j%), a80$) & VbDquote$ & vbTab
-Next j%
-Print #Temp1FileNumber%, msg$
-
-' Single data set
-Else
-msg$ = VbDquote$ & gstring$ & VbDquote$
-Print #Temp1FileNumber%, msg$
-msg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$ & vbTab
-Print #Temp1FileNumber%, msg$
-End If
-
-' Loop on graphs
-For i% = 1 To tGraph.NumPoints
-msg$ = vbNullString
-tGraph.ThisPoint = i%
-
-For j% = 1 To tGraph.NumSets
-tGraph.ThisSet = j%
-ydata! = tGraph.GraphData
-xdata! = tGraph.XPosData
-msg$ = msg$ & MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!) & vbTab
-Next j%
-
-' Write to disk
-Print #Temp1FileNumber%, msg$
-Next i%
-
-Screen.MousePointer = vbDefault
-Exit Sub
-
-' Errors
-MiscWriteDataSets_GSError:
-Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteDataSets_GS"
-Close #Temp1FileNumber%
-ierror = True
-Exit Sub
-
-MiscWriteDataSets_GSNoData:
-Screen.MousePointer = vbDefault
-msg$ = "No graph data to write to disk"
-MsgBox msg$, vbOKOnly + vbExclamation, "MiscWriteDataSets_GS"
 ierror = True
 Exit Sub
 

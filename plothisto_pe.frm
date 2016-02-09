@@ -1,5 +1,4 @@
 VERSION 5.00
-Object = "{827E9F53-96A4-11CF-823E-000021570103}#1.0#0"; "graphs32.ocx"
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
 Begin VB.Form FormPLOTHISTO_PE 
    BorderStyle     =   3  'Fixed Dialog
@@ -17,36 +16,44 @@ Begin VB.Form FormPLOTHISTO_PE
    ScaleWidth      =   11025
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.CheckBox CheckLabels 
+      Caption         =   "Plot Labels"
+      Height          =   255
+      Left            =   9720
+      TabIndex        =   15
+      Top             =   6600
+      Width           =   1215
+   End
    Begin VB.CommandButton CommandPlotConcentrationHistogram 
       BackColor       =   &H00C0FFFF&
       Caption         =   "Plot Concentration Histogram"
       Height          =   855
       Left            =   9720
       Style           =   1  'Graphical
-      TabIndex        =   15
+      TabIndex        =   14
       ToolTipText     =   "Plot a concentration histogram (a la Carpenter)"
-      Top             =   5040
+      Top             =   6840
       Width           =   1215
    End
    Begin VB.CommandButton CommandOptions 
       Caption         =   "Histogram Options"
       Height          =   495
       Left            =   9720
-      TabIndex        =   14
+      TabIndex        =   13
       TabStop         =   0   'False
       ToolTipText     =   "Click this button to modify the histogram plot options"
-      Top             =   3720
+      Top             =   4680
       Width           =   1215
    End
    Begin Pesgo32fLib.Pesgo Pesgo1 
-      Height          =   7215
+      Height          =   7575
       Left            =   120
-      TabIndex        =   13
+      TabIndex        =   12
       Top             =   120
-      Width           =   8175
+      Width           =   9495
       _Version        =   65536
-      _ExtentX        =   14420
-      _ExtentY        =   12726
+      _ExtentX        =   16748
+      _ExtentY        =   13361
       _StockProps     =   96
       _AllProps       =   "PLOTHISTO_PE.frx":0000
    End
@@ -54,9 +61,9 @@ Begin VB.Form FormPLOTHISTO_PE
       Caption         =   "Copy To Clipboard"
       Height          =   495
       Left            =   9720
-      TabIndex        =   12
+      TabIndex        =   11
       ToolTipText     =   "Click this button to copy the graph to the system clipboard"
-      Top             =   4320
+      Top             =   5280
       Width           =   1215
    End
    Begin VB.OptionButton OptionColumnNumber 
@@ -73,9 +80,9 @@ Begin VB.Form FormPLOTHISTO_PE
       Height          =   255
       Index           =   1
       Left            =   9720
-      TabIndex        =   3
+      TabIndex        =   2
       ToolTipText     =   "Plot the second element (B)"
-      Top             =   7440
+      Top             =   960
       Width           =   1215
    End
    Begin VB.OptionButton OptionColumnNumber 
@@ -92,9 +99,9 @@ Begin VB.Form FormPLOTHISTO_PE
       Height          =   255
       Index           =   0
       Left            =   9720
-      TabIndex        =   2
+      TabIndex        =   1
       ToolTipText     =   "Plot the first element (A)"
-      Top             =   7200
+      Top             =   720
       Value           =   -1  'True
       Width           =   1215
    End
@@ -114,32 +121,9 @@ Begin VB.Form FormPLOTHISTO_PE
       Height          =   375
       Left            =   9720
       Style           =   1  'Graphical
-      TabIndex        =   1
+      TabIndex        =   0
       Top             =   120
       Width           =   1215
-   End
-   Begin GraphsLib.Graph Graph1 
-      Height          =   3495
-      Left            =   4440
-      TabIndex        =   0
-      Top             =   4200
-      Width           =   5175
-      _Version        =   327680
-      _ExtentX        =   9128
-      _ExtentY        =   6165
-      _StockProps     =   96
-      BorderStyle     =   1
-      Background      =   "15~-1~-1~-1~-1~-1~-1"
-      GraphType       =   3
-      GridStyle       =   3
-      LabelEvery      =   5
-      NumPoints       =   50
-      Palette         =   1
-      PrintStyle      =   1
-      Toolbar         =   2
-      XAxisStyle      =   2
-      YAxisMinorTicks =   "1~0"
-      Bar2DGap        =   1
    End
    Begin VB.Label Label6 
       Alignment       =   2  'Center
@@ -155,8 +139,8 @@ Begin VB.Form FormPLOTHISTO_PE
       EndProperty
       Height          =   255
       Left            =   9720
-      TabIndex        =   11
-      Top             =   2880
+      TabIndex        =   10
+      Top             =   3600
       Width           =   1215
    End
    Begin VB.Label LabelMaximum 
@@ -164,8 +148,8 @@ Begin VB.Form FormPLOTHISTO_PE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   9720
-      TabIndex        =   10
-      Top             =   3120
+      TabIndex        =   9
+      Top             =   3840
       Width           =   1215
    End
    Begin VB.Label Label3 
@@ -182,8 +166,8 @@ Begin VB.Form FormPLOTHISTO_PE
       EndProperty
       Height          =   255
       Left            =   9720
-      TabIndex        =   9
-      Top             =   2160
+      TabIndex        =   8
+      Top             =   2880
       Width           =   1215
    End
    Begin VB.Label LabelMinimum 
@@ -191,8 +175,8 @@ Begin VB.Form FormPLOTHISTO_PE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   9720
-      TabIndex        =   8
-      Top             =   2400
+      TabIndex        =   7
+      Top             =   3120
       Width           =   1215
    End
    Begin VB.Label LabelStdDev 
@@ -200,8 +184,8 @@ Begin VB.Form FormPLOTHISTO_PE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   9720
-      TabIndex        =   7
-      Top             =   1680
+      TabIndex        =   6
+      Top             =   2400
       Width           =   1215
    End
    Begin VB.Label Label5 
@@ -218,8 +202,8 @@ Begin VB.Form FormPLOTHISTO_PE
       EndProperty
       Height          =   255
       Left            =   9720
-      TabIndex        =   6
-      Top             =   1440
+      TabIndex        =   5
+      Top             =   2160
       Width           =   1215
    End
    Begin VB.Label LabelAverage 
@@ -227,8 +211,8 @@ Begin VB.Form FormPLOTHISTO_PE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   9720
-      TabIndex        =   5
-      Top             =   960
+      TabIndex        =   4
+      Top             =   1680
       Width           =   1215
    End
    Begin VB.Label Label1 
@@ -245,8 +229,8 @@ Begin VB.Form FormPLOTHISTO_PE
       EndProperty
       Height          =   255
       Left            =   9720
-      TabIndex        =   4
-      Top             =   720
+      TabIndex        =   3
+      Top             =   1440
       Width           =   1215
    End
 End
@@ -265,9 +249,10 @@ End Sub
 
 Private Sub CommandCopyToClipboard_Click()
 If Not DebugMode Then On Error Resume Next
-FormPLOTHISTO_PE.Graph1.DrawMode = 3     ' blit to put in bitmap format (otherwise metafile format does not work correctly)
-DoEvents
-FormPLOTHISTO_PE.Graph1.DrawMode = 4     ' copy to clipboard
+FormPLOTHISTO_PE.Pesgo1.AllowExporting = True
+FormPLOTHISTO_PE.Pesgo1.ExportImageLargeFont = False
+FormPLOTHISTO_PE.Pesgo1.ExportImageDpi = 400
+Call FormPLOTHISTO_PE.Pesgo1.PEcopybitmaptoclipboard(FormPLOTHISTO_PE.Pesgo1.Width / 10, FormPLOTHISTO_PE.Pesgo1.Height / 10)
 End Sub
 
 Private Sub CommandOptions_Click()

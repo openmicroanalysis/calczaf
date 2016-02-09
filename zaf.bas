@@ -14,6 +14,9 @@ Option Explicit
 ' Declare ZAF structure
 Dim zaf As TypeZAF
 
+Const UseBrianJoyModifications = True
+'Const UseBrianJoyModifications = False
+
 ' Module level ZAF arrays
 Dim phi(1 To MAXCHAN1%) As Single
 Dim pz(1 To MAXCHAN1%, 1 To MAXCHAN1%) As Single
@@ -230,8 +233,11 @@ For i% = 1 To zaf.in1%
 For i1% = 1 To zaf.in0%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 pz!(i%, i1%) = 216140# * zaf.Z%(i1%) ^ 1.163 / ((zaf.eO!(i%) / zaf.eC!(i%) - 1) ^ 0.5 * zaf.eO!(i%) ^ 1.25 * zaf.atwts!(i1%))
-'pz!(i%, i1%) = pz!(i%, i1%) * (Log(1.166 * zaf.eO!(i%) / jm!(i%)) / zaf.eC!(i%)) ^ 0.5       ' original CITZAF code
+If Not UseBrianJoyModifications Then
+pz!(i%, i1%) = pz!(i%, i1%) * (Log(1.166 * zaf.eO!(i%) / jm!(i%)) / zaf.eC!(i%)) ^ 0.5       ' original CITZAF code
+Else
 pz!(i%, i1%) = pz!(i%, i1%) * (Log(1.166 * zaf.eO!(i%) / jm!(i1%)) / zaf.eC!(i%)) ^ 0.5      ' corrected by Brian Joy (02-2016)
+End If
 End If
 Next i1%
 Next i%
@@ -1058,6 +1064,9 @@ Dim chi As Single, xx As Single, m7 As Single, pp As Single
 Dim ww As Single, rr As Single, hh As Single, v1 As Single
 Dim qeO As Single, ff As Single, rbas As Single
 
+Dim beta_iter As Integer
+Dim y1 As Single, Y2 As Single, beta0 As Single, beta1 As Single    ' variables for beta refinement by Brian Joy
+
 ' Calculate square root of pi (used to be  Sqr(3.14159) / 2, fixed 7/14/2011, Carpenter)
 spi! = Sqr(3.14159)
 
@@ -1220,8 +1229,11 @@ If iabs% = 15 Then
 qeO! = Log(zaf.v!(i%)) / (zaf.eC!(i%) * zaf.eC!(i%) * Exp(em!(i%) * Log(zaf.v!(i%))))
 xp! = xp! / (zipi!(i%) * 66892#) * zaf.atwts!(i%)
 ff! = xp! / qeO!
-'rbas! = (X2! - x4! * ff! / spi!) / x5!              ' original code from CITZAF
-rbas! = (X2! - 2 * x4! * ff! / spi!) / x5!          ' corrcted by Brian Joy, 01-2016
+If Not UseBrianJoyModifications Then
+rbas! = (X2! - x4! * ff! / spi!) / x5!              ' original code from CITZAF
+Else
+rbas! = (X2! - 2 * x4! * ff! / spi!) / x5!          ' corrected by Brian Joy, 01-2016
+End If
 
 If rbas! <= 0# Or rbas! >= 1# Then
 x4! = (rr! + X2!) * spi! / (4# * ff!)   ' used to be (2# * ff!), fixed 7/14/2011, Carpenter
@@ -1229,17 +1241,19 @@ rbas! = 0.5
 End If
 
 ' Original CITZAF code
-'If rbas! >= 0.9 And rbas! < 1 Then x3! = 0.9628832 - 0.964244 * rbas!
-'If rbas! > 0.8 And rbas! <= 0.9 Then x3! = 1.122405 - 1.141942 * rbas!
-'If rbas! > 0.7 And rbas! <= 0.8 Then x3! = 13.4381 * Exp(-5.180503 * rbas!)
-'If rbas! > 0.57 And rbas! <= 0.7 Then x3! = 5.909606 * Exp(-4.015891 * rbas!)
-'If rbas! > 0.306 And rbas! <= 0.57 Then x3! = 4.852357 * Exp(-3.680818 * rbas!)
-'If rbas! > 0.102 And rbas! <= 0.306 Then x3! = (1 - 0.5379956 * rbas!) / (1.685638 * rbas!)
-'If rbas! > 0.056 And rbas! <= 0.102 Then x3! = (1 - 1.043744 * rbas!) / (1.60482 * rbas!)
-'If rbas! > 0.03165 And rbas! <= 0.056 Then x3! = (1 - 2.749786 * rbas!) / (1.447465 * rbas!)
-'If rbas! > 0# And rbas! <= 0.03165 Then x3! = (1 - 4.894396 * rbas!) / (1.341313 * rbas!)
+If Not UseBrianJoyModifications Then
+If rbas! >= 0.9 And rbas! < 1 Then x3! = 0.9628832 - 0.964244 * rbas!
+If rbas! > 0.8 And rbas! <= 0.9 Then x3! = 1.122405 - 1.141942 * rbas!
+If rbas! > 0.7 And rbas! <= 0.8 Then x3! = 13.4381 * Exp(-5.180503 * rbas!)
+If rbas! > 0.57 And rbas! <= 0.7 Then x3! = 5.909606 * Exp(-4.015891 * rbas!)
+If rbas! > 0.306 And rbas! <= 0.57 Then x3! = 4.852357 * Exp(-3.680818 * rbas!)
+If rbas! > 0.102 And rbas! <= 0.306 Then x3! = (1 - 0.5379956 * rbas!) / (1.685638 * rbas!)
+If rbas! > 0.056 And rbas! <= 0.102 Then x3! = (1 - 1.043744 * rbas!) / (1.60482 * rbas!)
+If rbas! > 0.03165 And rbas! <= 0.056 Then x3! = (1 - 2.749786 * rbas!) / (1.447465 * rbas!)
+If rbas! > 0# And rbas! <= 0.03165 Then x3! = (1 - 4.894396 * rbas!) / (1.341313 * rbas!)
 
 ' Corrected by Brian Joy, 01-2016
+Else
 If rbas! >= 0.9 And rbas! < 1 Then x3! = (0.9628832 - 0.964244 * rbas!) * 2 * x4!
 If rbas! > 0.8 And rbas! <= 0.9 Then x3! = (1.122405 - 1.141942 * rbas!) * 2 * x4!
 If rbas! > 0.7 And rbas! <= 0.8 Then x3! = (13.4381 * Exp(-5.180503 * rbas!)) * 2 * x4!
@@ -1249,8 +1263,24 @@ If rbas! > 0.102 And rbas! <= 0.306 Then x3! = ((1 - 0.5379956 * rbas!) / (1.685
 If rbas! > 0.056 And rbas! <= 0.102 Then x3! = ((1 - 1.043744 * rbas!) / (1.60482 * rbas!)) * 2 * x4!
 If rbas! > 0.03165 And rbas! <= 0.056 Then x3! = ((1 - 2.749786 * rbas!) / (1.447465 * rbas!)) * 2 * x4!
 If rbas! > 0# And rbas! <= 0.03165 Then x3! = ((1 - 4.894396 * rbas!) / (1.341313 * rbas!)) * 2 * x4!
+
+' Refinement of beta(i,j), adapted from GMRFILM by R. Waldo, by Brian Joy, 02-2016
+beta_iter% = 0
+beta0! = x3!
+y1! = x3! / (2# * x4!)
+Do
+    beta1! = beta0!
+    Y2! = ZAFErrorFunction!(y1!) / rbas! * y1!
+    beta0! = Y2! * (2# * x4!)
+    If (Abs((beta1! - beta0!) / beta1!) < 0.0001) Then Exit Do
+    y1! = Y2!
+beta_iter% = beta_iter% + 1
+If beta_iter% > 100 Then Exit Do
+Loop
+x3! = y1! * (2# * x4!)
 End If
- 
+End If
+
 ' Calculate error function
 chi! = xx! * zaf.m1!(i%)
 
@@ -3998,7 +4028,7 @@ p4! = xx! * zaf.t1! * er1!
 p5! = Exp(-p4!)
 p6! = Exp(-xx! * zaf.g! * er1!)
 r4! = er1! * 10000!
-b9! = X2! * (1# - x5 * Exp(-x3 * er1!)) * Exp(-x4! * x4! * er1! * er1!)
+b9! = X2! * (1# - x5! * Exp(-x3! * er1!)) * Exp(-x4! * x4! * er1! * er1!)
 If b9! < 0.000001 Then
 zaf.erange!(ii%) = er1!
 Exit Sub

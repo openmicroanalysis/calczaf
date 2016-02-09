@@ -13,9 +13,6 @@ Option Explicit
 
 Global ierror As Integer                           ' global error for backing out gracefully from error events
 
-Global Const UseProEssentialsGraphics = False      ' global flag for Graphics Server form/code
-'Global Const UseProEssentialsGraphics = True       ' global flag for ProEssentials form/code (for testing new graphic codes)
-
 ' Based on Cameca SX100 set times
 Global Const KILOVOLT_SET_TIME! = 6#
 Global Const BEAMCURRENT_SET_TIME_CAMECA! = 11#

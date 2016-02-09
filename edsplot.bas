@@ -49,7 +49,7 @@ End If
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))             ' red
 
-tForm.Pesgo1.points = sample(1).EDSSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.Points = sample(1).EDSSpectraNumberofChannels%(datarow%)
 
 ' Load y axis data subset 0 - eds data
 For i% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)
@@ -138,18 +138,18 @@ On Error GoTo EDSInitDisplay_PEError
 
 ' Init graph properies
 tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.points = 1
+tForm.Pesgo1.Points = 1
 tForm.Pesgo1.xdata(0, 0) = 0                    ' for empty subset
 tForm.Pesgo1.ydata(0, 0) = 0
 
-tForm.Pesgo1.RenderEngine = PERE_GDIPLUS&       ' PERE_DIRECT2D may screw xp people?
-tForm.Pesgo1.AntiAliasText = True               ' needed?
+tForm.Pesgo1.RenderEngine = PERE_GDIPLUS&
+tForm.Pesgo1.AntiAliasText = True
 tForm.Pesgo1.DataShadows = PEDS_NONE&           ' no data shadows
 
 ' Plot type
 tForm.Pesgo1.PlottingMethod = SGPM_BAR&         ' bargraph subset
-'tForm.Pesgo1.BarWidth(0) = 1                   ' this should be = to the true bin width for 100% bar, if needed.
-tForm.Pesgo1.AdjoinBars = True                  ' yes or no?
+'tForm.Pesgo1.BarWidth(0) = 1                   ' 0 equals auto width
+tForm.Pesgo1.AdjoinBars = True                  ' bars full bin width
 
 tForm.Pesgo1.ShowTickMarkY = PESTM_TICKS_HIDE&
 tForm.Pesgo1.ShowTickMarkX = PESTM_TICKS_OUTSIDE&

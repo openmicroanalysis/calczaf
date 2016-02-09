@@ -16,9 +16,9 @@ Sub ScanDataPlotFitCurve_PE(tGraph As Pesgo, mode As Integer, linecount As Long,
 ierror = False
 On Error GoTo ScanDataPlotFitCurve_PEError
 
+Dim firstpointdone As Boolean
 Dim i As Integer
 Dim tx As Single, ty As Single
-
 Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
 Dim sxmin As Double, sxmax As Double, symin As Double, symax As Double
 
@@ -41,11 +41,11 @@ sxmin# = sxmax#
 sxmax# = sxmin# + (xmax# - xmin#) / (MAXSEGMENTS% - 1)
 
 ' Calculate partial line segments for y
-If mode% = 1 Then        ' parabolic
+If mode% = 1 Then               ' parabolic
 symin# = acoeff1! + sxmin# * acoeff2! + sxmin# ^ 2 * acoeff3!
 symax# = acoeff1! + sxmax# * acoeff2! + sxmax# ^ 2 * acoeff3!
 
-ElseIf mode% = 2 Then    ' gaussian
+ElseIf mode% = 2 Then           ' gaussian
 symin# = acoeff1! + sxmin# * acoeff2! + sxmin# ^ 2 * acoeff3!
 symax# = acoeff1! + sxmax# * acoeff2! + sxmax# ^ 2 * acoeff3!
 If symin# > MAXLOGEXPD! Then symin# = MAXLOGEXPD!
@@ -53,7 +53,7 @@ If symax# > MAXLOGEXPD! Then symax# = MAXLOGEXPD!
 symin# = NATURALE# ^ symin#
 symax# = NATURALE# ^ symax#
 
-ElseIf mode% = 5 Then    ' cubic spline
+ElseIf mode% = 5 Then           ' cubic spline
 tx! = CSng(sxmin#)
 Call SplineInterpolate(xdata!(), ydata!(), ycoeff#(), CLng(nPoints%), tx!, ty!)
 If ierror Then Exit Sub
@@ -63,7 +63,7 @@ Call SplineInterpolate(xdata!(), ydata!(), ycoeff#(), CLng(nPoints%), tx!, ty!)
 If ierror Then Exit Sub
 symax# = CDbl(ty!)
 
-ElseIf mode% = 6 Then    ' multi-point exponential
+ElseIf mode% = 6 Then           ' multi-point exponential
 symin# = acoeff1! + sxmin# * acoeff2! + sxmin# ^ 2 * acoeff3!
 symax# = acoeff1! + sxmax# * acoeff2! + sxmax# ^ 2 * acoeff3!
 If symin# > MAXLOGEXPD! Then symin# = MAXLOGEXPD!
@@ -78,9 +78,10 @@ If sxmax# > xmax# Then sxmax# = xmax#
 If symin# < ymin# Then symin# = ymin#
 If symax# > ymax# Then symax# = ymax#
 
-If i% = 1 Then
+If Not firstpointdone Then
 Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, True, Int(255), Int(128), Int(0), Int(0))     ' brown
 If ierror Then Exit Sub
+firstpointdone = True
 Else
 Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, True, True, Int(255), Int(128), Int(0), Int(0))      ' brown
 If ierror Then Exit Sub
@@ -229,6 +230,54 @@ Exit Sub
 
 End Sub
 
+Sub ScanDataPlotLineRGB(tGraph As Pesgo, linecount As Long, txmin As Double, tymin As Double, txmax As Double, tymax As Double, tContinue As Boolean, tBold As Boolean, tRGB As Long)
+' Plots a line on the passed graph using the passed RGB color
+
+ierror = False
+On Error GoTo ScanDataPlotLineRGBError
+
+tGraph.ShowAnnotations = True
+
+' Start point
+tGraph.GraphAnnotationX(linecount&) = txmin#
+tGraph.GraphAnnotationY(linecount&) = tymin#
+If Not tContinue Then
+If Not tBold Then
+tGraph.GraphAnnotationType(linecount&) = PEGAT_THIN_SOLIDLINE&
+Else
+tGraph.GraphAnnotationType(linecount&) = PEGAT_MEDIUM_SOLIDLINE&
+End If
+Else
+tGraph.GraphAnnotationType(linecount&) = PEGAT_LINECONTINUE&
+End If
+tGraph.GraphAnnotationColor(linecount&) = tRGB&
+
+' No text (at this time)
+tGraph.GraphAnnotationText(linecount&) = ""
+'tGraph.GraphAnnotationText(linecount&) = vbNullString      ' this does not work!!!
+
+' End point
+linecount& = linecount& + 1
+tGraph.GraphAnnotationX(linecount&) = txmax#
+tGraph.GraphAnnotationY(linecount&) = tymax#
+tGraph.GraphAnnotationType(linecount&) = PEGAT_LINECONTINUE&
+tGraph.GraphAnnotationColor(linecount&) = tRGB&
+
+' No text (at this time)
+tGraph.GraphAnnotationText(linecount&) = ""
+'tGraph.GraphAnnotationText(linecount&) = vbNullString      ' this does not work!!!
+linecount& = linecount& + 1
+
+Exit Sub
+
+' Errors
+ScanDataPlotLineRGBError:
+MsgBox Error$, vbOKOnly + vbCritical, "ScanDataPlotLineRGB"
+ierror = True
+Exit Sub
+
+End Sub
+
 Sub ScanDataPlotBar(tGraph As Pesgo, linecount As Long, txmin As Double, tymin As Double, txmax As Double, tymax As Double, tText As String, tAlpha As Integer, tRed As Integer, tGreen As Integer, tBlue As Integer)
 ' Plots a (scale) bar (and text striong) on the passed graph using the passed color
 
@@ -240,7 +289,7 @@ tGraph.ShowAnnotations = True
 ' Start point
 tGraph.GraphAnnotationX(linecount&) = txmin#
 tGraph.GraphAnnotationY(linecount&) = tymin#
-tGraph.GraphAnnotationType(linecount&) = PEGAT_MEDIUM_SOLIDLINE&
+tGraph.GraphAnnotationType(linecount&) = PEGAT_THICK_SOLIDLINE&
 tGraph.GraphAnnotationColor(linecount&) = tGraph.PEargb(tAlpha%, tRed%, tGreen%, tBlue%)
 
 ' End point

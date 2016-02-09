@@ -201,9 +201,9 @@ Begin VB.Form FormPlotAlpha_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   8880
+      Left            =   9120
       TabIndex        =   6
-      Top             =   6360
+      Top             =   6480
       Value           =   1  'Checked
       Width           =   1095
    End

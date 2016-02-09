@@ -14,7 +14,7 @@ Dim i As Integer, j As Integer
 Dim astring As String, bstring As String
 Dim cstring As String, dstring As String
 
-' Allow auto scaling of axes from here on  (initial PlotLoad has fixed axes to create generic 'blank' plot)
+' Allow auto scaling of axes from here on  (initial plot load has fixed axes to create generic blank plot)
 FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_NONE&
 FormPENEPMA12.Pesgo1.ManualScaleControlX = PEMSC_NONE&
 
@@ -109,12 +109,12 @@ Next j%
 
 ' Legend
 If ParameterFileA$ <> ParameterFileB$ Then
-FormPENEPMA12.Pesgo1.LegendStyle = PELS_1_LINE_INSIDE_OVERLAP&                ' Legend inside plot
+FormPENEPMA12.Pesgo1.LegendStyle = PELS_1_LINE_INSIDE_OVERLAP&                ' legend inside plot
 Else
 FormPENEPMA12.Pesgo1.LegendStyle = PELS_1_LINE&                               ' single line per legend
 FormPENEPMA12.Pesgo1.LegendLocation = PELL_BOTTOM&                            ' 0 = PELL_TOP, 1 = PELL_BOTTOM
 End If
-FormPENEPMA12.Pesgo1.OneLegendPerLine = True                                  ' Edit Put one Legend per line
+FormPENEPMA12.Pesgo1.OneLegendPerLine = True                                  ' edit to put one legend per line
 FormPENEPMA12.Pesgo1.SimpleLineLegend = True
 FormPENEPMA12.Pesgo1.SimplePointLegend = True                                 ' default False encloses in a box
 
@@ -153,12 +153,12 @@ FormPENEPMA12.Pesgo1.Points = 1
 FormPENEPMA12.Pesgo1.xdata(0, 0) = 0                            ' for empty subset
 FormPENEPMA12.Pesgo1.ydata(0, 0) = 0
 FormPENEPMA12.Pesgo1.ShowAnnotations = False
-FormPENEPMA12.Pesgo1.MainTitle = VbSpace                        ' blank Chart title
+FormPENEPMA12.Pesgo1.MainTitle = VbSpace                        ' blank chart title
 
-FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_MINMAX&        ' manually control Y Axis - this requires resetting to 'NONE" in the PlotKRatio code
+FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_MINMAX&        ' manually control y axis - this requires resetting to 'NONE" in the PlotKRatio code
 FormPENEPMA12.Pesgo1.ManualMinY = 0
 FormPENEPMA12.Pesgo1.ManualMaxY = 100
-FormPENEPMA12.Pesgo1.ManualScaleControlX = PEMSC_MINMAX&        ' manually control X Axis
+FormPENEPMA12.Pesgo1.ManualScaleControlX = PEMSC_MINMAX&        ' manually control x axis
 FormPENEPMA12.Pesgo1.ManualMinX = -50
 FormPENEPMA12.Pesgo1.ManualMaxX = 0
 
@@ -230,7 +230,7 @@ Dim alen As Integer, blen As Integer, clen As Integer               ' max length
 ' With or w/o gridlines
 If FormPENEPMA12.CheckUseGridLines.Value = vbChecked Then
 FormPENEPMA12.Pesgo1.GridLineControl = PEGLC_BOTH&          ' x and y grid
-FormPENEPMA12.Pesgo1.GridBands = True                       ' adds colour banding on background
+FormPENEPMA12.Pesgo1.GridBands = True                       ' adds color banding on background
 Else
 FormPENEPMA12.Pesgo1.GridLineControl = PEGLC_NONE&
 FormPENEPMA12.Pesgo1.GridBands = False                      ' removes colour banding on background
@@ -246,7 +246,7 @@ End If
 ' Boundary label a<->b string parse
 alen% = 8                                           ' if Mat A string > A density not added
 blen% = 8
-clen% = 32                                          ' max character length for  cstring$
+clen% = 32                                          ' max character length for cstring$
 If ParameterFileA$ <> ParameterFileB$ Then
 astring$ = MiscGetFileNameNoExtension$(ParameterFileA$)
 r& = InStr(ParameterFileA$, VbSpace)                ' number of characters before space
@@ -276,9 +276,9 @@ cstring$ = " Mat. A <--> Mat. B "                   ' if too long then just mat 
 End If
 FormPENEPMA12.Pesgo1.MultiSubTitles(0) = VbSpace
 FormPENEPMA12.Pesgo1.MultiSubTitles(1) = VbSpace                                                        ' create some space
-FormPENEPMA12.Pesgo1.VertLineAnnotation(0) = 0                                                          ' vertical line at x=0 as place holder for annotation
+FormPENEPMA12.Pesgo1.VertLineAnnotation(0) = 0                                                          ' vertical line at x = 0 as place holder for annotation
 FormPENEPMA12.Pesgo1.VertLineAnnotationColor(0) = FormPENEPMA12.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(0))             ' line black
-FormPENEPMA12.Pesgo1.VertLineAnnotationText(0) = "|H" & cstring$                                        ' centre justification wrt VertLine
+FormPENEPMA12.Pesgo1.VertLineAnnotationText(0) = "|H" & cstring$                                        ' center justification for VertLine
 
 ' Annotations properties
 FormPENEPMA12.Pesgo1.AnnotationsInFront = True

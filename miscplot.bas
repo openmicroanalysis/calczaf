@@ -2,33 +2,6 @@ Attribute VB_Name = "CodeMiscPlot"
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Sub MiscPlotGetSymbols_GS(nsets As Integer, tGraph As Graph)
-' Generate random solid symbols (Graphics Server code)
-
-ierror = False
-On Error GoTo MiscPlotGetSymbols_GSError
-
-Dim i As Integer, j As Integer
-
-tGraph.AutoInc = 1  ' for loading symbols
-i% = 3
-For j% = 1 To nsets%
-tGraph.SymbolData = i%
-i% = i% + 2
-If i% > 13 Then i% = 3
-Next j%
-tGraph.AutoInc = 0  ' for loading symbols
-
-Exit Sub
-
-' Errors
-MiscPlotGetSymbols_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "MiscPlotGetSymbols_GS"
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub MiscPlotGetSymbols_PE(nsets As Integer, tPesgo As Pesgo)
 ' Generate random solid symbols (Pro Essentials code)
 

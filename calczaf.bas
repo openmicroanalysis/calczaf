@@ -686,6 +686,7 @@ If ierror Then Exit Sub
 
 ' Re-load grid
 ImportDataFile$ = vbNullString
+ImportDataFile2$ = vbNullString
 Call CalcZAFLoadList
 If ierror Then Exit Sub
 
@@ -4748,20 +4749,11 @@ Sub CalcZAFPlotHistogram(mode As Integer)
 ierror = False
 On Error GoTo CalcZAFPlotHistogramError
 
-If Not UseProEssentialsGraphics Then
-Call CalcZAFPlotHistogram_GS(CalcZAFOutputCount&, KratioError!())
-If ierror Then Exit Sub
-Else
 Call CalcZAFPlotHistogram_PE(CalcZAFOutputCount&, KratioError!())
 If ierror Then Exit Sub
-End If
 
 If mode% > 0 Then
-If Not UseProEssentialsGraphics Then
-FormPLOTHISTO_GS.Show vbModal
-Else
 FormPLOTHISTO_PE.Show vbModal
-End If
 End If
 
 Exit Sub
@@ -4780,7 +4772,7 @@ Sub CalcZAFPlotHistogramConcentration()
 ierror = False
 On Error GoTo CalcZAFPlotHistogramConcentrationError
 
-Call CalcZAFPlotHistogramConcentration_PE(CalcZAFOutputCount&, KratioConc!(), KratioError!())
+Call CalcZAFPlotHistogramConcentration_PE(CalcZAFOutputCount&, KratioConc!(), KratioError!(), KratioLine&())
 If ierror Then Exit Sub
 
 Exit Sub

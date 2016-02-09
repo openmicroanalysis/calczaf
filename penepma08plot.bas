@@ -35,6 +35,7 @@ FormPENEPMA08_PE.Pesgo1.XAxisLabel = "Energy eV"
 FormPENEPMA08_PE.Pesgo1.AxisNumberSpacing = 5#
 FormPENEPMA08_PE.Pesgo1.ImageAdjustTop = 100                ' for appearance
 FormPENEPMA08_PE.Pesgo1.ImageAdjustLeft = 100
+FormPENEPMA08_PE.Pesgo1.ImageAdjustRight = 100
 
 FormPENEPMA08_PE.Pesgo1.PlottingMethod = SGPM_BAR&
 'FormPENEPMA08_PE.Pesgo1.AxisNumericFormatY = PEANF_EXP_NOTATION_3X&
@@ -50,9 +51,6 @@ FormPENEPMA08_PE.Pesgo1.DpiY = 450
 FormPENEPMA08_PE.Pesgo1.RenderEngine = PERE_GDIPLUS&
 
 FormPENEPMA08_PE.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE&
-Call FormPENEPMA08_PE.Pesgo1.PEreinitialize
-Call FormPENEPMA08_PE.Pesgo1.PEresetimage(0, 0)
-Call FormPENEPMA08_PE.Pesgo1.PEInvalidate
 
 Exit Sub
 
@@ -92,12 +90,12 @@ FormPENEPMA08_PE.Pesgo1.Points = nPoints&
 ymin! = MAXMINIMUM!
 ymax! = MAXMAXIMUM!
 For i% = 1 To (nPoints&)
-If ydata#(i%) < ymin! And ydata#(i%) > 2E-35 Then ymin! = ydata#(i%) ' prevent logscale being stretched by values (rounding errors?)close to zero
+If ydata#(i%) < ymin! And ydata#(i%) > 2E-35 Then ymin! = ydata#(i%)    ' prevent logscale being stretched by values (rounding errors?)close to zero
 If ydata#(i%) > ymax! Then ymax! = ydata#(i%)
 
 ' ProEssentials starts array at 0
-FormPENEPMA08_PE.Pesgo1.UsingYDataII = True ' use double precision for PE y axis
-FormPENEPMA08_PE.Pesgo1.YDataII(0, i% - 1) = ydata#(i%) ' YDataII is double precision for PE
+FormPENEPMA08_PE.Pesgo1.UsingYDataII = True                             ' use double precision for PE y axis
+FormPENEPMA08_PE.Pesgo1.YDataII(0, i% - 1) = ydata#(i%)                 ' YDataII is double precision for PE
 Next i%
 
 ' Y axis format
@@ -134,14 +132,11 @@ FormPENEPMA08_PE.Pesgo1.MouseDraggingX = True
 FormPENEPMA08_PE.Pesgo1.MouseDraggingY = True
 FormPENEPMA08_PE.Pesgo1.ZoomWindow = True
 
-FormPENEPMA08_PE.Pesgo1.AdjoinBars = True               ' bars full bin-width, yes or no?
+FormPENEPMA08_PE.Pesgo1.AdjoinBars = True               ' bars full bin-width
 FormPENEPMA08_PE.Pesgo1.DataShadows = PEDS_NONE&        ' no data shadows
 
 ' Show plot
 FormPENEPMA08_PE.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE&
-Call FormPENEPMA08_PE.Pesgo1.PEreinitialize
-Call FormPENEPMA08_PE.Pesgo1.PEresetimage(0, 0)
-Call FormPENEPMA08_PE.Pesgo1.PEInvalidate
 
 Exit Sub
 
@@ -166,20 +161,19 @@ FormPENEPMA08_PE.Pesgo1.Points = 1
 FormPENEPMA08_PE.Pesgo1.xdata(0, 0) = 0                     ' empty subset
 FormPENEPMA08_PE.Pesgo1.ydata(0, 0) = 0
 
-FormPENEPMA08_PE.Pesgo1.MainTitle = "  "                    ' blank Chart title
+FormPENEPMA08_PE.Pesgo1.MainTitle = "  "                    ' blank chart title
 FormPENEPMA08_PE.Pesgo1.SubTitle = " "
-FormPENEPMA08_PE.Pesgo1.ManualScaleControlY = PEMSC_MINMAX& ' Manually Control Y Axis
+FormPENEPMA08_PE.Pesgo1.ManualScaleControlY = PEMSC_MINMAX& ' manually control y axis
 FormPENEPMA08_PE.Pesgo1.ManualMinY = 0
 FormPENEPMA08_PE.Pesgo1.ManualMaxY = 100
-FormPENEPMA08_PE.Pesgo1.ManualScaleControlX = PEMSC_MINMAX& ' Manually Control X Axis
+FormPENEPMA08_PE.Pesgo1.ManualScaleControlX = PEMSC_MINMAX& ' manually control x axis
 FormPENEPMA08_PE.Pesgo1.ManualMinX = 0
 FormPENEPMA08_PE.Pesgo1.ManualMaxX = 15000
 
-FormPENEPMA08_PE.Pesgo1.YAxisLabel = "Intensity"            ' Axis labels
+FormPENEPMA08_PE.Pesgo1.YAxisLabel = "Intensity"            ' axis labels
 FormPENEPMA08_PE.Pesgo1.XAxisLabel = "Energy eV"
 
-FormPENEPMA08_PE.Pesgo1.ImageAdjustRight = 100              ' layout formatting
-FormPENEPMA08_PE.Pesgo1.PlottingMethod = SGPM_BAR&          ' bargraph
+FormPENEPMA08_PE.Pesgo1.PlottingMethod = SGPM_BAR&          ' bar graph
 FormPENEPMA08_PE.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE&
 
 Exit Sub

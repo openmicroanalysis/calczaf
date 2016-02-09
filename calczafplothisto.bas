@@ -65,8 +65,8 @@ hstep! = (hmax! - hmin!) / nbin%
 
 For i% = 1 To nCol%
 For k% = 1 To nbin%
-'xdata(i%, k%) = hmin! + hstep! * (k% - 1) + hstep! / 2# ' calculate buckets centered on intervals
-xdata(i%, k%) = hmin! + hstep! * (k% - 1)
+xdata(i%, k%) = hmin! + hstep! * (k% - 1) + hstep! / 2#     ' calculate buckets centered on intervals
+'xdata(i%, k%) = hmin! + hstep! * (k% - 1)
 ydata(i%, k%) = 0#
 Next k%
 
@@ -182,226 +182,14 @@ Exit Sub
 
 End Sub
 
-Sub CalcZAFPlotHistogram_GS(CalcZAFOutputCount As Long, KratioError() As Single)
-' Calculate and plot the histogram
-
-ierror = False
-On Error GoTo CalcZAFPlotHistogram_GSError
-
-Dim i As Integer, nCol As Integer
-Dim TickGap As Single, AllowPct As Single
-
-Dim xdata() As Single, ydata() As Single
-
-Dim average As TypeAverage
-
-If CalcZAFOutputCount& < 1 Then GoTo CalcZAFPlotHistogram_GSNoData
-If HistogramNumberofBuckets% = 0 Then GoTo CalcZAFPlotHistogram_GSNoBuckets
-
-ReDim xdata(1 To CalcZAFOutputCount&, 1 To HistogramNumberofBuckets%) As Single
-ReDim ydata(1 To CalcZAFOutputCount&, 1 To HistogramNumberofBuckets%) As Single
-
-' Special code for single binary
-If CalcZAFOutputCount& < 2 Then
-ReDim xdata(1 To 2, 1 To HistogramNumberofBuckets%) As Single
-ReDim ydata(1 To 2, 1 To HistogramNumberofBuckets%) As Single
-End If
-
-' Calculate histogram
-Call CalcZAFHistogram(HistogramMinimum!, HistogramMaximum!, HistogramNumberofBuckets%, CalcZAFOutputCount&, 2, KratioError!(), xdata!(), ydata!())
-If ierror Then Exit Sub
-
-' Plot data into control, clear the graph
-FormPLOTHISTO_GS.Graph1.DrawMode = 1
-
-' Display plot and fit
-FormPLOTHISTO_GS.Graph1.DataReset = 9   ' reset all array based properties
-FormPLOTHISTO_GS.Graph1.NumPoints = HistogramNumberofBuckets%
-FormPLOTHISTO_GS.Graph1.NumSets = 1
-FormPLOTHISTO_GS.Graph1.AutoInc = 0
-
-FormPLOTHISTO_GS.Graph1.XAxisStyle = 2 ' user defined
-FormPLOTHISTO_GS.Graph1.XAxisTicks = HistogramNumberofBuckets% / 4#
-FormPLOTHISTO_GS.Graph1.XAxisMinorTicks = -1   ' 1 minor ticks per tick
-
-FormPLOTHISTO_GS.Graph1.YAxisStyle = 1 ' automatic
-
-' Printer info
-FormPLOTHISTO_GS.Graph1.PrintInfo(11) = 1  ' landscape
-FormPLOTHISTO_GS.Graph1.PrintInfo(12) = 1  ' fit to page
-
-' Set aspect ratio for axes
-FormPLOTHISTO_GS.Graph1.XAxisMin = HistogramMinimum!
-FormPLOTHISTO_GS.Graph1.XAxisMax = HistogramMaximum!
-
-' Calculate best bar gap
-TickGap! = (FormPLOTHISTO_GS.Graph1.XAxisMax - FormPLOTHISTO_GS.Graph1.XAxisMin) / CDbl(FormPLOTHISTO_GS.Graph1.XAxisTicks)
-
-' Each bar can use this fraction of the distance
-AllowPct! = 0.025 * (FormPLOTHISTO_GS.Graph1.XAxisMax - FormPLOTHISTO_GS.Graph1.XAxisMin) / TickGap!
-
-' Convert from fraction used, to percentage unused, and add 1 to allow for roundoff error.
-FormPLOTHISTO_GS.Graph1.Bar2DGap = Int(100# * (1# - AllowPct!)) + 1
-
-' Determine column to load
-If FormPLOTHISTO_GS.OptionColumnNumber(0).Value Then
-nCol% = 1
-Else
-nCol% = 2
-End If
-
-' Load y axis data
-For i% = 1 To HistogramNumberofBuckets%
-FormPLOTHISTO_GS.Graph1.Data(i%) = ydata!(nCol%, i%)
-FormPLOTHISTO_GS.Graph1.xpos(i%) = xdata!(nCol%, i%)
-FormPLOTHISTO_GS.Graph1.Color(i%) = 0
-Next i%
-
-FormPLOTHISTO_GS.Graph1.BottomTitle = "Relative Error" & ", " & Str$(HistogramNumberofBuckets%) & " Bins (" & Str$(HistogramMinimum!) & " - " & Str$(HistogramMaximum!) & " )"
-FormPLOTHISTO_GS.Graph1.LeftTitleStyle = 1
-FormPLOTHISTO_GS.Graph1.LeftTitle = "Number of Binaries" & " (" & Str$(CalcZAFOutputCount&) & ")"
-
-If HistogramOutputOption% = -1 Then msg$ = "First Approximation Atomic Fractions"
-If HistogramOutputOption% = -2 Then msg$ = "First Approximation Weight Fractions"
-If HistogramOutputOption% = -3 Then msg$ = "First Approximation Electron Fractions"
-If HistogramOutputOption% = 0 Then msg$ = "Calculated Intensities (K-ratios)"
-If HistogramOutputOption% = 1 Then msg$ = "Calculated Intensities (1st Approx. Atomic Fractions)"
-If HistogramOutputOption% = 2 Then msg$ = "Calculated Intensities (1st Approx. Weight Fractions)"
-If HistogramOutputOption% = 3 Then msg$ = "Calculated Intensities (1st Approx. Electron Fractions)"
-
-FormPLOTHISTO_GS.Graph1.GraphTitle = ImportDataFile2$
-
-' Load legends for options
-FormPLOTHISTO_GS.Graph1.AutoInc = 1
-FormPLOTHISTO_GS.Graph1.LegendText = msg$
-
-' Corrections to First approximation
-If HistogramOutputOption% >= 0 Then
-
-If HistogramOutputOption% > 0 And FirstApproximationApplyAbsorption Then
-FormPLOTHISTO_GS.Graph1.LegendText = "First Approximations corrected for Absorption"
-End If
-If HistogramOutputOption% > 0 And FirstApproximationApplyFluorescence Then
-FormPLOTHISTO_GS.Graph1.LegendText = "First Approximations corrected for Fluorescence"
-End If
-If HistogramOutputOption% > 0 And FirstApproximationApplyAtomicNumber Then
-FormPLOTHISTO_GS.Graph1.LegendText = "First Approximations corrected for Atomic Number"
-End If
-
-' 0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters
-FormPLOTHISTO_GS.Graph1.LegendText = corstring$(CorrectionFlag%)
-
-' Output flags
-If BinaryOutputRangeMinAbs Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Minimum Absorption Correction=" & Str$(BinaryOutputRangeAbsMin!)
-End If
-If BinaryOutputRangeMinFlu Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Minimum Fluorescence Correction=" & Str$(BinaryOutputRangeFluMin!)
-End If
-If BinaryOutputRangeMinZed Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Minimum Atomic Number Correction=" & Str$(BinaryOutputRangeZedMin!)
-End If
-
-If BinaryOutputRangeMaxAbs Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Maximum Absorption Correction=" & Str$(BinaryOutputRangeAbsMax!)
-End If
-
-If BinaryOutputRangeMaxFlu Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Maximum Fluorescence Correction=" & Str$(BinaryOutputRangeFluMax!)
-End If
-
-If BinaryOutputRangeMaxZed Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Maximum Atomic Number Correction=" & Str$(BinaryOutputRangeZedMax!)
-End If
-
-' Zbar filters
-If BinaryOutputMinimumZbar Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Minimum Mass-Electron Zbar Difference" & Str$(BinaryOutputMinimumZbarDiff!) & "%"
-End If
-
-If BinaryOutputMaximumZbar Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Maximum Mass-Electron Zbar Difference" & Str$(BinaryOutputMaximumZbarDiff!) & "%"
-End If
-
-' Correction options
-If CorrectionFlag% = 0 Or (CorrectionFlag% >= 1 And CorrectionFlag% <= 4 And UsePenepmaKratiosFlag% = 1) Then
-FormPLOTHISTO_GS.Graph1.LegendText = bscstring$(ibsc%)
-FormPLOTHISTO_GS.Graph1.LegendText = mipstring$(imip%)
-FormPLOTHISTO_GS.Graph1.LegendText = stpstring$(istp%)
-FormPLOTHISTO_GS.Graph1.LegendText = bksstring$(ibks%)
-FormPLOTHISTO_GS.Graph1.LegendText = absstring$(iabs%)
-FormPLOTHISTO_GS.Graph1.LegendText = flustring$(iflu%)
-FormPLOTHISTO_GS.Graph1.LegendText = macstring$(MACTypeFlag%)
-
-' Note beta fluorescence
-If Not UseFluorescenceByBetaLinesFlag Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Fluorescence of/by beta lines not included"
-Else
-FormPLOTHISTO_GS.Graph1.LegendText = "Fluorescence of/by beta lines included"
-End If
-
-If CorrectionFlag% >= 1 And CorrectionFlag% <= 4 Then
-FormPLOTHISTO_GS.Graph1.LegendText = empstring$(EmpiricalAlphaFlag%)
-End If
-
-' Using fundamental parameters
-ElseIf CorrectionFlag% = 5 Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Using Fundamental Parameters"
-
-' Using Penepma derived k-ratios alpha factors
-Else
-    If Not UsePenepmaKratiosLimitFlag Then
-    FormPLOTHISTO_GS.Graph1.LegendText = "Using Penepma k-ratios if available..."
-    Else
-    FormPLOTHISTO_GS.Graph1.LegendText = "Using Penepma k-ratios if available...(" & Format$(PenepmaKratiosLimitValue!) & " % limit)"
-    End If
-End If
-End If
-
-' Calculate average and standard deviation
-Call MathArrayAverage3(average, KratioError!(), CalcZAFOutputCount&, 2)
-If ierror Then Exit Sub
-
-' Print average and standard deviation on plot
-FormPLOTHISTO_GS.LabelAverage.Caption = MiscAutoFormat$(average.averags!(nCol%))
-FormPLOTHISTO_GS.LabelStdDev.Caption = MiscAutoFormat$(average.Stddevs!(nCol%))
-FormPLOTHISTO_GS.LabelMinimum.Caption = MiscAutoFormat$(average.Minimums!(nCol%))
-FormPLOTHISTO_GS.LabelMaximum.Caption = MiscAutoFormat$(average.Maximums!(nCol%))
-
-' Show plot
-FormPLOTHISTO_GS.Graph1.DrawMode = 2
-
-Exit Sub
-
-' Errors
-CalcZAFPlotHistogram_GSError:
-MsgBox Error$, vbOKOnly + vbCritical, "CalcZAFPlotHistogram_GS"
-Call CalcZAFImportClose
-ierror = True
-Exit Sub
-
-CalcZAFPlotHistogram_GSNoData:
-msg$ = "No CalcZAF data to plot"
-MsgBox msg$, vbOKOnly + vbExclamation, "CalcZAFPlotHistogram_GS"
-ierror = True
-Exit Sub
-
-CalcZAFPlotHistogram_GSNoBuckets:
-msg$ = "No histogram data to plot"
-MsgBox msg$, vbOKOnly + vbExclamation, "CalcZAFPlotHistogram_GS"
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub CalcZAFPlotHistogram_PE(CalcZAFOutputCount As Long, KratioError() As Single)
 ' Calculate and plot the histogram
 
 ierror = False
 On Error GoTo CalcZAFPlotHistogram_PEError
 
-Dim i As Integer, nCol As Integer
-Dim TickGap As Single, AllowPct As Single
+Dim i As Integer, nCol As Integer, acounter As Integer
+Dim xannotation As Single, yannotation As Single, ydecrement As Single
 
 Dim xdata() As Single, ydata() As Single
 
@@ -410,6 +198,44 @@ Dim average As TypeAverage
 If CalcZAFOutputCount& < 1 Then GoTo CalcZAFPlotHistogram_PENoData
 If HistogramNumberofBuckets% = 0 Then GoTo CalcZAFPlotHistogram_PENoBuckets
 
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(-1) = 0               ' empty annotation array
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(-1) = 0
+
+' Init graph
+FormPLOTHISTO_PE.Pesgo1.xdata(0, 0) = 0                    ' for empty subset
+FormPLOTHISTO_PE.Pesgo1.ydata(0, 0) = 0
+
+FormPLOTHISTO_PE.Pesgo1.RenderEngine = PERE_GDIPLUS&
+FormPLOTHISTO_PE.Pesgo1.AntiAliasText = True
+FormPLOTHISTO_PE.Pesgo1.DataShadows = PEDS_NONE&           ' no data shadows
+
+FormPLOTHISTO_PE.Pesgo1.ShowTickMarkY = PESTM_TICKS_HIDE&
+FormPLOTHISTO_PE.Pesgo1.ShowTickMarkX = PESTM_TICKS_OUTSIDE&
+
+' Title Properties
+FormPLOTHISTO_PE.Pesgo1.MainTitle = vbNullString
+FormPLOTHISTO_PE.Pesgo1.SubTitle = vbNullString
+FormPLOTHISTO_PE.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
+FormPLOTHISTO_PE.Pesgo1.ImageAdjustRight = -80                     ' axis formatting
+
+' Plot type
+FormPLOTHISTO_PE.Pesgo1.PlottingMethod = SGPM_BAR&         ' bargraph subset
+
+FormPLOTHISTO_PE.Pesgo1.ManualScaleControlX = PEMSC_MINMAX                                 ' manually Control X Axis
+FormPLOTHISTO_PE.Pesgo1.ManualMinX = HistogramMinimum!
+FormPLOTHISTO_PE.Pesgo1.ManualMaxX = HistogramMaximum!
+
+FormPLOTHISTO_PE.Pesgo1.ManualScaleControlY = PEMSC_MIN                                    ' autoscale Control Y Axis max, Manual Control min
+FormPLOTHISTO_PE.Pesgo1.ManualMinY = 0
+
+FormPLOTHISTO_PE.Pesgo1.GridLineControl = PEGLC_NONE&
+FormPLOTHISTO_PE.Pesgo1.GridBands = False                      ' removes colour banding on background
+
+' Define #subset and #points
+FormPLOTHISTO_PE.Pesgo1.Subsets = 1
+FormPLOTHISTO_PE.Pesgo1.points = HistogramNumberofBuckets%
+
+' Load histogram data
 ReDim xdata(1 To CalcZAFOutputCount&, 1 To HistogramNumberofBuckets%) As Single
 ReDim ydata(1 To CalcZAFOutputCount&, 1 To HistogramNumberofBuckets%) As Single
 
@@ -420,40 +246,8 @@ ReDim ydata(1 To 2, 1 To HistogramNumberofBuckets%) As Single
 End If
 
 ' Calculate histogram
-Call CalcZAFHistogram(HistogramMinimum!, HistogramMaximum!, HistogramNumberofBuckets%, CalcZAFOutputCount, 2, KratioError!(), xdata!(), ydata!())
+Call CalcZAFHistogram(HistogramMinimum!, HistogramMaximum!, HistogramNumberofBuckets%, CalcZAFOutputCount, Int(2), KratioError!(), xdata!(), ydata!())
 If ierror Then Exit Sub
-
-' Plot data into control, clear the graph
-FormPLOTHISTO_PE.Graph1.DrawMode = 1
-
-' Display plot and fit
-FormPLOTHISTO_PE.Graph1.DataReset = 9   ' reset all array based properties
-FormPLOTHISTO_PE.Graph1.NumPoints = HistogramNumberofBuckets%
-FormPLOTHISTO_PE.Graph1.NumSets = 1
-FormPLOTHISTO_PE.Graph1.AutoInc = 0
-
-FormPLOTHISTO_PE.Graph1.XAxisStyle = 2 ' user defined
-FormPLOTHISTO_PE.Graph1.XAxisTicks = HistogramNumberofBuckets% / 4#
-FormPLOTHISTO_PE.Graph1.XAxisMinorTicks = -1   ' 1 minor ticks per tick
-
-FormPLOTHISTO_PE.Graph1.YAxisStyle = 1 ' automatic
-
-' Printer info
-FormPLOTHISTO_PE.Graph1.PrintInfo(11) = 1  ' landscape
-FormPLOTHISTO_PE.Graph1.PrintInfo(12) = 1  ' fit to page
-
-' Set aspect ratio for axes
-FormPLOTHISTO_PE.Graph1.XAxisMin = HistogramMinimum!
-FormPLOTHISTO_PE.Graph1.XAxisMax = HistogramMaximum!
-
-' Calculate best bar gap
-TickGap! = (FormPLOTHISTO_PE.Graph1.XAxisMax - FormPLOTHISTO_PE.Graph1.XAxisMin) / CDbl(FormPLOTHISTO_PE.Graph1.XAxisTicks)
-
-' Each bar can use this fraction of the distance
-AllowPct! = 0.025 * (FormPLOTHISTO_PE.Graph1.XAxisMax - FormPLOTHISTO_PE.Graph1.XAxisMin) / TickGap!
-
-' Convert from fraction used, to percentage unused, and add 1 to allow for roundoff error.
-FormPLOTHISTO_PE.Graph1.Bar2DGap = Int(100# * (1# - AllowPct!)) + 1
 
 ' Determine column to load
 If FormPLOTHISTO_PE.OptionColumnNumber(0).Value Then
@@ -462,112 +256,24 @@ Else
 nCol% = 2
 End If
 
+' Set bar width
+FormPLOTHISTO_PE.Pesgo1.BarWidth = xdata!(nCol%, 2) - xdata!(nCol%, 1)                       ' 0 for auto width
+'FormPLOTHISTO_PE.Pesgo1.BarWidth = 0                                                         ' 0 for auto width
+FormPLOTHISTO_PE.Pesgo1.AdjoinBars = True
+FormPLOTHISTO_PE.Pesgo1.SubsetColors(0) = FormPLOTHISTO_PE.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))             ' red bars
+FormPLOTHISTO_PE.Pesgo1.BarBorderColor = FormPLOTHISTO_PE.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(0))                ' black border
+
 ' Load y axis data
 For i% = 1 To HistogramNumberofBuckets%
-FormPLOTHISTO_PE.Graph1.Data(i%) = ydata!(nCol%, i%)
-FormPLOTHISTO_PE.Graph1.xpos(i%) = xdata!(nCol%, i%)
-FormPLOTHISTO_PE.Graph1.Color(i%) = 0
+FormPLOTHISTO_PE.Pesgo1.ydata(0, i% - 1) = ydata!(nCol%, i%)
+FormPLOTHISTO_PE.Pesgo1.xdata(0, i% - 1) = xdata!(nCol%, i%)
 Next i%
 
-FormPLOTHISTO_PE.Graph1.BottomTitle = "Relative Error" & ", " & Str$(HistogramNumberofBuckets%) & " Bins (" & Str$(HistogramMinimum!) & " - " & Str$(HistogramMaximum!) & " )"
-FormPLOTHISTO_PE.Graph1.LeftTitleStyle = 1
-FormPLOTHISTO_PE.Graph1.LeftTitle = "Number of Binaries" & " (" & Str$(CalcZAFOutputCount&) & ")"
+FormPLOTHISTO_PE.Pesgo1.XAxisLabel = "Relative Error" & ", " & Str$(HistogramNumberofBuckets%) & " Bins (" & Str$(HistogramMinimum!) & " - " & Str$(HistogramMaximum!) & " )"
+FormPLOTHISTO_PE.Pesgo1.YAxisLabel = "Number of Binaries" & " (" & Str$(CalcZAFOutputCount&) & ")"
+FormPLOTHISTO_PE.Pesgo1.MainTitle = ImportDataFile2$
 
-If HistogramOutputOption% = -1 Then msg$ = "First Approximation Atomic Fractions"
-If HistogramOutputOption% = -2 Then msg$ = "First Approximation Weight Fractions"
-If HistogramOutputOption% = -3 Then msg$ = "First Approximation Electron Fractions"
-If HistogramOutputOption% = 0 Then msg$ = "Calculated Intensities (K-ratios)"
-If HistogramOutputOption% = 1 Then msg$ = "Calculated Intensities (1st Approx. Atomic Fractions)"
-If HistogramOutputOption% = 2 Then msg$ = "Calculated Intensities (1st Approx. Weight Fractions)"
-If HistogramOutputOption% = 3 Then msg$ = "Calculated Intensities (1st Approx. Electron Fractions)"
-
-FormPLOTHISTO_PE.Graph1.GraphTitle = ImportDataFile2$
-
-' Load legends for options
-FormPLOTHISTO_PE.Graph1.AutoInc = 1
-FormPLOTHISTO_PE.Graph1.LegendText = msg$
-
-' Corrections to First approximation
-If HistogramOutputOption% >= 0 Then
-
-If HistogramOutputOption% > 0 And FirstApproximationApplyAbsorption Then
-FormPLOTHISTO_PE.Graph1.LegendText = "First Approximations corrected for Absorption"
-End If
-If HistogramOutputOption% > 0 And FirstApproximationApplyFluorescence Then
-FormPLOTHISTO_PE.Graph1.LegendText = "First Approximations corrected for Fluorescence"
-End If
-If HistogramOutputOption% > 0 And FirstApproximationApplyAtomicNumber Then
-FormPLOTHISTO_PE.Graph1.LegendText = "First Approximations corrected for Atomic Number"
-End If
-
-' 0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters
-FormPLOTHISTO_PE.Graph1.LegendText = corstring$(CorrectionFlag%)
-
-' Output flags
-If BinaryOutputRangeMinAbs Then
-FormPLOTHISTO_PE.Graph1.LegendText = "Minimum Absorption Correction=" & Str$(BinaryOutputRangeAbsMin!)
-End If
-If BinaryOutputRangeMinFlu Then
-FormPLOTHISTO_PE.Graph1.LegendText = "Minimum Fluorescence Correction=" & Str$(BinaryOutputRangeFluMin!)
-End If
-If BinaryOutputRangeMinZed Then
-FormPLOTHISTO_PE.Graph1.LegendText = "Minimum Atomic Number Correction=" & Str$(BinaryOutputRangeZedMin!)
-End If
-
-If BinaryOutputRangeMaxAbs Then
-FormPLOTHISTO_PE.Graph1.LegendText = "Maximum Absorption Correction=" & Str$(BinaryOutputRangeAbsMax!)
-End If
-
-If BinaryOutputRangeMaxFlu Then
-FormPLOTHISTO_PE.Graph1.LegendText = "Maximum Fluorescence Correction=" & Str$(BinaryOutputRangeFluMax!)
-End If
-
-If BinaryOutputRangeMaxZed Then
-FormPLOTHISTO_PE.Graph1.LegendText = "Maximum Atomic Number Correction=" & Str$(BinaryOutputRangeZedMax!)
-End If
-
-' Zbar filters
-If BinaryOutputMinimumZbar Then
-FormPLOTHISTO_PE.Graph1.LegendText = "Minimum Mass-Electron Zbar Difference" & Str$(BinaryOutputMinimumZbarDiff!) & "%"
-End If
-If BinaryOutputMaximumZbar Then
-FormPLOTHISTO_PE.Graph1.LegendText = "Maximum Mass-Electron Zbar Difference" & Str$(BinaryOutputMaximumZbarDiff!) & "%"
-End If
-
-' Correction options
-If CorrectionFlag% = 0 Or (CorrectionFlag% >= 1 And CorrectionFlag% <= 4 And UsePenepmaKratiosFlag% = 1) Then
-FormPLOTHISTO_GS.Graph1.LegendText = bscstring$(ibsc%)
-FormPLOTHISTO_GS.Graph1.LegendText = mipstring$(imip%)
-FormPLOTHISTO_GS.Graph1.LegendText = stpstring$(istp%)
-FormPLOTHISTO_GS.Graph1.LegendText = bksstring$(ibks%)
-FormPLOTHISTO_GS.Graph1.LegendText = absstring$(iabs%)
-FormPLOTHISTO_GS.Graph1.LegendText = flustring$(iflu%)
-FormPLOTHISTO_GS.Graph1.LegendText = macstring$(MACTypeFlag%)
-
-' Note beta fluorescence
-If Not UseFluorescenceByBetaLinesFlag Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Fluorescence of/by beta lines not included"
-Else
-FormPLOTHISTO_GS.Graph1.LegendText = "Fluorescence of/by beta lines included"
-End If
-
-If CorrectionFlag% >= 1 And CorrectionFlag% <= 4 Then
-FormPLOTHISTO_GS.Graph1.LegendText = empstring$(EmpiricalAlphaFlag%)
-End If
-
-' Using fundamental parameters
-ElseIf CorrectionFlag% = 5 Then
-FormPLOTHISTO_GS.Graph1.LegendText = "Using Fundamental Parameters"
-
-' Using Penepma derived k-ratios alpha factors
-Else
-    If Not UsePenepmaKratiosLimitFlag Then
-    FormPLOTHISTO_GS.Graph1.LegendText = "Using Penepma k-ratios if available..."
-    Else
-    FormPLOTHISTO_GS.Graph1.LegendText = "Using Penepma k-ratios if available...(" & Format$(PenepmaKratiosLimitValue!) & " % limit)"
-    End If
-End If
-End If
+FormPLOTHISTO_PE.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE    ' generate new plot
 
 ' Calculate average and standard deviation
 Call MathArrayAverage3(average, KratioError!(), CalcZAFOutputCount&, 2)
@@ -579,8 +285,279 @@ FormPLOTHISTO_PE.LabelStdDev.Caption = MiscAutoFormat$(average.Stddevs!(nCol%))
 FormPLOTHISTO_PE.LabelMinimum.Caption = MiscAutoFormat$(average.Minimums!(nCol%))
 FormPLOTHISTO_PE.LabelMaximum.Caption = MiscAutoFormat$(average.Maximums!(nCol%))
 
-' Show plot
-FormPLOTHISTO_PE.Graph1.DrawMode = 2
+' Annotation properties
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationTextSize = 90              ' define annotation text size
+FormPLOTHISTO_PE.Pesgo1.LabelFont = "Arial"                        ' define Font for annotations (and axes)
+FormPLOTHISTO_PE.Pesgo1.HideIntersectingText = PEHIT_NO_HIDING&    ' or PEHIT_HIDE&
+
+If HistogramOutputOption% = -1 Then msg$ = "First Approximation Atomic Fractions"
+If HistogramOutputOption% = -2 Then msg$ = "First Approximation Weight Fractions"
+If HistogramOutputOption% = -3 Then msg$ = "First Approximation Electron Fractions"
+If HistogramOutputOption% = 0 Then msg$ = "Calculated Intensities (K-ratios)"
+If HistogramOutputOption% = 1 Then msg$ = "Calculated Intensities (1st Approx. Atomic Fractions)"
+If HistogramOutputOption% = 2 Then msg$ = "Calculated Intensities (1st Approx. Weight Fractions)"
+If HistogramOutputOption% = 3 Then msg$ = "Calculated Intensities (1st Approx. Electron Fractions)"
+
+' Load calculation options as annotations
+FormPLOTHISTO_PE.Pesgo1.ShowAnnotations = True
+xannotation! = FormPLOTHISTO_PE.Pesgo1.ManualMaxX * 0.83
+yannotation! = FormPLOTHISTO_PE.Pesgo1.ManualMaxY * 0.98
+ydecrement! = (FormPLOTHISTO_PE.Pesgo1.ManualMaxY - FormPLOTHISTO_PE.Pesgo1.ManualMinY) / 25#
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = msg$
+
+' Corrections to First approximation
+If HistogramOutputOption% >= 0 Then
+If HistogramOutputOption% > 0 And FirstApproximationApplyAbsorption Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "First Approximations corrected for Absorption"
+End If
+If HistogramOutputOption% > 0 And FirstApproximationApplyFluorescence Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "First Approximations corrected for Fluorescence"
+End If
+If HistogramOutputOption% > 0 And FirstApproximationApplyAtomicNumber Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "First Approximations corrected for Atomic Number"
+End If
+
+' 0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = corstring$(CorrectionFlag%)
+
+' Output flags
+If BinaryOutputRangeMinAbs Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Minimum Absorption Correction=" & Str$(BinaryOutputRangeAbsMin!)
+End If
+If BinaryOutputRangeMinFlu Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Minimum Fluorescence Correction=" & Str$(BinaryOutputRangeFluMin!)
+End If
+If BinaryOutputRangeMinZed Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Minimum Atomic Number Correction=" & Str$(BinaryOutputRangeZedMin!)
+End If
+
+If BinaryOutputRangeMaxAbs Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Maximum Absorption Correction=" & Str$(BinaryOutputRangeAbsMax!)
+End If
+
+If BinaryOutputRangeMaxFlu Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Maximum Fluorescence Correction=" & Str$(BinaryOutputRangeFluMax!)
+End If
+
+If BinaryOutputRangeMaxZed Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Maximum Atomic Number Correction=" & Str$(BinaryOutputRangeZedMax!)
+End If
+
+' Zbar filters
+If BinaryOutputMinimumZbar Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Minimum Mass-Electron Zbar Difference" & Str$(BinaryOutputMinimumZbarDiff!) & "%"
+End If
+
+If BinaryOutputMaximumZbar Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Maximum Mass-Electron Zbar Difference" & Str$(BinaryOutputMaximumZbarDiff!) & "%"
+End If
+
+' Correction options
+If CorrectionFlag% = 0 Or (CorrectionFlag% >= 1 And CorrectionFlag% <= 4 And UsePenepmaKratiosFlag% = 1) Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = bscstring$(ibsc%)
+
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = mipstring$(imip%)
+
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = stpstring$(istp%)
+
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = bksstring$(ibks%)
+
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = absstring$(iabs%)
+
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = flustring$(iflu%)
+
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = macstring$(MACTypeFlag%)
+
+If EmpTypeFlag% = 1 Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Using Empirical MACs if available"
+End If
+
+' Note beta fluorescence
+If Not UseFluorescenceByBetaLinesFlag Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Fluorescence of/by beta lines not included"
+Else
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Fluorescence of/by beta lines included"
+End If
+
+If CorrectionFlag% >= 1 And CorrectionFlag% <= 4 Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = empstring$(EmpiricalAlphaFlag%)
+End If
+
+' Using fundamental parameters
+ElseIf CorrectionFlag% = 5 Then
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Using Fundamental Parameters"
+
+' Using Penepma derived k-ratios alpha factors
+Else
+    If Not UsePenepmaKratiosLimitFlag Then
+    acounter% = acounter% + 1
+    yannotation! = yannotation! - ydecrement!
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Using Penepma k-ratios if available..."
+    Else
+    acounter% = acounter% + 1
+    yannotation! = yannotation! - ydecrement!
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+    FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = "Using Penepma k-ratios if available...(" & Format$(PenepmaKratiosLimitValue!) & " % limit)"
+    End If
+End If
+End If
+
+FormPLOTHISTO_PE.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE    ' generate new plot
 
 Exit Sub
 
@@ -605,18 +582,94 @@ Exit Sub
 
 End Sub
 
-Sub CalcZAFPlotHistogramConcentration_PE(CalcZAFOutputCount As Long, KratioConc() As Single, KratioError() As Single)
+Sub CalcZAFPlotHistogramConcentration_PE(CalcZAFOutputCount As Long, KratioConc() As Single, KratioError() As Single, KratioLine() As Long)
 ' Calculate and plot the histogram as a concentration histogram (x axis = concentration and y axis = error)
 
 ierror = False
 On Error GoTo CalcZAFPlotHistogramConcentration_PEError
 
+Dim i As Integer, nCol As Integer
+
 If CalcZAFOutputCount& < 1 Then GoTo CalcZAFPlotHistogramConcentration_PENoData
 
+' General settings
+FormPlotHistoConc.Pesgo1.MainTitle = vbNullString
+FormPlotHistoConc.Pesgo1.SubTitle = vbNullString
+FormPlotHistoConc.Pesgo1.PrepareImages = True
+FormPlotHistoConc.Pesgo1.CacheBmp = True
+FormPlotHistoConc.Pesgo1.FixedFonts = True
+FormPlotHistoConc.Pesgo1.FontSize = PEFS_LARGE&
 
+' Plot Formatting
+FormPlotHistoConc.Pesgo1.DataShadows = PEDS_NONE&
+FormPlotHistoConc.Pesgo1.LineShadows = False
+FormPlotHistoConc.Pesgo1.PointGradientStyle = PEPGS_NONE&
 
+FormPlotHistoConc.Pesgo1.AntiAliasGraphics = True
+FormPlotHistoConc.Pesgo1.AntiAliasText = True
 
+FormPlotHistoConc.Pesgo1.DpiX = 450
+FormPlotHistoConc.Pesgo1.DpiY = 450
 
+FormPlotHistoConc.Pesgo1.RenderEngine = PERE_GDIPLUS&
+
+' Enable zoom
+FormPlotHistoConc.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&
+FormPlotHistoConc.Pesgo1.ZoomStyle = PEZS_RO2_NOT&
+
+' Scrolling options (when zoomed)
+FormPlotHistoConc.Pesgo1.ScrollingHorzZoom = True
+FormPlotHistoConc.Pesgo1.ScrollingVertZoom = True
+FormPlotHistoConc.Pesgo1.MouseDraggingX = True
+FormPlotHistoConc.Pesgo1.MouseDraggingY = True
+FormPlotHistoConc.Pesgo1.ZoomWindow = True
+
+FormPlotHistoConc.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
+FormPlotHistoConc.Pesgo1.AxisBorderType = PEABT_THIN_LINE&
+
+FormPlotHistoConc.Pesgo1.AxisNumericFormatX = PEANF_EXP_NOTATION&
+FormPlotHistoConc.Pesgo1.AxisNumericFormatY = PEANF_EXP_NOTATION&
+
+' Missing data points
+FormPlotHistoConc.Pesgo1.NullDataValueX = 0
+FormPlotHistoConc.Pesgo1.NullDataValueY = 0
+
+FormPlotHistoConc.Pesgo1.PlottingMethod = SGPM_POINT&                ' controls point or point plus line, etc
+FormPlotHistoConc.Pesgo1.PointSize = PEPS_LARGE&
+FormPlotHistoConc.Pesgo1.MinimumPointSize = PEMPS_MEDIUM_LARGE&      ' helps readability if sizing
+
+' Determine column to load from histogram form
+If FormPLOTHISTO_PE.OptionColumnNumber(0).Value Then
+nCol% = 1
+Else
+nCol% = 2
+End If
+
+' Define #subset and #points
+FormPlotHistoConc.Pesgo1.Subsets = 1
+FormPlotHistoConc.Pesgo1.points = CalcZAFOutputCount&
+
+' Load y axis data
+For i% = 1 To CalcZAFOutputCount&
+FormPlotHistoConc.Pesgo1.ydata(0, i% - 1) = KratioError!(nCol%, i%)
+FormPlotHistoConc.Pesgo1.xdata(0, i% - 1) = KratioConc!(nCol%, i%)
+Next i%
+
+' For data point labels
+If FormPLOTHISTO_PE.CheckLabels.Value = vbChecked Then
+FormPlotHistoConc.Pesgo1.AllowDataLabels = PEADL_DATAPOINTLABELS&
+FormPlotHistoConc.Pesgo1.GraphDataLabels = True
+For i% = 1 To CalcZAFOutputCount&
+FormPlotHistoConc.Pesgo1.DataPointLabels(0, i% - 1) = Format$(KratioLine&(nCol%, i%))
+Next i%
+Else
+FormPlotHistoConc.Pesgo1.GraphDataLabels = False
+End If
+
+' Load axis labels and title
+FormPlotHistoConc.Pesgo1.XAxisLabel = "Concentration (Wt. %)"
+FormPlotHistoConc.Pesgo1.YAxisLabel = "Relative Error"
+FormPlotHistoConc.Pesgo1.MainTitle = ImportDataFile2$
 
 FormPlotHistoConc.Show vbModal
 
