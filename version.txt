@@ -2,10 +2,16 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/09/16	Fix minor display bugs (Cathey and von der Handt). Bump version just in case.
+v. 11.3.2	
+
+02/08/16	Fix MCA PHA bug with Cameca instruments (from code re-write for Ben Buse). (Chouinard)
+v. 11.3.1
+
 02/07/16	All graphs now converted to Pro Essentials graphics!!!   
 v. 11.3.0
 
-02/06/16	Convert CalcZAF plot alphas dialog.  Removed digitized pouints when starting new sample in Digitize Image (von der Handt)
+02/06/16	Convert CalcZAF plot alphas dialog.  Removed digitized points when starting new sample in Digitize Image (von der Handt)
 v. 11.2.9
 		Convert Evaluate to new graphics.
 
