@@ -9,6 +9,12 @@ Sub Penepma08GraphLoad_PE(Index As Integer, UseGridLines As Boolean, UseLogScale
 ierror = False
 On Error GoTo Penepma08GraphLoad_PEError
 
+' Init graph properties
+Call MiscPlotInit(FormPENEPMA08_PE.Pesgo1, True)
+If ierror Then Exit Sub
+
+FormPENEPMA08_PE.Pesgo1.FontSize = PEFS_SMALL&
+
 ' With or w/o log scale
 If UseLogScale Then
 FormPENEPMA08_PE.Pesgo1.YAxisScaleControl = PEAC_LOG&
@@ -22,7 +28,7 @@ FormPENEPMA08_PE.Pesgo1.GridLineControl = PEGLC_BOTH&       ' x and y grid
 FormPENEPMA08_PE.Pesgo1.GridBands = True                    ' adds colour banding on background
 Else
 FormPENEPMA08_PE.Pesgo1.GridLineControl = PEGLC_NONE&
-FormPENEPMA08_PE.Pesgo1.GridBands = False                   ' removes colour banding on background
+FormPENEPMA08_PE.Pesgo1.GridBands = False                   ' removes color banding on background
 End If
 
 ' Axis Titles
@@ -31,26 +37,8 @@ If Index% = 1 Then FormPENEPMA08_PE.Pesgo1.YAxisLabel = "Photon Intensity"
 If Index% = 2 Then FormPENEPMA08_PE.Pesgo1.YAxisLabel = "Electron Intensity"
 FormPENEPMA08_PE.Pesgo1.XAxisLabel = "Energy eV"
 
-' Format X and Y axis location etc. if needed
 FormPENEPMA08_PE.Pesgo1.AxisNumberSpacing = 5#
-FormPENEPMA08_PE.Pesgo1.ImageAdjustTop = 100                ' for appearance
-FormPENEPMA08_PE.Pesgo1.ImageAdjustLeft = 100
-FormPENEPMA08_PE.Pesgo1.ImageAdjustRight = 100
-
 FormPENEPMA08_PE.Pesgo1.PlottingMethod = SGPM_BAR&
-'FormPENEPMA08_PE.Pesgo1.AxisNumericFormatY = PEANF_EXP_NOTATION_3X&
-FormPENEPMA08_PE.Pesgo1.AxisNumericFormatY = PEANF_EXP_NOTATION&
-
-FormPENEPMA08_PE.Pesgo1.SubTitle = vbNullString
-FormPENEPMA08_PE.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
-FormPENEPMA08_PE.Pesgo1.AxisBorderType = PEABT_THIN_LINE&
-
-FormPENEPMA08_PE.Pesgo1.DpiX = 450
-FormPENEPMA08_PE.Pesgo1.DpiY = 450
-
-FormPENEPMA08_PE.Pesgo1.RenderEngine = PERE_GDIPLUS&
-
-FormPENEPMA08_PE.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE&
 
 Exit Sub
 

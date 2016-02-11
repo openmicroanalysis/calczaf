@@ -198,24 +198,12 @@ Dim average As TypeAverage
 If CalcZAFOutputCount& < 1 Then GoTo CalcZAFPlotHistogram_PENoData
 If HistogramNumberofBuckets% = 0 Then GoTo CalcZAFPlotHistogram_PENoBuckets
 
-FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(-1) = 0               ' empty annotation array
-FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(-1) = 0
-
-' Init graph
-FormPLOTHISTO_PE.Pesgo1.xdata(0, 0) = 0                    ' for empty subset
-FormPLOTHISTO_PE.Pesgo1.ydata(0, 0) = 0
-
-FormPLOTHISTO_PE.Pesgo1.RenderEngine = PERE_GDIPLUS&
-FormPLOTHISTO_PE.Pesgo1.AntiAliasText = True
-FormPLOTHISTO_PE.Pesgo1.DataShadows = PEDS_NONE&           ' no data shadows
+' Init the graph
+Call MiscPlotInit(FormPLOTHISTO_PE.Pesgo1, True)
+If ierror Then Exit Sub
 
 FormPLOTHISTO_PE.Pesgo1.ShowTickMarkY = PESTM_TICKS_HIDE&
 FormPLOTHISTO_PE.Pesgo1.ShowTickMarkX = PESTM_TICKS_OUTSIDE&
-
-' Title Properties
-FormPLOTHISTO_PE.Pesgo1.MainTitle = vbNullString
-FormPLOTHISTO_PE.Pesgo1.SubTitle = vbNullString
-FormPLOTHISTO_PE.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
 FormPLOTHISTO_PE.Pesgo1.ImageAdjustRight = -80                     ' axis formatting
 
 ' Plot type
@@ -592,43 +580,9 @@ Dim i As Integer, nCol As Integer
 
 If CalcZAFOutputCount& < 1 Then GoTo CalcZAFPlotHistogramConcentration_PENoData
 
-' General settings
-FormPlotHistoConc.Pesgo1.MainTitle = vbNullString
-FormPlotHistoConc.Pesgo1.SubTitle = vbNullString
-FormPlotHistoConc.Pesgo1.PrepareImages = True
-FormPlotHistoConc.Pesgo1.CacheBmp = True
-FormPlotHistoConc.Pesgo1.FixedFonts = True
-FormPlotHistoConc.Pesgo1.FontSize = PEFS_LARGE&
-
-' Plot Formatting
-FormPlotHistoConc.Pesgo1.DataShadows = PEDS_NONE&
-FormPlotHistoConc.Pesgo1.LineShadows = False
-FormPlotHistoConc.Pesgo1.PointGradientStyle = PEPGS_NONE&
-
-FormPlotHistoConc.Pesgo1.AntiAliasGraphics = True
-FormPlotHistoConc.Pesgo1.AntiAliasText = True
-
-FormPlotHistoConc.Pesgo1.DpiX = 450
-FormPlotHistoConc.Pesgo1.DpiY = 450
-
-FormPlotHistoConc.Pesgo1.RenderEngine = PERE_GDIPLUS&
-
-' Enable zoom
-FormPlotHistoConc.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&
-FormPlotHistoConc.Pesgo1.ZoomStyle = PEZS_RO2_NOT&
-
-' Scrolling options (when zoomed)
-FormPlotHistoConc.Pesgo1.ScrollingHorzZoom = True
-FormPlotHistoConc.Pesgo1.ScrollingVertZoom = True
-FormPlotHistoConc.Pesgo1.MouseDraggingX = True
-FormPlotHistoConc.Pesgo1.MouseDraggingY = True
-FormPlotHistoConc.Pesgo1.ZoomWindow = True
-
-FormPlotHistoConc.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
-FormPlotHistoConc.Pesgo1.AxisBorderType = PEABT_THIN_LINE&
-
-FormPlotHistoConc.Pesgo1.AxisNumericFormatX = PEANF_EXP_NOTATION&
-FormPlotHistoConc.Pesgo1.AxisNumericFormatY = PEANF_EXP_NOTATION&
+' Init the graph
+Call MiscPlotInit(FormPlotHistoConc.Pesgo1, True)
+If ierror Then Exit Sub
 
 ' Missing data points
 FormPlotHistoConc.Pesgo1.NullDataValueX = 0

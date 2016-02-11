@@ -1877,7 +1877,7 @@ If Not DebugMode Then On Error Resume Next
 Dim fX As Double, fY As Double      ' last mouse position
 
 ' Get mouse position in data units
-Call ZoomTrack(Int(1), x!, Y!, fX#, fY#, FormPENEPMA08_PE.Pesgo1)
+Call MiscPlotTrack(Int(1), x!, Y!, fX#, fY#, FormPENEPMA08_PE.Pesgo1)
 If ierror Then Exit Sub
    
 ' Format graph mouse position

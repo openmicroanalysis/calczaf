@@ -109,49 +109,13 @@ Dim astring As String
 Dim npts As Integer, nsets As Integer
 Dim xdata() As Single, ydata() As Single, acoeff() As Single, stddev As Single
 
-FormPlotAlpha_PE.Pesgo1.GraphAnnotationX(-1) = 0              ' empty annotation array
-FormPlotAlpha_PE.Pesgo1.GraphAnnotationY(-1) = 0
+' Init the graph
+Call MiscPlotInit(FormPlotAlpha_PE.Pesgo1, True)
+If ierror Then Exit Sub
 
 ' Get the selected binary
 If FormPlotAlpha_PE.ComboPlotAlpha.ListIndex < 0 Then Exit Sub
 If FormPlotAlpha_PE.ComboPlotAlpha.ListCount < 1 Then Exit Sub
-
-' General settings
-FormPlotAlpha_PE.Pesgo1.SubTitle = vbNullString
-FormPlotAlpha_PE.Pesgo1.PrepareImages = True
-FormPlotAlpha_PE.Pesgo1.CacheBmp = True
-FormPlotAlpha_PE.Pesgo1.FixedFonts = True
-FormPlotAlpha_PE.Pesgo1.FontSize = PEFS_LARGE&
-
-' Plot Formatting
-FormPlotAlpha_PE.Pesgo1.DataShadows = PEDS_NONE&
-FormPlotAlpha_PE.Pesgo1.LineShadows = False
-FormPlotAlpha_PE.Pesgo1.PointGradientStyle = PEPGS_NONE&
-
-FormPlotAlpha_PE.Pesgo1.AntiAliasGraphics = True
-FormPlotAlpha_PE.Pesgo1.AntiAliasText = True
-
-FormPlotAlpha_PE.Pesgo1.DpiX = 450
-FormPlotAlpha_PE.Pesgo1.DpiY = 450
-
-FormPlotAlpha_PE.Pesgo1.RenderEngine = PERE_GDIPLUS&
-
-' Enable zoom
-FormPlotAlpha_PE.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&
-FormPlotAlpha_PE.Pesgo1.ZoomStyle = PEZS_RO2_NOT&
-
-' Scrolling options (when zoomed)
-FormPlotAlpha_PE.Pesgo1.ScrollingHorzZoom = True
-FormPlotAlpha_PE.Pesgo1.ScrollingVertZoom = True
-FormPlotAlpha_PE.Pesgo1.MouseDraggingX = True
-FormPlotAlpha_PE.Pesgo1.MouseDraggingY = True
-FormPlotAlpha_PE.Pesgo1.ZoomWindow = True
-
-FormPlotAlpha_PE.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
-FormPlotAlpha_PE.Pesgo1.AxisBorderType = PEABT_THIN_LINE&
-
-FormPlotAlpha_PE.Pesgo1.AxisNumericFormatX = PEANF_EXP_NOTATION&
-FormPlotAlpha_PE.Pesgo1.AxisNumericFormatY = PEANF_EXP_NOTATION&
 
 ' Missing data points
 FormPlotAlpha_PE.Pesgo1.NullDataValueX = 0

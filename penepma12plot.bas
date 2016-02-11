@@ -147,13 +147,9 @@ On Error GoTo Penepma12PlotLoad_PEError
 
 Dim astring As String, bstring As String
 
-' Clear graph -  this plots blank graph with simple axes!
-FormPENEPMA12.Pesgo1.Subsets = 1
-FormPENEPMA12.Pesgo1.Points = 1
-FormPENEPMA12.Pesgo1.xdata(0, 0) = 0                            ' for empty subset
-FormPENEPMA12.Pesgo1.ydata(0, 0) = 0
-FormPENEPMA12.Pesgo1.ShowAnnotations = False
-FormPENEPMA12.Pesgo1.MainTitle = VbSpace                        ' blank chart title
+' Init graph properties
+Call MiscPlotInit(FormPENEPMA12.Pesgo1, True)
+If ierror Then Exit Sub
 
 FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_MINMAX&        ' manually control y axis - this requires resetting to 'NONE" in the PlotKRatio code
 FormPENEPMA12.Pesgo1.ManualMinY = 0
@@ -167,42 +163,6 @@ FormPENEPMA12.Pesgo1.XAxisLabel = "Distance um"
 
 FormPENEPMA12.Pesgo1.ImageAdjustRight = 100                     ' axis formatting
 FormPENEPMA12.Pesgo1.YAxisOnRight = True
-
-' General settings
-FormPENEPMA12.Pesgo1.PrepareImages = True
-FormPENEPMA12.Pesgo1.CacheBmp = True
-FormPENEPMA12.Pesgo1.FixedFonts = True
-FormPENEPMA12.Pesgo1.FontSize = PEFS_LARGE&
-
-' Plot Formatting
-FormPENEPMA12.Pesgo1.DataShadows = PEDS_NONE&
-FormPENEPMA12.Pesgo1.LineShadows = False
-FormPENEPMA12.Pesgo1.PointGradientStyle = PEPGS_NONE&
-
-FormPENEPMA12.Pesgo1.AntiAliasGraphics = True
-FormPENEPMA12.Pesgo1.AntiAliasText = True
-
-FormPENEPMA12.Pesgo1.DpiX = 450
-FormPENEPMA12.Pesgo1.DpiY = 450
-
-FormPENEPMA12.Pesgo1.RenderEngine = PERE_GDIPLUS&
-
-' Enable zoom
-FormPENEPMA12.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&
-FormPENEPMA12.Pesgo1.ZoomStyle = PEZS_RO2_NOT&
-
-' Scrolling options (when zoomed)
-FormPENEPMA12.Pesgo1.ScrollingHorzZoom = True
-FormPENEPMA12.Pesgo1.ScrollingVertZoom = True
-FormPENEPMA12.Pesgo1.MouseDraggingX = True
-FormPENEPMA12.Pesgo1.MouseDraggingY = True
-FormPENEPMA12.Pesgo1.ZoomWindow = True
-
-' Titles
-FormPENEPMA12.Pesgo1.SubTitle = vbNullString
-FormPENEPMA12.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
-FormPENEPMA12.Pesgo1.AxisBorderType = PEABT_THIN_LINE&
-FormPENEPMA12.Refresh
 
 Exit Sub
 

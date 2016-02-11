@@ -72,12 +72,6 @@ symin# = NATURALE# ^ symin#
 symax# = NATURALE# ^ symax#
 End If
 
-' Clip to data extents
-If sxmin# < xmin# Then sxmin# = xmin#
-If sxmax# > xmax# Then sxmax# = xmax#
-If symin# < ymin# Then symin# = ymin#
-If symax# > ymax# Then symax# = ymax#
-
 If Not firstpointdone Then
 Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, True, Int(255), Int(128), Int(0), Int(0))     ' brown
 If ierror Then Exit Sub

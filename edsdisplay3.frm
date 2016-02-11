@@ -333,7 +333,7 @@ Dim astring As String
 Dim fX As Double, fY As Double      ' last mouse position
 
 ' Get mouse position in data units
-Call ZoomTrack(Int(1), X!, Y!, fX#, fY#, FormEDSDISPLAY3.Pesgo1)
+Call MiscPlotTrack(Int(1), X!, Y!, fX#, fY#, FormEDSDISPLAY3.Pesgo1)
 If ierror Then Exit Sub
    
 ' Format graph mouse position

@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/10/16	Fix combined sample bug for combined conditions. (B. Wade)
+
+		Improve plot graphics.
+
 02/09/16	Fix minor display bugs (Cathey and von der Handt). Bump version just in case.
 v. 11.3.2	
 

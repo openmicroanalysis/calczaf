@@ -1764,6 +1764,16 @@ Call InitFilesMove2("DEMO3_Cameca.ACQ", tProgramPath$, ApplicationCommonAppData$
 
 ' See special treatment in InitFilesMove2 (until all apps support new JEOL/Cameca drivers)
 Call InitFilesMove2("Xline.dll", tProgramPath$, ApplicationCommonAppData$)
+
+' Warn user about moving EIKS files
+If InterfaceType% = 2 And JeolEOSInterfaceType& = 3 Then
+msg$ = "JEOL EIKS files must be moved from the old Probe for EPMA application folder (usually C:\Probe Software\Probe for EPMA), to the new Probe for EPMA application folder (usually C:\Program Files (x86)\Probe Software\probe for EPMA) manually." & vbCrLf & vbCrLf
+msg$ = msg$ & "This warning will only be given once!" & vbCrLf & vbCrLf
+msg$ = msg$ & "Please contact Probe Software technical support if you need assistance."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitFilesMove"
+ierror = True
+End If
+
 End If
 End If
 

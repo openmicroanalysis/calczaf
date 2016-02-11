@@ -49,7 +49,7 @@ End If
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))             ' red
 
-tForm.Pesgo1.Points = sample(1).EDSSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.points = sample(1).EDSSpectraNumberofChannels%(datarow%)
 
 ' Load y axis data subset 0 - eds data
 For i% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)
@@ -136,15 +136,9 @@ Sub EDSInitDisplay_PE(tForm As Form, tCaption As String)
 ierror = False
 On Error GoTo EDSInitDisplay_PEError
 
-' Init graph properies
-tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.Points = 1
-tForm.Pesgo1.xdata(0, 0) = 0                    ' for empty subset
-tForm.Pesgo1.ydata(0, 0) = 0
-
-tForm.Pesgo1.RenderEngine = PERE_GDIPLUS&
-tForm.Pesgo1.AntiAliasText = True
-tForm.Pesgo1.DataShadows = PEDS_NONE&           ' no data shadows
+' Init graph properties
+Call MiscPlotInit(tForm.Pesgo1, True)
+If ierror Then Exit Sub
 
 ' Plot type
 tForm.Pesgo1.PlottingMethod = SGPM_BAR&         ' bargraph subset
@@ -160,10 +154,9 @@ tForm.Pesgo1.LabelFont = "Arial"                        ' define Font for annota
 tForm.Pesgo1.HideIntersectingText = PEHIT_NO_HIDING&    ' or PEHIT_HIDE&
 
 ' Title Properties
-tForm.Pesgo1.MainTitle = vbNullString
-tForm.Pesgo1.SubTitle = vbNullString
-tForm.Pesgo1.ImageAdjustTop = 50                ' space above title formatting
-tForm.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
+tForm.Pesgo1.ImageAdjustTop = 50                ' add space above title formatting
+
+tForm.Pesgo1.AnnotationsInFront = True          ' for KLM markers
 
 tForm.Pesgo1.XAxisLabel = "keV"
 If EDSIntensityOption% = 0 Then
@@ -171,17 +164,6 @@ tForm.Pesgo1.YAxisLabel = "Intensity"           ' y axis label
 Else
 tForm.Pesgo1.YAxisLabel = "Intensity (cps)"     ' y axis label
 End If
-
-' Enable zoom
-tForm.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&
-tForm.Pesgo1.ZoomStyle = PEZS_RO2_NOT&
-
-' Allow scroll after zoom
-tForm.Pesgo1.ScrollingHorzZoom = True
-tForm.Pesgo1.ScrollingVertZoom = True
-tForm.Pesgo1.MouseDraggingX = True
-tForm.Pesgo1.MouseDraggingY = True
-tForm.Pesgo1.ZoomWindow = True
 
 tForm.TextStartkeV.Text = Format$(0)
 tForm.TextStopkeV.Text = Format$(20)

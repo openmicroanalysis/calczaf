@@ -110,14 +110,14 @@ If tmpsample(1).DisableQuantFlag%(i%) = 0 Then
 If sample(1).LastElm% + 1 > MAXCHAN% Then GoTo AnalyzeCombineSamplesTooManyAnalyzedElements
 sample(1).LastElm% = sample(1).LastElm% + 1
 
-' Add conditions to array (the whole point being different voltages!!!)
-sample(1).TakeoffArray!(sample(1).LastElm%) = tmpsample(1).takeoff! ' special
-sample(1).KilovoltsArray!(sample(1).LastElm%) = tmpsample(1).kilovolts! ' special
-sample(1).BeamCurrentArray!(sample(1).LastElm%) = tmpsample(1).beamcurrent! ' special
-sample(1).BeamSizeArray!(sample(1).LastElm%) = tmpsample(1).beamsize! ' special
+' Add conditions to array (the whole point being different voltages and/or currents!!!)
+sample(1).TakeoffArray!(sample(1).LastElm%) = tmpsample(1).TakeoffArray!(i%)
+sample(1).KilovoltsArray!(sample(1).LastElm%) = tmpsample(1).KilovoltsArray!(i%)
+sample(1).BeamCurrentArray!(sample(1).LastElm%) = tmpsample(1).BeamCurrentArray!(i%)
+sample(1).BeamSizeArray!(sample(1).LastElm%) = tmpsample(1).BeamSizeArray!(i%)
 
-sample(1).ColumnConditionMethodArray%(sample(1).LastElm%) = tmpsample(1).ColumnConditionMethod% ' special
-sample(1).ColumnConditionStringArray$(sample(1).LastElm%) = tmpsample(1).ColumnConditionString$ ' special
+sample(1).ColumnConditionMethodArray%(sample(1).LastElm%) = tmpsample(1).ColumnConditionMethodArray%(i%)
+sample(1).ColumnConditionStringArray$(sample(1).LastElm%) = tmpsample(1).ColumnConditionStringArray$(i%)
 
 ' Now add in normal element parameters
 sample(1).Elsyms$(sample(1).LastElm%) = tmpsample(1).Elsyms$(i%)
@@ -230,10 +230,10 @@ sample(1).AbBeamCountsArray!(j%, sample(1).LastElm%) = tmpsample(1).AbBeamCounts
 sample(1).OnBeamCountsArray2!(j%, sample(1).LastElm%) = tmpsample(1).OnBeamCounts2!(j%)
 sample(1).AbBeamCountsArray2!(j%, sample(1).LastElm%) = tmpsample(1).AbBeamCounts2!(j%)
 Else
-sample(1).OnBeamCountsArray!(j%, sample(1).LastElm%) = tmpsample(1).OnBeamCountsArray!(j%, sample(1).LastElm%)
-sample(1).AbBeamCountsArray!(j%, sample(1).LastElm%) = tmpsample(1).AbBeamCountsArray!(j%, sample(1).LastElm%)
-sample(1).OnBeamCountsArray2!(j%, sample(1).LastElm%) = tmpsample(1).OnBeamCountsArray2!(j%, sample(1).LastElm%)
-sample(1).AbBeamCountsArray2!(j%, sample(1).LastElm%) = tmpsample(1).AbBeamCountsArray2!(j%, sample(1).LastElm%)
+sample(1).OnBeamCountsArray!(j%, sample(1).LastElm%) = tmpsample(1).OnBeamCountsArray!(j%, i%)
+sample(1).AbBeamCountsArray!(j%, sample(1).LastElm%) = tmpsample(1).AbBeamCountsArray!(j%, i%)
+sample(1).OnBeamCountsArray2!(j%, sample(1).LastElm%) = tmpsample(1).OnBeamCountsArray2!(j%, i%)
+sample(1).AbBeamCountsArray2!(j%, sample(1).LastElm%) = tmpsample(1).AbBeamCountsArray2!(j%, i%)
 End If
 Next j%
 

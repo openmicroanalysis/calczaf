@@ -40,7 +40,7 @@ Dim temp1 As Single, temp2 As Single
 ' Define #subset and #points
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(255))                      ' blue
-tForm.Pesgo1.Points = sample(1).CLSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.points = sample(1).CLSpectraNumberofChannels%(datarow%)
 
 ' Display options for Y axis label
 If CLIntensityOption% = 0 Then
@@ -153,24 +153,16 @@ On Error GoTo CLInitDisplay_PEError
 Dim astring As String
 
 ' Init graph properties
-tForm.Pesgo1.Subsets = 1
-tForm.Pesgo1.Points = 1
-tForm.Pesgo1.xdata(0, 0) = 0                    ' for empty subset
-tForm.Pesgo1.ydata(0, 0) = 0
-
-tForm.Pesgo1.RenderEngine = PERE_GDIPLUS&
-tForm.Pesgo1.AntiAliasText = True
-tForm.Pesgo1.DataShadows = PEDS_NONE&           ' no data shadows
+Call MiscPlotInit(tForm.Pesgo1, True)
+If ierror Then Exit Sub
 
 ' Plot type
 tForm.Pesgo1.PlottingMethod = SGPM_BAR&         ' bargraph subset
 tForm.Pesgo1.AdjoinBars = True                  ' bar always full width of bin
 
 ' Title Properties
-tForm.Pesgo1.MainTitle = vbNullString
-tForm.Pesgo1.SubTitle = vbNullString
-tForm.Pesgo1.ImageAdjustTop = 50                ' space above title formatting
-tForm.Pesgo1.BorderTypes = PETAB_SINGLE_LINE&
+tForm.Pesgo1.ImageAdjustTop = 50                ' add space above title formatting
+tForm.Pesgo1.ImageAdjustLeft = 100              ' axis formatting - create a little space on far left
 
 tForm.Pesgo1.XAxisLabel = InterfaceStringCLUnitsX$(CLSpectraInterfaceTypeStored%)
 If CLIntensityOption% = 0 Then
@@ -180,19 +172,6 @@ tForm.Pesgo1.YAxisLabel = "Intensity (cps)"
 ElseIf CLIntensityOption% = 2 Then
 tForm.Pesgo1.YAxisLabel = "Net Intensity (cps)"
 End If
-
-tForm.Pesgo1.ImageAdjustLeft = 100              ' axis formatting - create a little space on far left
-
-' Enable zoom
-tForm.Pesgo1.AllowZooming = PEAZ_HORZANDVERT&
-tForm.Pesgo1.ZoomStyle = PEZS_RO2_NOT&
-
-' Allow scroll after zoom
-tForm.Pesgo1.ScrollingHorzZoom = True
-tForm.Pesgo1.ScrollingVertZoom = True
-tForm.Pesgo1.MouseDraggingX = True
-tForm.Pesgo1.MouseDraggingY = True
-tForm.Pesgo1.ZoomWindow = True
 
 Exit Sub
 

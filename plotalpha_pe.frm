@@ -365,7 +365,7 @@ End Sub
 
 Private Sub CommandPrint_Click()
 If Not DebugMode Then On Error Resume Next
-Call ZoomPrintGraph_PE(FormPlotAlpha_PE.Pesgo1)
+Call MiscPlotPrintGraph_PE(FormPlotAlpha_PE.Pesgo1)
 If ierror Then Exit Sub
 End Sub
 
@@ -413,7 +413,7 @@ If Not DebugMode Then On Error Resume Next
 Dim fX As Double, fY As Double      ' last mouse position
 
 ' Get mouse position in data units
-Call ZoomTrack(Int(1), X!, Y!, fX#, fY#, FormPlotAlpha_PE.Pesgo1)
+Call MiscPlotTrack(Int(1), X!, Y!, fX#, fY#, FormPlotAlpha_PE.Pesgo1)
 If ierror Then Exit Sub
    
 ' Format graph mouse position
