@@ -61,13 +61,12 @@ Dim hstep As Single
 Dim smin As Single, smax As Single
 
 ' Calculate bucket width
-hstep! = (hmax! - hmin!) / nbin%
+hstep! = (hmax! - hmin!) / (nbin% - 1)
 
 For i% = 1 To nCol%
+
 For k% = 1 To nbin%
 xdata(i%, k%) = hmin! + hstep! * (k% - 1) + hstep! / 2#     ' calculate buckets centered on intervals
-'xdata(i%, k%) = hmin! + hstep! * (k% - 1)
-ydata(i%, k%) = 0#
 Next k%
 
 ' Calculate bucket number and increment bucket
@@ -80,9 +79,10 @@ m% = nbin%
 
 Else
 For k% = 1 To nbin%
-smin! = hmin! + hstep! * (k% - 1)
-smax! = smin! + hstep!
-If rarray!(i%, n&) >= smin! And rarray!(i%, n&) < smax! Then m% = k%
+If rarray!(i%, n&) >= (xdata!(i%, k%) - hstep! / 2#) And rarray!(i%, n&) <= (xdata!(i%, k%) + hstep! / 2#) Then
+m% = k%
+Exit For
+End If
 Next k%
 End If
 
@@ -190,6 +190,7 @@ On Error GoTo CalcZAFPlotHistogram_PEError
 
 Dim i As Integer, nCol As Integer, acounter As Integer
 Dim xannotation As Single, yannotation As Single, ydecrement As Single
+Dim ymin As Double, ymax As Double
 
 Dim xdata() As Single, ydata() As Single
 
@@ -202,22 +203,25 @@ If HistogramNumberofBuckets% = 0 Then GoTo CalcZAFPlotHistogram_PENoBuckets
 Call MiscPlotInit(FormPLOTHISTO_PE.Pesgo1, True)
 If ierror Then Exit Sub
 
+FormPLOTHISTO_PE.Pesgo1.ShowAnnotations = True
+FormPLOTHISTO_PE.Pesgo1.AnnotationsInFront = True
+
 FormPLOTHISTO_PE.Pesgo1.ShowTickMarkY = PESTM_TICKS_HIDE&
 FormPLOTHISTO_PE.Pesgo1.ShowTickMarkX = PESTM_TICKS_OUTSIDE&
-FormPLOTHISTO_PE.Pesgo1.ImageAdjustRight = -80                     ' axis formatting
+FormPLOTHISTO_PE.Pesgo1.ImageAdjustRight = -80                      ' axis formatting
 
 ' Plot type
-FormPLOTHISTO_PE.Pesgo1.PlottingMethod = SGPM_BAR&         ' bargraph subset
+FormPLOTHISTO_PE.Pesgo1.PlottingMethod = SGPM_BAR&                  ' bargraph subset (see below for setting bar width)
 
-FormPLOTHISTO_PE.Pesgo1.ManualScaleControlX = PEMSC_MINMAX                                 ' manually Control X Axis
+FormPLOTHISTO_PE.Pesgo1.ManualScaleControlX = PEMSC_MINMAX          ' manually Control X Axis
 FormPLOTHISTO_PE.Pesgo1.ManualMinX = HistogramMinimum!
 FormPLOTHISTO_PE.Pesgo1.ManualMaxX = HistogramMaximum!
 
-FormPLOTHISTO_PE.Pesgo1.ManualScaleControlY = PEMSC_MIN                                    ' autoscale Control Y Axis max, Manual Control min
+FormPLOTHISTO_PE.Pesgo1.ManualScaleControlY = PEMSC_MIN             ' autoscale Control Y Axis max, Manual Control min
 FormPLOTHISTO_PE.Pesgo1.ManualMinY = 0
 
 FormPLOTHISTO_PE.Pesgo1.GridLineControl = PEGLC_NONE&
-FormPLOTHISTO_PE.Pesgo1.GridBands = False                      ' removes colour banding on background
+FormPLOTHISTO_PE.Pesgo1.GridBands = False                           ' removes color banding on background
 
 ' Define #subset and #points
 FormPLOTHISTO_PE.Pesgo1.Subsets = 1
@@ -245,7 +249,8 @@ nCol% = 2
 End If
 
 ' Set bar width
-FormPLOTHISTO_PE.Pesgo1.BarWidth = xdata!(nCol%, 2) - xdata!(nCol%, 1)                       ' 0 for auto width
+FormPLOTHISTO_PE.Pesgo1.BarWidth = (HistogramMaximum! - HistogramMinimum!) / HistogramNumberofBuckets%
+
 'FormPLOTHISTO_PE.Pesgo1.BarWidth = 0                                                         ' 0 for auto width
 FormPLOTHISTO_PE.Pesgo1.AdjoinBars = True
 FormPLOTHISTO_PE.Pesgo1.SubsetColors(0) = FormPLOTHISTO_PE.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))             ' red bars
@@ -274,7 +279,7 @@ FormPLOTHISTO_PE.LabelMinimum.Caption = MiscAutoFormat$(average.Minimums!(nCol%)
 FormPLOTHISTO_PE.LabelMaximum.Caption = MiscAutoFormat$(average.Maximums!(nCol%))
 
 ' Annotation properties
-FormPLOTHISTO_PE.Pesgo1.GraphAnnotationTextSize = 90              ' define annotation text size
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationTextSize = 60               ' define annotation text size
 FormPLOTHISTO_PE.Pesgo1.LabelFont = "Arial"                        ' define Font for annotations (and axes)
 FormPLOTHISTO_PE.Pesgo1.HideIntersectingText = PEHIT_NO_HIDING&    ' or PEHIT_HIDE&
 
@@ -287,8 +292,7 @@ If HistogramOutputOption% = 2 Then msg$ = "Calculated Intensities (1st Approx. W
 If HistogramOutputOption% = 3 Then msg$ = "Calculated Intensities (1st Approx. Electron Fractions)"
 
 ' Load calculation options as annotations
-FormPLOTHISTO_PE.Pesgo1.ShowAnnotations = True
-xannotation! = FormPLOTHISTO_PE.Pesgo1.ManualMaxX * 0.83
+xannotation! = FormPLOTHISTO_PE.Pesgo1.ManualMinX + (FormPLOTHISTO_PE.Pesgo1.ManualMaxX - FormPLOTHISTO_PE.Pesgo1.ManualMinX) * 0.8
 yannotation! = FormPLOTHISTO_PE.Pesgo1.ManualMaxY * 0.98
 ydecrement! = (FormPLOTHISTO_PE.Pesgo1.ManualMaxY - FormPLOTHISTO_PE.Pesgo1.ManualMinY) / 25#
 FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
@@ -544,6 +548,12 @@ Else
     End If
 End If
 End If
+
+' Draw line at 1.0
+ymin# = FormPLOTHISTO_PE.Pesgo1.ManualMinY
+ymax# = FormPLOTHISTO_PE.Pesgo1.ManualMaxY
+Call ScanDataPlotLine(FormPLOTHISTO_PE.Pesgo1, CLng(acounter%), CDbl(1#), ymin#, CDbl(1#), ymax#, False, True, Int(255), Int(0), Int(0), Int(0))       ' black
+If ierror Then Exit Sub
 
 FormPLOTHISTO_PE.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE    ' generate new plot
 

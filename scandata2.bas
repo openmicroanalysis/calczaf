@@ -73,11 +73,11 @@ symax# = NATURALE# ^ symax#
 End If
 
 If Not firstpointdone Then
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, True, Int(255), Int(128), Int(0), Int(0))     ' brown
+Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, False, Int(255), Int(128), Int(0), Int(0))     ' brown
 If ierror Then Exit Sub
 firstpointdone = True
 Else
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, True, True, Int(255), Int(128), Int(0), Int(0))      ' brown
+Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, True, False, Int(255), Int(128), Int(0), Int(0))      ' brown
 If ierror Then Exit Sub
 End If
 Next i%
