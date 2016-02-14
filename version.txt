@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/13/16	New beam scan calibration plot in CalcImage for evaluating beam scan calibrations.
+v. 11.3.4
+		Tweak MPB (and Integrated Intensity) plots to maintain selected element (Goemann)
+
 02/12/16	Misc. tweaks for Owen Neil for MAN and histogram plots and Gareth Hatton for MAN vs. off-peak 
 		in Acquisition Options.
 v. 11.3.3
