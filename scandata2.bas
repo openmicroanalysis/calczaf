@@ -9,7 +9,7 @@ Dim nPoints As Integer
 Dim xdata() As Single, ydata() As Single
 Dim ycoeff() As Double
 
-Sub ScanDataPlotFitCurve_PE(tGraph As Pesgo, mode As Integer, linecount As Long, acoeff1 As Single, acoeff2 As Single, acoeff3 As Single, centroid As Single, threshold As Single, currentonpeak As Single)
+Sub ScanDataPlotFitCurve_PE(tGraph As Pesgo, mode As Integer, linecount As Long, acoeff1 As Single, acoeff2 As Single, acoeff3 As Single, centroid As Single, threshold As Single, currentonpeak As Single, tBold As Boolean)
 ' Display the ROM and parabolic peak fit centroid and threshold on the graph (Pro Essentials code)
 ' mode: 1 = parabolic, 2 = gaussian, 3 = maxima, 4 = maximum value, 5 = cubic spline, 6 = (multi-point) exponential
 
@@ -72,12 +72,13 @@ symin# = NATURALE# ^ symin#
 symax# = NATURALE# ^ symax#
 End If
 
+' Plot fit
 If Not firstpointdone Then
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, False, Int(255), Int(128), Int(0), Int(0))     ' brown
+Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, tBold, Int(255), Int(0), Int(0), Int(255))     ' blue
 If ierror Then Exit Sub
 firstpointdone = True
 Else
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, True, False, Int(255), Int(128), Int(0), Int(0))      ' brown
+Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, True, tBold, Int(255), Int(0), Int(0), Int(255))      ' blue
 If ierror Then Exit Sub
 End If
 Next i%
