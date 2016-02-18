@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/17/16	Fix log weight percent output bug in CalcImage (Roberts).
+v. 11.3.5
+
 02/15/16	Improve EDS KLM marker behavior and MPB plot graph wider.
 
 02/13/16	New beam scan calibration plot in CalcImage for evaluating beam scan calibrations.

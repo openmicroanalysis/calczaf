@@ -19,8 +19,10 @@ Private Type TypeByt4
 strval(1 To 4) As Byte
 End Type
 
-Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scanrota As Double)
+Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scanrota As Double, scanflag As Integer, stageflag As Integer)
 ' Open prbimg and read in some parameters
+' scanflag% = 0 beam scan, scanflag% = 1 stage scan
+' stageflag% = 0 cartesian, stageflag% = 1 anti-cartesian
 
 Dim lpDefault As String
 
@@ -61,7 +63,7 @@ Dim barray() As Byte
 ierror = False
 On Error GoTo Base64ReaderInputError
 
-' Program version number
+' PrbImg file version number
 PrbImgVerStr$ = Base64ReaderGetINIString$(lpFileName$, "ProbeImage", "Version", "")
 Call MiscParseStringToStringA(PrbImgVerStr$, ".", astring$)
 If ierror Then Exit Sub
@@ -143,6 +145,32 @@ mag# = Val(Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "Magnifica
 If ierror Then Exit Sub
 scanrota# = Val(Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "ScanRotation", Format$(scanrota#)))
 If ierror Then Exit Sub
+End If
+
+' Read in scan type and stage type if v. 1.2 or later
+If PrbImgVerNum! >= 1.2 Then
+astring$ = Base64ReaderGetINIString$(lpFileName$, "ProbeImage", "ScanType", vbNullString$)
+If ierror Then Exit Sub
+If astring$ = "Stage" Then
+scanflag% = 1                   ' stage scan
+Else
+scanflag% = 0                   ' beam scan
+End If
+astring$ = Base64ReaderGetINIString$(lpFileName$, "ProbeImage", "ScanOrientation", vbNullString$)
+If ierror Then Exit Sub
+If astring$ = "AntiCartesian" Then
+stageflag% = 1                          ' JEOL
+Else
+stageflag% = 0                          ' Cameca
+End If
+
+' Try to determine scan and stage types for older PrbImg files
+Else
+scanflag% = 0   ' assume beam scan (what else can one do?)
+stageflag% = 1   ' assume JEOL anti-cartesian stage
+If RegXmin& < RegXmax& Then             ' Cameca minimum x pixels are 32 so this will work (min/max can be 0 for y axis if 1 pixel high)
+stageflag% = 0
+End If
 End If
 
 ' Re-dimension real world coordinates if only 1 pixel (that is, make the 1 pixel scan dimension equal to width of single pixel)
