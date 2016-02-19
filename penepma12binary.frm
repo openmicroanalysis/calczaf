@@ -741,16 +741,6 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-Call Penepma12Save
-If ierror Then Exit Sub
-Call Penepma12BinarySave
-If ierror Then Exit Sub
-Call Penepma12Extract
-If ierror Then Exit Sub
-End Sub
-
 Private Sub CommandCalculateAlphas_Click()
 If Not DebugMode Then On Error Resume Next
 Call Penepma12Save
@@ -937,16 +927,6 @@ FormPenepma12Binary.ComboExtractMatrixB1.Enabled = False
 FormPenepma12Binary.ComboExtractMatrixB2.Enabled = False
 FormPenepma12Binary.CheckExtractForSpecifiedRange.Enabled = True
 End If
-End Sub
-
-Private Sub TextAtNumAA_GotFocus()
-If Not DebugMode Then On Error Resume Next
-Call MiscSelectText(Screen.ActiveForm.ActiveControl)
-End Sub
-
-Private Sub TextAtNumBB_GotFocus()
-If Not DebugMode Then On Error Resume Next
-Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
 Private Sub TextConcA_GotFocus()

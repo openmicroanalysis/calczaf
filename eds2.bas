@@ -16,30 +16,6 @@ Dim EDSDataRow As Integer
 
 Dim EDSOldSample(1 To 1) As TypeSample
 
-Sub EDSZoomFull(tForm As Form)
-' Zoom to origin
-
-ierror = False
-On Error GoTo EDSZoomFullError
-
-' Call graphics routines
-Call EDSZoomFull_PE(tForm)
-If ierror Then Exit Sub
-
-' Reset KLM markers
-Call EDSPlotKLM1(tForm)
-If ierror Then Exit Sub
-
-Exit Sub
-
-' Errors
-EDSZoomFullError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSZoomFull"
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub EDSDisplaySpectra(tForm As Form, datarow As Integer, sample() As TypeSample)
 ' Display current spectrum from the interface
 

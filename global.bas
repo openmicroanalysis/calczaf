@@ -59,16 +59,6 @@ Public Declare Function WritePrivateProfileString Lib "Kernel32" Alias "WritePri
 
 Public Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 
-' Graphics Server DLL functions
-Public Declare Function GSLineAbs Lib "GSWDLL32.DLL" (ByVal fxA#, ByVal fya#, ByVal fxB#, ByVal fyB#, ByVal nmode%, ByVal nStyle%, ByVal nClr%) As Integer
-Public Declare Function GSRText Lib "GSWDLL32.DLL" (ByVal fxOrg#, ByVal fyOrg#, ByVal nCset%, ByVal nTMode%, ByVal nClr%, ByVal szString$) As Integer
-Public Declare Function GSBox2D Lib "GSWDLL32.DLL" (ByVal fxOrg#, ByVal fyOrg#, ByVal fWid#, ByVal fHt#, ByVal nPatt%, ByVal nClr%) As Integer
-Public Declare Function GSGetMean Lib "GSWDLL32.DLL" () As Double      ' used in StartWin
-Public Declare Function GSGetSD Lib "GSWDLL32.DLL" () As Double      ' used in StartWin
-Public Declare Function GSCircle Lib "GSWDLL32.DLL" (ByVal fxOrg#, ByVal fyOrg#, ByVal fRadius#, nmode%, nStyle%, nClr%) As Integer
-'Public Declare Function GSSetRFontFace Lib "GSWDLL32.DLL" (ByVal tFont%, ByVal szString$) As Integer
-'Public Declare Function GSLoadRFont Lib "GSWDLL32.DLL" (ByVal tFont%, tAttr%, tsize%, tPitch%) As Integer
-
 ' New constants for non-traditional emission lines
 Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,mb)
 'Global Const MAXRAY% = 7                ' maximum xray symbols (ka,kb,la,lb,ma,mb," ") including blank for non-analyzed
@@ -335,59 +325,13 @@ Global Const MAX_EXCEL_2003_COLS% = 256  ' maximum number of columns supported b
 
 Global Const LOTSOFGRIDPOINTS% = 1000    ' lots of polygon points (hide FormAUTOMATE)
 Global Const TOOMANYGRIDSTEPS% = 2000    ' too many grid steps
-Global Const MAXTITLELENGTH0% = 30       ' maximum graph title length
-Global Const MAXTITLELENGTH1% = 80       ' maximum graph title length
-Global Const MAXLABELLENGTH1% = 28       ' maximum graph label length
+Global Const MAXTITLELENGTH% = 80       ' maximum graph title length
 
 Global Const FONT_REGULAR% = 0           ' regular format
 Global Const FONT_BOLD% = 1              ' bold
 Global Const FONT_ITALIC% = 2            ' italic
 Global Const FONT_UNDERLINE% = 4         ' underline
 Global Const FONT_STRIKETHRU% = 8        ' strikethru
-
-' Graphics Server Text Constants
-'Global Const GSR_CSSYSTEM% = 0             ' Default vector font
-'Global Const GSR_CSUSER% = 1               ' Vector font loaded with GSLoadVFont function
-Global Const GSR_CSRASTER% = 2              ' Flag for raster font
-' Note: GSR_CSRASTER% + GSR_CSSYSTEM% = 2   ' Default raster font
-' Note: GSR_CSRASTER% + GSR_CSUSER% = 3     ' Raster font loaded with GSLoadRFont function
-
-'Global Const GSR_TXEXACT% = 1      ' Text conforms to specified height and width (vector fonts only)
-'Global Const GSR_TXLEFT% = 0       ' Text aligns at left
-Global Const GSR_TXMID% = 2         ' Text aligns at midpoint
-'Global Const GSR_TXRIGHT% = 4      ' Text aligns at right
-'Global Const GSR_TXBOTTOM% = 0     ' Text aligns along extreme bottom of characters
-Global Const GSR_TXBASELINE% = 8    ' Text aligns along baseline of characters
-Global Const GSR_TXTOP% = 16        ' Text aligns along top of characters
-'Global Const GSR_TXUP90% = 32      ' Rotates text 90 degrees counterclockwise
-'Global Const GSR_TXDOWN90% = 64    ' Rotates text 90 degrees clockwise
-Global Const GSR_TXTRANS% = 256     ' Text background is transparent
-
-Global Const GSR_USETITG% = 0       ' Graph title
-Global Const GSR_USETITXY% = 1      ' Other titles (left, right, bottom)
-Global Const GSR_USELABS% = 2       ' Labels
-
-'Global Const GSR_FOROMAN% = 1      ' Roman
-'Global Const GSR_FOSWISS% = 2      ' Swiss (Helvetica)
-'Global Const GSR_FOMODERN% = 3     ' Modern
-'Global Const GSR_FOSCRIPT% = 4     ' Script
-'Global Const GSR_FODECO% = 5       ' Decorative
-
-'Global Const GSR_FOREGULAR% = 0    ' Regular
-'Global Const GSR_FOITALIC% = 16    ' Italic
-'Global Const GSR_FOBOLD% = 32      ' Bold
-'Global Const GSR_FOULINE% = 64     ' Underlined
-
-Global Const GSR_SIZE_60% = 60      ' 60% of system font
-Global Const GSR_SIZE_80% = 80      ' 80% of system font
-Global Const GSR_SIZE_100% = 100    ' 100% of system font
-Global Const GSR_SIZE_120% = 120    ' 120% of system font
-Global Const GSR_SIZE_150% = 150    ' 150% of system font
-'Global Const GSR_SIZE_200% = 200   ' 200% of system font
-'Global Const GSR_SIZE_300% = 300   ' 300% of system font
-
-'Global Const GSR_FOVARIABLE% = 0   ' Variable pitch (default is variable)
-'Global Const GSR_FOFIXED% = 128    ' Fixed pitch (default is variable)
 
 ' Database Field lengths
 Global Const DbTextDescriptionLength% = 255
@@ -1938,7 +1882,7 @@ Global macstring2(1 To MAXMACTYPE%) As String
 ' ZAF globals
 Global iabs As Integer, ibsc As Integer, ibks As Integer
 Global imip As Integer, iphi As Integer, izaf As Integer
-Global istp As Integer, iflu As Integer, ielc As Integer    ' ielc% is currently not used
+Global istp As Integer, iflu As Integer, ielc As Integer               ' ielc% is not currently utilized
 
 ' MAN drift arrays
 Global MANAssignsDriftCounts() As Single    ' (1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) allocated in InitData

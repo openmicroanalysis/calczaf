@@ -1884,7 +1884,7 @@ Sub EditUpdateXFiles(mode As Integer, tForm As Form)
 ierror = False
 On Error GoTo EditUpdateXFilesError
 
-Dim ix As Integer, iz As Integer, tmax As Integer
+Dim ix As Integer, iz As Integer
 Dim line_number As Long
 Dim astring As String, tfilename As String
 Dim response As Integer

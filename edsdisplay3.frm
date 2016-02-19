@@ -169,7 +169,7 @@ Begin VB.Form FormEDSDISPLAY3
          Width           =   1935
       End
    End
-   Begin VB.CommandButton CommandZoom 
+   Begin VB.CommandButton CommandZoomFull 
       Caption         =   "Zoom Full"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -268,10 +268,9 @@ FormEDSDISPLAY3.Pesgo1.ExportImageLargeFont = False ' = True for large font
 Call FormEDSDISPLAY3.Pesgo1.PEcopybitmaptoclipboard(1400, 600)
 End Sub
 
-Private Sub CommandZoom_Click()
+Private Sub CommandZoomFull_Click()
 If Not DebugMode Then On Error Resume Next
-Call EDSZoomFull(FormEDSDISPLAY3)
-If ierror Then Exit Sub
+FormEDSDISPLAY3.Pesgo1.PEactions = UNDO_ZOOM
 End Sub
 
 Private Sub Form_Load()
@@ -290,7 +289,7 @@ Const TopOfButtons% = 1200
 FormEDSDISPLAY3.LabelSpectrumName.Top = FormEDSDISPLAY3.ScaleHeight - TopOfButtons%
 FormEDSDISPLAY3.LabelTrack.Top = FormEDSDISPLAY3.ScaleHeight - (TopOfButtons% - 300)
 
-FormEDSDISPLAY3.CommandZoom.Top = FormEDSDISPLAY3.ScaleHeight - TopOfButtons%
+FormEDSDISPLAY3.CommandZoomFull.Top = FormEDSDISPLAY3.ScaleHeight - TopOfButtons%
 FormEDSDISPLAY3.CommandClose.Top = FormEDSDISPLAY3.ScaleHeight - TopOfButtons%
 
 FormEDSDISPLAY3.FrameKLM.Top = FormEDSDISPLAY3.ScaleHeight - TopOfButtons%

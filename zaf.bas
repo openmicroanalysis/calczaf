@@ -1655,7 +1655,7 @@ End If
 
 ' Formula by difference
 If sample(1).DifferenceFormulaFlag% And sample(1).DifferenceFormula$ <> vbNullString Then
-If ConvertIsDifferenceFormulaElement(sample(1).DifferenceFormula$, sample(1).Elsyms$(i%), sample()) Then
+If ConvertIsDifferenceFormulaElement(sample(1).DifferenceFormula$, sample(1).Elsyms$(i%)) Then
 zaf.krat!(i%) = 0#
 'zaf.il%(i%) = 13
 zaf.il%(i%) = 19
@@ -2111,7 +2111,7 @@ End If
 ' Load formula by difference (elements must already be specified)
 If sample(1).DifferenceFormulaFlag% And sample(1).DifferenceFormula$ <> vbNullString Then
 For i% = sample(1).LastElm% + 1 To sample(1).LastChan%
-If ConvertIsDifferenceFormulaElement(sample(1).DifferenceFormula$, sample(1).Elsyms$(i%), sample()) Then
+If ConvertIsDifferenceFormulaElement(sample(1).DifferenceFormula$, sample(1).Elsyms$(i%)) Then
 analysis.WtPercents!(i%) = zaf.conc!(i%) * 100#
 End If
 Next i%

@@ -4,22 +4,22 @@ Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
 Begin VB.Form FormANALYZE 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Analyze!"
-   ClientHeight    =   5355
+   ClientHeight    =   5745
    ClientLeft      =   -15
    ClientTop       =   270
-   ClientWidth     =   6210
+   ClientWidth     =   6225
    Icon            =   "ANALYZE3.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5355
-   ScaleWidth      =   6210
+   ScaleHeight     =   5745
+   ScaleWidth      =   6225
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
    Begin MSFlexGridLib.MSFlexGrid GridData 
       Height          =   855
       Left            =   3240
-      TabIndex        =   19
+      TabIndex        =   18
       TabStop         =   0   'False
       Top             =   2160
       Width           =   2415
@@ -32,7 +32,7 @@ Begin VB.Form FormANALYZE
    Begin MSFlexGridLib.MSFlexGrid GridStat 
       Height          =   975
       Left            =   120
-      TabIndex        =   18
+      TabIndex        =   17
       TabStop         =   0   'False
       Top             =   2160
       Width           =   2655
@@ -50,7 +50,7 @@ Begin VB.Form FormANALYZE
       Locked          =   -1  'True
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
-      TabIndex        =   16
+      TabIndex        =   15
       TabStop         =   0   'False
       ToolTipText     =   "Sample description information"
       Top             =   1320
@@ -60,7 +60,7 @@ Begin VB.Form FormANALYZE
       Caption         =   "Check1"
       Height          =   255
       Left            =   120
-      TabIndex        =   9
+      TabIndex        =   8
       TabStop         =   0   'False
       ToolTipText     =   "Check this box if you do not want to see samples without data listed in the sample list"
       Top             =   360
@@ -70,7 +70,7 @@ Begin VB.Form FormANALYZE
       Caption         =   "Standards"
       Height          =   255
       Left            =   120
-      TabIndex        =   8
+      TabIndex        =   7
       TabStop         =   0   'False
       Top             =   1080
       Width           =   1335
@@ -79,7 +79,7 @@ Begin VB.Form FormANALYZE
       Caption         =   "Unknowns"
       Height          =   255
       Left            =   120
-      TabIndex        =   7
+      TabIndex        =   6
       TabStop         =   0   'False
       Top             =   1320
       Width           =   1335
@@ -88,7 +88,7 @@ Begin VB.Form FormANALYZE
       Caption         =   "All Samples"
       Height          =   255
       Left            =   120
-      TabIndex        =   6
+      TabIndex        =   5
       TabStop         =   0   'False
       Top             =   1800
       Width           =   1335
@@ -97,7 +97,7 @@ Begin VB.Form FormANALYZE
       Caption         =   "Wavescans"
       Height          =   255
       Left            =   120
-      TabIndex        =   5
+      TabIndex        =   4
       TabStop         =   0   'False
       Top             =   1560
       Width           =   1335
@@ -106,7 +106,7 @@ Begin VB.Form FormANALYZE
       Height          =   645
       Left            =   3360
       MultiSelect     =   2  'Extended
-      TabIndex        =   4
+      TabIndex        =   3
       TabStop         =   0   'False
       Top             =   480
       Width           =   2775
@@ -143,9 +143,9 @@ Begin VB.Form FormANALYZE
       Height          =   255
       Left            =   0
       TabIndex        =   0
-      Top             =   5100
-      Width           =   6210
-      _ExtentX        =   10954
+      Top             =   5490
+      Width           =   6225
+      _ExtentX        =   10980
       _ExtentY        =   450
       SimpleText      =   ""
       _Version        =   327682
@@ -153,7 +153,7 @@ Begin VB.Form FormANALYZE
          NumPanels       =   3
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   7303
+            Object.Width           =   7329
             TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""
@@ -193,7 +193,7 @@ Begin VB.Form FormANALYZE
       ForeColor       =   &H00FF0000&
       Height          =   255
       Left            =   1200
-      TabIndex        =   17
+      TabIndex        =   16
       Top             =   3840
       Width           =   4095
    End
@@ -201,7 +201,7 @@ Begin VB.Form FormANALYZE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   3960
-      TabIndex        =   15
+      TabIndex        =   14
       ToolTipText     =   "Average atomic number"
       Top             =   4440
       Width           =   855
@@ -210,7 +210,7 @@ Begin VB.Form FormANALYZE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   1320
-      TabIndex        =   14
+      TabIndex        =   13
       ToolTipText     =   "Excess oxygen from calculation (average for oxide calculation)"
       Top             =   4680
       Width           =   855
@@ -219,7 +219,7 @@ Begin VB.Form FormANALYZE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   1320
-      TabIndex        =   13
+      TabIndex        =   12
       ToolTipText     =   "Total measured and calculated oxygen (average for oxide calculation)"
       Top             =   4200
       Width           =   855
@@ -228,7 +228,7 @@ Begin VB.Form FormANALYZE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   3960
-      TabIndex        =   12
+      TabIndex        =   11
       ToolTipText     =   "Average atomic weight"
       Top             =   4680
       Width           =   855
@@ -237,7 +237,7 @@ Begin VB.Form FormANALYZE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   1320
-      TabIndex        =   11
+      TabIndex        =   10
       ToolTipText     =   "Calculated oxygen only  (average for oxide calculation)"
       Top             =   4440
       Width           =   855
@@ -246,30 +246,10 @@ Begin VB.Form FormANALYZE
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   3960
-      TabIndex        =   10
+      TabIndex        =   9
       ToolTipText     =   "Total weight percent (average)"
       Top             =   4200
       Width           =   855
-   End
-   Begin VB.Label Label1 
-      Alignment       =   2  'Center
-      BorderStyle     =   1  'Fixed Single
-      Caption         =   "Stub Form"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   1800
-      TabIndex        =   3
-      Top             =   3240
-      Visible         =   0   'False
-      Width           =   2415
    End
 End
 Attribute VB_Name = "FormANALYZE"
@@ -279,6 +259,11 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
+
+Private Sub CommandNext_Click()
+If Not DebugMode Then On Error Resume Next
+' Nothing to do here
+End Sub
 
 Private Sub StatusBarAnal_PanelClick(ByVal Panel As ComctlLib.Panel)
 If Not DebugMode Then On Error Resume Next

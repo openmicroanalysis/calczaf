@@ -7,24 +7,6 @@ Dim TotalEnergyRange As Single
 Dim GraphMinX As Single, GraphMinY As Single
 Dim GraphMaxX As Single, GraphMaxY As Single
 
-Sub CLZoomFull_PE(tForm As Form)
-' Zoom to origin (Pro Essentials)
-
-ierror = False
-On Error GoTo CLZoomFull_PEError
-
-tForm.Pesgo1.PEactions = UNDO_ZOOM&
-
-Exit Sub
-
-' Errors
-CLZoomFull_PEError:
-IOMsgBox Error$, vbOKOnly + vbCritical, "CLZoomFull_PE"
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub CLDisplaySpectra_PE(tCLDarkSpectra As Boolean, tForm As Form, datarow As Integer, sample() As TypeSample)
 ' Display current spectrum from the interface (Pro Essentials)
 '  tCLDarkSpectra = false for normal CL spectrum
@@ -40,7 +22,7 @@ Dim temp1 As Single, temp2 As Single
 ' Define #subset and #points
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(255))                      ' blue
-tForm.Pesgo1.points = sample(1).CLSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.Points = sample(1).CLSpectraNumberofChannels%(datarow%)
 
 ' Display options for Y axis label
 If CLIntensityOption% = 0 Then
@@ -144,13 +126,11 @@ Exit Sub
 
 End Sub
 
-Sub CLInitDisplay_PE(tForm As Form, tCaption As String, datarow As Integer, sample() As TypeSample)
+Sub CLInitDisplay_PE(tForm As Form)
 ' Init spectrum display (Pro Essentials)
 
 ierror = False
 On Error GoTo CLInitDisplay_PEError
-
-Dim astring As String
 
 ' Init graph properties
 Call MiscPlotInit(tForm.Pesgo1, True)
@@ -184,37 +164,3 @@ Exit Sub
 
 End Sub
 
-Sub CLDisplayRedraw_PE()
-' Redraw the display, if graph has data (Pro Essentials)
-
-ierror = False
-On Error GoTo CLDisplayRedraw_PEError
-
-FormCLDISPLAY.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE ' GGES
-
-Exit Sub
-
-' Errors
-CLDisplayRedraw_PEError:
-MsgBox Error$, vbOKOnly + vbCritical, "CLDisplayRedraw_PE"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub CLZoomGraph_PE(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, mode As Integer, tForm As Form)
-' User clicked mouse, zoom graph (Pro Essentials)
-
-ierror = False
-On Error GoTo CLZoomGraph_PEError
-
-' No need for this as PE handles zoom
-Exit Sub
-
-' Errors
-CLZoomGraph_PEError:
-MsgBox Error$, vbOKOnly + vbCritical, "CLZoomGraph_PE"
-ierror = True
-Exit Sub
-
-End Sub

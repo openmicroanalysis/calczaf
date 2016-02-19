@@ -141,7 +141,7 @@ tGraph.XAxisLabel = vbNullString
 tGraph.YAxisLabel = vbNullString
 
 tGraph.Subsets = 1
-tGraph.Points = 1
+tGraph.points = 1
 tGraph.xdata(0, 0) = 0                          ' for empty subset
 tGraph.ydata(0, 0) = 0
 

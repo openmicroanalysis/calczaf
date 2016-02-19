@@ -11,8 +11,7 @@ ierror = False
 On Error GoTo Penepma12PlotKRatios_PEError
 
 Dim i As Integer, j As Integer
-Dim astring As String, bstring As String
-Dim cstring As String, dstring As String
+Dim astring As String, bstring As String, cstring As String
 
 ' Allow auto scaling of axes from here on  (initial plot load has fixed axes to create generic blank plot)
 FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_NONE&
@@ -118,7 +117,7 @@ FormPENEPMA12.Pesgo1.OneLegendPerLine = True                                  ' 
 FormPENEPMA12.Pesgo1.SimpleLineLegend = True
 FormPENEPMA12.Pesgo1.SimplePointLegend = True                                 ' default False encloses in a box
 
-Call Penepma12PlotUpdate_PE(Int(1), FormPENEPMA12)
+Call Penepma12PlotUpdate_PE
 If ierror Then Exit Sub
 
 Exit Sub
@@ -144,8 +143,6 @@ Sub Penepma12PlotLoad_PE()
 
 ierror = False
 On Error GoTo Penepma12PlotLoad_PEError
-
-Dim astring As String, bstring As String
 
 ' Init graph properties
 Call MiscPlotInit(FormPENEPMA12.Pesgo1, True)
@@ -175,10 +172,8 @@ Exit Sub
 
 End Sub
 
-Sub Penepma12PlotUpdate_PE(mode As Integer, tForm As Form)
+Sub Penepma12PlotUpdate_PE()
 ' Update the plot style (Pro Essentials code)
-'  mode = 0 do not redraw
-'  mode = 1 do redraw
 
 ierror = False
 On Error GoTo Penepma12PlotUpdate_PEError
@@ -213,10 +208,10 @@ r& = InStr(ParameterFileA$, VbSpace)                ' number of characters befor
 If r& > 0 Then
 astring$ = Left$(astring$, r&)                      ' only extract text before space
 Else
-astring$ = Left$(astring$, MAXLABELLENGTH1%)        ' extract text upto max allowed length
+astring$ = Left$(astring$, MAXTITLELENGTH%)        ' extract text upto max allowed length
 End If
 If Len(astring$) < alen% Then
-astring$ = Left$(astring$ & " (" & Format$(MaterialDensityA#, f52$) & ")", MAXLABELLENGTH1%)    ' add density to label if label not too long
+astring$ = Left$(astring$ & " (" & Format$(MaterialDensityA#, f52$) & ")", MAXTITLELENGTH%)    ' add density to label if label not too long
 End If
 
 bstring$ = MiscGetFileNameNoExtension$(ParameterFileB$)
@@ -224,10 +219,10 @@ r& = InStr(ParameterFileB$, VbSpace)
 If r& > 0 Then
 bstring$ = Left$(bstring$, r&)
 Else
-bstring$ = Left$(bstring$, MAXLABELLENGTH1%)
+bstring$ = Left$(bstring$, MAXTITLELENGTH%)
 End If
 If Len(bstring$) < blen% Then
-bstring$ = Left$(bstring$ & " (" & Format$(MaterialDensityB#, f52$) & ")", MAXLABELLENGTH1%)        ' add density to label if label not too long
+bstring$ = Left$(bstring$ & " (" & Format$(MaterialDensityB#, f52$) & ")", MAXTITLELENGTH%)        ' add density to label if label not too long
 End If
 
 cstring$ = astring$ & " <--> " & bstring$           ' c$ is final format of text displayed
@@ -253,7 +248,7 @@ r& = InStr(ParameterFileA$, VbSpace)
 If r& > 0 Then
 astring$ = Left$(astring$, r&)
 Else
-astring$ = Left$(astring$, MAXLABELLENGTH1%)
+astring$ = Left$(astring$, MAXTITLELENGTH%)
 End If
 FormPENEPMA12.Pesgo1.ShowAnnotations = False
 FormPENEPMA12.Pesgo1.MultiSubTitles(0) = " "
@@ -262,9 +257,6 @@ FormPENEPMA12.Pesgo1.FontSizeMSCntl = 0.8
 End If
 
 FormPENEPMA12.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE&
-Call FormPENEPMA12.Pesgo1.PEreinitialize
-Call FormPENEPMA12.Pesgo1.PEresetimage(0, 0)
-Call FormPENEPMA12.Pesgo1.PEInvalidate
 
 Exit Sub
 

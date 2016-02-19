@@ -364,7 +364,6 @@ Dim linecount As Long
 
 Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
 Dim sxmin As Double, sxmax As Double, symin As Double, symax As Double
-Dim txmin As Double, txmax As Double, tymin As Double, tymax As Double
 
 Dim npts As Integer
 Dim xdata() As Single, ydata() As Single, acoeff() As Single, stddev As Single

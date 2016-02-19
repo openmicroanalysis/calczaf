@@ -65,7 +65,6 @@ ierror = False
 On Error GoTo Cond2SaveFieldError
 
 Dim i As Integer
-Dim tfov As Single
 
 If Val(FormCOND2.TextKiloVolts.Text) < MINKILOVOLTS! Or Val(FormCOND2.TextKiloVolts.Text) > MAXKILOVOLTS! Then
 msg$ = FormCOND2.TextKiloVolts.Text & " for Kilovolts is out of range!"

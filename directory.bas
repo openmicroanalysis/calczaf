@@ -51,18 +51,9 @@ nFileSize As Double    ' total file size matching filespec. Set in FindXXX only
 End Type
 
 Public Declare Function FindClose Lib "kernel32" (ByVal hFindFile As Long) As Long
-     
-Public Declare Function FindFirstFile Lib "kernel32" Alias "FindFirstFileA" _
-    (ByVal lpFileName As String, lpFindFileData As WIN32_FIND_DATA) As Long
-     
-Public Declare Function FindNextFile Lib "kernel32" Alias "FindNextFileA" _
-    (ByVal hFindFile As Long, lpFindFileData As WIN32_FIND_DATA) As Long
-
-Public Declare Function GetLogicalDriveStrings Lib "kernel32" Alias "GetLogicalDriveStringsA" _
-    (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
-        
-Public Declare Function GetDriveType Lib "kernel32" Alias "GetDriveTypeA" _
-    (ByVal nDrive As String) As Long
+Public Declare Function FindFirstFile Lib "kernel32" Alias "FindFirstFileA" (ByVal lpFileName As String, lpFindFileData As WIN32_FIND_DATA) As Long
+Public Declare Function FindNextFile Lib "kernel32" Alias "FindNextFileA" (ByVal hFindFile As Long, lpFindFileData As WIN32_FIND_DATA) As Long
+Public Declare Function GetLogicalDriveStrings Lib "kernel32" Alias "GetLogicalDriveStringsA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
 
 Public Sub DirectorySearch(textension As String, tpath As String, tRecurse As Integer, nCount As Long, sAllFiles() As String)
 ' Directory search

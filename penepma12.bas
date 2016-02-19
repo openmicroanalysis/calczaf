@@ -1430,7 +1430,7 @@ GoTo Penepma12RunPenfluorINFileNotFound:
 End If
 
 ' Run Penfluor on material
-Call Penepma12RunPenfluor2(n%)
+Call Penepma12RunPenfluor2
 If ierror Then Exit Sub
 
 ' Now wait for the Penfluor calculation to finish
@@ -1463,7 +1463,7 @@ tfilename$ = PENEPMA_Root$ & "\Penfluor\penepma.dat"
 If Dir$(tfilename$) = vbNullString Then GoTo Penepma12RunPenFluorDATFileNotFound
 
 ' Run Fitall on material
-Call Penepma12RunFitall(n%)
+Call Penepma12RunFitall
 If ierror Then Exit Sub
 
 ' Now wait for the Fitall calculation to finish
@@ -1567,11 +1567,8 @@ Exit Sub
 
 End Sub
 
-Sub Penepma12RunPenfluor2(n As Integer)
+Sub Penepma12RunPenfluor2()
 ' Run Penfluor batch file
-'  n = 1 = Material A
-'  n = 2 = Material B
-'  n = 3 = Material B Std
 
 ierror = False
 On Error GoTo Penepma12RunPenfluor2Error
@@ -1779,11 +1776,8 @@ Exit Sub
 
 End Sub
 
-Sub Penepma12RunFitall(n As Integer)
+Sub Penepma12RunFitall()
 ' Run Fitall batch file
-'  n = 1 = Material A
-'  n = 2 = Material B
-'  n = 3 = Material B Std
 
 ierror = False
 On Error GoTo Penepma12RunFitallError
@@ -8064,7 +8058,7 @@ On Error GoTo Penepma12AdjustMinimumEnergyError
 Dim ip As Integer
 
 ' Check .MAT file for light elements
-Call Penepma12GetMatFileComposition(PENDBASE_Path$ & "\" & MaterialFileA$, Penepma_TmpSample())
+Call Penepma12GetMatFileComposition(mfilename$, Penepma_TmpSample())
 If ierror Then Exit Sub
 
 ' Load adjustment
@@ -8466,27 +8460,6 @@ Exit Sub
 
 End Sub
 
-Sub Penepma12PlotZoom(PressStatus As Integer, PressX As Double, PressY As Double, PressDataX As Double, PressDataY As Double, mode As Integer, tForm As Form)
-' Zoom the plot
-
-ierror = False
-On Error GoTo Penepma12PlotZoomError
-
-' Check for valid points
-If nPoints& < 1 Then Exit Sub
-Call Penepma12PlotUpdate_PE(Int(1), tForm)
-If ierror Then Exit Sub
-
-Exit Sub
-
-' Errors
-Penepma12PlotZoomError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma12PlotZoom"
-ierror = True
-Exit Sub
-
-End Sub
-
 Function Penepma12PARLowerPrecision(pfilename As String, tMaterialSimulationTime As Double) As Boolean
 ' Check if the input file for the passed PAR file is lower precision that the current precision value
 
@@ -8567,11 +8540,10 @@ Sub Penepma12ExtractPure()
 ierror = False
 On Error GoTo Penepma12ExtractPureError
 
-Dim i As Integer, j As Integer
+Dim i As Integer
 Dim response As Integer
 
 Dim tMaterialMeasuredGridPoints As Integer
-Dim tMaterialMeasuredDistance As Double
 Dim tExtractElement As Integer
 Dim tExtractMatrix As Integer
 
@@ -8639,8 +8611,7 @@ Sub Penepma12ExtractPureIntensity()
 ierror = False
 On Error GoTo Penepma12ExtractPureIntensityError
 
-Dim k As Integer, l As Integer, m As Integer, ip As Integer, ipA As Integer
-Dim inum1 As Integer, inum2 As Integer, inum3 As Integer
+Dim l As Integer, m As Integer
 Dim eng As Single, edg As Single, tovervoltage As Single
 Dim unk_int_pri As Double, unk_int_flu As Double, unk_int_all As Double
 
@@ -8940,9 +8911,8 @@ Sub Penepma12CheckXray(sample() As TypeSample, notfound1 As Boolean, notfound2 A
 ierror = False
 On Error GoTo Penepma12CheckXrayError
 
-Dim chan As Integer, nrec As Integer
-Dim jnum As Integer, ip As Integer
-Dim edge As Single, overvolt As Single, tenergy As Single
+Dim chan As Integer, nrec As Integer, jnum As Integer
+Dim tenergy As Single
 Dim sym As String
  
 Dim engrow As TypeEnergy

@@ -32,7 +32,6 @@ Dim over_volt_fluor_line2(1 To MAXCHAN1%, 1 To MAXCHAN1%, 1 To MAXRAY% - 1) As S
 Dim fluor_MACs(1 To MAXRAY% - 1, 1 To MAXCHAN1%, 1 To MAXCHAN1%) As Single          ' MACs for fluorescencing lines (formally fp)
 
 Dim AllJumpRatios(1 To MAXEDG%, 1 To MAXELM%) As Single                                                 ' values from NIST FFAST table
-Dim AllTransitionProbabilities(1 To MAXELM%, 1 To MAXSHELL%, 1 To MAXSHELL%) As Single                  ' values from Penepma table
 
 Sub ZAFFlu(zafinit As Integer, zaf As TypeZAF)
 ' Main stub for fluorescence correction. Comment/uncomment out calls as needed for testing.

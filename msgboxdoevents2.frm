@@ -42,7 +42,7 @@ Begin VB.Form FormMSGBOXDOEVENTS2
    End
    Begin VB.Label Label2 
       Alignment       =   2  'Center
-      Caption         =   "Version for realtime processing of driver without interface calls"
+      Caption         =   "Version for real time processing of driver without interface calls"
       Height          =   615
       Left            =   120
       TabIndex        =   2

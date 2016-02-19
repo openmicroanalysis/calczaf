@@ -570,6 +570,11 @@ If Not DebugMode Then On Error Resume Next
 Unload FormZAFOPT
 End Sub
 
+Private Sub CommandBrowseHyperspectralEDSData_Click()
+If Not DebugMode Then On Error Resume Next
+' Not implemented yet
+End Sub
+
 Private Sub Form_Load()
 If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(2), MDBUserName$, Me)

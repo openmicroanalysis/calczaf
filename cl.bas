@@ -6,26 +6,6 @@ Dim CLDataRow As Integer
 
 Dim CLOldSample(1 To 1) As TypeSample
 
-Sub CLZoomFull(tForm As Form)
-' Zoom to origin
-
-ierror = False
-On Error GoTo CLZoomFullError
-
-' Call graphics routines
-Call CLZoomFull_PE(tForm)
-If ierror Then Exit Sub
-
-Exit Sub
-
-' Errors
-CLZoomFullError:
-IOMsgBox Error$, vbOKOnly + vbCritical, "CLZoomFull"
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub CLDisplaySpectra(tCLDarkSpectra As Boolean, tForm As Form, datarow As Integer, sample() As TypeSample)
 ' Display current spectrum from the interface
 '  tCLDarkSpectra = false normal CL spectrum
@@ -33,10 +13,6 @@ Sub CLDisplaySpectra(tCLDarkSpectra As Boolean, tForm As Form, datarow As Intege
 
 ierror = False
 On Error GoTo CLDisplaySpectraError
-
-Dim i As Integer
-Dim temp As Single
-Dim temp1 As Single, temp2 As Single
 
 ' Check for data
 If datarow% = 0 Then Exit Sub
@@ -98,7 +74,7 @@ End If
 tForm.LabelSpectrumName.Caption = astring$
 
 ' Call graphics routines
-Call CLInitDisplay_PE(tForm, tCaption$, datarow%, sample())
+Call CLInitDisplay_PE(tForm)
 If ierror Then Exit Sub
 
 Exit Sub
@@ -107,52 +83,6 @@ Exit Sub
 CLInitDisplayError:
 MsgBox Error$, vbOKOnly + vbCritical, "CLInitDisplay"
 Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub CLDisplayRedraw()
-' Redraw the display, if graph has data
-
-ierror = False
-On Error GoTo CLDisplayRedrawError
-
-If CLDataRow% < 1 Then Exit Sub
-If CLOldSample(1).CLSpectraNumberofChannels%(CLDataRow%) < 1 Then Exit Sub
-
-' Call graphics routines
-Call CLDisplayRedraw_PE
-If ierror Then Exit Sub
-
-Exit Sub
-
-' Errors
-CLDisplayRedrawError:
-MsgBox Error$, vbOKOnly + vbCritical, "CLDisplayRedraw"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub CLZoomGraph(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, mode As Integer, tForm As Form)
-' User clicked mouse, zoom graph
-
-ierror = False
-On Error GoTo CLZoomGraphError
-
-If CLDataRow% < 1 Then Exit Sub
-If CLOldSample(1).CLSpectraNumberofChannels%(CLDataRow%) < 1 Then Exit Sub
-
-' Call graphics routines
-Call CLZoomGraph_PE(PressStatus%, PressX#, PressY#, PressDataX#, PressDataY#, Int(0), tForm)
-If ierror Then Exit Sub
-
-Exit Sub
-
-' Errors
-CLZoomGraphError:
-MsgBox Error$, vbOKOnly + vbCritical, "CLZoomGraph"
 ierror = True
 Exit Sub
 

@@ -214,7 +214,7 @@ Exit Sub
 
 End Sub
 
-Function ConvertIsDifferenceFormulaElement(tformula As String, tsym As String, sample() As TypeSample) As Boolean
+Function ConvertIsDifferenceFormulaElement(tformula As String, tsym As String) As Boolean
 ' Returns true if the passed element is in the passed formula by difference
 
 ierror = False

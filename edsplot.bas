@@ -49,7 +49,7 @@ End If
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))             ' red
 
-tForm.Pesgo1.points = sample(1).EDSSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.Points = sample(1).EDSSpectraNumberofChannels%(datarow%)
 
 ' Load y axis data subset 0 - eds data
 For i% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)
@@ -174,24 +174,6 @@ Exit Sub
 EDSInitDisplay_PEError:
 MsgBox Error$, vbOKOnly + vbCritical, "EDSInitDisplay_PE"
 Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub EDSZoomFull_PE(tForm As Form)
-' Zoom to origin (Pro Essentials)
-
-ierror = False
-On Error GoTo EDSZoomFull_PEError
-
-tForm.Pesgo1.PEactions = UNDO_ZOOM
-
-Exit Sub
-
-' Errors
-EDSZoomFull_PEError:
-MsgBox Error$, vbOKOnly + vbCritical, "EDSZoomFull_PE"
 ierror = True
 Exit Sub
 

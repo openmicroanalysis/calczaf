@@ -33,42 +33,10 @@ Private Const FOF_NOCONFIRMATION As Long = &H10
 Private Const FOF_SIMPLEPROGRESS As Long = &H100
 'Private Const FOF_ALLOWUNDO As Long = &H40
 
-Private Declare Function GetTempPath Lib "Kernel32" Alias "GetTempPathA" (ByVal nSize As Long, ByVal lpBuffer As String) As Long
 Private Declare Function SHFileOperation Lib "shell32" Alias "SHFileOperationA" (lpFileOp As SHFILEOPSTRUCT) As Long
-Private Declare Function SHGetPathFromIDList Lib "shell32" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
-Private Declare Function SHGetSpecialFolderLocation Lib "shell32" (ByVal hwndOwner As Long, ByVal nFolder As Long, pidl As Long) As Long
-Private Declare Function SHBrowseForFolder Lib "shell32" Alias "SHBrowseForFolderA" (lpBrowseInfo As BROWSEINFO) As Long
    
-'O_FUNC - the File Operation to perform, determined by the type of SHFileOperation action chosen (move/copy)
+' FO_FUNC - the File Operation to perform, determined by the type of SHFileOperation action chosen (move/copy)
 Dim FO_FUNC As Long
-
-Private Type BROWSEINFO
-   hOwner           As Long
-   pidlRoot         As Long
-   pszDisplayName   As String
-   lpszTitle        As String
-   ulFlags          As Long
-   lpfn             As Long
-   lparam           As Long
-   iImage           As Long
-End Type
-   
-'Private Const ERROR_SUCCESS As Long = 0
-'Private Const CSIDL_DESKTOP As Long = &H0
-'Private Const BIF_RETURNONLYFSDIRS As Long = &H1
-'Private Const BIF_STATUSTEXT As Long = &H4
-'Private Const BIF_RETURNFSANCESTORS As Long = &H8
-         
-' For ease of reading, constants are substituted for SHFileOperation numbers in code
-'Const FileMove As Integer = 1
-'Const FileCopy As Integer = 2
-  
-'Check button index constants
-'Const optSilent As Integer = 0
-'Const optNoFilenames As Integer = 1
-'Const optNoConfirmDialog As Integer = 2
-'Const optRenameIfExists As Integer = 3
-'Const optPromptMeFirst As Integer = 4
 
 Sub MiscCheckName(mode As Integer, astring As String)
 ' Check that the user is not using a reserved filename
@@ -196,17 +164,17 @@ Exit Sub
 
 End Sub
 
-Sub MiscChangePath(tPath As String)
+Sub MiscChangePath(tpath As String)
 ' Routine to change the path
 
 ierror = False
 On Error GoTo MiscChangePathError
 
-If Trim$(tPath$) = vbNullString Then Exit Sub
+If Trim$(tpath$) = vbNullString Then Exit Sub
 
-If Left$(Trim$(tPath$), 2) <> "\\" Then ChDrive tPath$
-If MiscGetPathOnly$(tPath$) <> vbNullString Then
-ChDir MiscGetPathOnly$(tPath$)
+If Left$(Trim$(tpath$), 2) <> "\\" Then ChDrive tpath$
+If MiscGetPathOnly$(tpath$) <> vbNullString Then
+ChDir MiscGetPathOnly$(tpath$)
 End If
 
 Exit Sub

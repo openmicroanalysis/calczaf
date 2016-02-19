@@ -12,9 +12,6 @@ Option Explicit
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ' AppData folders
-Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hWnd As Long, ByVal csidl As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal szPath As String) As Long
-
-' Declarations - place this part in the Declarations section of a code file
 Const SpecialFolder_AppData = &H1A        ' for the current Windows user (roaming), on any computer on the network [Windows 98 or later]
 Const SpecialFolder_CommonAppData = &H23  ' for all Windows users on this computer [Windows 2000 or later]
 Const SpecialFolder_LocalAppData = &H1C   ' for the current Windows user (non roaming), on this computer only [Windows 2000 or later]
@@ -25,7 +22,7 @@ Private Declare Function SHBrowseForFolder Lib "shell32.dll" Alias "SHBrowseForF
 Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
 Private Declare Sub CoTaskMemFree Lib "ole32.dll" (ByVal pv As Long)
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lparam As Any) As Long
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (pDest As Any, pSource As Any, ByVal dwLength As Long)
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSource As Any, ByVal dwLength As Long)
       
 Private Const MAX_PATH& = 260
 Private Const WM_USER& = &H400
@@ -84,8 +81,8 @@ Private Const BFFM_SETSELECTIONA As Long = (WM_USER& + 102)
 Private Declare Function SHSimpleIDListFromPath Lib "shell32" Alias "#162" (ByVal szPath As String) As Long
 
 ' Specific to the STRING method
-Private Declare Function LocalAlloc Lib "Kernel32" (ByVal uFlags As Long, ByVal uBytes As Long) As Long
-Private Declare Function LocalFree Lib "Kernel32" (ByVal hMem As Long) As Long
+Private Declare Function LocalAlloc Lib "kernel32" (ByVal uFlags As Long, ByVal uBytes As Long) As Long
+Private Declare Function LocalFree Lib "kernel32" (ByVal hMem As Long) As Long
 'Private Declare Function lstrcpyA Lib "kernel32" (lpString1 As Any, lpString2 As Any) As Long
 'Private Declare Function lstrlenA Lib "kernel32" (lpString As Any) As Long
 

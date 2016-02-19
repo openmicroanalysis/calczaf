@@ -70,16 +70,6 @@ Begin VB.Form FormPLOT
          EndProperty
       EndProperty
    End
-   Begin VB.Label Label1 
-      Alignment       =   2  'Center
-      Caption         =   "Stub Form"
-      Height          =   735
-      Left            =   1560
-      TabIndex        =   1
-      Top             =   1560
-      Visible         =   0   'False
-      Width           =   2415
-   End
 End
 Attribute VB_Name = "FormPLOT"
 Attribute VB_GlobalNameSpace = False

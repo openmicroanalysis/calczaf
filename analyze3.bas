@@ -1418,7 +1418,7 @@ msg$ = "TYPE: "
 For i% = ii% To jj%
 If sample(1).DifferenceElementFlag% And sample(1).DifferenceElement$ = sample(1).Elsyms$(i%) Then
 msg$ = msg$ & Format$("DIFF", a80$)
-ElseIf sample(1).DifferenceFormulaFlag% And ConvertIsDifferenceFormulaElement(sample(1).DifferenceFormula$, sample(1).Elsyms$(i%), sample()) Then
+ElseIf sample(1).DifferenceFormulaFlag% And ConvertIsDifferenceFormulaElement(sample(1).DifferenceFormula$, sample(1).Elsyms$(i%)) Then
 msg$ = msg$ & Format$("FORM", a80$)
 ElseIf sample(1).StoichiometryElementFlag% And sample(1).StoichiometryElement$ = sample(1).Elsyms$(i%) Then
 msg$ = msg$ & Format$("STOI", a80$)
@@ -1668,7 +1668,7 @@ msg$ = msg$ & Format$("ANAL", a80$)
 Else
 If sample(1).DifferenceElementFlag% And sample(1).DifferenceElement$ = sample(1).Elsyms$(i%) Then
 msg$ = msg$ & Format$("DIFF", a80$)
-ElseIf sample(1).DifferenceFormulaFlag% And ConvertIsDifferenceFormulaElement(sample(1).DifferenceFormula$, sample(1).Elsyms$(i%), sample()) Then
+ElseIf sample(1).DifferenceFormulaFlag% And ConvertIsDifferenceFormulaElement(sample(1).DifferenceFormula$, sample(1).Elsyms$(i%)) Then
 msg$ = msg$ & Format$("FORM", a80$)
 ElseIf sample(1).StoichiometryElementFlag% And sample(1).StoichiometryElement$ = sample(1).Elsyms$(i%) Then
 msg$ = msg$ & Format$("STOI", a80$)

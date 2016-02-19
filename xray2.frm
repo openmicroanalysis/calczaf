@@ -471,6 +471,11 @@ Call MiscCopyList(Int(2), FormXRAY.ListXray)
 If ierror Then Exit Sub
 End Sub
 
+Private Sub CommandGraphSelected_Click()
+If Not DebugMode Then On Error Resume Next
+' Nothing to do here in CalcZAF/Standard
+End Sub
+
 Private Sub CommandPeriodic_Click()
 If Not DebugMode Then On Error Resume Next
 Call XrayGetKLMElements0

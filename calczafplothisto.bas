@@ -58,7 +58,6 @@ On Error GoTo CalcZAFHistogramError
 Dim i As Integer, k As Integer, m As Integer
 Dim n As Long
 Dim hstep As Single
-Dim smin As Single, smax As Single
 
 ' Calculate bucket width
 hstep! = (hmax! - hmin!) / (nbin% - 1)

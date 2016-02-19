@@ -653,7 +653,6 @@ Sub Penepma12PureReadMDB2(tTakeoff As Single, tKilovolt As Single, tEmitter As I
 ierror = False
 On Error GoTo Penepma12PureReadMDB2Error
 
-Dim i As Integer
 Dim nrec As Long
 
 Dim SQLQ As String

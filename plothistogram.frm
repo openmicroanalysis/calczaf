@@ -62,6 +62,14 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
+Private Sub CommandClipboard_Click()
+If Not DebugMode Then On Error Resume Next
+FormPlotHistoConc.Pesgo1.AllowExporting = True
+FormPlotHistoConc.Pesgo1.ExportImageLargeFont = False
+FormPlotHistoConc.Pesgo1.ExportImageDpi = 400
+Call FormPlotHistoConc.Pesgo1.PEcopybitmaptoclipboard(FormPlotHistoConc.Pesgo1.Width / 10, FormPlotHistoConc.Pesgo1.Height / 10)
+End Sub
+
 Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormPlotHistoConc

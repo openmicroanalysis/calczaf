@@ -456,14 +456,13 @@ ierror = True
 Exit Sub
 
 End Sub
-
 Sub MQOptionsExtractData(tForm As Form)
 ' Extract BS and x-ray intensities for a specified MQ output file
 
 ierror = False
 On Error GoTo MqOptionsExtractDataError
 
-Dim tfilenumber1 As Integer, tfilenumber2 As Integer, tfilenumber3 As Integer
+Dim tfilenumber As Integer
 
 Dim tfilename As String     ' input file
 Dim tfilename1 As String    ' input file (compound)
@@ -731,16 +730,16 @@ columnlabels$ = columnlabels$ & VbDquote$ & "A electron fraction" & VbDquote$ & 
 columnlabels$ = columnlabels$ & VbDquote$ & "B electron fraction" & VbDquote$ & VbComma$
 columnlabels$ = columnlabels$ & VbDquote$ & "C electron fraction" & VbDquote$ & VbComma$
 columnlabels$ = columnlabels$ & VbDquote$ & "D electron fraction" & VbDquote$ & VbComma$
-Open tfilename3$ For Append As tfilenumber3%
-Print #tfilenumber3%, columnlabels$
-Close tfilenumber3%
+Open tfilename3$ For Append As tfilenumber%
+Print #tfilenumber%, columnlabels$
+Close tfilenumber%
 initializedbse = True
 End If
 
 ' Write extracted (and calculated) data for BSE
-Open tfilename3$ For Append As tfilenumber3%
+Open tfilename3$ For Append As tfilenumber%
 tfilename$ = MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(tfilename1$))
-Print #tfilenumber3%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
+Print #tfilenumber%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
 & syms$(1) & VbComma$ & syms$(2) & VbComma$ & syms$(3) & VbComma$ & syms$(4) & VbComma$ _
 & MQOptionsFormat$(backscatter!) & VbComma$ & MQOptionsFormat$(massbse!) & VbComma$ & MQOptionsFormat$(elecbse!) & VbComma$ _
 & MQOptionsFormat$(masserror!) & VbComma$ & MQOptionsFormat$(elecerror!) & VbComma$ _
@@ -755,7 +754,7 @@ Print #tfilenumber3%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
 & MQOptionsFormat$(electron!(1)) & VbComma$ & MQOptionsFormat$(electron!(2)) & VbComma$ _
 & MQOptionsFormat$(electron!(3)) & VbComma$ & MQOptionsFormat$(electron!(4)) & VbComma$
 
-Close tfilenumber3%
+Close tfilenumber%
 
 Call IOWriteLog("MQ data from " & tfilename1$ & " extracted to " & tfilename3$)
 
@@ -798,16 +797,16 @@ columnlabels$ = columnlabels$ & VbDquote$ & "A electron fraction prediction erro
 columnlabels$ = columnlabels$ & VbDquote$ & "B electron fraction prediction error" & VbDquote$ & VbComma$
 columnlabels$ = columnlabels$ & VbDquote$ & "C electron fraction prediction error" & VbDquote$ & VbComma$
 columnlabels$ = columnlabels$ & VbDquote$ & "D electron fraction prediction error" & VbDquote$ & VbComma$
-Open tfilename3$ For Append As tfilenumber3%
-Print #tfilenumber3%, columnlabels$
-Close tfilenumber3%
+Open tfilename3$ For Append As tfilenumber%
+Print #tfilenumber%, columnlabels$
+Close tfilenumber%
 initializedxry = True
 End If
 
 ' Write extracted (and calculated) data
-Open tfilename3$ For Append As tfilenumber3%
+Open tfilename3$ For Append As tfilenumber%
 tfilename$ = MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(tfilename1$))
-Print #tfilenumber3%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
+Print #tfilenumber%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
 & syms$(1) & VbComma$ & syms$(2) & VbComma$ & syms$(3) & VbComma$ & syms$(4) & VbComma$ _
 & MQOptionsFormat$(generatedA!(1)) & VbComma$ & MQOptionsFormat$(generatedB!(1)) & VbComma$ _
 & MQOptionsFormat$(generatedC!(1)) & VbComma$ & MQOptionsFormat$(generatedD!(1)) & VbComma$ _
@@ -824,14 +823,14 @@ Print #tfilenumber3%, VbDquote$ & Mid$(tfilename$, 4) & VbDquote$ & VbComma$ _
 & MQOptionsFormat$(eerror!(1)) & VbComma$ & MQOptionsFormat$(eerror!(2)) & VbComma$ _
 & MQOptionsFormat$(eerror!(3)) & VbComma$ & MQOptionsFormat$(eerror!(4)) & VbComma$
 
-Close tfilenumber3%
+Close tfilenumber%
 
 Call IOWriteLog("MQ data from " & tfilename1$ & " extracted to " & tfilename3$)
 Exit Sub
 
 ' Errors
 MqOptionsExtractDataError:
-Close tfilenumber3%
+Close tfilenumber%
 MsgBox Error$, vbOKOnly + vbCritical, "MqOptionsExtractData"
 ierror = True
 Exit Sub

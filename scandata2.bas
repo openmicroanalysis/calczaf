@@ -152,7 +152,6 @@ ierror = False
 On Error GoTo ScanDataPlotOnPeak_PEError
 
 Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
-Dim txmin As Double, txmax As Double, tymin As Double, tymax As Double
 
 ' Determine min and max of graph
 xmin# = tGraph.ManualMinX
@@ -163,7 +162,7 @@ ymax# = tGraph.ManualMaxY
 
 ' Plot on-peak position
 If onpeak! <> 0# Then
-Call ScanDataPlotLine(tGraph, linecount&, CDbl(onpeak!), tymin#, CDbl(onpeak!), tymax#, False, True, Int(255), Int(0), Int(255), Int(0))   ' light green
+Call ScanDataPlotLine(tGraph, linecount&, CDbl(onpeak!), ymin#, CDbl(onpeak!), ymax#, False, True, Int(255), Int(0), Int(255), Int(0))   ' light green
 If ierror Then Exit Sub
 End If
 

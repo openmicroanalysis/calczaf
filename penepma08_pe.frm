@@ -1757,11 +1757,6 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub Text1_GotFocus()
-If Not DebugMode Then On Error Resume Next
-Call MiscSelectText(Screen.ActiveForm.ActiveControl)
-End Sub
-
 Private Sub ListAvailableStandards_Click()
 If Not DebugMode Then On Error Resume Next
 Call Penepma08ListStandard(Int(0), FormPENEPMA08_PE)
@@ -1782,7 +1777,6 @@ End Sub
 
 Private Sub OptionProduction_Click(Index As Integer)
 If Not DebugMode Then On Error Resume Next
-Dim i As Integer
 Call Penepma08LoadProduction(Index%, FormPENEPMA08_PE)
 If ierror Then Exit Sub
 ProductionIndex% = Index%
@@ -1872,12 +1866,12 @@ FormPENEPMA08_PE.TextEABS2(1).Enabled = True
 End If
 End Sub
 
-Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
 Dim fX As Double, fY As Double      ' last mouse position
 
 ' Get mouse position in data units
-Call MiscPlotTrack(Int(1), x!, Y!, fX#, fY#, FormPENEPMA08_PE.Pesgo1)
+Call MiscPlotTrack(Int(1), X!, Y!, fX#, fY#, FormPENEPMA08_PE.Pesgo1)
 If ierror Then Exit Sub
    
 ' Format graph mouse position

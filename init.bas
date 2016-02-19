@@ -1322,8 +1322,6 @@ Dim amsg As String
 Dim sLanguage As String
 Dim sLocaleD As String, sLocaleT As String
 
-Dim tProgramPath As String
-
 ' Check language
 sLanguage$ = MiscSystemGetLanguage()
 If ierror Then Exit Sub

@@ -101,10 +101,7 @@ End Sub
 
 Private Sub CommandZoom_Click()
 If Not DebugMode Then On Error Resume Next
-Call CLZoomFull(FormCLDISPLAY)
-If ierror Then Exit Sub
-Call CLDisplayRedraw
-If ierror Then Exit Sub
+FormCLDISPLAY.Pesgo1.PEactions = UNDO_ZOOM&
 End Sub
 
 Private Sub Form_Load()
