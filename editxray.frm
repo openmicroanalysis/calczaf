@@ -91,7 +91,7 @@ Begin VB.Form FormEDITXRAY
          Width           =   1215
       End
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
@@ -100,7 +100,7 @@ Begin VB.Form FormEDITXRAY
       Top             =   720
       Width           =   975
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -144,15 +144,15 @@ Call EditUpdateDataValue
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command1_Click()
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
-Call EditXraySave
-If ierror Then Exit Sub
 Unload FormEDITXRAY
 End Sub
 
-Private Sub Command2_Click()
+Private Sub CommandOK_Click()
 If Not DebugMode Then On Error Resume Next
+Call EditXraySave
+If ierror Then Exit Sub
 Unload FormEDITXRAY
 End Sub
 

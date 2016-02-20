@@ -42,7 +42,7 @@ Begin VB.Form FormRANGE
       TabIndex        =   35
       Top             =   9600
       Width           =   5535
-      Begin VB.CommandButton Command9 
+      Begin VB.CommandButton CommandCalculateElectronEnergyTransmitted 
          Caption         =   "Calculate Electron Energy Transmitted"
          Height          =   495
          Left            =   1800
@@ -106,8 +106,8 @@ Begin VB.Form FormRANGE
       TabIndex        =   29
       Top             =   7680
       Width           =   5535
-      Begin VB.CommandButton Command8 
-         Caption         =   "Calculate X-ray Transmission"
+      Begin VB.CommandButton CommandCalculateXrayTransmission2 
+         Caption         =   "Calculate X-Ray Transmission"
          Height          =   495
          Left            =   1800
          TabIndex        =   31
@@ -169,8 +169,8 @@ Begin VB.Form FormRANGE
          Top             =   600
          Width           =   1455
       End
-      Begin VB.CommandButton Command7 
-         Caption         =   "Calculate X-ray Transmission"
+      Begin VB.CommandButton CommandCalculateXrayTransmission 
+         Caption         =   "Calculate X-Ray Transmission"
          Height          =   495
          Left            =   1800
          TabIndex        =   19
@@ -217,7 +217,7 @@ Begin VB.Form FormRANGE
       TabIndex        =   12
       Top             =   120
       Width           =   5415
-      Begin VB.CommandButton Command2 
+      Begin VB.CommandButton CommandEnterCompositionAsStandard 
          Caption         =   "Enter Composition as Standard"
          Height          =   255
          Left            =   600
@@ -225,7 +225,7 @@ Begin VB.Form FormRANGE
          Top             =   840
          Width           =   4095
       End
-      Begin VB.CommandButton Command4 
+      Begin VB.CommandButton CommandEnterCompositionAsWeightString 
          Caption         =   "Enter Composition as Weight String"
          Height          =   255
          Left            =   600
@@ -234,9 +234,9 @@ Begin VB.Form FormRANGE
          Top             =   600
          Width           =   4095
       End
-      Begin VB.CommandButton Command3 
+      Begin VB.CommandButton CommandEnterCompositionAsFormulaString 
          BackColor       =   &H0000FFFF&
-         Caption         =   "Enter Composition as Atom String"
+         Caption         =   "Enter Composition as Formula String"
          Height          =   255
          Left            =   600
          Style           =   1  'Graphical
@@ -263,7 +263,7 @@ Begin VB.Form FormRANGE
       TabIndex        =   9
       Top             =   2160
       Width           =   5535
-      Begin VB.CommandButton Command5 
+      Begin VB.CommandButton CommandCalculateElectronRange 
          BackColor       =   &H0080FFFF&
          Caption         =   "Calculate Electron Range"
          Height          =   495
@@ -349,9 +349,9 @@ Begin VB.Form FormRANGE
       TabIndex        =   6
       Top             =   3960
       Width           =   5535
-      Begin VB.CommandButton Command6 
+      Begin VB.CommandButton CommandCalculateXrayRange 
          BackColor       =   &H0080FFFF&
-         Caption         =   "Calculate X-ray Range"
+         Caption         =   "Calculate X-Ray Range"
          Height          =   495
          Left            =   2880
          Style           =   1  'Graphical
@@ -429,7 +429,7 @@ Begin VB.Form FormRANGE
          Width           =   1215
       End
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H00008000&
       Caption         =   "Close"
       Default         =   -1  'True
@@ -514,30 +514,15 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
+Private Sub CommandCalculateElectronEnergyTransmitted_Click()
 If Not DebugMode Then On Error Resume Next
-Unload FormRANGE
-End Sub
-
-Private Sub Command2_Click()
-If Not DebugMode Then On Error Resume Next
-Call RangeGetComposition(Int(3))
+Call RangeSave
+If ierror Then Exit Sub
+Call RangeCalculate(Int(5))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command3_Click()
-If Not DebugMode Then On Error Resume Next
-Call RangeGetComposition(Int(1))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command4_Click()
-If Not DebugMode Then On Error Resume Next
-Call RangeGetComposition(Int(2))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command5_Click()
+Private Sub CommandCalculateElectronRange_Click()
 If Not DebugMode Then On Error Resume Next
 Call RangeSave
 If ierror Then Exit Sub
@@ -545,7 +530,7 @@ Call RangeCalculate(Int(1))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command6_Click()
+Private Sub CommandCalculateXrayRange_Click()
 If Not DebugMode Then On Error Resume Next
 Call RangeSave
 If ierror Then Exit Sub
@@ -553,7 +538,7 @@ Call RangeCalculate(Int(2))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command7_Click()
+Private Sub CommandCalculateXrayTransmission_Click()
 If Not DebugMode Then On Error Resume Next
 Call RangeSave
 If ierror Then Exit Sub
@@ -561,7 +546,7 @@ Call RangeCalculate(Int(3))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command8_Click()
+Private Sub CommandCalculateXrayTransmission2_Click()
 If Not DebugMode Then On Error Resume Next
 Call RangeSave
 If ierror Then Exit Sub
@@ -569,11 +554,26 @@ Call RangeCalculate(Int(4))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command9_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
-Call RangeSave
+Unload FormRANGE
+End Sub
+
+Private Sub CommandEnterCompositionAsFormulaString_Click()
+If Not DebugMode Then On Error Resume Next
+Call RangeGetComposition(Int(1))
 If ierror Then Exit Sub
-Call RangeCalculate(Int(5))
+End Sub
+
+Private Sub CommandEnterCompositionAsStandard_Click()
+If Not DebugMode Then On Error Resume Next
+Call RangeGetComposition(Int(3))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandEnterCompositionAsWeightString_Click()
+If Not DebugMode Then On Error Resume Next
+Call RangeGetComposition(Int(2))
 If ierror Then Exit Sub
 End Sub
 

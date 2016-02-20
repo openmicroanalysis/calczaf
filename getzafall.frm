@@ -56,7 +56,7 @@ Begin VB.Form FormGETZAFALL
       Top             =   2280
       Width           =   1335
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       BeginProperty Font 
@@ -75,7 +75,7 @@ Begin VB.Form FormGETZAFALL
       Top             =   720
       Width           =   1335
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -304,7 +304,7 @@ Option Explicit
 
 Private Sub CheckPenepmaKratioLimit_Click()
 If Not DebugMode Then On Error Resume Next
-If FormGETZAFALL.CheckPenepmaKratioLimit.value = vbChecked Then
+If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = True
 Else
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
@@ -312,23 +312,14 @@ End If
 End Sub
 
 Private Sub CheckUsePenepmaKratios_Click()
-If FormGETZAFALL.CheckUsePenepmaKratios.value = vbChecked Then
+If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked Then
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
 Else
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
 End If
 End Sub
 
-Private Sub Command1_Click()
-' User clicked OK in form GETZAFALL
-If Not DebugMode Then On Error Resume Next
-' Save the current correction method
-Call GetZAFAllSave
-If ierror Then Exit Sub
-Unload FormGETZAFALL
-End Sub
-
-Private Sub Command2_Click()
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormGETZAFALL
 icancelload = True
@@ -340,6 +331,14 @@ If Not DebugMode Then On Error Resume Next
 Call GetZAFAllLoadMAC
 If ierror Then Exit Sub
 FormMAC.Show vbModal
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+' Save the current correction method
+Call GetZAFAllSave
+If ierror Then Exit Sub
+Unload FormGETZAFALL
 End Sub
 
 Private Sub CommandOptions_Click()

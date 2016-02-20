@@ -23,7 +23,7 @@ Begin VB.Form FormFIND2
       Top             =   840
       Width           =   1335
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H00008000&
       Caption         =   "Close"
       BeginProperty Font 
@@ -79,10 +79,9 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormFIND2
-DoEvents
 ierror = True
 End Sub
 

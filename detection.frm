@@ -232,7 +232,7 @@ Begin VB.Form FormDETECTION
          Top             =   2520
          Width           =   1575
       End
-      Begin VB.CommandButton Command3 
+      Begin VB.CommandButton CommandPredictCountTime 
          BackColor       =   &H0080FFFF&
          Caption         =   "Predict Count Time To Detect a Specified Concentration"
          BeginProperty Font 
@@ -252,7 +252,7 @@ Begin VB.Form FormDETECTION
          Top             =   3120
          Width           =   5535
       End
-      Begin VB.CommandButton Command2 
+      Begin VB.CommandButton CommandPredictDetectionLimit 
          BackColor       =   &H0080FFFF&
          Caption         =   "Predict Detection Limit For a Specified Integration Time"
          BeginProperty Font 
@@ -439,17 +439,14 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command2_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
 Call DetectionSave
 If ierror Then Exit Sub
-Call DetectionCalculateConcentration
-If ierror Then Exit Sub
-Call DetectionPrint(Int(1))
-If ierror Then Exit Sub
+Unload FormDETECTION
 End Sub
 
-Private Sub Command3_Click()
+Private Sub CommandPredictCountTime_Click()
 If Not DebugMode Then On Error Resume Next
 Call DetectionSave
 If ierror Then Exit Sub
@@ -459,11 +456,14 @@ Call DetectionPrint(Int(2))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub CommandClose_Click()
+Private Sub CommandPredictDetectionLimit_Click()
 If Not DebugMode Then On Error Resume Next
 Call DetectionSave
 If ierror Then Exit Sub
-Unload FormDETECTION
+Call DetectionCalculateConcentration
+If ierror Then Exit Sub
+Call DetectionPrint(Int(1))
+If ierror Then Exit Sub
 End Sub
 
 Private Sub Form_Load()

@@ -13,7 +13,7 @@ Begin VB.Form FormPICTURESELECT
    ScaleHeight     =   630
    ScaleWidth      =   4770
    StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandCancel 
       Caption         =   "Cancel"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -57,7 +57,7 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormPICTURESELECT
 icancel = True

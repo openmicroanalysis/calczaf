@@ -478,7 +478,7 @@ Begin VB.Form FormSECONDARY
          Width           =   2295
       End
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H0000C000&
       Caption         =   "Close"
       BeginProperty Font 
@@ -706,13 +706,6 @@ Option Explicit
 Dim ImageX1 As Single, ImageY1 As Single
 Dim ImageX2 As Single, ImageY2 As Single
 
-Private Sub Command2_Click()
-If Not DebugMode Then On Error Resume Next
-Call SecondarySave
-If ierror Then Exit Sub
-Unload FormSECONDARY
-End Sub
-
 Private Sub CommandBrowse_Click()
 If Not DebugMode Then On Error Resume Next
 Call SecondaryBrowseFile(Int(1), FormSECONDARY)
@@ -754,6 +747,13 @@ If ierror Then Exit Sub
 Call CalcZAFCalculateExportAll(FormSECONDARY)
 UseSecondaryBoundaryFluorescenceCorrectionFlag = False
 If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandClose_Click()
+If Not DebugMode Then On Error Resume Next
+Call SecondarySave
+If ierror Then Exit Sub
+Unload FormSECONDARY
 End Sub
 
 Private Sub CommandCompositionAtom_Click()

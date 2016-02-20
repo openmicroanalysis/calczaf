@@ -127,7 +127,7 @@ Begin VB.Form FormCOND
          Width           =   1575
       End
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -139,7 +139,7 @@ Begin VB.Form FormCOND
       Top             =   120
       Width           =   1215
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
@@ -158,20 +158,17 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-' OK click
-If Not DebugMode Then On Error Resume Next
-' Save default analytical conditions
-Call CondSave
-If ierror Then Exit Sub
-Unload FormCOND
-End Sub
-
-Private Sub Command2_Click()
-' Cancel click
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormCOND
 icancelload = True
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+Call CondSave
+If ierror Then Exit Sub
+Unload FormCOND
 End Sub
 
 Private Sub Form_Load()

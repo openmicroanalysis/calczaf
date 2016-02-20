@@ -102,7 +102,7 @@ Begin VB.Form FormBINARY
          Width           =   5175
       End
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       BeginProperty Font 
@@ -121,7 +121,7 @@ Begin VB.Form FormBINARY
       Top             =   840
       Width           =   1215
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -427,21 +427,17 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-' User clicked OK in form BINARY
+Private Sub CommandCancel_Click()
+If Not DebugMode Then On Error Resume Next
+Unload FormBINARY
+End Sub
+
+Private Sub CommandOK_Click()
 If Not DebugMode Then On Error Resume Next
 ' Save the options
 Call CalcZAFBinarySave
 If ierror Then Exit Sub
 Unload FormBINARY
-DoEvents
-End Sub
-
-Private Sub Command2_Click()
-' User clicked Cancel in form BINARY
-If Not DebugMode Then On Error Resume Next
-Unload FormBINARY
-DoEvents
 End Sub
 
 Private Sub Form_Load()

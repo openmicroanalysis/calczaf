@@ -110,7 +110,7 @@ Begin VB.Form FormZAFELM
       Top             =   1200
       Width           =   1095
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
@@ -120,7 +120,7 @@ Begin VB.Form FormZAFELM
       Top             =   720
       Width           =   1095
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -356,18 +356,6 @@ FormZAFELM.OptionSpecified.Value = True
 End If
 End Sub
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-Call CalcZAFElementSave
-If ierror Then Exit Sub
-Unload FormZAFELM
-End Sub
-
-Private Sub Command2_Click()
-If Not DebugMode Then On Error Resume Next
-Unload FormZAFELM
-End Sub
-
 Private Sub CommandAddStandardsToRun_Click()
 ' Add standards to the current run
 If Not DebugMode Then On Error Resume Next
@@ -380,11 +368,23 @@ Call CalcZAFElementLoad2
 If ierror Then Exit Sub
 End Sub
 
+Private Sub CommandCancel_Click()
+If Not DebugMode Then On Error Resume Next
+Unload FormZAFELM
+End Sub
+
 Private Sub CommandDelete_Click()
 ' Delete element fields
 If Not DebugMode Then On Error Resume Next
 Call CalcZAFElementDelete
 If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+Call CalcZAFElementSave
+If ierror Then Exit Sub
+Unload FormZAFELM
 End Sub
 
 Private Sub Form_Load()

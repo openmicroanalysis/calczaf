@@ -98,7 +98,7 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   735
       End
    End
-   Begin VB.CommandButton Command9 
+   Begin VB.CommandButton CommandDisplayCalibrationPoints 
       BackColor       =   &H00C0FFFF&
       Caption         =   "Display Calibration Points"
       BeginProperty Font 
@@ -135,7 +135,7 @@ Begin VB.Form FormPICTURESNAP2
       TabIndex        =   32
       Top             =   8280
       Width           =   3135
-      Begin VB.CommandButton Command12 
+      Begin VB.CommandButton CommandMoveTo3 
          Caption         =   "Move To"
          Height          =   495
          Left            =   2280
@@ -144,7 +144,7 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   3120
          Width           =   735
       End
-      Begin VB.CommandButton Command8 
+      Begin VB.CommandButton CommandReadCurrentStageCoordinate3 
          Caption         =   "Read Current Stage Coordinate"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -188,7 +188,7 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   2040
          Width           =   975
       End
-      Begin VB.CommandButton Command7 
+      Begin VB.CommandButton CommandPickPixelCoordinate3 
          Caption         =   "Pick Pixel Coordinate on Picture"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -349,7 +349,7 @@ Begin VB.Form FormPICTURESNAP2
       Top             =   840
       Width           =   1575
    End
-   Begin VB.CommandButton Command6 
+   Begin VB.CommandButton CommandCalibratePicture 
       BackColor       =   &H0000FFFF&
       Caption         =   "Calibrate Picture"
       BeginProperty Font 
@@ -387,7 +387,7 @@ Begin VB.Form FormPICTURESNAP2
       TabIndex        =   20
       Top             =   4200
       Width           =   3135
-      Begin VB.CommandButton Command11 
+      Begin VB.CommandButton CommandMoveTo2 
          Caption         =   "Move To"
          Height          =   495
          Left            =   2160
@@ -396,7 +396,7 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   3120
          Width           =   735
       End
-      Begin VB.CommandButton Command4 
+      Begin VB.CommandButton CommandReadCurrentStageCoordinate2 
          Caption         =   "Read Current Stage Coordinate"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -442,7 +442,7 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   840
          Width           =   975
       End
-      Begin VB.CommandButton Command5 
+      Begin VB.CommandButton CommandPickPixelCoordinate2 
          Caption         =   "Pick Pixel Coordinate on Picture"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -563,7 +563,7 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   1815
       End
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H00008000&
       Caption         =   "Close"
       BeginProperty Font 
@@ -576,12 +576,12 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3480
+      Left            =   3360
       Style           =   1  'Graphical
       TabIndex        =   13
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1335
+      Width           =   1935
    End
    Begin VB.Frame Frame1 
       Caption         =   "Point #1 Calibration"
@@ -600,7 +600,7 @@ Begin VB.Form FormPICTURESNAP2
       TabIndex        =   12
       Top             =   120
       Width           =   3135
-      Begin VB.CommandButton Command10 
+      Begin VB.CommandButton CommandMoveTo1 
          Caption         =   "Move To"
          Height          =   495
          Left            =   2280
@@ -609,7 +609,7 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   3120
          Width           =   735
       End
-      Begin VB.CommandButton Command3 
+      Begin VB.CommandButton CommandReadCurrentStageCoordinate1 
          Caption         =   "Read Current Stage Coordinate"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -653,7 +653,7 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   2040
          Width           =   975
       End
-      Begin VB.CommandButton Command2 
+      Begin VB.CommandButton CommandPickPixelCoordinate1 
          Caption         =   "Pick Pixel Coordinate on Picture"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -822,81 +822,24 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-Unload FormPICTURESNAP2
-End Sub
-
-Private Sub Command10_Click()
-If Not DebugMode Then On Error Resume Next
-If Val(FormPICTURESNAP2.TextZStage1.Text) = 0# Then FormPICTURESNAP2.TextZStage1.Text = MiscAutoFormat$(RealTimeMotorPositions!(ZMotor%))
-Call DigitizeMovePosition(False, FormPICTURESNAP2.TextXStage1, FormPICTURESNAP2.TextYStage1, FormPICTURESNAP2.TextZStage1)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command11_Click()
-If Not DebugMode Then On Error Resume Next
-If Val(FormPICTURESNAP2.TextZStage2.Text) = 0# Then FormPICTURESNAP2.TextZStage2.Text = MiscAutoFormat$(RealTimeMotorPositions!(ZMotor%))
-Call DigitizeMovePosition(False, FormPICTURESNAP2.TextXStage2, FormPICTURESNAP2.TextYStage2, FormPICTURESNAP2.TextZStage2)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command12_Click()
-If Not DebugMode Then On Error Resume Next
-If Val(FormPICTURESNAP2.TextZStage3.Text) = 0# Then FormPICTURESNAP2.TextZStage3.Text = MiscAutoFormat$(RealTimeMotorPositions!(ZMotor%))
-Call DigitizeMovePosition(False, FormPICTURESNAP2.TextXStage3, FormPICTURESNAP2.TextYStage3, FormPICTURESNAP2.TextZStage3)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command2_Click()
-If Not DebugMode Then On Error Resume Next
-Call PictureSnapCalibratePoint(Int(1))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command3_Click()
-If Not DebugMode Then On Error Resume Next
-Call PictureSnapCalibratePointStage(Int(4))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command4_Click()
-If Not DebugMode Then On Error Resume Next
-Call PictureSnapCalibratePointStage(Int(5))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command5_Click()
-If Not DebugMode Then On Error Resume Next
-Call PictureSnapCalibratePoint(Int(2))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command6_Click()
+Private Sub CommandCalibratePicture_Click()
 If Not DebugMode Then On Error Resume Next
 Call PictureSnapCalibrate(Int(0))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command7_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
-Call PictureSnapCalibratePoint(Int(3))
-If ierror Then Exit Sub
+Unload FormPICTURESNAP2
 End Sub
 
-Private Sub Command8_Click()
-If Not DebugMode Then On Error Resume Next
-Call PictureSnapCalibratePointStage(Int(6))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command9_Click()
+Private Sub CommandDisplayCalibrationPoints_Click()
 If Not DebugMode Then On Error Resume Next
 PictureSnapDisplayCalibrationPointsFlag = Not PictureSnapDisplayCalibrationPointsFlag
 If PictureSnapDisplayCalibrationPointsFlag Then
-FormPICTURESNAP2.Command9.Caption = "Do Not Display Calibration Points"
+FormPICTURESNAP2.CommandDisplayCalibrationPoints.Caption = "Do Not Display Calibration Points"
 Else
-FormPICTURESNAP2.Command9.Caption = "Display Calibration Points"
+FormPICTURESNAP2.CommandDisplayCalibrationPoints.Caption = "Display Calibration Points"
 End If
 FormPICTURESNAP.Picture2.Refresh
 If FormPICTURESNAP3.Visible Then FormPICTURESNAP3.Image1.Refresh
@@ -932,6 +875,63 @@ Light_Reflected_Transmitted& = 1
 Call RealTimeSetLightMode(Int(1))
 FormPICTURESNAP2.CommandLightModeReflected.BackColor = vbButtonFace
 FormPICTURESNAP2.CommandLightModeTransmitted.BackColor = vbWhite
+End Sub
+
+Private Sub CommandMoveTo1_Click()
+If Not DebugMode Then On Error Resume Next
+If Val(FormPICTURESNAP2.TextZStage1.Text) = 0# Then FormPICTURESNAP2.TextZStage1.Text = MiscAutoFormat$(RealTimeMotorPositions!(ZMotor%))
+Call DigitizeMovePosition(False, FormPICTURESNAP2.TextXStage1, FormPICTURESNAP2.TextYStage1, FormPICTURESNAP2.TextZStage1)
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandMoveTo2_Click()
+If Not DebugMode Then On Error Resume Next
+If Val(FormPICTURESNAP2.TextZStage2.Text) = 0# Then FormPICTURESNAP2.TextZStage2.Text = MiscAutoFormat$(RealTimeMotorPositions!(ZMotor%))
+Call DigitizeMovePosition(False, FormPICTURESNAP2.TextXStage2, FormPICTURESNAP2.TextYStage2, FormPICTURESNAP2.TextZStage2)
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandMoveTo3_Click()
+If Not DebugMode Then On Error Resume Next
+If Val(FormPICTURESNAP2.TextZStage3.Text) = 0# Then FormPICTURESNAP2.TextZStage3.Text = MiscAutoFormat$(RealTimeMotorPositions!(ZMotor%))
+Call DigitizeMovePosition(False, FormPICTURESNAP2.TextXStage3, FormPICTURESNAP2.TextYStage3, FormPICTURESNAP2.TextZStage3)
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandPickPixelCoordinate1_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapCalibratePoint(Int(1))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandPickPixelCoordinate2_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapCalibratePoint(Int(2))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandPickPixelCoordinate3_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapCalibratePoint(Int(3))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandReadCurrentStageCoordinate1_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapCalibratePointStage(Int(4))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandReadCurrentStageCoordinate2_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapCalibratePointStage(Int(5))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandReadCurrentStageCoordinate3_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapCalibratePointStage(Int(6))
+If ierror Then Exit Sub
 End Sub
 
 Private Sub Form_Activate()

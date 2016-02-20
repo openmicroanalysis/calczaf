@@ -23,7 +23,7 @@ Begin VB.Form FormABOUT
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   11865
    ScaleWidth      =   9495
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -148,7 +148,7 @@ Private Const clrLinkActive& = vbBlue
 Private Const clrLinkHot& = vbRed
 'Private Const clrLinkInactive& = vbBlack
 
-Private Sub Command1_Click()
+Private Sub CommandOK_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormABOUT
 End Sub

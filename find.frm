@@ -22,7 +22,7 @@ Begin VB.Form FormFIND
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   6465
    ScaleWidth      =   6345
-   Begin VB.CommandButton Command4 
+   Begin VB.CommandButton CommandFilterStandardList 
       Caption         =   "Filter Std List"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -88,7 +88,7 @@ Begin VB.Form FormFIND
       TabIndex        =   9
       Top             =   2160
       Width           =   6135
-      Begin VB.CommandButton Command3 
+      Begin VB.CommandButton CommandSaveStandardsToClipboard 
          Caption         =   "Save Standards Found to Clipboard"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -126,7 +126,7 @@ Begin VB.Form FormFIND
          Width           =   5895
       End
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H00008000&
       Cancel          =   -1  'True
       Caption         =   "Close"
@@ -147,7 +147,7 @@ Begin VB.Form FormFIND
       TabIndex        =   0
       Top             =   120
       Width           =   3855
-      Begin VB.CommandButton Command2 
+      Begin VB.CommandButton CommandFindStandards 
          BackColor       =   &H0000FFFF&
          Caption         =   "Find Standards"
          Default         =   -1  'True
@@ -228,29 +228,28 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormFIND
-DoEvents
 End Sub
 
-Private Sub Command2_Click()
+Private Sub CommandFilterStandardList_Click()
+If Not DebugMode Then On Error Resume Next
+Screen.MousePointer = vbHourglass
+Call FindStandardsFilter
+Screen.MousePointer = vbDefault
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandFindStandards_Click()
 If Not DebugMode Then On Error Resume Next
 Call FindStandards(FormFIND.ListStandards)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command3_Click()
+Private Sub CommandSaveStandardsToClipboard_Click()
 If Not DebugMode Then On Error Resume Next
 Call MiscCopyList(Int(1), FormFIND.ListStandards)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command4_Click()
-If Not DebugMode Then On Error Resume Next
-Screen.MousePointer = vbHourglass
-Call FindStandardsFilter
-Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End Sub
 

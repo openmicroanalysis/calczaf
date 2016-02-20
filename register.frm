@@ -23,7 +23,7 @@ Begin VB.Form FormREGISTER
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   6360
    ScaleWidth      =   5745
-   Begin VB.CommandButton Command3 
+   Begin VB.CommandButton CommandCancel 
       Caption         =   "Cancel"
       Height          =   375
       Left            =   4320
@@ -31,7 +31,7 @@ Begin VB.Form FormREGISTER
       Top             =   720
       Width           =   1335
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandHelp 
       Caption         =   "Help"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -48,7 +48,7 @@ Begin VB.Form FormREGISTER
       Top             =   2400
       Width           =   1335
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandRegister 
       BackColor       =   &H0000FFFF&
       Caption         =   "Register"
       Default         =   -1  'True
@@ -141,22 +141,22 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
-Call RegisterSave
-If ierror Then Exit Sub
-Unload FormREGISTER
+End
 End Sub
 
-Private Sub Command2_Click()
+Private Sub CommandHelp_Click()
 If Not DebugMode Then On Error Resume Next
 Call MiscFormLoadHelp(FormREGISTER.HelpContextID)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command3_Click()
+Private Sub CommandRegister_Click()
 If Not DebugMode Then On Error Resume Next
-End
+Call RegisterSave
+If ierror Then Exit Sub
+Unload FormREGISTER
 End Sub
 
 Private Sub Form_Activate()

@@ -616,7 +616,7 @@ Begin VB.Form FormGETZAF
          Width           =   5295
       End
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   495
@@ -626,7 +626,7 @@ Begin VB.Form FormGETZAF
       Top             =   120
       Width           =   1335
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -807,17 +807,15 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-' User clicked OK in form GETZAF
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
-' Save the current ZAF settings
-Call GetZAFSave
-If ierror Then Exit Sub
 Unload FormGETZAF
 End Sub
 
-Private Sub Command2_Click()
+Private Sub CommandOK_Click()
 If Not DebugMode Then On Error Resume Next
+Call GetZAFSave
+If ierror Then Exit Sub
 Unload FormGETZAF
 End Sub
 

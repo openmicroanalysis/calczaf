@@ -57,7 +57,7 @@ Begin VB.Form FormTEMPERATURE
          Top             =   1440
          Width           =   1215
       End
-      Begin VB.CommandButton Command5 
+      Begin VB.CommandButton CommandCalculateTemperatureRise 
          BackColor       =   &H0080FFFF&
          Caption         =   "Calculate Temperature Rise"
          Height          =   615
@@ -193,7 +193,7 @@ Begin VB.Form FormTEMPERATURE
          Width           =   1215
       End
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H00008000&
       Caption         =   "Close"
       Default         =   -1  'True
@@ -249,19 +249,19 @@ If Not DebugMode Then On Error Resume Next
 FormTEMPERATURE.TextThermalConductivity.Text = FormTEMPERATURE.ComboThermalConductivity.ItemData(FormTEMPERATURE.ComboThermalConductivity.ListIndex) / MILLIWATTSPERWATT&
 End Sub
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-Call TemperatureSave
-If ierror Then Exit Sub
-Unload FormTEMPERATURE
-End Sub
-
-Private Sub Command5_Click()
+Private Sub CommandCalculateTemperatureRise_Click()
 If Not DebugMode Then On Error Resume Next
 Call TemperatureSave
 If ierror Then Exit Sub
 Call TemperatureCalculate
 If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandClose_Click()
+If Not DebugMode Then On Error Resume Next
+Call TemperatureSave
+If ierror Then Exit Sub
+Unload FormTEMPERATURE
 End Sub
 
 Private Sub Form_Load()

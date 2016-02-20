@@ -41,7 +41,7 @@ Begin VB.Form FormEMP
       Visible         =   0   'False
       Width           =   1215
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -53,7 +53,7 @@ Begin VB.Form FormEMP
       Top             =   5400
       Width           =   1335
    End
-   Begin VB.CommandButton Command4 
+   Begin VB.CommandButton CommandDeleteFromRun 
       Caption         =   "Delete From Run"
       Height          =   375
       Left            =   6000
@@ -63,7 +63,7 @@ Begin VB.Form FormEMP
       Top             =   3840
       Width           =   2055
    End
-   Begin VB.CommandButton Command3 
+   Begin VB.CommandButton CommandAddToRun 
       BackColor       =   &H0000FFFF&
       Caption         =   "Add To Run >>"
       Height          =   495
@@ -111,7 +111,7 @@ Begin VB.Form FormEMP
       Top             =   720
       Width           =   6735
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   495
@@ -277,32 +277,31 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-Unload FormEMP
-icancelload = True
-End Sub
-
-Private Sub Command2_Click()
-' OK click
-If Not DebugMode Then On Error Resume Next
-Call EmpSave
-If ierror Then Exit Sub
-Unload FormEMP
-End Sub
-
-Private Sub Command3_Click()
+Private Sub CommandAddToRun_Click()
 ' Load the selected value
 If Not DebugMode Then On Error Resume Next
 Call EmpAddEmp
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command4_Click()
+Private Sub CommandCancel_Click()
+If Not DebugMode Then On Error Resume Next
+Unload FormEMP
+icancelload = True
+End Sub
+
+Private Sub CommandDeleteFromRun_Click()
 ' Delete a specified empirical AMC/APF
 If Not DebugMode Then On Error Resume Next
 Call EmpDeleteEmp
 If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+Call EmpSave
+If ierror Then Exit Sub
+Unload FormEMP
 End Sub
 
 Private Sub Form_Load()

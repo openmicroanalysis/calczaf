@@ -170,7 +170,7 @@ Begin VB.Form FormXRAY
       TabIndex        =   9
       Top             =   120
       Width           =   6135
-      Begin VB.CommandButton Command5 
+      Begin VB.CommandButton CommandCopySelectedToClipboard 
          Caption         =   "Copy Selected to Clipboard"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -188,7 +188,7 @@ Begin VB.Form FormXRAY
          Top             =   7680
          Width           =   2655
       End
-      Begin VB.CommandButton Command4 
+      Begin VB.CommandButton CommandCopyToClipboard 
          Caption         =   "Copy to Clipboard"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -207,7 +207,7 @@ Begin VB.Form FormXRAY
          Width           =   2655
       End
       Begin VB.ListBox ListXray 
-         Height          =   5910
+         Height          =   6105
          Left            =   120
          MultiSelect     =   2  'Extended
          TabIndex        =   10
@@ -228,10 +228,10 @@ Begin VB.Form FormXRAY
             Strikethrough   =   0   'False
          EndProperty
          Height          =   855
-         Left            =   360
+         Left            =   120
          TabIndex        =   23
          Top             =   6720
-         Width           =   5655
+         Width           =   5895
       End
       Begin VB.Label Label9 
          Alignment       =   2  'Center
@@ -289,7 +289,7 @@ Begin VB.Form FormXRAY
          Width           =   1215
       End
    End
-   Begin VB.CommandButton Command3 
+   Begin VB.CommandButton CommandLoadNewRange 
       Caption         =   "Load New Range"
       Height          =   495
       Left            =   6360
@@ -323,7 +323,7 @@ Begin VB.Form FormXRAY
       Top             =   8040
       Width           =   1575
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H0000C000&
       Cancel          =   -1  'True
       Caption         =   "Close"
@@ -445,35 +445,32 @@ Call XraySpecifyRange(Int(2))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command1_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormXRAY
 End Sub
 
-Private Sub Command3_Click()
-' Load new xray range from xray database
-If Not DebugMode Then On Error Resume Next
-Call XrayLoadNewRange
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command4_Click()
-' Copy Xray List
-If Not DebugMode Then On Error Resume Next
-Call MiscCopyList(Int(1), FormXRAY.ListXray)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command5_Click()
-' Copy Xray List (selected only)
+Private Sub CommandCopySelectedToClipboard_Click()
 If Not DebugMode Then On Error Resume Next
 Call MiscCopyList(Int(2), FormXRAY.ListXray)
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandCopyToClipboard_Click()
+If Not DebugMode Then On Error Resume Next
+Call MiscCopyList(Int(1), FormXRAY.ListXray)
 If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandGraphSelected_Click()
 If Not DebugMode Then On Error Resume Next
 ' Nothing to do here in CalcZAF/Standard
+End Sub
+
+Private Sub CommandLoadNewRange_Click()
+If Not DebugMode Then On Error Resume Next
+Call XrayLoadNewRange
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandPeriodic_Click()

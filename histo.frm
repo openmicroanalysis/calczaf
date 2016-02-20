@@ -104,7 +104,7 @@ Begin VB.Form FormHISTO
          Width           =   2415
       End
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       BeginProperty Font 
@@ -123,7 +123,7 @@ Begin VB.Form FormHISTO
       Top             =   720
       Width           =   1095
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -153,8 +153,12 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-' User clicked OK in form HISTO
+Private Sub CommandCancel_Click()
+If Not DebugMode Then On Error Resume Next
+Unload FormHISTO
+End Sub
+
+Private Sub CommandOK_Click()
 If Not DebugMode Then On Error Resume Next
 ' Save the options
 Call CalcZAFHistogramSave
@@ -164,13 +168,6 @@ DoEvents
 ' Plot histogram
 Call CalcZAFPlotHistogram(Int(0))
 If ierror Then Exit Sub
-End Sub
-
-Private Sub Command2_Click()
-' User clicked Cancel in form HISTO
-If Not DebugMode Then On Error Resume Next
-Unload FormHISTO
-DoEvents
 End Sub
 
 Private Sub Form_Load()

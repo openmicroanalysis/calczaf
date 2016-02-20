@@ -235,7 +235,7 @@ Begin VB.Form FormZAFOPT
          Width           =   1095
       End
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
@@ -245,7 +245,7 @@ Begin VB.Form FormZAFOPT
       Top             =   720
       Width           =   975
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -558,21 +558,21 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
+Private Sub CommandBrowseHyperspectralEDSData_Click()
+If Not DebugMode Then On Error Resume Next
+' Not implemented yet
+End Sub
+
+Private Sub CommandCancel_Click()
+If Not DebugMode Then On Error Resume Next
+Unload FormZAFOPT
+End Sub
+
+Private Sub CommandOK_Click()
 If Not DebugMode Then On Error Resume Next
 Call ZAFOptionSave
 If ierror Then Exit Sub
 Unload FormZAFOPT
-End Sub
-
-Private Sub Command2_Click()
-If Not DebugMode Then On Error Resume Next
-Unload FormZAFOPT
-End Sub
-
-Private Sub CommandBrowseHyperspectralEDSData_Click()
-If Not DebugMode Then On Error Resume Next
-' Not implemented yet
 End Sub
 
 Private Sub Form_Load()

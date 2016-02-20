@@ -90,7 +90,7 @@ Begin VB.Form FormADDSTD
       Top             =   3480
       Width           =   1695
    End
-   Begin VB.CommandButton Command4 
+   Begin VB.CommandButton CommandRemoveStandardFromRun 
       Caption         =   "<< Remove Standard from Run"
       Height          =   375
       Left            =   3840
@@ -100,7 +100,7 @@ Begin VB.Form FormADDSTD
       Top             =   3840
       Width           =   2775
    End
-   Begin VB.CommandButton Command3 
+   Begin VB.CommandButton CommandAddStandardToRun 
       BackColor       =   &H0000FFFF&
       Caption         =   "Add Standard To Run >>"
       Height          =   495
@@ -133,7 +133,7 @@ Begin VB.Form FormADDSTD
       Top             =   360
       Width           =   5055
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
@@ -143,7 +143,7 @@ Begin VB.Form FormADDSTD
       Top             =   3840
       Width           =   1335
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -247,35 +247,19 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-' Save standards to add to run
-If Not DebugMode Then On Error Resume Next
-Call AddStdSave
-If ierror Then Exit Sub
-Unload FormADDSTD
-End Sub
-
-Private Sub Command2_Click()
-' User clicked cancel in FormADDSTD
-If Not DebugMode Then On Error Resume Next
-Unload FormADDSTD
-Call AddStdCancel   ' reload the original standards
-'If ierror Then Exit Sub    ' do not exit on error
-icancelload = True
-End Sub
-
-Private Sub Command3_Click()
+Private Sub CommandAddStandardToRun_Click()
 ' Add the selected standard to the run
 If Not DebugMode Then On Error Resume Next
 Call AddStdAdd
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command4_Click()
-' Remove the selected standard to the run
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
-Call AddStdRemove
-If ierror Then Exit Sub
+Unload FormADDSTD
+Call AddStdCancel   ' reload the original standards
+'If ierror Then Exit Sub    ' do not exit on error
+icancelload = True
 End Sub
 
 Private Sub CommandFindNextNumber_Click()
@@ -293,6 +277,20 @@ End Sub
 Private Sub CommandHelpAddStd_Click()
 If Not DebugMode Then On Error Resume Next
 Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=15.0")
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+Call AddStdSave
+If ierror Then Exit Sub
+Unload FormADDSTD
+End Sub
+
+Private Sub CommandRemoveStandardFromRun_Click()
+' Remove the selected standard to the run
+If Not DebugMode Then On Error Resume Next
+Call AddStdRemove
 If ierror Then Exit Sub
 End Sub
 

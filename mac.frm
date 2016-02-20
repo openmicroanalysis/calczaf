@@ -23,7 +23,7 @@ Begin VB.Form FormMAC
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   2490
    ScaleWidth      =   7230
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
@@ -33,7 +33,7 @@ Begin VB.Form FormMAC
       Top             =   720
       Width           =   1215
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -134,18 +134,17 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-' Save MAC selections
+Private Sub CommandCancel_Click()
+If Not DebugMode Then On Error Resume Next
+Unload FormMAC
+icancelload = True
+End Sub
+
+Private Sub CommandOK_Click()
 If Not DebugMode Then On Error Resume Next
 Call GetZAFAllSaveMAC
 If ierror Then Exit Sub
 Unload FormMAC
-End Sub
-
-Private Sub Command2_Click()
-If Not DebugMode Then On Error Resume Next
-Unload FormMAC
-icancelload = True
 End Sub
 
 Private Sub Form_Load()

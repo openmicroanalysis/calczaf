@@ -14,7 +14,7 @@ Begin VB.Form FormGETPTC
    ScaleWidth      =   12825
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       BeginProperty Font 
@@ -33,7 +33,7 @@ Begin VB.Form FormGETPTC
       Top             =   720
       Width           =   1575
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -398,15 +398,7 @@ If Not DebugMode Then On Error Resume Next
 TextChanged = True
 End Sub
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-If TextChanged Then FormGETPTC.CheckUsePTC.value = vbChecked
-Call GetPTCSave
-If ierror Then Exit Sub
-Unload FormGETPTC
-End Sub
-
-Private Sub Command2_Click()
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormGETPTC
 icancelload = True
@@ -422,6 +414,14 @@ Private Sub CommandHelpOnThinFilms_Click()
 If Not DebugMode Then On Error Resume Next
 Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=111.0")
 If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+If TextChanged Then FormGETPTC.CheckUsePTC.Value = vbChecked
+Call GetPTCSave
+If ierror Then Exit Sub
+Unload FormGETPTC
 End Sub
 
 Private Sub Form_Activate()

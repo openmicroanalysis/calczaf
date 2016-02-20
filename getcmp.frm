@@ -257,7 +257,7 @@ Begin VB.Form FormGETCMP
          Width           =   2055
       End
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Appearance      =   0  'Flat
       Cancel          =   -1  'True
       Caption         =   "Cancel"
@@ -268,7 +268,7 @@ Begin VB.Form FormGETCMP
       Top             =   840
       Width           =   1455
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       Appearance      =   0  'Flat
       BackColor       =   &H0000C000&
       Caption         =   "OK"
@@ -488,20 +488,6 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-' User clicked OK in Form GETCMP
-If Not DebugMode Then On Error Resume Next
-Call GetCmpSaveAll
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command2_Click()
-If Not DebugMode Then On Error Resume Next
-Unload FormGETCMP
-DoEvents
-ierror = True
-End Sub
-
 Private Sub CommandAddCR_Click()
 If Not DebugMode Then On Error Resume Next
 Call MiscAddCRToText(FormGETCMP.TextDescription)
@@ -512,6 +498,12 @@ Private Sub CommandCalculateDensity_Click()
 If Not DebugMode Then On Error Resume Next
 Call GetCmpCalculateDensity
 If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandCancel_Click()
+If Not DebugMode Then On Error Resume Next
+Unload FormGETCMP
+ierror = True
 End Sub
 
 Private Sub CommandDeleteCLSpectrum_Click()
@@ -554,6 +546,12 @@ End Sub
 Private Sub CommandImportEDSSpectra_Click()
 If Not DebugMode Then On Error Resume Next
 Call GetCmpImportSpectrum(Int(0), FormGETCMP)
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+Call GetCmpSaveAll
 If ierror Then Exit Sub
 End Sub
 

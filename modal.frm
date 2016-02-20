@@ -30,7 +30,7 @@ Begin VB.Form FormMODAL
       TabIndex        =   26
       Top             =   3240
       Width           =   3615
-      Begin VB.CommandButton Command11 
+      Begin VB.CommandButton CommandUpdatePhase 
          BackColor       =   &H00C0FFFF&
          Caption         =   "Update Phase"
          Height          =   375
@@ -104,7 +104,7 @@ Begin VB.Form FormMODAL
          Width           =   3255
       End
    End
-   Begin VB.CommandButton Command3 
+   Begin VB.CommandButton CommandStart 
       BackColor       =   &H0000FFFF&
       Caption         =   "Start"
       Height          =   495
@@ -131,7 +131,7 @@ Begin VB.Form FormMODAL
          Top             =   1440
          Width           =   5655
       End
-      Begin VB.CommandButton Command4 
+      Begin VB.CommandButton CommandBrowseOutputDataFile 
          BackColor       =   &H00C0C0C0&
          Caption         =   "Browse"
          Height          =   375
@@ -141,7 +141,7 @@ Begin VB.Form FormMODAL
          Top             =   1320
          Width           =   1095
       End
-      Begin VB.CommandButton Command1 
+      Begin VB.CommandButton CommandBrowseInputDataFile 
          BackColor       =   &H00C0C0C0&
          Caption         =   "Browse"
          Height          =   375
@@ -204,7 +204,7 @@ Begin VB.Form FormMODAL
          Top             =   1200
          Width           =   3252
       End
-      Begin VB.CommandButton Command12 
+      Begin VB.CommandButton CommandUpdateGroup 
          BackColor       =   &H00C0FFFF&
          Caption         =   "Update Group"
          Height          =   375
@@ -242,7 +242,7 @@ Begin VB.Form FormMODAL
          Width           =   3255
       End
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H0000C000&
       Caption         =   "Close"
       Default         =   -1  'True
@@ -262,7 +262,7 @@ Begin VB.Form FormMODAL
       TabIndex        =   0
       Top             =   120
       Width           =   5895
-      Begin VB.CommandButton Command10 
+      Begin VB.CommandButton CommandRemoveStandard 
          Caption         =   "Remove"
          Height          =   255
          Left            =   3960
@@ -271,7 +271,7 @@ Begin VB.Form FormMODAL
          Top             =   2520
          Width           =   1815
       End
-      Begin VB.CommandButton Command9 
+      Begin VB.CommandButton CommandAddStandard 
          BackColor       =   &H00C0FFFF&
          Caption         =   "Add"
          Height          =   255
@@ -282,7 +282,7 @@ Begin VB.Form FormMODAL
          Top             =   2280
          Width           =   1815
       End
-      Begin VB.CommandButton Command8 
+      Begin VB.CommandButton CommandDeletePhase 
          Caption         =   "Delete"
          Height          =   255
          Left            =   2040
@@ -291,7 +291,7 @@ Begin VB.Form FormMODAL
          Top             =   2520
          Width           =   1815
       End
-      Begin VB.CommandButton Command7 
+      Begin VB.CommandButton CommandNewPhase 
          BackColor       =   &H00C0FFFF&
          Caption         =   "New"
          Height          =   255
@@ -302,7 +302,7 @@ Begin VB.Form FormMODAL
          Top             =   2280
          Width           =   1815
       End
-      Begin VB.CommandButton Command6 
+      Begin VB.CommandButton CommandDeleteGroup 
          Caption         =   "Delete"
          Height          =   255
          Left            =   120
@@ -311,7 +311,7 @@ Begin VB.Form FormMODAL
          Top             =   2520
          Width           =   1815
       End
-      Begin VB.CommandButton Command5 
+      Begin VB.CommandButton CommandNewGroup 
          BackColor       =   &H00C0FFFF&
          Caption         =   "New"
          Height          =   255
@@ -387,38 +387,62 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
+Private Sub CommandAddStandard_Click()
+If Not DebugMode Then On Error Resume Next
+Call ModalStandardAdd
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandBrowseInputDataFile_Click()
 If Not DebugMode Then On Error Resume Next
 Call ModalGetInputDataFile(FormMODAL)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command10_Click()
+Private Sub CommandBrowseOutputDataFile_Click()
 If Not DebugMode Then On Error Resume Next
-Call ModalStandardRemove
+Call ModalGetOutputDataFile(FormMODAL)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command11_Click()
-If Not DebugMode Then On Error Resume Next
-Call ModalSaveOptionsPhase
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command12_Click()
-If Not DebugMode Then On Error Resume Next
-Call ModalSaveOptionsGroup
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command2_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
 Call ModalSaveForm
 If ierror Then Exit Sub
 Unload FormMODAL
 End Sub
 
-Private Sub Command3_Click()
+Private Sub CommandDeleteGroup_Click()
+If Not DebugMode Then On Error Resume Next
+Call ModalGroupDelete
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandDeletePhase_Click()
+If Not DebugMode Then On Error Resume Next
+Call ModalPhaseDelete
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandNewGroup_Click()
+If Not DebugMode Then On Error Resume Next
+Call ModalGroupNew
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandNewPhase_Click()
+If Not DebugMode Then On Error Resume Next
+Call ModalPhaseNew
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandRemoveStandard_Click()
+If Not DebugMode Then On Error Resume Next
+Call ModalStandardRemove
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandStart_Click()
 If Not DebugMode Then On Error Resume Next
 Call ModalSaveForm
 If ierror Then Exit Sub
@@ -426,39 +450,15 @@ Call ModalStartModal
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command4_Click()
+Private Sub CommandUpdateGroup_Click()
 If Not DebugMode Then On Error Resume Next
-Call ModalGetOutputDataFile(FormMODAL)
+Call ModalSaveOptionsGroup
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command5_Click()
+Private Sub CommandUpdatePhase_Click()
 If Not DebugMode Then On Error Resume Next
-Call ModalGroupNew
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command6_Click()
-If Not DebugMode Then On Error Resume Next
-Call ModalGroupDelete
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command7_Click()
-If Not DebugMode Then On Error Resume Next
-Call ModalPhaseNew
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command8_Click()
-If Not DebugMode Then On Error Resume Next
-Call ModalPhaseDelete
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command9_Click()
-If Not DebugMode Then On Error Resume Next
-Call ModalStandardAdd
+Call ModalSaveOptionsPhase
 If ierror Then Exit Sub
 End Sub
 

@@ -23,7 +23,7 @@ Begin VB.Form FormSETCMP
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   2130
    ScaleWidth      =   7305
-   Begin VB.CommandButton Command3 
+   Begin VB.CommandButton CommandClear 
       Caption         =   "Clear"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -41,7 +41,7 @@ Begin VB.Form FormSETCMP
       Top             =   1560
       Width           =   1095
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
@@ -51,7 +51,7 @@ Begin VB.Form FormSETCMP
       Top             =   720
       Width           =   1095
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -213,40 +213,29 @@ End Sub
 
 Private Sub ComboElement_Click()
 If Not DebugMode Then On Error Resume Next
-' Update
 Call GetCmpSetCmpUpdateCombo
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-
-' User clicked OK
-Call GetCmpSetCmpSave
-If ierror Then Exit Sub
-
-Unload FormSETCMP
-DoEvents
-
-' Remove blank rows
-Call GetCmpSave
-If ierror Then Exit Sub
-
-' Reload the entire grid in case an element was deleted
-Call GetCmpLoadGrid
-If ierror Then Exit Sub
-
-End Sub
-
-Private Sub Command2_Click()
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormSETCMP
-DoEvents
 End Sub
 
-Private Sub Command3_Click()
+Private Sub CommandClear_Click()
 If Not DebugMode Then On Error Resume Next
 Call GetCmpSetCmpClear
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+Call GetCmpSetCmpSave
+If ierror Then Exit Sub
+Unload FormSETCMP
+Call GetCmpSave
+If ierror Then Exit Sub
+Call GetCmpLoadGrid
 If ierror Then Exit Sub
 End Sub
 

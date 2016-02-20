@@ -50,7 +50,7 @@ Begin VB.Form FormMATCH
       TabIndex        =   3
       Top             =   120
       Width           =   4215
-      Begin VB.CommandButton Command3 
+      Begin VB.CommandButton CommandMatchStandards 
          BackColor       =   &H0000FFFF&
          Caption         =   "Match Standards"
          Default         =   -1  'True
@@ -63,7 +63,7 @@ Begin VB.Form FormMATCH
          Top             =   1800
          Width           =   1695
       End
-      Begin VB.CommandButton Command2 
+      Begin VB.CommandButton CommandEnterUnknown 
          Caption         =   "Enter Unknown"
          Height          =   375
          Left            =   2400
@@ -102,7 +102,7 @@ Begin VB.Form FormMATCH
          Width           =   1695
       End
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H00008000&
       Cancel          =   -1  'True
       Caption         =   "Close"
@@ -123,7 +123,7 @@ Begin VB.Form FormMATCH
       TabIndex        =   0
       Top             =   2760
       Width           =   5655
-      Begin VB.CommandButton Command4 
+      Begin VB.CommandButton CommandCopyStandardsFoundToClipboard 
          Caption         =   "Copy Standards Found to Clipboard"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -190,37 +190,34 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
+Private Sub CommandChange_Click()
 If Not DebugMode Then On Error Resume Next
-Unload FormMATCH
-DoEvents
-End Sub
-
-Private Sub Command2_Click()
-If Not DebugMode Then On Error Resume Next
-' Get user specified sample using weight string
-Call MatchLoadWeight
+Call MatchOpenDatabase(FormMATCH)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command3_Click()
-' Match composition to standards in database
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOStatusAuto(vbNullString)
-Call MatchSample
-Call IOStatusAuto(vbNullString)
+Unload FormMATCH
 End Sub
 
-Private Sub Command4_Click()
+Private Sub CommandCopyStandardsFoundToClipboard_Click()
 If Not DebugMode Then On Error Resume Next
 Call MiscCopyList(Int(1), FormMATCH.ListStandards)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub CommandChange_Click()
+Private Sub CommandEnterUnknown_Click()
 If Not DebugMode Then On Error Resume Next
-Call MatchOpenDatabase(FormMATCH)
+Call MatchLoadWeight
 If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandMatchStandards_Click()
+If Not DebugMode Then On Error Resume Next
+Call IOStatusAuto(vbNullString)
+Call MatchSample
+Call IOStatusAuto(vbNullString)
 End Sub
 
 Private Sub Form_Load()

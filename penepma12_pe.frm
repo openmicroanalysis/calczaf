@@ -42,7 +42,7 @@ Begin VB.Form FormPENEPMA12
       Top             =   960
       Width           =   1575
    End
-   Begin VB.CommandButton Command13 
+   Begin VB.CommandButton CommandFanalPrompt 
       Caption         =   "Fanal Prompt"
       Height          =   495
       Left            =   12600
@@ -52,7 +52,7 @@ Begin VB.Form FormPENEPMA12
       Top             =   960
       Width           =   975
    End
-   Begin VB.CommandButton Command12 
+   Begin VB.CommandButton CommandPenfluorPrompt 
       Caption         =   "Penfluor Prompt"
       Height          =   495
       Left            =   11520
@@ -62,7 +62,7 @@ Begin VB.Form FormPENEPMA12
       Top             =   960
       Width           =   1095
    End
-   Begin VB.CommandButton Command11 
+   Begin VB.CommandButton CommandPENEPMAPrompt 
       Caption         =   "PENEPMA Prompt"
       Height          =   255
       Left            =   9600
@@ -72,7 +72,7 @@ Begin VB.Form FormPENEPMA12
       Top             =   1200
       Width           =   1935
    End
-   Begin VB.CommandButton Command10 
+   Begin VB.CommandButton CommandPENDBASEPrompt 
       Caption         =   "PENDBASE Prompt"
       Height          =   255
       Left            =   9600
@@ -1306,10 +1306,38 @@ Call Penepma12PlotUpdate_PE
 If ierror Then Exit Sub
 End Sub
 
+Private Sub CommandFanalPrompt_Click()
+If Not DebugMode Then On Error Resume Next
+Dim taskID As Long
+ChDrive PENEPMA_Root$
+taskID& = Shell("cmd.exe /k cd " & VbDquote$ & PENEPMA_Root$ & "\Fanal" & VbDquote$, vbNormalFocus)
+End Sub
+
 Private Sub CommandHelp_Click()
 If Not DebugMode Then On Error Resume Next
 Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=58.msg214#msg214")
 If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandPENDBASEPrompt_Click()
+If Not DebugMode Then On Error Resume Next
+Dim taskID As Long
+ChDrive PENDBASE_Path$
+taskID& = Shell("cmd.exe /k cd " & VbDquote$ & PENDBASE_Path$ & VbDquote$, vbNormalFocus)
+End Sub
+
+Private Sub CommandPENEPMAPrompt_Click()
+If Not DebugMode Then On Error Resume Next
+Dim taskID As Long
+ChDrive PENEPMA_Path$
+taskID& = Shell("cmd.exe /k cd " & VbDquote$ & PENEPMA_Path$ & VbDquote$, vbNormalFocus)
+End Sub
+
+Private Sub CommandPenfluorPrompt_Click()
+If Not DebugMode Then On Error Resume Next
+Dim taskID As Long
+ChDrive PENEPMA_Root$
+taskID& = Shell("cmd.exe /k cd " & VbDquote$ & PENEPMA_Root$ & "\Penfluor" & VbDquote$, vbNormalFocus)
 End Sub
 
 Private Sub CommandRunFanal_Click()
@@ -1352,34 +1380,6 @@ Private Sub ComboElementStd_Click()
 If Not DebugMode Then On Error Resume Next
 Call Penepma12UpdateCombo
 If ierror Then Exit Sub
-End Sub
-
-Private Sub Command10_Click()
-If Not DebugMode Then On Error Resume Next
-Dim taskID As Long
-ChDrive PENDBASE_Path$
-taskID& = Shell("cmd.exe /k cd " & VbDquote$ & PENDBASE_Path$ & VbDquote$, vbNormalFocus)
-End Sub
-
-Private Sub Command11_Click()
-If Not DebugMode Then On Error Resume Next
-Dim taskID As Long
-ChDrive PENEPMA_Path$
-taskID& = Shell("cmd.exe /k cd " & VbDquote$ & PENEPMA_Path$ & VbDquote$, vbNormalFocus)
-End Sub
-
-Private Sub Command12_Click()
-If Not DebugMode Then On Error Resume Next
-Dim taskID As Long
-ChDrive PENEPMA_Root$
-taskID& = Shell("cmd.exe /k cd " & VbDquote$ & PENEPMA_Root$ & "\Penfluor" & VbDquote$, vbNormalFocus)
-End Sub
-
-Private Sub Command13_Click()
-If Not DebugMode Then On Error Resume Next
-Dim taskID As Long
-ChDrive PENEPMA_Root$
-taskID& = Shell("cmd.exe /k cd " & VbDquote$ & PENEPMA_Root$ & "\Fanal" & VbDquote$, vbNormalFocus)
 End Sub
 
 Private Sub CommandBinary_Click()
@@ -1578,7 +1578,7 @@ End Sub
 
 Private Sub CommandZoomFull_Click()
 If Not DebugMode Then On Error Resume Next
-Pesgo1.PEactions = UNDO_ZOOM&
+FormPENEPMA12.Pesgo1.PEactions = UNDO_ZOOM&
 End Sub
 
 Private Sub Form_Load()

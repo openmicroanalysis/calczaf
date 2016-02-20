@@ -25,7 +25,7 @@ Begin VB.Form FormFORMULA
    ScaleHeight     =   2130
    ScaleWidth      =   6345
    ShowInTaskbar   =   0   'False
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Appearance      =   0  'Flat
       Cancel          =   -1  'True
       Caption         =   "Cancel"
@@ -36,7 +36,7 @@ Begin VB.Form FormFORMULA
       Top             =   1560
       Width           =   1455
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       Appearance      =   0  'Flat
       BackColor       =   &H0000C000&
       Caption         =   "OK"
@@ -96,18 +96,16 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-' User clicked OK
-Call FormulaSaveFormula
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command2_Click()
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormFORMULA
-DoEvents
 icancel = True
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+Call FormulaSaveFormula
+If ierror Then Exit Sub
 End Sub
 
 Private Sub Form_Load()

@@ -151,7 +151,7 @@ On Error GoTo PictureSnapCalibrateLoadError
 If Not MiscStringsAreSame(app.EXEName, "CalcImage") And Not RealTimeMode Then Exit Sub
 
 ' Load PictureSnap mode
-FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).value = True
+FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).Value = True
 
 ' Load current stage positions
 FormPICTURESNAP2.TextXStage1.Text = RealTimeMotorPositions!(XMotor%)
@@ -184,9 +184,9 @@ FormPICTURESNAP2.TextXPixel3.ForeColor = vbBlack
 FormPICTURESNAP2.TextYPixel3.ForeColor = vbBlack
 
 If PictureSnapDisplayCalibrationPointsFlag Then
-FormPICTURESNAP2.Command9.Caption = "Do Not Display Calibration Points"
+FormPICTURESNAP2.CommandDisplayCalibrationPoints.Caption = "Do Not Display Calibration Points"
 Else
-FormPICTURESNAP2.Command9.Caption = "Display Calibration Points"
+FormPICTURESNAP2.CommandDisplayCalibrationPoints.Caption = "Display Calibration Points"
 End If
 
 If PictureSnapCalibrated Then
@@ -488,7 +488,7 @@ On Error GoTo PictureSnapLoadCalibrationError
 Dim tfilename As String, tfilename2 As String
 
 ' Load PictureSnapMode
-FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).value = True
+FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).Value = True
 
 ' Read calibration points to INI style ACQ file
 tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".ACQ"
@@ -847,10 +847,10 @@ tulefty! = FormPICTURESNAP.ScaleHeight - 1000
 
 ' Add scroll offset to keep scale bar in view
 If FormPICTURESNAP.HScroll1.Max > 0 Then
-x1! = FormPICTURESNAP.HScroll1.value / FormPICTURESNAP.HScroll1.Max
+x1! = FormPICTURESNAP.HScroll1.Value / FormPICTURESNAP.HScroll1.Max
 End If
 If FormPICTURESNAP.VScroll1.Max > 0 Then
-y1! = FormPICTURESNAP.VScroll1.value / FormPICTURESNAP.VScroll1.Max
+y1! = FormPICTURESNAP.VScroll1.Value / FormPICTURESNAP.VScroll1.Max
 End If
 
 tuleftx! = tuleftx! + x1! * (FormPICTURESNAP.Picture2.ScaleWidth - FormPICTURESNAP.Picture1.ScaleWidth)

@@ -40,7 +40,7 @@ Begin VB.Form FormPICTURESNAP2
       Visible         =   0   'False
       Width           =   735
    End
-   Begin VB.CommandButton Command9 
+   Begin VB.CommandButton CommandDisplayCalibrationPoints 
       BackColor       =   &H00C0FFFF&
       Caption         =   "Display Calibration Points"
       BeginProperty Font 
@@ -102,7 +102,7 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   2040
          Width           =   975
       End
-      Begin VB.CommandButton Command7 
+      Begin VB.CommandButton CommandPickPixelCoordinate3 
          Caption         =   "Pick Pixel Coordinate on Picture"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -263,7 +263,7 @@ Begin VB.Form FormPICTURESNAP2
       Top             =   840
       Width           =   1575
    End
-   Begin VB.CommandButton Command6 
+   Begin VB.CommandButton CommandCalibratePicture 
       BackColor       =   &H0000FFFF&
       Caption         =   "Calibrate Picture"
       BeginProperty Font 
@@ -328,7 +328,7 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   840
          Width           =   975
       End
-      Begin VB.CommandButton Command5 
+      Begin VB.CommandButton CommandPickPixelCoordinate2 
          Caption         =   "Pick Pixel Coordinate on Picture"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -449,7 +449,7 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   1815
       End
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H00008000&
       Caption         =   "Close"
       BeginProperty Font 
@@ -462,12 +462,12 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3480
+      Left            =   3360
       Style           =   1  'Graphical
       TabIndex        =   13
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1335
+      Width           =   1935
    End
    Begin VB.Frame Frame1 
       Caption         =   "Point #1 Calibration"
@@ -511,7 +511,7 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   2040
          Width           =   975
       End
-      Begin VB.CommandButton Command2 
+      Begin VB.CommandButton CommandPickPixelCoordinate1 
          Caption         =   "Pick Pixel Coordinate on Picture"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -680,45 +680,45 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-Unload FormPICTURESNAP2
-End Sub
-
-Private Sub Command2_Click()
-If Not DebugMode Then On Error Resume Next
-Call PictureSnapCalibratePoint(Int(1))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command5_Click()
-If Not DebugMode Then On Error Resume Next
-Call PictureSnapCalibratePoint(Int(2))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command6_Click()
+Private Sub CommandCalibratePicture_Click()
 If Not DebugMode Then On Error Resume Next
 Call PictureSnapCalibrate(Int(1))
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command7_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
-Call PictureSnapCalibratePoint(Int(3))
-If ierror Then Exit Sub
+Unload FormPICTURESNAP2
 End Sub
 
-Private Sub Command9_Click()
+Private Sub CommandDisplayCalibrationPoints_Click()
 If Not DebugMode Then On Error Resume Next
 PictureSnapDisplayCalibrationPointsFlag = Not PictureSnapDisplayCalibrationPointsFlag
 If PictureSnapDisplayCalibrationPointsFlag Then
-FormPICTURESNAP2.Command9.Caption = "Do Not Display Calibration Points"
+FormPICTURESNAP2.CommandDisplayCalibrationPoints.Caption = "Do Not Display Calibration Points"
 Else
-FormPICTURESNAP2.Command9.Caption = "Display Calibration Points"
+FormPICTURESNAP2.CommandDisplayCalibrationPoints.Caption = "Display Calibration Points"
 End If
 FormPICTURESNAP.Picture2.Refresh
 If FormPICTURESNAP3.Visible Then FormPICTURESNAP3.Image1.Refresh
+End Sub
+
+Private Sub CommandPickPixelCoordinate1_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapCalibratePoint(Int(1))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandPickPixelCoordinate2_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapCalibratePoint(Int(2))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandPickPixelCoordinate3_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapCalibratePoint(Int(3))
+If ierror Then Exit Sub
 End Sub
 
 Private Sub Form_Activate()

@@ -24,7 +24,7 @@ Begin VB.Form FormWEIGHT
    ScaleHeight     =   1545
    ScaleWidth      =   9225
    ShowInTaskbar   =   0   'False
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
@@ -34,7 +34,7 @@ Begin VB.Form FormWEIGHT
       Top             =   720
       Width           =   1215
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -103,17 +103,16 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-' User clicked OK
-Call FormulaSaveWeight
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command2_Click()
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormWEIGHT
 icancel = True
+End Sub
+
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+Call FormulaSaveWeight
+If ierror Then Exit Sub
 End Sub
 
 Private Sub Form_Load()

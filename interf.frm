@@ -33,7 +33,7 @@ Begin VB.Form FormINTERF
       TabIndex        =   10
       Top             =   3480
       Width           =   5895
-      Begin VB.CommandButton Command4 
+      Begin VB.CommandButton CommandCalculate 
          BackColor       =   &H0000FFFF&
          Caption         =   "Calculate"
          Default         =   -1  'True
@@ -162,7 +162,7 @@ Begin VB.Form FormINTERF
          Width           =   4455
       End
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandClose 
       BackColor       =   &H00008000&
       Cancel          =   -1  'True
       Caption         =   "Close"
@@ -242,7 +242,7 @@ Begin VB.Form FormINTERF
          Top             =   1440
          Width           =   975
       End
-      Begin VB.CommandButton Command3 
+      Begin VB.CommandButton CommandEnterUnknown 
          Caption         =   "Enter Unknown"
          Height          =   375
          Left            =   2520
@@ -323,23 +323,20 @@ Call InterfUpdateElement
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command1_Click()
+Private Sub CommandCalculate_Click()
 If Not DebugMode Then On Error Resume Next
-Unload FormINTERF
-DoEvents
-End Sub
-
-Private Sub Command3_Click()
-If Not DebugMode Then On Error Resume Next
-' Get a user specified composition
-Call InterfLoadWeight
+Call InterfSave
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command4_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
-' Save the specified options and calculate interferences
-Call InterfSave
+Unload FormINTERF
+End Sub
+
+Private Sub CommandEnterUnknown_Click()
+If Not DebugMode Then On Error Resume Next
+Call InterfLoadWeight
 If ierror Then Exit Sub
 End Sub
 

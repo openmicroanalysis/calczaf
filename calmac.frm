@@ -34,7 +34,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   12938
       _ExtentY        =   3413
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
       TextRTF         =   $"CALMAC.frx":6E7FA
@@ -67,7 +66,7 @@ Begin VB.Form FormMAIN
       FontSize        =   0
       MaxFileSize     =   256
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandCalculateMAC 
       Caption         =   "Calculate MAC"
       Height          =   255
       Left            =   7680
@@ -221,7 +220,7 @@ Call CalMacChange
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command1_Click()
+Private Sub CommandCalculateMAC_Click()
 If Not DebugMode Then On Error Resume Next
 Call CalMacCalculate
 If ierror Then Exit Sub

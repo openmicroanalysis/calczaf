@@ -12,7 +12,7 @@ Begin VB.Form FormMQOPTIONS
    ScaleHeight     =   5745
    ScaleWidth      =   8250
    StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton Command6 
+   Begin VB.CommandButton CommandSpecifyFolderForPureElementOutput 
       Caption         =   "Specify Folder For Pure Element MQ Output Files"
       Height          =   255
       Left            =   4320
@@ -21,7 +21,7 @@ Begin VB.Form FormMQOPTIONS
       Top             =   5040
       Width           =   3735
    End
-   Begin VB.CommandButton Command5 
+   Begin VB.CommandButton CommandExtractCompoundDataFromMQOutputFile 
       Caption         =   "Extract  Compound Data From MQ Output File"
       Height          =   255
       Left            =   4320
@@ -30,7 +30,7 @@ Begin VB.Form FormMQOPTIONS
       Top             =   5400
       Width           =   3735
    End
-   Begin VB.CommandButton Command4 
+   Begin VB.CommandButton CommandCreateMQInputFilesForAllBinaries 
       Caption         =   "Create MQ Input Files for All Binaries (1-94)"
       Height          =   375
       Left            =   240
@@ -89,7 +89,7 @@ Begin VB.Form FormMQOPTIONS
          Width           =   2295
       End
    End
-   Begin VB.CommandButton Command3 
+   Begin VB.CommandButton CommandCreateMQInputFilesForAllElements 
       BackColor       =   &H0080FFFF&
       Caption         =   "Create MQ Input Files For All Elements (1-94)"
       Height          =   375
@@ -253,7 +253,7 @@ Begin VB.Form FormMQOPTIONS
          Width           =   2415
       End
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandClose 
       Cancel          =   -1  'True
       Caption         =   "Close"
       BeginProperty Font 
@@ -272,7 +272,7 @@ Begin VB.Form FormMQOPTIONS
       Top             =   720
       Width           =   975
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H00008000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -377,21 +377,21 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-If Not DebugMode Then On Error Resume Next
-Call MqOptionsSave
-If ierror Then Exit Sub
-Unload FormMQOPTIONS
-End Sub
-
-Private Sub Command2_Click()
+Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
 ierror = True
 Unload FormMQOPTIONS
 End Sub
 
-Private Sub Command3_Click()
-' Calculate all elements
+Private Sub CommandCreateMQInputFilesForAllBinaries_Click()
+If Not DebugMode Then On Error Resume Next
+Call MqOptionsSave
+If ierror Then Exit Sub
+Call StanFormCalculateBinary
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandCreateMQInputFilesForAllElements_Click()
 If Not DebugMode Then On Error Resume Next
 Call MqOptionsSave
 If ierror Then Exit Sub
@@ -401,22 +401,20 @@ Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command4_Click()
-' Calculate all binaries
-If Not DebugMode Then On Error Resume Next
-Call MqOptionsSave
-If ierror Then Exit Sub
-Call StanFormCalculateBinary
-If ierror Then Exit Sub
-End Sub
-
-Private Sub Command5_Click()
+Private Sub CommandExtractCompoundDataFromMQOutputFile_Click()
 If Not DebugMode Then On Error Resume Next
 Call MQOptionsExtractData(FormMQOPTIONS)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Command6_Click()
+Private Sub CommandOK_Click()
+If Not DebugMode Then On Error Resume Next
+Call MqOptionsSave
+If ierror Then Exit Sub
+Unload FormMQOPTIONS
+End Sub
+
+Private Sub CommandSpecifyFolderForPureElementOutput_Click()
 If Not DebugMode Then On Error Resume Next
 Call MQOptionsExtract(FormMQOPTIONS)
 If ierror Then Exit Sub

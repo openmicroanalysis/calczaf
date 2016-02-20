@@ -73,7 +73,7 @@ Begin VB.Form FormFILEINFO
       Top             =   960
       Width           =   5175
    End
-   Begin VB.CommandButton Command2 
+   Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
@@ -83,7 +83,7 @@ Begin VB.Form FormFILEINFO
       Top             =   1080
       Width           =   1095
    End
-   Begin VB.CommandButton Command1 
+   Begin VB.CommandButton CommandOK 
       BackColor       =   &H0000C000&
       Caption         =   "OK"
       Default         =   -1  'True
@@ -317,24 +317,23 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Private Sub Command1_Click()
-' Save info from FormFILEINFO
+Private Sub CommandAddCR_Click()
 If Not DebugMode Then On Error Resume Next
-Call FileInfoSave
+Call MiscAddCRToText(FormFILEINFO.TextDescription)
 If ierror Then Exit Sub
-Unload FormFILEINFO
 End Sub
 
-Private Sub Command2_Click()
+Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormFILEINFO
 icancelload = True
 End Sub
 
-Private Sub CommandAddCR_Click()
+Private Sub CommandOK_Click()
 If Not DebugMode Then On Error Resume Next
-Call MiscAddCRToText(FormFILEINFO.TextDescription)
+Call FileInfoSave
 If ierror Then Exit Sub
+Unload FormFILEINFO
 End Sub
 
 Private Sub Form_Load()
