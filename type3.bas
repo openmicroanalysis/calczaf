@@ -270,7 +270,7 @@ Sub TypeSampleSetup(sample() As TypeSample)
 ierror = False
 On Error GoTo TypeSampleSetupError
 
-Dim n As Integer, i As Integer, j As Integer
+Dim n As Integer, i As Integer
 Dim k As Integer, m As Integer
 Dim ii As Integer, jj As Integer
 Dim temp As Single, count_time As Single

@@ -1542,11 +1542,10 @@ On Error GoTo AnalyzeTypeResultsError
 
 Dim linerow As Integer
 Dim i As Integer, j As Integer, ii As Integer, jj As Integer, n As Integer
-Dim imin As Integer, imax As Integer, ip As Integer
-Dim nthpnt As Long, npixels As Long
+Dim ip As Integer
+Dim nthpnt As Long
 Dim sString As String
-Dim temp3 As Single, temp4 As Single
-Dim tmin As Single, tmax As Single
+Dim temp3 As Single
 
 Dim npts As Integer, nrows As Integer
 Dim txdata() As Single, tydata() As Single

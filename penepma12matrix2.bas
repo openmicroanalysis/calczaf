@@ -241,6 +241,9 @@ End If
 n% = InStr(astring$, ".txt")
 BeamTakeOff! = Val(Left$(astring$, n% - 1))
 
+' Check for emitter less than carbon (Z=6) for now- until Penepma 2014 is implemented!!!!
+If EmittingElement% >= 6 Then
+
 ' Loop on each possible energy
 For m% = 5 To 50         ' Fanal calculations are only good down to 5 keV at this time
 'For m% = 1 To 50
@@ -412,6 +415,8 @@ End If
 End If
 Next l%
 Next m%
+
+End If      ' check for emitter >= 6
 
 ' Get next input filename
 Next k&
