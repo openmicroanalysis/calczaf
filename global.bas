@@ -1032,6 +1032,9 @@ Type TypeSample
     MultiPointProcessManualFlagHi() As Integer  ' manual override flag (-1 = never use, 0 = automatic, 1 = always use)
     MultiPointProcessManualFlagLo() As Integer  ' manual override flag (-1 = never use, 0 = automatic, 1 = always use)
     
+    MultiPointProcessLastManualFlagHi() As Integer  ' last manual override flag (-1 = never use, 0 = automatic, 1 = always use)     ' v. 11.3.9
+    MultiPointProcessLastManualFlagLo() As Integer  ' last manual override flag (-1 = never use, 0 = automatic, 1 = always use)     ' v. 11.3.9
+    
     SpecifyMatrixByAnalysisUnknownNumber As Integer     ' unknown sample number to be used for specifying matrix elements
     UnknownCountTimeForInterferenceStandardFlag As Boolean
     UnknownCountTimeForInterferenceStandardChanFlag(1 To MAXCHAN%) As Boolean

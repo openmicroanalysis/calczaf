@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/23/16	Add flags to support MPB manual over ride flags even when samples have no data (Goemann and Poeml).
+v. 11.3.9
+
 02/22/16	Fix unnecessary output in ScanData (Hanson).
 v. 11.3.8
 		Prune some dead code out of CalcImage.

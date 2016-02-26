@@ -368,6 +368,9 @@ ReDim sample(1).MultiPointAcquireCountsLo(1 To MAXROW%, 1 To MAXCHAN%, 1 To MAXM
 ReDim sample(1).MultiPointProcessManualFlagHi(1 To MAXROW%, 1 To MAXCHAN%, 1 To MAXMULTI%) As Integer  ' manual override flag (-1 = never use, 0 = automatic, 1 = always use)
 ReDim sample(1).MultiPointProcessManualFlagLo(1 To MAXROW%, 1 To MAXCHAN%, 1 To MAXMULTI%) As Integer  ' manual override flag (-1 = never use, 0 = automatic, 1 = always use)
 
+ReDim sample(1).MultiPointProcessLastManualFlagHi(1 To MAXCHAN%, 1 To MAXMULTI%) As Integer  ' last manual override flag (-1 = never use, 0 = automatic, 1 = always use)
+ReDim sample(1).MultiPointProcessLastManualFlagLo(1 To MAXCHAN%, 1 To MAXMULTI%) As Integer  ' last manual override flag (-1 = never use, 0 = automatic, 1 = always use)
+
 ' Init boundary secondary fluorescence arrays
 amsg$ = "Dimensioning secondary fluorescence sample arrays..."
 ReDim sample(1).SecondaryFluorescenceBoundaryDistance(1 To MAXROW%) As Single
