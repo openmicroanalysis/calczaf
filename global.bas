@@ -2877,3 +2877,5 @@ Global GraphWavescanType As Integer         ' 1 = spectrometer, 2 = angstroms, 3
 Global CalcImageScanTypeFlag As Integer     ' 0 = beam scan, 1 = stage scan
 Global CalcImageStageTypeFlag As Integer    ' 0 = cartesian (Cameca), 1 = anti-cartesian (JEOL)
 
+Global ThermoNSSVersionNumber As Single
+

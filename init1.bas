@@ -3922,6 +3922,20 @@ CLInterfaceInsertRetractPresent = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+lpAppName$ = "Hardware"
+lpKeyName$ = "ThermoNSSVersionNumber"
+lpDefault$ = "3.0"
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+If Left$(lpReturnString2$, tValid&) = vbNullString Then
+msg$ = "Thermo NSS Version Number keyword was not found in " & ProbeWinINIFile$ & ". Therefore, version 3.0 of the Thermo NSS application will be assumed." & vbCrLf & vbCrLf
+msg$ = msg$ & "If this is incorrect, please edit the Thermo NSS version number keyword in " & ProbeWinINIFile$ & ", for the correct version number of NSS."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+End If
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then ThermoNSSVersionNumber! = Val(Left$(lpReturnString$, valid&))
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
 Exit Sub
 
 ' Errors

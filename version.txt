@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/27/16	Add ThermoNSSVersionNUmber keyword to probewin.ini file (Severin)
+v. 11.4.0
+		Modify MAN code to automatically handle combined condition amples, add KeV column to element grid (von der Handt).
+		
+		Add check for deleted point in unknown balnk and force recalculation of blank sample on next analysis (Severin).
+		
+		Update PFE user manual.
+
 02/23/16	Add flags to support MPB manual over ride flags even when samples have no data (Goemann and Poeml).
 v. 11.3.9
 
