@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "comctl32.ocx"
 Object = "{7ED47906-67D7-4D60-ABCD-66C3BA9E3452}#1.0#0"; "csmtpctl.ocx"
 Object = "{959AC9FE-B2CE-4117-9CE6-56B273C5848F}#1.0#0"; "csmsgctl.ocx"
 Object = "{6FBA474E-43AC-11CE-9A0E-00AA0062BB4C}#1.0#0"; "SYSINFO.OCX"
@@ -27,14 +27,14 @@ Begin VB.Form FormMAIN
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   7545
    ScaleWidth      =   11325
-   Begin MailMessageCtl.MailMessage MailMessage1 
-      Left            =   2280
+   Begin SmtpClientCtl.SmtpClient SmtpClient1 
+      Left            =   1680
       Top             =   0
       _cx             =   741
       _cy             =   741
    End
-   Begin SmtpClientCtl.SmtpClient SmtpClient1 
-      Left            =   1680
+   Begin MailMessageCtl.MailMessage MailMessage1 
+      Left            =   2280
       Top             =   0
       _cx             =   741
       _cy             =   741
@@ -270,7 +270,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   18230
       _ExtentY        =   6376
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"STANDARD.frx":59D8A
    End
@@ -847,11 +846,11 @@ If Not DebugMode Then On Error Resume Next
 If Penepma08CheckPenepmaVersion%() = 6 Then
 msg$ = "Penepma 2006 is no longer supported. Please download the latest PENEPMA12.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "menuAnayticalPENEPMA"
-ElseIf Penepma08CheckPenepmaVersion%() = 8 Or Penepma08CheckPenepmaVersion%() = 12 Then
+ElseIf Penepma08CheckPenepmaVersion%() = 8 Or Penepma08CheckPenepmaVersion%() = 12 Or Penepma08CheckPenepmaVersion%() = 14 Then
 Call Penepma08Load(FormPENEPMA08_PE)
 If ierror Then Exit Sub
 Else
-msg$ = "Penepma 2012 or 2014 application files were not found. Please download the PENEPMA12.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
+msg$ = "Penepma 2012 or 2014 application files were not found. Please download the PENEPMA12.ZIP or PENEPMA14.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "menuAnayticalPENEPMA"
 End If
 End Sub

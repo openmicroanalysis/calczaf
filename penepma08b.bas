@@ -37,6 +37,11 @@ ElseIf InStr(PENEPMA_Root$, "12") > 0 Then
 Penepma08CheckPenepmaVersion% = 12
 Exit Function
 
+' Version 14
+ElseIf InStr(PENEPMA_Root$, "14") > 0 Then
+Penepma08CheckPenepmaVersion% = 14
+Exit Function
+
 ' Unable to determine version
 Else
 msg$ = "Unable to determine current version Penepma. Please check that the PENDBASE_Path, PENEPMA_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$ & " file."
