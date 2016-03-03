@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/02/16	Fix minor output problem for STRATAGem (Chouinard).
+
 03/01/16	Add new k-ratios to matrix.mdb.  Fix checking of MDB file version number when loading CL spectra.
 v. 11.4.1	
 		Fix saving/loading of MPB elements in SETUP.MDB.  Fix loading of MPB file setups (Goemann).
