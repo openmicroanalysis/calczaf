@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/03/16	Modify Acquire.bas acquire volatile code to acquire assigned TDI elements more efficiently. 
+v. 11.4.2
+		Fix save assign TDI bug in GetElm.  Improve graphics display for assigned TDI plot.
+
 03/02/16	Fix minor output problem for STRATAGem (Chouinard).
 
 03/01/16	Add new k-ratios to matrix.mdb.  Fix checking of MDB file version number when loading CL spectra.
