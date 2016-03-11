@@ -6855,7 +6855,12 @@ Dim idnum As Long, atnum As Long, numelm As Long
 Dim ZbyA As Double, wtfrac As Double
 
 ' Check for Penepma atomic weights
+If Penepma08CheckPenepmaVersion%() <= 12 Then
 tfilename$ = PENDBASE_Path$ & "\pdfiles\" & "pdcompos.p08"
+Else
+tfilename$ = PENDBASE_Path$ & "\pdfiles\" & "pdcompos.pen"
+End If
+
 If Dir$(tfilename$) = vbNullString Then
 msg$ = "Warning in Penepma12AtomicWeights: Penepma 2008/2012 atomic weights file " & tfilename$ & ", was not found. CalcZAF atomic weights will be utilized for calculations."
 Call IOWriteLog(msg$)
@@ -6867,7 +6872,7 @@ Next i%
 Exit Sub
 End If
 
-' Open pdcompos.p08
+' Open pdcompos.p08 or pdcompos.pen
 linecount% = 1
 Open tfilename$ For Input As #Temp1FileNumber%
 
@@ -6917,7 +6922,7 @@ Next i%
 
 Close #Temp1FileNumber%
 
-' Load last atomic weight (not in pdcompos.p08 file)
+' Load last atomic weight (not in pdcompos.p08 or pdcompos.pen file)
 pAllAtomicWts!(MAXELM%) = AllAtomicWts!(MAXELM%)
 
 Exit Sub

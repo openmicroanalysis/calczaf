@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/10/16	Fix Zoom 0,0 in Evaluate (Poeml).
+
+03/08/16	Fix Plot button in Automate! (von der Handt). Modify Display Scan Data dialog (Carpenter).
+v. 11.4.3
+
 03/04/16	Replace all default command buttons with named command buttons.
 
 03/03/16	Modify Acquire.bas acquire volatile code to acquire assigned TDI elements more efficiently. 

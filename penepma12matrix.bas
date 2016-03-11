@@ -364,7 +364,11 @@ End If
 
 ' Open file
 Close #Temp1FileNumber%
+If Penepma08CheckPenepmaVersion%() <= 12 Then
 tfilename$ = PENDBASE_Path$ & "\pdfiles\pdatconf.pen"
+Else
+tfilename$ = PENDBASE_Path$ & "\pdfiles\pdatconf.p14"
+End If
 If Dir$(tfilename$) = vbNullString Then GoTo PenepmaGetPDATCONFTransitionFileNotFound
 Open tfilename$ For Input As #Temp1FileNumber%
 

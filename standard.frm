@@ -844,7 +844,7 @@ End Sub
 Private Sub menuAnalyticalPENEPMA_Click()
 If Not DebugMode Then On Error Resume Next
 If Penepma08CheckPenepmaVersion%() = 6 Then
-msg$ = "Penepma 2006 is no longer supported. Please download the latest PENEPMA12.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
+msg$ = "Penepma 2006 is no longer supported. Please download the latest PENEPMA12.ZIP or PENEPMA14.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "menuAnayticalPENEPMA"
 ElseIf Penepma08CheckPenepmaVersion%() = 8 Or Penepma08CheckPenepmaVersion%() = 12 Or Penepma08CheckPenepmaVersion%() = 14 Then
 Call Penepma08Load(FormPENEPMA08_PE)
@@ -856,13 +856,13 @@ End If
 End Sub
 
 Private Sub menuAnalyticalPENFLUOR_Click()
-If Penepma08CheckPenepmaVersion%() = 12 Then
+If Penepma08CheckPenepmaVersion%() = 12 Or Penepma08CheckPenepmaVersion%() = 14 Then
 Call Penepma12Load
 If ierror Then Exit Sub
 FormPENEPMA12.Show vbModeless
 If ierror Then Exit Sub
 Else
-msg$ = "Penepma 2012 application files were not found. Please download the PENEPMA12.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
+msg$ = "Penepma 2012 or 2014 application files were not found. Please download the PENEPMA12.ZIP or PENEPMA14.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "menuAnayticalPENFLUOR"
 End If
 End Sub
