@@ -568,7 +568,7 @@ Call InitElement(i%, sample())
 If ierror Then Exit Sub
 Next i%
 
-' Reset condition orders too
+' Reset combined condition acquisition orders too
 amsg$ = "Initializing misc sample parameters..."
 For k% = 1 To MAXCOND%
 sample(1).ConditionOrders%(k%) = 1

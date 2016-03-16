@@ -1062,7 +1062,7 @@ Call IOWriteLog(msg$)
 
 msg$ = "CONDO:"
 For i% = ii% To jj%
-msg$ = msg$ & Format$(Format$(sample(1).ConditionOrders%(sample(1).ConditionNumbers%(i%)), i80$), a80$)      ' acquisition order
+msg$ = msg$ & Format$(Format$(sample(1).ConditionOrders%(sample(1).ConditionNumbers%(i%)), i80$), a80$)      ' combined condition acquisition order
 Next i%
 Call IOWriteLog(msg$)
 

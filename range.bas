@@ -210,7 +210,7 @@ Call ConvertCalculateElectronRange(radius!, XrayLastKev!, XrayLastDensity!, Rang
 If ierror Then Exit Sub
 msg$ = Format$(XrayLastKev!) & " keV, " & Format$(XrayLastDensity!) & " grams/cm^3"
 Call IOWriteLog(msg$)
-msg$ = "Electron range radius = " & Str$(radius!) & " um"
+msg$ = "Electron range radius = " & Format$(radius!) & " um"
 FormRANGE.LabelElectronRange.Caption = msg$
 Call IOWriteLog(msg$)
 End If
@@ -224,7 +224,7 @@ If edge! >= XrayLastKev! Then
 msg$ = "Edge energy (" & Format$(edge!) & " keV) is greater or equal to the beam energy (" & Format$(XrayLastKev!) & " keV) for " & Symup$(XrayLastElementEmitted% + 1) & " " & Xraylo$(XrayLastXrayEmitted% + 1) & ", and therefore is invalid."
 Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
 End If
-msg$ = "X-ray production range radius = " & Str$(radius!) & " um"
+msg$ = "X-ray production range radius = " & Format$(radius!) & " um"
 FormRANGE.LabelXrayRange.Caption = msg$
 Call IOWriteLog(msg$)
 
@@ -234,13 +234,13 @@ If ierror Then Exit Sub
 
 XrayLastXrayEnergy! = energy!
 XrayLastXrayEdge! = edge!
-FormRANGE.Frame4.Caption = "X-ray Transmission at " & Str$(energy!) & " keV"
+FormRANGE.Frame4.Caption = "X-ray Transmission at " & Format$(energy!) & " keV"
 End If
 
 If mode% = 3 Then
 Call ConvertCalculateXrayTransmission(transmission!, averagemassabsorption!, XrayLastDensity!, XrayLastThickness!, Symlo$(XrayLastElementEmitted% + 1), Xraylo$(XrayLastXrayEmitted% + 1), RangeTmpSample(1).LastChan%, RangeTmpSample(1).Elsyms$(), RangeTmpSample(1).ElmPercents!())
 If ierror Then Exit Sub
-msg$ = "X-ray transmission fraction of thickness " & Str$(XrayLastThickness!) & " um (average u/p = " & Str$(averagemassabsorption!) & ") = " & Str$(transmission!)
+msg$ = Symup$(XrayLastElementEmitted% + 1) & " " & Xraylo$(XrayLastXrayEmitted% + 1) & ", x-ray transmission fraction through thickness " & Format$(XrayLastThickness!) & " um (average u/p = " & Format$(averagemassabsorption!) & ") = " & Format$(transmission!)
 FormRANGE.LabelXrayTransmission.Caption = msg$
 Call IOWriteLog(msg$)
 End If
@@ -248,7 +248,7 @@ End If
 If mode% = 4 Then
 Call ConvertCalculateXrayTransmission2(transmission!, averagemassabsorption!, XrayLastDensity!, XrayLastThickness!, XrayLastXrayEnergy!, RangeTmpSample(1).LastChan%, RangeTmpSample(1).Elsyms$(), RangeTmpSample(1).ElmPercents!())
 If ierror Then Exit Sub
-msg$ = "X-ray transmission fraction at energy " & Str$(XrayLastXrayEnergy!) & " keV, thickness of " & Str$(XrayLastThickness!) & " um (average u/p = " & Str$(averagemassabsorption!) & ") = " & Str$(transmission!)
+msg$ = "X-ray transmission fraction at energy " & Format$(XrayLastXrayEnergy!) & " keV, thickness of " & Format$(XrayLastThickness!) & " um (average u/p = " & Format$(averagemassabsorption!) & ") = " & Format$(transmission!)
 FormRANGE.LabelXrayTransmission2.Caption = msg$
 Call IOWriteLog(msg$)
 End If
@@ -256,9 +256,8 @@ End If
 If mode% = 5 Then
 Call ConvertCalculateElectronEnergy(energy!, XrayLastKev!, XrayLastDensity!, XrayLastThickness!, RangeTmpSample(1).LastChan%, RangeTmpSample(1).Elsyms$(), RangeTmpSample(1).ElmPercents!())
 If ierror Then Exit Sub
-msg$ = Format$(XrayLastKev!) & " keV, " & Format$(XrayLastDensity!) & " grams/cm^3, thickness of " & Str$(XrayLastThickness!) & " um"
+msg$ = "Electron energy transmitted at incident electron energy of " & Format$(XrayLastKev!) & " keV, " & Format$(XrayLastDensity!) & " grams/cm^3, thickness of " & Format$(XrayLastThickness!) & " um = " & Format$(energy!) & " keV,"
 Call IOWriteLog(msg$)
-msg$ = "Electron energy transmitted = " & Str$(energy!) & " keV"
 FormRANGE.LabelElectronEnergyFinal.Caption = msg$
 Call IOWriteLog(msg$)
 End If

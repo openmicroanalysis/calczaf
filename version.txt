@@ -2,7 +2,14 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-03/10/16	Fix Zoom 0,0 in Evaluate (Poeml).
+03/15/16	Fix use digitized conditions issue (Poeml).
+v. 11.4.4
+
+03/14/16	Fiz minor bugs in Time.bas and New.bas for Cathey and Poeml.
+
+03/11/16	Improve Automate! Plot button to better support multiple samples.
+
+03/10/16	Fix Zoom 0,0 in Evaluate (Poeml). 
 
 03/08/16	Fix Plot button in Automate! (von der Handt). Modify Display Scan Data dialog (Carpenter).
 v. 11.4.3
