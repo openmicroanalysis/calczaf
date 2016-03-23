@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/22/16	Fix min/max issue in CalcImage atomic percents images.  Modify color for MPB wavescan overlay plot.
+
+03/18/16	Add beam deflection and get/set image shift to Remote Automation COM interface (Ruscitto).
+v. 11.4.5
+
+03/17/16	Fux last bug on using quick stds with automatd digitized conditions (Poeml).
+
 03/15/16	Fix use digitized conditions issue (Poeml).
 v. 11.4.4
 
