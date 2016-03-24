@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/23/16	Fix data labels in Evaluate and peak marker flag in Plot! window (Neill).
+
+		Fix mag issue in Imaging! window when UseDoNotSetConditionFlag is set (Seward).
+
 03/22/16	Fix min/max issue in CalcImage atomic percents images.  Modify color for MPB wavescan overlay plot.
 
 03/18/16	Add beam deflection and get/set image shift to Remote Automation COM interface (Ruscitto).
