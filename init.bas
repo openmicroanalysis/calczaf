@@ -4431,6 +4431,9 @@ Dim nMonitors As Long
 Dim vWidth As Long, vHeight As Long
 Dim tWidth() As Long, tHeight() As Long
 
+' Only re-size sizable windows
+If tForm.BorderStyle <> vbSizable And tForm.BorderStyle <> vbSizableToolWindow Then Exit Sub
+
 ' Check for blank username (not Probewin.exe)
 If Trim$(userstring$) = vbNullString Then
 userstring$ = app.EXEName

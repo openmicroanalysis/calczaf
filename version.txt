@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/27/16	Fix Evaulate app where zero values were not getting plotting because of NullDataValue issue (Neill).
+
 03/23/16	Fix data labels in Evaluate and peak marker flag in Plot! window (Neill).
 
 		Fix mag issue in Imaging! window when UseDoNotSetConditionFlag is set (Seward).
