@@ -20,7 +20,7 @@ On Error GoTo Interf2CalculateError
 
 Dim i As Integer, n As Integer
 Dim ip As Integer, ipp As Integer
-Dim pos As Single
+Dim pos As Single, temp As Single, factor As Single
 Dim interferedline As Single, interferingline As Single
 Dim interferedintensity As Single, interferingintensity As Single
 Dim xstart As Single, xstop As Single
@@ -86,8 +86,13 @@ keV! = sample(1).KilovoltsArray!(i%)
 Call XrayLoad(Int(2), Int(0), klm!, keV!, xstart!, xstop!)
 If ierror Then Exit Function
 
+' Calculate a spectral resolution factor for the Bragg angle of the spectrometer
+temp! = MotLoLimits!(sample(1).MotorNumbers%(chan%)) + Abs(MotHiLimits!(sample(1).MotorNumbers%(chan%)) - MotLoLimits!(sample(1).MotorNumbers%(chan%)))
+If temp! / sample(1).OnPeaks(chan%) < 0# Then GoTo Interf2CalculatePositionsNegative
+factor! = 12# / (temp! / sample(1).OnPeaks(chan%))                      ' factor used to be a constant of 10.0, changed 04-04-2016 to a variable based on spectrometer angle
+
 ' Correct LiF width for actual crystal 2d
-sigma! = lifwidth! / 10# * (sample(1).Crystal2ds!(i%) / LIF2D!) ^ 1.1
+sigma! = lifwidth! / factor! * (sample(1).Crystal2ds!(i%) / LIF2D!) ^ 1.1
 
 ' Adjust for LDE
 If sample(1).Crystal2ds!(i%) > MAXCRYSTAL2D_NOT_LDE! Then sigma! = sigma! * 3#  ' triple for LDE analyzers (changed to triple 9-28-2006)
@@ -181,6 +186,12 @@ Exit Function
 
 Interf2CalculateBadChan:
 msg$ = "Channel number is out of range"
+MsgBox msg$, vbOKOnly + vbExclamation, "Interf2Calculate"
+ierror = True
+Exit Function
+
+Interf2CalculatePositionsNegative:
+msg$ = "Negative result prior to square root on channel " & Format$(chan%) & ", onpos " & Format$(sample(1).OnPeaks!(chan%))
 MsgBox msg$, vbOKOnly + vbExclamation, "Interf2Calculate"
 ierror = True
 Exit Function
