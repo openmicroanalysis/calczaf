@@ -3,10 +3,10 @@ Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormCALCSPEC 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Calculate Spectrometer Position"
-   ClientHeight    =   3615
+   ClientHeight    =   3840
    ClientLeft      =   1770
    ClientTop       =   1230
-   ClientWidth     =   8655
+   ClientWidth     =   11280
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -22,8 +22,8 @@ Begin VB.Form FormCALCSPEC
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   3615
-   ScaleWidth      =   8655
+   ScaleHeight     =   3840
+   ScaleWidth      =   11280
    Begin MSComCtl2.UpDown UpDown1 
       Height          =   375
       Left            =   6360
@@ -50,11 +50,11 @@ Begin VB.Form FormCALCSPEC
       BackColor       =   &H00FF8080&
       Caption         =   "Help"
       Height          =   375
-      Left            =   6960
+      Left            =   9120
       Style           =   1  'Graphical
       TabIndex        =   19
       TabStop         =   0   'False
-      Top             =   720
+      Top             =   120
       Width           =   1455
    End
    Begin VB.Frame Frame1 
@@ -63,7 +63,7 @@ Begin VB.Form FormCALCSPEC
       Height          =   1455
       Left            =   120
       TabIndex        =   16
-      Top             =   1200
+      Top             =   1320
       Width           =   6495
       Begin VB.OptionButton OptionInstrument 
          Caption         =   "Cameca 180mm Spectrometer (same reading as 160mm spectro!)"
@@ -118,20 +118,20 @@ Begin VB.Form FormCALCSPEC
    Begin VB.CommandButton CommandCalculate 
       BackColor       =   &H0000FFFF&
       Caption         =   "Calculate Spectrometer Position"
-      Height          =   975
-      Left            =   6840
+      Height          =   1335
+      Left            =   6720
       Style           =   1  'Graphical
       TabIndex        =   14
       TabStop         =   0   'False
       Top             =   1440
-      Width           =   1695
+      Width           =   1815
    End
    Begin VB.TextBox TextCalcSpec 
-      Height          =   615
+      Height          =   735
       Left            =   120
       MultiLine       =   -1  'True
       TabIndex        =   13
-      Top             =   2880
+      Top             =   3000
       Width           =   8415
    End
    Begin VB.ComboBox ComboCrystal 
@@ -176,13 +176,49 @@ Begin VB.Form FormCALCSPEC
       BackColor       =   &H0000C000&
       Caption         =   "Close"
       Default         =   -1  'True
-      Height          =   495
-      Left            =   6960
+      Height          =   375
+      Left            =   7200
       Style           =   1  'Graphical
       TabIndex        =   2
       TabStop         =   0   'False
       Top             =   120
       Width           =   1455
+   End
+   Begin VB.OLE OLE3 
+      BackStyle       =   0  'Transparent
+      Class           =   "Equation.3"
+      Enabled         =   0   'False
+      Height          =   600
+      Left            =   6810
+      OleObjectBlob   =   "CalcSpec.frx":00C2
+      SizeMode        =   1  'Stretch
+      TabIndex        =   27
+      Top             =   600
+      Width           =   4395
+   End
+   Begin VB.OLE OLE1 
+      BackStyle       =   0  'Transparent
+      Class           =   "Equation.3"
+      Enabled         =   0   'False
+      Height          =   855
+      Left            =   8610
+      OleObjectBlob   =   "CalcSpec.frx":12DA
+      SizeMode        =   1  'Stretch
+      TabIndex        =   26
+      Top             =   2880
+      Width           =   2535
+   End
+   Begin VB.OLE OLE2 
+      BackStyle       =   0  'Transparent
+      Class           =   "Equation.3"
+      Enabled         =   0   'False
+      Height          =   1095
+      Left            =   8640
+      OleObjectBlob   =   "CalcSpec.frx":22F2
+      SizeMode        =   1  'Stretch
+      TabIndex        =   25
+      Top             =   1440
+      Width           =   2535
    End
    Begin VB.Label Label4 
       Alignment       =   2  'Center

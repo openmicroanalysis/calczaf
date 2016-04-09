@@ -2239,7 +2239,7 @@ Call IOWriteLog(msg$)
 End If
 
 ' Output assigned standard coating parameters
-If DebugMode Then
+If VerboseMode Then
 msg$ = vbCrLf & "STDELEM "
 For j% = 1 To sample(1).LastElm%
 msg$ = msg$ & MiscAutoFormatI$(zaf.coating_std_assigns_element%(j%))

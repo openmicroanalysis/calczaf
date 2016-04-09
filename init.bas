@@ -4431,9 +4431,6 @@ Dim nMonitors As Long
 Dim vWidth As Long, vHeight As Long
 Dim tWidth() As Long, tHeight() As Long
 
-' Only re-size sizable windows
-If tForm.BorderStyle <> vbSizable And tForm.BorderStyle <> vbSizableToolWindow Then Exit Sub
-
 ' Check for blank username (not Probewin.exe)
 If Trim$(userstring$) = vbNullString Then
 userstring$ = app.EXEName
@@ -4489,13 +4486,16 @@ Call MiscCenterForm(tForm)
 Exit Sub
 End If
 
+' Set window top and left position
 tForm.Left = twindow!(1)
 tForm.Top = twindow!(2)
 If tForm.Name = "FormCALCIMAGE" Then    ' MDIForm does not have borderstyle property (but is sizable)
 tForm.Width = twindow!(3)
 tForm.Height = twindow!(4)
+
+' Set window width and height
 Else
-If tForm.BorderStyle = vbSizable Then
+If tForm.BorderStyle = vbSizable Or tForm.BorderStyle = vbSizableToolWindow Then
 tForm.Width = twindow!(3)
 tForm.Height = twindow!(4)
 End If

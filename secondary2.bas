@@ -204,10 +204,10 @@ If sample(1).XrayNums%(ip%) = 5 And Trim$(trans$) <> "M5 N7" Then GoTo Secondary
 If sample(1).XrayNums%(ip%) = 6 And Trim$(trans$) <> "M4 N6" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
 
 ' Parse keV
-n% = InStr(k_string2$, "#  eO (eV) = ")
+n% = InStr(UCase$(k_string2$), UCase$("#  e0 (eV) = "))
 If n% = 0 Then GoTo SecondaryReadKratiosDATFileBadSecondLine
 
-astring$ = Mid$(k_string2$, Len("#  eO (eV) = ") + 1)
+astring$ = Mid$(k_string2$, Len("#  e0 (eV) = ") + 1)
 keV! = CDbl(astring$)      ' use double for language issues
 keV! = keV! / EVPERKEV#    ' convert to keV
 
@@ -616,7 +616,7 @@ Exit Sub
 
 End Sub
 
-Sub SecondaryGetCoordinates(n As Long, x() As Single, Y() As Single, Z() As Single)
+Sub SecondaryGetCoordinates(n As Long, X() As Single, Y() As Single, Z() As Single)
 ' Get the currently analyzed data point coordinates
 
 ierror = False
@@ -628,12 +628,12 @@ Dim i As Long
 If apoints& < 1 Then Exit Sub
 
 ' Dimension
-ReDim x(1 To apoints&) As Single
+ReDim X(1 To apoints&) As Single
 ReDim Y(1 To apoints&) As Single
 ReDim Z(1 To apoints&) As Single
 
 For i& = 1 To apoints&
-x!(i&) = xcoord!(i&)
+X!(i&) = xcoord!(i&)
 Y!(i&) = ycoord!(i&)
 Z!(i&) = zcoord!(i&)
 Next i&

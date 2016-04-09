@@ -13,6 +13,9 @@ On Error GoTo Penepma12PlotKRatios_PEError
 Dim i As Integer, j As Integer
 Dim astring As String, bstring As String, cstring As String
 
+' Unzoom, in case already zoomed
+FormPENEPMA12.Pesgo1.PEactions = UNDO_ZOOM&
+
 ' Allow auto scaling of axes from here on  (initial plot load has fixed axes to create generic blank plot)
 FormPENEPMA12.Pesgo1.ManualScaleControlY = PEMSC_NONE&
 FormPENEPMA12.Pesgo1.ManualScaleControlX = PEMSC_NONE&
