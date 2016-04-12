@@ -2,9 +2,15 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/11/16	Fix bug for PI automation sample setup number.
+
+		Fix STRATAGem output bug when outputing separate lines (Fournelle).
+
 04/09/16	Add disable of WDS/EDS option in Elements/cations if x-ray is blank.
 v. 11.4.6		
 		Add 59 binaries to matrix.mdb.
+		
+		Fix sample setup selection for Probe Image automation.
 
 04/08/16	Add spec pos equations to CalcZAF Calculate Spectrometer positions dialog.  
 
