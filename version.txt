@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/14/16	Add test utilities to Test Probe menus.
+v. 11.4.7
+
 04/11/16	Fix bug for PI automation sample setup number.
 
 		Fix STRATAGem output bug when outputing separate lines (Fournelle).

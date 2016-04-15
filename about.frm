@@ -164,10 +164,10 @@ Else
 tmsg$ = "Program " & app.EXEName & " v. " & ProgramVersionString$ & vbCrLf
 End If
 
-tmsg$ = tmsg$ & "For Windows NT/2000/XP/Vista/Win7" & vbCrLf
+tmsg$ = tmsg$ & "For Windows 2000/XP/Vista/Win7/Win8/Win10" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "Written by John J. Donovan, Probe Software, Inc." & vbCrLf
-tmsg$ = tmsg$ & "(c) Copyright 1995-2015, All Rights Reserved" & vbCrLf & vbCrLf
+tmsg$ = tmsg$ & "(c) Copyright 1995-2016, All Rights Reserved" & vbCrLf & vbCrLf
 tmsg$ = tmsg$ & "Special thanks to Paul Carpenter for his tireless testing and many helpful discussions"
 FormABOUT.LabelAboutTitle.Caption = tmsg$
 

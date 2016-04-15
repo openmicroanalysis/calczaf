@@ -549,6 +549,7 @@ End If
 End If
 
 ' Draw line at 1.0
+acounter% = acounter% + 1
 ymin# = FormPLOTHISTO_PE.Pesgo1.ManualMinY
 ymax# = FormPLOTHISTO_PE.Pesgo1.ManualMaxY
 Call ScanDataPlotLine(FormPLOTHISTO_PE.Pesgo1, CLng(acounter%), CDbl(1#), ymin#, CDbl(1#), ymax#, False, True, Int(255), Int(0), Int(0), Int(0))       ' black
