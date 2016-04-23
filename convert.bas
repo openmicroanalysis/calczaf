@@ -243,12 +243,108 @@ ierror = True
 Exit Sub
 
 ConvertMineralsLineZeroSum:
-msg$ = "Zero sum on line " & Format$(sample(1).Linenumber&(sampleline%)) & " for sample " & SampleGetString2$(sample())
+msg$ = "Zero sum on line " & Format$(sample(1).Linenumber&(sampleline%)) & " for sample " & SampleGetString2$(sample()) & ". Most likely an insufficient number of the basis atoms for the specified mineral end-member calculation."
 MsgBox msg$, vbOKOnly + vbExclamation, "ConvertMineralsLine"
 ierror = True
 Exit Sub
 
 End Sub
+
+Function ConvertMineralsLineCheck(analysis As TypeAnalysis, sample() As TypeSample) As Boolean
+' Perform only a check for sufficient concentrations for mineral end-member calculations
+
+ierror = False
+On Error GoTo ConvertMineralsLineCheckError
+
+Dim j As Integer
+Dim ia As Integer, ib As Integer, ic As Integer, id As Integer
+Dim sum As Single
+
+' Assume OK
+ConvertMineralsLineCheck = True
+
+' Check each data line
+For j% = 1 To sample(1).Datarows%
+If sample(1).LineStatus(j%) Then
+
+sum! = 0#
+ia% = 0
+ib% = 0
+ic% = 0
+id% = 0
+
+' Olivine (skip disabled quant elements)
+If sample(1).MineralFlag% = 1 Then
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(12), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+
+If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
+If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
+If sum! <= 0# Then ConvertMineralsLineCheck = False
+End If
+
+' Feldspar (skip disabled quant elements)
+If sample(1).MineralFlag% = 2 Then
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(11), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Na
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(20), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(19), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' K
+
+If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
+If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
+If ic% > 0 Then sum! = sum! + analysis.CalData!(j%, ic%)
+If sum! <= 0# Then ConvertMineralsLineCheck = False
+End If
+
+' Pyroxene (skip disabled quant elements)
+If sample(1).MineralFlag% = 3 Then
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(20), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(12), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+
+If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
+If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
+If ic% > 0 Then sum! = sum! + analysis.CalData!(j%, ic%)
+If sum! <= 0# Then ConvertMineralsLineCheck = False
+End If
+
+' Garnet (Normal) (skip disabled quant elements)
+If sample(1).MineralFlag% = 4 Then
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(20), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(12), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+id% = IPOS1DQ(sample(1).LastChan%, Symlo$(25), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mn
+
+If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
+If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
+If ic% > 0 Then sum! = sum! + analysis.CalData!(j%, ic%)
+If id% > 0 Then sum! = sum! + analysis.CalData!(j%, id%)
+If sum! <= 0# Then ConvertMineralsLineCheck = False
+End If
+
+' Garnet (Grossular, Andradite, Uvarovite) (skip disabled quant elements)
+If sample(1).MineralFlag% = 5 Then
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(13), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Al
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(24), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Cr
+
+If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
+If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
+If ic% > 0 Then sum! = sum! + analysis.CalData!(j%, ic%)
+If sum! <= 0# Then ConvertMineralsLineCheck = False
+End If
+
+End If
+Next j%
+
+Exit Function
+
+' Errors
+ConvertMineralsLineCheckError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertMineralsLineCheck"
+ierror = True
+Exit Function
+
+End Function
 
 Function ConvertOxdToElm(weight As Single, sym As String, cat As Integer, oxd As Integer) As Single
 ' Converts an oxide weight percent to an elemental weight percent
