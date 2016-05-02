@@ -110,6 +110,8 @@ Sub Penepma08SaveInput(tForm As Form)
 ierror = False
 On Error GoTo Penepma08SaveInputError
 
+Static userwarned As Boolean
+
 Dim i As Integer
 Dim tfilename As String
 
@@ -286,6 +288,14 @@ End If
 If MaterialFiles$(1) = vbNullString Or MaterialFiles$(2) = vbNullString And BeamProductionIndex& >= 3 Then
 msg$ = "Note that two material files are required for the Optimize Secondary Fluorescence Production or Thin Film On Substrate Production options"
 MsgBox msg$, vbOKOnly + vbInformation, "Penepma08SaveInput"
+End If
+
+' Warn using about maximum step length if using bi-layer model (should be 1/10th of thin film thickness)
+If BeamProductionIndex& = 4 And Not userwarned Then
+msg$ = "Note that if the thin film thickness is less than a few nm, the DSMAX (maximum step length) parameter in the Penepma input file (" & InputFile$ & "), may need to be manually edited to be less than 1/10th of the film thickness (in cm)." & vbCrLf & vbCrLf
+msg$ = msg$ & "This warning will only be given once per application execution session."
+MsgBox msg$, vbOKOnly + vbInformation, "Penepma08SaveInput"
+userwarned = True
 End If
 
 Exit Sub

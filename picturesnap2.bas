@@ -615,7 +615,7 @@ scan! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "ScanRotat
 If ierror Then Exit Sub
 
 ' Load to hidden text fields
-FormPICTURESNAP2.TextKev.Text = Format$(keV!)
+FormPICTURESNAP2.TextkeV.Text = Format$(keV!)
 FormPICTURESNAP2.TextMag.Text = Format$(mag!)
 FormPICTURESNAP2.TextScan.Text = Format$(scan!)
 
@@ -850,6 +850,9 @@ On Error GoTo PictureSnapDisplayPositionsError
 
 Const radius! = 80
 
+Static calibrationsavedtodisk As Boolean
+
+Dim tfilenumber As Integer
 Dim tcolor As Long, n As Long
 Dim sx As Single, sy As Single, sz As Single
 Dim formx As Single, formy As Single, formz As Single
@@ -857,7 +860,7 @@ Dim fractionx As Single, fractiony As Single
 
 Dim ixmin As Single, ixmax As Single, iymin As Single, iymax As Single
 Dim xmin As Single, xmax As Single, ymin As Single, ymax As Single, zmin As Single, zmax As Single
-Dim astring As String
+Dim astring As String, tfilename As String
 
 ' If form not visible just exit
 If Not FormPICTURESNAP.Visible Then Exit Sub
@@ -874,10 +877,29 @@ ixmax! = FormPICTURESNAP.Picture2.ScaleX(FormPICTURESNAP.Picture2.Picture.Width,
 iymax! = FormPICTURESNAP.Picture2.ScaleY(FormPICTURESNAP.Picture2.Picture.Height, vbHimetric, vbTwips)
 
 ' Convert to stage coordinates (z coordinates are not used)
-Call PictureSnapConvert(Int(1), ixmin!, iymin!, CSng(0#), xmin!, ymin!, zmin!, fractionx!, fractiony!)
+'Call PictureSnapConvert(Int(1), ixmin!, iymin!, CSng(0#), xmin!, ymin!, zmin!, fractionx!, fractiony!)
+'If ierror Then Exit Sub
+'Call PictureSnapConvert(Int(1), ixmax!, iymax!, CSng(0#), xmax!, ymax!, zmax!, fractionx!, fractiony!)
+'If ierror Then Exit Sub
+
+' Convert to stage coordinates (z coordinates are not used) (this code flips the y min/max- changed 04/26/2016)
+Call PictureSnapConvert(Int(1), ixmin!, iymax!, CSng(0#), xmin!, ymin!, zmin!, fractionx!, fractiony!)
 If ierror Then Exit Sub
-Call PictureSnapConvert(Int(1), ixmax!, iymax!, CSng(0#), xmax!, ymax!, zmax!, fractionx!, fractiony!)
+Call PictureSnapConvert(Int(1), ixmax!, iymin!, CSng(0#), xmax!, ymax!, zmax!, fractionx!, fractiony!)
 If ierror Then Exit Sub
+
+' Save window calibration to disk file for debugging
+If Not calibrationsavedtodisk And ImagePoints& > 0 Then
+tfilenumber% = FreeFile()
+tfilename$ = ApplicationCommonAppData$ & "PictureSnap.txt"
+Open tfilename$ For Output As #tfilenumber%
+
+astring$ = "Image window twips: " & Format$(ixmin!) & ", " & Format$(iymin!) & ", " & Format$(ixmax!) & ", " & Format$(iymax!)
+Print #tfilenumber%, astring$
+
+astring$ = "Image window stage: " & Format$(xmin!) & ", " & Format$(ymin!) & ", " & Format$(xmax!) & ", " & Format$(ymax!)
+Print #tfilenumber%, astring$
+End If
 
 ' Note that x/y min/max are not correct for rotated images imported from another source, so add a "buffer" of 45 degrees rotation?
 If xmin! < xmax! Then
@@ -894,6 +916,12 @@ ymax! = ymax! + (Abs(ymax! - ymin!) * Sqr(2)) / 2#
 Else
 ymin! = ymin! + (Abs(ymax! - ymin!) * Sqr(2)) / 2#
 ymax! = ymax! - (Abs(ymax! - ymin!) * Sqr(2)) / 2#
+End If
+
+' Save 45 degree modified window calibration to disk file for debugging
+If Not calibrationsavedtodisk And ImagePoints& > 0 Then
+astring$ = "Image window stage: " & Format$(xmin!) & ", " & Format$(ymin!) & ", " & Format$(xmax!) & ", " & Format$(ymax!)
+Print #tfilenumber%, astring$
 End If
 
 ' Loop on all coordinates
@@ -918,6 +946,16 @@ End If
 ' Calculate screen coordinate for picture control
 Call PictureSnapConvert(Int(2), formx!, formy!, formz!, sx!, sy!, sz!, fractionx!, fractiony!)
 If ierror Then Exit Sub
+
+' Save first position to disk file for debugging
+If Not calibrationsavedtodisk And ImagePoints& > 0 Then
+astring$ = "Position stage: " & Format$(sx!) & ", " & Format$(sy!)
+Print #tfilenumber%, astring$
+astring$ = "Position twips: " & Format$(formx!) & ", " & Format$(formy!)
+Print #tfilenumber%, astring$
+Close #tfilenumber%
+calibrationsavedtodisk = True
+End If
 
 ' Draw positions directly on picture control
 tcolor& = RGB(255, 0, 0)    ' red
@@ -952,6 +990,7 @@ Exit Sub
 
 ' Errors
 PictureSnapDisplayPositionsError:
+Close #tfilenumber%
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDisplayPositions"
 ierror = True
 Exit Sub

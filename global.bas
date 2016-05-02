@@ -1308,7 +1308,7 @@ Global Const RecalbPHAFileNumber% = 176             ' #176 .PHA file number
 Global Const EMSASpectrumFileNumber% = 182          ' #182 EMSA EDS file number
 Global Const ProbeTextLogFileNumber% = 184          ' #184 ProbeTextLogFile$ (PROBEWIN.TXT)
 
-Global Const CustomOutputFileNumber% = 205          ' #206-255 Custom format analysis output files
+Global Const CustomOutputFileNumber% = 205          ' #205-255 Custom format analysis output files
 
 ' Database access flags
 Global DatabaseExclusiveAccess As Integer        ' for generic exclusive access

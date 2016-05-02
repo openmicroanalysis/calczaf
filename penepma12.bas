@@ -1095,9 +1095,9 @@ If n% = 1 Then astring$ = astring$ & " " & VbDquote$ & MiscGetFileNameNoExtensio
 If n% = 2 Then astring$ = astring$ & " " & VbDquote$ & MiscGetFileNameNoExtension$(MaterialFileB$) & ".mat" & VbDquote$
 If n% = 3 Then astring$ = astring$ & " " & VbDquote$ & MiscGetFileNameNoExtension$(MaterialFileBStd$) & ".mat" & VbDquote$
 Print #Temp1FileNumber%, astring$
-If n% = 1 Then astring$ = "copy " & PENDBASE_Path$ & "\" & MaterialFileA$ & " " & PENEPMA_Path$ & "\" & MaterialFileA$
-If n% = 2 Then astring$ = "copy " & PENDBASE_Path$ & "\" & MaterialFileB$ & " " & PENEPMA_Path$ & "\" & MaterialFileB$
-If n% = 3 Then astring$ = "copy " & PENDBASE_Path$ & "\" & MaterialFileBStd$ & " " & PENEPMA_Path$ & "\" & MaterialFileBStd$
+If n% = 1 Then astring$ = "copy " & VbDquote$ & PENDBASE_Path$ & "\" & MaterialFileA$ & VbDquote$ & " " & VbDquote$ & PENEPMA_Path$ & "\" & MaterialFileA$ & VbDquote$
+If n% = 2 Then astring$ = "copy " & VbDquote$ & PENDBASE_Path$ & "\" & MaterialFileB$ & VbDquote$ & " " & VbDquote$ & PENEPMA_Path$ & "\" & MaterialFileB$ & VbDquote$
+If n% = 3 Then astring$ = "copy " & VbDquote$ & PENDBASE_Path$ & "\" & MaterialFileBStd$ & VbDquote$ & " " & VbDquote$ & PENEPMA_Path$ & "\" & MaterialFileBStd$ & VbDquote$
 Print #Temp1FileNumber%, astring$
 Close #Temp1FileNumber%
 
@@ -1416,7 +1416,7 @@ If n% = 3 Then FileCopy tfilename$, PENEPMA_Root$ & "\Penfluor\material3.mat"
 Call Penepma12CreatePenfluorInput(n%)
 If ierror Then Exit Sub
 
-' Copy Penfluor.in to <binaryname$>.in
+' Copy Penfluor.in to <binaryname$>.in (do not need filenames with blanks to be in double quotes for FileCopy or Kill statements)
 If Dir$(PENEPMA_Root$ & "\Penfluor\Penfluor.in") <> vbNullString Then
 If n% = 1 And Dir$(PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(MaterialFileA$) & ".in") <> vbNullString Then Kill PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(MaterialFileA$) & ".in"
 If n% = 2 And Dir$(PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(MaterialFileB$) & ".in") <> vbNullString Then Kill PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameNoExtension$(MaterialFileB$) & ".in"
@@ -1945,19 +1945,15 @@ Call Penepma12CreateInput2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 End If
 
-' Load geometry file, etc (no changes)
+' Load geometry file name (no changes)
 If InStr(astring$, "GEOMFN") > 0 Then Call Penepma12CreateInput2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
+' Load maximum step length (no changes)
 If InStr(astring$, "DSMAX") > 0 Then Call Penepma12CreateInput2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
-If InStr(astring$, "DSMAX") > 0 Then Call Penepma12CreateInput2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-If InStr(astring$, "IFORCE") > 0 Then Call Penepma12CreateInput2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
+' Load forcing parameters (can have multiple occurances) (no changes)
 If InStr(astring$, "IFORCE") > 0 Then Call Penepma12CreateInput2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 

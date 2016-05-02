@@ -133,8 +133,9 @@ valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnStr
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 astring$ = Left$(lpReturnString$, valid&)
 tvalue! = Val(astring$)
-End If
+
 If Left$(lpReturnString$, valid&) = vbNullString Then tValid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+End If
 
 ' Write scaler value
 If mode% = 2 Then
