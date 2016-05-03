@@ -117,7 +117,7 @@ If ierror Then Exit Sub
 
 ' Additional elements now added to sample, next load alpha-factor arrays if necessary (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
 If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
-Call AFactorLoadFactors(sample())
+Call AFactorLoadFactors(analysis, sample())
 If ierror Then Exit Sub
 End If
 

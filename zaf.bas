@@ -456,7 +456,7 @@ Exit Sub
 
 End Sub
 
-Sub ZAFAFactor(wout() As Single, rout() As Single, eout() As String, xout() As String, zout() As Integer, sample() As TypeSample)
+Sub ZAFAFactor(wout() As Single, rout() As Single, eout() As String, xout() As String, zout() As Integer, analysis As TypeAnalysis, sample() As TypeSample)
 ' Calculate the k-ratios for the passed concentrations for alpha-factor calculations
 
 ierror = False
@@ -553,7 +553,7 @@ End If
 If DebugMode Then
 'Call ZAFPrintCalculate(zaf, analysis, sample())
 'If ierror Then Exit Sub
-Call ZAFPrintSmp(zaf, CSng(0#), CInt(0), CSng(0#))
+Call ZAFPrintSmp(zaf, analysis, CInt(0))
 If ierror Then Exit Sub
 End If
 
@@ -594,7 +594,7 @@ Exit Sub
 
 End Sub
 
-Sub ZAFAFactorOxide(wout() As Single, rout() As Single, eout() As String, xout() As String, zout() As Integer, sample() As TypeSample)
+Sub ZAFAFactorOxide(wout() As Single, rout() As Single, eout() As String, xout() As String, zout() As Integer, analysis As TypeAnalysis, sample() As TypeSample)
 ' Calculate the k-ratios for the passed oxide end-member concentrations for oxide alpha-factor calculations
 
 ierror = False
@@ -689,7 +689,7 @@ End If
 If DebugMode Then
 'Call ZAFPrintCalculate(zaf, analysis, sample())
 'If ierror Then Exit Sub
-Call ZAFPrintSmp(zaf, CSng(0#), CInt(0), CSng(0#))
+Call ZAFPrintSmp(zaf, analysis, CInt(0))
 If ierror Then Exit Sub
 End If
 
@@ -2271,7 +2271,7 @@ Call ZAFPrintCalculate(zaf, analysis, sample())
 If ierror Then Exit Sub
 
 ' Print out analytical results for unknown
-Call ZAFPrintSmp(zaf, analysis.Zbar!, sample(1).DisplayAsOxideFlag%, analysis.ExcessOxygen!)
+Call ZAFPrintSmp(zaf, analysis, sample(1).DisplayAsOxideFlag%)
 If ierror Then Exit Sub
 End If
 
@@ -2783,7 +2783,7 @@ Next i%
 If VerboseMode Or (UCase$(app.EXEName) = UCase$("Standard") And DebugMode) Or (Not VerboseMode And UCase$(app.EXEName) = UCase$("CalcZAF") And CalcZAFMode% = 0) Then
 Call ZAFPrintCalculate(zaf, analysis, sample())
 If ierror Then Exit Sub
-Call ZAFPrintSmp(zaf, analysis.Zbar!, sample(1).DisplayAsOxideFlag, CSng(0#))
+Call ZAFPrintSmp(zaf, analysis, sample(1).DisplayAsOxideFlag)
 If ierror Then Exit Sub
 End If
 

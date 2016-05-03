@@ -11,6 +11,8 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+Dim CalcZAFAnalysis As TypeAnalysis
+
 Dim CalcZAFTmpSample(1 To 1) As TypeSample
 
 Dim tzaftype As Integer, tmactype As Integer
@@ -202,7 +204,7 @@ MACTypeFlag% = k%       ' set after check for exist
 End If
 
 ' Calculate the binary
-Call AFactorCalculateKFactors(emitter%, absorber%, CalcZAFTmpSample())
+Call AFactorCalculateKFactors(emitter%, absorber%, CalcZAFAnalysis, CalcZAFTmpSample())
 If ierror Then Exit Sub
 
 ' Return the plot data (always return first emitter of binary only for plotting)

@@ -137,7 +137,7 @@ Exit Sub
 
 End Sub
 
-Sub ZAFPrintSmp(zaf As TypeZAF, tzbar As Single, tdisplayoxide As Integer, texcess As Single)
+Sub ZAFPrintSmp(zaf As TypeZAF, analysis As TypeAnalysis, tdisplayoxide As Integer)
 ' Print sample ZAF results if debug
 ' Note x-ray flags
 '  il() = 0 = stoichiometric element (oxygen)
@@ -179,7 +179,7 @@ On Error GoTo ZAFPrintSmpError
 Dim i As Integer
 
 ' Print sample heading and parameters
-msg$ = vbCrLf & "SAMPLE: " & Format$(zaf.n8&) & ", TOA: " & Format$(zaf.TOA!) & ", ITERATIONS: " & Format$(zaf.iter%) & ", Z-BAR: " & Format$(tzbar!)
+msg$ = vbCrLf & "SAMPLE: " & Format$(zaf.n8&) & ", TOA: " & Format$(zaf.TOA!) & ", ITERATIONS: " & Format$(zaf.iter%) & ", Z-BAR: " & Format$(analysis.Zbar!)
 Call IOWriteLog(msg$)
 
 ' Print particle parameters if specified (averaged for all elements?)
@@ -194,7 +194,11 @@ Call IOWriteLog(msg$)
 End If
 
 ' Output the element z and the correction factors
+If analysis.UnkZAFCors!(4, 1) <> 0# And analysis.UnkZAFCors!(4, 1) <> 1# And analysis.StdAssignsZAFCors!(4, 1) <> 0# Then     ' just check first element (there has to be at least one element)
+msg$ = vbCrLf & " ELEMENT  ABSCOR  FLUCOR  ZEDCOR  ZAFCOR STP-POW BKS-COR   F(x)u      Ec   Eo/Ec    MACs uZAF/sZAF"
+Else
 msg$ = vbCrLf & " ELEMENT  ABSCOR  FLUCOR  ZEDCOR  ZAFCOR STP-POW BKS-COR   F(x)u      Ec   Eo/Ec    MACs"
+End If
 Call IOWriteLog(msg$)
 
 For i% = 1 To zaf.in1%
@@ -272,6 +276,11 @@ msg$ = msg$ & Format$(Format$(zaf.v!(i%), f84$), a80$)
 ' Emitter MACs
 msg$ = msg$ & MiscAutoFormat$(zaf.MACs!(i%))
 
+' SmpZAF/StdZAF
+If analysis.UnkZAFCors!(4, i%) <> 0# And analysis.UnkZAFCors!(4, 1) <> 1# And analysis.StdAssignsZAFCors!(4, i%) <> 0# Then
+msg$ = msg$ & MiscAutoFormatM$(analysis.UnkZAFCors!(4, i%) / analysis.StdAssignsZAFCors!(4, i%))
+End If
+
 ' Output line
 Call IOWriteLog(msg$)
 End If
@@ -324,9 +333,9 @@ End If
 Else
 If zaf.in1% <> zaf.in0% Or tdisplayoxide% Then     ' using stoichiometric oxygen
 If Not UseAutomaticFormatForResultsFlag Then
-msg$ = Format$(Symup$(zaf.Z%(i%)) & "   ", a80$) & a8x$ & a8x$ & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(Format$(texcess!, f83$), a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$)
+msg$ = Format$(Symup$(zaf.Z%(i%)) & "   ", a80$) & a8x$ & a8x$ & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(Format$(analysis.ExcessOxygen!, f83$), a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$)
 Else
-msg$ = Format$(Symup$(zaf.Z%(i%)) & "   ", a80$) & a8x$ & a8x$ & MiscAutoFormat$(100# * zaf.conc!(i%)) & MiscAutoFormat$(texcess!) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%))
+msg$ = Format$(Symup$(zaf.Z%(i%)) & "   ", a80$) & a8x$ & a8x$ & MiscAutoFormat$(100# * zaf.conc!(i%)) & MiscAutoFormat$(analysis.ExcessOxygen!) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%))
 End If
 Else
 If Not UseAutomaticFormatForResultsFlag Then
@@ -356,9 +365,9 @@ End If
 Else
 If zaf.in1% <> zaf.in0% Or tdisplayoxide% Then      ' using stoichiometric oxygen
 If Not UseAutomaticFormatForResultsFlag Then
-msg$ = Format$(Symup$(zaf.Z%(i%)) & "   ", a80$) & a8x$ & a8x$ & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(Format$(texcess!, f83$), a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$)
+msg$ = Format$(Symup$(zaf.Z%(i%)) & "   ", a80$) & a8x$ & a8x$ & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(Format$(analysis.ExcessOxygen!, f83$), a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$)
 Else
-msg$ = Format$(Symup$(zaf.Z%(i%)) & "   ", a80$) & a8x$ & a8x$ & MiscAutoFormat$(100# * zaf.conc!(i%)) & MiscAutoFormat$(texcess!) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%))
+msg$ = Format$(Symup$(zaf.Z%(i%)) & "   ", a80$) & a8x$ & a8x$ & MiscAutoFormat$(100# * zaf.conc!(i%)) & MiscAutoFormat$(analysis.ExcessOxygen!) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%))
 End If
 Else
 If Not UseAutomaticFormatForResultsFlag Then

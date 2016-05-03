@@ -234,7 +234,7 @@ End If
 
 ' Load alpha-factor arrays for this sample (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
 If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
-Call AFactorLoadFactors(CalcZAFOldSample())
+Call AFactorLoadFactors(CalcZAFAnalysis, CalcZAFOldSample())
 If ierror Then Exit Sub
 End If
 
@@ -3862,7 +3862,7 @@ Exit Sub
 End If
 
 ' Calculate array of intensities using ZAF or Phi-Rho-Z
-Call ZAFAFactor(wout!(), rout!(), eout$(), xout$(), zout%(), CalcZAFOldSample())
+Call ZAFAFactor(wout!(), rout!(), eout$(), xout$(), zout%(), CalcZAFAnalysis, CalcZAFOldSample())
 If ierror Then Exit Sub
 
 If icancelauto Then
@@ -3981,7 +3981,7 @@ Exit Sub
 End If
 
 ' Calculate array of oxide intensities using ZAF or Phi-Rho-Z
-Call ZAFAFactorOxide(wout2!(), rout2!(), eout2$(), xout2$(), zout2%(), CalcZAFOldSample())
+Call ZAFAFactorOxide(wout2!(), rout2!(), eout2$(), xout2$(), zout2%(), CalcZAFAnalysis, CalcZAFOldSample())
 If ierror Then Exit Sub
 
 If icancelauto Then
@@ -4655,7 +4655,7 @@ ierror = False
 On Error GoTo CalcZAFListCurrentAlphasError
 
 ' Get the alphas and print them out
-Call AFactorTypeAlphas(CalcZAFOldSample())
+Call AFactorTypeAlphas(CalcZAFAnalysis, CalcZAFOldSample())
 If ierror Then Exit Sub
 
 Exit Sub

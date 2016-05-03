@@ -155,7 +155,7 @@ Exit Sub
 
 End Sub
 
-Sub AFactorCalculateFactor(i As Integer, j As Integer, sample() As TypeSample)
+Sub AFactorCalculateFactor(i As Integer, j As Integer, analysis As TypeAnalysis, sample() As TypeSample)
 ' Calculate the specified or all alpha-factors for the sample
 ' i = emitter, j = absorber position of binary in sample()
 
@@ -197,7 +197,7 @@ End If
 
 ' K-factor calculation
 Screen.MousePointer = vbHourglass
-Call AFactorCalculateKFactors(emitter%, absorber%, sample())
+Call AFactorCalculateKFactors(emitter%, absorber%, analysis, sample())
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 
@@ -225,7 +225,7 @@ End If
 
 ' K-factor calculation
 Screen.MousePointer = vbHourglass
-Call AFactorCalculateKFactors(emitter%, absorber%, sample())
+Call AFactorCalculateKFactors(emitter%, absorber%, analysis, sample())
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End If
@@ -484,7 +484,7 @@ Exit Sub
 
 End Sub
 
-Sub AFactorCalculateKFactors(k As Integer, l As Integer, sample() As TypeSample)
+Sub AFactorCalculateKFactors(k As Integer, l As Integer, analysis As TypeAnalysis, sample() As TypeSample)
 ' Calculate k-factors for alpha-factor calculations of the passed binary.
 '
 ' This routine will calculate K-factors for a binary elemental system
@@ -571,7 +571,7 @@ Else
 End If
 
 ' Calculate array of intensities using ZAF or Phi-Rho-Z (zout() is the atomic number for alpha record)
-Call ZAFAFactor(wout!(), rout!(), eout$(), xout$(), zout%(), AFactorTmpSample())
+Call ZAFAFactor(wout!(), rout!(), eout$(), xout$(), zout%(), analysis, AFactorTmpSample())
 If ierror Then Exit Sub
 
 ' Adjust if specified element is present
@@ -787,7 +787,7 @@ Exit Sub
 
 End Sub
 
-Sub AFactorLoadFactors(sample() As TypeSample)
+Sub AFactorLoadFactors(analysis As TypeAnalysis, sample() As TypeSample)
 ' Load the specific alpha-factors based on sample setup
 
 ierror = False
@@ -816,7 +816,7 @@ End If
 
 ' Check for a change in operating conditions and re-calculate all if necessary
 If alphakev! <> sample(1).kilovolts! Or alphatof! <> sample(1).takeoff! Then
-Call AFactorCalculateFactor(Int(0), Int(0), sample())
+Call AFactorCalculateFactor(Int(0), Int(0), analysis, sample())
 If ierror Then Exit Sub
 
 ' Loop on each emitting element in sample
@@ -831,7 +831,7 @@ ipp% = IPOS1(MAXELM%, sample(1).Elsyms$(absorber%), Symlo$())
 ' Check for missing emitter, xray or absorber combination
 If ip% > 0 And ipp% > 0 Then
 If AlphaXray$(ip%, ipp%) <> sample(1).Xrsyms$(emitter%) Then
-Call AFactorCalculateFactor(emitter%, absorber%, sample())
+Call AFactorCalculateFactor(emitter%, absorber%, analysis, sample())
 If ierror Then Exit Sub
 End If
 End If
@@ -1615,7 +1615,7 @@ Dim i As Integer, ip As Integer
 Dim sum As Single
 
 ' Check for missing elements in alpha-factor look-up tables
-Call AFactorLoadFactors(stdsample())
+Call AFactorLoadFactors(analysis, stdsample())
 If ierror Then Exit Sub
 
 ' Load the element arrays
@@ -2101,7 +2101,7 @@ Exit Sub
 
 End Sub
 
-Sub AFactorTypeAlphas(sample() As TypeSample)
+Sub AFactorTypeAlphas(analysis As TypeAnalysis, sample() As TypeSample)
 ' Print out the alpha factors
 
 ierror = False
@@ -2126,7 +2126,7 @@ If ierror Then Exit Sub
 
 ' Re-load alpha-factors based on current selections
 AllAFactorUpdateNeeded = True
-Call AFactorLoadFactors(sample())
+Call AFactorLoadFactors(analysis, sample())
 If ierror Then Exit Sub
 
 ' Print empirical alphas

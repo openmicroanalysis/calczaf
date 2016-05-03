@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Begin VB.Form FormPENEPMA08_PE 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Create PENEPMA Material and Input Files"
@@ -557,6 +557,7 @@ Begin VB.Form FormPENEPMA08_PE
          Left            =   240
          TabIndex        =   79
          TabStop         =   0   'False
+         ToolTipText     =   "Based on template file Bilayer.in"
          Top             =   3600
          Width           =   5895
       End
@@ -820,6 +821,7 @@ Begin VB.Form FormPENEPMA08_PE
          Left            =   240
          TabIndex        =   41
          TabStop         =   0   'False
+         ToolTipText     =   "Based on template file CuFe_sec.in"
          Top             =   3360
          Width           =   6615
       End
@@ -829,6 +831,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   2
          Left            =   240
          TabIndex        =   40
+         ToolTipText     =   "Based on template file Cu_cont.in"
          Top             =   3120
          Width           =   4575
       End
@@ -838,6 +841,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   1
          Left            =   240
          TabIndex        =   39
+         ToolTipText     =   "Based on template file Cu_back.in"
          Top             =   2880
          Width           =   4575
       End
@@ -847,6 +851,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   0
          Left            =   240
          TabIndex        =   38
+         ToolTipText     =   "Based on template file Cu_cha.in"
          Top             =   2640
          Width           =   4575
       End
