@@ -747,7 +747,7 @@ Begin VB.Form FormPENEPMA12
       Width           =   1455
    End
    Begin VB.Frame Frame3 
-      Caption         =   "PENPEMA Material Files (create .MAT files)"
+      Caption         =   "PENEPEMA Material Files (create .MAT files)"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25

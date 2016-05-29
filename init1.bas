@@ -789,10 +789,20 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then UseWavFileAfterAutomationString$ = Left$(lpReturnString$, valid&)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+' Check that path is to the ProgramData folder
+If MiscGetPathOnly$(UseWavFileAfterAutomationString$) <> vbNullString Then
+msg$ = "Automation sound file " & UseWavFileAfterAutomationString$ & " as defined in " & ProbeWinINIFile$ & " must *not* have an explicit path specified (and all .wav files should be in the " & ApplicationCommonAppData$ & " folder)"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIGeneral"
+End
+End If
+
 ' Check that sound file exists
+If UseWavFileAfterAutomationString$ <> vbNullString Then
 If Dir$(ApplicationCommonAppData$ & UseWavFileAfterAutomationString$) = vbNullString Then
 msg$ = "Automation sound file " & UseWavFileAfterAutomationString$ & " as defined in " & ProbeWinINIFile$ & " was not found"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIGeneral"
+End
+End If
 End If
 
 lpAppName$ = "General"

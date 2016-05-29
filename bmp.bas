@@ -160,6 +160,7 @@ Sub BMPSaveArrayToBMPFile(ix As Integer, iy As Integer, jarray() As Byte, tfilen
 ierror = False
 On Error GoTo BMPSaveArrayToBMPFileError
 
+Dim tfilenumber As Integer
 Dim i As Integer, j As Integer
 Dim BPL As Long, aBPL As Long
 
@@ -177,7 +178,8 @@ BPL& = BMPBytesPerLine&(CLng(ix%), 8)   ' assume always 8 bit images
 aBPL& = BMPAlignToDword&(BPL&)
 
 ' Open file name (binary write only)
-Open tfilename$ For Binary Access Write As #Temp1FileNumber%
+tfilenumber% = FreeFile()
+Open tfilename$ For Binary Access Write As #tfilenumber%
 
 ' Fill in BitMap header
 BMPHeader.ImageFileType% = &H4D42
@@ -185,7 +187,7 @@ BMPHeader.FileSize& = 14 + 40 + 256 * 4 + (aBPL& * CLng(iy%))
 BMPHeader.Reserved1% = 0
 BMPHeader.Reserved2% = 0
 BMPHeader.ImageDataOffset& = 14 + 40 + 256 * 4
-Put #Temp1FileNumber%, , BMPHeader
+Put #tfilenumber%, , BMPHeader
 
 ' Fill in BitMap Info
 BMPInfo.HeaderSize& = 40
@@ -199,7 +201,7 @@ BMPInfo.HorzResolution& = 1024
 BMPInfo.VertResolution& = 1024
 BMPInfo.NumColorsUsed& = 0
 BMPInfo.NumSignificantColors& = 0
-Put #Temp1FileNumber%, , BMPInfo
+Put #tfilenumber%, , BMPInfo
 
 ' Fill RGB quad (gray palette)
 For i% = 0 To BIT8&
@@ -209,7 +211,7 @@ BMPRGBQuad.Green = CByte(i%)
 BMPRGBQuad.Red = CByte(i%)
 BMPRGBQuad.Reserved = 0
 
-Put #Temp1FileNumber%, , BMPRGBQuad
+Put #tfilenumber%, , BMPRGBQuad
 Else
 
 ' Load palette from .FC file (swap red and blue bytes)
@@ -220,30 +222,30 @@ BMPRGBQuad.Green = tbyt4.strval(2)
 BMPRGBQuad.Red = tbyt4.strval(1)
 BMPRGBQuad.Reserved = 0
 
-Put #Temp1FileNumber%, , BMPRGBQuad
+Put #tfilenumber%, , BMPRGBQuad
 End If
 Next i%
 
 ' Save to file
 For j% = 1 To iy%
 For i% = 1 To ix%
-Put #Temp1FileNumber%, , jarray(i%, j%)
+Put #tfilenumber%, , jarray(i%, j%)
 Next i%
 
 ' Load extra bytes per line
 For i% = ix% + 1 To aBPL&
-Put #Temp1FileNumber%, , CByte(0)
+Put #tfilenumber%, , CByte(0)
 Next i%
 
 Next j%
 
-Close #Temp1FileNumber%
+Close #tfilenumber%
 Exit Sub
 
 ' Errors
 BMPSaveArrayToBMPFileError:
 MsgBox Error$, vbOKOnly + vbCritical, "BMPSaveArrayToBMPFile"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
@@ -255,6 +257,7 @@ Sub BMPLoadArrayFromBMPFile(ix As Integer, iy As Integer, jarray() As Byte, tfil
 ierror = False
 On Error GoTo BMPLoadArrayFromBMPFileError
 
+Dim tfilenumber As Integer
 Dim i As Integer, j As Integer
 Dim ixstep As Single, iystep As Single
 
@@ -265,16 +268,17 @@ Dim BMPRGBQuad As TypeBMPRGBQuad
 Dim BPL As Long, aBPL As Long
 
 ' Open file name (binary read only)
-Open tfilename$ For Binary Access Read As #Temp1FileNumber%
+tfilenumber% = FreeFile()
+Open tfilename$ For Binary Access Read As #tfilenumber%
 
 ' Get BitMap header
-Get #Temp1FileNumber%, , BMPHeader
+Get #tfilenumber%, , BMPHeader
 
 ' Check if image data starts at expected position for 8 bit image:  Len(BMPHeader) + Len(BMPInfo) + Len(BMPRGBQuad) * 256
 If BMPHeader.ImageDataOffset& <> 1078 Then GoTo BMPLoadArrayFromBMPFileBadImageDataOffset
 
 ' Get BitMap Info
-Get #Temp1FileNumber%, , BMPInfo
+Get #tfilenumber%, , BMPInfo
 
 ' Check if 8 bit BMP
 If BMPInfo.BitsPerPixel <> 8 Then GoTo BMPLoadArrayFromBMPFileNot8Bits
@@ -291,7 +295,7 @@ If BMPInfo.ImageWidth < ix% Then GoTo BMPLoadArrayFromBMPFileSmallWidth
 If BMPInfo.ImageHeight < iy% Then GoTo BMPLoadArrayFromBMPFileSmallHeight
 
 For i% = 0 To BIT8&
-Get #Temp1FileNumber%, , BMPRGBQuad
+Get #tfilenumber%, , BMPRGBQuad
 Next i%
 
 ' Calculate bytes per line
@@ -304,8 +308,8 @@ aBPL& = BMPAlignToDword&(BPL&)
 ReDim bmparray(1 To aBPL&, 1 To BMPInfo.ImageHeight&) As Byte
 
 ' Read image data
-Get #Temp1FileNumber%, , bmparray()
-Close #Temp1FileNumber%
+Get #tfilenumber%, , bmparray()
+Close #tfilenumber%
 
 ' Calculate istep
 ixstep! = BMPInfo.ImageWidth& / ix%
@@ -323,35 +327,35 @@ Exit Sub
 ' Errors
 BMPLoadArrayFromBMPFileError:
 MsgBox Error$, vbOKOnly + vbCritical, "BMPLoadArrayFromBMPFile"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
 BMPLoadArrayFromBMPFileBadImageDataOffset:
 msg$ = "Image data offset " & Str$(BMPHeader.ImageDataOffset&) & ", does not equal expected offset of 1078 for 8 bit BMP image"
 MsgBox msg$, vbOKOnly + vbExclamation, "BMPLoadArrayFromBMPFile"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
 BMPLoadArrayFromBMPFileNot8Bits:
 msg$ = "Disk image file is not 8 bits (it is " & Str$(BMPInfo.BitsPerPixel%) & " bits per pixel)"
 MsgBox msg$, vbOKOnly + vbExclamation, "BMPLoadArrayFromBMPFile"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
 BMPLoadArrayFromBMPFileSmallWidth:
 msg$ = "Disk image file width " & Str$(BMPInfo.ImageWidth) & ", too small for specified pixel width, " & Str$(ix%)
 MsgBox msg$, vbOKOnly + vbExclamation, "BMPLoadArrayFromBMPFile"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
 BMPLoadArrayFromBMPFileSmallHeight:
 msg$ = "Disk image file height " & Str$(BMPInfo.ImageHeight) & ", too small for specified pixel height, " & Str$(iy%)
 MsgBox msg$, vbOKOnly + vbExclamation, "BMPLoadArrayFromBMPFile"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
@@ -364,6 +368,7 @@ Sub BMPLoadArrayFromBMPStream(mode As Integer, ix As Integer, iy As Integer, jar
 ierror = False
 On Error GoTo BMPLoadArrayFromBMPStreamError
 
+Dim tfilenumber As Integer
 Dim tOffset As Long
 Dim tTempBMPFileName As String
 
@@ -392,10 +397,11 @@ Exit Sub
 End If
 
 ' Mode = 1, write byte buffer to temp file and read back
+tfilenumber% = FreeFile()
 tTempBMPFileName$ = MiscSystemCreateTempFile$("PSI")
-Open tTempBMPFileName$ For Binary Access Write As #Temp1FileNumber%
-Put #Temp1FileNumber%, , tBuffer
-Close #Temp1FileNumber%
+Open tTempBMPFileName$ For Binary Access Write As #tfilenumber%
+Put #tfilenumber%, , tBuffer
+Close #tfilenumber%
 
 ' Load image from file
 ix% = 0
@@ -412,7 +418,7 @@ Exit Sub
 ' Errors
 BMPLoadArrayFromBMPStreamError:
 MsgBox Error$, vbOKOnly + vbCritical, "BMPLoadArrayFromBMPStream"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
@@ -834,6 +840,7 @@ Sub BMPSaveArrayToBMPFile24Bit(ix As Long, iy As Long, narray() As Long, tfilena
 ierror = False
 On Error GoTo BMPSaveArrayToBMPFile24BitError
 
+Dim tfilenumber As Integer
 Dim i As Integer, j As Integer
 Dim BPL As Long, aBPL As Long
 Dim vred As Long, vgreen As Long, vblue As Long
@@ -848,7 +855,8 @@ BPL& = BMPBytesPerLine&(ix&, 24)   ' assume always 24 bit images
 aBPL& = BMPAlignToDword&(BPL&)
 
 ' Open file name (binary write only)
-Open tfilename$ For Binary Access Write As #Temp1FileNumber%
+tfilenumber% = FreeFile()
+Open tfilename$ For Binary Access Write As #tfilenumber%
 
 ' Fill in BitMap header
 BMPHeader.ImageFileType% = &H4D42
@@ -856,7 +864,7 @@ BMPHeader.FileSize& = 14 + 40 + (aBPL& * iy&)
 BMPHeader.Reserved1% = 0
 BMPHeader.Reserved2% = 0
 BMPHeader.ImageDataOffset& = 14 + 40
-Put #Temp1FileNumber%, , BMPHeader
+Put #tfilenumber%, , BMPHeader
 
 ' Fill in BitMap Info
 BMPInfo.HeaderSize& = 40
@@ -870,7 +878,7 @@ BMPInfo.HorzResolution& = 1024
 BMPInfo.VertResolution& = 1024
 BMPInfo.NumColorsUsed& = 0
 BMPInfo.NumSignificantColors& = 0
-Put #Temp1FileNumber%, , BMPInfo
+Put #tfilenumber%, , BMPInfo
 
 ' Save to file
 For j% = 1 To iy&
@@ -881,28 +889,28 @@ Call BMPUnRGB(narray&(i%, j%), vred&, vgreen&, vblue&)
 If ierror Then Exit Sub
 
 ' Output the RGB values.  Note the order : blue, green, red
-Put #Temp1FileNumber%, , CByte(vblue&)
-Put #Temp1FileNumber%, , CByte(vgreen&)
-Put #Temp1FileNumber%, , CByte(vred&)
+Put #tfilenumber%, , CByte(vblue&)
+Put #tfilenumber%, , CByte(vgreen&)
+Put #tfilenumber%, , CByte(vred&)
 
 Next i%
 
 ' Load extra bytes per line
 If aBPL& <> BPL& Then
 For i% = ix& + 1 To aBPL&
-Put #Temp1FileNumber%, , CByte(0)
+Put #tfilenumber%, , CByte(0)
 Next i%
 End If
 
 Next j%
 
-Close #Temp1FileNumber%
+Close #tfilenumber%
 Exit Sub
 
 ' Errors
 BMPSaveArrayToBMPFile24BitError:
 MsgBox Error$, vbOKOnly + vbCritical, "BMPSaveArrayToBMPFile24Bit"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 

@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/28/16	Fix oxygen bug in Elements/Cations (Roberts/Fournelle).
+
+		Expand File Info labels. Fix rounding for keV read for JEOL (Buse).
+
 05/02/16	Add SmpZAF/StdZAF in calcZAF debug output (Carpenter).
 
 		Found and fixed nasty cation/oxygen bug in Elements/Cations code (GetElmSetElmSave).
