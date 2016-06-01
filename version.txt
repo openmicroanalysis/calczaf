@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/31/16	Add light brightness control to StageMap window.
+
+05/30/16	Add 300 millsec delay after 8x30 stage move calls (EIKS) to avoid "stage already moving" warning 
+v. 11.4.9		on JEOL PC-SEM software).
+
 05/28/16	Fix oxygen bug in Elements/Cations (Roberts/Fournelle).
 
 		Expand File Info labels. Fix rounding for keV read for JEOL (Buse).
