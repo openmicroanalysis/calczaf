@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormZAFELM 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Element Parameters"
-   ClientHeight    =   5220
+   ClientHeight    =   4320
    ClientLeft      =   825
    ClientTop       =   4905
    ClientWidth     =   6480
@@ -21,7 +21,7 @@ Begin VB.Form FormZAFELM
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   5220
+   ScaleHeight     =   4320
    ScaleWidth      =   6480
    Begin VB.Frame Frame2 
       Caption         =   "Standard Parameters"
@@ -29,7 +29,7 @@ Begin VB.Form FormZAFELM
       Height          =   1575
       Left            =   120
       TabIndex        =   18
-      Top             =   3600
+      Top             =   2640
       Width           =   6255
       Begin VB.CommandButton CommandAddStandardsToRun 
          BackColor       =   &H0080FFFF&
@@ -46,7 +46,7 @@ Begin VB.Form FormZAFELM
          Height          =   375
          Left            =   1200
          Style           =   1  'Graphical
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   1080
          Width           =   3855
       End
@@ -135,35 +135,37 @@ Begin VB.Form FormZAFELM
    Begin VB.Frame Frame1 
       Caption         =   "Unknown Parameters"
       ForeColor       =   &H00FF0000&
-      Height          =   3135
+      Height          =   2295
       Left            =   120
       TabIndex        =   6
       Top             =   120
       Width           =   5055
       Begin VB.OptionButton OptionSpecified 
-         Caption         =   "Specified Only"
+         Caption         =   "Specified"
          Height          =   255
-         Left            =   600
+         Left            =   1320
          TabIndex        =   16
          TabStop         =   0   'False
-         Top             =   2640
-         Width           =   1935
+         ToolTipText     =   "Select this option for specified elemental data (by difference, stoichiometry or fixed concentrations)"
+         Top             =   1080
+         Width           =   1335
       End
       Begin VB.OptionButton OptionAnalyzed 
          Caption         =   "Analyzed"
          Height          =   255
-         Left            =   2760
+         Left            =   120
          TabIndex        =   15
          TabStop         =   0   'False
-         Top             =   2640
-         Width           =   1695
+         ToolTipText     =   "Select this option for measured elemental data"
+         Top             =   1080
+         Width           =   1215
       End
       Begin VB.TextBox TextIntensity 
          BackColor       =   &H00FFFFFF&
          Height          =   285
          Left            =   2640
          TabIndex        =   5
-         Top             =   2160
+         Top             =   1800
          Width           =   2295
       End
       Begin VB.ComboBox ComboElement 
@@ -207,28 +209,8 @@ Begin VB.Form FormZAFELM
          Height          =   285
          Left            =   120
          TabIndex        =   4
-         Top             =   2160
+         Top             =   1800
          Width           =   2295
-      End
-      Begin VB.Label Label8 
-         Alignment       =   2  'Center
-         Appearance      =   0  'Flat
-         Caption         =   "Leave the  X-ray Line Blank to Indicate an Un-Analyzed Element (EDS, Specified, by Difference or Stoichiometry)"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H80000008&
-         Height          =   735
-         Left            =   360
-         TabIndex        =   25
-         Top             =   960
-         Width           =   4335
       End
       Begin VB.Label LabelIntensity 
          Alignment       =   2  'Center
@@ -238,7 +220,7 @@ Begin VB.Form FormZAFELM
          Height          =   255
          Left            =   2640
          TabIndex        =   14
-         Top             =   1920
+         Top             =   1560
          Width           =   2295
       End
       Begin VB.Label Label1 
@@ -293,27 +275,9 @@ Begin VB.Form FormZAFELM
          Height          =   255
          Left            =   120
          TabIndex        =   9
-         Top             =   1920
+         Top             =   1560
          Width           =   2295
       End
-   End
-   Begin VB.Label Label5 
-      Alignment       =   2  'Center
-      Caption         =   "Select a ""blank"" x-ray line for a specified element"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   975
-      Left            =   5280
-      TabIndex        =   23
-      Top             =   1680
-      Width           =   1095
    End
 End
 Attribute VB_Name = "FormZAFELM"
@@ -401,6 +365,8 @@ End Sub
 
 Private Sub OptionAnalyzed_Click()
 If Not DebugMode Then On Error Resume Next
+Call CalcZAFElementUpdate
+If ierror Then Exit Sub
 If FormZAF.OptionCalculate(0).Value = False Then
 FormZAFELM.TextWeight.Enabled = False
 FormZAFELM.TextIntensity.Enabled = True
