@@ -11,6 +11,8 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+Dim tfilenumber As Integer
+
 Sub MiscSaveData_PE(gstring As String, xstring As String, ystring As String, tGraph As Pesgo, tForm As Form)
 ' Open file to save graph data to disk (Pro Esentials code)
 
@@ -26,14 +28,14 @@ Call IOGetFileName(Int(1), "DAT", tfilename$, tForm)
 If ierror Then Exit Sub
 
 ' Open file
-Close #Temp1FileNumber%
 Screen.MousePointer = vbHourglass
 DoEvents
-Open tfilename$ For Output As #Temp1FileNumber%
+tfilenumber% = FreeFile()
+Open tfilename$ For Output As #tfilenumber%
 
 ' Save all data
 Call MiscWriteData_PE(xstring$, ystring$, tGraph)
-Close #Temp1FileNumber%
+Close #tfilenumber%
 
 If ierror Then Exit Sub
 Exit Sub
@@ -41,7 +43,7 @@ Exit Sub
 ' Errors
 MiscSaveData_PEError:
 MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveData_PE"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
@@ -62,14 +64,14 @@ Call IOGetFileName(Int(1), "DAT", tfilename$, tForm)
 If ierror Then Exit Sub
 
 ' Open file
-Close #Temp1FileNumber%
 Screen.MousePointer = vbHourglass
 DoEvents
-Open tfilename$ For Output As #Temp1FileNumber%
+tfilenumber% = FreeFile()
+Open tfilename$ For Output As #tfilenumber%
 
 ' Save all data
 Call MiscWriteDataSets_PE(gstring$, xstring$, ystring$, sString$(), tGraph)
-Close #Temp1FileNumber%
+Close #tfilenumber%
 If ierror Then Exit Sub
 
 Screen.MousePointer = vbDefault
@@ -78,7 +80,7 @@ Exit Sub
 ' Errors
 MiscSaveDataSets_PEError:
 MsgBox Error$, vbOKOnly + vbCritical, "MiscSaveDataSets_PE"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
@@ -98,7 +100,7 @@ If tGraph.points = 0 Or tGraph.Subsets = 0 Then GoTo MiscWriteData_PENoData
 ' Write column labels
 Screen.MousePointer = vbHourglass
 msg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$
-Print #Temp1FileNumber%, msg$
+Print #tfilenumber%, msg$
 
 ' Loop on graphs
 For i% = 1 To tGraph.points
@@ -107,7 +109,7 @@ xdata! = tGraph.xdata(0, i% - 1)
 msg$ = MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!)
 
 ' Write to disk
-Print #Temp1FileNumber%, msg$
+Print #tfilenumber%, msg$
 Next i%
 
 Screen.MousePointer = vbDefault
@@ -117,7 +119,7 @@ Exit Sub
 MiscWriteData_PEError:
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteData_PE"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
@@ -145,21 +147,21 @@ If tGraph.points = 0 Or tGraph.Subsets = 0 Then GoTo MiscWriteDataSets_PENoData
 Screen.MousePointer = vbHourglass
 If tGraph.Subsets > 1 Then
 msg$ = VbDquote$ & Format$(ystring$, a80$) & VbDquote$
-Print #Temp1FileNumber%, msg$
+Print #tfilenumber%, msg$
 
 ' Write column labels
 msg$ = vbNullString
 For j% = 1 To tGraph.Subsets
 msg$ = msg$ & VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(sString$(j%), a80$) & VbDquote$ & vbTab
 Next j%
-Print #Temp1FileNumber%, msg$
+Print #tfilenumber%, msg$
 
 ' Single data set
 Else
 msg$ = VbDquote$ & gstring$ & VbDquote$
-Print #Temp1FileNumber%, msg$
+Print #tfilenumber%, msg$
 msg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$ & vbTab
-Print #Temp1FileNumber%, msg$
+Print #tfilenumber%, msg$
 End If
 
 ' Loop on graphs
@@ -173,7 +175,7 @@ msg$ = msg$ & MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!) & vbTab
 Next j%
 
 ' Write to disk
-Print #Temp1FileNumber%, msg$
+Print #tfilenumber%, msg$
 Next i%
 
 Screen.MousePointer = vbDefault
@@ -183,7 +185,7 @@ Exit Sub
 MiscWriteDataSets_PEError:
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "MiscWriteDataSets_PE"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 

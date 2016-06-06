@@ -2879,3 +2879,4 @@ Global CalcImageStageTypeFlag As Integer    ' 0 = cartesian (Cameca), 1 = anti-c
 
 Global ThermoNSSVersionNumber As Single
 
+Global DisplayFullScanRangeForAcquisitionFlag As Boolean
