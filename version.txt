@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/07/16	Add Start Peaking button to Peaking Options (von der Handt).
+
 06/06/16	Add Probewin.ini flag for fixed x-axis range for wave and peak scanning (Carpenter).
 
 		Fix integrated intensity display issue (B. Wade).
