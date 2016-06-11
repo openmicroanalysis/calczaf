@@ -2880,3 +2880,5 @@ Global CalcImageStageTypeFlag As Integer    ' 0 = cartesian (Cameca), 1 = anti-c
 Global ThermoNSSVersionNumber As Single
 
 Global DisplayFullScanRangeForAcquisitionFlag As Boolean
+
+Global ManualPHAElementChannel As Integer   ' 0 = none, > 0 = channel to manually acquire PHA
