@@ -588,10 +588,9 @@ filearray$(ii&) = tfilename$
 tfilename$ = Dir$
 Loop
 
-' Delete Standard.txt file if present
-If Dir$(ProbeTextLogFile$) <> vbNullString Then
-Kill ProbeTextLogFile$
-End If
+' Delete Standard.txt and standard.err file if present
+If Dir$(ProbeTextLogFile$) <> vbNullString Then Kill ProbeTextLogFile$
+If Dir$(ProbeErrorLogFile$) <> vbNullString Then Kill ProbeErrorLogFile$
 
 ' Open the Boundary.mdb
 Set MtDb = OpenDatabase(BoundaryMDBFile$, BoundaryDatabaseExclusiveAccess%, False)

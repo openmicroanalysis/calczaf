@@ -2083,7 +2083,7 @@ Next n%
 Else
 If DebugMode Then
 If EmitterXray% < MAXRAY% Then
-tmsg$ = "Binary for " & Symup$(EmitterElement%) & " " & Xraylo$(EmitterXray%) & " in " & Symup$(MatrixElement%) & " at " & Format$(EmitterKilovolts!) & " keV, was not found."
+tmsg$ = "Binary for " & Symup$(EmitterElement%) & " " & Xraylo$(EmitterXray%) & " in " & Symup$(MatrixElement%) & " at " & Format$(EmitterKilovolts!) & " keV, " & Format$(EmitterTakeOff!) & " degrees, was not found."
 Call IOWriteError(tmsg$, "AFactorPenepmaReadmatrix")
 If ierror Then Exit Sub
 End If

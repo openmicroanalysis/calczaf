@@ -203,10 +203,9 @@ End If
 tfilename$ = Dir$
 Loop
 
-' Delete Standard.txt file if present
-If Dir$(ProbeTextLogFile$) <> vbNullString Then
-Kill ProbeTextLogFile$
-End If
+' Delete Standard.txt and standard.err file if present
+If Dir$(ProbeTextLogFile$) <> vbNullString Then Kill ProbeTextLogFile$
+If Dir$(ProbeErrorLogFile$) <> vbNullString Then Kill ProbeErrorLogFile$
 
 ' Open the matrix.mdb
 Set MtDb = OpenDatabase(MatrixMDBFile$, MatrixDatabaseExclusiveAccess%, False)
@@ -639,10 +638,9 @@ End If
 tfilename$ = Dir$
 Loop
 
-' Delete Standard.txt file if present
-If Dir$(ProbeTextLogFile$) <> vbNullString Then
-Kill ProbeTextLogFile$
-End If
+' Delete Standard.txt and standard.err file if present
+If Dir$(ProbeTextLogFile$) <> vbNullString Then Kill ProbeTextLogFile$
+If Dir$(ProbeErrorLogFile$) <> vbNullString Then Kill ProbeErrorLogFile$
 
 ' Open the pure.mdb
 Set PrDb = OpenDatabase(PureMDBFile$, PureDatabaseExclusiveAccess%, False)

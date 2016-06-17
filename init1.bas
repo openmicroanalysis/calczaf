@@ -1945,7 +1945,7 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then
-SurferAppDirectory$ = Left$(lpReturnString$, valid&)
+SurferAppDirectory$ = Trim$(Left$(lpReturnString$, valid&))
 Else
 Call InitDetermineScripterPath(Int(2), Int(0))
 If ierror Then End
