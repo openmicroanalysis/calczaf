@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/20/16	Tweak GunAlign app for 8900/8200/8500 (Neill).
+
 06/16/16	Add filament saturation window to GunAlign for 8900/8200 instruments.
 
 06/10/16	Modify manual PHA acquisition so it records changes to the current sample (Meier).

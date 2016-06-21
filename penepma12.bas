@@ -5277,11 +5277,11 @@ End If
 pfilename = Trim$(Symup$(ExtractElement%)) & "-" & Trim$(Symup$(ExtractMatrix%)) & "_" & Format$(BinaryRanges!(1)) & "-" & Format$(100# - BinaryRanges!(1)) & ".par"
 
 ' Check in Binary folder if not found in Penfluor
-If Dir$(PENEPMA_Root$ & "\Penfluor\" & pfilename$) = vbNullString Then
-tfilename$ = PENEPMA_Root$ & "\Penfluor\Binary\" & pfilename$    ' A and B are the same
-If Dir$(tfilename$) <> vbNullString Then FileCopy tfilename$, PENEPMA_Root$ & "\Penfluor\" & pfilename$
-If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(pfilename$)) & ".in"
-End If
+'If Dir$(PENEPMA_Root$ & "\Penfluor\" & pfilename$) = vbNullString Then
+'tfilename$ = PENEPMA_Root$ & "\Penfluor\Binary\" & pfilename$    ' A and B are the same
+'If Dir$(tfilename$) <> vbNullString Then FileCopy tfilename$, PENEPMA_Root$ & "\Penfluor\" & pfilename$
+'If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(pfilename$)) & ".in"
+'End If
 
 If Dir$(PENEPMA_Root$ & "\Penfluor\" & pfilename$) <> vbNullString Then
 BinaryElementsSwapped = False
@@ -5291,11 +5291,11 @@ Else
 pfilename = Trim$(Symup$(ExtractMatrix%)) & "-" & Trim$(Symup$(ExtractElement%)) & "_" & Format$(BinaryRanges!(MAXBINARY%)) & "-" & Format$(100# - BinaryRanges!(MAXBINARY%)) & ".par"
 
 ' Check in Binary folder if not found in Penfluor
-If Dir$(PENEPMA_Root$ & "\Penfluor\" & pfilename$) = vbNullString Then
-tfilename$ = PENEPMA_Root$ & "\Penfluor\Binary\" & pfilename$    ' A and B are the same
-If Dir$(tfilename$) <> vbNullString Then FileCopy tfilename$, PENEPMA_Root$ & "\Penfluor\" & pfilename$
-If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(pfilename$)) & ".in"
-End If
+'If Dir$(PENEPMA_Root$ & "\Penfluor\" & pfilename$) = vbNullString Then
+'tfilename$ = PENEPMA_Root$ & "\Penfluor\Binary\" & pfilename$    ' A and B are the same
+'If Dir$(tfilename$) <> vbNullString Then FileCopy tfilename$, PENEPMA_Root$ & "\Penfluor\" & pfilename$
+'If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(pfilename$)) & ".in"
+'End If
 
 If Dir$(PENEPMA_Root$ & "\Penfluor\" & pfilename$) <> vbNullString Then
 BinaryElementsSwapped = True
@@ -5342,11 +5342,11 @@ pfilename2$ = PENEPMA_Root$ & "\Penfluor\" & ParameterFileB$    ' A and B are th
 pfilename3$ = PENEPMA_Root$ & "\Penfluor\" & ParameterFileBStd$
 
 ' Check in Binary folder if not found in Penfluor
-If Dir$(PENEPMA_Root$ & "\Penfluor\" & ParameterFileA$) = vbNullString Then
-tfilename$ = PENEPMA_Root$ & "\Penfluor\Binary\" & ParameterFileA$    ' A and B are the same for matrix calculations
-If Dir$(tfilename$) <> vbNullString Then FileCopy tfilename$, PENEPMA_Root$ & "\Penfluor\" & ParameterFileA$
-If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(ParameterFileA$)) & ".in"
-End If
+'If Dir$(PENEPMA_Root$ & "\Penfluor\" & ParameterFileA$) = vbNullString Then
+'tfilename$ = PENEPMA_Root$ & "\Penfluor\Binary\" & ParameterFileA$    ' A and B are the same for matrix calculations
+'If Dir$(tfilename$) <> vbNullString Then FileCopy tfilename$, PENEPMA_Root$ & "\Penfluor\" & ParameterFileA$
+'If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(ParameterFileA$)) & ".in"
+'End If
 
 ' Check if binary composition is present
 If Dir$(pfilename1$) = vbNullString Or Dir$(pfilename3$) = vbNullString Then
