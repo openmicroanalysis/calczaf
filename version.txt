@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/01/16	Modify enables for assigned TDI elements if assigned TDI calibration samples have 
+		been loaded (von der Handt).
+
 06/24/16	Improve GunAlign code (Neil and von der Handt).
 v. 11.5.2
 		Remove commented out VB5 components from deployment msi files.
