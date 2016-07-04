@@ -341,7 +341,7 @@ If Not DebugMode Then On Error Resume Next
 Call CalcZAFPlotAlphaFactors_PE
 End Sub
 
-Private Sub CommandClipBoard_Click()
+Private Sub CommandClipboard_Click()
 If Not DebugMode Then On Error Resume Next
 FormPlotAlpha_PE.Pesgo1.AllowExporting = True
 FormPlotAlpha_PE.Pesgo1.ExportImageLargeFont = False
@@ -410,7 +410,7 @@ End Sub
 
 Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
-Dim fX As Double, fY As Double      ' last mouse position
+Dim fX As Double, fY As Double      ' mouse position in graph coordinates
 
 ' Get mouse position in data units
 Call MiscPlotTrack(Int(1), X!, Y!, fX#, fY#, FormPlotAlpha_PE.Pesgo1)
