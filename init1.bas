@@ -2628,7 +2628,7 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 BeamCurrentType% = nDefault&
 End If
 If BeamCurrentType% = 1 And JeolEOSInterfaceType& <> 3 Then
-msg$ = "BeamCurrentType keyword value is invalid for JEOL 8900/8200/8500 in " & ProbeWinINIFile$
+msg$ = "BeamCurrentType keyword value is invalid for Cameca or JEOL 8900/8200/8500 in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
