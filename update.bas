@@ -2246,8 +2246,8 @@ End If
 If UpdateTmpSample(1).Datarows% < 1 Then GoTo 9000
 If UpdateTmpSample(1).GoodDataRows% < 1 Then GoTo 9000
 
-' Check that integrated intensity flag matches
-If UpdateTmpSample(1).IntegratedIntensitiesUseFlag% <> sample(1).IntegratedIntensitiesUseFlag% Then GoTo 9000
+' Check that sample integrated intensity flag matches (this line is commented out as it prevents mixing integrated intensities and MAN elements)
+'If UpdateTmpSample(1).IntegratedIntensitiesUseFlag% <> sample(1).IntegratedIntensitiesUseFlag% Then GoTo 9000
 
 ' If analytical conditions do not match selected sample, skip
 If Not UpdateTmpSample(1).CombinedConditionsFlag And Not sample(1).CombinedConditionsFlag Then
@@ -2320,7 +2320,7 @@ End If
 ' Check for Bragg order
 If sample(1).BraggOrders%(i%) <> UpdateTmpSample(1).BraggOrders%(ip%) Then GoTo 7400
 
-' Check for matching integrated intensity flag
+' Check for matching element integrated intensity flag
 If sample(1).IntegratedIntensitiesUseIntegratedFlags%(i%) <> UpdateTmpSample(1).IntegratedIntensitiesUseIntegratedFlags%(ip%) Then GoTo 7400
 
 ' Check for disabled acquisition in standard

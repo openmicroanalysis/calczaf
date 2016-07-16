@@ -1533,12 +1533,12 @@ If defminpnt% = 0 Then defminpnt% = i%
 defmaxpnt% = i%
 End If
 
-If xpos! < xdata!(i%) And Abs(xpos! - xdata!(i%)) < xmindif! And ydata!(i%) <> NotAnalyzedValue! Then
+If xpos! <= xdata!(i%) And Abs(xpos! - xdata!(i%)) <= xmindif! And ydata!(i%) <> NotAnalyzedValue! Then     ' modified 07/15/2016 for cases where the values are equal
 xminpnt% = i%
 xmindif! = Abs(xpos! - xdata!(i%))
 End If
 
-If xpos! > xdata!(i%) And Abs(xpos! - xdata!(i%)) < xmaxdif! And ydata!(i%) <> NotAnalyzedValue! Then
+If xpos! > xdata!(i%) And Abs(xpos! - xdata!(i%)) < xmaxdif! And ydata!(i%) <> NotAnalyzedValue! Then       ' do not change this, it is correct
 xmaxpnt% = i%
 xmaxdif! = Abs(xpos! - xdata!(i%))
 End If
