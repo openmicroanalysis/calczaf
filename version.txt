@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/25/16	Fix Plot wavescan bug in smoothing (Knussman).
+
 07/24/16	Fix problem with creating new element setup databases (Seward).
 
 07/21/16	Fix time calculation if integrated intensity initial/minimum step sizes are equal (Feig).
