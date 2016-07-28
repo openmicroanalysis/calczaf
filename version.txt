@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/27/16	Improve integrated intensity display dialog. Improve CL acquisition code.
+
 07/26/16	Fix export/import code for element setup database to handle CrLf, tabs and nulls in text..
 
 07/25/16	Fix Plot wavescan bug in smoothing (Knussman).
