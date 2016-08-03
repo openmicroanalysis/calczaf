@@ -3652,7 +3652,7 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then AutomationOverheadPerAnalysis! = Val(Left$(lpReturnString$, valid&))
 If AutomationOverheadPerAnalysis! < 0.1 Or AutomationOverheadPerAnalysis! > 100# Then
 msg$ = "AutomationOverheadPerAnalysis keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 AutomationOverheadPerAnalysis! = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
@@ -3963,6 +3963,68 @@ valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnStr
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then ThermoNSSVersionNumber! = Val(Left$(lpReturnString$, valid&))
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
+' Load max energy values for EDS (0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM)
+If EDSInterfaceMaxEnergyThroughputPresent And MaxEnergyArraySize% > 0 And MaxThroughputArraySize% > 0 Then
+lpAppName$ = "Hardware"
+lpKeyName$ = "MaxEnergyArraySize"
+nDefault& = MaxEnergyArraySize%
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+MaxEnergyArraySize% = valid&
+If MaxEnergyArraySize% < 0 Or MaxEnergyArraySize% > MAX_ENERGY_ARRAY_SIZE% Then
+msg$ = "MaxEnergyArraySize keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MaxEnergyArraySize% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+For i% = 1 To MaxEnergyArraySize%
+lpAppName$ = "Hardware"
+lpKeyName$ = "MaxEnergyArrayValue" & Format$(i%)
+lpDefault$ = Format$(MaxEnergyArrayValue!(i%))
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then MaxEnergyArrayValue!(i%) = Val(Left$(lpReturnString$, valid&))
+If MaxEnergyArrayValue!(i%) < 1# Or MaxEnergyArrayValue!(i%) > 100# Then
+msg$ = "MaxEnergyArrayValue" & Format$(i%) & " keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MaxEnergyArrayValue!(i%) = Val(lpDefault$)
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+Next i%
+
+' Load max throughput values for EDS (0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM)
+lpAppName$ = "Hardware"
+lpKeyName$ = "MaxThroughputArraySize"
+nDefault& = MaxThroughputArraySize%
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+MaxThroughputArraySize% = valid&
+If MaxThroughputArraySize% < 0 Or MaxThroughputArraySize% > MAX_THROUGHPUT_ARRAY_SIZE% Then
+msg$ = "MaxThroughputArraySize keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MaxThroughputArraySize% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+For i% = 1 To MaxThroughputArraySize%
+lpAppName$ = "Hardware"
+lpKeyName$ = "MaxThroughputArrayValue" & Format$(i%)
+lpDefault$ = Format$(MaxThroughputArrayValue!(i%))
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then MaxThroughputArrayValue!(i%) = Val(Left$(lpReturnString$, valid&))
+If MaxThroughputArrayValue!(i%) < 0# Or MaxThroughputArrayValue!(i%) > 10000# Then
+msg$ = "MaxThroughputArrayValue" & Format$(i%) & " keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MaxThroughputArrayValue!(i%) = Val(lpDefault$)
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+Next i%
+End If
 
 Exit Sub
 

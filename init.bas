@@ -2281,47 +2281,41 @@ If CLSpectraInterfaceType% = 4 Then InterfaceStringCLUnitsX$(4) = "nm"
 
 ' Demo (Bruker)
 MaxEnergyArraySize% = 4
-ReDim MaxEnergyArrayValue(1 To MaxEnergyArraySize%) As Single
 MaxEnergyArrayValue!(1) = 10#
 MaxEnergyArrayValue!(2) = 20#
 MaxEnergyArrayValue!(3) = 40#
 MaxEnergyArrayValue!(4) = 80#
 
 MaxThroughputArraySize% = 4
-ReDim MaxThroughputArrayValue(1 To MaxThroughputArraySize%) As Single
-MaxThroughputArrayValue!(1) = 60#
-MaxThroughputArrayValue!(2) = 90#
-MaxThroughputArrayValue!(3) = 130#
-MaxThroughputArrayValue!(4) = 275#
+MaxThroughputArrayValue!(1) = 275#
+MaxThroughputArrayValue!(2) = 130#
+MaxThroughputArrayValue!(3) = 90#
+MaxThroughputArrayValue!(4) = 60#
 
 ' Bruker
 If EDSSpectraInterfaceType% = 2 Then
 MaxEnergyArraySize% = 4
-ReDim MaxEnergyArrayValue(1 To MaxEnergyArraySize%) As Single
 MaxEnergyArrayValue!(1) = 10#
 MaxEnergyArrayValue!(2) = 20#
 MaxEnergyArrayValue!(3) = 40#
 MaxEnergyArrayValue!(4) = 80#
 
 MaxThroughputArraySize% = 4
-ReDim MaxThroughputArrayValue(1 To MaxThroughputArraySize%) As Single
-MaxThroughputArrayValue!(1) = 60#
-MaxThroughputArrayValue!(2) = 90#
-MaxThroughputArrayValue!(3) = 130#
-MaxThroughputArrayValue!(4) = 275#
+MaxThroughputArrayValue!(1) = 275#
+MaxThroughputArrayValue!(2) = 130#
+MaxThroughputArrayValue!(3) = 90#
+MaxThroughputArrayValue!(4) = 60#
 
 ' Thermo
 ElseIf EDSSpectraInterfaceType% = 5 Then
 MaxEnergyArraySize% = 5
-ReDim MaxEnergyArrayValue(1 To MaxEnergyArraySize%) As Single
 MaxEnergyArrayValue!(1) = 5#
 MaxEnergyArrayValue!(2) = 10#
 MaxEnergyArrayValue!(3) = 20#
 MaxEnergyArrayValue!(4) = 40#
-MaxEnergyArrayValue!(4) = 80#
+MaxEnergyArrayValue!(5) = 80#
 
 MaxThroughputArraySize% = 11    ' (0 (AUTO), 6400, 4000, 3200, 2000, 1600, 1000, 800, 600, 400, 200 nano-secs)
-ReDim MaxThroughputArrayValue(1 To MaxThroughputArraySize%) As Single
 MaxThroughputArrayValue!(1) = 200#
 MaxThroughputArrayValue!(2) = 400#
 MaxThroughputArrayValue!(3) = 600#
@@ -3345,6 +3339,11 @@ CLSpectrumAcquisitionOverhead = 1#          ' Newport
 ElseIf CLSpectraInterfaceType% = 4 Then
 CLSpectrumAcquisitionOverhead = 1#          ' unused
 End If
+
+' Init integrated intensity background fit option and parameters
+IntegratedBackgroundFitType = 1             ' use integrated start/stop intensities
+IntegratedBackgroundFitPointsLow% = 5       ' use first points
+IntegratedBackgroundFitPointsHigh% = 5      ' use last points
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

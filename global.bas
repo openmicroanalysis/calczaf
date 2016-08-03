@@ -13,6 +13,11 @@ Option Explicit
 
 Global ierror As Integer                           ' global error for backing out gracefully from error events
 
+' New integrated intensity background fit parameter (on each side of scan)
+Global Const MAX_INTEGRATED_BGD_FIT% = 20
+Global Const MAX_ENERGY_ARRAY_SIZE% = 10
+Global Const MAX_THROUGHPUT_ARRAY_SIZE% = 20
+
 ' Based on Cameca SX100 set times
 Global Const KILOVOLT_SET_TIME! = 6#
 Global Const BEAMCURRENT_SET_TIME_CAMECA! = 11#
@@ -2774,9 +2779,9 @@ Global EDSInterfaceInsertRetractPresent As Boolean
 Global EDSInterfaceMaxEnergyThroughputPresent As Boolean
 
 Global MaxEnergyArraySize As Integer
-Global MaxEnergyArrayValue() As Single
+Global MaxEnergyArrayValue(1 To MAX_ENERGY_ARRAY_SIZE%) As Single
 Global MaxThroughputArraySize As Integer
-Global MaxThroughputArrayValue() As Single
+Global MaxThroughputArrayValue(1 To MAX_THROUGHPUT_ARRAY_SIZE%) As Single
 
 Global EDSInterfaceMCSInputsPresent As Boolean
 
@@ -2882,3 +2887,8 @@ Global ThermoNSSVersionNumber As Single
 Global DisplayFullScanRangeForAcquisitionFlag As Boolean
 
 Global ManualPHAElementChannel As Integer   ' 0 = none, > 0 = channel to manually acquire PHA
+
+' New globals for integrated intensity background fit (see global constant MAX_INTEGRATED_BGD_FIT% above)
+Global IntegratedBackgroundFitType As Integer
+Global IntegratedBackgroundFitPointsLow As Integer
+Global IntegratedBackgroundFitPointsHigh As Integer
