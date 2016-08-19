@@ -2,10 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-08/02/16	Add remaining REE elements to matrix.mdb (347K k-ratios).  Modify integhrated intensity background fit
-v.11.5.7	to utilize either off-peaks or scan end points (Goemann).
+08/18/16	Enable Bruker beam deflection call for Remote interface. Add code to disable nominal interference
+v. 11.5.8	calculations in Standard Assignments and Elements/Cations dialogs if the element is EDS (for now).
 
-		Fix Cameca bias scan issue when MCXA PHA is selected (Neill).
+08/02/16	Add remaining REE elements to matrix.mdb (347K k-ratios).  Modify integrated intensity background fit
+v. 11.5.7	to utilize either off-peaks or scan end points (Goemann).
+
+		Fix Cameca bias scan issue when MCA PHA is selected (Neill).
 
 07/27/16	Improve integrated intensity display dialog. Improve CL acquisition code.
 

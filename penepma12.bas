@@ -725,7 +725,7 @@ If CalculateDoNotOverwriteTXT = 0 Then CalculateDoNotOverwriteTXT = True
 If CalculateForMatrixRange = 0 Then CalculateForMatrixRange = False
 If CalculateFromFormulaOrStandard% = 0 Then CalculateFromFormulaOrStandard% = 1
 
-If ExtractMethod% = 0 Then ExtractMethod% = 0
+If ExtractMethod% = 0 Then ExtractMethod% = 1       ' default to matrix extraction
 If ExtractElement% = 0 Then ExtractElement% = 22    ' Ti
 If ExtractMatrix% = 0 Then ExtractMatrix% = 14      ' Si
 
@@ -6162,7 +6162,7 @@ Next j%
 Close #Temp1FileNumber%
 Next n&
 
-msg$ = "The specified boundary k-ratio plot data was output based on " & Format$(MaterialMeasuredEnergy#) & " keV, " & Trim$(Symup$(ExtractElement%)) & " " & Trim$(Xraylo$(MaterialMeasuredXray%)) & " in " & Trim$(Symup$(ExtractMatrixA1%)) & "-" & Trim$(Symup$(ExtractMatrixA2%)) & " adjacent to " & Trim$(Symup$(ExtractMatrixB1%)) & "-" & Trim$(Symup$(ExtractMatrixB2%))
+msg$ = "The specified boundary k-ratio plot data was output based on " & Format$(MaterialMeasuredTakeoff#) & " degrees, " & Format$(MaterialMeasuredEnergy#) & " keV, " & Trim$(Symup$(ExtractElement%)) & " " & Trim$(Xraylo$(MaterialMeasuredXray%)) & " in " & Trim$(Symup$(ExtractMatrixA1%)) & "-" & Trim$(Symup$(ExtractMatrixA2%)) & " adjacent to " & Trim$(Symup$(ExtractMatrixB1%)) & "-" & Trim$(Symup$(ExtractMatrixB2%))
 MsgBox msg$, vbOKOnly + vbInformation, "Penepma12OutputPlotDataBoundary"
 
 Exit Sub
@@ -6228,7 +6228,7 @@ Call Penepma12CalculateReadWriteBinaryDataMatrix(Int(1), tfolder$, tfilename$, C
 If ierror Then Exit Sub
 
 ' Output for each valid x-ray
-For l% = 1 To MAXRAY% - 1
+For l% = 1 To MAXRAY_OLD%
 Call XrayGetEnergy(ExtractElement%, l%, eng!, edg!)
 If ierror Then Exit Sub
 
@@ -6327,7 +6327,7 @@ Call IOWriteLog(msg$)
 End If
 Next l%
 
-msg$ = "The specified matrix k-ratio plot data was output based on " & Format$(MaterialMeasuredEnergy#) & " keV, " & Trim$(Symup$(ExtractElement%)) & " in " & Trim$(Symup$(ExtractMatrix%))
+msg$ = "The specified matrix k-ratio plot data (from the available matrix .TXT files in " & tfolder$ & ") was output based on " & Format$(MaterialMeasuredTakeoff#) & " degrees, " & Format$(MaterialMeasuredEnergy#) & " keV, " & Trim$(Symup$(ExtractElement%)) & " in " & Trim$(Symup$(ExtractMatrix%))
 MsgBox msg$, vbOKOnly + vbInformation, "Penepma12OutputPlotDataMatrix"
 
 Exit Sub
