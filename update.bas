@@ -43,6 +43,10 @@ icancelanal = False
 Call DataMAN(Int(1), sample())
 If ierror Then Exit Sub
 
+' Init the analysis structure
+Call InitStandards(analysis)
+If ierror Then Exit Sub
+
 ' Update not analyzed elements for standards and oxygen by stoichiometry (always do this) (added 7/16/2011, v. 8.50)
 Call UpdateStdElements(analysis, sample(), stdsample())
 If ierror Then Exit Sub

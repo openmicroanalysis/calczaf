@@ -512,9 +512,6 @@ If sample(1).Elsyms$(k%) = sample(1).Elsyms(l%) Then Exit Sub
 ' Check for both elements as absorbers
 If sample(1).Xrsyms$(k%) = vbNullString And sample(1).Xrsyms$(l%) = vbNullString Then Exit Sub
 
-Call InitStandards(analysis)
-If ierror Then Exit Sub
-
 msg$ = vbCrLf & "Calculating alpha-factor binary " & Format$(sample(1).Elsyms$(k%), a20$) & " " & sample(1).Xrsyms$(k%) & " in " & Format$(sample(1).Elsyms$(l%), a20$)
 If DebugMode Then Call IOWriteLog(msg$)
 Call AnalyzeStatusAnal(msg$)

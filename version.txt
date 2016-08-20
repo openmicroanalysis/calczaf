@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/19/16	Fix MPB list bug when MPB iterate index is larger than acquire index (Matveev).
+
+		Move call to InitStandards(analysis) from AFactorCalculateKFactors to UpdateAnalyze to avoid 
+		overwriting std percents loaded in AfactorStd (already initialized in CalcZAFCalculate).
+
 08/18/16	Enable Bruker beam deflection call for Remote interface. Add code to disable nominal interference
 v. 11.5.8	calculations in Standard Assignments and Elements/Cations dialogs if the element is EDS (for now).
 
