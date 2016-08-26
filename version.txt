@@ -2,8 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-08/19/16	Fix MPB list bug when MPB iterate index is larger than acquire index (Matveev).
+08/25/16	Fix data type in EMS output (Meisenkothen), Add sample type options for auto focus
+v. 11.6.1	in Automate! window.
 
+08/19/16	Fix MPB list bug when MPB iterate index is larger than acquire index (Matveev).
+v. 11.5.9
 		Move call to InitStandards(analysis) from AFactorCalculateKFactors to UpdateAnalyze to avoid 
 		overwriting std percents loaded in AfactorStd (already initialized in CalcZAFCalculate).
 

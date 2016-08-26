@@ -258,7 +258,7 @@ Print #EMSASpectrumFileNumber%, "#XPERCHAN    : " & Format$(sample(1).EDSSpectra
 
 Print #EMSASpectrumFileNumber%, "#XUNITS      : eV"
 Print #EMSASpectrumFileNumber%, "#YUNITS      : cps"
-Print #EMSASpectrumFileNumber%, "#DATATYPE    : XY"
+Print #EMSASpectrumFileNumber%, "#DATATYPE    : Y"
 
 Print #EMSASpectrumFileNumber%, "#SIGNALTYPE  : EDS"
 Print #EMSASpectrumFileNumber%, "#XLABEL      : Energy (eV)"
