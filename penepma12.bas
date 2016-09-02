@@ -7828,8 +7828,15 @@ PENEPMA_Sample(1).ElmPercents!(2) = 100# * kcmp!(2, n%)
 binaryname$ = Symup$(ksym%(1, n%)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "_" & Symup$(ksym%(2, n%)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
 
 ParameterFileA$ = binaryname$ & ".par"
-ParameterFileB$ = binaryname$ & ".par"          ' same as A for matrix calculations
-ParameterFileBStd$ = Trim$(Symup$(isym%(1))) & ".par"  ' use pure element always (use Trim$ for single letter elements)
+ParameterFileB$ = binaryname$ & ".par"                          ' same as A for matrix calculations
+ParameterFileBStd$ = Trim$(Symup$(isym%(ibin%))) & ".par"       ' use pure element always (use Trim$ for single letter elements)
+
+' Check for pure element PAR file in Penfluor\Pure folder
+If Dir$(PENEPMA_Root$ & "\Penfluor\" & ParameterFileBStd$) = vbNullString Then
+tfilename$ = PENEPMA_Root$ & "\Penfluor\Pure\" & ParameterFileBStd$
+If Dir$(tfilename$) <> vbNullString Then FileCopy tfilename$, PENEPMA_Root$ & "\Penfluor\" & ParameterFileBStd$
+If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(ParameterFileBStd$)) & ".in"
+End If
 
 ' Check the parameters files
 Call Penepma12RunFanal

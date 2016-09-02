@@ -6,6 +6,8 @@ Function Penepma08CheckPenepmaVersion() As Integer
 ' Returns 6 if Penepma06
 ' Returns 8 if Penepma08
 ' Returns 12 if Penepma12
+' Returns 14 if Penepma14       ' does not officially exist
+' Returns 16 if Penepma16
 ' Returns 0 if path not found
 
 ierror = False
@@ -37,7 +39,7 @@ ElseIf InStr(PENEPMA_Root$, "12") > 0 Then
 Penepma08CheckPenepmaVersion% = 12
 Exit Function
 
-' Version 14
+' Version 14 (does not officially exist)
 ElseIf InStr(PENEPMA_Root$, "14") > 0 Then
 Penepma08CheckPenepmaVersion% = 14
 Exit Function

@@ -3928,7 +3928,7 @@ Sub Penepma08BatchExtractKratios(tForm As Form)
 ierror = False
 On Error GoTo Penepma08BatchExtractKratiosError
 
-Dim astring As String, tfilename As String, tfilename2 As String, kratiofile As String
+Dim astring As String, tfilename As String, tfilename2 As String, kratiofile As String, bstring As String
 
 Dim nCount As Long, n As Long
 Dim sAllFiles() As String
@@ -3975,8 +3975,12 @@ End If
 If Dir$(ExtractStdFolder$, vbDirectory) = vbNullString Then GoTo Penepma08BatchExtractKratiosStdFolderNotFound
 If Dir$(ExtractFolder$, vbDirectory) = vbNullString Then GoTo Penepma08BatchExtractKratiosFolderNotFound
 
-' First extract the standard intensities (just use n% = 1 index)
-tfilename$ = ExtractStdFolder$ & "\pe-intens-01.dat"
+' First extract the standard intensities (just use n% = 1 index) (check for both Penepma 2008 and Penepma 2012 output file names)
+tfilename$ = ExtractStdFolder$ & "\pe-intens-01.dat"    ' check for Penepma 2012 output file
+If Dir$(Trim$(tfilename$)) = vbNullString Then
+tfilename$ = ExtractStdFolder$ & "\pe-inten-01.dat"    ' check for Penepma 2008 output file
+If Dir$(Trim$(tfilename$)) = vbNullString Then GoTo Penepma08BatchExtractKratiosStdFileNotFound
+End If
 
 ' Extract all MAXRAY emission lines from net intensity file
 BinaryElement1% = ExtractElement%
@@ -3985,6 +3989,7 @@ If ierror Then Exit Sub
 
 ' Store standard intensities
 std_int!(Int(1), ExtractXray%) = tot_int!(Int(1), ExtractXray%)
+If std_int!(Int(1), ExtractXray%) = 0# Then GoTo Penepma08BatchExtractKratiosStdIntZero
 
 ' Open k-ratio output file
 Close #Temp2FileNumber%
@@ -3999,6 +4004,13 @@ Call IOWriteLog(vbCrLf & astring$)
 ' Extract the unknown element k-ratios for all files in folder and sub folders
 Call DirectorySearch("*intens-01.dat", ExtractFolder$, True, nCount&, sAllFiles$())
 If ierror Then Exit Sub
+
+' If no Penepma 2012 output files found, try using Penepma 2008 output file
+If nCount& = 0 Then
+Call DirectorySearch("*inten-01.dat", ExtractFolder$, True, nCount&, sAllFiles$())
+If ierror Then Exit Sub
+If nCount& = 0 Then GoTo Penepma08BatchExtractKratiosUnkFilesNotFound
+End If
 
 ' Loop through all recursively found files
 For n& = 1 To nCount&
@@ -4090,6 +4102,27 @@ Exit Sub
 
 Penepma08BatchExtractKratiosFolderNotFound:
 msg$ = "Please select a folder that contains the unknown intensity files (extraction will include all subfolders containing a pe-intens-01.dat file)."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchExtractKratios"
+Close #Temp2FileNumber%
+ierror = True
+Exit Sub
+
+Penepma08BatchExtractKratiosStdFileNotFound:
+msg$ = "Neither the pe-intens-01.dat nor the pe-inten-01.dat Penepma output files for the standard intensities were found"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchExtractKratios"
+Close #Temp2FileNumber%
+ierror = True
+Exit Sub
+
+Penepma08BatchExtractKratiosStdIntZero:
+msg$ = "Standard intensity for " & Symup$(ExtractElement%) & " " & Xraylo$(ExtractXray%) & " in " & tfilename$ & ", is zero"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchExtractKratios"
+Close #Temp2FileNumber%
+ierror = True
+Exit Sub
+
+Penepma08BatchExtractKratiosUnkFilesNotFound:
+msg$ = "No pe-intens-01.dat nor pe-inten-01.dat Penepma output files for unknowns were found"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchExtractKratios"
 Close #Temp2FileNumber%
 ierror = True

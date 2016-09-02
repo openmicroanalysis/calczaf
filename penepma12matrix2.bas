@@ -240,7 +240,7 @@ End If
 n% = InStr(astring$, ".txt")
 BeamTakeOff! = Val(Left$(astring$, n% - 1))
 
-' Check for emitter less than carbon (Z=6) for now- until Penepma 2014 is implemented!!!!
+' Check for emitter less than carbon (Z=6) for now- until Penepma 2016 is implemented in Penfluor/Fanal!!!!
 If EmittingElement% >= 6 Then
 
 ' Loop on each possible energy

@@ -2,8 +2,14 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/01/16	Fix NIST output for raw interpolated off-peak (Meisenkothen).
+v. 11.6.2
+		New matrix.mdb.
+
 08/25/16	Fix data type in EMS output (Meisenkothen), Add sample type options for auto focus
 v. 11.6.1	in Automate! window.
+
+		Disable save to disk option if error when outputting log (MacDonald).
 
 08/19/16	Fix MPB list bug when MPB iterate index is larger than acquire index (Matveev).
 v. 11.5.9
