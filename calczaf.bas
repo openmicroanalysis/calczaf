@@ -739,7 +739,11 @@ CalcZAFOldSample(1).PTCDensity! = PTCDensity!
 CalcZAFOldSample(1).PTCThicknessFactor! = PTCThicknessFactor!
 CalcZAFOldSample(1).PTCNumericalIntegrationStep! = PTCNumericalIntegrationStep!
 
+' Increment sample count
+CalcZAFSampleCount% = CalcZAFSampleCount% + 1
+
 ' Read first line and parse
+CalcZAFLineCount& = CalcZAFLineCount& + 1
 Line Input #ImportDataFileNumber%, astring$
 If Left$(astring$, 1) <> "0" And Left$(astring$, 1) <> "1" And Left$(astring$, 1) <> "2" And Left$(astring$, 1) <> "3" Then GoTo CalcZAFImportNextWrongFile
 
@@ -813,19 +817,18 @@ CalcZAFOldSample(1).StagePositions!(1, 4) = 0#                 ' W
 End If
 End If
 
-' Read mode and number of elements, kilovolts and takeoff
-'Input #ImportDataFileNumber%, CalcZAFMode%, CalcZAFOldSample(1).LastChan%, CalcZAFOldSample(1).kilovolts!, CalcZAFOldSample(1).takeoff!
+' Check for valid mode and number of elements, kilovolts and takeoff
 If CalcZAFMode% < 0 Or CalcZAFMode% > 3 Then GoTo CalcZAFImportNextBadMode
 If CalcZAFOldSample(1).kilovolts! < 1# Or CalcZAFOldSample(1).kilovolts! > 100# Then GoTo CalcZAFImportNextBadKeV
 If CalcZAFOldSample(1).takeoff! < 1# Or CalcZAFOldSample(1).takeoff! > 90# Then GoTo CalcZAFImportNextBadTakeoff
 If CalcZAFOldSample(1).LastChan% < 1 Or CalcZAFOldSample(1).LastChan% > MAXCHAN% Then GoTo CalcZAFImportNextTooMany
-CalcZAFLineCount& = CalcZAFLineCount& + 1
 
 ' Update defaults
 DefaultTakeOff! = CalcZAFOldSample(1).takeoff!
 DefaultKiloVolts! = CalcZAFOldSample(1).kilovolts!
 
 ' Read oxide, difference, stoichiometry, relative parameters
+CalcZAFLineCount& = CalcZAFLineCount& + 1
 Input #ImportDataFileNumber%, CalcZAFOldSample(1).OxideOrElemental%, CalcZAFOldSample(1).DifferenceElement$, CalcZAFOldSample(1).StoichiometryElement$, CalcZAFOldSample(1).StoichiometryRatio!, CalcZAFOldSample(1).RelativeElement$, CalcZAFOldSample(1).RelativeToElement$, CalcZAFOldSample(1).RelativeRatio!
 
 ' Set calculation flags
@@ -837,6 +840,7 @@ CalcZAFLineCount& = CalcZAFLineCount& + 1
 ' Loop on each element
 NumberofStandards% = 0
 For i% = 1 To CalcZAFOldSample(1).LastChan%
+CalcZAFLineCount& = CalcZAFLineCount& + 1
 Input #ImportDataFileNumber%, CalcZAFOldSample(1).Elsyms$(i%), CalcZAFOldSample(1).Xrsyms$(i%)
 Input #ImportDataFileNumber%, CalcZAFOldSample(1).numcat%(i%), CalcZAFOldSample(1).numoxd%(i%)
 Input #ImportDataFileNumber%, CalcZAFOldSample(1).StdAssigns%(i%), CalcZAFOldSample(1).ElmPercents!(i%), UnkCounts!(i%), StdCounts!(i%)
@@ -849,8 +853,6 @@ Call AddStdSaveStd(CalcZAFOldSample(1).StdAssigns%(i%))
 If ierror Then Exit Sub
 End If
 End If
-
-CalcZAFLineCount& = CalcZAFLineCount& + 1
 Next i%
 
 ' Update sample number
@@ -886,7 +888,7 @@ FormZAF.Caption = "Calculate ZAF Corrections    [" & CalcZAFOldSample(1).Name$ &
 If CalcZAFOldSample(1).StagePositions!(1, 1) <> 0# Or CalcZAFOldSample(1).StagePositions!(1, 2) <> 0# Then
 FormZAF.Caption = FormZAF.Caption & " [" & Format$(CalcZAFOldSample(1).StagePositions!(1, 1)) & ", " & Format$(CalcZAFOldSample(1).StagePositions!(1, 2)) & "]"
 End If
-CalcZAFSampleCount% = CalcZAFSampleCount% + 1
+
 Exit Sub
 
 ' Errors
@@ -964,15 +966,15 @@ Call IOGetFileName(Int(2), "DAT", tfilename$, tForm)
 If ierror Then Exit Sub
 
 ' Save current path
-CalcZAFDATFileDirectory$ = CurDir$
+CalcZAFDATFileDirectory$ = MiscGetPathOnly$(tfilename$)
 
 ' No errors, save file name
 ImportDataFile$ = tfilename$
 Open ImportDataFile$ For Input As #ImportDataFileNumber%
 
 ' Read first line of data
-CalcZAFLineCount& = 1
-CalcZAFSampleCount% = 1
+CalcZAFLineCount& = 0
+CalcZAFSampleCount% = 0
 Call CalcZAFImportNext
 If ierror Then Exit Sub
 

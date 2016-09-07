@@ -262,6 +262,11 @@ sample(1).WDSQuickScanSpeeds!(sample(1).LastElm%) = tmpsample(1).WDSQuickScanSpe
 sample(1).NthPointAcquisitionFlags%(sample(1).LastElm%) = tmpsample(1).NthPointAcquisitionFlags%(i%)
 sample(1).NthPointAcquisitionIntervals%(sample(1).LastElm%) = tmpsample(1).NthPointAcquisitionIntervals%(i%)
 
+' Do not load integrated intensities here (first sample loaded must have the only integrated intensities when combining samples!)
+If tmpsample(1).IntegratedIntensitiesUseIntegratedFlags(i%) Then
+End If
+
+' Load MPB parameters
 sample(1).MultiPointNumberofPointsAcquireHi%(sample(1).LastElm%) = tmpsample(1).MultiPointNumberofPointsAcquireHi%(i%)
 sample(1).MultiPointNumberofPointsAcquireLo%(sample(1).LastElm%) = tmpsample(1).MultiPointNumberofPointsAcquireLo%(i%)
 sample(1).MultiPointNumberofPointsIterateHi%(sample(1).LastElm%) = tmpsample(1).MultiPointNumberofPointsIterateHi%(i%)
