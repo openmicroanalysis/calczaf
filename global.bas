@@ -14,7 +14,7 @@ Option Explicit
 Global ierror As Integer                           ' global error for backing out gracefully from error events
 
 ' New integrated intensity background fit parameter (on each side of scan)
-Global Const MAX_INTEGRATED_BGD_FIT% = 20
+Global Const MAX_INTEGRATED_BGD_FIT% = 50
 Global Const MAX_ENERGY_ARRAY_SIZE% = 10
 Global Const MAX_THROUGHPUT_ARRAY_SIZE% = 20
 

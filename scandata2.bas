@@ -18,9 +18,11 @@ On Error GoTo ScanDataPlotFitCurve_PEError
 
 Dim firstpointdone As Boolean
 Dim i As Integer
-Dim tx As Single, ty As Single
+Dim tX As Single, tY As Single
 Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
 Dim sxmin As Double, sxmax As Double, symin As Double, symax As Double
+
+tGraph.PEactions = REINITIALIZE_RESETIMAGE
 
 ' Determine min and max of graph
 xmin# = tGraph.ManualMinX
@@ -54,14 +56,14 @@ symin# = NATURALE# ^ symin#
 symax# = NATURALE# ^ symax#
 
 ElseIf mode% = 5 Then           ' cubic spline
-tx! = CSng(sxmin#)
-Call SplineInterpolate(xdata!(), ydata!(), ycoeff#(), CLng(nPoints%), tx!, ty!)
+tX! = CSng(sxmin#)
+Call SplineInterpolate(xdata!(), ydata!(), ycoeff#(), CLng(nPoints%), tX!, tY!)
 If ierror Then Exit Sub
-symin# = CDbl(ty!)
-tx! = CSng(sxmax#)
-Call SplineInterpolate(xdata!(), ydata!(), ycoeff#(), CLng(nPoints%), tx!, ty!)
+symin# = CDbl(tY!)
+tX! = CSng(sxmax#)
+Call SplineInterpolate(xdata!(), ydata!(), ycoeff#(), CLng(nPoints%), tX!, tY!)
 If ierror Then Exit Sub
-symax# = CDbl(ty!)
+symax# = CDbl(tY!)
 
 ElseIf mode% = 6 Then           ' multi-point exponential
 symin# = acoeff1! + sxmin# * acoeff2! + sxmin# ^ 2 * acoeff3!
@@ -101,8 +103,6 @@ If currentonpeak! <> 0# Then
 Call ScanDataPlotLine(tGraph, linecount&, CDbl(currentonpeak!), ymin#, CDbl(currentonpeak!), ymax#, False, True, Int(255), Int(0), Int(255), Int(0))    ' green
 If ierror Then Exit Sub
 End If
-
-tGraph.PEactions = REINITIALIZE_RESETIMAGE
 
 Exit Sub
 
@@ -302,6 +302,51 @@ Exit Sub
 ' Errors
 ScanDataPlotBarError:
 MsgBox Error$, vbOKOnly + vbCritical, "ScanDataPlotBar"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub ScanDataPlotPHAWindow_PE(tGraph As Pesgo, linecount As Long, baseline As Single, window As Single, tBold As Boolean)
+' Display the PHA window on the graph (Pro Essentials code)
+
+ierror = False
+On Error GoTo ScanDataPlotPHAWindow_PEError
+
+Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
+Dim sxmin As Double, sxmax As Double, symin As Double, symax As Double
+
+tGraph.PEactions = REINITIALIZE_RESETIMAGE                   ' generate new plot
+
+' Determine min and max of graph
+xmin# = tGraph.ManualMinX
+xmax# = tGraph.ManualMaxX
+
+ymin# = tGraph.ManualMinY
+ymax# = tGraph.ManualMaxY
+
+' Calculate PHA window
+sxmin# = CSng(baseline!)
+sxmax# = CSng(baseline! + window!)
+symin# = ymin# + (ymax# - ymin#) / 2#
+symax# = symin#
+
+' Plot PHA window
+Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
+If ierror Then Exit Sub
+
+' Calculate end bars
+Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin# * 0.9, sxmin#, symax# * 1.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
+If ierror Then Exit Sub
+
+Call ScanDataPlotLine(tGraph, linecount&, sxmax#, symin# * 0.9, sxmax#, symax# * 1.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
+If ierror Then Exit Sub
+
+Exit Sub
+
+' Errors
+ScanDataPlotPHAWindow_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "ScanDataPlotPHAWindow_PE"
 ierror = True
 Exit Sub
 
