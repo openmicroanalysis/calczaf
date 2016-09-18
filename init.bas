@@ -2746,7 +2746,7 @@ InterfSyms$(i%) = "2nd"
 ElseIf i% = 3 Then
 InterfSyms$(i%) = "3rd"
 Else
-InterfSyms$(i%) = Str$(i%) & "th"
+InterfSyms$(i%) = Format$(i%) & "th"
 End If
 Next i%
 

@@ -4026,6 +4026,49 @@ If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivatePro
 Next i%
 End If
 
+' Tolerance for initiating a stage move (in microns)
+lpAppName$ = "Hardware"
+lpKeyName$ = "MoveStageToleranceX"
+lpDefault$ = "0.1"
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then MoveStageToleranceX! = Val(Left$(lpReturnString$, valid&))
+If MoveStageToleranceX! < 0# Or MoveStageToleranceX! > 10# Then
+msg$ = "MoveStageToleranceX keyword value out of range (must be between 0 and 10 microns) in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+End
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
+lpAppName$ = "Hardware"
+lpKeyName$ = "MoveStageToleranceY"
+lpDefault$ = "0.1"
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then MoveStageToleranceY! = Val(Left$(lpReturnString$, valid&))
+If MoveStageToleranceY! < 0# Or MoveStageToleranceY! > 10# Then
+msg$ = "MoveStageToleranceY keyword value out of range (must be between 0 and 10 microns) in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+End
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
+lpAppName$ = "Hardware"
+lpKeyName$ = "MoveStageToleranceZ"
+lpDefault$ = "0.1"
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then MoveStageToleranceZ! = Val(Left$(lpReturnString$, valid&))
+If MoveStageToleranceZ! < 0# Or MoveStageToleranceZ! > 10# Then
+msg$ = "MoveStageToleranceZ keyword value out of range (must be between 0 and 10 microns) in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+End
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
 Exit Sub
 
 ' Errors

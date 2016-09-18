@@ -538,7 +538,7 @@ MiscIsElementDuplicated2 = False
 ' Search sample for match
 ipp% = 0
 For j% = 1 To sample(1).LastChan%
-If sample(1).DisableQuantFlag%(j%) = 0 Then
+If chan% <> j% And sample(1).DisableQuantFlag%(j%) = 0 Then
 If Trim$(UCase$(sample(1).Elsyms$(chan%))) = Trim$(UCase$(sample(1).Elsyms$(j%))) Then
 If Trim$(UCase$(sample(1).Xrsyms$(chan%))) = Trim$(UCase$(sample(1).Xrsyms$(j%))) Then
 If sample(1).TakeoffArray!(chan%) = sample(1).TakeoffArray!(j%) Then

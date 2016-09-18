@@ -66,7 +66,6 @@ Public Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 
 ' New constants for non-traditional emission lines
 Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,mb)
-'Global Const MAXRAY% = 7                ' maximum xray symbols (ka,kb,la,lb,ma,mb," ") including blank for non-analyzed
 Global Const MAXRAY% = 13               ' maximum xray symbols (ka,kb,la,lb,ma,mb,ln,lg,lv,ll,mg,mz," ") including blank for non-analyzed
 
 ' Constants for array declarations
@@ -84,9 +83,9 @@ Global Const MAXEDG% = 9                ' maximum emission edges
 Global Const MAXELM% = 100              ' maximum elements (do not change due to data restrictions in AbsorbGetMAC)
 Global Const MAXEMP% = 20               ' maximum empirical MAC/APFs
 Global Const MAXSAMPLE% = 19999         ' maximum samples per run
-Global Const MAXINTF% = 5               ' maximum interferences per element
+Global Const MAXINTF% = 6               ' maximum interferences per element
 Global Const MAXINDEX% = 10000          ' maximum standards per standard database   (changed to 10000 as of 2-27-2007)
-Global Const MAXMAN% = 16               ' maximum MAN assignments per element
+Global Const MAXMAN% = 36               ' maximum MAN assignments per element
 Global Const MAXSET% = 30               ' maximum sets for drift correction
 Global Const MAXCRYSTYPE% = 60          ' maximum crystal types
 Global Const MAXCRYS% = 6               ' maximum crystals per spectrometer
@@ -2892,3 +2891,8 @@ Global ManualPHAElementChannel As Integer   ' 0 = none, > 0 = channel to manuall
 Global IntegratedBackgroundFitType As Integer
 Global IntegratedBackgroundFitPointsLow As Integer
 Global IntegratedBackgroundFitPointsHigh As Integer
+
+Global MoveStageToleranceX As Single    ' tolerance for initiating a stage move
+Global MoveStageToleranceY As Single
+Global MoveStageToleranceZ As Single
+

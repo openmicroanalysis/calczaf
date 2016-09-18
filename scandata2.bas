@@ -336,10 +336,10 @@ Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False,
 If ierror Then Exit Sub
 
 ' Calculate end bars
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin# * 0.9, sxmin#, symax# * 1.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
+Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin# - (ymax# - ymin#) * 0.1, sxmin#, symax# + (ymax# - ymin#) * 0.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
 If ierror Then Exit Sub
 
-Call ScanDataPlotLine(tGraph, linecount&, sxmax#, symin# * 0.9, sxmax#, symax# * 1.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
+Call ScanDataPlotLine(tGraph, linecount&, sxmax#, symin# - (ymax# - ymin#) * 0.1, sxmax#, symax# + (ymax# - ymin#) * 0.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
 If ierror Then Exit Sub
 
 Exit Sub
