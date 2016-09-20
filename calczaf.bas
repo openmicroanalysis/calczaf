@@ -4515,7 +4515,7 @@ Dim nstring As String
 Dim i As Integer, tzaf As Integer, j As Integer
 Dim sum1 As Single, sum2 As Single
 
-icancelanal% = False
+icancelanal = False
 
 ' Check if calculating all matrix corrections
 tzaf% = izaf%

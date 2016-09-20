@@ -1784,10 +1784,10 @@ Global apfrenormstandard(1 To MAXEMP%) As String
 
 ' Print out and I/O
 Global msg As String
-Global icancel As Integer
-Global icancelauto As Integer
-Global icancelanal As Integer
-Global icancelload As Integer
+Global icancel As Boolean
+Global icancelauto As Boolean
+Global icancelanal As Boolean
+Global icancelload As Boolean
 Global DebugMode As Integer
 Global ExtendedFormat As Integer
 Global SaveToDisk As Integer
