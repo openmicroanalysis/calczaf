@@ -317,7 +317,7 @@ If ippp% = 0 Then
 analysis.WtPercents!(chan%) = stdsample(1).ElmPercents!(ip%)            ' no, so load
 Else
 If sample(1).DisableQuantFlag%(ippp%) = 1 Then analysis.WtPercents!(chan%) = stdsample(1).ElmPercents!(ip%)     ' if analyzed but disabled, then load anway
-'If sample(1).DisableQuantFlag%(ippp%) = 1 And chan% <= sample(1).LastElm% Then analysis.WtPercents!(chan%) = stdsample(1).ElmPercents!(ip%)     ' if analyzed but disabled, then load anway (this line handles the situation when element is present as disabled WDS, enabled EDS and also specified)
+'If sample(1).DisableQuantFlag%(ippp%) = 1 And chan% <= sample(1).LastElm% Then analysis.WtPercents!(chan%) = stdsample(1).ElmPercents!(ip%)     ' if analyzed but disabled, then load anyway (this line handles the situation when element is present as disabled WDS, enabled EDS and also specified)
 End If
 
 ' Zero if analyzing oxygen and sample is a standard (3/1/2004 code changes)
