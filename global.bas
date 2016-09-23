@@ -2101,7 +2101,7 @@ Global DetDetectorModeDefaultIndexes(1 To MAXSPEC%) As Integer
 
 ' Multiple peak calibration global (see CalibratePeakCenterFlag and CalibratePeakCenterFiles())
 Global UseMultiplePeakCalibrationOffsetFlag As Integer
-Global CalibratePeakCenterFiles(0 To MAXRAY% - 2) As String
+Global CalibratePeakCenterFiles(0 To MAXRAY_OLD% - 1) As String
 
 ' Wav file global
 Global UseWavFileAfterAutomationString As String

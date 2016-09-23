@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/22/16	Fix automated Calibrate Spectrometers feature in StartWin (Buse).
+
 09/20/16	Add output of absorbed current if acquired in wavescans.
 
 09/19/16	If Do not set beam conditions checkbox is checked, use current mag for imaging
