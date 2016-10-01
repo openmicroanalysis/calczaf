@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/30/16	Modify CalcImage dialog CPQ controls to handle increase in number of MAN stds to 36 per element and 
+		interferences to 6 per element (Roberts).
+
+09/29/16	Move absorbed current TDI measurement to end of TDI counting cycle (Seward). 
+
+		Reduce overhead in starting On-peak counting for TDI (Seward).
+
 09/27/16	Check for disabled quant in DataCorrectAggregateData (Seward). Small tweak to Stage mosaic code.
 
 09/22/16	Fix automated Calibrate Spectrometers feature in StartWin (Buse).
