@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/02/16	Add display of initial absorbed current value to TDI plot (Seward).
+v. 11.6.5
+
 09/30/16	Modify CalcImage dialog CPQ controls to handle increase in number of MAN stds to 36 per element and 
 		interferences to 6 per element (Roberts).
 

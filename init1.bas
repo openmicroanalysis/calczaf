@@ -1434,18 +1434,6 @@ End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 lpAppName$ = "Software"
-lpKeyName$ = "UseSimpleRegistration"     ' (for bypassing "hash" registration, but use by default for Unicode languages to avoid byte issues)
-nDefault& = True
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-If valid& <> 0 Then
-UseSimpleRegistrationFlag = True
-Else
-UseSimpleRegistrationFlag = False
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-lpAppName$ = "Software"
 lpKeyName$ = "UseMultiplePeakCalibrationOffset"
 nDefault& = False
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)

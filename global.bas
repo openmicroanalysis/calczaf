@@ -2038,15 +2038,11 @@ Global RealTimePauseAutomation As Integer
 Global UseZeroPointCalibrationCurveFlag As Integer
 Global VerboseMode As Integer
 
+' Plot and PlotWave parameters
 Global ErrorbarSigmaIndex As Integer
 Global ErrorbarSigmaNumber As Integer
 Global ErrorbarSpacingIndex As Integer
 Global ErrorbarSpacingNumber As Integer
-
-Global ErrorbarSigmaIndex2 As Integer
-Global ErrorbarSigmaNumber2 As Integer
-Global ErrorbarSpacingIndex2 As Integer
-Global ErrorbarSpacingNumber2 As Integer
 
 Global ScanRotationPresent As Integer
 Global DefaultScanRotation As Single
@@ -2105,7 +2101,6 @@ Global CalibratePeakCenterFiles(0 To MAXRAY_OLD% - 1) As String
 
 ' Wav file global
 Global UseWavFileAfterAutomationString As String
-Global UseSimpleRegistrationFlag As Integer
 
 ' Move all stage motors hardware flag
 Global MoveAllStageMotorsHardwarePresent As Integer
