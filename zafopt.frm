@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormZAFOPT 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Calculation Options"
-   ClientHeight    =   7515
+   ClientHeight    =   5775
    ClientLeft      =   1440
    ClientTop       =   3480
    ClientWidth     =   9120
@@ -21,56 +21,9 @@ Begin VB.Form FormZAFOPT
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   7515
+   ScaleHeight     =   5775
    ScaleWidth      =   9120
    ShowInTaskbar   =   0   'False
-   Begin VB.Frame FrameHyperImagingQuantification 
-      Caption         =   "Hyper-Imaging Quantification"
-      ForeColor       =   &H00FF0000&
-      Height          =   1455
-      Left            =   120
-      TabIndex        =   37
-      Top             =   5880
-      Width           =   7815
-      Begin VB.TextBox TextHyperspectralEDSData 
-         Height          =   285
-         Left            =   240
-         Locked          =   -1  'True
-         TabIndex        =   41
-         Top             =   960
-         Width           =   7335
-      End
-      Begin VB.CommandButton CommandBrowseHyperspectralEDSData 
-         Caption         =   "Browse"
-         Height          =   375
-         Left            =   5760
-         TabIndex        =   40
-         Top             =   360
-         Width           =   1815
-      End
-      Begin VB.OptionButton OptionEDSUse 
-         Caption         =   "Do Not Use EDS Hyperspectral Element Data"
-         Height          =   255
-         Index           =   0
-         Left            =   120
-         TabIndex        =   39
-         TabStop         =   0   'False
-         ToolTipText     =   "Do not include EDS data in sample analysis"
-         Top             =   360
-         Width           =   5535
-      End
-      Begin VB.OptionButton OptionEDSUse 
-         Caption         =   "Use EDS Hyperspectral Element Data"
-         Height          =   255
-         Index           =   2
-         Left            =   120
-         TabIndex        =   38
-         TabStop         =   0   'False
-         ToolTipText     =   "Include EDS spectrum net intensities in sample analysis (use k-ratios and include in matrix iteration)"
-         Top             =   600
-         Width           =   5415
-      End
-   End
    Begin VB.TextBox TextDensity 
       Height          =   285
       Left            =   8040
@@ -268,7 +221,7 @@ Begin VB.Form FormZAFOPT
       Begin VB.TextBox TextDifferenceFormula 
          Height          =   285
          Left            =   3480
-         TabIndex        =   42
+         TabIndex        =   37
          ToolTipText     =   "Enter the formula by difference (not saved for export/import)"
          Top             =   1800
          Width           =   1815
@@ -286,7 +239,7 @@ Begin VB.Form FormZAFOPT
          EndProperty
          Height          =   255
          Left            =   120
-         TabIndex        =   43
+         TabIndex        =   38
          TabStop         =   0   'False
          ToolTipText     =   "Specify a formula by difference in the sample analysis"
          Top             =   1800
@@ -557,11 +510,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
-
-Private Sub CommandBrowseHyperspectralEDSData_Click()
-If Not DebugMode Then On Error Resume Next
-' Not implemented yet
-End Sub
 
 Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next

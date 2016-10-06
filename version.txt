@@ -2,7 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/05/16	Automatically add elements for Formula By Difference feature in CalcZAF and CalcImage.
+
 10/04/16	Add display of JEOL image shift DAC values in Analytical Conditions dialog (Carpenter).
+
+		Fix DataMotor null issue (Seward).
 
 10/02/16	Add display of initial absorbed current value to TDI plot (Seward).
 v. 11.6.5
