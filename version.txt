@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/06/16	Save fit flag in TDI disp[lay dialog (B. Wade). Improve estimated automation time by including
+v. 11.6.6	running standard after probe Image from PFE.
+
+		New matrix.mdb k-ratio database for fast Monte Carlo matrix calculations.
+
 10/05/16	Automatically add elements for Formula By Difference feature in CalcZAF and CalcImage.
 
 10/04/16	Add display of JEOL image shift DAC values in Analytical Conditions dialog (Carpenter).

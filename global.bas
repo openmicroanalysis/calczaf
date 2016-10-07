@@ -2315,6 +2315,8 @@ Global LimitToLimit2 As Single      ' for stage motion
 
 Global AutomationTotalTime As Variant
 Global AutomationStartTime As Variant
+Global ProbeImageStartTime As Variant
+Global ProbeImageElapsedTime As Variant
 
 Global UseOnlyDigitizedStandardPositionsFlag As Boolean
 Global DefaultReflectedLightIntensity As Integer
