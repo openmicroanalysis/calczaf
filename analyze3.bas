@@ -323,7 +323,7 @@ End If
 ' Zero if analyzing oxygen and sample is a standard (3/1/2004 code changes)
 If sample(1).Type% = 1 Then
 If sample(1).OxygenChannel% > 0 And sample(1).OxygenChannel% <= sample(1).LastElm% Then
-If UCase$(Trim$(sample(1).Elsyms$(chan%))) = UCase$(Trim$(Symlo$(8))) Then
+If UCase$(Trim$(sample(1).Elsyms$(chan%))) = UCase$(Trim$(Symlo$(ATOMIC_NUM_OXYGEN%))) Then
 analysis.WtPercents!(chan%) = 0#                                        ' zero specified value
 ippp% = IPOS2(NumberofStandards%, sample(1).number%, StandardNumbers%())
 analysis.StdPercents!(ippp%, chan%) = 0#                                ' fix PUBL: values
@@ -550,7 +550,7 @@ RowUnkVolElCors!(linerow%, chan%) = 0#
 RowUnkVolElDevs!(linerow%, chan%) = 0
 If sample(1).VolatileCorrectionUnks%(chan%) <> 0 Then
 
-' Only perfrom TDI correction if counts are > 0
+' Only perform TDI correction if counts are > 0
 If uncts!(chan%) > 0# Then
 
 ' Calculate volatile correction using count time plus intervals for elapsed time
@@ -1093,7 +1093,7 @@ End If
 If sample(1).StoichiometryElementFlag% Then
 ip% = IPOS1(sample(1).LastChan%, sample(1).StoichiometryElement$, sample(1).Elsyms$())
 If ip% > 0 And sample(1).OxideOrElemental% = 1 Then
-temp! = (stoichoxygen! / AllAtomicWts!(8)) * sample(1).StoichiometryRatio! * sample(1).AtomicWts!(ip%)
+temp! = (stoichoxygen! / AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) * sample(1).StoichiometryRatio! * sample(1).AtomicWts!(ip%)
 analysis.WtPercents!(ip%) = temp!
 
 ' Add stoichiometric oxygen from element by stoichiometry to stoichiometric oxygen

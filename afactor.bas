@@ -301,7 +301,7 @@ rec1% = 0
 rec2% = 0
 
 ' Skip hydrogen emitter and helium emitter components (check first binary only)
-If LCase$(eout$(ibin%)) = "h" Or LCase$(eout$(ibin%)) = "he" Then GoTo 600
+If LCase$(eout$(ibin%)) = Symlo$(ATOMIC_NUM_HYDROGEN%) Or LCase$(eout$(ibin%)) = Symlo$(ATOMIC_NUM_HELIUM%) Then GoTo 600
 
 ' Calculate the nominal alpha-factor at the given concentrations and perform a least squares fit based on "CorrectionFlag%".
 '
@@ -1338,7 +1338,7 @@ End If
 If sample(1).StoichiometryElementFlag% And sample(1).StoichiometryElement$ <> vbNullString Then
 ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, sample(1).StoichiometryElement$, sample(1).Elsyms$())
 If ip% > 0 And sample(1).OxideOrElemental% = 1 Then
-unkwts!(ip%) = oxygen! / AllAtomicWts!(8) * sample(1).StoichiometryRatio! * sample(1).AtomicWts!(ip%)
+unkwts!(ip%) = oxygen! / AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).StoichiometryRatio! * sample(1).AtomicWts!(ip%)
 
 If VerboseMode% Then
 msg$ = "STOI WT%" & Format$(Format$(unkwts!(ip%), f83$), a80$)

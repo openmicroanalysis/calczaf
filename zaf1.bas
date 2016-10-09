@@ -714,7 +714,6 @@ If zaf.flu!(6, i%) = 0# Then zaf.flu!(6, i%) = ZAFCalculateFlurYield(zaf.Z%(i%),
 If zaf.flu!(6, i%) < 0# Then zaf.flu!(6, i%) = 0#
 
 ' Calculate yields if zero value loaded for additional x-ray lines
-If MAXRAY% - 1 > MAXRAY_OLD% Then
 If zaf.flu!(7, i%) = 0# Then zaf.flu!(7, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(7))   ' calculate Ln yields
 If zaf.flu!(7, i%) < 0# Then zaf.flu!(7, i%) = 0#
 
@@ -732,7 +731,6 @@ If zaf.flu!(11, i%) < 0# Then zaf.flu!(11, i%) = 0#
 
 If zaf.flu!(12, i%) = 0# Then zaf.flu!(12, i%) = ZAFCalculateFlurYield(zaf.Z%(i%), Int(12))   ' calculate Mz yields
 If zaf.flu!(12, i%) < 0# Then zaf.flu!(12, i%) = 0#
-End If
 Next i%
 
 ' Loop on each emitter in matrix and check for bad values

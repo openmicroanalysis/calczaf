@@ -55,7 +55,7 @@ Call IOWriteLog(msg$)
 If sample(1).OxideOrElemental% = 1 Then
 msg$ = "OXWT: "
 For i% = 1 To sample(1).LastChan%
-If Not MiscStringsAreSame(sample(1).Elsyms$(i%), Symlo$(8)) Then
+If Not MiscStringsAreSame(sample(1).Elsyms$(i%), Symlo$(ATOMIC_NUM_OXYGEN%)) Then
 temp! = ConvertElmToOxd!(sample(1).ElmPercents!(i%), sample(1).Elsyms$(i%), sample(1).numcat%(i%), sample(1).numoxd%(i%))
 Else
 temp! = 0#

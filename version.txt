@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/08/16	Modify code to allow TDI correction of alternating on/off peak intensities (B. Wade).
+
+		Replace commonly used element numbers with global constants.
+
 10/06/16	Save fit flag in TDI disp[lay dialog (B. Wade). Improve estimated automation time by including
 v. 11.6.6	running standard after probe Image from PFE.
 
@@ -194,7 +198,7 @@ v. 11.4.6
 03/18/16	Add beam deflection and get/set image shift to Remote Automation COM interface (Ruscitto).
 v. 11.4.5
 
-03/17/16	Fux last bug on using quick stds with automatd digitized conditions (Poeml).
+03/17/16	Fux last bug on using quick stds with automated digitized conditions (Poeml).
 
 03/15/16	Fix use digitized conditions issue (Poeml).
 v. 11.4.4

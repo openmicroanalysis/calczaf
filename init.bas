@@ -2573,10 +2573,7 @@ Xraylo$(3) = "la"
 Xraylo$(4) = "lb"
 Xraylo$(5) = "ma"
 Xraylo$(6) = "mb"
-Xraylo$(7) = vbNullString     ' unanalyzed element
 
-' Initialize additional xray strings
-If MAXRAY% - 1 > MAXRAY_OLD% Then
 Xraylo$(7) = "Ln"
 Xraylo$(8) = "Lg"
 Xraylo$(9) = "Lv"
@@ -2584,7 +2581,6 @@ Xraylo$(10) = "Ll"
 Xraylo$(11) = "Mg"
 Xraylo$(12) = "Mz"
 Xraylo$(13) = vbNullString     ' unanalyzed element
-End If
 
 Edglo$(1) = "k"
 Edglo$(2) = "l1"
@@ -3046,14 +3042,12 @@ XrayColor&(4) = RGB(80, 220, 80) ' Lb
 XrayColor&(5) = RGB(80, 80, 255) ' Ma
 XrayColor&(6) = RGB(80, 80, 220) ' Mb
 
-If MAXRAY% - 1 > MAXRAY_OLD% Then
 XrayColor&(7) = RGB(200, 100, 100)  ' Ln
 XrayColor&(8) = RGB(128, 64, 64)    ' Lg
 XrayColor&(9) = RGB(100, 200, 100)  ' Lv
 XrayColor&(10) = RGB(64, 128, 64)   ' Ll
 XrayColor&(11) = RGB(100, 100, 200) ' Mg
 XrayColor&(12) = RGB(64, 64, 100)   ' Mz
-End If
 
 ' Alternative array for graph control
 XrayColor2%(1) = 12             ' Ka
@@ -3063,14 +3057,12 @@ XrayColor2%(4) = 2              ' Lb
 XrayColor2%(5) = 9              ' Ma
 XrayColor2%(6) = 1              ' Mb
 
-If MAXRAY% - 1 > MAXRAY_OLD% Then
 XrayColor2%(7) = 11             ' Ln
 XrayColor2%(8) = 3              ' Lg
 XrayColor2%(9) = 8              ' Lv
 XrayColor2%(10) = 3             ' Ll
 XrayColor2%(11) = 13            ' Mg
 XrayColor2%(12) = 14            ' Mz
-End If
 
 ' Load sample exchange positions
 Call InitINI3
@@ -3488,13 +3480,13 @@ itemp% = -1 * AllOxd%(i%) * -2 / AllCat%(i%)     ' if oxide
 Else
 itemp% = -1     ' if halogen
 End If
-If i% = 2 Then itemp% = 0    ' if noble
-If i% = 8 Then itemp% = -2   ' if oxygen
-If i% = 10 Then itemp% = 0   ' if noble
-If i% = 18 Then itemp% = 0   ' if noble
-If i% = 36 Then itemp% = 0   ' if noble
-If i% = 54 Then itemp% = 0   ' if noble
-If i% = 86 Then itemp% = 0   ' if noble
+If i% = ATOMIC_NUM_HELIUM% Then itemp% = 0      ' if noble
+If i% = ATOMIC_NUM_OXYGEN% Then itemp% = -2     ' if oxygen
+If i% = ATOMIC_NUM_NEON% Then itemp% = 0        ' if noble
+If i% = ATOMIC_NUM_ARGON% Then itemp% = 0       ' if noble
+If i% = ATOMIC_NUM_KRYPTON% Then itemp% = 0     ' if noble
+If i% = ATOMIC_NUM_XENON% Then itemp% = 0       ' if noble
+If i% = ATOMIC_NUM_RADON% Then itemp% = 0       ' if noble
 Print #Temp1FileNumber%, AllAtomicNums%(i%), VbDquote$ & Symup$(i%) & VbDquote$, itemp%
 Next i%
 

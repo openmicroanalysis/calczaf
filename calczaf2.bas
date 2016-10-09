@@ -41,7 +41,7 @@ Call IOWriteLog(vbNullString)
 For i% = 1 To MAXELM%
 
 ' Calculate oxide weight
-temp1! = AllAtomicWts!(i%) * AllCat%(i%) + AllAtomicWts!(8) * AllOxd%(i%)
+temp1! = AllAtomicWts!(i%) * AllCat%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * AllOxd%(i%)
 
 ' Calculate elemental weight
 temp2! = AllAtomicWts!(i%) * AllCat%(i%)

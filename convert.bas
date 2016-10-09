@@ -67,7 +67,7 @@ Dim ip As Integer
 temp# = 0#
 ip% = IPOS1(MAXELM%, sym$, Symlo$())
 If ip% > 0 Then
-temp# = weight! * (AllAtomicWts!(ip%) * cat% + AllAtomicWts!(8) * oxd%)
+temp# = weight! * (AllAtomicWts!(ip%) * cat% + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * oxd%)
 ConvertElmToOxd! = CSng(temp# / (AllAtomicWts!(ip%) * cat%))
 End If
 
@@ -132,8 +132,8 @@ temp4! = 0
 
 ' Olivine (skip disabled quant elements)
 If sample(1).MineralFlag% = 1 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(12), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_MAGNESIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_IRON%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())        ' Fe
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ib%)
@@ -150,9 +150,9 @@ End If
 
 ' Feldspar (skip disabled quant elements)
 If sample(1).MineralFlag% = 2 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(11), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Na
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(20), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
-ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(19), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' K
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_SODIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Na
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_CALCIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_POTASSIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' K
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ib%)
@@ -171,9 +171,9 @@ End If
 
 ' Pyroxene (skip disabled quant elements)
 If sample(1).MineralFlag% = 3 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(20), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(12), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
-ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_CALCIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_MAGNESIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_IRON%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ib%)
@@ -192,10 +192,10 @@ End If
 
 ' Garnet (Normal) (skip disabled quant elements)
 If sample(1).MineralFlag% = 4 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(20), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(12), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
-ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
-id% = IPOS1DQ(sample(1).LastChan%, Symlo$(25), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mn
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_CALCIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_MAGNESIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_IRON%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+id% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_MANGANESE%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mn
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ib%)
@@ -216,9 +216,9 @@ End If
 
 ' Garnet (Grossular, Andradite, Uvarovite) (skip disabled quant elements)
 If sample(1).MineralFlag% = 5 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(13), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Al
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
-ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(24), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Cr
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_ALUMINUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Al
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_IRON%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_CHROMIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Cr
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(sampleline%, ib%)
@@ -275,8 +275,8 @@ id% = 0
 
 ' Olivine (skip disabled quant elements)
 If sample(1).MineralFlag% = 1 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(12), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_MAGNESIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_IRON%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
@@ -285,9 +285,9 @@ End If
 
 ' Feldspar (skip disabled quant elements)
 If sample(1).MineralFlag% = 2 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(11), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Na
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(20), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
-ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(19), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' K
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_SODIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Na
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_CALCIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_POTASSIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' K
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
@@ -297,9 +297,9 @@ End If
 
 ' Pyroxene (skip disabled quant elements)
 If sample(1).MineralFlag% = 3 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(20), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(12), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
-ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_CALCIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_MAGNESIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_IRON%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
@@ -309,10 +309,10 @@ End If
 
 ' Garnet (Normal) (skip disabled quant elements)
 If sample(1).MineralFlag% = 4 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(20), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(12), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
-ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
-id% = IPOS1DQ(sample(1).LastChan%, Symlo$(25), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mn
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_CALCIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Ca
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_MAGNESIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mg
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_IRON%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+id% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_MANGANESE%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Mn
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
@@ -323,9 +323,9 @@ End If
 
 ' Garnet (Grossular, Andradite, Uvarovite) (skip disabled quant elements)
 If sample(1).MineralFlag% = 5 Then
-ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(13), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Al
-ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
-ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(24), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Cr
+ia% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_ALUMINUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Al
+ib% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_IRON%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Fe
+ic% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_CHROMIUM%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())   ' Cr
 
 If ia% > 0 Then sum! = sum! + analysis.CalData!(j%, ia%)
 If ib% > 0 Then sum! = sum! + analysis.CalData!(j%, ib%)
@@ -359,7 +359,7 @@ temp! = 0#
 ip% = IPOS1(MAXELM%, sym$, Symlo$())
 If ip% > 0 Then
 temp! = weight! * (AllAtomicWts!(ip%) * cat%)
-ConvertOxdToElm! = temp! / (AllAtomicWts!(ip%) * cat% + AllAtomicWts!(8) * oxd%)
+ConvertOxdToElm! = temp! / (AllAtomicWts!(ip%) * cat% + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * oxd%)
 End If
 
 Exit Function
@@ -389,7 +389,7 @@ Dim temp As Single
 ConvertTotalToExcessOxygen! = 0#
 
 ' Find the position of unknown specified oxygen in the standard composition array
-ip% = IPOS1(stdsample(1).LastChan%, Symlo$(8), stdsample(1).Elsyms$())
+ip% = IPOS1(stdsample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), stdsample(1).Elsyms$())
 If ip% = 0 Then Exit Function
 
 ' Load total oxygen from standard composition database
@@ -596,8 +596,8 @@ Dim i As Integer
 Dim temp As Single
 
 For i% = 1 To lchan%
-If atwts!(i%) <> AllAtomicWts!(8) Then
-temp! = wts!(i%) * (atwts!(i%) * numcats%(i%) + AllAtomicWts!(8) * numoxds%(i%))
+If atwts!(i%) <> AllAtomicWts!(ATOMIC_NUM_OXYGEN%) Then
+temp! = wts!(i%) * (atwts!(i%) * numcats%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * numoxds%(i%))
 oxwts!(i%) = temp! / (atwts!(i%) * numcats%(i%))
 Else
 oxwts!(i%) = excess!
@@ -696,32 +696,32 @@ Dim BrtoO As Single, ItoO As Single
 Dim ip As Integer
 Dim temp As Single
 
-FtoO! = AllAtomicWts!(8) / (AllAtomicWts!(9) * 2#)
-CltoO! = AllAtomicWts!(8) / (AllAtomicWts!(17) * 2#)
-BrtoO! = AllAtomicWts!(8) / (AllAtomicWts!(35) * 2#)
-ItoO! = AllAtomicWts!(8) / (AllAtomicWts!(53) * 2#)
+FtoO! = AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / (AllAtomicWts!(ATOMIC_NUM_FLUORINE%) * 2#)
+CltoO! = AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / (AllAtomicWts!(ATOMIC_NUM_CHLORINE%) * 2#)
+BrtoO! = AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / (AllAtomicWts!(ATOMIC_NUM_BROMINE%) * 2#)
+ItoO! = AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / (AllAtomicWts!(ATOMIC_NUM_IODINE%) * 2#)
 
 ' Check for fluorine
 temp! = 0#
-ip% = IPOS1DQ(lchan%, Symlo$(9), syms$(), dqs%())
+ip% = IPOS1DQ(lchan%, Symlo$(ATOMIC_NUM_FLUORINE%), syms$(), dqs%())
 If ip% > 0 Then
 temp! = conc!(ip%) * FtoO!
 End If
 
 ' Check for chlorine
-ip% = IPOS1DQ(lchan%, Symlo$(17), syms$(), dqs%())
+ip% = IPOS1DQ(lchan%, Symlo$(ATOMIC_NUM_CHLORINE%), syms$(), dqs%())
 If ip% > 0 Then
 temp! = temp! + conc!(ip%) * CltoO!
 End If
 
 ' Check for bromine
-ip% = IPOS1DQ(lchan%, Symlo$(35), syms$(), dqs%())
+ip% = IPOS1DQ(lchan%, Symlo$(ATOMIC_NUM_BROMINE%), syms$(), dqs%())
 If ip% > 0 Then
 temp! = temp! + conc!(ip%) * BrtoO!
 End If
 
 ' Check for iodine
-ip% = IPOS1DQ(lchan%, Symlo$(53), syms$(), dqs%())
+ip% = IPOS1DQ(lchan%, Symlo$(ATOMIC_NUM_IODINE%), syms$(), dqs%())
 If ip% > 0 Then
 temp! = temp! + conc!(ip%) * ItoO!
 End If

@@ -110,7 +110,7 @@ sample(1).XrayNums%(chan%) = ip
 If sample(1).DisableQuantFlag%(chan%) = 1 Then GoTo DisableQuant
 
 ' Check for hydrogen or helium
-If sample(1).AtomicNums%(chan%) = 1 Or sample(1).AtomicNums%(chan%) = 2 Then GoTo AbsorberOnly
+If sample(1).AtomicNums%(chan%) = ATOMIC_NUM_HYDROGEN% Or sample(1).AtomicNums%(chan%) = ATOMIC_NUM_HELIUM% Then GoTo AbsorberOnly
 
 ' Check for bad xray lines (no data)
 nrec% = sample(1).AtomicNums%(chan%) + 2
@@ -307,7 +307,7 @@ oxup$ = Trim$(elup$) + Trim$(Format$(cat%))
 End If
 
 If oxd% > 0 Then
-oxup$ = Trim$(oxup$) & Trim$(Symup$(8))
+oxup$ = Trim$(oxup$) & Trim$(Symup$(ATOMIC_NUM_OXYGEN%))
 If oxd% > 1 Then
 oxup$ = Trim$(oxup$) + Trim$(Format$(oxd%))
 End If
@@ -349,7 +349,7 @@ oxup$ = Trim$(elup$) + Trim$(Format$(cat%))
 End If
 
 If oxd% > 0 Then
-oxup$ = Trim$(oxup$) & Trim$(Symup$(8))
+oxup$ = Trim$(oxup$) & Trim$(Symup$(ATOMIC_NUM_OXYGEN%))
 If oxd% > 1 Then
 oxup$ = Trim$(oxup$) + Trim$(Format$(oxd%))
 End If

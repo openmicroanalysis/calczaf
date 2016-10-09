@@ -58,15 +58,15 @@ On Error GoTo UpdateAddCalculatedOxygenError
 Dim ip As Integer
 
 If sample(1).OxideOrElemental% = 1 Then
-ip% = IPOS1(sample(1).LastChan%, Symlo$(8), sample(1).Elsyms$())
+ip% = IPOS1(sample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), sample(1).Elsyms$())
 If ip% = 0 Then
 If sample(1).LastChan% + 1 > MAXCHAN% Then GoTo UpdateAddCalculatedOxygenTooManyElements
 elementadded = True
 sample(1).LastChan% = sample(1).LastChan% + 1
-sample(1).Elsyms$(sample(1).LastChan%) = Symlo$(8)
+sample(1).Elsyms$(sample(1).LastChan%) = Symlo$(ATOMIC_NUM_OXYGEN%)
 sample(1).Xrsyms$(sample(1).LastChan%) = vbNullString
-sample(1).numcat%(sample(1).LastChan%) = AllCat%(8)
-sample(1).numoxd%(sample(1).LastChan%) = AllOxd%(8)
+sample(1).numcat%(sample(1).LastChan%) = AllCat%(ATOMIC_NUM_OXYGEN%)
+sample(1).numoxd%(sample(1).LastChan%) = AllOxd%(ATOMIC_NUM_OXYGEN%)
 End If
 End If
 

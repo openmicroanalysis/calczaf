@@ -58,8 +58,8 @@ If ierror Then Exit Sub
 ' Calculate sum of oxides divided by molecular weights
 sum! = 0#
 For i% = 1 To sample(1).LastChan%
-If sample(1).AtomicNums%(i%) <> 8 Then
-temp! = sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + AllAtomicWts!(8) * sample(1).numoxd%(i%)
+If sample(1).AtomicNums%(i%) <> ATOMIC_NUM_OXYGEN% Then
+temp! = sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).numoxd%(i%)
 If temp! > 0# Then
 sum! = sum! + analysis.OxPercents!(i%) / temp!
 End If
@@ -67,8 +67,8 @@ End If
 Next i%
 
 For i% = 1 To sample(1).LastChan%
-If sample(1).AtomicNums%(i%) <> 8 Then
-temp! = sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + AllAtomicWts!(8) * sample(1).numoxd%(i%)
+If sample(1).AtomicNums%(i%) <> ATOMIC_NUM_OXYGEN% Then
+temp! = sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).numoxd%(i%)
 If sum! <> 0# And temp! <> 0# Then
 analysis.OxMolPercents!(i%) = 100# * (analysis.OxPercents!(i%) / temp!) / sum!
 Else
@@ -98,7 +98,7 @@ Dim temp As Single
 temp! = 0#
 For i% = 1 To sample(1).LastChan%
 analysis.OxPercents!(i%) = 0
-temp! = analysis.WtsData!(sampleline%, i%) * (sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + AllAtomicWts!(8) * sample(1).numoxd%(i%))
+temp! = analysis.WtsData!(sampleline%, i%) * (sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).numoxd%(i%))
 analysis.OxPercents!(i%) = temp! / (sample(1).AtomicWts!(i%) * sample(1).numcat%(i%))
 Next i%
 

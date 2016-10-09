@@ -680,7 +680,7 @@ If mode% = 7 Or mode% = 9 Then
 
 ' MAC element emitter
 msg$ = "Enter the emitter element symbol for MAC table"
-If sym$ = vbNullString Then sym$ = Symup$(8)
+If sym$ = vbNullString Then sym$ = Symup$(ATOMIC_NUM_OXYGEN%)
 sym$ = InputBox$(msg$, "XrayGetTable", sym$)
 If sym$ = vbNullString Then Exit Sub
 

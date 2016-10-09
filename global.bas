@@ -451,6 +451,28 @@ Global Const DASHED5$ = "-----"
 Global Const EDS_CRYSTAL$ = "EDS"        ' EDS crystal (not WDS)
 Global Const CONTINUED$ = "continued"
 
+Global Const ATOMIC_NUM_HYDROGEN% = 1
+Global Const ATOMIC_NUM_HELIUM% = 2
+Global Const ATOMIC_NUM_OXYGEN% = 8
+Global Const ATOMIC_NUM_FLUORINE% = 9
+Global Const ATOMIC_NUM_NEON% = 10
+Global Const ATOMIC_NUM_SODIUM% = 11
+Global Const ATOMIC_NUM_MAGNESIUM% = 12
+Global Const ATOMIC_NUM_ALUMINUM% = 13
+Global Const ATOMIC_NUM_SILICON% = 14
+Global Const ATOMIC_NUM_CHLORINE% = 17
+Global Const ATOMIC_NUM_ARGON% = 18
+Global Const ATOMIC_NUM_POTASSIUM% = 19
+Global Const ATOMIC_NUM_CALCIUM% = 20
+Global Const ATOMIC_NUM_CHROMIUM% = 24
+Global Const ATOMIC_NUM_MANGANESE% = 25
+Global Const ATOMIC_NUM_IRON% = 26
+Global Const ATOMIC_NUM_BROMINE% = 35
+Global Const ATOMIC_NUM_KRYPTON% = 36
+Global Const ATOMIC_NUM_IODINE% = 53
+Global Const ATOMIC_NUM_XENON% = 54
+Global Const ATOMIC_NUM_RADON% = 86
+
 Type TypeXray
     atnum As Integer
     syme As String * 2

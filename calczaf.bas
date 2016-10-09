@@ -497,7 +497,7 @@ sym$ = FormZAFELM.ComboElement.Text
 ip% = IPOS1(MAXELM%, sym$, Symlo$())
 sym$ = FormZAFELM.ComboXRay.Text
 ipp% = IPOS1(MAXRAY%, sym$, Xraylo$())  ' including unanalyzed elements
-If ip% = AllAtomicNums%(8) And ipp% <= MAXRAY% - 1 Then CalcZAFOldSample(1).OxideOrElemental% = 2
+If ip% = AllAtomicNums%(ATOMIC_NUM_OXYGEN%) And ipp% <= MAXRAY% - 1 Then CalcZAFOldSample(1).OxideOrElemental% = 2
 
 ' Get the element symbol
 CalcZAFOldSample(1).Elsyms$(CalcZAFRow%) = vbNullString
@@ -1353,7 +1353,7 @@ CalcZAFNewSample(1).Oxsyup$(CalcZAFNewSample(1).LastChan%) = CalcZAFOldSample(1)
 
 ' Check for analyzed oxygen if oxide sample
 If CalcZAFNewSample(1).OxideOrElemental% = 1 Then
-ip% = IPOS1(CalcZAFNewSample(1).LastElm%, Symlo$(8), CalcZAFNewSample(1).Elsyms$())
+ip% = IPOS1(CalcZAFNewSample(1).LastElm%, Symlo$(ATOMIC_NUM_OXYGEN%), CalcZAFNewSample(1).Elsyms$())
 If ip% > 0 Then GoTo CalcZAFSaveOxygenOnOxide
 End If
 
@@ -3942,7 +3942,7 @@ Call IOStatusAuto(vbNullString)
 For i% = 1 To MAXELM%
 
 ' Load the binary oxide
-Call CalcZAFLoadBinary(i%, Int(8))
+Call CalcZAFLoadBinary(i%, Int(ATOMIC_NUM_OXYGEN%))
 If ierror Then Exit Sub
 
 msg$ = Format$(CalcZAFOldSample(1).Elsyms$(1), a20$) & " " & CalcZAFOldSample(1).Xrsyms$(1) & " and " & Format$(CalcZAFOldSample(1).Elsyms$(2), a20$) & " " & CalcZAFOldSample(1).Xrsyms$(2)

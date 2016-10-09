@@ -615,7 +615,7 @@ Next i%
 If XrayLastElementEmitted% > 0 Then
 FormEDITMAC.ComboElement.ListIndex = XrayLastElementEmitted%
 Else
-FormEDITMAC.ComboElement.ListIndex = 8 - 1 ' oxygen
+FormEDITMAC.ComboElement.ListIndex = ATOMIC_NUM_OXYGEN% - 1 ' oxygen
 End If
 
 If XrayLastXrayEmitted% > 0 Then
@@ -627,7 +627,7 @@ End If
 If XrayLastElementAbsorbed% > 0 Then
 FormEDITMAC.ComboAbsorber.ListIndex = XrayLastElementAbsorbed%
 Else
-FormEDITMAC.ComboAbsorber.ListIndex = 26 - 1 ' iron
+FormEDITMAC.ComboAbsorber.ListIndex = ATOMIC_NUM_IRON% - 1 ' iron
 End If
 
 Exit Sub
@@ -985,7 +985,7 @@ End If
 If XrayLastElement% > 0 Then
 FormEDITXRAY.ComboElement.ListIndex = XrayLastElement%
 Else
-FormEDITXRAY.ComboElement.ListIndex = 8 - 1 ' oxygen
+FormEDITXRAY.ComboElement.ListIndex = ATOMIC_NUM_OXYGEN% - 1 ' oxygen
 End If
 
 If XrayType% = 1 Or XrayType% = 3 Then

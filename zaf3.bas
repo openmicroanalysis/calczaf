@@ -334,7 +334,6 @@ Sub ZAFFlu2(zafinit As Integer, zaf As TypeZAF)
 '  zafinit% = 0  calculate standard fluorescence correction factors
 '  zafinit% = 1  calculate sample fluorescence correction factors
 ' Donovan/Gainsforth modified code using N. Ritchie jump ratio table and JJD fluorescence by beta lines code.
-' Note that "MAXRAY%" equals 7 so "MAXRAY% - 1" equals 6 (Ka,Kb,La,Lb,Ma,Mb)
 
 ierror = False
 On Error GoTo ZAFFlu2Error
@@ -375,21 +374,18 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
     If zaf.il%(i%) = 5 Then n6! = 3.5  ' Ma
     If zaf.il%(i%) = 6 Then n6! = 3.5  ' Mb
 
-    ' If additional x-ray lines, load those here...
-    If MAXRAY% - 1 > MAXRAY_OLD% Then
     If zaf.il%(i%) = 7 Then n6! = 3.5   ' Ln
     If zaf.il%(i%) = 8 Then n6! = 3.5   ' Lg
     If zaf.il%(i%) = 9 Then n6! = 3.5   ' Lv
     If zaf.il%(i%) = 10 Then n6! = 3.5  ' Ll
     If zaf.il%(i%) = 11 Then n6! = 3.5  ' Mg
     If zaf.il%(i%) = 12 Then n6! = 3.5  ' Mz
-    End If
 
     ' Check to see if any absorber (matrix) element present can fluoresce the emitted element/line
     For i1% = 1 To zaf.in0%     ' for each absorber (matrix) element causing fluorescence
         If Not UseFluorescenceByBetaLinesFlag Then
         If zaf.il%(i1%) = 2 Or zaf.il%(i1%) = 4 Or zaf.il%(i1%) = 6 Then GoTo 6970  ' skip fluorescence by beta lines
-        If zaf.il%(i1%) > MAXRAY_OLD% Then GoTo 6970                                ' skip fluorescence by additional x-ray lines
+        'If zaf.il%(i1%) > MAXRAY_OLD% Then GoTo 6970                                ' skip fluorescence by additional x-ray lines
         End If
 
             ' First test for fluorescence by K line, then L, and then M (if indicated).
@@ -401,7 +397,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
             If iflu% = 2 And (i2% = 5 Or i2% = 6) Then GoTo 6960    ' only do fluorescence of K and L lines if indicated
                 If Not UseFluorescenceByBetaLinesFlag Then
                 If i2% = 2 Or i2% = 4 Or i2% = 6 Then GoTo 6960     ' skip fluorescence by beta lines
-                If i2% > MAXRAY_OLD% Then GoTo 6960                 ' skip fluorescence by additional x-ray lines
+                'If i2% > MAXRAY_OLD% Then GoTo 6960                 ' skip fluorescence by additional x-ray lines
                 End If
 
             ' Check for energy greater than critical excitation energy
@@ -415,15 +411,12 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
             If i2% = 5 Then in8% = 9   ' Ma
             If i2% = 6 Then in8% = 8   ' Mb
 
-            ' If additional x-ray lines, load those here...
-            If MAXRAY% - 1 > MAXRAY_OLD% Then
             If i2% = 7 Then in8% = 3   ' Ln
             If i2% = 8 Then in8% = 3   ' Lg
             If i2% = 9 Then in8% = 3   ' Lv
             If i2% = 10 Then in8% = 4   ' Ll
             If i2% = 11 Then in8% = 7   ' Mg
             If i2% = 12 Then in8% = 9   ' Mz
-            End If
 
             ' Check for missing absorption edge data
             If zaf.edg!(in8%, i1%) = 0# Then
@@ -530,7 +523,7 @@ zaf.vv!(i%) = 0#
         If fluor_type2%(i%, i1%, i2%) = 0 Then GoTo 7340
         If Not UseFluorescenceByBetaLinesFlag Then
         If zaf.il%(i1%) = 2 Or zaf.il%(i1%) = 4 Or zaf.il%(i1%) = 6 Then GoTo 7340  ' skip beta lines
-        If zaf.il%(i1%) > MAXRAY_OLD% Then GoTo 7340                                ' skip fluorescence by additional x-ray lines
+        'If zaf.il%(i1%) > MAXRAY_OLD% Then GoTo 7340                                ' skip fluorescence by additional x-ray lines
         End If
      
         ' Get x-ray line index for MAC of fluorescencing line
@@ -765,21 +758,6 @@ On Error GoTo ZAFFLUGetFluYieldError
 
 ZAFFLUGetFluYield! = 0#
 
-' Load fluorescent yields for original lines here...
-' 1=Ka by Ka  2=Ka by Kb  3=Ka by La   4=Ka by Lb  5=Ka by Ma  6=Ka by Mb
-' 7=Kb by Ka  8=Kb by Kb  9=Kb by La  10=Kb by Lb 11=Kb by Ma 12=Kb by Mb
-'13=La by Ka 14=La by Kb 15=La by La  16=La by Lb 17=La by Ma 18=La by Mb
-'19=Lb by Ka 20=Lb by Kb 21=Lb by La  22=Lb by Lb 23=Lb by Ma 24=Lb by Mb
-'25=Ma by Ka 26=Ma by Kb 27=Ma by La  28=Ma by Lb 29=Ma by Ma 30=Ma by Mb
-'31=Mb by Ka 32=Mb by Kb 33=Mb by La  34=Mb by Lb 35=Mb by Ma 36=Mb by Mb
-If MAXRAY% - 1 = MAXRAY_OLD% Then
-If tFluTyp% = 1 Or tFluTyp% = 7 Or tFluTyp% = 13 Or tFluTyp% = 19 Or tFluTyp% = 25 Or tFluTyp% = 31 Then ZAFFLUGetFluYield! = zaf.flu!(1, iabs%)  ' fluorescence by Ka
-If tFluTyp% = 2 Or tFluTyp% = 8 Or tFluTyp% = 14 Or tFluTyp% = 20 Or tFluTyp% = 26 Or tFluTyp% = 32 Then ZAFFLUGetFluYield! = zaf.flu!(2, iabs%)  ' fluorescence by Kb
-If tFluTyp% = 3 Or tFluTyp% = 9 Or tFluTyp% = 15 Or tFluTyp% = 21 Or tFluTyp% = 27 Or tFluTyp% = 33 Then ZAFFLUGetFluYield! = zaf.flu!(3, iabs%)  ' fluorescence by La
-If tFluTyp% = 4 Or tFluTyp% = 10 Or tFluTyp% = 16 Or tFluTyp% = 22 Or tFluTyp% = 28 Or tFluTyp% = 34 Then ZAFFLUGetFluYield! = zaf.flu!(4, iabs%)  ' fluorescence by Lb
-If tFluTyp% = 5 Or tFluTyp% = 11 Or tFluTyp% = 17 Or tFluTyp% = 23 Or tFluTyp% = 29 Or tFluTyp% = 35 Then ZAFFLUGetFluYield! = zaf.flu!(5, iabs%)  ' fluorescence by Ma
-If tFluTyp% = 6 Or tFluTyp% = 12 Or tFluTyp% = 18 Or tFluTyp% = 24 Or tFluTyp% = 30 Or tFluTyp% = 36 Then ZAFFLUGetFluYield! = zaf.flu!(6, iabs%)  ' fluorescence by Mb
-
 ' Load fluorescent yields for original and additional lines here...
 '  1=Ka by Ka   2=Ka by Kb   3=Ka by La    4=Ka by Lb   5=Ka by Ma   6=Ka by Mb     7=Ka by Ln   8=Ka by Lg   9=Ka by Lv   10=Ka by Ll  11=Ka by Mg  12=Ka by Mz
 ' 13=Kb by Ka  14=Kb by Kb  15=Kb by La   16=Kb by Lb  17=Kb by Ma  18=Kb by Mb    19=Kb by Ln  20=Kb by Lg  21=Kb by Lv   22=Kb by Ll  23=Kb by Mg  24=Kb by Mz
@@ -794,7 +772,6 @@ If tFluTyp% = 6 Or tFluTyp% = 12 Or tFluTyp% = 18 Or tFluTyp% = 24 Or tFluTyp% =
 '109=Ll by Ka 110=Ll by Kb 111=Ll by La  112=Ll by Lb 113=Ll by Ma 114=Ll by Mb   115=Ll by Ln 116=Ll by Lg 117=Ll by Lv  118=Ll by Ll 119=Ll by Mg 120=Ll by Mz
 '121=Mg by Ka 122=Mg by Kb 123=Mg by La  124=Mg by Lb 125=Mg by Ma 126=Mg by Mb   127=Mg by Ln 128=Mg by Lg 129=Mg by Lv  130=Mg by Ll 131=Mg by Mg 132=Mg by Mz
 '133=Mz by Ka 134=Mz by Kb 135=Mz by La  136=Mz by Lb 137=Mz by Ma 138=Mz by Mb   139=Mz by Ln 140=Mz by Lg 141=Mz by Lv  142=Mz by Ll 143=Mz by Mg 144=Mz by Mz
-Else
 If tFluTyp% = 1 Or tFluTyp% = 13 Or tFluTyp% = 25 Or tFluTyp% = 37 Or tFluTyp% = 49 Or tFluTyp% = 61 Then ZAFFLUGetFluYield! = zaf.flu!(1, iabs%)  ' fluorescence by Ka
 If tFluTyp% = 73 Or tFluTyp% = 85 Or tFluTyp% = 97 Or tFluTyp% = 109 Or tFluTyp% = 121 Or tFluTyp% = 133 Then ZAFFLUGetFluYield! = zaf.flu!(1, iabs%)  ' fluorescence by Ka
 
@@ -831,7 +808,6 @@ If tFluTyp% = 83 Or tFluTyp% = 95 Or tFluTyp% = 107 Or tFluTyp% = 119 Or tFluTyp
 
 If tFluTyp% = 12 Or tFluTyp% = 24 Or tFluTyp% = 36 Or tFluTyp% = 48 Or tFluTyp% = 60 Or tFluTyp% = 72 Then ZAFFLUGetFluYield! = zaf.flu!(12, iabs%)  ' fluorescence by Mz
 If tFluTyp% = 84 Or tFluTyp% = 96 Or tFluTyp% = 108 Or tFluTyp% = 120 Or tFluTyp% = 132 Or tFluTyp% = 144 Then ZAFFLUGetFluYield! = zaf.flu!(12, iabs%)  ' fluorescence by Mz
-End If
 
 Exit Function
 

@@ -1673,7 +1673,7 @@ ipp% = IPOS1(sample(1).LastChan%, sample(1).RelativeToElement$, sample(1).Elsyms
 If sample(1).OxygenChannel% > 0 Then
 If sample(1).DisableQuantFlag%(sample(1).OxygenChannel%) = 0 Then
 If sample(1).HydrogenStoichiometryFlag And sample(1).HydrogenStoichiometryRatio! <> 0# Then
-ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, Symlo$(1), sample(1).Elsyms$())
+ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, Symlo$(ATOMIC_NUM_HYDROGEN%), sample(1).Elsyms$())
 If ip% = i% Then
 zaf.krat!(i%) = 0#
 zaf.il%(i%) = 18
@@ -2112,7 +2112,7 @@ End If
 
 ' Hydrogen stoichiometry to excess oxygen (measured, specified or calculated)
 If sample(1).HydrogenStoichiometryFlag And sample(1).HydrogenStoichiometryRatio! <> 0# Then
-ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, Symlo$(1), sample(1).Elsyms$())
+ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, Symlo$(ATOMIC_NUM_HYDROGEN%), sample(1).Elsyms$())
 If ip% > sample(1).LastElm% And ip% <= sample(1).LastChan% Then
 analysis.WtPercents!(ip%) = zaf.conc!(ip%) * 100#
 End If
@@ -2413,15 +2413,15 @@ zaf.in1% = zaf.in0%
 zaf.in1% = zaf.in0% - 1
 
 zaf.eO!(zaf.in0%) = sample(1).kilovolts!   ' use sample kilovolts (no need to apply energy loss from coating to stoichiometric oxygen)
-zaf.Z%(zaf.in0%) = AllAtomicNums%(8)
+zaf.Z%(zaf.in0%) = AllAtomicNums%(ATOMIC_NUM_OXYGEN%)
 zaf.il%(zaf.in0%) = 0
 p2!(zaf.in0%) = 0#
-zaf.atwts!(zaf.in0%) = AllAtomicWts!(8)
+zaf.atwts!(zaf.in0%) = AllAtomicWts!(ATOMIC_NUM_OXYGEN%)
 End If
 
 ' Calculate oxide-elemental conversion factors
 For i% = 1 To zaf.in1%
-zaf.p1!(i%) = p2!(i%) * AllAtomicWts!(8) / zaf.atwts!(i%)
+zaf.p1!(i%) = p2!(i%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / zaf.atwts!(i%)
 Next i%
 
 ' Load xray lines, absorption edges, fluorescencent yields, MACs
@@ -3159,16 +3159,16 @@ zaf.in1% = zaf.in0%
 zaf.in1% = zaf.in0% - 1                     ' array index for all emitting elements (not including oxygen by stoichiometry)
 
 zaf.eO!(zaf.in0%) = sample(1).kilovolts!
-zaf.Z%(zaf.in0%) = AllAtomicNums%(8)
+zaf.Z%(zaf.in0%) = AllAtomicNums%(ATOMIC_NUM_OXYGEN%)
 zaf.il%(zaf.in0%) = 0
 p2!(zaf.in0%) = 0#
-zaf.atwts!(zaf.in0%) = AllAtomicWts!(8)
+zaf.atwts!(zaf.in0%) = AllAtomicWts!(ATOMIC_NUM_OXYGEN%)
 End If
 
 ' Calculate oxide-elemental conversion factors
 For i% = 1 To zaf.in1%
 If zaf.atwts!(i%) = 0# Then GoTo ZAFSetZAFBadAtomicWeight
-zaf.p1(i%) = p2!(i%) * AllAtomicWts!(8) / zaf.atwts!(i%)
+zaf.p1(i%) = p2!(i%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / zaf.atwts!(i%)
 Next i%
 
 ' Load xray lines, absorption edges, fluorescencent yields, MACs

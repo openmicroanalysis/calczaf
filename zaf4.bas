@@ -155,16 +155,6 @@ Sub ZAFPrintSmp(zaf As TypeZAF, analysis As TypeAnalysis, tdisplayoxide As Integ
 '  il() = 11 = Mg
 '  il() = 12 = Mz
 
-' Old definitions
-'  il() = 7 = by difference
-'  il() = 8 = by specified concentration
-'  il() = 9 = by stoichiometry to stoichiometric oxygen
-'  il() = 10 = disabled quantification
-'  il() = 11 = by stoichiometry to another element
-'  il() = 12 = by hydrogen stoichiometry to oxygen (measured, specified or calculated)
-'  il() = 13 = by difference (formula)
-
-' New definitions
 '  il() = 13 = by difference
 '  il() = 14 = by specified concentration
 '  il() = 15 = by stoichiometry to stoichiometric oxygen
@@ -348,7 +338,7 @@ End If
 
 ' Analyzed element
 Else
-If zaf.Z%(i%) <> AllAtomicNums%(8) Then
+If zaf.Z%(i%) <> AllAtomicNums%(ATOMIC_NUM_OXYGEN%) Then
 If zaf.in1% <> zaf.in0% Or tdisplayoxide% Then      ' using stoichiometric oxygen
 If Not UseAutomaticFormatForResultsFlag Then
 msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & Format$(Format$(zaf.kraw!(i%), f85$), a80$) & Format$(Format$(zaf.krat!(i%), f85$), a80$) & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(Format$(zaf.OxPercents!(i%), f83$), a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)

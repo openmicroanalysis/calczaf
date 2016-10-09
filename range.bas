@@ -47,7 +47,7 @@ Next i%
 If XrayLastElementEmitted% > 0 Then
 FormRANGE.ComboElement.ListIndex = XrayLastElementEmitted%
 Else
-FormRANGE.ComboElement.ListIndex = 8 - 1 ' oxygen
+FormRANGE.ComboElement.ListIndex = ATOMIC_NUM_OXYGEN% - 1 ' oxygen
 End If
 
 If XrayLastXrayEmitted% > 0 Then
@@ -74,7 +74,7 @@ FormRANGE.ListAtomicDensities.Clear
 For i% = 0 To MAXELM% - 1
 FormRANGE.ListAtomicDensities.AddItem "Density of " & Symup$(i% + 1) & " equals " & Format$(AllAtomicDensities!(i% + 1))
 Next i%
-FormRANGE.ListAtomicDensities.ListIndex = 14 - 1        ' default = Si
+FormRANGE.ListAtomicDensities.ListIndex = atomic_num_silicon% - 1        ' default = Si
 
 Exit Sub
 

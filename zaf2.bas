@@ -228,7 +228,7 @@ Const MAXCALCDENSITY% = 8   ' maximum density in gm/cm3
 
 Dim i As Integer, k As Integer, n As Integer
 Dim ii As Integer, jj As Integer, notransmission As Integer
-Dim tradius As Single, averageatomicweight As Single
+Dim tRadius As Single, averageatomicweight As Single
 Dim averageatomicnumber As Single
 Dim astring As String
 
@@ -247,8 +247,8 @@ Next i%
 ' Electron ranges
 astring$ = astring$ & vbCrLf & "Kanaya-Okayama Range (1972) at " & Str$(sample(1).kilovolts!) & " KeV, in microns:" & vbCrLf
 For k% = 1 To MAXCALCDENSITY%     ' loop on densities 1 to MAXCALCDENSITY%
-tradius! = (0.0276 * averageatomicweight! * sample(1).kilovolts! ^ 1.67) / (k% * averageatomicnumber! ^ 0.89)
-astring$ = astring$ & "Density =" & Str$(k%) & ", radius = " & MiscAutoFormat$(tradius!) & vbCrLf
+tRadius! = (0.0276 * averageatomicweight! * sample(1).kilovolts! ^ 1.67) / (k% * averageatomicnumber! ^ 0.89)
+astring$ = astring$ & "Density =" & Str$(k%) & ", radius = " & MiscAutoFormat$(tRadius!) & vbCrLf
 Next k%
 
 Call IOWriteLog(astring)
@@ -389,7 +389,7 @@ Dim ip As Integer
 
 ' Calculate "sample(1).OxygenChannel%" for use in calculating elemental to oxide conversions
 sample(1).OxygenChannel% = 0
-ip% = IPOS1(sample(1).LastChan%, Symlo$(8), sample(1).Elsyms$())
+ip% = IPOS1(sample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), sample(1).Elsyms$())
 sample(1).OxygenChannel% = ip%
 
 Exit Sub
@@ -416,7 +416,7 @@ Dim alloxygen As Single, extraoxygen As Single
 ' Calculate stoichiometric oxygen
 stoichiometricoxygen! = 0#
 For j% = 1 To zaf.in1%
-p1! = CSng(sample(1).numoxd%(j%)) / CSng(sample(1).numcat%(j%)) * AllAtomicWts!(8) / sample(1).AtomicWts!(j%)
+p1! = CSng(sample(1).numoxd%(j%)) / CSng(sample(1).numcat%(j%)) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / sample(1).AtomicWts!(j%)
 If j% <> sample(1).OxygenChannel% Then
 stoichiometricoxygen! = stoichiometricoxygen! + conc!(j%) * p1!
 End If
@@ -441,7 +441,7 @@ extraoxygen! = alloxygen! - stoichiometricoxygen!
 ' Convert to hydrogen if there is excess oxygen (allow negative correction)
 temp! = 0#
 'If extraoxygen! > 0# Then
-temp! = extraoxygen! / AllAtomicWts!(8) * sample(1).HydrogenStoichiometryRatio! * AllAtomicWts!(1)
+temp! = extraoxygen! / AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).HydrogenStoichiometryRatio! * AllAtomicWts!(ATOMIC_NUM_HYDROGEN%)
 'End If
 
 ZAFConvertExcessOxygenToHydrogen! = temp!
