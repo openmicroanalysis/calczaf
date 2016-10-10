@@ -147,7 +147,7 @@ End If
 analysis.ChargeBalance! = ConvertChargeBalance!(sample(1).LastChan%, sample(1).AtomicWts!(), analysis.WtPercents!(), sample(1).AtomicCharges!())
 
 ' Load Fe charge
-ip% = IPOS1(sample(1).LastChan%, Symlo$(26), sample(1).Elsyms$())   ' find Fe index
+ip% = IPOS1(sample(1).LastChan%, Symlo$(ATOMIC_NUM_IRON%), sample(1).Elsyms$())   ' find Fe index
 If ip% > 0 Then analysis.FeCharge! = sample(1).AtomicCharges!(ip%)
 
 If VerboseMode Then

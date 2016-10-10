@@ -177,7 +177,7 @@ Next chan%
 
 ' Add excess oxygen to oxygen channel
 If ModalOldSample(1).OxideOrElemental% = 1 Then
-ip% = IPOS1(ModalOldSample(1).LastChan%, Symlo$(8), ModalOldSample(1).Elsyms$())
+ip% = IPOS1(ModalOldSample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), ModalOldSample(1).Elsyms$())
 If ip% > 0 Then
 upercents#(ip%) = CDbl(totaloxygen!)
 End If
@@ -671,15 +671,15 @@ If ierror Then Exit Sub
 If numelms% < 1 Then GoTo ModalReadColumnLabelsBadLabel
 
 ' Determine which is cation and which is oxygen
-If symbols$(1) <> Symup$(8) Then
+If symbols$(1) <> Symup$(ATOMIC_NUM_OXYGEN%) Then
 icat% = 1
 ioxd% = 2
 
-ElseIf symbols$(1) = Symup$(8) And symbols$(2) <> vbNullString Then
+ElseIf symbols$(1) = Symup$(ATOMIC_NUM_OXYGEN%) And symbols$(2) <> vbNullString Then
 icat% = 2
 ioxd% = 1
 
-ElseIf symbols$(1) = Symup$(8) And symbols$(2) = vbNullString Then
+ElseIf symbols$(1) = Symup$(ATOMIC_NUM_OXYGEN%) And symbols$(2) = vbNullString Then
 icat% = 1
 ioxd% = 2
 
@@ -700,7 +700,7 @@ If symbols$(ioxd%) <> vbNullString Then
 ip% = IPOS1(MAXELM%, symbols$(ioxd%), Symlo$())
 If ip% = 0 Then GoTo ModalReadColumnLabelsBadElement
 
-If symbols$(ioxd%) <> Symup$(8) Then GoTo ModalReadColumnLabelsNoOxygen
+If symbols$(ioxd%) <> Symup$(ATOMIC_NUM_OXYGEN%) Then GoTo ModalReadColumnLabelsNoOxygen
 
 ' Load oxide cations
 cat% = CInt(fatoms!(icat%))
@@ -729,11 +729,11 @@ sample(1).LastChan% = sample(1).LastElm%
 
 ' If oxide (and no oxygen already), add oxygen
 If ModalOldSample(1).OxideOrElemental% = 1 Then
-ip% = IPOS1(ModalOldSample(1).LastChan%, Symlo$(8), ModalOldSample(1).Elsyms$())
+ip% = IPOS1(ModalOldSample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), ModalOldSample(1).Elsyms$())
 If ip% = 0 Then
 If sample(1).LastChan% + 1 > MAXCHAN% Then GoTo ModalReadColumnLabelsNoRoom
 sample(1).LastChan% = sample(1).LastChan% + 1
-sample(1).Elsyms$(sample(1).LastChan%) = Symlo$(8)
+sample(1).Elsyms$(sample(1).LastChan%) = Symlo$(ATOMIC_NUM_OXYGEN%)
 sample(1).numcat%(sample(1).LastChan%) = 1
 sample(1).numoxd%(sample(1).LastChan%) = 0
 End If

@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/09/16	Add more element atomic number constants where needed in code.
+
 10/08/16	Modify code to allow TDI correction of alternating on/off peak intensities (B. Wade).
 
 		Replace commonly used element numbers with global constants.

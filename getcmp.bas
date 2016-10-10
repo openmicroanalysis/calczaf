@@ -473,7 +473,7 @@ GetCmpTmpSample(1).Xrsyms$(GetCmpRow%) = sym$
 Deflin$(ipp%) = GetCmpTmpSample(1).Xrsyms$(GetCmpRow%)
 
 ' Determine energy and wavelength based on element and xray (skip hydrogen and helium)
-If Symlo$(ipp%) <> Symlo$(1) And Symlo$(ipp%) <> Symlo$(2) Then
+If Symlo$(ipp%) <> Symlo$(ATOMIC_NUM_HYDROGEN%) And Symlo$(ipp%) <> Symlo$(ATOMIC_NUM_HELIUM%) Then
 Call XrayGetKevLambda(Symlo$(ipp%), Xraylo$(ip%), keV!, lam!)
 If ierror Then Exit Sub
 End If

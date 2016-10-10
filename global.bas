@@ -55,14 +55,14 @@ Global Const SW_SHOWNORMAL& = 1
 'Global Const SW_SHOWDEFAULT& = 10
 
 ' Declare Windows API Functions
-Public Declare Function GetPrivateProfileString Lib "Kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, _
+Public Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, _
     ByVal lpReturnedString As String, ByVal nSize As Long, ByVal lpFileName As String) As Long
-Public Declare Function GetPrivateProfileInt Lib "Kernel32" Alias "GetPrivateProfileIntA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal nDefault As Long, _
+Public Declare Function GetPrivateProfileInt Lib "kernel32" Alias "GetPrivateProfileIntA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal nDefault As Long, _
     ByVal lpFileName As String) As Long
-Public Declare Function WritePrivateProfileString Lib "Kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As Any, _
+Public Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As Any, _
     ByVal lpFileName As String) As Long
 
-Public Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
+Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 ' New constants for non-traditional emission lines
 Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,mb)
@@ -453,6 +453,11 @@ Global Const CONTINUED$ = "continued"
 
 Global Const ATOMIC_NUM_HYDROGEN% = 1
 Global Const ATOMIC_NUM_HELIUM% = 2
+Global Const ATOMIC_NUM_LITHIUM% = 3
+Global Const ATOMIC_NUM_BERYLLIUM% = 4
+Global Const ATOMIC_NUM_BORON% = 5
+Global Const ATOMIC_NUM_CARBON% = 6
+Global Const ATOMIC_NUM_NITROGEN% = 7
 Global Const ATOMIC_NUM_OXYGEN% = 8
 Global Const ATOMIC_NUM_FLUORINE% = 9
 Global Const ATOMIC_NUM_NEON% = 10
@@ -467,11 +472,17 @@ Global Const ATOMIC_NUM_CALCIUM% = 20
 Global Const ATOMIC_NUM_CHROMIUM% = 24
 Global Const ATOMIC_NUM_MANGANESE% = 25
 Global Const ATOMIC_NUM_IRON% = 26
+Global Const ATOMIC_NUM_COPPER% = 29
+Global Const ATOMIC_NUM_ZINC% = 30
 Global Const ATOMIC_NUM_BROMINE% = 35
 Global Const ATOMIC_NUM_KRYPTON% = 36
+Global Const ATOMIC_NUM_MOLYBDENUM% = 42
 Global Const ATOMIC_NUM_IODINE% = 53
 Global Const ATOMIC_NUM_XENON% = 54
+Global Const ATOMIC_NUM_LEAD% = 82
 Global Const ATOMIC_NUM_RADON% = 86
+Global Const ATOMIC_NUM_THORIUM% = 90
+Global Const ATOMIC_NUM_URANIUM% = 92
 
 Type TypeXray
     atnum As Integer

@@ -827,60 +827,6 @@ Sub ZAFFLULoadLineWeightsReed(i As Integer, i1 As Integer, i2 As Integer, fluor_
 ierror = False
 On Error GoTo ZAFFLULoadLineWeightsReedError
            
-' Load relative line weights for original x-ray lines here...
-' 1=Ka by Ka  2=Ka by Kb  3=Ka by La   4=Ka by Lb  5=Ka by Ma  6=Ka by Mb
-' 7=Kb by Ka  8=Kb by Kb  9=Kb by La  10=Kb by Lb 11=Kb by Ma 12=Kb by Mb
-'13=La by Ka 14=La by Kb 15=La by La  16=La by Lb 17=La by Ma 18=La by Mb
-'19=Lb by Ka 20=Lb by Kb 21=Lb by La  22=Lb by Lb 23=Lb by Ma 24=Lb by Mb
-'25=Ma by Ka 26=Ma by Kb 27=Ma by La  28=Ma by Lb 29=Ma by Ma 30=Ma by Mb
-'31=Mb by Ka 32=Mb by Kb 33=Mb by La  34=Mb by Lb 35=Mb by Ma 36=Mb by Mb
-If MAXRAY% - 1 = MAXRAY_OLD% Then
-If fluor_type2%(i%, i1%, i2%) = 1 Then rela_line_wts2!(i%, i1%, i2%) = 1#     ' Ka by Ka
-If fluor_type2%(i%, i1%, i2%) = 2 Then rela_line_wts2!(i%, i1%, i2%) = 0.05   ' Ka by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
-If fluor_type2%(i%, i1%, i2%) = 3 Then rela_line_wts2!(i%, i1%, i2%) = 4.2    ' Ka by La (4.2 from Reed)
-If fluor_type2%(i%, i1%, i2%) = 4 Then rela_line_wts2!(i%, i1%, i2%) = 0.2    ' Ka by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
-If fluor_type2%(i%, i1%, i2%) = 5 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Ma (adjusted based on Penepma12_Exper_kratios Si/Pt)
-If fluor_type2%(i%, i1%, i2%) = 6 Then rela_line_wts2!(i%, i1%, i2%) = 1.6    ' Ka by Mb (adjusted based on Penepma12_Exper_kratios Si/Pt)
-
-If fluor_type2%(i%, i1%, i2%) = 7 Then rela_line_wts2!(i%, i1%, i2%) = 0.6    ' Kb by Ka (adjusted based on Penepma12_Exper_kratios_flu.dat)
-If fluor_type2%(i%, i1%, i2%) = 8 Then rela_line_wts2!(i%, i1%, i2%) = 0.08   ' Kb by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
-If fluor_type2%(i%, i1%, i2%) = 9 Then rela_line_wts2!(i%, i1%, i2%) = 0.3    ' Kb by La (adjusted based on Penepma12_Exper_kratios_flu.dat)
-If fluor_type2%(i%, i1%, i2%) = 10 Then rela_line_wts2!(i%, i1%, i2%) = 2.4   ' Kb by Lb (adjusted based on Penepma12_Exper_kratios_flu.dat)
-If fluor_type2%(i%, i1%, i2%) = 11 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Ma ()
-If fluor_type2%(i%, i1%, i2%) = 12 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Kb by Mb ()
-
-If fluor_type2%(i%, i1%, i2%) = 13 Then rela_line_wts2!(i%, i1%, i2%) = 0.24  ' La by Ka (0.24 from Reed)
-If fluor_type2%(i%, i1%, i2%) = 14 Then rela_line_wts2!(i%, i1%, i2%) = 0.005  ' La by Kb (adjusted based on Penepma12_Exper_kratios Cd/Ca)
-If fluor_type2%(i%, i1%, i2%) = 15 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' La by La
-If fluor_type2%(i%, i1%, i2%) = 16 Then rela_line_wts2!(i%, i1%, i2%) = 0.5   ' La by Lb (adjusted based on Penepma12_Exper_kratios Pb/Th)
-'If fluor_type2%(i%, i1%, i2%) = 17 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' La by Ma (adjusted based on Penepma12_Exper_kratios Rb/Re)
-If fluor_type2%(i%, i1%, i2%) = 18 Then rela_line_wts2!(i%, i1%, i2%) = 0.05  ' La by Mb (adjusted based on Pouchou2.dat)
-
-If fluor_type2%(i%, i1%, i2%) = 19 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Ka (adjusted based on Penepma12_Exper_kratios Ag/Ca)
-If fluor_type2%(i%, i1%, i2%) = 20 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Lb by Kb (adjusted based on Penepma12_Exper_kratios Ag/Ca)
-If fluor_type2%(i%, i1%, i2%) = 21 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by La ()
-If fluor_type2%(i%, i1%, i2%) = 22 Then rela_line_wts2!(i%, i1%, i2%) = 1#  ' Lb by Lb ()
-If fluor_type2%(i%, i1%, i2%) = 23 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Ma ()
-If fluor_type2%(i%, i1%, i2%) = 24 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb by Mb ()
-
-If fluor_type2%(i%, i1%, i2%) = 25 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Ma by Ka (adjusted based on Pouchou2.dat)
-'If fluor_type2%(i%, i1%, i2%) = 26 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Ma by Kb (adjusted based on Penepma12_Exper_kratios U/K)
-'If fluor_type2%(i%, i1%, i2%) = 27 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by La (adjusted based on Penepma12_Exper_kratios Pb/Rh)
-If fluor_type2%(i%, i1%, i2%) = 28 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by Lb (adjusted based on Pouchou2.dat)
-If fluor_type2%(i%, i1%, i2%) = 29 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Ma by Ma
-If fluor_type2%(i%, i1%, i2%) = 30 Then rela_line_wts2!(i%, i1%, i2%) = 0.03  ' Ma by Mb (adjusted based on Pouchou2.dat)
-
-If fluor_type2%(i%, i1%, i2%) = 31 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Mb by Ka ()
-If fluor_type2%(i%, i1%, i2%) = 32 Then rela_line_wts2!(i%, i1%, i2%) = 0.4   ' Mb by Kb (adjusted based on Pouchou2.dat)
-If fluor_type2%(i%, i1%, i2%) = 33 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by La ()
-If fluor_type2%(i%, i1%, i2%) = 34 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by Lb ()
-If fluor_type2%(i%, i1%, i2%) = 35 Then rela_line_wts2!(i%, i1%, i2%) = 2#    ' Mb by Ma (adjusted based on Penepma12_Exper_kratios Pb/Th)
-If fluor_type2%(i%, i1%, i2%) = 36 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Mb by Mb (adjusted based on Penepma12_Exper_kratios Pb/Th)
-
-'If fluor_type2%(i%, i1%, i2%) = 14 Then    ' test break
-'DoEvents
-'End If
-
 ' Load relative line weights for original and additional x-ray lines here...
 '  1=Ka by Ka   2=Ka by Kb   3=Ka by La    4=Ka by Lb   5=Ka by Ma   6=Ka by Mb     7=Ka by Ln   8=Ka by Lg   9=Ka by Lv   10=Ka by Ll  11=Ka by Mg  12=Ka by Mz
 ' 13=Kb by Ka  14=Kb by Kb  15=Kb by La   16=Kb by Lb  17=Kb by Ma  18=Kb by Mb    19=Kb by Ln  20=Kb by Lg  21=Kb by Lv   22=Kb by Ll  23=Kb by Mg  24=Kb by Mz
@@ -895,7 +841,6 @@ If fluor_type2%(i%, i1%, i2%) = 36 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' 
 '109=Ll by Ka 110=Ll by Kb 111=Ll by La  112=Ll by Lb 113=Ll by Ma 114=Ll by Mb   115=Ll by Ln 116=Ll by Lg 117=Ll by Lv  118=Ll by Ll 119=Ll by Mg 120=Ll by Mz
 '121=Mg by Ka 122=Mg by Kb 123=Mg by La  124=Mg by Lb 125=Mg by Ma 126=Mg by Mb   127=Mg by Ln 128=Mg by Lg 129=Mg by Lv  130=Mg by Ll 131=Mg by Mg 132=Mg by Mz
 '133=Mz by Ka 134=Mz by Kb 135=Mz by La  136=Mz by Lb 137=Mz by Ma 138=Mz by Mb   139=Mz by Ln 140=Mz by Lg 141=Mz by Lv  142=Mz by Ll 143=Mz by Mg 144=Mz by Mz
-Else
 If fluor_type2%(i%, i1%, i2%) = 1 Then rela_line_wts2!(i%, i1%, i2%) = 1#     ' Ka by Ka
 If fluor_type2%(i%, i1%, i2%) = 2 Then rela_line_wts2!(i%, i1%, i2%) = 0.05   ' Ka by Kb (adjusted based on Penepma12_Exper_kratios_flu.dat)
 If fluor_type2%(i%, i1%, i2%) = 3 Then rela_line_wts2!(i%, i1%, i2%) = 4.2    ' Ka by La (4.2 from Reed)
@@ -916,7 +861,7 @@ If fluor_type2%(i%, i1%, i2%) = 25 Then rela_line_wts2!(i%, i1%, i2%) = 0.24  ' 
 If fluor_type2%(i%, i1%, i2%) = 26 Then rela_line_wts2!(i%, i1%, i2%) = 0.005  ' La by Kb (adjusted based on Penepma12_Exper_kratios Cd/Ca)
 If fluor_type2%(i%, i1%, i2%) = 27 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' La by La
 If fluor_type2%(i%, i1%, i2%) = 28 Then rela_line_wts2!(i%, i1%, i2%) = 0.5   ' La by Lb (adjusted based on Penepma12_Exper_kratios Pb/Th)
-'If fluor_type2%(i%, i1%, i2%) = 29 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' La by Ma (adjusted based on Penepma12_Exper_kratios Rb/Re)
+If fluor_type2%(i%, i1%, i2%) = 29 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' La by Ma (adjusted based on Penepma12_Exper_kratios Rb/Re)
 If fluor_type2%(i%, i1%, i2%) = 30 Then rela_line_wts2!(i%, i1%, i2%) = 0.05  ' La by Mb (adjusted based on Pouchou2.dat)
 
 
@@ -929,8 +874,8 @@ If fluor_type2%(i%, i1%, i2%) = 42 Then rela_line_wts2!(i%, i1%, i2%) = 0#  ' Lb
 
 
 If fluor_type2%(i%, i1%, i2%) = 49 Then rela_line_wts2!(i%, i1%, i2%) = 0.01  ' Ma by Ka (adjusted based on Pouchou2.dat)
-'If fluor_type2%(i%, i1%, i2%) = 50 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Ma by Kb (adjusted based on Penepma12_Exper_kratios U/K)
-'If fluor_type2%(i%, i1%, i2%) = 51 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by La (adjusted based on Penepma12_Exper_kratios Pb/Rh)
+If fluor_type2%(i%, i1%, i2%) = 50 Then rela_line_wts2!(i%, i1%, i2%) = 0#    ' Ma by Kb (adjusted based on Penepma12_Exper_kratios U/K)
+If fluor_type2%(i%, i1%, i2%) = 51 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by La (adjusted based on Penepma12_Exper_kratios Pb/Rh)
 If fluor_type2%(i%, i1%, i2%) = 52 Then rela_line_wts2!(i%, i1%, i2%) = 0.02  ' Ma by Lb (adjusted based on Pouchou2.dat)
 If fluor_type2%(i%, i1%, i2%) = 53 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Ma by Ma
 If fluor_type2%(i%, i1%, i2%) = 54 Then rela_line_wts2!(i%, i1%, i2%) = 0.03  ' Ma by Mb (adjusted based on Pouchou2.dat)
@@ -942,12 +887,6 @@ If fluor_type2%(i%, i1%, i2%) = 63 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' M
 If fluor_type2%(i%, i1%, i2%) = 64 Then rela_line_wts2!(i%, i1%, i2%) = 0#   ' Mb by Lb ()
 If fluor_type2%(i%, i1%, i2%) = 65 Then rela_line_wts2!(i%, i1%, i2%) = 2#    ' Mb by Ma (adjusted based on Penepma12_Exper_kratios Pb/Th)
 If fluor_type2%(i%, i1%, i2%) = 66 Then rela_line_wts2!(i%, i1%, i2%) = 1#    ' Mb by Mb (adjusted based on Penepma12_Exper_kratios Pb/Th)
-
-'If fluor_type2%(i%, i1%, i2%) = 26 Then    ' test break
-'DoEvents
-'End If
-
-End If
 
 Exit Sub
 
@@ -1095,12 +1034,6 @@ Exit Sub
 ' Errors
 ZAFFLULoadLineWeightsPenepmaError:
 MsgBox Error$, vbOKOnly + vbCritical, "ZAFFLULoadLineWeightsPenepma"
-ierror = True
-Exit Sub
-
-ZAFFLULoadLineWeightsPenepmaNoMatrixElementFound:
-msg$ = "Invalid atomic number matrix element specified for fluorescence"
-MsgBox msg$, vbOKOnly + vbExclamation, "ZAFFLULoadLineWeightsPenepma"
 ierror = True
 Exit Sub
 

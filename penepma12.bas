@@ -2706,7 +2706,7 @@ Call XrayGetEnergy(ielm%, iray%, eng!, edg!)
 If ierror Then Exit Sub
 
 ' Check overvoltage and set elements as absorber only if necessary (also disable H and He)
-If edg! >= sample(1).kilovolts! Or UCase$(sample(1).Elsyms$(i%)) = UCase$(Symlo$(1)) Or UCase$(sample(1).Elsyms$(i%)) = UCase$(Symlo$(2)) Then
+If edg! >= sample(1).kilovolts! Or UCase$(sample(1).Elsyms$(i%)) = UCase$(Symlo$(ATOMIC_NUM_HYDROGEN%)) Or UCase$(sample(1).Elsyms$(i%)) = UCase$(Symlo$(ATOMIC_NUM_HELIUM%)) Then
 ip% = IPOS1(sample(1).LastElm%, sample(1).Elsyms$(i%), sample(1).Elsyms$())
 If ip% > 0 Then
 sample(1).Xrsyms$(i%) = Xraylo$(MAXRAY%)
@@ -8071,26 +8071,26 @@ If ierror Then Exit Sub
 
 ' Load adjustment
 PenepmaMinimumElectronEnergy! = 1#      ' assume default 1 keV to start
-ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(10), Penepma_TmpSample(1).Elsyms$())    ' Ne
+ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_NEON%), Penepma_TmpSample(1).Elsyms$())    ' Ne
 If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.8
-ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(9), Penepma_TmpSample(1).Elsyms$())     ' F
+ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_FLUORINE%), Penepma_TmpSample(1).Elsyms$())     ' F
 If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.6
-ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(8), Penepma_TmpSample(1).Elsyms$())     ' O
+ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), Penepma_TmpSample(1).Elsyms$())     ' O
 If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.5
-ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(7), Penepma_TmpSample(1).Elsyms$())     ' N
+ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_NITROGEN%), Penepma_TmpSample(1).Elsyms$())     ' N
 If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.3
-ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(6), Penepma_TmpSample(1).Elsyms$())     ' C
+ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_CARBON%), Penepma_TmpSample(1).Elsyms$())     ' C
 If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.2
-ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(5), Penepma_TmpSample(1).Elsyms$())     ' B
+ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_BORON%), Penepma_TmpSample(1).Elsyms$())     ' B
 If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.1
-ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(4), Penepma_TmpSample(1).Elsyms$())     ' Be
+ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_BERYLLIUM%), Penepma_TmpSample(1).Elsyms$())     ' Be
 If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.05
-ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(3), Penepma_TmpSample(1).Elsyms$())     ' Li
+ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_LITHIUM%), Penepma_TmpSample(1).Elsyms$())     ' Li
 If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.02
 
-'ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(2), Penepma_TmpSample(1).Elsyms$())    ' He
+'ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_HELIUM%), Penepma_TmpSample(1).Elsyms$())    ' He
 'If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.01
-'ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(1), Penepma_TmpSample(1).Elsyms$())    ' H
+'ip% = IPOS1%(Penepma_TmpSample(1).LastChan%, Symlo$(ATOMIC_NUM_HYDROGEN%), Penepma_TmpSample(1).Elsyms$())    ' H
 'If ip% > 0 Then PenepmaMinimumElectronEnergy! = 0.00
 
 ' Update minimum energy field on form
@@ -8115,17 +8115,17 @@ On Error GoTo Penepma12AdjustMinimumEnergy2Error
 
 ' Load adjustment
 PenepmaMinimumElectronEnergy! = 1#      ' assume default 1 keV to start
-If MiscStringsAreSame(esym$, Symlo$(10)) Then PenepmaMinimumElectronEnergy! = 0.8   ' Ne
-If MiscStringsAreSame(esym$, Symlo$(9)) Then PenepmaMinimumElectronEnergy! = 0.6   ' F
-If MiscStringsAreSame(esym$, Symlo$(8)) Then PenepmaMinimumElectronEnergy! = 0.5   ' O
-If MiscStringsAreSame(esym$, Symlo$(7)) Then PenepmaMinimumElectronEnergy! = 0.3   ' N
-If MiscStringsAreSame(esym$, Symlo$(6)) Then PenepmaMinimumElectronEnergy! = 0.2   ' C
-If MiscStringsAreSame(esym$, Symlo$(5)) Then PenepmaMinimumElectronEnergy! = 0.1   ' B
-If MiscStringsAreSame(esym$, Symlo$(4)) Then PenepmaMinimumElectronEnergy! = 0.05   ' Be
-If MiscStringsAreSame(esym$, Symlo$(3)) Then PenepmaMinimumElectronEnergy! = 0.02   ' Li
+If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_NEON%)) Then PenepmaMinimumElectronEnergy! = 0.8   ' Ne
+If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_FLUORINE%)) Then PenepmaMinimumElectronEnergy! = 0.6   ' F
+If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_OXYGEN%)) Then PenepmaMinimumElectronEnergy! = 0.5   ' O
+If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_NITROGEN%)) Then PenepmaMinimumElectronEnergy! = 0.3   ' N
+If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_CARBON%)) Then PenepmaMinimumElectronEnergy! = 0.2   ' C
+If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_BORON%)) Then PenepmaMinimumElectronEnergy! = 0.1   ' B
+If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_BERYLLIUM%)) Then PenepmaMinimumElectronEnergy! = 0.05   ' Be
+If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_LITHIUM%)) Then PenepmaMinimumElectronEnergy! = 0.02   ' Li
 
-'If MiscStringsAreSame(esym$, Symlo$(2)) Then PenepmaMinimumElectronEnergy! = 0.01   ' He
-'If MiscStringsAreSame(esym$, Symlo$(1)) Then PenepmaMinimumElectronEnergy! = 0.00   ' H
+'If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_HELIUM%)) Then PenepmaMinimumElectronEnergy! = 0.01   ' He
+'If MiscStringsAreSame(esym$, Symlo$(ATOMIC_NUM_HYDROGEN%)) Then PenepmaMinimumElectronEnergy! = 0.00   ' H
 
 ' Update minimum energy field on form
 FormPENEPMA12.TextPenepmaMinimumElectronEnergy.Text = Format$(PenepmaMinimumElectronEnergy!)
