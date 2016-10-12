@@ -563,7 +563,7 @@ uncts!(chan%) = voluncts!
 
 ' If negative counts, warn user
 Else
-tmsg$ = "Warning- Negative TDI counts (" & Format$(uncts!(chan%)) & ") for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " on sample " & SampleGetString2$(sample()) & " (unable to perform TDI correction)."
+tmsg$ = "Warning- Negative TDI counts (" & Format$(uncts!(chan%)) & ") for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " on channel " & Format$(chan%) & ", sample " & SampleGetString2$(sample()) & " (unable to perform TDI correction)."
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
 End If
 End If
@@ -2335,7 +2335,6 @@ If (MiscIsDifferent(sample(1).LastElm%, sample(1).VolatileCorrectionUnks%()) Or 
 ' Average the volatile correction percentages
 Call MathArrayAverage(average, RowUnkVolElCors!(), sample(1).Datarows%, sample(1).LastElm%, sample())
 If ierror Then Exit Sub
-
 msg$ = vbCrLf & "TDI%: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
@@ -2393,7 +2392,8 @@ msg$ = "TDIF: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
 
-If sample(1).VolatileCorrectionUnks%(i%) <> 0 Then
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If sample(1).VolatileCorrectionUnks%(i%) <> 0 And (Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0)) Then       ' check for duplicate element
 msg$ = msg$ & Format$(vstring$(sample(1).VolatileFitTypes%(i%)), a80$)
 Else
 msg$ = msg$ & Format$(DASHED4$, a80$)
@@ -2410,7 +2410,8 @@ For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
 
 ' Average the self volatile fit parameters (time and intercept). Check if called from Probe for EPMA (Nth sample rows) or CalcImage (Nth pixels)
-If sample(1).VolatileCorrectionUnks%(i%) < 0 Then
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If sample(1).VolatileCorrectionUnks%(i%) < 0 And (Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0)) Then       ' check for duplicate element
 nthpnt& = 1                        ' use all sample rows or all pixels
 If UCase$(Trim$(app.EXEName)) <> UCase$(Trim$("CalcImage")) Then
 Call VolatileCalculateFitSelfAll(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata%(), npts%, nrows%, i%, sample())
@@ -2435,10 +2436,13 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 
+' Print volatile fit intercepts (log)
 msg$ = "TDII: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
-If sample(1).VolatileCorrectionUnks%(i%) <> 0 And sample(1).VolatileFitIntercepts!(i%) < MAXLOGEXPS! Then
+
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If sample(1).VolatileCorrectionUnks%(i%) <> 0 And sample(1).VolatileFitIntercepts!(i%) < MAXLOGEXPS! And (Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0)) Then        ' check for duplicate element
 msg$ = msg$ & MiscAutoFormatBB$(NATURALE# ^ (sample(1).VolatileFitIntercepts!(i%)))
 Else
 msg$ = msg$ & Format$(DASHED4$, a80$)
@@ -2450,10 +2454,13 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 
+' Print volatile fit intercepts (linear)
 msg$ = "TDIL: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
-If sample(1).VolatileCorrectionUnks%(i%) <> 0 Then
+
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If sample(1).VolatileCorrectionUnks%(i%) <> 0 And (Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0)) Then         ' check for duplicate element
 msg$ = msg$ & MiscAutoFormatBB$(sample(1).VolatileFitIntercepts!(i%))
 Else
 msg$ = msg$ & Format$(DASHED4$, a80$)
