@@ -82,10 +82,10 @@ End If
 If method% = 7 Then
 tfilenumber% = FreeFile()
 Open tfilename$ For Append As #tfilenumber%
-tfilenumber2% = FreeFile()
-Open tfilename$ For Append As #tfilenumber2%
-'Call ConvertBiotite(percents!(), sample())
-Call ConvertHalog(percents!(), sample())
+'tfilenumber2% = FreeFile()                         ' not utilized by ConvertHalog
+'Open tfilename2$ For Append As #tfilenumber2%      ' not utilized by ConvertHalog
+'Call ConvertBiotite(tfilenumber%, percents!(), sample())
+Call ConvertHalog(tfilenumber%, percents!(), sample())
 Close #tfilenumber%
 Close #tfilenumber2%
 If ierror Then Exit Sub

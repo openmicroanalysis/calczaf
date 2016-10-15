@@ -2,7 +2,7 @@ Attribute VB_Name = "CodeCONVERT6"
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
-Sub ConvertBiotite(percents() As Single, sample() As TypeSample)
+Sub ConvertBiotite(tfilenumber As Integer, percents() As Single, sample() As TypeSample)
 ' Biotite calculation (COMPUTES BIOTITE FORMULAS AND SITE OCCUPANCIES AND MOLE FRACTION
 '    RATIOS FOR USE IN HALOGEN CHEMISTRY AND CHARACTERIZATION OF MINERALIZATION ENVIRONMENTS)
 '  Originally written by George Brimhall, Jay Ague and John Donovan in FORTRAN
@@ -304,7 +304,7 @@ astring$ = astring$ & MiscAutoFormat$(sum1!) & vbTab$ & MiscAutoFormat$(sum2!) &
 astring$ = astring$ & MiscAutoFormat$(sum3!) & vbTab$ & MiscAutoFormat$(sum4!) & vbTab$
 astring$ = astring$ & MiscAutoFormat$(AFEOH!) & vbTab$ & MiscAutoFormat$(AMGOH!) & vbTab$
 astring$ = astring$ & MiscAutoFormat$(AFEF!) & vbTab$ & MiscAutoFormat$(AMGF!)
-Print #Temp2FileNumber%, astring$
+Print #tfilenumber%, astring$
 
 ' ITER CALCULATIONS, SUM FLUORINE, CHLORINE, WATER
 1900:   NOVOL = num(10) + num(15)
@@ -350,13 +350,13 @@ Exit Sub
 ' Errors
 ConvertBiotiteError:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertBiotite"
-Close #Temp2FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub ConvertHalog(percents() As Single, sample() As TypeSample)
+Sub ConvertHalog(tfilenumber As Integer, percents() As Single, sample() As TypeSample)
 ' v. 1.0; WRITTEN BY G. BRIMHALL
 '
 ' v. 1.1; MODIFIED BY JAY AGUE (8-1-84) TO COMPUTE BIOTITE
@@ -652,7 +652,7 @@ Call IOWriteLog(astring$)
             
 ' WRITE OUTPUT FILE FOR HALOG.OUT (COMPOSITONAL FRAMES)
 astring$ = "Sample " & vbTab & VbDquote$ & sample(1).number% & VbDquote$ & vbTab & VbDquote$ & sample(1).Name$ & VbDquote$
-Print #Temp2FileNumber%, astring$
+Print #tfilenumber%, astring$
 
 astring$ = vbNullString
 For i% = 1 To MAXBIOT%
@@ -664,19 +664,19 @@ For i% = 1 To MAXBIOT%
         astring$ = astring$ + MiscAutoFormat$(WTPC!(i%)) & vbTab$ & MiscAutoFormat$(ANSFO!(i%)) & vbTab$ & esym$(i%) & vbCrLf
     End If
 Next i%
-Print #Temp2FileNumber%, astring$
+Print #tfilenumber%, astring$
 
 astring$ = vbNullString
 astring$ = astring$ & MiscAutoFormat$(WTT!) & vbTab$ & MiscAutoFormat$(HALOG1!) & vbTab$ & MiscAutoFormat$(RAMGFE!) & vbTab$ & MiscAutoFormat$(MGMFT!) & vbTab$ & MiscAutoFormat$(FEX!) & vbTab$ & MiscAutoFormat$(tix!) & vbTab$ & MiscAutoFormat$(XALVI!) & vbTab$ & MiscAutoFormat$(MNX!) & vbTab$ & MiscAutoFormat$(XFOXOH!) & vbTab$
 astring$ = astring$ & MiscAutoFormat$(SIDER!) & vbTab$ & MiscAutoFormat$(ANNIT!) & vbTab$ & MiscAutoFormat$(PHLOG!) & vbTab$ & MiscAutoFormat$(sum1!) & vbTab$ & MiscAutoFormat$(sum2!)
-Print #Temp2FileNumber%, astring$
+Print #tfilenumber%, astring$
  
 Exit Sub
 
 ' Errors
 ConvertHalogError:
 MsgBox Error$, vbOKOnly + vbCritical, "ConvertHalog"
-Close #Temp2FileNumber%
+Close #tfilenumber%
 ierror = True
 Exit Sub
 
