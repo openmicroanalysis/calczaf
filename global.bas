@@ -2876,7 +2876,7 @@ Global ImageData_TDI_Iy As Long          ' for CalcImage TDI pixel arrays (alway
 Global ImageData_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to npts)
 Global ImageTime_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to npts)
 
-Global IntegrateEDSSpectrumImagingFlag As Integer       ' for synchronized WDS and ED SI mapping
+Global IntegrateEDSSpectrumImagingFlag As Integer       ' for synchronized WDS and ED SI mapping (leave as integer for CIP file input)
 Global IntegrateEDSSpectrumImagingFilename As String    ' for synchronized WDS and ED SI mapping
 
 Global CLSpectrumAcquisitionOverhead As Single
@@ -2926,6 +2926,6 @@ Global MoveStageToleranceX As Single    ' tolerance for initiating a stage move
 Global MoveStageToleranceY As Single
 Global MoveStageToleranceZ As Single
 
-Global CalcImageAnalogSignalFlags(1 To 3) As Integer
+Global CalcImageAnalogSignalFlags(1 To 3) As Integer    ' leave as integer for CIP file input
 Global CalcImageAnalogSignalLabels(1 To 3) As String
 
