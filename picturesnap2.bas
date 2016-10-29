@@ -615,7 +615,7 @@ scan! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "ScanRotat
 If ierror Then Exit Sub
 
 ' Load to hidden text fields
-FormPICTURESNAP2.TextkeV.Text = Format$(keV!)
+FormPICTURESNAP2.TextKev.Text = Format$(keV!)
 FormPICTURESNAP2.TextMag.Text = Format$(mag!)
 FormPICTURESNAP2.TextScan.Text = Format$(scan!)
 
@@ -1168,6 +1168,7 @@ Dim beamcurrent1 As Single, beamcurrent2 As Single, keV As Single, counttime As 
 Dim timeofacq1 As Double, timeofacq2 As Double
 Dim mag As Double, scanrota As Double
 Dim scanflag As Integer, stageflag As Integer
+Dim astring As String
 
 Dim sarray() As Single
 Dim response As Integer
@@ -1190,7 +1191,7 @@ Screen.MousePointer = vbHourglass
 ' Extract data from PrbImg
 Call IOStatusAuto("Reading PrbImg file " & tfilename$ & "...")
 DoEvents
-Call Base64ReaderInput(tfilename$, keV!, counttime!, beamcurrent1!, beamcurrent2!, timeofacq1#, timeofacq2#, ix%, iy%, sarray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#, mag#, scanrota#, scanflag%, stageflag%)
+Call Base64ReaderInput(tfilename$, keV!, counttime!, beamcurrent1!, beamcurrent2!, timeofacq1#, timeofacq2#, ix%, iy%, sarray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#, mag#, scanrota#, scanflag%, stageflag%, astring$)
 If ierror Then Exit Sub
 
 ' Create GRD file from extracted data and save to folder

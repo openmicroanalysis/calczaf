@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/27/16	Fix TDI with alternating off-peaks and MPBs (Jercinovic).
+
 10/22/16	Fix log window buffer issue in CalcImage when numerous standard intensity drift warnings occur (Allaz).
 
 10/21/16	Add automatic output of analog signal images in CalcImage.

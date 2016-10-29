@@ -214,6 +214,7 @@ analysis = UpdateAnalysis
 UpdateAnalyzeReloadCorrection = False
 UpdateAnalyzeReloadDrift = False
 
+Call AnalyzeStatusAnal(vbNullString)
 Exit Sub
 
 ' Errors

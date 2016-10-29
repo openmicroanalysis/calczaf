@@ -19,7 +19,7 @@ Private Type TypeByt4
 strval(1 To 4) As Byte
 End Type
 
-Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scanrota As Double, scanflag As Integer, stageflag As Integer)
+Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scanrota As Double, scanflag As Integer, stageflag As Integer, tIntegrateEDSSpectrumImagingFilename As String)
 ' Open prbimg and read in some parameters
 ' scanflag% = 0 beam scan, scanflag% = 1 stage scan
 ' stageflag% = 0 cartesian, stageflag% = 1 anti-cartesian
@@ -172,6 +172,9 @@ If RegXmin& < RegXmax& Then             ' Cameca minimum x pixels are 32 so this
 stageflag% = 0
 End If
 End If
+
+' Read integrated EDS spectrum image file name (if present)
+tIntegrateEDSSpectrumImagingFilename$ = Base64ReaderGetINIString$(lpFileName$, "Integrated_EDS", "Integrated_EDS_Filename", "")
 
 ' Re-dimension real world coordinates if only 1 pixel (that is, make the 1 pixel scan dimension equal to width of single pixel)
 If RegXmin& = 0 And RegXmax& = 0 Then   ' nominally JEOL line scan

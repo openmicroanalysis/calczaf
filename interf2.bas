@@ -87,9 +87,9 @@ Call XrayLoad(Int(2), Int(0), klm!, keV!, xstart!, xstop!)
 If ierror Then Exit Function
 
 ' Calculate a spectral resolution factor for the Bragg angle of the spectrometer
-temp! = MotLoLimits!(sample(1).MotorNumbers%(chan%)) + Abs(MotHiLimits!(sample(1).MotorNumbers%(chan%)) - MotLoLimits!(sample(1).MotorNumbers%(chan%)))
-If temp! / sample(1).OnPeaks(chan%) < 0# Then GoTo Interf2CalculatePositionsNegative
-factor! = 12# / (temp! / sample(1).OnPeaks(chan%))                      ' factor used to be a constant of 10.0, changed 04-04-2016 to a variable based on spectrometer angle
+temp! = MotLoLimits!(sample(1).MotorNumbers%(i%)) + Abs(MotHiLimits!(sample(1).MotorNumbers%(i%)) - MotLoLimits!(sample(1).MotorNumbers%(i%)))
+If temp! / sample(1).OnPeaks(i%) < 0# Then GoTo Interf2CalculatePositionsNegative
+factor! = 12# / (temp! / sample(1).OnPeaks(i%))                      ' factor used to be a constant of 10.0, changed 04-04-2016 to a variable based on spectrometer angle
 
 ' Correct LiF width for actual crystal 2d
 sigma! = lifwidth! / factor! * (sample(1).Crystal2ds!(i%) / LIF2D!) ^ 1.1
