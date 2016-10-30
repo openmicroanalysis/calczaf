@@ -508,6 +508,22 @@ End If
 lpFileName$ = ProbeWinINIFile$
 nSize& = Len(lpReturnString$)
 
+' Get instrument/facility string
+lpAppName$ = "General"
+lpKeyName$ = "InstrumentFacility"
+lpDefault$ = ""
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then InstrumentFacility$ = Left$(lpReturnString$, valid&)
+
+If Trim$(InstrumentFacility$) = vbNullString Then InstrumentFacility$ = InputBox$("Please enter a description of your instrument/facility, e.g., Cameca SX100, UTAS or JEOL 8530 Univ. of Bristol, etc.", "InitINIGeneral", "")
+If Trim$(InstrumentFacility$) <> vbNullString Then
+lpReturnString2$ = InstrumentFacility$
+lpDefault$ = InstrumentFacility$
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
 ' Get default KiloVolts
 lpAppName$ = "General"
 lpKeyName$ = "KiloVolts"

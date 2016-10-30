@@ -2929,3 +2929,4 @@ Global MoveStageToleranceZ As Single
 Global CalcImageAnalogSignalFlags(1 To 3) As Integer    ' leave as integer for CIP file input
 Global CalcImageAnalogSignalLabels(1 To 3) As String
 
+Global InstrumentFacility As String

@@ -3362,6 +3362,7 @@ tmsg$ = vbCrLf & "This software is registered to :"
 Call IOWriteLog(tmsg$)
 tmsg$ = RegistrationName$ & vbCrLf & RegistrationInstitution$
 Call IOWriteLog(tmsg$)
+Call IOWriteLog(InstrumentFacility$)
 tmsg$ = vbCrLf & "Press the F1 key in any window for context sensitive help. To get help on a menu item simply highlight with the mouse and hit the F1 key."
 Call IOWriteLogRichText(tmsg$ & vbCrLf, vbNullString, Int(LogWindowFontSize% + 2), vbRed, Int(FONT_BOLD%), Int(0))
 
