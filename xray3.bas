@@ -1037,7 +1037,7 @@ offset! = oldpos! - newpos!
 ' Check if offset if too large (use twice normal warning offset)
 If ScalSpecOffsetFactors!(motor%) > 0# Then
 temp! = 2# * (MotHiLimits!(motor%) - MotLoLimits!(motor%)) / ScalSpecOffsetFactors!(motor%)
-If x2d! > MAXCRYSTAL2D_NOT_LDE! Then temp! = temp! * 3#  ' double if LDE crystal (changed to triple 02-13-2010)
+If x2d! > MAXCRYSTAL2D_NOT_LDE! Then temp! = temp! * 3.5   ' double if LDE crystal (changed to 3.5 10-31-2016)
 If x2d! > MAXCRYSTAL2D_LARGE_LDE! Then temp! = temp! * 2#  ' increase again for large LDEs
 If Abs(offset!) > Abs(temp!) Then XrayCheckOffset2 = True
 End If
