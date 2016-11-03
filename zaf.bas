@@ -2018,6 +2018,46 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
+' If DebugMode and VerboseMode print out intermediate calculations
+If DebugMode And VerboseMode Then
+Call IOWriteLog(vbCrLf & "ZAFSmp: Iteration #" & Format$(zaf.iter%))
+msg$ = "ELEMENT "
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(sample(1).Elsyms$(i%) & " " & sample(1).Xrsyms$(i%), a80$)
+Next i%
+Call IOWriteLog(msg$)
+msg$ = "ZAFAbs: "
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%), f84), a80$)
+Next i%
+Call IOWriteLog(msg$)
+msg$ = "ZAFFlu: "
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(1# / (1# + zaf.vv!(i%)), f84), a80$)
+Next i%
+Call IOWriteLog(msg$)
+msg$ = "ZAFZed: "
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(zaf.zed!(i%), f84), a80$)
+Next i%
+Call IOWriteLog(msg$)
+msg$ = "ZAFCOR: "
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%) * zaf.zed!(i%) / (1# + zaf.vv!(i%)), f84), a80$)
+Next i%
+Call IOWriteLog(msg$)
+msg$ = "UNKRAT: "
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84), a80$)
+Next i%
+Call IOWriteLog(msg$)
+msg$ = "UNCONC: "
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(zaf.conc!(i%), f84), a80$)
+Next i%
+Call IOWriteLog(msg$)
+End If
+
 ' Check if iteration is complete
 If r0% = 0 Then GoTo 3400   ' iteration completed
 
@@ -2142,7 +2182,7 @@ For i% = 1 To sample(1).LastElm%
 msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(2, i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
-msg$ = "ZAFStp: "
+msg$ = "ZAFZed: "
 For i% = 1 To sample(1).LastElm%
 msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(3, i%), f84), a80$)
 Next i%
