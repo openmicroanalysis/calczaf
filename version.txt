@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/03/16	Add code to Bruker get net intensity call to return background counts in addition to net counts (Locock).
+
 11/02/16	Add ZAF iteration output (Fournelle).
 
 11/01/16	Modify Feig EPMA-MDT.
