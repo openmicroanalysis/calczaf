@@ -17,6 +17,8 @@ Sub InitINI()
 ierror = False
 On Error GoTo InitINIError
 
+'Call JeolTest
+
 Call InitINIGeneral
 If ierror Then Exit Sub
 Call InitINISoftware
@@ -2345,16 +2347,36 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "FilamentStandbyType"
-nDefault& = 0
+nDefault& = 0           ' 0 = reduce heat only, 1 = reduce heat and keV, 2 = reduce keV only, 3 = external script
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 FilamentStandbyType% = valid&
-If FilamentStandbyType% < 0 Or FilamentStandbyType% > 2 Then
+If FilamentStandbyType% < 0 Or FilamentStandbyType% > 3 Then
 msg$ = "FilamentStandbyType keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 FilamentStandbyType% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Hardware"
+lpKeyName$ = "FilamentStandbyExternalScript"
+lpDefault$ = vbNullString
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then FilamentStandbyExternalScript$ = Left$(lpReturnString$, valid&)
+If FilamentStandbyType% = 3 And Trim$(FilamentStandbyExternalScript$) = vbNullString Then
+msg$ = "FilamentStandbyExternalScript keyword is blank in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
+End
+End If
+If FilamentStandbyType% = 3 And Dir$(FilamentStandbyExternalScript$) = vbNullString Then    ' check that file actually exists
+msg$ = "FilamentStandbyExternalScript keyword file was not found as specified in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
+End
+End If
+lpDefault$ = Trim$(FilamentStandbyExternalScript$)
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 ' EDS Spectra interface parameters
 lpAppName$ = "Hardware"
@@ -2421,8 +2443,8 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then EDS_IPAddress$ = Left$(lpReturnString$, valid&)
-If Trim$(EDS_IPAddress$) = vbNullString Then
-If EDSSpectraInterfaceType% = 5 Then msg$ = "EDS_IPAddress keyword value (Thermo NSS interface) is blank in " & ProbeWinINIFile$
+If Trim$(EDS_IPAddress$) = vbNullString And EDSSpectraInterfaceType% = 5 Then
+msg$ = "EDS_IPAddress keyword value (Thermo NSS interface) is blank in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
@@ -2440,7 +2462,7 @@ End If
 lpDefault$ = Trim$(EDS_ServicePort$)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
-If EDSSpectraInterfaceType% = 2 Then   ' used by Bruker
+If EDSSpectraInterfaceType% = 2 Then   ' used by Bruker EDS interface only
 lpAppName$ = "Hardware"
 lpKeyName$ = "EDS_ServerName"
 lpDefault$ = "Local Server"            ' for remote clients use server name defined in Bruker app Configuration menu

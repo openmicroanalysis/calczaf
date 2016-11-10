@@ -157,24 +157,24 @@ ierror = True
 Exit Sub
 
 MiscModifyStringToFilenameNoString:
-msg$ = "String is blank"
+msg$ = "Passed string is blank"
 MsgBox msg$, vbOKOnly + vbExclamation, "MiscModifyStringToFilenameError"
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub MiscChangePath(tpath As String)
+Sub MiscChangePath(tPath As String)
 ' Routine to change the path
 
 ierror = False
 On Error GoTo MiscChangePathError
 
-If Trim$(tpath$) = vbNullString Then Exit Sub
+If Trim$(tPath$) = vbNullString Then Exit Sub
 
-If Left$(Trim$(tpath$), 2) <> "\\" Then ChDrive tpath$
-If MiscGetPathOnly$(tpath$) <> vbNullString Then
-ChDir MiscGetPathOnly$(tpath$)
+If Left$(Trim$(tPath$), 2) <> "\\" Then ChDrive tPath$
+If MiscGetPathOnly$(tPath$) <> vbNullString Then
+ChDir MiscGetPathOnly$(tPath$)
 End If
 
 Exit Sub

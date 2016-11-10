@@ -457,4 +457,29 @@ Exit Function
 
 End Function
 
+Function MiscAreAllElementsEDS(sample() As TypeSample) As Boolean
+' Return true if all element in the passed sample are EDS elements (no WDS elements)
+
+ierror = False
+On Error GoTo MiscAreAllElementsEDSError
+
+Dim chan As Integer
+
+' Assume all EDS elements
+MiscAreAllElementsEDS = True
+
+' Check for other analying crystals
+For chan% = 1 To sample(1).LastElm%
+If sample(1).CrystalNames$(chan%) <> EDS_CRYSTAL$ Then MiscAreAllElementsEDS = False
+Next chan%
+
+Exit Function
+
+' Errors
+MiscAreAllElementsEDSError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscAreAllElementsEDS"
+ierror = True
+Exit Function
+
+End Function
 

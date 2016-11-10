@@ -249,7 +249,7 @@ With FormPICTURESNAP.Picture2
 End With
 End If
 
-' Invert Y (if JEOL config loading Cameca or  Cameca config loading JEOL files)
+' Invert Y (if JEOL config loading Cameca or Cameca config loading JEOL files)
 If Default_Y_Polarity% <> gY_Polarity% Then
 With FormPICTURESNAP.Picture2
     .AutoRedraw = True
@@ -615,7 +615,7 @@ scan! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "ScanRotat
 If ierror Then Exit Sub
 
 ' Load to hidden text fields
-FormPICTURESNAP2.TextKev.Text = Format$(keV!)
+FormPICTURESNAP2.TextkeV.Text = Format$(keV!)
 FormPICTURESNAP2.TextMag.Text = Format$(mag!)
 FormPICTURESNAP2.TextScan.Text = Format$(scan!)
 

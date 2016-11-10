@@ -1,13 +1,13 @@
 VERSION 5.00
 Begin VB.Form FormPICTURESNAP 
    Caption         =   "Picture Snap"
-   ClientHeight    =   6765
+   ClientHeight    =   8370
    ClientLeft      =   225
    ClientTop       =   855
-   ClientWidth     =   9375
+   ClientWidth     =   12030
    LinkTopic       =   "Form1"
-   ScaleHeight     =   6765
-   ScaleWidth      =   9375
+   ScaleHeight     =   8370
+   ScaleWidth      =   12030
    StartUpPosition =   3  'Windows Default
    Begin VB.Timer TimerPictureSnap 
       Enabled         =   0   'False
@@ -52,11 +52,11 @@ Begin VB.Form FormPICTURESNAP
       Begin VB.PictureBox Picture2 
          AutoSize        =   -1  'True
          Height          =   1575
-         Left            =   2520
+         Left            =   3000
          ScaleHeight     =   1515
          ScaleWidth      =   1515
          TabIndex        =   1
-         Top             =   1920
+         Top             =   2640
          Width           =   1575
       End
    End
@@ -183,6 +183,10 @@ Dim BitMapButton As Integer
 Dim BitMapX As Single
 Dim BitMapY As Single
 
+Dim DisplayUseBlackScaleBar As Boolean
+
+Const NumberOfScrollIntervals% = 20
+
 Private Sub Form_Activate()
 If Not DebugMode Then On Error Resume Next
 ' Activate timer only on form activate event!
@@ -194,11 +198,14 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(2), MDBUserName$, Me)
 Call MiscLoadIcon(FormPICTURESNAP)
 HelpContextID = IOGetHelpContextID("FormPICTURESNAP")
+FormPICTURESNAP.menuDisplayUseBlackScaleBar.Checked = DisplayUseBlackScaleBar
+' Move inside Pictuebox to upper left
+FormPICTURESNAP.Picture2.Left = 0
+FormPICTURESNAP.Picture2.Top = 0
 End Sub
 
 Private Sub Form_Resize()
 If Not DebugMode Then On Error Resume Next
-Dim xdim As Single, ydim As Single
 
 ' Move the Container PicBox to fill the screen but leave room for the scrollbars
 If Me.ScaleWidth = 0 Or Me.ScaleHeight = 0 Then Exit Sub
@@ -212,31 +219,15 @@ FormPICTURESNAP.HScroll1.Move 0, Me.ScaleHeight - FormPICTURESNAP.HScroll1.Heigh
 ' Set the borderstyle for pic2 to no border
 FormPICTURESNAP.Picture2.BorderStyle = 0
 
-' Size pic2 so it is bigger that view window
-If FormPICTURESNAP.Picture2.Picture.Type > 0 Then   ' bitmap
-xdim! = FormPICTURESNAP.Picture2.ScaleX(FormPICTURESNAP.Picture2.Picture.Width, vbHimetric, vbTwips)
-ydim! = FormPICTURESNAP.Picture2.ScaleY(FormPICTURESNAP.Picture2.Picture.Height, vbHimetric, vbTwips)
-FormPICTURESNAP.Picture2.Move 0, 0, xdim!, ydim!
-Else
-FormPICTURESNAP.Picture2.Move 0, 0, FormPICTURESNAP.Picture1.ScaleWidth * 30, FormPICTURESNAP.Picture1.ScaleHeight * 20
-End If
+' Set large scroll change size
+FormPICTURESNAP.VScroll1.SmallChange = 1
+FormPICTURESNAP.HScroll1.SmallChange = 1
+FormPICTURESNAP.VScroll1.LargeChange = 2
+FormPICTURESNAP.HScroll1.LargeChange = 2
     
-' Set the scroll bars change settings
-If Abs(FormPICTURESNAP.Picture1.ScaleHeight - FormPICTURESNAP.Picture2.ScaleHeight) < MAXINTEGER% Then
-FormPICTURESNAP.VScroll1.Max = Abs(FormPICTURESNAP.Picture1.ScaleHeight - FormPICTURESNAP.Picture2.ScaleHeight)
-If FormPICTURESNAP.VScroll1.Max / 10 > 1 Then FormPICTURESNAP.VScroll1.LargeChange = FormPICTURESNAP.VScroll1.Max / 10
-If FormPICTURESNAP.VScroll1.Max / 100 > 1 Then FormPICTURESNAP.VScroll1.SmallChange = FormPICTURESNAP.VScroll1.Max / 100
-End If
-
-If Abs(FormPICTURESNAP.Picture1.ScaleWidth - FormPICTURESNAP.Picture2.ScaleWidth) < MAXINTEGER% Then
-FormPICTURESNAP.HScroll1.Max = Abs(FormPICTURESNAP.Picture1.ScaleWidth - FormPICTURESNAP.Picture2.ScaleWidth)
-If FormPICTURESNAP.HScroll1.Max / 10 > 1 Then FormPICTURESNAP.HScroll1.LargeChange = FormPICTURESNAP.HScroll1.Max / 10
-If FormPICTURESNAP.HScroll1.Max / 100 > 1 Then FormPICTURESNAP.HScroll1.SmallChange = FormPICTURESNAP.HScroll1.Max / 100
-End If
-
-' To help scale bar redraw
-HScroll1_Scroll
-VScroll1_Scroll
+FormPICTURESNAP.VScroll1.Max = NumberOfScrollIntervals%
+FormPICTURESNAP.HScroll1.Max = NumberOfScrollIntervals%
+    
 End Sub
  
 Private Sub Form_Unload(Cancel As Integer)
@@ -298,6 +289,7 @@ End Sub
 Private Sub menuDisplayUseBlackScaleBar_Click()
 If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuDisplayUseBlackScaleBar.Checked = Not FormPICTURESNAP.menuDisplayUseBlackScaleBar.Checked
+DisplayUseBlackScaleBar = FormPICTURESNAP.menuDisplayUseBlackScaleBar.Checked
 End Sub
 
 Private Sub menuDisplayWavescans_Click()
@@ -460,23 +452,25 @@ End Sub
 Private Sub VScroll1_Change()
 If Not DebugMode Then On Error Resume Next
 VScroll1_Scroll
+Call PictureSnapResetScaleBar
 End Sub
 
 Private Sub VScroll1_Scroll()
 If Not DebugMode Then On Error Resume Next
-FormPICTURESNAP.Picture2.Top = -FormPICTURESNAP.VScroll1.value
-Call PictureSnapResetScaleBar
+Dim MyTop As Double
+MyTop = (Picture2.Height - Picture1.Height) * VScroll1.value / NumberOfScrollIntervals%
+Picture2.Top = -MyTop
 End Sub
 
 Private Sub HScroll1_Change()
 If Not DebugMode Then On Error Resume Next
 HScroll1_Scroll
+Call PictureSnapResetScaleBar
 End Sub
 
 Private Sub HScroll1_Scroll()
 If Not DebugMode Then On Error Resume Next
-FormPICTURESNAP.Picture2.Left = -FormPICTURESNAP.HScroll1.value
-Call PictureSnapResetScaleBar
+Dim MyLeft As Double
+MyLeft = (Picture2.Width - Picture1.Width) * HScroll1.value / NumberOfScrollIntervals%
+Picture2.Left = -MyLeft
 End Sub
-
-

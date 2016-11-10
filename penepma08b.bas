@@ -44,7 +44,7 @@ ElseIf InStr(PENEPMA_Root$, "14") > 0 Then
 Penepma08CheckPenepmaVersion% = 14
 Exit Function
 
-' Version 16
+' Version 16 (bug fix for light element intensities)
 ElseIf InStr(PENEPMA_Root$, "16") > 0 Then
 Penepma08CheckPenepmaVersion% = 16
 Exit Function

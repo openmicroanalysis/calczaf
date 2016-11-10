@@ -1927,8 +1927,9 @@ Dim n As Long
 Dim bstring As String
 
 ' Check for empty string
+tcomment$ = vbNullString
 astring$ = Trim$(astring$)
-If astring$ = vbNullString Then Exit Sub
+If astring$ = vbNullString Or nchars& = 0 Then Exit Sub
 
 ' Parse out based on first semi-colon
 n& = InStr(astring$, ";")

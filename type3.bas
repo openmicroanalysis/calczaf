@@ -275,6 +275,9 @@ Dim k As Integer, m As Integer
 Dim ii As Integer, jj As Integer
 Dim temp As Single, count_time As Single
 
+' Only output peak and PHA if not all EDS
+If Not MiscAreAllElementsEDS(sample()) Then
+
 ' Peak positions
 If sample(1).LastElm% > 0 And UseDetailedFlag Then
 msg$ = vbCrLf & "On and Off Peak Positions:"
@@ -566,6 +569,7 @@ Next i%
 Call IOWriteLog(msg$)
 
 Loop
+End If
 End If
 
 ' Type LAST count times for each element
