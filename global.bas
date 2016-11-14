@@ -2042,6 +2042,7 @@ Global MagnificationType As Integer
 
 Global OperatingVoltageTolerance As Single
 Global BeamCurrentTolerance As Single
+Global BeamSizeTolerance As Single
 
 Global PeakCenterModifiedOffPeakFlag(1 To MAXCHAN%) As Integer
 Global PeakCenterModifiedPeakScanFlag(1 To MAXCHAN%) As Integer

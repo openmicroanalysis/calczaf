@@ -2718,6 +2718,21 @@ BeamSizeType% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+' Get beam size tolerance
+lpAppName$ = "Hardware"
+lpKeyName$ = "BeamSizeTolerance"
+lpDefault$ = "0.05"    ' 5%
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then BeamSizeTolerance! = Val(Left$(lpReturnString$, valid&))
+If BeamSizeTolerance! < 0.00001 Or BeamSizeTolerance! > 0.2 Then
+msg$ = "BeamSizeTolerance keyword value out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
+BeamSizeTolerance! = Val(lpDefault$)
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
 ' Magnification control
 lpAppName$ = "Hardware"
 lpKeyName$ = "MagnificationPresent"

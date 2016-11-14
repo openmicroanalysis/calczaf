@@ -209,6 +209,45 @@ Exit Function
 
 End Function
 
+Function IPOS8A(n As Integer, syme As String, symx As String, keV As Single, sample() As TypeSample) As Integer
+' This routine returns as its value a pointer to the first occurance of the element and x-ray and keV
+' in "sample()" up to (but not including) channel "n%". Checks disable quant flag!!! (added 11/12/16)
+' If a match does not occur, IPOS8A = 0.
+
+ierror = False
+On Error GoTo IPOS8AError
+
+Dim i As Integer
+
+' Fail if not specified
+IPOS8A = 0
+
+' Search sample for match (element and x-ray only)
+For i% = 1 To n% - 1
+If sample(1).DisableQuantFlag%(i%) = 0 Then
+
+If Trim$(UCase$(syme$)) = Trim$(UCase$(sample(1).Elsyms$(i%))) Then
+If Trim$(UCase$(symx$)) = Trim$(UCase$(sample(1).Xrsyms$(i%))) Then
+If keV! = sample(1).KilovoltsArray!(i%) Then
+IPOS8A = i%
+Exit Function
+End If
+End If
+End If
+
+End If
+Next i%
+
+Exit Function
+
+' Errors
+IPOS8AError:
+MsgBox Error$, vbOKOnly + vbCritical, "IPOS8A"
+ierror = True
+Exit Function
+
+End Function
+
 Function IPOS9(syme As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the
 ' element in "sample1()". Checks the DisableQuant flag! If no match, IPOS9 = 0.
@@ -489,6 +528,47 @@ Exit Function
 ' Errors
 IPOS13AError:
 MsgBox Error$, vbOKOnly + vbCritical, "IPOS13A"
+ierror = True
+Exit Function
+
+End Function
+
+Function IPOS13B(syme As String, symx As String, imot As Integer, crys As String, keV As Single, sample() As TypeSample) As Integer
+' Same as IPOS13A but also checks keV (for MAN fits)
+
+ierror = False
+On Error GoTo IPOS13BError
+
+Dim i As Integer
+
+' Fail if not specified
+IPOS13B = 0
+
+' Search sample for match (element, x-ray, motor, crystal)
+For i% = 1 To sample(1).LastChan%
+If sample(1).DisableQuantFlag%(i%) = 0 Then
+
+If Trim$(UCase$(syme$)) = Trim$(UCase$(sample(1).Elsyms$(i%))) Then
+If Trim$(UCase$(symx$)) = Trim$(UCase$(sample(1).Xrsyms$(i%))) Then
+If imot% = sample(1).MotorNumbers%(i%) Then
+If Trim$(UCase$(crys$)) = Trim$(UCase$(sample(1).CrystalNames$(i%))) Then
+If keV! = sample(1).KilovoltsArray!(i%) Then
+IPOS13B = i%
+Exit Function
+End If
+End If
+End If
+End If
+End If
+
+End If
+Next i%
+
+Exit Function
+
+' Errors
+IPOS13BError:
+MsgBox Error$, vbOKOnly + vbCritical, "IPOS13B"
 ierror = True
 Exit Function
 

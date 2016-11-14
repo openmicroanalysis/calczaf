@@ -25,6 +25,10 @@ Dim StdAssignsIntfSampleRows(1 To MAXSET%, 1 To MAXINTF%, 1 To MAXCHAN%) As Inte
 Dim StdAssignsSets(1 To MAXCHAN%) As Integer
 Dim StdAssignsIntfSets(1 To MAXINTF%, 1 To MAXCHAN%) As Integer
 
+' Missing MAN assignments array
+Dim MissingMANAssignmentsStringsNumberOf As Integer
+Dim MissingMANAssignmentsStrings() As String
+
 Dim UpdateTmpSample(1 To 1) As TypeSample
 Dim UpdateOldSample(1 To 1) As TypeSample   ' use only for function UpdateChangedSample!
 Dim UpdateAnalysis As TypeAnalysis
@@ -590,7 +594,8 @@ If StdAssignsSets%(i%) = 0 Then GoTo UpdateGetStandardsNoSets
 End If
 
 Else
-ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+'ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+ip% = IPOS8A(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample(1).KilovoltsArray!(i%), sample())
 If ip% = 0 And sample(1).DisableQuantFlag%(i%) = 0 Then
 If StdAssignsSets%(i%) = 0 Then GoTo UpdateGetStandardsNoSets
 End If
@@ -832,7 +837,8 @@ jmax% = UpdateGetMaxInterfAssign(sample())
 ' Correct standard count drift arrays for interferences
 For chan% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(chan%) = 0 Then
-ip% = IPOS8(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample()) ' find if element is duplicated
+'ip% = IPOS8(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample()) ' find if element is duplicated
+ip% = IPOS8A(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample(1).KilovoltsArray!(chan%), sample()) ' find if element is duplicated
 If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then
 
 assignstd% = IPOS2(NumberofStandards%, sample(1).StdAssigns%(chan%), StandardNumbers%())
@@ -1102,7 +1108,8 @@ StdAssignsDriftCounts!(i%, chan%) = StdAssignsDriftCounts!(i%, chan%) - stdbac!(
 If Not UseAggregateIntensitiesFlag Then
 If StdAssignsDriftCounts!(i%, chan%) <= 0# Then GoTo UpdateStdMANBackgroundsNegativeStd
 Else
-ipp% = IPOS8(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample())
+'ipp% = IPOS8(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample())
+ipp% = IPOS8A(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample(1).KilovoltsArray!(chan%), sample())
 If ipp% = 0 Then
 If StdAssignsDriftCounts!(i%, chan%) <= 0# Then GoTo UpdateStdMANBackgroundsNegativeStd
 End If
@@ -1113,6 +1120,7 @@ End If
 
 Next i%
 End If
+8000:
 Next chan%
 
 ' Debug
@@ -1227,7 +1235,8 @@ Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int
 End If
 
 Else
-ipp% = IPOS8(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample())
+'ipp% = IPOS8(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample())
+ipp% = IPOS8A(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample(1).KilovoltsArray!(chan%), sample())
 If ipp% = 0 Then
 If StdAssignsIntfDriftCounts!(i%, j%, chan%) < -2# Then GoTo UpdateStdMANBackgroundsNegativeInterf
 If StdAssignsIntfDriftCounts!(i%, j%, chan%) <= 0# Then
@@ -1564,7 +1573,8 @@ If sample(1).DisableQuantFlag%(i%) = 0 Then ' skip check if quant is disabled
 If Not UseAggregateIntensitiesFlag Then
 If analysis.StdAssignsCounts!(i%) <= 0# Then GoTo UpdateCalculateDriftNoCounts
 Else
-ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+'ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+ip% = IPOS8A(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample(1).KilovoltsArray!(i%), sample())
 If ip% = 0 Then
 If analysis.StdAssignsCounts!(i%) <= 0# Then GoTo UpdateCalculateDriftNoCounts
 End If
@@ -1578,7 +1588,6 @@ For i% = 1 To sample(1).LastElm%
 
 ' Check if this is a MAN correction at all (0=off-peak, 1=MAN, 2=multipoint)
 If sample(1).BackgroundTypes%(i%) = 1 Then
-' Was: Call UpdateCalculateMANDrift(i%, sample(1).DateTimes(row%), analysis)
 Call UpdateCalculateMANDrift(Int(3), i%, row%, Int(0), Int(0), analysis, sample())
 If ierror Then Exit Sub
 End If
@@ -2114,7 +2123,7 @@ ierror = True
 Exit Sub
 
 UpdateFitMANBadStandard:
-msg$ = "MAN standard number " & Format$(sample(1).MANStdAssigns%(i%, chan%)) & " is not in run"
+msg$ = "MAN standard number " & Format$(sample(1).MANStdAssigns%(i%, chan%)) & " is not present in the current probe data file."
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateFitMAN"
 Call AnalyzeStatusAnal(vbNullString)
 ierror = True
@@ -2123,7 +2132,7 @@ Exit Sub
 UpdateFitMANNoPoints:
 row% = SampleGetRow%(sample())
 msg$ = SampleGetString$(row%)
-msg$ = "No MAN data to fit for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " in sample " & msg$ & ". "
+msg$ = "No MAN data to fit for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " ( spectro " & Format$(sample(1).MotorNumbers%(chan%)) & " " & sample(1).CrystalNames$(chan%) & ") at " & sample(1).KilovoltsArray!(chan%) & " keV, in sample " & msg$ & ". " & vbCrLf & vbCrLf
 msg$ = msg$ & "Be sure that MAN standards have been acquired and that MAN assignments are properly assigned by using the Analytical | Assign MAN Fits menu. "
 msg$ = msg$ & "If no MAN elements were acquired check the Analytical | Use Off Peak Elements for MAN Fit to have the program utilize off-peak elements for the MAN assignments."
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateFitMAN"
@@ -2143,9 +2152,11 @@ Sub UpdateGetMANStandards(mode As Integer, sample() As TypeSample)
 ierror = False
 On Error GoTo UpdateGetMANStandardsError
 
-Dim i As Integer, j As Integer, k As Integer, response As Integer
+Dim i As Integer, j As Integer, k As Integer, n As Integer, response As Integer
 Dim samplerow As Integer, ip As Integer, chan As Integer
 Dim jmax As Integer, kmax As Integer
+Dim astring As String
+Dim alreadyasked As Boolean
 
 Dim average As TypeAverage
 Dim average2 As TypeAverage
@@ -2175,6 +2186,9 @@ MANAssignsSets%(j%, i%) = 0
 Next j%
 Next i%
 
+' Init missing MAN assignments
+MissingMANAssignmentsStringsNumberOf% = 0
+
 ' Search through samples and load all assigned MAN standard sets
 For samplerow% = 1 To NumberofSamples%
 
@@ -2197,14 +2211,11 @@ GoTo 9000
 7000:
 
 ' Update status form
-If mode% = 0 Then
 msg$ = SampleGetString(samplerow%)
 Call AnalyzeStatusAnal("Loading count data for MAN  " & msg$ & "...")
 If icancelanal Then
 ierror = True
 Exit Sub
-End If
-
 End If
 
 ' Load data for this MAN standard
@@ -2254,7 +2265,7 @@ If UpdateTmpSample(1).GoodDataRows% < 1 Then GoTo 9000
 ' Check that sample integrated intensity flag matches (this line is commented out as it prevents mixing integrated intensities and MAN elements)
 'If UpdateTmpSample(1).IntegratedIntensitiesUseFlag% <> sample(1).IntegratedIntensitiesUseFlag% Then GoTo 9000
 
-' If analytical conditions do not match selected sample, skip
+' If analytical conditions do not match selected sample, skip (if passed MAN sample has combined conditions, this check is skipped)
 If Not UpdateTmpSample(1).CombinedConditionsFlag And Not sample(1).CombinedConditionsFlag Then
 If UpdateTmpSample(1).takeoff! <> sample(1).takeoff! Then GoTo 9000
 If UpdateTmpSample(1).kilovolts! <> sample(1).kilovolts! Then GoTo 9000
@@ -2364,6 +2375,7 @@ End If
 Next i%
 
 9000:  Next samplerow%
+Call AnalyzeStatusAnal(vbNullString)
 
 ' Check for empty MAN sets on MAN corrected elements
 For i% = 1 To sample(1).LastElm%
@@ -2371,41 +2383,59 @@ If sample(1).BackgroundTypes%(i%) = 1 And sample(1).DisableQuantFlag(i%) = 0 The
 For j% = 1 To MAXMAN%
 If sample(1).MANStdAssigns%(j%, i%) > 0 And MANAssignsSets%(j%, i%) = 0 Then
 
-msg$ = "Warning- No MAN intensity data found for standard " & Format$(sample(1).MANStdAssigns%(j%, i%)) & " for "
-msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
-msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
-msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV for MAN assignments." & vbCrLf & vbCrLf & "Either acquire count data "
-msg$ = msg$ & "for the indicated element on the indicated standard at the indicated conditions or "
-msg$ = msg$ & "remove the MAN assignment by clicking on the Analytical | MAN Assignments menu item "
-msg$ = msg$ & "and remove the standard from the MAN assignments by first selecting the " & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " from "
-msg$ = msg$ & "the Element grid, then use a <ctrl> click on the Standards list box to unselect the MAN standard assignment and "
-msg$ = msg$ & "click the Update Fit button." & vbCrLf & vbCrLf
-msg$ = msg$ & "If you loaded a file setup from another run and removed or changed any standards you should probably "
-msg$ = msg$ & "clear the MAN assignments by using the Analytical | Clear All MAN Assignments menu and then re-assign them "
-msg$ = msg$ & "using the Analytical | Assign MAN Fits menu." & vbCrLf & vbCrLf
-msg$ = msg$ & "This error can also occur when quick standards are acquired before all MAN standards have been assigned to the MAN background "
-msg$ = msg$ & "calibration curve. Generally it is best to acquire your standards the first time without the quick standards option "
-msg$ = msg$ & "so all elements being analyzed are acquired on each standard. Then once all MAN assignments have been made, "
-msg$ = msg$ & "then the quick standards can be utilized without getting these warnings."
+MissingMANAssignmentsStringsNumberOf% = MissingMANAssignmentsStringsNumberOf% + 1
+ReDim Preserve MissingMANAssignmentsStrings(1 To MissingMANAssignmentsStringsNumberOf%) As String
 
-' Output warning depending on quick std flag
-If Not UseQuickStandardsFlag Then
-response% = MsgBox(msg$, vbOKCancel + vbExclamation, "UpdateGetMANStandards")
-If response% = vbOK Then
-ierror = False  ' do not set error flag for missing data
+astring$ = "Warning- No MAN intensity data found for standard " & Format$(sample(1).MANStdAssigns%(j%, i%)) & " for "
+astring$ = astring$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
+astring$ = astring$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
+astring$ = astring$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV for MAN assignments."
+MissingMANAssignmentsStrings$(MissingMANAssignmentsStringsNumberOf%) = astring$
+
 sample(1).MANStdAssigns%(j%, i%) = 0    ' deselect MAN assignment
-Else
-ierror = True
-Exit Sub
-End If
-Else
-Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
-End If
-
 End If
 Next j%
 End If
 Next i%
+
+' Output elements with missing MAN assignments
+For n% = 1 To MissingMANAssignmentsStringsNumberOf%
+If Not alreadyasked Then
+msg$ = vbCrLf & "One or more MAN elements are missing standard intensities. Either acquire data for the "
+msg$ = msg$ & "indicated element/standard at the indicated conditions or "
+msg$ = msg$ & "remove the MAN assignment by clicking " & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " from "
+msg$ = msg$ & "the MAN Assignments element grid, then <ctrl> click on the Standards list box to unselect the MAN assignment and "
+msg$ = msg$ & "click the Update Fit button." & vbCrLf & vbCrLf
+msg$ = msg$ & "If you loaded a file setup from another run and removed or changed any standards you should "
+msg$ = msg$ & "clear the MAN assignments using the Analytical | Clear All MAN Assignments menu and re-assign them "
+msg$ = msg$ & "using the Analytical | Assign MAN Fits menu." & vbCrLf & vbCrLf
+msg$ = msg$ & "This error can also occur when quick standards are acquired before all MAN standards have been assigned to the MAN background "
+msg$ = msg$ & "calibration curve. Please acquire standards the first time without the quick standards option "
+msg$ = msg$ & "so all MAN elements are acquired on each standard." & vbCrLf & vbCrLf
+msg$ = msg$ & "Do you want to see the missing MAN assignments? Click Yes to see each element/standard with missing MAN intensities, "
+msg$ = msg$ & "No to just output to the log window, or Cancel to exit."
+
+' Check first time user response
+response% = MsgBox(msg$, vbYesNoCancel + vbExclamation, "UpdateGetMANStandards")
+alreadyasked = True
+End If
+
+' User cancels
+If response% = vbCancel Then
+ierror = True
+Exit Sub
+End If
+
+' Output to log window
+msg$ = MissingMANAssignmentsStrings$(n%)
+Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
+
+' Output msgbox
+If response% = vbYes Then
+msg$ = msg$ & vbCrLf & vbCrLf & "Do you want to see the missing MAN assignments? Click Yes to see each element/standard with missing MAN intensities, No to just output to the log window, or Cancel to exit."
+response% = MsgBox(msg$, vbYesNoCancel + vbInformation, "UpdateGetMANStandards")
+End If
+Next n%
 
 If Not DebugMode Or mode% = 1 Then Exit Sub
 
