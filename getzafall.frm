@@ -2,21 +2,21 @@ VERSION 5.00
 Begin VB.Form FormGETZAFALL 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Matrix Correction Methods"
-   ClientHeight    =   4005
+   ClientHeight    =   3960
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   7725
+   ClientWidth     =   7680
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4005
-   ScaleWidth      =   7725
+   ScaleHeight     =   3960
+   ScaleWidth      =   7680
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton CommandOptions 
-      BackColor       =   &H0000FFFF&
-      Caption         =   "Options"
+      BackColor       =   &H0080FFFF&
+      Caption         =   "ZAF - Phi-Rho-Z Options"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -26,18 +26,18 @@ Begin VB.Form FormGETZAFALL
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   495
-      Left            =   6240
+      Height          =   735
+      Left            =   6120
       Style           =   1  'Graphical
       TabIndex        =   10
       TabStop         =   0   'False
       ToolTipText     =   "Select the ZAF or Phi-Rho-Z matrix correction procedure"
-      Top             =   1680
-      Width           =   1335
+      Top             =   2280
+      Width           =   1455
    End
    Begin VB.CommandButton CommandMACs 
       BackColor       =   &H0080FFFF&
-      Caption         =   "MACs"
+      Caption         =   "MAC Tables"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -47,14 +47,14 @@ Begin VB.Form FormGETZAFALL
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   495
-      Left            =   6240
+      Height          =   615
+      Left            =   6120
       Style           =   1  'Graphical
       TabIndex        =   9
       TabStop         =   0   'False
       ToolTipText     =   "Select the mass absorption coefficient lookup table"
-      Top             =   2280
-      Width           =   1335
+      Top             =   3240
+      Width           =   1455
    End
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
@@ -69,14 +69,14 @@ Begin VB.Form FormGETZAFALL
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   6240
+      Left            =   6120
       TabIndex        =   8
       TabStop         =   0   'False
       Top             =   720
-      Width           =   1335
+      Width           =   1455
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       BeginProperty Font 
@@ -89,12 +89,12 @@ Begin VB.Form FormGETZAFALL
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   6240
+      Left            =   6120
       Style           =   1  'Graphical
       TabIndex        =   7
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1335
+      Width           =   1455
    End
    Begin VB.Frame Frame6 
       Caption         =   "Correction Method"
@@ -304,7 +304,7 @@ Option Explicit
 
 Private Sub CheckPenepmaKratioLimit_Click()
 If Not DebugMode Then On Error Resume Next
-If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
+If FormGETZAFALL.CheckPenepmaKratioLimit.value = vbChecked Then
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = True
 Else
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
@@ -312,7 +312,7 @@ End If
 End Sub
 
 Private Sub CheckUsePenepmaKratios_Click()
-If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked Then
+If FormGETZAFALL.CheckUsePenepmaKratios.value = vbChecked Then
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
 Else
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False

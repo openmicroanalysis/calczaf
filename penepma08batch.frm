@@ -128,7 +128,7 @@ Begin VB.Form FormPENEPMA08Batch
          Width           =   4575
       End
       Begin VB.CommandButton CommandExtractKratios2 
-         BackColor       =   &H00C0FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Extract K-ratios"
          Height          =   255
          Left            =   5760
@@ -156,7 +156,7 @@ Begin VB.Form FormPENEPMA08Batch
          Width           =   615
       End
       Begin VB.CommandButton CommandRunBatch 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Run Selected Input Files In Batch Mode"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -177,7 +177,7 @@ Begin VB.Form FormPENEPMA08Batch
          Width           =   1455
       End
       Begin VB.CommandButton CommandBrowseBatchFolder 
-         BackColor       =   &H00C0FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Browse"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -188,13 +188,13 @@ Begin VB.Form FormPENEPMA08Batch
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   375
+         Height          =   735
          Left            =   4800
          Style           =   1  'Graphical
          TabIndex        =   25
          TabStop         =   0   'False
          ToolTipText     =   "Browse to specify the output folder for all selected batch calculations"
-         Top             =   720
+         Top             =   480
          Width           =   735
       End
       Begin VB.Label Label7 
@@ -444,7 +444,7 @@ Begin VB.Form FormPENEPMA08Batch
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       Default         =   -1  'True
       BeginProperty Font 
@@ -457,13 +457,13 @@ Begin VB.Form FormPENEPMA08Batch
          Strikethrough   =   0   'False
       EndProperty
       Height          =   615
-      Left            =   6120
+      Left            =   6000
       Style           =   1  'Graphical
       TabIndex        =   1
       TabStop         =   0   'False
       ToolTipText     =   "Close the PENEPMA batch mode window"
       Top             =   120
-      Width           =   1095
+      Width           =   1335
    End
    Begin VB.Frame Frame1 
       Caption         =   "PENEPMA Batch Mode Processing"

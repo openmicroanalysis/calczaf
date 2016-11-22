@@ -16,7 +16,7 @@ Begin VB.Form FormPERIODIC2
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
    Begin VB.CommandButton CommandClear 
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Clear Selections"
       Height          =   375
       Left            =   1200
@@ -1939,14 +1939,14 @@ Begin VB.Form FormPERIODIC2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   3480
+      Left            =   3360
       TabIndex        =   1
       ToolTipText     =   "Close the Periodic dialog without displaying the element selections"
       Top             =   720
-      Width           =   735
+      Width           =   855
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "OK"
       Default         =   -1  'True
       BeginProperty Font 
@@ -1959,12 +1959,12 @@ Begin VB.Form FormPERIODIC2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3480
+      Left            =   3360
       Style           =   1  'Graphical
       TabIndex        =   0
       ToolTipText     =   "Accept the currently selected KLM elements"
       Top             =   120
-      Width           =   735
+      Width           =   855
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center

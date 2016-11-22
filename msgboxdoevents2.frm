@@ -21,7 +21,7 @@ Begin VB.Form FormMSGBOXDOEVENTS2
       Top             =   1320
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       BeginProperty Font 
@@ -34,11 +34,11 @@ Begin VB.Form FormMSGBOXDOEVENTS2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   2280
+      Left            =   2400
       Style           =   1  'Graphical
       TabIndex        =   0
       Top             =   1320
-      Width           =   1095
+      Width           =   1215
    End
    Begin VB.Label Label2 
       Alignment       =   2  'Center

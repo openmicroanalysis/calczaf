@@ -24,7 +24,7 @@ Begin VB.Form FormFIND2
       Width           =   1335
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       BeginProperty Font 
          Name            =   "MS Sans Serif"

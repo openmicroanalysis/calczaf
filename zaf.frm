@@ -46,7 +46,7 @@ Begin VB.Form FormZAF
          Cols            =   8
       End
       Begin VB.CommandButton CommandHelpCalcZAF 
-         BackColor       =   &H00FF8080&
+         BackColor       =   &H00FFC0C0&
          Caption         =   "Help"
          Height          =   375
          Left            =   4080
@@ -178,7 +178,7 @@ Begin VB.Form FormZAF
          Width           =   1215
       End
       Begin VB.CommandButton CommandZAFOption 
-         BackColor       =   &H00C0FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Calculation Options"
          Height          =   495
          Left            =   7080
@@ -223,7 +223,7 @@ Begin VB.Form FormZAF
          Width           =   5415
       End
       Begin VB.CommandButton CommandClose 
-         BackColor       =   &H00008000&
+         BackColor       =   &H00C0FFC0&
          Cancel          =   -1  'True
          Caption         =   "Close"
          Height          =   495
@@ -247,7 +247,7 @@ Begin VB.Form FormZAF
          Width           =   5415
       End
       Begin VB.CommandButton CommandCalculate 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Calculate"
          Height          =   495
          Left            =   5760

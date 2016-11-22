@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormGETPTC 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Particle and Thin Film (single-layer) Calculations"
-   ClientHeight    =   3765
+   ClientHeight    =   3705
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   12825
@@ -10,7 +10,7 @@ Begin VB.Form FormGETPTC
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3765
+   ScaleHeight     =   3705
    ScaleWidth      =   12825
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
@@ -27,14 +27,14 @@ Begin VB.Form FormGETPTC
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   10920
+      Left            =   10800
       TabIndex        =   2
       TabStop         =   0   'False
       Top             =   720
-      Width           =   1575
+      Width           =   1815
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       BeginProperty Font 
@@ -47,12 +47,12 @@ Begin VB.Form FormGETPTC
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   10920
+      Left            =   10800
       Style           =   1  'Graphical
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1575
+      Width           =   1815
    End
    Begin VB.Frame Frame1 
       Caption         =   "Particle/Thin Film Options"
@@ -90,7 +90,7 @@ Begin VB.Form FormGETPTC
          Width           =   7935
       End
       Begin VB.CommandButton CommandHelpOnThinFilms 
-         BackColor       =   &H00FF8080&
+         BackColor       =   &H00FFC0C0&
          Caption         =   "Help On Thin Films"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -109,7 +109,7 @@ Begin VB.Form FormGETPTC
          Width           =   2055
       End
       Begin VB.CommandButton CommandHelpOnParticles 
-         BackColor       =   &H00FF8080&
+         BackColor       =   &H00FFC0C0&
          Caption         =   "Help On Particles"
          BeginProperty Font 
             Name            =   "MS Sans Serif"

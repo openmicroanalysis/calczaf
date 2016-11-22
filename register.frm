@@ -49,7 +49,7 @@ Begin VB.Form FormREGISTER
       Width           =   1335
    End
    Begin VB.CommandButton CommandRegister 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Register"
       Default         =   -1  'True
       Height          =   495

@@ -2908,7 +2908,7 @@ AcquisitionMotionFlag = 0
 ReturnToOnPeakFlag = True
 UseQuickStandardsFlag = False
 
-PeakCenterMethodFlag = DefaultPeakCenterMethod% ' from INI file
+PeakCenterMethodFlag = DefaultPeakCenterMethod% ' from INI file (0 = interval halving, 1 = parabolic, 2 = ROM, 3 = manual)
 PeakCenterPreScanFlag = False   ' default is no peaking prescan
 PeakCenterPostScanFlag = False   ' default is no peaking postscan
 

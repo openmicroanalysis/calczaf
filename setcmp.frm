@@ -52,7 +52,7 @@ Begin VB.Form FormSETCMP
       Width           =   1095
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
@@ -124,6 +124,15 @@ Begin VB.Form FormSETCMP
       Begin VB.Label Label4 
          Alignment       =   2  'Center
          Caption         =   "Crystal (default)"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   2880
          TabIndex        =   17
@@ -133,6 +142,15 @@ Begin VB.Form FormSETCMP
       Begin VB.Label Label3 
          Alignment       =   2  'Center
          Caption         =   "Charge"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   4440
          TabIndex        =   15

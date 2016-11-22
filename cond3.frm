@@ -128,7 +128,7 @@ Begin VB.Form FormCOND
       End
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

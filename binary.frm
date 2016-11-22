@@ -122,7 +122,7 @@ Begin VB.Form FormBINARY
       Width           =   1215
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       BeginProperty Font 

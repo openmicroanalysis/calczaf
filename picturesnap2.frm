@@ -350,7 +350,7 @@ Begin VB.Form FormPICTURESNAP2
       Width           =   1575
    End
    Begin VB.CommandButton CommandCalibratePicture 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H00C0FFFF&
       Caption         =   "Calibrate Picture"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -564,7 +564,7 @@ Begin VB.Form FormPICTURESNAP2
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       BeginProperty Font 
          Name            =   "MS Sans Serif"

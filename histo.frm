@@ -2,16 +2,16 @@ VERSION 5.00
 Begin VB.Form FormHISTO 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Binary Histogram Options"
-   ClientHeight    =   2820
+   ClientHeight    =   2865
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   5370
+   ClientWidth     =   5415
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2820
-   ScaleWidth      =   5370
+   ScaleHeight     =   2865
+   ScaleWidth      =   5415
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Frame Frame1 
@@ -124,7 +124,7 @@ Begin VB.Form FormHISTO
       Width           =   1095
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       BeginProperty Font 

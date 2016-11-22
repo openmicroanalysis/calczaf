@@ -2,16 +2,16 @@ VERSION 5.00
 Begin VB.Form FormEXCELOPTIONS 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Excel Spreadsheet Output Options"
-   ClientHeight    =   2595
+   ClientHeight    =   2640
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   5850
+   ClientWidth     =   5895
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2595
-   ScaleWidth      =   5850
+   ScaleHeight     =   2640
+   ScaleWidth      =   5895
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton CommandCancel 
@@ -33,7 +33,7 @@ Begin VB.Form FormEXCELOPTIONS
       Width           =   1095
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       BeginProperty Font 

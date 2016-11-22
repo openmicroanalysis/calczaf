@@ -499,9 +499,11 @@ Begin VB.Form FormPenepma12Random
          Width           =   735
       End
       Begin VB.CommandButton CommandReadMatrix 
+         BackColor       =   &H0080FFFF&
          Caption         =   "Read Matrix.MDB (for specified energy, emitter, x-ray and matrix)"
          Height          =   495
          Left            =   4320
+         Style           =   1  'Graphical
          TabIndex        =   22
          TabStop         =   0   'False
          Top             =   1080
@@ -605,7 +607,7 @@ Begin VB.Form FormPenepma12Random
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Cancel          =   -1  'True
       Caption         =   "Close"
       Default         =   -1  'True

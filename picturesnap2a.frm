@@ -41,7 +41,7 @@ Begin VB.Form FormPICTURESNAP2
       Width           =   735
    End
    Begin VB.CommandButton CommandDisplayCalibrationPoints 
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Display Calibration Points"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -53,12 +53,12 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3480
+      Left            =   3360
       Style           =   1  'Graphical
       TabIndex        =   36
       ToolTipText     =   "Click this button to have the program display the location of the calibration points on the calibrated image"
       Top             =   5280
-      Width           =   1815
+      Width           =   1935
    End
    Begin VB.Frame Frame3 
       Caption         =   "Point #3 Calibration"
@@ -264,7 +264,7 @@ Begin VB.Form FormPICTURESNAP2
       Width           =   1575
    End
    Begin VB.CommandButton CommandCalibratePicture 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Calibrate Picture"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -276,13 +276,13 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   615
-      Left            =   3480
+      Left            =   3360
       Style           =   1  'Graphical
       TabIndex        =   25
       TabStop         =   0   'False
       ToolTipText     =   "Click this button when both calibration coordinates in pixel and stage coordinates have been entered to calibrate the picture"
       Top             =   4200
-      Width           =   1815
+      Width           =   1935
    End
    Begin VB.Frame Frame2 
       Caption         =   "Point #2 Calibration"
@@ -450,7 +450,7 @@ Begin VB.Form FormPICTURESNAP2
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -637,12 +637,21 @@ Begin VB.Form FormPICTURESNAP2
    Begin VB.Label LabelCalibration 
       Alignment       =   2  'Center
       Caption         =   "Image Is Calibrated!"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       ForeColor       =   &H000000FF&
       Height          =   255
-      Left            =   3480
+      Left            =   3360
       TabIndex        =   41
       Top             =   4920
-      Width           =   1815
+      Width           =   1935
    End
    Begin VB.Label Label15 
       Alignment       =   2  'Center

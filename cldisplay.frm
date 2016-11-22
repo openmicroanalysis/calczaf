@@ -26,7 +26,7 @@ Begin VB.Form FormCLDISPLAY
       _AllProps       =   "CLDisplay.frx":0000
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       Default         =   -1  'True
       BeginProperty Font 

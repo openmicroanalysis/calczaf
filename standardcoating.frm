@@ -140,21 +140,21 @@ Begin VB.Form FormSTANDARDCOATING
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
-      Left            =   6840
+      Left            =   6720
       TabIndex        =   9
       Top             =   840
-      Width           =   1335
+      Width           =   1575
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   615
-      Left            =   6840
+      Left            =   6720
       Style           =   1  'Graphical
       TabIndex        =   8
       Top             =   120
-      Width           =   1335
+      Width           =   1575
    End
    Begin VB.Frame Frame6 
       Caption         =   "Conductive Coating Parameters For All Standards"
@@ -165,9 +165,9 @@ Begin VB.Form FormSTANDARDCOATING
       Top             =   4920
       Width           =   6495
       Begin VB.CommandButton CommandAssignToAll 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Assign To All Standards"
-         Height          =   615
+         Height          =   735
          Left            =   4680
          Style           =   1  'Graphical
          TabIndex        =   12

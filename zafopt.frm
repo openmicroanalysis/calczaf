@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormZAFOPT 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Calculation Options"
-   ClientHeight    =   5775
+   ClientHeight    =   5745
    ClientLeft      =   1440
    ClientTop       =   3480
    ClientWidth     =   9120
@@ -21,7 +21,7 @@ Begin VB.Form FormZAFOPT
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   5775
+   ScaleHeight     =   5745
    ScaleWidth      =   9120
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox TextDensity 
@@ -199,7 +199,7 @@ Begin VB.Form FormZAFOPT
       Width           =   975
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

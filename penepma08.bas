@@ -4252,6 +4252,7 @@ If Dir$(PENEPMA_Path$ & "\" & pfilename$ & ".in") = vbNullString Or (Dir$(PENEPM
 ' Check input file parameters
 Call Penepma08SaveInput(tForm)
 If ierror Then Exit Sub
+DoEvents
 
 ' Create .in file
 Call Penepma08CreateInput(Int(1))

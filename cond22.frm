@@ -25,7 +25,7 @@ Begin VB.Form FormCOND2
    ScaleHeight     =   5130
    ScaleWidth      =   8985
    Begin VB.CommandButton CommandHelpCombinedConditions 
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       Height          =   375
       Left            =   7560
@@ -74,10 +74,10 @@ Begin VB.Form FormCOND2
       Top             =   120
       Width           =   7335
       Begin VB.CommandButton CommandApply 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Apply Conditions To Selected Element"
          Height          =   1215
-         Left            =   5760
+         Left            =   5640
          Style           =   1  'Graphical
          TabIndex        =   12
          Top             =   360
@@ -161,7 +161,7 @@ Begin VB.Form FormCOND2
       End
    End
    Begin VB.CommandButton CommandOk 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

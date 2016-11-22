@@ -127,16 +127,16 @@ Begin VB.Form FormFIND
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Cancel          =   -1  'True
       Caption         =   "Close"
       Height          =   495
-      Left            =   4440
+      Left            =   4200
       Style           =   1  'Graphical
       TabIndex        =   4
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1455
+      Width           =   1935
    End
    Begin VB.Frame Frame1 
       Caption         =   "Enter Search Element and Range"
@@ -148,7 +148,7 @@ Begin VB.Form FormFIND
       Top             =   120
       Width           =   3855
       Begin VB.CommandButton CommandFindStandards 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Find Standards"
          Default         =   -1  'True
          Height          =   495

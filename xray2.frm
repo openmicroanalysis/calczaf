@@ -324,7 +324,7 @@ Begin VB.Form FormXRAY
       Width           =   1575
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Cancel          =   -1  'True
       Caption         =   "Close"
       Height          =   375

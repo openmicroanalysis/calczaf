@@ -57,7 +57,7 @@ Begin VB.Form FormUPDATE
       Width           =   3855
    End
    Begin VB.CommandButton CommandUpdate 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Download Update!"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -125,7 +125,7 @@ Begin VB.Form FormUPDATE
       Width           =   3855
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       Default         =   -1  'True
       BeginProperty Font 
@@ -184,7 +184,7 @@ End Sub
 
 Private Sub CommandUpdate_Click()
 If Not DebugMode Then On Error Resume Next
-If FormUPDATE.OptionDownloadType(0).value = True Then
+If FormUPDATE.OptionDownloadType(0).Value = True Then
 FormUPDATE.OptionDownloadType(0).Enabled = False
 FormUPDATE.OptionDownloadType(1).Enabled = False
 FormUPDATE.OptionDownloadType(2).Enabled = False
@@ -198,7 +198,7 @@ FormUPDATE.OptionDownloadType(1).Enabled = True
 FormUPDATE.OptionDownloadType(2).Enabled = True
 If ierror Then Exit Sub
 
-ElseIf FormUPDATE.OptionDownloadType(1).value = True Then
+ElseIf FormUPDATE.OptionDownloadType(1).Value = True Then
 FormUPDATE.OptionDownloadType(0).Enabled = False
 FormUPDATE.OptionDownloadType(1).Enabled = False
 FormUPDATE.OptionDownloadType(2).Enabled = False
@@ -256,7 +256,7 @@ End Sub
 Private Sub FtpClient1_OnProgress(ByVal Filename As Variant, ByVal FileSize As Variant, ByVal BytesCopied As Variant, ByVal Percent As Variant)
 If Not DebugMode Then On Error Resume Next
 DoEvents
-FormUPDATE.ProgressBar1.value = Percent
+FormUPDATE.ProgressBar1.Value = Percent
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
 If Percent > 0# Then FormUPDATE.Caption = "Update CalcZAF [" & Format$(Percent) & "% downloaded...]"
 End If
@@ -270,7 +270,7 @@ End Sub
 Private Sub HttpClient1_OnProgress(ByVal BytesTotal As Variant, ByVal BytesCopied As Variant, ByVal Percent As Variant)
 If Not DebugMode Then On Error Resume Next
 DoEvents
-FormUPDATE.ProgressBar1.value = Percent
+FormUPDATE.ProgressBar1.Value = Percent
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
 If Percent > 0# Then FormUPDATE.Caption = "Update CalcZAF [" & Format$(Percent) & "% downloaded...]"
 End If

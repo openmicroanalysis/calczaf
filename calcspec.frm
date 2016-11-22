@@ -47,10 +47,10 @@ Begin VB.Form FormCALCSPEC
       Width           =   1095
    End
    Begin VB.CommandButton CommandHelp 
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       Height          =   375
-      Left            =   9120
+      Left            =   9240
       Style           =   1  'Graphical
       TabIndex        =   19
       TabStop         =   0   'False
@@ -116,7 +116,7 @@ Begin VB.Form FormCALCSPEC
       Width           =   4095
    End
    Begin VB.CommandButton CommandCalculate 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Calculate Spectrometer Position"
       Height          =   1335
       Left            =   6720
@@ -173,7 +173,7 @@ Begin VB.Form FormCALCSPEC
       Width           =   1215
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       Default         =   -1  'True
       Height          =   375
@@ -182,7 +182,7 @@ Begin VB.Form FormCALCSPEC
       TabIndex        =   2
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1455
+      Width           =   1575
    End
    Begin VB.OLE OLE3 
       BackStyle       =   0  'Transparent

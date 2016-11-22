@@ -14,7 +14,7 @@ Begin VB.Form FormPENEPMA12
    ScaleWidth      =   17160
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton CommandHelp 
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -160,7 +160,7 @@ Begin VB.Form FormPENEPMA12
          Width           =   1455
       End
       Begin VB.CommandButton CommandRunFanal 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Run Fanal (generate k-ratio file for couple boundary)"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -564,7 +564,7 @@ Begin VB.Form FormPENEPMA12
          Width           =   2535
       End
       Begin VB.CommandButton CommandRunPenfluorRunAll 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Run Penfluor and Fitall for ALL three materials (generate .PAR files)"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -726,7 +726,7 @@ Begin VB.Form FormPENEPMA12
       Width           =   1455
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       BeginProperty Font 
@@ -822,7 +822,7 @@ Begin VB.Form FormPENEPMA12
          Width           =   2895
       End
       Begin VB.CommandButton CommandOutputFormulaBStd 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Create PENEPMA Material B Std From Formula"
          Height          =   495
          Left            =   6120
@@ -923,7 +923,7 @@ Begin VB.Form FormPENEPMA12
          Width           =   975
       End
       Begin VB.CommandButton CommandOutputFormulaB 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Create PENEPMA Material B From Formula"
          Height          =   495
          Left            =   3120
@@ -980,7 +980,7 @@ Begin VB.Form FormPENEPMA12
          Width           =   975
       End
       Begin VB.CommandButton CommandOutputFormulaA 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Create PENEPMA Material A From Formula"
          Height          =   495
          Left            =   120

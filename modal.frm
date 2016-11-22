@@ -31,7 +31,7 @@ Begin VB.Form FormMODAL
       Top             =   3240
       Width           =   3615
       Begin VB.CommandButton CommandUpdatePhase 
-         BackColor       =   &H00C0FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Update Phase"
          Height          =   375
          Left            =   480
@@ -105,7 +105,7 @@ Begin VB.Form FormMODAL
       End
    End
    Begin VB.CommandButton CommandStart 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Start"
       Height          =   495
       Left            =   6120
@@ -205,7 +205,7 @@ Begin VB.Form FormMODAL
          Width           =   3252
       End
       Begin VB.CommandButton CommandUpdateGroup 
-         BackColor       =   &H00C0FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Update Group"
          Height          =   375
          Left            =   360
@@ -243,7 +243,7 @@ Begin VB.Form FormMODAL
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       Default         =   -1  'True
       Height          =   615
@@ -272,7 +272,7 @@ Begin VB.Form FormMODAL
          Width           =   1815
       End
       Begin VB.CommandButton CommandAddStandard 
-         BackColor       =   &H00C0FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Add"
          Height          =   255
          Left            =   3960
@@ -292,7 +292,7 @@ Begin VB.Form FormMODAL
          Width           =   1815
       End
       Begin VB.CommandButton CommandNewPhase 
-         BackColor       =   &H00C0FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "New"
          Height          =   255
          Left            =   2040
@@ -312,7 +312,7 @@ Begin VB.Form FormMODAL
          Width           =   1815
       End
       Begin VB.CommandButton CommandNewGroup 
-         BackColor       =   &H00C0FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "New"
          Height          =   255
          Left            =   120

@@ -25,7 +25,7 @@ Begin VB.Form FormPLOTHISTO_PE
       Width           =   1215
    End
    Begin VB.CommandButton CommandPlotConcentrationHistogram 
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Plot Concentration Histogram"
       Height          =   855
       Left            =   9720
@@ -106,7 +106,7 @@ Begin VB.Form FormPLOTHISTO_PE
       Width           =   1215
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       Default         =   -1  'True
       BeginProperty Font 

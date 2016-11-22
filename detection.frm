@@ -14,7 +14,7 @@ Begin VB.Form FormDETECTION
    ScaleWidth      =   9120
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       BeginProperty Font 
          Name            =   "MS Sans Serif"

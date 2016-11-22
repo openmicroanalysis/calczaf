@@ -13,7 +13,7 @@ Begin VB.Form FormSECONDARY
    ScaleWidth      =   13425
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton CommandHelp 
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -295,7 +295,7 @@ Begin VB.Form FormSECONDARY
          Width           =   1095
       End
       Begin VB.CommandButton CommandBrowse 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Browse For Image"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -479,7 +479,7 @@ Begin VB.Form FormSECONDARY
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -604,7 +604,7 @@ Begin VB.Form FormSECONDARY
          Width           =   3015
       End
       Begin VB.CommandButton CommandCalculateCurrent 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Calculate Current Sample Composition"
          BeginProperty Font 
             Name            =   "MS Sans Serif"

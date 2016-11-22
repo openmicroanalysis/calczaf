@@ -63,12 +63,15 @@ Begin VB.Form FormPlotAlpha_PE
       Width           =   1815
    End
    Begin VB.CommandButton CommandZoomFull 
+      BackColor       =   &H0080FFFF&
       Caption         =   "Zoom Full"
       Height          =   375
-      Left            =   8760
+      Left            =   8640
+      Style           =   1  'Graphical
       TabIndex        =   3
+      TabStop         =   0   'False
       Top             =   7920
-      Width           =   1815
+      Width           =   2055
    End
    Begin VB.CommandButton CommandPrint 
       Caption         =   "Print"
@@ -208,17 +211,17 @@ Begin VB.Form FormPlotAlpha_PE
       Width           =   1095
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Cancel          =   -1  'True
       Caption         =   "Close"
       Default         =   -1  'True
       Height          =   495
-      Left            =   8760
+      Left            =   8640
       Style           =   1  'Graphical
       TabIndex        =   0
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1815
+      Width           =   2055
    End
    Begin VB.Label LabelMatrixCorrection 
       BorderStyle     =   1  'Fixed Single
@@ -339,6 +342,7 @@ End Sub
 Private Sub ComboPlotAlpha_Click()
 If Not DebugMode Then On Error Resume Next
 Call CalcZAFPlotAlphaFactors_PE
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandClipboard_Click()

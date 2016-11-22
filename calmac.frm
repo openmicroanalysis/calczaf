@@ -67,9 +67,11 @@ Begin VB.Form FormMAIN
       MaxFileSize     =   256
    End
    Begin VB.CommandButton CommandCalculateMAC 
+      BackColor       =   &H0080FFFF&
       Caption         =   "Calculate MAC"
       Height          =   255
       Left            =   7680
+      Style           =   1  'Graphical
       TabIndex        =   7
       TabStop         =   0   'False
       Top             =   120

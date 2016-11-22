@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormPENEPMA08_PE 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Create PENEPMA Material and Input Files"
@@ -87,7 +87,7 @@ Begin VB.Form FormPENEPMA08_PE
       End
    End
    Begin VB.CommandButton CommandHelp 
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       Height          =   495
       Left            =   12120
@@ -292,7 +292,7 @@ Begin VB.Form FormPENEPMA08_PE
       Top             =   7440
    End
    Begin VB.CommandButton CommandRunPENEPMA 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Run Input File In PENEPMA"
       Default         =   -1  'True
       Height          =   975
@@ -381,25 +381,25 @@ Begin VB.Form FormPENEPMA08_PE
       Width           =   1695
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Height          =   495
-      Left            =   12240
+      Left            =   12120
       Style           =   1  'Graphical
       TabIndex        =   3
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1455
+      Width           =   1695
    End
    Begin VB.CommandButton CommandClose 
       Cancel          =   -1  'True
       Caption         =   "Close"
       Height          =   375
-      Left            =   12240
+      Left            =   12120
       TabIndex        =   2
       TabStop         =   0   'False
       Top             =   720
-      Width           =   1455
+      Width           =   1695
    End
    Begin VB.Frame Frame2 
       Caption         =   "PENEPMA Input File (*.INI)"

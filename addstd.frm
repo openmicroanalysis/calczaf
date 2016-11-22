@@ -33,7 +33,7 @@ Begin VB.Form FormADDSTD
       Width           =   1695
    End
    Begin VB.CommandButton CommandFindNextNumber 
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Next Match"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -52,7 +52,7 @@ Begin VB.Form FormADDSTD
       Width           =   1455
    End
    Begin VB.CommandButton CommandFindNextString 
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Next Match"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -71,7 +71,7 @@ Begin VB.Form FormADDSTD
       Width           =   1455
    End
    Begin VB.CommandButton CommandHelpAddStd 
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       Height          =   375
       Left            =   7320
@@ -101,7 +101,7 @@ Begin VB.Form FormADDSTD
       Width           =   2775
    End
    Begin VB.CommandButton CommandAddStandardToRun 
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Add Standard To Run >>"
       Height          =   495
       Left            =   3840
@@ -144,7 +144,7 @@ Begin VB.Form FormADDSTD
       Width           =   1335
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

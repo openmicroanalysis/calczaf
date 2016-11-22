@@ -42,7 +42,7 @@ Begin VB.Form FormGETCMP
       Width           =   2055
    End
    Begin VB.CommandButton CommandDisplayCLSpectrum 
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Display CL Spectrum"
       Height          =   495
       Left            =   5040
@@ -52,7 +52,7 @@ Begin VB.Form FormGETCMP
       Width           =   1935
    End
    Begin VB.CommandButton CommandDisplayEDSSpectrum 
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Display EDS Spectrum"
       Height          =   495
       Left            =   2880
@@ -119,7 +119,7 @@ Begin VB.Form FormGETCMP
    End
    Begin VB.CommandButton CommandUpdateExcess 
       Appearance      =   0  'Flat
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Update Excess"
       Enabled         =   0   'False
       Height          =   375
@@ -133,7 +133,7 @@ Begin VB.Form FormGETCMP
    End
    Begin VB.CommandButton CommandEnterAtomFormula 
       Appearance      =   0  'Flat
-      BackColor       =   &H0000FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Enter Atom Formula Composition"
       Height          =   495
       Left            =   360
@@ -262,24 +262,24 @@ Begin VB.Form FormGETCMP
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
-      Left            =   8040
+      Left            =   7920
       TabIndex        =   7
       TabStop         =   0   'False
       Top             =   840
-      Width           =   1455
+      Width           =   1695
    End
    Begin VB.CommandButton CommandOK 
       Appearance      =   0  'Flat
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   8040
+      Left            =   7920
       Style           =   1  'Graphical
       TabIndex        =   6
       TabStop         =   0   'False
       Top             =   240
-      Width           =   1455
+      Width           =   1695
    End
    Begin VB.Frame Frame1 
       Caption         =   "Click Element Row to Edit Element Composition and/or Cations (click empty row to add)"

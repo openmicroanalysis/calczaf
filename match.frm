@@ -31,7 +31,7 @@ Begin VB.Form FormMATCH
       Width           =   855
    End
    Begin VB.CommandButton CommandChange 
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Change Match Database"
       Height          =   735
       Left            =   4440
@@ -51,7 +51,7 @@ Begin VB.Form FormMATCH
       Top             =   120
       Width           =   4215
       Begin VB.CommandButton CommandMatchStandards 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Match Standards"
          Default         =   -1  'True
          Height          =   495
@@ -103,7 +103,7 @@ Begin VB.Form FormMATCH
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Cancel          =   -1  'True
       Caption         =   "Close"
       Height          =   495

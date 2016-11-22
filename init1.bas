@@ -645,7 +645,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 ' Get default peak center method
 lpAppName$ = "General"
 lpKeyName$ = "PeakCenterMethod"
-nDefault& = 1   ' default is parabolic
+nDefault& = 1   ' default is parabolic (0 = interval halving, 1 = parabolic, 2 = ROM, 3 = manual)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 DefaultPeakCenterMethod% = valid&
@@ -2938,8 +2938,8 @@ ROMPeakingPresent% = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
-' Check for correct default peak method
-If Not ROMPeakingPresent And DefaultPeakCenterMethod% > 1 Then
+' Check for correct default peak method  (0 = interval halving, 1 = parabolic, 2 = ROM, 3 = manual)
+If Not ROMPeakingPresent And DefaultPeakCenterMethod% = 2 Then
 msg$ = "ROM Peaking was specified as the default peak center method, however ROM Peaking is specified as not available in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 DefaultPeakCenterMethod% = 1

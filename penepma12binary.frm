@@ -287,7 +287,7 @@ Begin VB.Form FormPenepma12Binary
       Width           =   2055
    End
    Begin VB.CommandButton CommandPenPFE 
-      BackColor       =   &H00C0FFFF&
+      BackColor       =   &H0080FFFF&
       Caption         =   "Open PenPFE Control Dialog"
       Height          =   495
       Left            =   360
@@ -384,7 +384,7 @@ Begin VB.Form FormPenepma12Binary
          Width           =   4335
       End
       Begin VB.CommandButton CommandExtract 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Extract Binary K-Ratios"
          Height          =   375
          Left            =   1920
@@ -535,24 +535,42 @@ Begin VB.Form FormPenepma12Binary
    Begin VB.CommandButton CommandClose 
       Cancel          =   -1  'True
       Caption         =   "Close"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   375
-      Left            =   5280
+      Left            =   5160
       TabIndex        =   15
       TabStop         =   0   'False
       Top             =   840
-      Width           =   1575
+      Width           =   1815
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
-      Left            =   5280
+      Left            =   5160
       Style           =   1  'Graphical
       TabIndex        =   14
       TabStop         =   0   'False
       Top             =   240
-      Width           =   1575
+      Width           =   1815
    End
    Begin VB.Frame Frame1 
       Caption         =   "Calculate Binary or Pure Element PAR Files"
@@ -639,7 +657,7 @@ Begin VB.Form FormPenepma12Binary
          Width           =   3135
       End
       Begin VB.CommandButton CommandBinaryCalculate 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Calculate Binary Parameter Files"
          Height          =   375
          Left            =   1440

@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormFILEINFO 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "File Information"
-   ClientHeight    =   4695
+   ClientHeight    =   4665
    ClientLeft      =   2340
    ClientTop       =   1620
    ClientWidth     =   8745
@@ -21,7 +21,7 @@ Begin VB.Form FormFILEINFO
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   4695
+   ScaleHeight     =   4665
    ScaleWidth      =   8745
    Begin VB.CommandButton CommandAddCR 
       Caption         =   "Add <cr>"
@@ -84,7 +84,7 @@ Begin VB.Form FormFILEINFO
       Width           =   1095
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

@@ -38,7 +38,7 @@ Begin VB.Form FormFORMULA
    End
    Begin VB.CommandButton CommandOK 
       Appearance      =   0  'Flat
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

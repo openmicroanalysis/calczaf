@@ -386,8 +386,6 @@ If sample(1).EDSSpectraFlag And sample(1).EDSSpectraUseFlag Then
 If UpdateEDSCheckForEDSElements(Int(1), sample()) Then
 If UpdateTmpSample(1).EDSSpectraFlag Then
 If UpdateEDSCheckForEDSElements(Int(1), UpdateTmpSample()) Then
-'Call UpdateEDSSpectraElements(sample(), UpdateTmpSample())      ' update standard sample for unknown EDS elements (in case they are not already specified in the standard)
-'If ierror Then Exit Sub
 Call UpdateEDSSpectraNetIntensities(UpdateTmpSample())
 If ierror Then Exit Sub
 End If

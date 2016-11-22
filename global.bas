@@ -20,8 +20,8 @@ Global Const MAX_THROUGHPUT_ARRAY_SIZE% = 20
 
 ' Based on Cameca SX100 set times
 Global Const KILOVOLT_SET_TIME! = 6#
-Global Const BEAMCURRENT_SET_TIME_CAMECA! = 11#
-Global Const BEAMCURRENT_SET_TIME_JEOL! = 9#
+Global Const BEAMCURRENT_SET_TIME_CAMECA! = 9#
+Global Const BEAMCURRENT_SET_TIME_JEOL! = 7#
 Global Const BEAMSIZE_SET_TIME! = 2#
 Global Const HYSTERESIS_SET_TIME! = 12#
 Global Const COLUMNCONDITION_SET_TIME! = 25#
@@ -620,13 +620,13 @@ Type TypeMonitorStructure
     CondenserFine As Long
     ObjectiveCoarse As Long
     ObjectiveFine As Long
-    Astigmatism1 As Long
-    Astigmatism2 As Long
-    rotation As Single
+    Astigmation1 As Long
+    Astigmation2 As Long
+    ScanRotation As Single
     
-    kilovoltstatus As String
+    KilovoltStatus As String
     kilovolts As Single
-    emission As Single
+    EmissionCurrent As Single
     FilamentCurrent As Single
     Magnification As Single
     takeoff As Single
@@ -1708,7 +1708,7 @@ Global DefaultLIFPeakWidth As Single
 Global DefaultMinimumOverlap As Single
 Global DefaultPHADiscrimination As Single
 
-Global DefaultPeakCenterMethod As Integer
+Global DefaultPeakCenterMethod As Integer   ' 0 = interval halving, 1 = parabolic, 2 = ROM, 3 = manual
 
 Global NumberOfTunableSpecs As Integer
 Global NumberOfStageMotors As Integer

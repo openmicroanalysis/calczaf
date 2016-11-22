@@ -24,7 +24,7 @@ Begin VB.Form FormRANGE
    ScaleHeight     =   11385
    ScaleWidth      =   10110
    Begin VB.CommandButton CommandHelpRange 
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       Height          =   615
       Left            =   8280
@@ -32,7 +32,7 @@ Begin VB.Form FormRANGE
       TabIndex        =   40
       ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
       Top             =   120
-      Width           =   855
+      Width           =   975
    End
    Begin VB.Frame Frame6 
       Caption         =   "Electron Energy Loss (for low overvoltage situations)"
@@ -235,7 +235,7 @@ Begin VB.Form FormRANGE
          Width           =   4095
       End
       Begin VB.CommandButton CommandEnterCompositionAsFormulaString 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Enter Composition as Formula String"
          Height          =   255
          Left            =   600
@@ -430,7 +430,7 @@ Begin VB.Form FormRANGE
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       Default         =   -1  'True
       Height          =   615

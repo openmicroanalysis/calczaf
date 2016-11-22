@@ -136,8 +136,8 @@ analysis.ExcessOxygen! = analysis.totaloxygen! - analysis.CalculatedOxygen!
 ' Calculate oxygen equivalent of halogens
 analysis.OxygenFromHalogens! = ConvertHalogensToOxygen!(sample(1).LastChan%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), analysis.WtPercents!())
 
-' Calculate halogen corrected oxygen
-If Not UseOxygenFromHalogensCorrectionFlag Then
+' Calculate halogen corrected oxygen (do not perform if oxygen is measured)
+If Not UseOxygenFromHalogensCorrectionFlag And sample(1).OxygenChannel% > sample(1).LastElm% And sample(1).OxideOrElemental% = 1 Then
 analysis.HalogenCorrectedOxygen! = analysis.totaloxygen! - analysis.OxygenFromHalogens!
 Else
 analysis.HalogenCorrectedOxygen! = analysis.totaloxygen!

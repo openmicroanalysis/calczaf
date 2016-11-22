@@ -28,23 +28,23 @@ Begin VB.Form FormWEIGHT
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
-      Left            =   7920
+      Left            =   7800
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   720
-      Width           =   1215
+      Width           =   1335
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   7920
+      Left            =   7800
       Style           =   1  'Graphical
       TabIndex        =   4
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1215
+      Width           =   1335
    End
    Begin VB.Frame Frame1 
       Caption         =   "Enter Weight Percent String For Match"

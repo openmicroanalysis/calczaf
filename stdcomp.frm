@@ -5,7 +5,7 @@ Begin VB.Form FormSTDCOMP
    ClientHeight    =   3570
    ClientLeft      =   750
    ClientTop       =   4290
-   ClientWidth     =   6570
+   ClientWidth     =   6600
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -22,7 +22,7 @@ Begin VB.Form FormSTDCOMP
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   3570
-   ScaleWidth      =   6570
+   ScaleWidth      =   6600
    ShowInTaskbar   =   0   'False
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
@@ -35,7 +35,7 @@ Begin VB.Form FormSTDCOMP
       Width           =   1215
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

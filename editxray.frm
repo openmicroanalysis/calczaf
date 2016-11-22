@@ -5,7 +5,7 @@ Begin VB.Form FormEDITXRAY
    ClientHeight    =   1305
    ClientLeft      =   2670
    ClientTop       =   2835
-   ClientWidth     =   6900
+   ClientWidth     =   6975
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -22,7 +22,7 @@ Begin VB.Form FormEDITXRAY
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   1305
-   ScaleWidth      =   6900
+   ScaleWidth      =   6975
    Begin VB.Frame Frame1 
       Caption         =   "Edit"
       ForeColor       =   &H00FF0000&
@@ -101,7 +101,7 @@ Begin VB.Form FormEDITXRAY
       Width           =   975
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

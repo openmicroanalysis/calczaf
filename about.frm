@@ -24,7 +24,7 @@ Begin VB.Form FormABOUT
    ScaleHeight     =   11865
    ScaleWidth      =   9495
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form FormMAC 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Mass Absorption Coefficients"
-   ClientHeight    =   2490
+   ClientHeight    =   2520
    ClientLeft      =   1575
    ClientTop       =   1800
-   ClientWidth     =   7230
+   ClientWidth     =   7215
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -21,8 +21,8 @@ Begin VB.Form FormMAC
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   2490
-   ScaleWidth      =   7230
+   ScaleHeight     =   2520
+   ScaleWidth      =   7215
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
@@ -34,7 +34,7 @@ Begin VB.Form FormMAC
       Width           =   1215
    End
    Begin VB.CommandButton CommandOK 
-      BackColor       =   &H0000C000&
+      BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495

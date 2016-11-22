@@ -2,6 +2,18 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/21/16	Fix 8230/8530 PCC file loading (Poirier).  
+
+		Add code for 8200/8500 set scan rotation (Neill).
+
+11/20/16	Improve demo mode PHA acquisition.
+
+11/17/16	Implement additional column save/load parameters for 8x30 instruments (Buse, Poirier, Allaz, Cathey).
+v. 11.7.1	
+		Modify button colors per von der Handt suggestions.
+
+11/16/16	Work on 8x30 gun and EOS parameters.
+
 11/13/16	Fix several bugs in MAN fit code when duplicate elements at different operating voltages are 
 		present in the same run (Allaz).
 

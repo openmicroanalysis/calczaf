@@ -111,6 +111,10 @@ Dim astring As String
 Dim npts As Integer, nsets As Integer
 Dim xdata() As Single, ydata() As Single, acoeff() As Single, stddev As Single
 
+' Init analysis array
+Call InitStandards(CalcZAFAnalysis)
+If ierror Then Exit Sub
+
 ' Init the graph
 Call MiscPlotInit(FormPlotAlpha_PE.Pesgo1, True)
 If ierror Then Exit Sub

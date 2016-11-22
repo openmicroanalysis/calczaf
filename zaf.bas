@@ -1917,7 +1917,7 @@ For i% = 1 To zaf.in1%
 r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
 Next i%
 
-' Calculate equivalent oxygen from halogens and subtract from calculated oxyegn if flagged
+' Calculate equivalent oxygen from halogens and subtract from calculated oxygen if flagged
 If UseOxygenFromHalogensCorrectionFlag Then r1!(zaf.in0%) = r1!(zaf.in0%) - ConvertHalogensToOxygen(zaf.in1%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), r1!())
 
 ' Add to sum
@@ -2607,7 +2607,7 @@ For i% = 1 To zaf.in1%
 zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) + zaf.krat!(i%) * zaf.p1!(i%)
 Next i%
 
-' Calculate equivalent oxygen from halogens and subtract from calculated oxyegn if flagged
+' Calculate equivalent oxygen from halogens and subtract from calculated oxygen if flagged
 analysis.OxygenFromHalogens! = ConvertHalogensToOxygen(zaf.in1%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), zaf.krat!())
 If UseOxygenFromHalogensCorrectionFlag Then zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) - analysis.OxygenFromHalogens!
 analysis.OxygenFromHalogens! = analysis.OxygenFromHalogens! * 100#  ' convert to weight %

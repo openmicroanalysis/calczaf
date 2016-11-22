@@ -34,7 +34,7 @@ Begin VB.Form FormINTERF
       Top             =   3480
       Width           =   5895
       Begin VB.CommandButton CommandCalculate 
-         BackColor       =   &H0000FFFF&
+         BackColor       =   &H0080FFFF&
          Caption         =   "Calculate"
          Default         =   -1  'True
          Height          =   495
@@ -163,10 +163,10 @@ Begin VB.Form FormINTERF
       End
    End
    Begin VB.CommandButton CommandClose 
-      BackColor       =   &H00008000&
+      BackColor       =   &H00C0FFC0&
       Cancel          =   -1  'True
       Caption         =   "Close"
-      Height          =   495
+      Height          =   615
       Left            =   4920
       Style           =   1  'Graphical
       TabIndex        =   8
