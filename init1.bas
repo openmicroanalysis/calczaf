@@ -17,8 +17,6 @@ Sub InitINI()
 ierror = False
 On Error GoTo InitINIError
 
-'Call JeolTest
-
 Call InitINIGeneral
 If ierror Then Exit Sub
 Call InitINISoftware
@@ -41,6 +39,10 @@ Call InitINIStandards
 If ierror Then Exit Sub
 Call InitINISerial
 If ierror Then Exit Sub
+
+' Test calls for JEOL instruments (normally commented out!)
+'Call JeolTest
+'Call JeolInitInterface
 
 Exit Sub
 

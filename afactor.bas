@@ -1574,7 +1574,7 @@ ierror = True
 Exit Sub
 
 AFactorSmpBadUnkBetas:
-msg$ = "WARNING in AFactorSmp- Bad unknown beta factor on " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " on channel " & Format$(chan%)
+msg$ = "WARNING in AFactorSmp- Bad unknown beta factor (" & Format$(analysis.UnkBetas!(chan%)) & ") on " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " on channel " & Format$(chan%)
 Call IOWriteLog(msg$)
 zerror = True
 Exit Sub
