@@ -455,6 +455,14 @@ Begin VB.Form FormPenepma12Random
       TabIndex        =   19
       Top             =   2760
       Width           =   10935
+      Begin VB.CommandButton CommandCheckKratios 
+         Caption         =   "Check Database Kratios Against CalcZAF"
+         Height          =   375
+         Left            =   360
+         TabIndex        =   78
+         Top             =   1800
+         Width           =   3255
+      End
       Begin VB.TextBox TextBeamEnergy 
          Height          =   285
          Left            =   5880
@@ -524,7 +532,7 @@ Begin VB.Form FormPenepma12Random
          Left            =   360
          TabIndex        =   21
          TabStop         =   0   'False
-         Top             =   1320
+         Top             =   1080
          Width           =   3255
       End
       Begin VB.CommandButton CommandCreateMatrix 
@@ -542,7 +550,7 @@ Begin VB.Form FormPenepma12Random
          Left            =   360
          TabIndex        =   20
          TabStop         =   0   'False
-         Top             =   480
+         Top             =   360
          Width           =   3255
       End
       Begin VB.Label LabelMatrixDisplay 
@@ -857,6 +865,12 @@ Call Penepma12RandomRun
 FormPenepma12Random.LabelCopying.Caption = vbNullString
 If ierror Then Exit Sub
 Call Penepma12RandomRunPenfluor
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandCheckKratios_Click()
+If Not DebugMode Then On Error Resume Next
+Call Penepma12MatrixCheckKratios
 If ierror Then Exit Sub
 End Sub
 

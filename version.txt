@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/01/16	Add reflected light on/off for JEOL 8x30 autofocus (Poirier)
+
+11/30/16	Improve code for 8200 warmup filament (Yu).  Add GunAlign and Vacuum to PFE Utilities menu.
+
+11/27/16	Add code to close gun valve is 8530 for filament standby (Buse).
+v. 11.7.2
+
 11/22/16	Add check for change from scan mode to spot mode and set image shift to 0, 0 if so (Buse).
 
 11/21/16	Fix 8230/8530 PCC file loading (Poirier).  

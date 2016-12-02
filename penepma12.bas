@@ -2727,7 +2727,7 @@ sample(1).LineStatus(1) = True      ' force status flag always true (good data p
 sample(1).AtomicPercentFlag% = True
 
 ' Set sample standard assignments so that ZAF and K-factors get loaded
-For i% = 1 To sample(1).LastChan%
+For i% = 1 To sample(1).LastElm%
 sample(1).StdAssigns%(i%) = sample(1).number%
 Next i%
 
@@ -9016,6 +9016,130 @@ MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CheckXray"
 Close #XEdgeFileNumber%
 Close #XLineFileNumber%
 Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub Penepma12CheckPenfluorInputFiles()
+' Check Penfluor input files for self consistency in selected folder
+
+ierror = False
+On Error GoTo Penepma12CheckPenfluorInputFilesError
+
+Dim EmittingElement As Integer, ip As Integer
+Dim tstring As String, pstring As String, bstring As String
+Dim tfilename As String
+Dim i As Long, ii As Long
+
+Dim filearray() As String
+
+Static tpath As String
+
+icancelauto = False
+
+' Browse to a specified folder containing the Penfluor .in files
+tstring$ = "Browse PENFLUOR Input File(s) Folder"
+If tpath$ = vbNullString Then tpath$ = PENEPMA_Root$ & "\Penfluor\"
+tpath$ = IOBrowseForFolderByPath(True, tpath$, tstring$, FormPenepma12Binary)
+If ierror Then Exit Sub
+If Trim$(tpath$) = vbNullString Then Exit Sub
+
+' Save current Penfluor form parameters (simulation time and minimum energy)
+Call Penepma12Save
+If ierror Then Exit Sub
+
+' Make a list of all input files (must do this way to avoid reentrant Dir$ calls)
+tfilename$ = Dir$(tpath$ & "\*.in")  ' get first file
+ii& = 0
+Do While tfilename$ <> vbNullString
+ii& = ii& + 1
+ReDim Preserve filearray(1 To ii&) As String
+filearray$(ii&) = tfilename$
+tfilename$ = Dir$
+Loop
+
+' Check for any .in files
+If ii& < 1 Then GoTo Penepma12CheckPenfluorInputFilesNotFound
+
+' Loop through all input files and check against form parameters
+Call IOWriteLog(vbCrLf & "Penepma12CheckPenfluorInputFiles: Checking Penfluor input file parameters in folder " & tpath$)
+Screen.MousePointer = vbHourglass
+For i& = 1 To ii&
+tfilename$ = tpath$ & "\" & filearray$(i&)
+Call IOStatusAuto("Penepma12CheckPenfluorInputFiles: checking Penfluor input file " & tfilename$ & " (" & Format$(i&) & " of " & Format$(ii&) & ")")
+
+' Read the simulation time from the input file
+Call Penepma12RunFanalCheckINFile("TIME", tfilename, pstring$)
+If ierror Then
+Screen.MousePointer = vbDefault
+Exit Sub
+End If
+If Val(pstring$) <> MaterialSimulationTime# Then
+Call IOWriteLog("Penepma12CheckPenfluorInputFiles: Penfluor input file " & tfilename$ & ", does not match current TIME parameter (" & pstring$ & " vs. " & Format$(MaterialSimulationTime#) & ").")
+End If
+
+' Load minimum energy if auto adjust is checked
+If FormPENEPMA12.CheckAutoAdjustMinimumEnergy.Value = vbChecked Then
+Call MiscParseStringToStringA(filearray$(i&), "-", bstring$)
+If ierror Then
+Screen.MousePointer = vbDefault
+Exit Sub
+End If
+ip% = IPOS1%(MAXELM%, bstring$, Symup$())
+If ip% = 0 Then GoTo Penepma12CheckPenfluorInputFilesBadSymbol
+EmittingElement% = ip%
+Call Penepma12AdjustMinimumEnergy2(Symlo$(EmittingElement%))
+If ierror Then
+Screen.MousePointer = vbDefault
+Exit Sub
+End If
+End If
+
+' Read the minimum energy from the input file
+Call Penepma12RunFanalCheckINFile("MSIMPA", tfilename$, pstring$)
+If ierror Then
+Screen.MousePointer = vbDefault
+Exit Sub
+End If
+If Val(pstring$) <> CSng(PenepmaMinimumElectronEnergy! * EVPERKEV#) Then    ' need to cast to single precision
+Call IOWriteLog("Penepma12CheckPenfluorInputFiles: Penfluor input file " & tfilename$ & ", does not match current MSIMPA parameter (" & pstring$ & " vs. " & Format$(CSng(PenepmaMinimumElectronEnergy! * EVPERKEV#)) & ").")
+End If
+
+DoEvents
+If icancelauto Or ierror Then
+Screen.MousePointer = vbDefault
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+End If
+
+' Get next input filename
+Next i&
+Screen.MousePointer = vbDefault
+
+Call IOWriteLog("Penepma12CheckPenfluorInputFiles: Checking Penfluor input file parameters in folder " & tpath$ & " is complete!")
+Call IOStatusAuto(vbNullString)
+Exit Sub
+
+' Errors
+Penepma12CheckPenfluorInputFilesError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma12CheckPenfluorInputFiles"
+ierror = True
+Exit Sub
+
+Penepma12CheckPenfluorInputFilesNotFound:
+Screen.MousePointer = vbDefault
+msg$ = "No Penfluor input files found in folder " & tpath$
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CheckPenfluorInputFiles"
+ierror = True
+Exit Sub
+
+Penepma12CheckPenfluorInputFilesBadSymbol:
+Screen.MousePointer = vbDefault
+msg$ = "Element symbol " & bstring$ & " in file " & filearray$(i&) & " is not a valid element symbol."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CheckPenfluorInputFiles"
 ierror = True
 Exit Sub
 

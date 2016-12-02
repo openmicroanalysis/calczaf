@@ -225,7 +225,7 @@ ReDim ncomplete(1 To m%) As Integer   ' completion flag T/F
 
 tfilename$ = PENEPMA_PAR_Path$ & "\PAR_share.txt"
 
-' First create the PAR shar file if not found
+' First create the PAR share file if not found
 If mode% = 0 Then
 If Dir$(tfilename$) = vbNullString Then
 Open tfilename$ For Output As #Temp1FileNumber%

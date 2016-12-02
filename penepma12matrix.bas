@@ -453,7 +453,7 @@ End Sub
 
 Sub Penepma12MatrixReadMDB2(tTakeoff As Single, tKilovolt As Single, tEmitter As Integer, tXray As Integer, tMatrix As Integer, tKratios() As Double, notfound As Boolean)
 ' This routine reads the Matrix.mdb file for the specified beam energy, emitter, x-ray, matrix.
-'  tKratios#(1 to MAXBINARY%)  are the k-ratios for this x-ray and binary composition
+'  tKratios#(1 to MAXBINARY%) are the k-ratios for this x-ray and binary composition
 
 ierror = False
 On Error GoTo Penepma12MatrixReadMDB2Error
@@ -466,7 +466,7 @@ Dim MtDb As Database
 Dim MtDs As Recordset
 
 ' Check for file
-If Dir$(MatrixMDBFile$) = vbNullString Then GoTo Penepma12MatrixReadMDBNoMatrixMDB2File
+If Dir$(MatrixMDBFile$) = vbNullString Then GoTo Penepma12MatrixReadMDB2NoMatrixMDBFile
 
 ' Check for use keV rounding flag for fractional keVs
 If Penepma12UseKeVRoundingFlag Then
@@ -500,7 +500,7 @@ SQLQ$ = "SELECT MatrixKRatio.* FROM MatrixKRatio WHERE MatrixKRatioNumber = " & 
 Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
 If MtDs.BOF And MtDs.EOF Then GoTo Penepma12MatrixReadMDB2NoKRatios
 
-' Load kratio array (only!)
+' Load kratio array
 Do Until MtDs.EOF
 i% = MtDs("MatrixKRatioOrder")          ' load order (1 to MAXBINARY%)
 tKratios#(i%) = CDbl(MtDs("MatrixKRatio_ZAF_KRatio"))
@@ -522,7 +522,7 @@ Call IOStatusAuto(vbNullString)
 ierror = True
 Exit Sub
 
-Penepma12MatrixReadMDBNoMatrixMDB2File:
+Penepma12MatrixReadMDB2NoMatrixMDBFile:
 msg$ = "File " & MatrixMDBFile$ & " was not found"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixReadMDB2"
 ierror = True

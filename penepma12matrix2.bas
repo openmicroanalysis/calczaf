@@ -2,6 +2,10 @@ Attribute VB_Name = "CodePenepma12Matrix2"
 ' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
+Dim PENEPMA_Analysis As TypeAnalysis
+Dim PENEPMA_Sample(1 To 1) As TypeSample
+Dim Penepma_TmpSample(1 To 1) As TypeSample
+
 Sub Penepma12MatrixNewMDB()
 ' This routine create a new the Matrix.mdb file
 
@@ -43,8 +47,6 @@ End If
 
 ' Open the new database and create the tables
 Screen.MousePointer = vbHourglass
-'Set MtDb = CreateDatabase(MatrixMDBFile$, dbLangGeneral)
-'If MtDb Is Nothing Or Err <> 0 Then GoTo Penepma12MatrixNewMDBError
 
 ' Open a new database by copying from existing MDB template
 Call FileInfoCreateDatabase(MatrixMDBFile$)
@@ -807,6 +809,180 @@ Penepma12PureScanMDBNotEmpty:
 msg$ = "The pure database already contains intensity entires. Please create a new Pure.mdb file and try updating it again."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12PureScanMDB"
 Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub Penepma12MatrixCheckKratios()
+' This routine reads the Matrix.mdb file for the specified beam energy, emitter, x-ray, matrix.
+'  tKratios#(1 to MAXBINARY%) are the k-ratios for this x-ray and binary composition
+
+ierror = False
+On Error GoTo Penepma12MatrixCheckKratiosError
+
+Dim i As Integer
+Dim nrec As Long
+Dim temp As Single
+Dim tTakeoff As Single, tKilovolts As Single
+Dim tEmitter As Integer, tXray As Integer, tMatrix As Integer
+
+ReDim tKratios(1 To MAXBINARY%) As Double
+
+Dim SQLQ As String
+Dim MtDb As Database
+Dim MtDt As Recordset
+Dim MtDs As Recordset
+
+Const maxdiff! = 0.2
+
+icancelauto = False
+
+' Check for file
+If Dir$(MatrixMDBFile$) = vbNullString Then GoTo Penepma12MatrixCheckKratiosNoMatrixMDBFile
+
+' Init sample
+Call InitSample(PENEPMA_Sample())
+If ierror Then Exit Sub
+Call InitSample(Penepma_TmpSample())
+If ierror Then Exit Sub
+Call InitStandards(PENEPMA_Analysis)
+If ierror Then Exit Sub
+Call InitLine(PENEPMA_Analysis)
+If ierror Then Exit Sub
+
+' Delete Standard.txt and Standard.err file if present
+If Dir$(ProbeTextLogFile$) <> vbNullString Then Kill ProbeTextLogFile$
+If Dir$(ProbeErrorLogFile$) <> vbNullString Then Kill ProbeErrorLogFile$
+
+' Open matrix database (non exclusive and read only)
+Set MtDb = OpenDatabase(MatrixMDBFile$, MatrixDatabaseNonExclusiveAccess%, dbReadOnly)
+
+' Open the "Matrix" table as a Recordset
+Set MtDt = MtDb.OpenRecordset("Matrix", dbOpenSnapshot)
+
+' Check for any records
+If MtDt.BOF And MtDt.EOF Then GoTo Penepma12MatrixCheckKratiosNoMatrixRecords
+
+' Loop through database on each unique matrix record number
+Screen.MousePointer = vbHourglass
+Do Until MtDt.EOF
+nrec& = MtDt("MatrixNumber")
+tTakeoff! = MtDt("BeamTakeOff")
+tKilovolts! = MtDt("BeamEnergy")
+tEmitter% = MtDt("EmittingElement")
+tXray% = MtDt("EmittingXray")
+tMatrix% = MtDt("MatrixElement")
+
+' Search for records for this matrix
+SQLQ$ = "SELECT MatrixKRatio.* FROM MatrixKRatio WHERE MatrixKRatioNumber = " & Format$(nrec&)
+Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
+If MtDs.BOF And MtDs.EOF Then GoTo Penepma12MatrixCheckKratiosNoKRatios
+
+' Load kratio array
+Do Until MtDs.EOF
+i% = MtDs("MatrixKRatioOrder")          ' load order (1 to MAXBINARY%)
+tKratios#(i%) = CDbl(MtDs("MatrixKRatio_ZAF_KRatio"))
+
+' Load sample for elements and compositions
+PENEPMA_Sample(1).takeoff! = tTakeoff!
+PENEPMA_Sample(1).kilovolts! = tKilovolts!
+PENEPMA_Sample(1).TakeoffArray!(1) = tTakeoff!
+PENEPMA_Sample(1).TakeoffArray!(2) = tTakeoff!
+PENEPMA_Sample(1).KilovoltsArray!(1) = tTakeoff!
+PENEPMA_Sample(1).KilovoltsArray!(2) = tTakeoff!
+PENEPMA_Sample(1).LastElm% = 1
+PENEPMA_Sample(1).LastChan% = 2
+PENEPMA_Sample(1).Elsyms$(1) = Symlo$(tEmitter%)
+PENEPMA_Sample(1).Elsyms$(2) = Symlo$(tMatrix%)
+PENEPMA_Sample(1).Xrsyms$(1) = Xraylo$(tXray%)
+PENEPMA_Sample(1).Xrsyms$(2) = Xraylo$(MAXRAY%)
+
+PENEPMA_Sample(1).Datarows% = 1   ' always a single data point
+PENEPMA_Sample(1).GoodDataRows% = 1
+PENEPMA_Sample(1).LineStatus(1) = True      ' force status flag always true (good data point)
+
+PENEPMA_Sample(1).numcat%(1) = AllCat%(tEmitter%)
+PENEPMA_Sample(1).numcat%(2) = AllCat%(tMatrix%)
+PENEPMA_Sample(1).numoxd%(1) = AllOxd%(tEmitter%)
+PENEPMA_Sample(1).numoxd%(2) = AllOxd%(tMatrix%)
+
+' Load other necessary values
+PENEPMA_Sample(1).number% = MAXINTEGER%
+PENEPMA_Sample(1).Set% = 1
+PENEPMA_Sample(1).Type% = 1
+
+' Load compositions
+PENEPMA_Sample(1).ElmPercents!(1) = BinaryRanges!(i%)
+PENEPMA_Sample(1).ElmPercents!(2) = 100# - BinaryRanges!(i%)
+
+Call IOStatusAuto("Checking binary (" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "/" & Format$(PENEPMA_Sample(1).ElmPercents!(2)) & ") " & PENEPMA_Sample(1).Elsyms$(1) & " " & PENEPMA_Sample(1).Xrsyms$(1) & " in " & PENEPMA_Sample(1).Elsyms$(2) & " at TO= " & Format$(tTakeoff!) & ", keV= " & Format$(tKilovolts!))
+DoEvents
+If icancelauto Then
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+End If
+
+' Now calculate expected k-ratios using current CalcZAF method and compare
+Call Penepma12CalculateMatrix(PENEPMA_Analysis, PENEPMA_Sample(), Penepma_TmpSample())
+If ierror Then Exit Sub
+
+' Compare database k-ratios to CalcZAF calculated k-ratios (within 1 +/- MAXDIFF!)
+If PENEPMA_Analysis.StdAssignsZAFCors!(4, 1) <> 0# Then
+temp! = (tKratios#(i%) / 100#) / PENEPMA_Analysis.StdAssignsKfactors!(1)
+If temp! > 1# + maxdiff! Or temp! < 1# - maxdiff! Then
+
+' Output to log window and log file
+If tKilovolts! >= 5 And tKilovolts! <= 30 Then    ' only print problematic matrix corrections if between 5 and 30 keV
+msg$ = "More than " & Format$(CInt(maxdiff! * 100#)) & "% difference (" & MiscAutoFormatD$(tKratios#(i%) / 100#) & " vs. " & MiscAutoFormat$(PENEPMA_Analysis.StdAssignsKfactors!(1)) & ") found for " & PENEPMA_Sample(1).Elsyms$(1) & " " & PENEPMA_Sample(1).Xrsyms$(1) & " in " & PENEPMA_Sample(1).Elsyms$(2) & " at TO= " & Format$(tTakeoff!) & ", keV= " & Format$(tKilovolts!)
+Call IOWriteLog(msg$)
+Call IOWriteError(msg$, "Penepma12MatrixCheckKratios")
+If ierror Then Exit Sub
+End If
+
+End If
+End If
+
+MtDs.MoveNext
+Loop
+MtDs.Close
+
+MtDt.MoveNext
+Loop
+
+MtDt.Close
+MtDb.Close
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+Penepma12MatrixCheckKratiosError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma12MatrixCheckKratios"
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+
+Penepma12MatrixCheckKratiosNoMatrixMDBFile:
+Screen.MousePointer = vbDefault
+msg$ = "File " & MatrixMDBFile$ & " was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixCheckKratios"
+ierror = True
+Exit Sub
+
+Penepma12MatrixCheckKratiosNoMatrixRecords:
+Screen.MousePointer = vbDefault
+msg$ = "No matrix records found in matrix database " & MatrixMDBFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixCheckKratios"
+ierror = True
+Exit Sub
+
+Penepma12MatrixCheckKratiosNoKRatios:
+Screen.MousePointer = vbDefault
+msg$ = "No kratios found for the specified record number " & Format$(nrec&)
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixCheckKratios"
 ierror = True
 Exit Sub
 

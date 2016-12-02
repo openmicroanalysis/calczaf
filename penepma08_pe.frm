@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Begin VB.Form FormPENEPMA08_PE 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Create PENEPMA Material and Input Files"
@@ -1789,86 +1789,31 @@ ProductionIndex% = Index%
 If Index% = 0 Then  ' optimize x-rays
 FormPENEPMA08_PE.LabelMaterialFiles(0).Caption = "Bulk Beam Incident Material"
 FormPENEPMA08_PE.LabelMaterialFiles(1).Caption = vbNullString
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = False
-FormPENEPMA08_PE.UpDownXray(0).Enabled = True
-FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
-FormPENEPMA08_PE.CommandElement(0).Enabled = True
-FormPENEPMA08_PE.UpDownXray(1).Enabled = False
-FormPENEPMA08_PE.CommandAdjust(1).Enabled = False
-FormPENEPMA08_PE.CommandElement(1).Enabled = False
-FormPENEPMA08_PE.TextEABS1(0).Enabled = True
-FormPENEPMA08_PE.TextEABS1(1).Enabled = False
-FormPENEPMA08_PE.TextEABS2(0).Enabled = True
-FormPENEPMA08_PE.TextEABS2(1).Enabled = False
 FormPENEPMA08_PE.TextMaterialFiles(1).Text = vbNullString
 
 ElseIf Index% = 1 Then  ' optimize backscatter
 FormPENEPMA08_PE.LabelMaterialFiles(0).Caption = "Bulk Beam Incident Material"
 FormPENEPMA08_PE.LabelMaterialFiles(1).Caption = vbNullString
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = False
-FormPENEPMA08_PE.UpDownXray(0).Enabled = True
-FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
-FormPENEPMA08_PE.CommandElement(0).Enabled = True
-FormPENEPMA08_PE.UpDownXray(1).Enabled = False
-FormPENEPMA08_PE.CommandAdjust(1).Enabled = False
-FormPENEPMA08_PE.CommandElement(1).Enabled = False
 FormPENEPMA08_PE.TextMaterialFiles(1).Text = vbNullString
-FormPENEPMA08_PE.TextEABS1(0).Enabled = True
-FormPENEPMA08_PE.TextEABS1(1).Enabled = False
-FormPENEPMA08_PE.TextEABS2(0).Enabled = True
-FormPENEPMA08_PE.TextEABS2(1).Enabled = False
 
 ElseIf Index% = 2 Then  ' optimize continuum
 FormPENEPMA08_PE.LabelMaterialFiles(0).Caption = "Bulk Beam Incident Material"
 FormPENEPMA08_PE.LabelMaterialFiles(1).Caption = vbNullString
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = False
-FormPENEPMA08_PE.UpDownXray(0).Enabled = True
-FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
-FormPENEPMA08_PE.CommandElement(0).Enabled = True
-FormPENEPMA08_PE.UpDownXray(1).Enabled = False
-FormPENEPMA08_PE.CommandAdjust(1).Enabled = False
-FormPENEPMA08_PE.CommandElement(1).Enabled = False
 FormPENEPMA08_PE.TextMaterialFiles(1).Text = vbNullString
-FormPENEPMA08_PE.TextEABS1(0).Enabled = True
-FormPENEPMA08_PE.TextEABS1(1).Enabled = False
-FormPENEPMA08_PE.TextEABS2(0).Enabled = True
-FormPENEPMA08_PE.TextEABS2(1).Enabled = False
 
 ElseIf Index% = 3 Then  ' optimize couple or hemisphere
 FormPENEPMA08_PE.LabelMaterialFiles(0).Caption = "Beam Incident Material (X>0)"
 FormPENEPMA08_PE.LabelMaterialFiles(1).Caption = "Adjacent Phase or Matrix"
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = True
-FormPENEPMA08_PE.UpDownXray(0).Enabled = True
-FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
-FormPENEPMA08_PE.CommandElement(0).Enabled = True
-FormPENEPMA08_PE.UpDownXray(1).Enabled = True
-FormPENEPMA08_PE.CommandAdjust(1).Enabled = True
-FormPENEPMA08_PE.CommandElement(1).Enabled = True
-FormPENEPMA08_PE.TextEABS1(0).Enabled = True
-FormPENEPMA08_PE.TextEABS1(1).Enabled = True
-FormPENEPMA08_PE.TextEABS2(0).Enabled = True
-FormPENEPMA08_PE.TextEABS2(1).Enabled = True
 
 ElseIf Index% = 4 Then  ' optimize bilayer (thin film)
 FormPENEPMA08_PE.LabelMaterialFiles(0).Caption = "Thin Film Material"
 FormPENEPMA08_PE.LabelMaterialFiles(1).Caption = "Substrate Material"
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
-FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = True
-FormPENEPMA08_PE.UpDownXray(0).Enabled = True
-FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
-FormPENEPMA08_PE.CommandElement(0).Enabled = True
-FormPENEPMA08_PE.UpDownXray(1).Enabled = True
-FormPENEPMA08_PE.CommandAdjust(1).Enabled = True
-FormPENEPMA08_PE.CommandElement(1).Enabled = True
-FormPENEPMA08_PE.TextEABS1(0).Enabled = True
-FormPENEPMA08_PE.TextEABS1(1).Enabled = True
-FormPENEPMA08_PE.TextEABS2(0).Enabled = True
-FormPENEPMA08_PE.TextEABS2(1).Enabled = True
 End If
+
+' Set production control enables
+Call Penepma08SetOptionProductionEnables(Index%)
+If ierror Then Exit Sub
+
 End Sub
 
 Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)

@@ -531,7 +531,8 @@ Next chan%
 ' Load fresh unknown count data and weight fractions for MAN continuum calculations
 For chan% = 1 To sample(1).LastElm%
 uncts!(chan%) = sample(1).CorData!(linerow%, chan%)
-If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then continuum_absorbtion!(chan%) = analysis.UnkZAFCors!(1, chan%)   ' use characteristic absorption for continuum absorption (MAN)
+If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then continuum_absorbtion!(chan%) = analysis.UnkZAFCors!(1, chan%)   ' use characteristic absorption for continuum absorption correction (MAN)
+'If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then continuum_absorbtion!(chan%) = 1# / analysis.UnkZAFCors!(8, chan%)   ' use generated sample intensity f(chi) for continuum absorption correction(MAN)
 If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then continuum_absorbtion!(chan%) = analysis.UnkBetas!(chan%)  ' use alpha factor correction for continuum absorption (MAN)
 Next chan%
 

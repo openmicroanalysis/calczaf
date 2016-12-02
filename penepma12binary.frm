@@ -12,11 +12,21 @@ Begin VB.Form FormPenepma12Binary
    ScaleWidth      =   7230
    StartUpPosition =   3  'Windows Default
    Begin VB.OptionButton OptionMinimumOvervoltagePercent 
+      Caption         =   "Use 2% Minimum Overvoltage For Binary K-Ratio Fanal Extractions"
+      Height          =   255
+      Index           =   0
+      Left            =   960
+      TabIndex        =   71
+      TabStop         =   0   'False
+      Top             =   8760
+      Width           =   5415
+   End
+   Begin VB.OptionButton OptionMinimumOvervoltagePercent 
       Caption         =   "Use 40% Minimum Overvoltage For Binary K-Ratio Fanal Extractions"
       Height          =   255
       Index           =   3
       Left            =   960
-      TabIndex        =   66
+      TabIndex        =   65
       TabStop         =   0   'False
       Top             =   9480
       Width           =   5415
@@ -26,7 +36,7 @@ Begin VB.Form FormPenepma12Binary
       Height          =   255
       Index           =   2
       Left            =   960
-      TabIndex        =   65
+      TabIndex        =   64
       TabStop         =   0   'False
       Top             =   9240
       Width           =   5415
@@ -36,19 +46,9 @@ Begin VB.Form FormPenepma12Binary
       Height          =   255
       Index           =   1
       Left            =   960
-      TabIndex        =   64
-      TabStop         =   0   'False
-      Top             =   9000
-      Width           =   5415
-   End
-   Begin VB.OptionButton OptionMinimumOvervoltagePercent 
-      Caption         =   "Use 2% Minimum Overvoltage For Binary K-Ratio Fanal Extractions"
-      Height          =   255
-      Index           =   0
-      Left            =   960
       TabIndex        =   63
       TabStop         =   0   'False
-      Top             =   8760
+      Top             =   9000
       Width           =   5415
    End
    Begin VB.CommandButton CommandCalculateKratios 
@@ -315,20 +315,37 @@ Begin VB.Form FormPenepma12Binary
       TabIndex        =   16
       Top             =   4200
       Width           =   4815
-      Begin VB.CommandButton CommandExtractPureElementIntensities 
-         Caption         =   "Extract Pure Element Intensities"
+      Begin VB.CommandButton CommandExtractRandom 
+         Caption         =   "Extract Random K-Ratios Using TXT Share Folder"
+         Height          =   375
+         Left            =   240
+         TabIndex        =   31
+         TabStop         =   0   'False
+         Top             =   3240
+         Width           =   4335
+      End
+      Begin VB.CommandButton CommandCheckPenfluorInputFiles 
+         Caption         =   "Check Penfluor Input Files"
          Height          =   375
          Left            =   240
          TabIndex        =   70
-         ToolTipText     =   "Extract pure element intensities using Fanal (always uses element range mode)"
-         Top             =   2760
+         Top             =   2880
          Width           =   4335
+      End
+      Begin VB.CommandButton CommandExtractPureElementIntensities 
+         Caption         =   "Extract Pure Element Intensities"
+         Height          =   495
+         Left            =   2400
+         TabIndex        =   69
+         ToolTipText     =   "Extract pure element intensities using Fanal (always uses element range mode)"
+         Top             =   2400
+         Width           =   2175
       End
       Begin VB.CommandButton CommandExtract2 
          Caption         =   "Extract Binary K-Ratios From Specified Composition"
          Height          =   495
          Left            =   1920
-         TabIndex        =   69
+         TabIndex        =   68
          TabStop         =   0   'False
          ToolTipText     =   "Extract all k-ratios from PAR files based on the specified formula"
          Top             =   1800
@@ -366,22 +383,13 @@ Begin VB.Form FormPenepma12Binary
       End
       Begin VB.CommandButton CommandOutputPlotData 
          Caption         =   "Output Plot Data"
-         Height          =   375
+         Height          =   495
          Left            =   240
          TabIndex        =   17
          TabStop         =   0   'False
          ToolTipText     =   "Output k-ratio data to plot file for emitting element, matrix and beam energy"
          Top             =   2400
-         Width           =   4335
-      End
-      Begin VB.CommandButton CommandExtractRandom 
-         Caption         =   "Extract Random K-Ratios Using TXT Share Folder"
-         Height          =   375
-         Left            =   240
-         TabIndex        =   31
-         TabStop         =   0   'False
-         Top             =   3240
-         Width           =   4335
+         Width           =   2175
       End
       Begin VB.CommandButton CommandExtract 
          BackColor       =   &H0080FFFF&
@@ -593,7 +601,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Only Overwrite Higher Minimum Energy PAR Files"
          Height          =   255
          Left            =   840
-         TabIndex        =   68
+         TabIndex        =   67
          Top             =   1080
          Value           =   1  'Checked
          Width           =   3855
@@ -720,7 +728,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Only Overwrite Lower Precision PAR Files"
          Height          =   255
          Left            =   840
-         TabIndex        =   67
+         TabIndex        =   66
          Top             =   840
          Value           =   1  'Checked
          Width           =   3615
@@ -814,6 +822,12 @@ If ierror Then Exit Sub
 Call Penepma12BinarySave
 If ierror Then Exit Sub
 Call Penepma12CalculateComposition
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandCheckPenfluorInputFiles_Click()
+If Not DebugMode Then On Error Resume Next
+Call Penepma12CheckPenfluorInputFiles
 If ierror Then Exit Sub
 End Sub
 

@@ -1040,6 +1040,8 @@ Dim tpath As String, tstring As String
 ' Load to module and dialog
 tstring$ = "Browse PENEPMA Batch Project Folder"
 tpath$ = IOBrowseForFolderByPath(True, PENEPMA_Path$, tstring$, FormPENEPMA08Batch)
+If ierror Then Exit Sub
+
 If Trim$(tpath$) <> vbNullString Then PENEPMA_BATCH_FOLDER$ = tpath$
 FormPENEPMA08Batch.TextBatchFolder.Text = PENEPMA_BATCH_FOLDER$
 
@@ -1845,6 +1847,10 @@ DoEvents
 Call Penepma08LoadInputFile(PENEPMA_Path$ & "\" & InputFile$, tForm)
 If ierror Then Exit Sub
 tForm.TextInputFile.Text = InputFile$
+
+' Save the new parameters as default
+Call Penepma08SaveInput(FormPENEPMA08_PE)
+If ierror Then Exit Sub
 
 ' Load parameters to batch form
 Call Penepma08BatchGetInputParameters(i%)
@@ -2692,6 +2698,7 @@ tForm.TextBeamAperture.Enabled = True
 tForm.TextDumpPeriod.Enabled = True
 tForm.TextNumberSimulatedShowers.Enabled = True
 tForm.TextSimulationTimePeriod.Enabled = True
+
 tForm.OptionProduction(0).Enabled = True
 tForm.OptionProduction(1).Enabled = True
 tForm.OptionProduction(2).Enabled = True
@@ -2699,18 +2706,8 @@ tForm.OptionProduction(3).Enabled = True
 tForm.OptionProduction(4).Enabled = True
 tForm.TextMaterialFiles(0).Enabled = True
 tForm.TextMaterialFiles(1).Enabled = True
-tForm.TextEABS1(0).Enabled = True
-tForm.TextEABS1(1).Enabled = True
-tForm.TextEABS2(0).Enabled = True
-tForm.TextEABS2(1).Enabled = True
 tForm.CommandBrowseMaterialFiles(0).Enabled = True
 tForm.CommandBrowseMaterialFiles(1).Enabled = True
-tForm.UpDownXray(0).Enabled = True
-tForm.UpDownXray(1).Enabled = True
-tForm.CommandAdjust(0).Enabled = True
-tForm.CommandAdjust(1).Enabled = True
-tForm.CommandElement(0).Enabled = True
-tForm.CommandElement(1).Enabled = True
 tForm.TextGeometryFile.Enabled = True
 tForm.CommandBrowseGeometry.Enabled = True
 tForm.TextInputFile.Enabled = True
@@ -2725,11 +2722,20 @@ FormPENEPMA08Batch.CommandBrowseBatchFolder.Enabled = True
 tForm.LabelElapsedTime.Caption = vbNullString
 tForm.LabelProgress.Caption = vbNullString
 
-' Force click event to set production option enables
-tForm.OptionProduction(BeamProductionIndex&).Value = False
-DoEvents
-tForm.OptionProduction(BeamProductionIndex&).Value = True
-DoEvents
+'tForm.TextEABS1(0).Enabled = True
+'tForm.TextEABS1(1).Enabled = True
+'tForm.TextEABS2(0).Enabled = True
+'tForm.TextEABS2(1).Enabled = True
+'tForm.UpDownXray(0).Enabled = True
+'tForm.UpDownXray(1).Enabled = True
+'tForm.CommandAdjust(0).Enabled = True
+'tForm.CommandAdjust(1).Enabled = True
+'tForm.CommandElement(0).Enabled = True
+'tForm.CommandElement(1).Enabled = True
+
+' Set production control enables
+Call Penepma08SetOptionProductionEnables(CInt(BeamProductionIndex&))
+If ierror Then Exit Sub
 
 Exit Sub
 
@@ -4504,3 +4510,89 @@ Exit Sub
 
 End Sub
 
+Sub Penepma08SetOptionProductionEnables(Index As Integer)
+' Set the enables for the OptionProduction controls
+
+ierror = False
+On Error GoTo Penepma08SetOptionProductionEnablesError
+
+If Index% = 0 Then  ' optimize x-rays
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = False
+FormPENEPMA08_PE.UpDownXray(0).Enabled = True
+FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
+FormPENEPMA08_PE.CommandElement(0).Enabled = True
+FormPENEPMA08_PE.UpDownXray(1).Enabled = False
+FormPENEPMA08_PE.CommandAdjust(1).Enabled = False
+FormPENEPMA08_PE.CommandElement(1).Enabled = False
+FormPENEPMA08_PE.TextEABS1(0).Enabled = True
+FormPENEPMA08_PE.TextEABS1(1).Enabled = False
+FormPENEPMA08_PE.TextEABS2(0).Enabled = True
+FormPENEPMA08_PE.TextEABS2(1).Enabled = False
+
+ElseIf Index% = 1 Then  ' optimize backscatter
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = False
+FormPENEPMA08_PE.UpDownXray(0).Enabled = True
+FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
+FormPENEPMA08_PE.CommandElement(0).Enabled = True
+FormPENEPMA08_PE.UpDownXray(1).Enabled = False
+FormPENEPMA08_PE.CommandAdjust(1).Enabled = False
+FormPENEPMA08_PE.CommandElement(1).Enabled = False
+FormPENEPMA08_PE.TextEABS1(0).Enabled = True
+FormPENEPMA08_PE.TextEABS1(1).Enabled = False
+FormPENEPMA08_PE.TextEABS2(0).Enabled = True
+FormPENEPMA08_PE.TextEABS2(1).Enabled = False
+
+ElseIf Index% = 2 Then  ' optimize continuum
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = False
+FormPENEPMA08_PE.UpDownXray(0).Enabled = True
+FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
+FormPENEPMA08_PE.CommandElement(0).Enabled = True
+FormPENEPMA08_PE.UpDownXray(1).Enabled = False
+FormPENEPMA08_PE.CommandAdjust(1).Enabled = False
+FormPENEPMA08_PE.CommandElement(1).Enabled = False
+FormPENEPMA08_PE.TextEABS1(0).Enabled = True
+FormPENEPMA08_PE.TextEABS1(1).Enabled = False
+FormPENEPMA08_PE.TextEABS2(0).Enabled = True
+FormPENEPMA08_PE.TextEABS2(1).Enabled = False
+
+ElseIf Index% = 3 Then  ' optimize couple or hemisphere
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = True
+FormPENEPMA08_PE.UpDownXray(0).Enabled = True
+FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
+FormPENEPMA08_PE.CommandElement(0).Enabled = True
+FormPENEPMA08_PE.UpDownXray(1).Enabled = True
+FormPENEPMA08_PE.CommandAdjust(1).Enabled = True
+FormPENEPMA08_PE.CommandElement(1).Enabled = True
+FormPENEPMA08_PE.TextEABS1(0).Enabled = True
+FormPENEPMA08_PE.TextEABS1(1).Enabled = True
+FormPENEPMA08_PE.TextEABS2(0).Enabled = True
+FormPENEPMA08_PE.TextEABS2(1).Enabled = True
+
+ElseIf Index% = 4 Then  ' optimize bilayer (thin film)
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(0).Enabled = True
+FormPENEPMA08_PE.CommandBrowseMaterialFiles(1).Enabled = True
+FormPENEPMA08_PE.UpDownXray(0).Enabled = True
+FormPENEPMA08_PE.CommandAdjust(0).Enabled = True
+FormPENEPMA08_PE.CommandElement(0).Enabled = True
+FormPENEPMA08_PE.UpDownXray(1).Enabled = True
+FormPENEPMA08_PE.CommandAdjust(1).Enabled = True
+FormPENEPMA08_PE.CommandElement(1).Enabled = True
+FormPENEPMA08_PE.TextEABS1(0).Enabled = True
+FormPENEPMA08_PE.TextEABS1(1).Enabled = True
+FormPENEPMA08_PE.TextEABS2(0).Enabled = True
+FormPENEPMA08_PE.TextEABS2(1).Enabled = True
+End If
+
+Exit Sub
+
+' Errors
+Penepma08SetOptionProductionEnablesError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08SetOptionProductionEnables"
+ierror = True
+Exit Sub
+
+End Sub
