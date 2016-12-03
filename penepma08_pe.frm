@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormPENEPMA08_PE 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Create PENEPMA Material and Input Files"
@@ -409,6 +409,60 @@ Begin VB.Form FormPENEPMA08_PE
       TabIndex        =   1
       Top             =   120
       Width           =   7095
+      Begin VB.TextBox TextEnergyRangeMinMaxNumber 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Index           =   2
+         Left            =   6120
+         TabIndex        =   102
+         ToolTipText     =   "Enter the number of energy channels for the Penepma simulation"
+         Top             =   1800
+         Width           =   855
+      End
+      Begin VB.TextBox TextEnergyRangeMinMaxNumber 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Index           =   1
+         Left            =   5280
+         TabIndex        =   101
+         ToolTipText     =   "Enter the maximum energy range for the Penepma simulation"
+         Top             =   1800
+         Width           =   735
+      End
+      Begin VB.TextBox TextEnergyRangeMinMaxNumber 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Index           =   0
+         Left            =   4440
+         TabIndex        =   100
+         ToolTipText     =   "Enter the minimum energy range for the Penepma simulation"
+         Top             =   1800
+         Width           =   735
+      End
       Begin MSComCtl2.UpDown UpDownXray 
          Height          =   375
          Index           =   0
@@ -593,7 +647,7 @@ Begin VB.Form FormPENEPMA08_PE
          TabIndex        =   61
          ToolTipText     =   "Enter the time interval for the dump files to be updated (for live display)"
          Top             =   1800
-         Width           =   3855
+         Width           =   1095
       End
       Begin VB.CommandButton CommandElement 
          BeginProperty Font 
@@ -1144,7 +1198,7 @@ Begin VB.Form FormPENEPMA08_PE
          Y2              =   2520
       End
       Begin VB.Label Label14 
-         Caption         =   "Dump Time Period (sec)"
+         Caption         =   "Dump Time (sec), Range (min, max, num)"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -1158,7 +1212,7 @@ Begin VB.Form FormPENEPMA08_PE
          Left            =   120
          TabIndex        =   35
          Top             =   1800
-         Width           =   2295
+         Width           =   3015
       End
       Begin VB.Label Label11 
          Caption         =   "Number Showers, Simulation Time"
@@ -1832,6 +1886,11 @@ Else
    FormPENEPMA08_PE.LabelXPos.Caption = vbNullString
    FormPENEPMA08_PE.LabelYPos.Caption = vbNullString
 End If
+End Sub
+
+Private Sub TextEnergyRangeMinMaxNumber_GotFocus(Index As Integer)
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
 Private Sub UpDownXray_DownClick(Index As Integer)

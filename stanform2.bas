@@ -494,7 +494,7 @@ Call IOWriteLog(msg$)
 
 msg$ = "MAC : "
 For i% = ii% To jj%
-msg$ = msg$ & Format$(Format$(characteristicmacs!(i%), e81$), a80$)
+msg$ = msg$ & Format$(Format$(characteristicmacs!(i%), e71$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
@@ -535,7 +535,7 @@ Call IOWriteLog(msg$)
 
 msg$ = "MAC : "
 For i% = ii% To jj%
-msg$ = msg$ & Format$(Format$(continuummacs!(i%), e81$), a80$)
+msg$ = msg$ & Format$(Format$(continuummacs!(i%), e71$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 

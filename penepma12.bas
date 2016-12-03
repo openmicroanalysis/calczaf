@@ -367,7 +367,7 @@ FormPENEPMA12.TextBeamEnergy.Text = MaterialMeasuredEnergy#
 FormPENEPMA12.TextPenepmaMinimumElectronEnergy.Text = Format$(PenepmaMinimumElectronEnergy!)
 
 FormPENEPMA12.TextSimulationTime.Text = MaterialSimulationTime#
-FormPENEPMA12.TextSimulationShowers.Text = Format$(MaterialSimulationShowers#, e81$)
+FormPENEPMA12.TextSimulationShowers.Text = Format$(MaterialSimulationShowers#, e71$)
 
 ' Load parameter file names (filenames only, no path)
 FormPENEPMA12.TextParameterFileA.Text = ParameterFileA$
@@ -1856,7 +1856,7 @@ Sub Penepma12CreatePenfluorInput(n As Integer)
 '                IPSF=0, do not create a phase-space file.
 '                IPSF=1, creates a phase-space file.
 'PDANGL 0 90  0 360 0                   [Angular window, in deg, IPSF]
-'PDENER 0.0 0.0 100                   [Energy window, no. of channels]
+'PDENER 0   20e3 1000                 [Energy window, no. of channels]
 '       .
 'NSIMSH 2.0e9                    [Desired number of simulated showers]
 'TIME   3600                        [Allotted simulation time, in sec]
@@ -1972,7 +1972,7 @@ If ierror Then Exit Sub
 If InStr(astring$, "PDENER") > 0 Then Call Penepma12CreateInput2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
-cstring$ = Format$(MaterialSimulationShowers#, e81$)
+cstring$ = Format$(MaterialSimulationShowers#, e71$)
 If InStr(astring$, "NSIMSH") > 0 Then Call Penepma12CreateInput2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 

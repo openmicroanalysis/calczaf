@@ -1605,6 +1605,103 @@ Exit Function
 
 End Function
 
+Function MathGetInterpolatedYValue2(xpos As Double, nPoints As Long, xdata() As Double, ydata() As Double) As Double
+' Determines the y data value based on interpolating between nearest x data values (double precision version)
+
+ierror = False
+On Error GoTo MathGetInterpolatedYValue2Error
+
+Dim i As Long, defminpnt As Long, defmaxpnt As Long
+Dim xmindif As Double, xmaxdif As Double
+Dim xminpnt As Long, xmaxpnt As Long
+
+Dim xmin As Double, xmax As Double
+Dim ymin As Double, ymax As Double
+
+Dim temp As Double
+Dim deltaposition As Double, deltacounts As Double, shiftposition As Double
+
+' Find closest point less and greater then xpos
+xmindif# = 1E+38
+xmaxdif# = 1E+38
+For i& = 1 To nPoints&
+If ydata#(i&) <> CDbl(NotAnalyzedValue!) Then
+If defminpnt& = 0 Then defminpnt& = i&
+defmaxpnt& = i&
+End If
+
+If xpos# <= xdata#(i&) And Abs(xpos# - xdata#(i&)) <= xmindif# And ydata#(i&) <> CDbl(NotAnalyzedValue!) Then     ' modified 07/15/2016 for cases where the values are equal
+xminpnt& = i&
+xmindif# = Abs(xpos# - xdata#(i&))
+End If
+
+If xpos# > xdata#(i&) And Abs(xpos# - xdata#(i&)) < xmaxdif# And ydata#(i&) <> CDbl(NotAnalyzedValue!) Then       ' do not change this, it is correct
+xmaxpnt& = i&
+xmaxdif# = Abs(xpos# - xdata#(i&))
+End If
+
+Next i&
+
+' Check
+If xminpnt& = 0 And xmaxpnt& = 0 Then GoTo MathGetInterpolatedYValue2NoPoints
+
+If xdata#(1) < xdata#(nPoints&) Then
+If xminpnt& = 0 Then xminpnt& = defminpnt&
+If xmaxpnt& = 0 Then xmaxpnt& = defmaxpnt&
+
+Else
+If xminpnt& = 0 Then xminpnt& = defmaxpnt&
+If xmaxpnt& = 0 Then xmaxpnt& = defminpnt&
+End If
+
+' Debug
+If DebugMode Then
+Call IOWriteLog(vbCrLf & "MathGetInterpolatedYValue: XminPnt=" & Format$(xminpnt&) & ", XmaxPnt=" & Format$(xmaxpnt&))
+Call IOWriteLog("MathGetInterpolatedYValue: Xpos=" & Format$(xpos#) & ", XDataMin=" & Format$(xdata#(xminpnt&)) & ", XDataMax=" & Format$(xdata#(xmaxpnt&)))
+End If
+
+' Interpolate between points
+xmin# = xdata#(xminpnt&)
+xmax# = xdata#(xmaxpnt&)
+ymin# = ydata#(xminpnt&)
+ymax# = ydata#(xmaxpnt&)
+
+' Calculate interpolated Y value
+deltaposition# = xmax# - xmin#
+If deltaposition# = 0# Then
+temp# = (ymin# + ymax#) / 2#
+
+' Do interpolation
+Else
+deltacounts# = ymax# - ymin#
+shiftposition# = xpos# - xmin#
+temp# = ymin# + deltacounts# * shiftposition# / deltaposition#
+End If
+
+' Return calculated y
+MathGetInterpolatedYValue2# = temp#
+
+' Debug
+If DebugMode Then
+Call IOWriteLog("MathGetInterpolatedYValue2: IntY=" & Format$(temp#) & ", YDataMin=" & Format$(ydata#(xminpnt&)) & ", YDataMax=" & Format$(ydata#(xmaxpnt&)))
+End If
+
+Exit Function
+
+' Errors
+MathGetInterpolatedYValue2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "MathGetInterpolatedYValue2"
+ierror = True
+Exit Function
+
+MathGetInterpolatedYValue2NoPoints:
+msg$ = "No adjacent data points were found to interpolate between"
+MsgBox msg$, vbOKOnly + vbExclamation, "MathGetInterpolatedYValue2"
+ierror = True
+Exit Function
+
+End Function
+
 Function MathCalculateSinThickness(thickness As Single, takeoff As Single) As Single
 ' Function to calculate sin thickness based on takeoff angle
 

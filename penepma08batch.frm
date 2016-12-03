@@ -2,13 +2,13 @@ VERSION 5.00
 Begin VB.Form FormPENEPMA08Batch 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "PENEPMA- Batch Mode"
-   ClientHeight    =   12465
+   ClientHeight    =   13140
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   7455
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   12465
+   ScaleHeight     =   13140
    ScaleWidth      =   7455
    StartUpPosition =   3  'Windows Default
    Begin VB.Frame Frame4 
@@ -26,7 +26,7 @@ Begin VB.Form FormPENEPMA08Batch
       Height          =   1215
       Left            =   120
       TabIndex        =   33
-      Top             =   11160
+      Top             =   11880
       Width           =   7215
       Begin VB.CommandButton CommandCreatePure 
          Caption         =   "Create Bulk Pure Element Input Files For Penepma"
@@ -116,7 +116,7 @@ Begin VB.Form FormPENEPMA08Batch
       Height          =   2175
       Left            =   120
       TabIndex        =   24
-      Top             =   7320
+      Top             =   7920
       Width           =   7215
       Begin VB.TextBox TextBatchFolder 
          Enabled         =   0   'False
@@ -239,7 +239,7 @@ Begin VB.Form FormPENEPMA08Batch
       Height          =   1215
       Left            =   120
       TabIndex        =   17
-      Top             =   9720
+      Top             =   10440
       Width           =   7215
       Begin VB.CommandButton CommandCreateBinaries 
          Caption         =   "Create Binary Composition Input Files For Penepma"
@@ -319,11 +319,41 @@ Begin VB.Form FormPENEPMA08Batch
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FF0000&
-      Height          =   1815
+      Height          =   2175
       Left            =   120
       TabIndex        =   4
       Top             =   5160
       Width           =   7215
+      Begin VB.TextBox TextEnergyRangeMinMaxNumber 
+         BackColor       =   &H00E0E0E0&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   2
+         Left            =   5880
+         TabIndex        =   44
+         Top             =   1800
+         Width           =   1215
+      End
+      Begin VB.TextBox TextEnergyRangeMinMaxNumber 
+         BackColor       =   &H00E0E0E0&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   1
+         Left            =   4440
+         TabIndex        =   43
+         Top             =   1800
+         Width           =   1215
+      End
+      Begin VB.TextBox TextEnergyRangeMinMaxNumber 
+         BackColor       =   &H00E0E0E0&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   0
+         Left            =   3120
+         TabIndex        =   42
+         Top             =   1800
+         Width           =   1215
+      End
       Begin VB.TextBox TextEABS1 
          BackColor       =   &H00E0E0E0&
          Enabled         =   0   'False
@@ -409,6 +439,14 @@ Begin VB.Form FormPENEPMA08Batch
          ToolTipText     =   "Enter title for this input file (up to 120 characters)"
          Top             =   360
          Width           =   5295
+      End
+      Begin VB.Label Label14 
+         Caption         =   "Energy Range (min, max, num)"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   45
+         Top             =   1800
+         Width           =   2655
       End
       Begin VB.Label Label1 
          Caption         =   "Electron/Photon Absorption (eV)"

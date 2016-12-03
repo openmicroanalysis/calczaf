@@ -688,7 +688,7 @@ Call IOWriteLog(msg$)
 If DisplayZAFCalculationFlag Then
 msg$ = "MACS: "
 For i% = ii% To jj%
-msg$ = msg$ & Format$(Format$(analysis.StdMACs!(stdrow%, i%), e81$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.StdMACs!(stdrow%, i%), e71$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 End If

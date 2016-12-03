@@ -9,6 +9,9 @@ Const MAXTRIES% = 10
 
 Const COL7% = 7
 
+'The maximum number of channels can be changed in Penepma.f where (NEDCM) can be changed at line 464:
+'PARAMETER (NEDM=25,NEDCM=1000)     ' changed to 20000 12-02-2016
+
 ' Global
 Global Const MAXPRODUCTION% = 4
 Global GraphDisplayOption As Integer     ' 0 = total spectrum, 1 = characteristic spectrum, 2  = backscatter spectrum
@@ -28,6 +31,9 @@ Dim BeamDirection(1 To 2) As Double, BeamAperture As Double
 Dim BeamDumpPeriod As Double
 
 Dim BeamNumberSimulatedShowers As Double, BeamSimulationTimePeriod As Double
+
+Dim BeamMinimumEnergyRange As Double, BeamMaximumEnergyRange As Double
+Dim BeamNumberOfEnergyChannels As Long
 
 Dim BeamProductionIndex As Long
 Dim BeamProductionFilename(0 To MAXPRODUCTION%) As String
@@ -191,6 +197,33 @@ ierror = True
 Exit Sub
 Else
 BeamDumpPeriod# = Val(tForm.TextDumpPeriod.Text)
+End If
+
+If Val(tForm.TextEnergyRangeMinMaxNumber(0).Text) < 0 Or Val(tForm.TextEnergyRangeMinMaxNumber(0).Text) > 1000 Then
+msg$ = "Minimum Energy Range is out of range (must be between 0 and 1000)"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08SaveInput"
+ierror = True
+Exit Sub
+Else
+BeamMinimumEnergyRange# = Val(tForm.TextEnergyRangeMinMaxNumber(0).Text)
+End If
+
+If Val(tForm.TextEnergyRangeMinMaxNumber(1).Text) < 10000 Or Val(tForm.TextEnergyRangeMinMaxNumber(1).Text) > 100000 Then
+msg$ = "Maximum Energy Range is out of range (must be between 10,000 and 100,000)"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08SaveInput"
+ierror = True
+Exit Sub
+Else
+BeamMaximumEnergyRange# = Val(tForm.TextEnergyRangeMinMaxNumber(1).Text)
+End If
+
+If Val(tForm.TextEnergyRangeMinMaxNumber(2).Text) < 1000 Or Val(tForm.TextEnergyRangeMinMaxNumber(2).Text) > 100000 Then
+msg$ = "Number Of Energy Channels is out of range (must be between 1000 and 100,000)"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08SaveInput"
+ierror = True
+Exit Sub
+Else
+BeamNumberOfEnergyChannels& = Val(tForm.TextEnergyRangeMinMaxNumber(2).Text)
 End If
 
 ' Check other parameters
@@ -583,12 +616,18 @@ Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 End If
 
+' Load energy range parameters
+cstring$ = Format$(BeamMinimumEnergyRange#, f41$) & " " & Format$(BeamMaximumEnergyRange#, e61$) & " "
+cstring$ = cstring$ & Format$(BeamNumberOfEnergyChannels&, "0")
+If InStr(astring$, "PDENER") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+If ierror Then Exit Sub
+
 ' Load geometry file
 cstring$ = MiscGetFileNameOnly$(GeometryFile$)
 If InStr(astring$, "GEOMFN") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
-cstring$ = Format$(BeamNumberSimulatedShowers#, e81$)
+cstring$ = Format$(BeamNumberSimulatedShowers#, e71$)
 If InStr(astring$, "NSIMSH") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
@@ -1138,11 +1177,11 @@ FormPENEPMA08Batch.ComboElm.AddItem Symup$(i% + 1)
 Next i%
 FormPENEPMA08Batch.ComboElm.ListIndex = ExtractElement% - 1
 
-FormPENEPMA08Batch.ComboXray.Clear
+FormPENEPMA08Batch.ComboXRay.Clear
 For i% = 0 To MAXRAY% - 2
-FormPENEPMA08Batch.ComboXray.AddItem Xraylo$(i% + 1)
+FormPENEPMA08Batch.ComboXRay.AddItem Xraylo$(i% + 1)
 Next i%
-FormPENEPMA08Batch.ComboXray.ListIndex = ExtractXray% - 1
+FormPENEPMA08Batch.ComboXRay.ListIndex = ExtractXray% - 1
 
 ' Select last file
 If FormPENEPMA08Batch.ListInputFiles.ListCount > 0 Then
@@ -1218,6 +1257,11 @@ End If
 If InStr(astring$, "MSIMPA") > 0 Then Call Penepma08LoadProduction4(astring$, bstring$, Int(1), FormPENEPMA08Batch)
 If ierror Then
 MsgBox "Problem reading file " & PENEPMA_Path$ & "\" & InputFiles$(Index% + 1), vbOKOnly + vbExclamation, "Penepma08BatchGetInputParameters [Penepma08LoadProduction4]"
+Exit Sub
+End If
+If InStr(astring$, "PDENER") > 0 Then Call Penepma08LoadProduction3(astring$, bstring$, FormPENEPMA08Batch)
+If ierror Then
+MsgBox "Problem reading file " & PENEPMA_Path$ & "\" & InputFiles$(Index% + 1), vbOKOnly + vbExclamation, "Penepma08BatchGetInputParameters [Penepma08LoadProduction3]"
 Exit Sub
 End If
 
@@ -1313,6 +1357,11 @@ End If
 If InStr(astring$, "TIME") > 0 Then Call Penepma08LoadProduction2(astring$, bstring$, tForm.TextSimulationTimePeriod)
 If ierror Then
 MsgBox "Problem reading file " & BeamProductionFilename$(Index%), vbOKOnly + vbExclamation, "Penepma08LoadProduction [Penepma08LoadProduction2]"
+Exit Sub
+End If
+If InStr(astring$, "PDENER") > 0 Then Call Penepma08LoadProduction3(astring$, bstring$, tForm)
+If ierror Then
+MsgBox "Problem reading file " & BeamProductionFilename$(Index%), vbOKOnly + vbExclamation, "Penepma08LoadProduction [Penepma08LoadProduction3]"
 Exit Sub
 End If
 
@@ -1437,6 +1486,7 @@ If InStr(astring$, "GEOMFN") > 0 Then
 tText.Text = Trim$(bstring$)
 ElseIf InStr(astring$, "DUMPP") > 0 Then
 tText.Text = Trim$(bstring$)
+
 Else
 tText.Text = Trim$(bstring$)
 End If
@@ -1501,6 +1551,14 @@ Call MiscParseStringToString(bstring$, cstring$)
 tForm.TextBeamDirection(0).Text = Trim$(cstring$)
 Call MiscParseStringToString(bstring$, cstring$)
 tForm.TextBeamDirection(1).Text = Trim$(cstring$)
+
+ElseIf InStr(astring$, "PDENER") > 0 Then
+Call MiscParseStringToString(bstring$, cstring$)            ' energy range (min)
+tForm.TextEnergyRangeMinMaxNumber(0).Text = Trim$(cstring$)
+Call MiscParseStringToString(bstring$, cstring$)            ' energy range (max)
+tForm.TextEnergyRangeMinMaxNumber(1).Text = Trim$(cstring$)
+Call MiscParseStringToString(bstring$, cstring$)            ' number of energy channels
+tForm.TextEnergyRangeMinMaxNumber(2).Text = Trim$(cstring$)
 End If
 
 Exit Sub
@@ -1761,6 +1819,9 @@ tForm.TextBeamDirection(0).Enabled = False
 tForm.TextBeamDirection(1).Enabled = False
 tForm.TextBeamAperture.Enabled = False
 tForm.TextDumpPeriod.Enabled = False
+tForm.TextEnergyRangeMinMaxNumber(0).Enabled = False
+tForm.TextEnergyRangeMinMaxNumber(1).Enabled = False
+tForm.TextEnergyRangeMinMaxNumber(2).Enabled = False
 tForm.TextNumberSimulatedShowers.Enabled = False
 tForm.TextSimulationTimePeriod.Enabled = False
 tForm.OptionProduction(0).Enabled = False
@@ -2696,6 +2757,9 @@ tForm.TextBeamDirection(0).Enabled = True
 tForm.TextBeamDirection(1).Enabled = True
 tForm.TextBeamAperture.Enabled = True
 tForm.TextDumpPeriod.Enabled = True
+tForm.TextEnergyRangeMinMaxNumber(0).Enabled = True
+tForm.TextEnergyRangeMinMaxNumber(1).Enabled = True
+tForm.TextEnergyRangeMinMaxNumber(2).Enabled = True
 tForm.TextNumberSimulatedShowers.Enabled = True
 tForm.TextSimulationTimePeriod.Enabled = True
 
@@ -2858,9 +2922,9 @@ icancelauto = False
 msg$ = "Before creating the binary composition input files, be sure to check that not only is the correct batch folder for saving results properly specified, but that all Penepma input parameters are properly specified, for example, title of run (e.g., Bulk Fe-Ni, 15 keV), beam energy, number of showers, simulation time, etc..." & vbCrLf & vbCrLf
 msg$ = msg$ & Space(8) & "Penepma Batch Simulation Title:  " & BeamTitle$ & vbCrLf
 msg$ = msg$ & Space(8) & "Penepma Batch Save To Folder:    " & PENEPMA_BATCH_FOLDER$ & vbCrLf
-msg$ = msg$ & Space(8) & "Penepma Beam Energy (eV) :       " & Format$(BeamEnergy#, e81$) & " (" & Format$(BeamEnergy# / EVPERKEV#) & " keV)" & vbCrLf
-msg$ = msg$ & Space(8) & "Penepma Number of Showers:       " & Format$(BeamNumberSimulatedShowers#, e81$) & vbCrLf
-msg$ = msg$ & Space(8) & "Penepma Simulation Time (sec):   " & Format$(BeamSimulationTimePeriod#, e81$) & " (" & Format$(BeamSimulationTimePeriod# / SECPERHOUR#, f82$) & " hours per binary or " & Format$((MAXBINARY% + 2) * BeamSimulationTimePeriod# / SECPERDAY#, f82$) & " days for all " & Format$(MAXBINARY%) & " binaries plus two end-members)" & vbCrLf & vbCrLf
+msg$ = msg$ & Space(8) & "Penepma Beam Energy (eV) :       " & Format$(BeamEnergy#, e71$) & " (" & Format$(BeamEnergy# / EVPERKEV#) & " keV)" & vbCrLf
+msg$ = msg$ & Space(8) & "Penepma Number of Showers:       " & Format$(BeamNumberSimulatedShowers#, e71$) & vbCrLf
+msg$ = msg$ & Space(8) & "Penepma Simulation Time (sec):   " & Format$(BeamSimulationTimePeriod#, e71$) & " (" & Format$(BeamSimulationTimePeriod# / SECPERHOUR#, f82$) & " hours per binary or " & Format$((MAXBINARY% + 2) * BeamSimulationTimePeriod# / SECPERDAY#, f82$) & " days for all " & Format$(MAXBINARY%) & " binaries plus two end-members)" & vbCrLf & vbCrLf
 msg$ = msg$ & "Is everything ready to create the binary composition Penepma input files?"
 response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton1, "Penepma08BatchBinaryCreate")
 If response% = vbNo Then
@@ -3727,14 +3791,22 @@ If ierror Then
 MsgBox "Problem reading file " & tfilename$, vbOKOnly + vbExclamation, "Penepma08LoadInputFile [Penepma08LoadProduction2]"
 Exit Sub
 End If
+
 If InStr(astring$, "NSIMSH") > 0 Then Call Penepma08LoadProduction2(astring$, bstring$, tForm.TextNumberSimulatedShowers)
 If ierror Then
 MsgBox "Problem reading file " & tfilename$, vbOKOnly + vbExclamation, "Penepma08LoadInputFile [Penepma08LoadProduction2]"
 Exit Sub
 End If
+
 If InStr(astring$, "TIME") > 0 Then Call Penepma08LoadProduction2(astring$, bstring$, tForm.TextSimulationTimePeriod)
 If ierror Then
 MsgBox "Problem reading file " & tfilename$, vbOKOnly + vbExclamation, "Penepma08LoadInputFile [Penepma08LoadProduction2]"
+Exit Sub
+End If
+
+If InStr(astring$, "PDENER") > 0 Then Call Penepma08LoadProduction3(astring$, bstring$, tForm)
+If ierror Then
+MsgBox "Problem reading file " & tfilename$, vbOKOnly + vbExclamation, "Penepma08LoadInputFile [Penepma08LoadProduction3]"
 Exit Sub
 End If
 
@@ -3968,7 +4040,7 @@ ip% = IPOS1(MAXELM%, esym$, Symlo$())
 If ip% = 0 Then GoTo Penepma08BatchExtractKratiosBadElement
 ExtractElement% = ip%
 
-xsym$ = FormPENEPMA08Batch.ComboXray.Text
+xsym$ = FormPENEPMA08Batch.ComboXRay.Text
 ip% = IPOS1(MAXRAY% - 1, xsym$, Xraylo$())
 If ip% = 0 Then GoTo Penepma08BatchExtractKratiosBadXray
 ExtractXray% = ip%
@@ -4387,6 +4459,10 @@ tForm.TextBeamDirection(0).Text = Format$(BeamDirection#(1))
 tForm.TextBeamDirection(1).Text = Format$(BeamDirection#(2))
 tForm.TextBeamAperture.Text = Format$(BeamAperture#)
 tForm.TextDumpPeriod.Text = Format$(BeamDumpPeriod#)
+
+tForm.TextEnergyRangeMinMaxNumber(0).Text = Format$(BeamMinimumEnergyRange#)
+tForm.TextEnergyRangeMinMaxNumber(1).Text = Format$(BeamMaximumEnergyRange#)
+tForm.TextEnergyRangeMinMaxNumber(2).Text = Format$(BeamNumberOfEnergyChannels)
 
 tForm.TextNumberSimulatedShowers.Text = Format$(BeamNumberSimulatedShowers#, "Scientific")
 tForm.TextSimulationTimePeriod.Text = Format$(BeamSimulationTimePeriod#, "Scientific")

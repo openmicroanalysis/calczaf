@@ -13,9 +13,8 @@ Option Explicit
 
 Const COL7% = 7
 
-'The maximum number of channels can be changed here and in Penepma.f where (NEDCM) can be changed at line 464:
-'PARAMETER (NEDM=25,NEDCM=1000)
-Const NUMENERGYCHANNELS& = 1000
+'The maximum number of channels can be changed in Penepma.f where (NEDCM) can be changed at line 464:
+'PARAMETER (NEDM=25,NEDCM=1000)     ' changed to 20000 12-02-2016
 
 Global Const PENEPMA_MINPERCENT! = 0.0001
 
@@ -231,9 +230,16 @@ On Error GoTo Penepma08CreatePenepmaFileError
 
 Dim astring As String, bstring As String, cstring As String, dstring As String
 Dim tfilename As String, tfilename2 As String
-Dim maxrange As Single
 
 Const tSimulatedShowers# = 2000000000#
+
+Dim tBeamMinimumEnergyRange As Double
+Dim tBeamMaximumEnergyRange As Double
+Dim tBeamNumberOfEnergyChannels As Long
+
+tBeamMinimumEnergyRange# = 0#
+tBeamMaximumEnergyRange# = 20000#
+tBeamNumberOfEnergyChannels& = 1000
 
 ' Loop through sample production file and copy to new file with modified parameters
 tfilename$ = PENEPMA_Root$ & "\Cu_cha.in"
@@ -299,10 +305,9 @@ End If
 
 ' Spectrum energy range and channels
 If InStr(astring$, "PDENER") > 0 Then
-maxrange! = 20# * EVPERKEV#
-If sample(1).kilovolts! * EVPERKEV# > maxrange! Then maxrange! = 30# * EVPERKEV#
-cstring$ = Format$(0#, "0.0") & " " & Format$(maxrange!, "0.0") & " "
-cstring$ = cstring$ & Format$(NUMENERGYCHANNELS&, "0")
+If sample(1).kilovolts! * EVPERKEV# > tBeamMaximumEnergyRange# Then tBeamMaximumEnergyRange# = 30# * EVPERKEV#
+cstring$ = Format$(tBeamMinimumEnergyRange#, "0.0") & " " & Format$(tBeamMaximumEnergyRange#, "0.0") & " "
+cstring$ = cstring$ & Format$(tBeamNumberOfEnergyChannels&, "0")
 Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 End If
 
@@ -312,7 +317,7 @@ If InStr(astring$, "DUMPP") > 0 Then Call Penepma08CreateInputFile2(astring$, bs
 If ierror Then Exit Sub
 
 ' Number of simulated showers (make arbitrarily large number)
-cstring$ = Format$(tSimulatedShowers#, e81$)
+cstring$ = Format$(tSimulatedShowers#, e71$)
 If InStr(astring$, "NSIMSH") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
@@ -653,68 +658,6 @@ Exit Sub
 
 End Sub
 
-Sub Penepma08PenepmaSpectrumWrite(tfilename As String, nPoints As Long, xdata() As Double, ydata() As Double, zdata() As Double)
-' Save spectrum data to passed Penepma spectrum file (for synthetic wavescan data in demo mode)
-' Default header shown here:
-' #  Results from PENEPMA. Output from photon detector #  1
-' #
-' #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01
-' #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02
-' #  Energy window = ( 0.00000E+00, 2.00000E+04) eV, no. of channels = 1000
-' #  Channel width = 2.000000E+01 eV
-' #
-' #  Whole spectrum. Characteristic peaks and background.
-' #  1st column: photon energy (eV).
-' #  2nd column: probability density (1/(eV*sr*electron)).
-' #  3rd column: statistical uncertainty (3 sigma).
-' #
-'   1.000000E+01  1.000000E-35  1.000000E-35
-'   3.000000E+01  1.000000E-35  1.000000E-35
-'   5.000001E+01  1.000000E-35  1.000000E-35
-'   7.000001E+01  1.000000E-35  1.000000E-35
-'   9.000001E+01  1.000000E-35  1.000000E-35
-
-ierror = False
-On Error GoTo Penepma08PenepmaSpectrumWriteError
-
-Dim tfilenumber As Integer
-Dim n As Long
-
-tfilenumber% = FreeFile()
-Open tfilename$ For Output As #tfilenumber%
-
-' Write header information
-Print #tfilenumber%, " #  Results from PENEPMA. Output from photon detector #  1"
-Print #tfilenumber%, " #"
-Print #tfilenumber%, " #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01"
-Print #tfilenumber%, " #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02"
-Print #tfilenumber%, " #  Energy window = ( 0.00000E+00, 2.00000E+04) eV, no. of channels = 1000"
-Print #tfilenumber%, " #  Channel width = 2.000000E+01 eV"
-Print #tfilenumber%, " #"
-Print #tfilenumber%, " #  Whole spectrum. Characteristic peaks and background."
-Print #tfilenumber%, " #  1st column: photon energy (eV)."
-Print #tfilenumber%, " #  2nd column: probability density (1/(eV*sr*electron))."
-Print #tfilenumber%, " #  3rd column: statistical uncertainty (3 sigma)."
-Print #tfilenumber%, " #"
-
-' Save array to disk (nPoints&, xdata#(), ydata#(), zdata#())
-For n& = 1 To nPoints&
-Print #tfilenumber%, " ", Format$(Format$(xdata#(n&), e104$), a14$), Format$(Format$(ydata#(n&), e104$), a14$), Format$(Format$(zdata#(n&), e104$), a14$)
-Next n&
-
-Close #tfilenumber%
-
-Exit Sub
-
-' Errors
-Penepma08PenepmaSpectrumWriteError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma08PenepmaSpectrumWrite"
-Close #tfilenumber%
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub Penepma08PenepmaSpectrumConvolve(tfilename As String, eVPerChannel As Single)
 ' Run the Convolg program to convolve the passed Penepma spectrum file
 
@@ -785,3 +728,66 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub Penepma08PenepmaSpectrumWrite(tfilename As String, chan As Integer, npts() As Long, xdata() As Double, ydata() As Double, zdata() As Double)
+' Save spectrum data to passed Penepma spectrum file (for synthetic wavescan data in demo mode)
+' Default header shown here:
+' #  Results from PENEPMA. Output from photon detector #  1
+' #
+' #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01
+' #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02
+' #  Energy window = ( 0.00000E+00, 2.00000E+04) eV, no. of channels = 1000
+' #  Channel width = 2.000000E+01 eV
+' #
+' #  Whole spectrum. Characteristic peaks and background.
+' #  1st column: photon energy (eV).
+' #  2nd column: probability density (1/(eV*sr*electron)).
+' #  3rd column: statistical uncertainty (3 sigma).
+' #
+'   1.000000E+01  1.000000E-35  1.000000E-35
+'   3.000000E+01  1.000000E-35  1.000000E-35
+'   5.000001E+01  1.000000E-35  1.000000E-35
+'   7.000001E+01  1.000000E-35  1.000000E-35
+'   9.000001E+01  1.000000E-35  1.000000E-35
+
+ierror = False
+On Error GoTo Penepma08PenepmaSpectrumWriteError
+
+Dim tfilenumber As Integer
+Dim n As Long
+
+tfilenumber% = FreeFile()
+Open tfilename$ For Output As #tfilenumber%
+
+' Write header information
+Print #tfilenumber%, " #  Results from PENEPMA. Output from photon detector #  1"
+Print #tfilenumber%, " #"
+Print #tfilenumber%, " #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01"
+Print #tfilenumber%, " #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02"
+Print #tfilenumber%, " #  Energy window = ( 0.00000E+00, 2.00000E+04) eV, no. of channels = 1000"
+Print #tfilenumber%, " #  Channel width = 2.000000E+01 eV"
+Print #tfilenumber%, " #"
+Print #tfilenumber%, " #  Whole spectrum. Characteristic peaks and background."
+Print #tfilenumber%, " #  1st column: photon energy (eV)."
+Print #tfilenumber%, " #  2nd column: probability density (1/(eV*sr*electron))."
+Print #tfilenumber%, " #  3rd column: statistical uncertainty (3 sigma)."
+Print #tfilenumber%, " #"
+
+' Save array to disk (nPoints&, xdata#(), ydata#(), zdata#())
+For n& = 1 To npts&(chan%)
+Print #tfilenumber%, " ", Format$(Format$(xdata#(chan%, n&), e104$), a14$), Format$(Format$(ydata#(chan%, n&), e104$), a14$), Format$(Format$(zdata#(chan%, n&), e104$), a14$)
+Next n&
+
+Close #tfilenumber%
+
+Exit Sub
+
+' Errors
+Penepma08PenepmaSpectrumWriteError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08PenepmaSpectrumWrite"
+Close #tfilenumber%
+ierror = True
+Exit Sub
+
+End Sub
+

@@ -745,9 +745,12 @@ CalcZAFSampleCount% = CalcZAFSampleCount% + 1
 ' Read first line and parse
 CalcZAFLineCount& = CalcZAFLineCount& + 1
 Line Input #ImportDataFileNumber%, astring$
-If Left$(astring$, 1) <> "0" And Left$(astring$, 1) <> "1" And Left$(astring$, 1) <> "2" And Left$(astring$, 1) <> "3" Then GoTo CalcZAFImportNextWrongFile
 
-' Parse mode
+' Check for wrong format in file (wrong .dat file!)
+If Left$(astring$, 1) <> "0" And Left$(astring$, 1) <> "1" And Left$(astring$, 1) <> "2" And Left$(astring$, 1) <> "3" Then GoTo CalcZAFImportNextWrongFile
+If InStr(astring$, ",") = 0 Then GoTo CalcZAFImportNextWrongFile
+
+' Parse mode using comma delimiter
 Call MiscParseStringToStringA(astring$, ",", bstring$)
 If ierror Then Exit Sub
 CalcZAFMode% = Val(bstring$)
