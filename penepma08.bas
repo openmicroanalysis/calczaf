@@ -226,6 +226,18 @@ Else
 BeamNumberOfEnergyChannels& = Val(tForm.TextEnergyRangeMinMaxNumber(2).Text)
 End If
 
+' Check for new Penepma.exe if more than 1000 channels
+If BeamNumberOfEnergyChannels& > 1000 Then
+If Dir$(PENEPMA_Path$ & "\Penepma.exe") <> vbNullString Then
+If FileDateTime(PENEPMA_Path$ & "\Penepma.exe") < "12/01/2016" Then
+msg$ = "Number of energy channels requires an update to the Penepma12 distribution. Please use the Help | Update Probe for EPMA or Help | Update CalcZAF menus to update your Penepma12 distribution."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08SaveInput"
+ierror = True
+Exit Sub
+End If
+End If
+End If
+
 ' Check other parameters
 If Val(tForm.TextNumberSimulatedShowers.Text) < 100 Or Val(tForm.TextNumberSimulatedShowers.Text) > 1E+20 Then
 msg$ = "Number Of Simulated Showers is out of range (must be between 100 and 1E+20)"
@@ -1177,11 +1189,11 @@ FormPENEPMA08Batch.ComboElm.AddItem Symup$(i% + 1)
 Next i%
 FormPENEPMA08Batch.ComboElm.ListIndex = ExtractElement% - 1
 
-FormPENEPMA08Batch.ComboXRay.Clear
+FormPENEPMA08Batch.ComboXray.Clear
 For i% = 0 To MAXRAY% - 2
-FormPENEPMA08Batch.ComboXRay.AddItem Xraylo$(i% + 1)
+FormPENEPMA08Batch.ComboXray.AddItem Xraylo$(i% + 1)
 Next i%
-FormPENEPMA08Batch.ComboXRay.ListIndex = ExtractXray% - 1
+FormPENEPMA08Batch.ComboXray.ListIndex = ExtractXray% - 1
 
 ' Select last file
 If FormPENEPMA08Batch.ListInputFiles.ListCount > 0 Then
@@ -4040,7 +4052,7 @@ ip% = IPOS1(MAXELM%, esym$, Symlo$())
 If ip% = 0 Then GoTo Penepma08BatchExtractKratiosBadElement
 ExtractElement% = ip%
 
-xsym$ = FormPENEPMA08Batch.ComboXRay.Text
+xsym$ = FormPENEPMA08Batch.ComboXray.Text
 ip% = IPOS1(MAXRAY% - 1, xsym$, Xraylo$())
 If ip% = 0 Then GoTo Penepma08BatchExtractKratiosBadXray
 ExtractXray% = ip%

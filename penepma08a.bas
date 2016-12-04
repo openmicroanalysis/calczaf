@@ -469,6 +469,7 @@ Dim taskID As Long
 Dim bfilename As String, astring As String
 
 ' First check if Penepma has had time to create a spectrum file
+If PENEPMA_SPEC_File$ = vbNullString Then GoTo Penepma08RunConvolgEXENotSpecified
 If Dir$(PENEPMA_SPEC_File$) = vbNullString Then Exit Sub
 
 ' Create Convg input file
@@ -515,8 +516,15 @@ Close #tfilenumber%
 ierror = True
 Exit Sub
 
+Penepma08RunConvolgEXENotSpecified:
+msg$ = "The Convolg.exe input file was not specified."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08RunConvolgEXE"
+Close #tfilenumber%
+ierror = True
+Exit Sub
+
 Penepma08RunConvolgEXENoConvolgCreated:
-msg$ = "The specified convolg file was not created properly. Go to the " & PENEPMA_Path$ & " command prompt and type the following command to see the error: convolg.exe < " & "convolg.in"
+msg$ = "The Convolg.exe output file (" & PENEPMA_CONVOLG_File$ & ") was not created properly. Go to the " & PENEPMA_Path$ & " command prompt and type the following command to see the error: convolg.exe < " & "convolg.in"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08RunConvolgEXE"
 Close #tfilenumber%
 ierror = True
@@ -533,6 +541,7 @@ On Error GoTo Penepma08GraphGetPenepmaError
 Dim astring As String, bstring As String
 
 ' Check production file
+If Trim$(PENEPMA_CONVOLG_File$) = vbNullString Then Exit Sub
 If Dir$(Trim$(PENEPMA_CONVOLG_File$)) = vbNullString Then Exit Sub
 Open PENEPMA_CONVOLG_File$ For Input As #Temp1FileNumber%
 
@@ -604,13 +613,34 @@ Exit Sub
 
 End Sub
 
-Sub Penepma08PenepmaSpectrumRead(tfilename As String, nPoints As Long, xdata() As Double, ydata() As Double, zdata() As Double)
+Sub Penepma08PenepmaSpectrumRead(tfilename As String, nPoints As Long, xdata() As Double, ydata() As Double, zdata() As Double, xmin As Double, xmax As Double, xnum As Long, xwidth As Double, theta1 As Double, theta2 As Double, phi1 As Double, phi2 As Double)
 ' Load spectrum data from passed Penepma spectrum file (for synthetic wavescan data in demo mode)
+'
+' Default header shown here:
+' #  Results from PENEPMA. Output from photon detector #  1
+' #
+' #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01
+' #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02
+' #  Energy window = ( 0.00000E+00, 2.00000E+04) eV, no. of channels = 1000
+' #  Channel width = 2.000000E+01 eV
+' #
+' #  Whole spectrum. Characteristic peaks and background.
+' #  1st column: photon energy (eV).
+' #  2nd column: probability density (1/(eV*sr*electron)).
+' #  3rd column: statistical uncertainty (3 sigma).
+' #
+'   1.000000E+01  1.000000E-35  1.000000E-35
+'   3.000000E+01  1.000000E-35  1.000000E-35
+'   5.000001E+01  1.000000E-35  1.000000E-35
+'   7.000001E+01  1.000000E-35  1.000000E-35
+'   9.000001E+01  1.000000E-35  1.000000E-35
+' ....
 
 ierror = False
 On Error GoTo Penepma08PenepmaSpectrumReadError
 
 Dim astring As String, bstring As String
+Dim cstring As String, dstring As String
 Dim tfilenumber As Integer
 
 ' Check production file
@@ -622,18 +652,58 @@ Open tfilename$ For Input As #tfilenumber%
 nPoints& = 0
 Do Until EOF(tfilenumber%)
 Line Input #tfilenumber%, astring$
+cstring$ = astring$
+
+' Load theta parameters
+If Len(Trim$(astring$)) > 0 And InStr(astring$, "theta_1") > 0 Then
+Call MiscParseStringToStringA(cstring$, ",", dstring$)
+If ierror Then Exit Sub
+theta1# = Val(Trim$(Right$(dstring$, 12)))
+theta2# = Val(Trim$(Right$(cstring$, 12)))
+
+' Load phi parameters
+ElseIf Len(Trim$(cstring$)) > 0 And InStr(cstring$, "phi_1") > 0 Then
+Call MiscParseStringToStringA(cstring$, ",", dstring$)
+If ierror Then Exit Sub
+phi1# = Val(Trim$(Right$(dstring$, 12)))
+phi2# = Val(Trim$(Right$(cstring$, 12)))
+
+' Load energy window parameters
+ElseIf Len(Trim$(cstring$)) > 0 And InStr(cstring$, "Energy window") > 0 Then
+Call MiscParseStringToStringA(cstring$, ",", dstring$)
+If ierror Then Exit Sub
+xmin# = Val(Trim$(Right$(dstring$, 11)))
+Call MiscParseStringToStringA(cstring$, ")", dstring$)
+If ierror Then Exit Sub
+xmax# = Val(Trim$(Right$(dstring$, 11)))
+Call MiscParseStringToStringA(cstring$, "=", dstring$)
+If ierror Then Exit Sub
+xnum& = Val(Trim$(cstring$))
+
+' Load channel resolution parameter
+ElseIf Len(Trim$(cstring$)) > 0 And InStr(cstring$, "Channel width") > 0 Then
+Call MiscParseStringToStringA(cstring$, "=", dstring$)
+If ierror Then Exit Sub
+xwidth# = Val(Trim$(Left$(cstring$, 13)))
+End If
+
+' Skip until comments are read
 If Len(Trim$(astring$)) > 0 And InStr(astring$, "#") = 0 Then            ' skip to first data line
 
 ' Load total spectrum
 nPoints& = nPoints& + 1
-Call MiscParseStringToString(astring$, bstring$)
-If ierror Then Exit Sub
 ReDim Preserve xdata(1 To nPoints&) As Double
 ReDim Preserve ydata(1 To nPoints&) As Double
+ReDim Preserve zdata(1 To nPoints&) As Double
+
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
 xdata#(nPoints&) = Val(Trim$(bstring$))
+
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
 ydata#(nPoints&) = Val(Trim$(bstring$))
+
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
 zdata#(nPoints&) = Val(Trim$(bstring$))
@@ -658,79 +728,9 @@ Exit Sub
 
 End Sub
 
-Sub Penepma08PenepmaSpectrumConvolve(tfilename As String, eVPerChannel As Single)
-' Run the Convolg program to convolve the passed Penepma spectrum file
-
-ierror = False
-On Error GoTo Penepma08PenepmaSpectrumConvolveError
-
-Dim tfilenumber As Integer
-Dim taskID As Long
-Dim bfilename As String, astring As String
-
-' First check if spectrum file exists
-If Dir$(tfilename$) = vbNullString Then Exit Sub
-
-' Create input file for Convolg.exe
-tfilename$ = PENEPMA_Path$ & "\convolg.in"
-tfilenumber% = FreeFile()
-Open tfilename$ For Output As #tfilenumber%
-Print #tfilenumber%, MiscGetFileNameOnly$(tfilename$)
-Print #tfilenumber%, Format$(eVPerChannel!)
-Print #tfilenumber%, vbNullString               ' needs a crlf
-Close #tfilenumber%
-
-' Delete existing temp batch file
-bfilename$ = PENDBASE_Path$ & "\temp2.bat"
-If Dir$(bfilename$) <> vbNullString Then
-Kill bfilename$
-DoEvents
-End If
-
-' Write batch file for running convolg.exe
-tfilenumber% = FreeFile()
-Open bfilename$ For Output As #tfilenumber%
-astring$ = Left$(PENEPMA_Path$, 2)                             ' change to drive
-Print #tfilenumber%, astring$
-astring$ = "cd " & VbDquote$ & PENEPMA_Path$ & VbDquote$       ' change to folder
-Print #tfilenumber%, astring$
-astring$ = "convolg.exe < " & "convolg.in"
-Print #tfilenumber%, astring$
-Close #tfilenumber%
-
-' Run batch file asynchronously (/k executes but window remains, /c executes but terminates)
-'taskID& = Shell("cmd.exe /k " & VbDquote$ & bfilename$ & VbDquote$, vbNormalFocus)
-taskID& = Shell("cmd.exe /c " & VbDquote$ & bfilename$ & VbDquote$, vbMinimizedNoFocus)
-
-' Loop until complete
-Do Until IOIsProcessTerminated(taskID&)
-Sleep 100
-DoEvents
-Loop
-
-' Check for created convolved file
-If Dir$(PENEPMA_CONVOLG_File$) = vbNullString Then GoTo Penepma08PenepmaSpectrumConvolveNoConvolgCreated
-
-Exit Sub
-
-' Errors
-Penepma08PenepmaSpectrumConvolveError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma08PenepmaSpectrumConvolve"
-Close #tfilenumber%
-ierror = True
-Exit Sub
-
-Penepma08PenepmaSpectrumConvolveNoConvolgCreated:
-msg$ = "The specified convolg file was not created properly. Go to the " & PENEPMA_Path$ & " command prompt and type the following command to see the error: convolg.exe < " & "convolg.in"
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08PenepmaSpectrumConvolve"
-Close #tfilenumber%
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub Penepma08PenepmaSpectrumWrite(tfilename As String, chan As Integer, npts() As Long, xdata() As Double, ydata() As Double, zdata() As Double)
+Sub Penepma08PenepmaSpectrumWrite(tfilename As String, chan As Integer, npts() As Long, xdata() As Double, ydata() As Double, zdata() As Double, xmin As Double, xmax As Double, xnum As Long, xwid As Double, theta1 As Double, theta2 As Double, phi1 As Double, phi2 As Double)
 ' Save spectrum data to passed Penepma spectrum file (for synthetic wavescan data in demo mode)
+'
 ' Default header shown here:
 ' #  Results from PENEPMA. Output from photon detector #  1
 ' #
@@ -749,6 +749,7 @@ Sub Penepma08PenepmaSpectrumWrite(tfilename As String, chan As Integer, npts() A
 '   5.000001E+01  1.000000E-35  1.000000E-35
 '   7.000001E+01  1.000000E-35  1.000000E-35
 '   9.000001E+01  1.000000E-35  1.000000E-35
+' ....
 
 ierror = False
 On Error GoTo Penepma08PenepmaSpectrumWriteError
@@ -762,10 +763,10 @@ Open tfilename$ For Output As #tfilenumber%
 ' Write header information
 Print #tfilenumber%, " #  Results from PENEPMA. Output from photon detector #  1"
 Print #tfilenumber%, " #"
-Print #tfilenumber%, " #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01"
-Print #tfilenumber%, " #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02"
-Print #tfilenumber%, " #  Energy window = ( 0.00000E+00, 2.00000E+04) eV, no. of channels = 1000"
-Print #tfilenumber%, " #  Channel width = 2.000000E+01 eV"
+Print #tfilenumber%, " #  Angular intervals : theta_1 = " & Format$(theta1#, e125$) & ",  theta_2 = " & Format$(theta2#, e125$)
+Print #tfilenumber%, " #                        phi_1 = " & Format$(phi1#, e125$) & ",    phi_2 = " & Format$(phi2#, e125$)
+Print #tfilenumber%, " #  Energy window = ( " & Format$(xmin#, e115$) & ", " & Format$(xmax, e115$) & ") eV, no. of channels = " & Format$(xnum&)
+Print #tfilenumber%, " #  Channel width = "; Format$(xwid#, e115$) & " eV"
 Print #tfilenumber%, " #"
 Print #tfilenumber%, " #  Whole spectrum. Characteristic peaks and background."
 Print #tfilenumber%, " #  1st column: photon energy (eV)."
