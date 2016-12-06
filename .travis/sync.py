@@ -130,6 +130,47 @@ def compare(filepath, workdir):
 
     return newchanges, newtag
 
+def compare_remove_files(filepath, workdir, no_commit):
+    logger.info('Comparing files %s...', filepath)
+
+    zipfile_list = set()
+    with zipfile.ZipFile(filepath, 'r') as z:
+        for info in z.infolist():
+            # Always use lower case
+            filename = info.filename.lower()
+            zipfile_list.add(filename)
+            # Create directory if needed
+            dirname = os.path.join(workdir, os.path.dirname(filename))
+            os.makedirs(dirname, exist_ok=True)
+
+    workdir_list = set(os.listdir(workdir))
+    # Ignore these files
+    workdir_list.remove(".travis.yml")
+    workdir_list.remove(".travis")
+    workdir_list.remove(".git")
+    workdir_list.remove(".gitignore")
+    workdir_list.remove("readme.md")
+    workdir_list.remove("license")
+
+    removed_files = workdir_list - zipfile_list
+
+    logger.info('Comparing files %s... DONE', filepath)
+
+    if len(removed_files) > 0:
+        for removed_file in removed_files:
+            logger.info('Running git rm %s ...', removed_file)
+            args = ['git', 'rm', removed_file]
+            if no_commit: args.append('--dry-run')
+            subprocess.check_call(args, cwd=workdir)
+            logger.info('Running git rm %s... DONE', removed_file)
+
+        if not no_commit:
+            message = "Remove files not in the CalcZAF source zip file."
+            logger.info('Running git commit...')
+            args = ['git', 'commit', '-m', message]
+            subprocess.check_call(args, cwd=workdir)
+            logger.info('Running git commit... DONE')
+
 def extract(filepath, workdir):
     logger.info('Extracting %s...', filepath)
     with zipfile.ZipFile(filepath, 'r') as z:
@@ -262,6 +303,9 @@ def main():
     version_changes, tag = compare(zipfilepath, workdir)
     logger.info('%i new changes found in VERSION.TXT', len(version_changes))
     
+    # Compare files
+    compare_remove_files(zipfilepath, workdir, no_commit)
+
     has_repos_changes = has_changes(workdir)
     if has_repos_changes:
         logger.info('has changes found in repository')
