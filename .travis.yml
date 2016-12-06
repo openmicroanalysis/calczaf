@@ -14,7 +14,7 @@ install:
 - git config --global core.ignorecase true
 - git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
 script:
-- git checkout remove_files
+- git checkout TRAVIS_BRANCH
 - python .travis/sync.py --verbose --workdir .
 notifications:
   email: false
