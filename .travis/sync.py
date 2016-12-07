@@ -145,13 +145,12 @@ def compare_remove_files(filepath, workdir, no_commit):
 
     workdir_list = set(os.listdir(workdir))
     # Ignore these files
-    workdir_list.remove(".travis.yml")
-    workdir_list.remove(".travis")
-    workdir_list.remove(".git")
-    workdir_list.remove(".gitignore")
-    workdir_list.remove("readme.md")
-    workdir_list.remove("license")
-    workdir_list.remove(".idea")
+    ignore_files = [".travis.yml", ".travis", ".git", ".gitignore", "readme.md", "license", ".idea"]
+    for ignore_file in ignore_files:
+        try:
+            workdir_list.remove(ignore_file)
+        except KeyError as message:
+            logging.warning(message)
 
     removed_files = workdir_list - zipfile_list
 
@@ -162,7 +161,10 @@ def compare_remove_files(filepath, workdir, no_commit):
             logger.info('Running git rm %s ...', removed_file)
             args = ['git', 'rm', removed_file]
             if no_commit: args.append('--dry-run')
-            subprocess.check_call(args, cwd=workdir)
+            try:
+                subprocess.check_call(args, cwd=workdir)
+            except subprocess.CalledProcessError as message:
+                logging.warning(message)
             logger.info('Running git rm %s... DONE', removed_file)
 
         if not no_commit:
