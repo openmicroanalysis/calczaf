@@ -372,7 +372,7 @@ End If
 GoTo Penepma12CalculateRandomCheckOpenProceed
 
 Penepma12CalculateRandomCheckOpenWait:
-Call MiscDelay3(FormMAIN.StatusBarAuto, CDbl(3#), Now)      ' wait 3 seconds and try again
+Call MiscDelay3(FormMAIN.StatusBarAuto, "for open data file...", CDbl(3#), Now)      ' wait 3 seconds and try again
 If ierror Then Exit Sub
 
 ' Check for too many tries

@@ -237,6 +237,7 @@ Dim tBeamMinimumEnergyRange As Double
 Dim tBeamMaximumEnergyRange As Double
 Dim tBeamNumberOfEnergyChannels As Long
 
+' Always use 20 eV per channel to match DEMOEVPERCHANNEL! constant
 tBeamMinimumEnergyRange# = 0#
 tBeamMaximumEnergyRange# = 20000#
 tBeamNumberOfEnergyChannels& = 1000

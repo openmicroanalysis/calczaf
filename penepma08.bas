@@ -317,7 +317,7 @@ tfilename$ = Trim$(tForm.TextInputFile.Text)
 Call MiscModifyStringToFilename$(tfilename$)
 tfilename$ = MiscGetFileNameNoExtension$(tfilename$) & ".in"
 tForm.TextInputFile.Text = tfilename$
-InputFile$ = PENEPMA_Path$ & "\" & tfilename$
+InputFile$ = tfilename$
 
 ' Check that the sample production files exist
 For i% = 0 To MAXPRODUCTION%
@@ -567,7 +567,7 @@ Dim astring As String, bstring As String, cstring As String, dstring As String
 
 ' Loop through sample production file and copy to new file with modified parameters
 Open BeamProductionFilename$(BeamProductionIndex&) For Input As #Temp1FileNumber%
-Open InputFile$ For Output As #Temp2FileNumber%
+Open PENEPMA_Path$ & "\" & InputFile$ For Output As #Temp2FileNumber%
 
 Do Until EOF(Temp1FileNumber%)
 Line Input #Temp1FileNumber%, astring$
@@ -1017,9 +1017,9 @@ On Error GoTo Penepma08BrowseInputFileError
 
 Dim tfilename As String, ioextension As String
 
-If Trim$(InputFile$) = vbNullString Then InputFile$ = PENEPMA_Path$ & "\untitled.in"
+If Trim$(InputFile$) = vbNullString Then InputFile$ = "untitled.in"
 ioextension$ = "IN"
-tfilename$ = InputFile$
+tfilename$ = PENEPMA_Path$ & "\" & InputFile$
 Call IOGetFileName(Int(2), ioextension$, tfilename$, tForm)
 If ierror Then Exit Sub
 
@@ -2396,7 +2396,7 @@ Open PENEPMA_DAT_File$ For Input As #Temp2FileNumber%
 GoTo Penepma08LoadPenepmaDATOpenProceed
 
 Penepma08LoadPenepmaDATOpenWait:
-Call MiscDelay3(FormMAIN.StatusBarAuto, CDbl(3#), Now)      ' wait 3 seconds and try again
+Call MiscDelay3(FormMAIN.StatusBarAuto, "next Penepma data read...", CDbl(3#), Now)      ' wait 3 seconds and try again
 If ierror Then Exit Sub
 
 ' Check for too many tries
