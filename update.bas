@@ -1391,7 +1391,11 @@ Call IOWriteLog(msg$)
 Next k%
 
 ' Type out assigned drift array intensities for the passed sample
+If UseVolElFlag And AcquireVolatileSelfStandardIntensitiesFlag Then
+msg$ = vbCrLf & "Drift array standard intensities (cps/" & Format$(NominalBeam!) & FaradayCurrentUnits$ & ") (background corrected) (TDI corrected):"
+Else
 msg$ = vbCrLf & "Drift array standard intensities (cps/" & Format$(NominalBeam!) & FaradayCurrentUnits$ & ") (background corrected):"
+End If
 Call IOWriteLog(msg$)
 
 msg$ = "ELMXRY: "

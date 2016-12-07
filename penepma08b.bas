@@ -1,4 +1,5 @@
 Attribute VB_Name = "CodePenepma08b"
+' (c) Copyright 1995-2016 by John J. Donovan
 Option Explicit
 
 Function Penepma08CheckPenepmaVersion() As Integer

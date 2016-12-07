@@ -176,9 +176,9 @@ Exit Sub
 
 End Sub
 
-Sub MiscDelay3(tStatus As StatusBar, timeinterval As Double, previoustime As Double)
+Sub MiscDelay3(tStatus As StatusBar, waitingmessage As String, timeinterval As Double, previoustime As Double)
 ' Waits a specified number of seconds before returning (updates status text)
-' Usage: Call MiscDelay3(tStatus as StatusBar, CDbl(secondsdelay!), Now)
+' Usage: Call MiscDelay3(tStatus as StatusBar, waitingmessage$, CDbl(secondsdelay!), Now)
 
 ierror = False
 On Error GoTo MiscDelay3Error
@@ -195,7 +195,7 @@ DoEvents
 
 ' Update caption
 atemp# = (timeinterval# / SECPERDAY# + previoustime#) - Now
-tStatus.Panels(1).Text = Format$(atemp# * SECPERDAY#, f81$) & " seconds remaining for next automation process..."
+tStatus.Panels(1).Text = Format$(atemp# * SECPERDAY#, f81$) & " seconds remaining for " & waitingmessage$
 DoEvents    ' yield to this app
 Sleep (100) ' yield to other apps
 

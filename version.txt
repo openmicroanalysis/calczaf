@@ -2,7 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/05/16	Fix eV per channel constant for demo EDS. Add better wait for messages in MiscDelay3. Add
+v. 11.7.3	more locked file code for DataVolatile check routines.
+
 12/04/16	Work on WDS simulated spectra feature.
+
+		Finish testing 8230 filament stauration code (Poirier).  That and save/load PCC all working now 
+		for 8230 and 8530 (Yu and Buse).
 
 12/02/16	Modify Standard.exe and Penepma.f to allow for more energy channels (for WDS demo simulation).
 		
