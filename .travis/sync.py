@@ -151,6 +151,7 @@ def compare_remove_files(filepath, workdir, no_commit):
     workdir_list.remove(".gitignore")
     workdir_list.remove("readme.md")
     workdir_list.remove("license")
+    workdir_list.remove(".idea")
 
     removed_files = workdir_list - zipfile_list
 
