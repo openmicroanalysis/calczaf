@@ -819,9 +819,9 @@ End If
 ' Check that sound file exists
 If UseWavFileAfterAutomationString$ <> vbNullString Then
 If Dir$(ApplicationCommonAppData$ & UseWavFileAfterAutomationString$) = vbNullString Then
-msg$ = "Automation sound file " & UseWavFileAfterAutomationString$ & " as defined in " & ProbeWinINIFile$ & " was not found"
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIGeneral"
-End
+msg$ = "Automation sound file " & UseWavFileAfterAutomationString$ & " as defined in " & ProbeWinINIFile$ & " was not found in folder " & ApplicationCommonAppData$ & ". The play sound file after automation feature will be disabled."
+MsgBox msg$, vbOKOnly + vbInformation, "InitINIGeneral"
+UseWavFileAfterAutomationString$ = vbNullString
 End If
 End If
 

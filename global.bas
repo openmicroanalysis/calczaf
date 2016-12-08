@@ -2763,8 +2763,6 @@ Global MatrixHelpFile As String
 Global UserSpecifiedOutputStandards As Boolean
 Global UserSpecifiedOutputUnknowns As Boolean
 
-Global LightTurnedOff As Long
-
 Global MinimumOverVoltageType As Integer    ' 0 = 2%, 1 = 10%, 2 = 20%
 
 Global ProbeSoftwareInternetBrowseMethod As Integer  ' 0 = WWW, 1 = DVD

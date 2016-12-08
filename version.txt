@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/06/16	Add delays for light on (JEOL 8x30 auto-focus) and light off (start EDS, CL and imaging) (Buse, Matthews, Poirier).
+
 12/05/16	Fix eV per channel constant for demo EDS. Add better wait for messages in MiscDelay3. Add
 v. 11.7.3	more locked file code for DataVolatile check routines.
 

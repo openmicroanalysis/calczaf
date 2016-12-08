@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "comctl32.ocx"
 Object = "{0EF1F64B-CADD-4E29-8703-556548DF74E3}#1.0#0"; "cshtpctl.ocx"
 Object = "{3A1209F5-3069-4E0A-A192-1427CFD1D5A9}#1.0#0"; "csftpctl.ocx"
 Begin VB.Form FormUPDATE 
@@ -30,7 +30,7 @@ Begin VB.Form FormUPDATE
       _cy             =   741
    End
    Begin VB.CheckBox CheckUpdatePenepmaOnly 
-      Caption         =   "Update Penepma Monte-Carlo Files Only"
+      Caption         =   "Update Penepma Monte Carlo Files Only"
       Height          =   255
       Left            =   480
       TabIndex        =   8
@@ -184,7 +184,7 @@ End Sub
 
 Private Sub CommandUpdate_Click()
 If Not DebugMode Then On Error Resume Next
-If FormUPDATE.OptionDownloadType(0).Value = True Then
+If FormUPDATE.OptionDownloadType(0).value = True Then
 FormUPDATE.OptionDownloadType(0).Enabled = False
 FormUPDATE.OptionDownloadType(1).Enabled = False
 FormUPDATE.OptionDownloadType(2).Enabled = False
@@ -198,7 +198,7 @@ FormUPDATE.OptionDownloadType(1).Enabled = True
 FormUPDATE.OptionDownloadType(2).Enabled = True
 If ierror Then Exit Sub
 
-ElseIf FormUPDATE.OptionDownloadType(1).Value = True Then
+ElseIf FormUPDATE.OptionDownloadType(1).value = True Then
 FormUPDATE.OptionDownloadType(0).Enabled = False
 FormUPDATE.OptionDownloadType(1).Enabled = False
 FormUPDATE.OptionDownloadType(2).Enabled = False
@@ -253,10 +253,10 @@ Call IOUpdateClose(Cancel%)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub FtpClient1_OnProgress(ByVal Filename As Variant, ByVal FileSize As Variant, ByVal BytesCopied As Variant, ByVal Percent As Variant)
+Private Sub FtpClient1_OnProgress(ByVal filename As Variant, ByVal FileSize As Variant, ByVal BytesCopied As Variant, ByVal Percent As Variant)
 If Not DebugMode Then On Error Resume Next
 DoEvents
-FormUPDATE.ProgressBar1.Value = Percent
+FormUPDATE.ProgressBar1.value = Percent
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
 If Percent > 0# Then FormUPDATE.Caption = "Update CalcZAF [" & Format$(Percent) & "% downloaded...]"
 End If
@@ -270,7 +270,7 @@ End Sub
 Private Sub HttpClient1_OnProgress(ByVal BytesTotal As Variant, ByVal BytesCopied As Variant, ByVal Percent As Variant)
 If Not DebugMode Then On Error Resume Next
 DoEvents
-FormUPDATE.ProgressBar1.Value = Percent
+FormUPDATE.ProgressBar1.value = Percent
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
 If Percent > 0# Then FormUPDATE.Caption = "Update CalcZAF [" & Format$(Percent) & "% downloaded...]"
 End If
