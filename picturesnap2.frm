@@ -863,7 +863,6 @@ End Sub
 
 Private Sub CommandLightModeReflected_Click()
 If Not DebugMode Then On Error Resume Next
-Light_Reflected_Transmitted& = 0
 Call RealTimeSetLightMode(Int(0))
 FormPICTURESNAP2.CommandLightModeReflected.BackColor = vbWhite
 FormPICTURESNAP2.CommandLightModeTransmitted.BackColor = vbButtonFace
@@ -871,7 +870,6 @@ End Sub
 
 Private Sub CommandLightModeTransmitted_Click()
 If Not DebugMode Then On Error Resume Next
-Light_Reflected_Transmitted& = 1
 Call RealTimeSetLightMode(Int(1))
 FormPICTURESNAP2.CommandLightModeReflected.BackColor = vbButtonFace
 FormPICTURESNAP2.CommandLightModeTransmitted.BackColor = vbWhite
