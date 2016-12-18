@@ -2382,6 +2382,11 @@ Global DefaultStandardCoatingElement As Integer
 Global DefaultStandardCoatingDensity As Single
 Global DefaultStandardCoatingThickness As Single    ' in angstroms
 
+Global DefaultSampleCoatingFlag As Integer    ' 0 = not coated, 1 = coated
+Global DefaultSampleCoatingElement As Integer
+Global DefaultSampleCoatingDensity As Single
+Global DefaultSampleCoatingThickness As Single    ' in angstroms
+
 Global UseConductiveCoatingCorrectionForElectronAbsorption As Boolean
 Global UseConductiveCoatingCorrectionForXrayTransmission As Boolean
 

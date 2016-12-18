@@ -141,10 +141,10 @@ For i% = 0 To MAXELM% - 1
 FormZAFOPT.ComboCoatingElement.AddItem Symlo$(i% + 1)
 Next i%
 
-'If ZAFOptionSample(1).CoatingFlag% = 0 Then ZAFOptionSample(1).CoatingFlag% = DefaultStandardCoatingFlag%
-If ZAFOptionSample(1).CoatingElement% = 0 Then ZAFOptionSample(1).CoatingElement% = DefaultStandardCoatingElement%
-If ZAFOptionSample(1).CoatingDensity! = 0# Then ZAFOptionSample(1).CoatingDensity! = DefaultStandardCoatingDensity!
-If ZAFOptionSample(1).CoatingThickness! = 0# Then ZAFOptionSample(1).CoatingThickness! = DefaultStandardCoatingThickness!
+If ZAFOptionSample(1).CoatingFlag% = 0 Then ZAFOptionSample(1).CoatingFlag% = DefaultSampleCoatingFlag%     ' 0 = not coated, 1 = coated
+If ZAFOptionSample(1).CoatingElement% = 0 Then ZAFOptionSample(1).CoatingElement% = DefaultSampleCoatingElement%
+If ZAFOptionSample(1).CoatingDensity! = 0# Then ZAFOptionSample(1).CoatingDensity! = DefaultSampleCoatingDensity!
+If ZAFOptionSample(1).CoatingThickness! = 0# Then ZAFOptionSample(1).CoatingThickness! = DefaultSampleCoatingThickness!
 
 If ZAFOptionSample(1).CoatingFlag% = 1 Then
 FormZAFOPT.CheckCoatingFlag.Value = vbChecked
@@ -384,6 +384,12 @@ MsgBox msg$, vbOKOnly + vbExclamation, "ZAFOptionSave"
 Else
 ZAFOptionSample(1).CoatingThickness! = Val(FormZAFOPT.TextCoatingThickness.Text)
 End If
+
+' Store changes to sample coating default globals
+DefaultSampleCoatingFlag% = ZAFOptionSample(1).CoatingFlag%     ' 0 = not coated, 1 = coated
+DefaultSampleCoatingElement% = ZAFOptionSample(1).CoatingElement%
+DefaultSampleCoatingDensity! = ZAFOptionSample(1).CoatingDensity!
+DefaultSampleCoatingThickness! = ZAFOptionSample(1).CoatingThickness!
 
 ' Save coating globals (leave commented out so user has to explicitly turn on in Analytical menu)
 If ZAFOptionSample(1).CoatingFlag% = 1 Then

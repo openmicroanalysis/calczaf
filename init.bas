@@ -3337,6 +3337,11 @@ IntegratedBackgroundFitType = 1             ' use integrated start/stop intensit
 IntegratedBackgroundFitPointsLow% = 5       ' use first points
 IntegratedBackgroundFitPointsHigh% = 5      ' use last points
 
+DefaultSampleCoatingFlag% = DefaultStandardCoatingFlag%    ' 0 = not coated, 1 = coated
+DefaultSampleCoatingElement% = DefaultStandardCoatingElement%
+DefaultSampleCoatingDensity! = DefaultStandardCoatingDensity!
+DefaultSampleCoatingThickness! = DefaultStandardCoatingThickness!
+
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
 If ierror Then Exit Sub

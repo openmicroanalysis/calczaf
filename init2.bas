@@ -523,11 +523,11 @@ sample(1).DisplayBiotiteCalculationFlag% = False
 sample(1).HydrogenStoichiometryFlag% = False
 sample(1).HydrogenStoichiometryRatio! = 0#
 
-sample(1).CoatingFlag = DefaultStandardCoatingFlag%  ' 0 = uncoated, 1 = coated
-sample(1).CoatingElement% = DefaultStandardCoatingElement%
-sample(1).CoatingDensity! = DefaultStandardCoatingDensity!
-sample(1).CoatingThickness! = DefaultStandardCoatingThickness!  ' in angstroms
-sample(1).CoatingSinThickness! = sample(1).CoatingThickness! / Sin(DefaultTakeOff! * PI! / 180#)
+sample(1).CoatingFlag = DefaultSampleCoatingFlag%  ' 0 = uncoated, 1 = coated
+sample(1).CoatingElement% = DefaultSampleCoatingElement%
+sample(1).CoatingDensity! = DefaultSampleCoatingDensity!
+sample(1).CoatingThickness! = DefaultSampleCoatingThickness!  ' in angstroms
+sample(1).CoatingSinThickness! = DefaultSampleCoatingThickness! / Sin(DefaultTakeOff! * PI! / 180#)
 
 ' EDS sample flags
 sample(1).EDSSpectraFlag = False

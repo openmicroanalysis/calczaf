@@ -55,9 +55,9 @@ FormSTANDARDCOATING.ComboCoatingElementAll.AddItem Symlo$(i% + 1)
 Next i%
 
 If DefaultStandardCoatingFlag% = 1 Then
-FormSTANDARDCOATING.CheckCoatingFlagAll.value = vbChecked
+FormSTANDARDCOATING.CheckCoatingFlagAll.Value = vbChecked
 Else
-FormSTANDARDCOATING.CheckCoatingFlagAll.value = vbUnchecked
+FormSTANDARDCOATING.CheckCoatingFlagAll.Value = vbUnchecked
 End If
 FormSTANDARDCOATING.ComboCoatingElementAll.Text = Symlo$(DefaultStandardCoatingElement%)
 FormSTANDARDCOATING.TextCoatingDensityAll.Text = Format$(DefaultStandardCoatingDensity!)
@@ -110,7 +110,7 @@ StandardCoatingThickness!(i%) = tStandardCoatingThickness!(i%)
 If StandardCoatingFlag%(i%) = 1 Then tFlag% = 1     ' update global flag if any standard uses coating
 Next i%
 
-DefaultStandardCoatingFlag% = tFlag%
+DefaultStandardCoatingFlag% = tFlag%        ' 0 = not coated, 1 = coated
 DefaultStandardCoatingElement% = tElement%
 DefaultStandardCoatingDensity! = tDensity!
 DefaultStandardCoatingThickness! = tThickness!
@@ -150,9 +150,9 @@ If FormSTANDARDCOATING.ListStandard.ListIndex < 0 Then Exit Sub
 ip% = FormSTANDARDCOATING.ListStandard.ListIndex + 1
 If ip% > 0 Then
 If tStandardCoatingFlag%(ip%) = 1 Then
-FormSTANDARDCOATING.CheckCoatingFlag.value = vbChecked
+FormSTANDARDCOATING.CheckCoatingFlag.Value = vbChecked
 Else
-FormSTANDARDCOATING.CheckCoatingFlag.value = vbUnchecked
+FormSTANDARDCOATING.CheckCoatingFlag.Value = vbUnchecked
 End If
 
 FormSTANDARDCOATING.ComboCoatingElement.Text = Symlo$(tStandardCoatingElement%(ip%))
@@ -185,7 +185,7 @@ If FormSTANDARDCOATING.ListStandard.ListIndex < 0 Then Exit Sub
 ' Calculate standard
 ip% = FormSTANDARDCOATING.ListStandard.ListIndex + 1
 If ip% > 0 Then
-If FormSTANDARDCOATING.CheckCoatingFlag.value = vbChecked Then
+If FormSTANDARDCOATING.CheckCoatingFlag.Value = vbChecked Then
 tStandardCoatingFlag%(ip%) = 1
 Else
 tStandardCoatingFlag%(ip%) = 0
@@ -236,7 +236,7 @@ On Error GoTo StandardCoatingAssignToAllError
 Dim i As Integer, ipp As Integer
 Dim sym As String
 
-If FormSTANDARDCOATING.CheckCoatingFlagAll.value = vbChecked Then
+If FormSTANDARDCOATING.CheckCoatingFlagAll.Value = vbChecked Then
 tFlag% = 1
 Else
 tFlag% = 0
