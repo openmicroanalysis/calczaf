@@ -2145,7 +2145,7 @@ WMotor% = NumberOfTunableSpecs% + 4
 
 ' Check for total number of spectrometers
 If NumberOfTunableSpecs% < 1 Then
-msg$ = "Warning- No spectrometers defined in " & ProbeWinINIFile$
+msg$ = "Warning- No WDS spectrometers defined in " & ProbeWinINIFile$
 Call IOWriteLog(msg$)
 End If
 

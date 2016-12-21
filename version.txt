@@ -2,7 +2,16 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-12/16/16	Modify Analytical COnditions dialogs so Column Condition (PCC) FIle option is selected automatically
+12/20/16	Add keV output to wavescan sample output (von der Handt).
+
+12/18/16	Modify update imaging magnification code in Automate! Digitize to not update beam mode (spot vs. scan). Make 
+		get beam mode and get mag variables local.
+		
+		Add 4 sec delay after turning on light for auto-focus for 8900/8200/8500 also (Neill).
+		
+		Fix multi-standard calibration curve analytical mode to work with aggregate mode (duplicate elements) (Neill).
+
+12/16/16	Modify Analytical Conditions dialogs so Column Condition (PCC) FIle option is selected automatically
 v.11.7.4	if user browses nand selected PCC file (Buse).
 
 		Insert faraday cup before loading PCC file (Poeml).  Fix defaulting of sample carbon coating parameters in 

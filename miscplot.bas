@@ -162,6 +162,9 @@ Else
 tGraph.AllowZooming = PEAZ_NONE&
 End If
 
+' Force modal dialog to true for maximize mode <esc> press
+tGraph.ModalDialogs = True
+
 tGraph.PEactions = REINITIALIZE_RESETIMAGE                ' generate new plot
 
 Exit Sub
