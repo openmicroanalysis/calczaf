@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSTANDARD"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Dim StandardTmpSample(1 To 1) As TypeSample

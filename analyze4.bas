@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeANALYZE4"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -37,13 +37,13 @@ tList.Clear
 For samplerow% = 1 To NumberofSamples%
 
 ' Load standards or unknowns or all
-If tForm.OptionStandard.value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
-If tForm.OptionUnknown.value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
-If tForm.OptionWavescan.value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
+If tForm.OptionStandard.Value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
+If tForm.OptionUnknown.Value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
+If tForm.OptionWavescan.Value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
 
 ' Check for FormANALYZE and if so, check display only samples with data checkbox
 If tForm.Name = "FormANALYZE" Then
-If tForm.CheckOnlyDisplaySamplesWithData.value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
+If tForm.CheckOnlyDisplaySamplesWithData.Value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
 End If
 
 ' Load number set and name

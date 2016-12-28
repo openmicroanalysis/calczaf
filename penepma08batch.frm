@@ -28,9 +28,18 @@ Begin VB.Form FormPENEPMA08Batch
       TabIndex        =   33
       Top             =   11880
       Width           =   7215
+      Begin VB.CommandButton CommandRename 
+         Caption         =   "Copy and Rename PARs"
+         Height          =   315
+         Left            =   4920
+         TabIndex        =   46
+         ToolTipText     =   "Copy Penepma pure element files and rename to synthetic spectrum folder"
+         Top             =   840
+         Width           =   2055
+      End
       Begin VB.CommandButton CommandCreatePure 
          Caption         =   "Create Bulk Pure Element Input Files For Penepma"
-         Height          =   735
+         Height          =   495
          Left            =   4920
          TabIndex        =   39
          TabStop         =   0   'False
@@ -66,7 +75,7 @@ Begin VB.Form FormPENEPMA08Batch
       End
       Begin VB.Label Label4 
          Alignment       =   2  'Center
-         Caption         =   "Electron beam energy is based on value in main Penepma window!"
+         Caption         =   "Electron beam energy, etc.  is based on value in main Penepma window!"
          Height          =   375
          Left            =   1920
          TabIndex        =   40
@@ -554,7 +563,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Private Sub CommandBrowseBatchFolder_Click()
@@ -603,6 +612,12 @@ End Sub
 Private Sub CommandReload_Click()
 If Not DebugMode Then On Error Resume Next
 Call Penepma08BatchLoad
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandRename_Click()
+If Not DebugMode Then On Error Resume Next
+Call Penepma08BatchCopyRename
 If ierror Then Exit Sub
 End Sub
 

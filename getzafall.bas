@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGETZAFALL"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -23,31 +23,31 @@ Dim i As Integer
 For i% = 0 To MAXCORRECTION%
 FormGETZAFALL.Option6(i%).Caption = corstring(i%)
 Next i%
-FormGETZAFALL.Option6(CorrectionFlag%).value = True
+FormGETZAFALL.Option6(CorrectionFlag%).Value = True
 
 ' Load empirical alpha flag
 If EmpiricalAlphaFlag% = 1 Then
-FormGETZAFALL.CheckEmpiricalAlphaFlag.value = vbUnchecked
+FormGETZAFALL.CheckEmpiricalAlphaFlag.Value = vbUnchecked
 Else
-FormGETZAFALL.CheckEmpiricalAlphaFlag.value = vbChecked
+FormGETZAFALL.CheckEmpiricalAlphaFlag.Value = vbChecked
 End If
 
 ' Load Penepma K-ratios flag (from binary compositions from Penfluor/Fanal)
 If UsePenepmaKratiosFlag% = 1 Then
-FormGETZAFALL.CheckUsePenepmaKratios.value = vbUnchecked
+FormGETZAFALL.CheckUsePenepmaKratios.Value = vbUnchecked
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
 Else
-FormGETZAFALL.CheckUsePenepmaKratios.value = vbChecked
+FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
 End If
 
 FormGETZAFALL.TextPenepmaKratioLimit.Text = Format$(PenepmaKratiosLimitValue!)
 
 If UsePenepmaKratiosLimitFlag Then
-FormGETZAFALL.CheckPenepmaKratioLimit.value = vbChecked
+FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = True
 Else
-FormGETZAFALL.CheckPenepmaKratioLimit.value = vbUnchecked
+FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbUnchecked
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
 End If
 
@@ -75,7 +75,7 @@ Dim i As Integer
 ' MACs
 For i% = 1 To MAXMACTYPE%
 FormMAC.Option6(i% - 1).Caption = macstring(i%)
-If i% = MACTypeFlag% Then FormMAC.Option6(i% - 1).value = True
+If i% = MACTypeFlag% Then FormMAC.Option6(i% - 1).Value = True
 Next i%
 
 Exit Sub
@@ -98,18 +98,18 @@ Dim i As Integer
 
 ' Note that "CorrectionFlag%" is handled different (dimensioned 0 to MAXCORRECTION%) (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
 For i% = 0 To MAXCORRECTION%
-If FormGETZAFALL.Option6(i%).value Then CorrectionFlag% = i%
+If FormGETZAFALL.Option6(i%).Value Then CorrectionFlag% = i%
 Next i%
 
 ' Save empirical factors flag
-If FormGETZAFALL.CheckEmpiricalAlphaFlag.value = vbUnchecked Then
+If FormGETZAFALL.CheckEmpiricalAlphaFlag.Value = vbUnchecked Then
 EmpiricalAlphaFlag% = 1
 Else
 EmpiricalAlphaFlag% = 2
 End If
 
 ' Save Penepma K-ratios flag (from binary compositions from Penfluor/Fanal)
-If FormGETZAFALL.CheckUsePenepmaKratios.value = vbUnchecked Then
+If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbUnchecked Then
 UsePenepmaKratiosFlag% = 1
 Else
 UsePenepmaKratiosFlag% = 2
@@ -122,7 +122,7 @@ Else
 PenepmaKratiosLimitValue! = Val(FormGETZAFALL.TextPenepmaKratioLimit.Text)
 End If
 
-If FormGETZAFALL.CheckPenepmaKratioLimit.value = vbChecked Then
+If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
 UsePenepmaKratiosLimitFlag = True
 Else
 UsePenepmaKratiosLimitFlag = False
@@ -153,7 +153,7 @@ Dim itemp As Integer
 
 ' Load value
 For i% = 1 To MAXMACTYPE%
-If FormMAC.Option6(i% - 1).value Then itemp% = i%
+If FormMAC.Option6(i% - 1).Value Then itemp% = i%
 Next i%
 
 ' Check that file exists
@@ -184,14 +184,14 @@ ierror = False
 On Error GoTo GetZAFAllOptionsError
 
 ' ZAF/Phi-Rho-Z or alpha factors
-If FormGETZAFALL.Option6(0).value Or FormGETZAFALL.Option6(1).value Or FormGETZAFALL.Option6(2).value Or FormGETZAFALL.Option6(3).value Then
+If FormGETZAFALL.Option6(0).Value Or FormGETZAFALL.Option6(1).Value Or FormGETZAFALL.Option6(2).Value Or FormGETZAFALL.Option6(3).Value Then
 Call GetZAFLoad
 If ierror Then Exit Sub
 FormGETZAF.Show vbModal
 End If
 
 ' Calibration curve
-If FormGETZAFALL.Option6(4).value Then
+If FormGETZAFALL.Option6(4).Value Then
 End If
 
 Exit Sub
@@ -223,13 +223,13 @@ FormGETZAFALL.CheckEmpiricalAlphaFlag.Enabled = True
 FormGETZAFALL.CheckUsePenepmaKratios.Enabled = True
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
 
-If FormGETZAFALL.CheckUsePenepmaKratios.value = vbChecked Then
+If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked Then
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
 Else
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
 End If
 
-If FormGETZAFALL.CheckPenepmaKratioLimit.value = vbChecked Then
+If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = True
 End If
 End If

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "comctl32.ocx"
+Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.3#0"; "COMCTL32.OCX"
 Object = "{0EF1F64B-CADD-4E29-8703-556548DF74E3}#1.0#0"; "cshtpctl.ocx"
 Object = "{3A1209F5-3069-4E0A-A192-1427CFD1D5A9}#1.0#0"; "csftpctl.ocx"
 Begin VB.Form FormUPDATE 
@@ -17,14 +17,14 @@ Begin VB.Form FormUPDATE
    ScaleWidth      =   5310
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
-   Begin FtpClientCtl.FtpClient FtpClient1 
-      Left            =   2640
+   Begin HttpClientCtl.HttpClient HttpClient1 
+      Left            =   3120
       Top             =   720
       _cx             =   741
       _cy             =   741
    End
-   Begin HttpClientCtl.HttpClient HttpClient1 
-      Left            =   3120
+   Begin FtpClientCtl.FtpClient FtpClient1 
+      Left            =   2640
       Top             =   720
       _cx             =   741
       _cy             =   741
@@ -169,7 +169,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Private Sub CommandClose_Click()

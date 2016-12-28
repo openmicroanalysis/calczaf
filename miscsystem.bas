@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscSystem"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -11,9 +11,9 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
-Private Declare Function SetLocaleInfo Lib "Kernel32" Alias "SetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String) As Boolean
-Private Declare Function GetUserDefaultLCID% Lib "Kernel32" ()
+Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function SetLocaleInfo Lib "kernel32" Alias "SetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String) As Boolean
+Private Declare Function GetUserDefaultLCID% Lib "kernel32" ()
  
 'Public Const LOCALE_ICENTURY& = &H24
 'Public Const LOCALE_ICOUNTRY& = &H5
@@ -96,7 +96,7 @@ Public Const LOCALE_STHOUSAND& = &HF
 'Public Const LOCALE_STIME& = &H1E
 'Public Const LOCALE_STIMEFORMAT& = &H1003
  
-Private Declare Function GetSystemDefaultLangID Lib "Kernel32" () As Integer
+Private Declare Function GetSystemDefaultLangID Lib "kernel32" () As Integer
 
 ' OS constants
 Global Const OS_VERSION_WIN32S& = 0
@@ -189,14 +189,14 @@ Private Const MAX_PATH& = 512
 Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
 
 ' Old functions
-Private Declare Function GetTempPath Lib "Kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
-Private Declare Function GetTempFileName Lib "Kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
+Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
+Private Declare Function GetTempFileName Lib "kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
 
-Private Declare Function GetWindowsDirectoryB Lib "Kernel32" Alias "GetWindowsDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
-Private Declare Function GetSystemDirectoryB Lib "Kernel32" Alias "GetSystemDirectoryA" (ByVal Path As String, ByVal cbBytes As Long) As Long
+Private Declare Function GetWindowsDirectoryB Lib "kernel32" Alias "GetWindowsDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
+Private Declare Function GetSystemDirectoryB Lib "kernel32" Alias "GetSystemDirectoryA" (ByVal Path As String, ByVal cbBytes As Long) As Long
 Private Const MAX_LENGTH& = 512
 
-Private Declare Function GetVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
+Private Declare Function GetVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
 
 Private Type OSVERSIONINFO
     OSVSize         As Long
@@ -211,10 +211,10 @@ Private Const VER_PLATFORM_WIN32s = 0
 Private Const VER_PLATFORM_WIN32_WINDOWS = 1
 Private Const VER_PLATFORM_WIN32_NT = 2
 
-Private Declare Function GetProcAddress Lib "Kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
-Private Declare Function GetModuleHandle Lib "Kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
-Private Declare Function GetCurrentProcess Lib "Kernel32" () As Long
-Private Declare Function IsWow64Process Lib "Kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
+Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
+Private Declare Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
+Private Declare Function GetCurrentProcess Lib "kernel32" () As Long
+Private Declare Function IsWow64Process Lib "kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
 
 ' Constants used by MiscFindWindowPartial and ThermoEDSSpectraStartServers
 Global Const FWP_STARTSWITH As Long = 0
@@ -231,8 +231,8 @@ Private Declare Function GetFileVersionInfo Lib "Version.dll" Alias "GetFileVers
 Private Declare Function GetFileVersionInfoSize Lib "Version.dll" Alias "GetFileVersionInfoSizeA" (ByVal lptstrFilename As String, lpdwHandle As Long) As Long
 Private Declare Function VerQueryValue Lib "Version.dll" Alias "VerQueryValueA" (pBlock As Any, ByVal lpSubBlock As String, lplpBuffer As Any, puLen As Long) As Long
 
-Private Declare Sub MoveMemory Lib "Kernel32" Alias "RtlMoveMemory" (dest As Any, ByVal Source As Long, ByVal Length As Long)
-Private Declare Function lstrcpy Lib "Kernel32" Alias "lstrcpyA" (ByVal lpString1 As String, ByVal lpString2 As Long) As Long
+Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" (dest As Any, ByVal Source As Long, ByVal Length As Long)
+Private Declare Function lstrcpy Lib "kernel32" Alias "lstrcpyA" (ByVal lpString1 As String, ByVal lpString2 As Long) As Long
 
 Public Type TypeFileInformation
 CompanyName As String
@@ -249,11 +249,11 @@ End Type
 Private Const GW_HWNDNEXT As Long = 2
 
 ' API for MiscDirectorySort
-Private Declare Function FindFirstFile Lib "Kernel32" Alias "FindFirstFileA" (ByVal lpFileName As String, lpFindFileData As WIN32_FIND_DATA) As Long
-Private Declare Function FindNextFile Lib "Kernel32" Alias "FindNextFileA" (ByVal hFindFile As Long, lpFindFileData As WIN32_FIND_DATA) As Long
-Private Declare Function FindClose Lib "Kernel32" (ByVal hFindFile As Long) As Long
-Private Declare Function lstrlen Lib "Kernel32" Alias "lstrlenA" (ByVal lpString As String) As Long
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+Private Declare Function FindFirstFile Lib "kernel32" Alias "FindFirstFileA" (ByVal lpFileName As String, lpFindFileData As WIN32_FIND_DATA) As Long
+Private Declare Function FindNextFile Lib "kernel32" Alias "FindNextFileA" (ByVal hFindFile As Long, lpFindFileData As WIN32_FIND_DATA) As Long
+Private Declare Function FindClose Lib "kernel32" (ByVal hFindFile As Long) As Long
+Private Declare Function lstrlen Lib "kernel32" Alias "lstrlenA" (ByVal lpString As String) As Long
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 
 Private Type FILETIME
     dwLowDateTime As Long
@@ -1066,7 +1066,7 @@ Exit Sub
 
 End Sub
 
-Sub MiscDirectorySort(tPath As String, tfilenames() As String, tfiledates() As Variant)
+Sub MiscDirectorySort(tpath As String, tfilenames() As String, tfiledates() As Variant)
 ' Returns an array of filenames sorted by date and time
 '
 ' Shell "cmd /c DIR C:\ /O:-D /B > C:\DirList.txt"
@@ -1076,19 +1076,19 @@ On Error GoTo MiscDirectorySortError
 
 Dim hFind As Long, n As Long, i As Long
 
-Dim wfd As WIN32_FIND_DATA
+Dim WFD As WIN32_FIND_DATA
 Dim tFiles() As FileInfo
     
 ' Create file list
-hFind& = FindFirstFile(tPath$, wfd)
+hFind& = FindFirstFile(tpath$, WFD)
     Do
-        If (wfd.dwFileAttributes And vbDirectory) = 0 Then
+        If (WFD.dwFileAttributes And vbDirectory) = 0 Then
             ReDim Preserve tFiles(n&)
-            tFiles(n&).Filename = Left$(wfd.cFileName, lstrlen(wfd.cFileName))
-            CopyMemory tFiles(n&).Modified, wfd.ftLastWriteTime, 8
+            tFiles(n&).Filename = Left$(WFD.cFileName, lstrlen(WFD.cFileName))
+            CopyMemory tFiles(n&).Modified, WFD.ftLastWriteTime, 8
             n& = n& + 1
         End If
-    Loop While FindNextFile(hFind&, wfd)
+    Loop While FindNextFile(hFind&, WFD)
 FindClose hFind&
     
 ' Sort file list by date/time
@@ -1110,7 +1110,7 @@ ReDim tfiledates(1 To UBound(tFiles)) As Variant
 
 For n& = 1 To UBound(tFiles)
 tfilenames$(n&) = tFiles(n&).Filename$
-tfiledates(n&) = FileDateTime(MiscGetPathOnly2$(tPath$) & "\" & tfilenames$(n&))
+tfiledates(n&) = FileDateTime(MiscGetPathOnly2$(tpath$) & "\" & tfilenames$(n&))
 Next n&
 
 Exit Sub

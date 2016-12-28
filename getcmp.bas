@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGETCMP"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Dim GetCmpOldSample(1 To 1) As TypeSample
@@ -88,10 +88,13 @@ If Val(FormGETCMP.TextNumber.Text) <= 0 Then GoTo GetCmpSaveNoNumber
 ' Check for non-blank standard name
 If FormGETCMP.TextName.Text = vbNullString Then GoTo GetCmpSaveNoName
 
-' Save Name, Number and description fields
+' Save name, number and description fields
 GetCmpTmpSample(1).number% = Val(FormGETCMP.TextNumber.Text)
 GetCmpTmpSample(1).Name$ = FormGETCMP.TextName.Text
 GetCmpTmpSample(1).Description$ = FormGETCMP.TextDescription.Text
+
+' Check for valid standard number
+If GetCmpTmpSample(1).number% = MAXINTEGER% Then GoTo GetCmpSaveInvalidNumber
 
 ' Save the DisplayAsOxide option button
 If FormGETCMP.OptionDisplayAsOxide.Value Then
@@ -103,8 +106,7 @@ End If
 If Val(FormGETCMP.TextDensity.Text) <= 0# Or Val(FormGETCMP.TextDensity.Text) > MAXDENSITY# Then GoTo GetCmpSaveBadDensity
 GetCmpTmpSample(1).SampleDensity! = Val(FormGETCMP.TextDensity.Text)
 
-' Load the element, xray, cation, oxygen and wtpercents lists
-' into the GetCmpOldSample array to remove possible blank spaces.
+' Load the element, xray, cation, oxygen and wtpercents lists into the GetCmpOldSample array to remove possible blank spaces
 Call InitSample(GetCmpOldSample())
 If ierror Then Exit Sub
 
@@ -184,6 +186,12 @@ Exit Sub
 
 GetCmpSaveNoName:
 msg$ = "Standard number " & Str$(GetCmpTmpSample(1).number%) & " has a blank standard name"
+MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSave"
+ierror = True
+Exit Sub
+
+GetCmpSaveInvalidNumber:
+msg$ = "Standard number " & Str$(GetCmpTmpSample(1).number%) & " is a reserved standard number and cannot be used for a standard."
 MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSave"
 ierror = True
 Exit Sub

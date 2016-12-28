@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscFile"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -164,17 +164,17 @@ Exit Sub
 
 End Sub
 
-Sub MiscChangePath(tPath As String)
+Sub MiscChangePath(tpath As String)
 ' Routine to change the path
 
 ierror = False
 On Error GoTo MiscChangePathError
 
-If Trim$(tPath$) = vbNullString Then Exit Sub
+If Trim$(tpath$) = vbNullString Then Exit Sub
 
-If Left$(Trim$(tPath$), 2) <> "\\" Then ChDrive tPath$
-If MiscGetPathOnly$(tPath$) <> vbNullString Then
-ChDir MiscGetPathOnly$(tPath$)
+If Left$(Trim$(tpath$), 2) <> "\\" Then ChDrive tpath$
+If MiscGetPathOnly$(tpath$) <> vbNullString Then
+ChDir MiscGetPathOnly$(tpath$)
 End If
 
 Exit Sub

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma08c"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Const COL7% = 7
@@ -135,7 +135,7 @@ Sub Penepma08RunConvolgEXE(mode As Integer)
 ' Run the Convolg program to convolve the Penepma spectrum
 '  mode = 0  use default EDS resolution (~140 eV)
 '  mode = 1  use WDS LIF resolution (~4 eV)
-'  mode = 2  use WDS PET resolution (~6 eV)
+'  mode = 2  use WDS PET resolution (~2 eV)
 '  mode = 3  use WDS TAP resolution (~8 eV)
 '  mode = 4  use WDS LDE resolution (~20 eV)
 
@@ -267,7 +267,7 @@ Print #tfilenumber%, Format$(DEMO_EDS_EVPERCHANNEL!)        ' always assume 20 e
 Else
 Print #tfilenumber%, Format$(DEMO_WDS_EVPERCHANNEL!)        ' always assume 1 eV per channel for WDS (range can vary depending on simulation!)
 End If
-Print #tfilenumber%, vbNullString               ' needs a crlf
+Print #tfilenumber%, vbNullString                           ' needs a CrLf
 
 Close #tfilenumber%
 Exit Sub

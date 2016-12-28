@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePENEPMA08"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Global Const MAXMATOUTPUT% = 2      ' up to 2 materials (1 for bulk, 2 for couple, bilayer or thin film)
@@ -10,7 +10,7 @@ Const MAXTRIES% = 10
 Const COL7% = 7
 
 'The maximum number of channels can be changed in Penepma.f where (NEDCM) can be changed at line 464:
-'PARAMETER (NEDM=25,NEDCM=1000)     ' changed to 20000 12-02-2016
+'PARAMETER (NEDM=25,NEDCM=1000)     ' changed to 32000 12-02-2016
 
 ' Global
 Global Const MAXPRODUCTION% = 4
@@ -1090,7 +1090,8 @@ Dim tpath As String, tstring As String
 
 ' Load to module and dialog
 tstring$ = "Browse PENEPMA Batch Project Folder"
-tpath$ = IOBrowseForFolderByPath(True, PENEPMA_Path$, tstring$, FormPENEPMA08Batch)
+If PENEPMA_BATCH_FOLDER$ = vbNullString Then PENEPMA_BATCH_FOLDER$ = PENEPMA_Path$
+tpath$ = IOBrowseForFolderByPath(True, PENEPMA_BATCH_FOLDER$, tstring$, FormPENEPMA08Batch)
 If ierror Then Exit Sub
 
 If Trim$(tpath$) <> vbNullString Then PENEPMA_BATCH_FOLDER$ = tpath$
@@ -3455,6 +3456,13 @@ If tstring$ = "L2 M4" Then l% = 4         ' (Lb)
 If tstring$ = "M5 N7" Then l% = 5         ' (Ma)
 If tstring$ = "M4 N6" Then l% = 6         ' (Mb)
 
+'If tstring$ = "L2-M1" Then l% = 7         ' (Ln)
+'If tstring$ = "L2-N4" Then l% = 8         ' (Lg)
+'If tstring$ = "L2-N6" Then l% = 9         ' (Lv)
+'If tstring$ = "L3-M1" Then l% = 10        ' (Ll)
+'If tstring$ = "M3-N5" Then l% = 11        ' (Mg)
+'If tstring$ = "M5-N3" Then l% = 12        ' (Mz)
+
 ' Skip if not one of the primary lines
 If l% > 0 Then
 elementfound = True
@@ -4680,6 +4688,81 @@ Exit Sub
 ' Errors
 Penepma08SetOptionProductionEnablesError:
 MsgBox Error$, vbOKOnly + vbCritical, "Penepma08SetOptionProductionEnables"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub Penepma08BatchCopyRename()
+' Copy and rename pure element files
+
+ierror = False
+On Error GoTo Penepma08BatchCopyRenameError
+
+Dim tpath As String, tstring As String
+Dim tfilename As String, tsym As String
+Dim tkeV As Integer, m As Integer
+
+Dim nCount As Long, n As Long
+Dim sAllFiles() As String
+
+' Load to module and dialog
+tstring$ = "Browse PENEPMA Batch Project Folder For Pure Elements Copy/Rename"
+If PENEPMA_BATCH_FOLDER$ = vbNullString Then PENEPMA_BATCH_FOLDER$ = PENEPMA_Path$
+tpath$ = IOBrowseForFolderByPath(True, PENEPMA_BATCH_FOLDER$, tstring$, FormPENEPMA08Batch)
+If ierror Then Exit Sub
+
+If Trim$(tpath$) <> vbNullString Then PENEPMA_BATCH_FOLDER$ = tpath$
+FormPENEPMA08Batch.TextBatchFolder.Text = PENEPMA_BATCH_FOLDER$
+
+' Now go through each folder and copy files as PENEPMA_Path$ & "\pure\" & Format$(tkeV%) & "keV\pe-spect-01" & "_" & Trim$(tSym$) & ".dat"
+Call DirectorySearch("pe-spect-01.dat", PENEPMA_BATCH_FOLDER$, True, nCount&, sAllFiles$())     ' get all pe-spect-01.dat files recursively
+If ierror Then Exit Sub
+
+If nCount& < 1 Then GoTo Penepma08BatchCopyRenameNoFiles
+
+' Loop on all files
+For n& = 1 To nCount&
+tfilename$ = sAllFiles$(n&)
+
+' Determine keV for folder
+m% = InStr(tfilename$, "(")
+If m% > 0 Then
+tkeV% = Val(Mid$(tfilename$, m% + 1, 2))
+
+' Determine element symbol for folder
+m% = InStr(tfilename$, ")\")
+If m% > 0 Then
+tsym$ = Mid$(tfilename$, m% + 2, 2)
+
+' Remove trailing underscore if present (single character element symbols)
+If Right$(tsym$, 1) = "_" Then tsym$ = Left$(tsym$, Len(tsym$) - 1)
+
+' Copy and rename spectrum file
+FileCopy MiscGetPathOnly$(tfilename$) & "pe-spect-01.dat", PENEPMA_Path$ & "\pure\" & Format$(tkeV%) & "keV\pe-spect-01" & "_" & Trim$(tsym$) & ".dat"
+
+' Copy and rename net intensity file
+FileCopy MiscGetPathOnly$(tfilename$) & "pe-intens-01.dat", PENEPMA_Path$ & "\pure\" & Format$(tkeV%) & "keV\pe-intens-01" & "_" & Trim$(tsym$) & ".dat"
+
+End If
+End If
+Next n&
+
+' Confirm with user
+msg$ = "All pure element files were copied to the Penepma12\Penepma\pure folder."
+MsgBox msg$, vbOKOnly + vbInformation, "Penepma08BatchCopyRename"
+
+Exit Sub
+
+' Errors
+Penepma08BatchCopyRenameError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08BatchCopyRename"
+ierror = True
+Exit Sub
+
+Penepma08BatchCopyRenameNoFiles:
+msg$ = "No files of the type specified were found."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchCopyRename"
 ierror = True
 Exit Sub
 

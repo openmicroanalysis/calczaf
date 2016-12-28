@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGLOBAL"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -1592,10 +1592,6 @@ Global RealTimeCrystalPositions(1 To MAXSPEC%) As String
 
 Global RealTimeScalLabels(1 To MAXSPEC%) As String
 
-' Demo stuff
-Global DemoOnCounts(1 To MAXCHAN%) As Single
-Global DemoOffCounts(1 To MAXCHAN%) As Single
-
 ' Wave/Peak scan globals
 Global WaveMode As Integer  ' 1 = wavescan, 2 = peakscan
 Global WavePeakCenterStart As Single
@@ -2938,3 +2934,5 @@ Global CalcImageAnalogSignalFlags(1 To 3) As Integer    ' leave as integer for C
 Global CalcImageAnalogSignalLabels(1 To 3) As String
 
 Global InstrumentFacility As String
+
+Global UsePenepmaSimulationForDemoMode As Boolean

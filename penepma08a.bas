@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma08a"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -14,7 +14,7 @@ Option Explicit
 Const COL7% = 7
 
 'The maximum number of channels can be changed in Penepma.f where (NEDCM) can be changed at line 464:
-'PARAMETER (NEDM=25,NEDCM=1000)     ' changed to 20000 12-02-2016
+'PARAMETER (NEDM=25,NEDCM=1000)     ' changed to 32000 12-02-2016
 
 Global Const PENEPMA_MINPERCENT! = 0.0001
 
@@ -494,7 +494,7 @@ Exit Sub
 
 End Sub
 
-Sub Penepma08PenepmaSpectrumWrite(tfilename As String, chan As Integer, npts() As Long, xdata() As Double, ydata() As Double, zdata() As Double, xmin As Double, xmax As Double, xnum As Long, xwid As Double, theta1 As Double, theta2 As Double, phi1 As Double, phi2 As Double)
+Sub Penepma08PenepmaSpectrumWrite(tfilename As String, npts As Long, xdata() As Double, ydata() As Double, zdata() As Double, xmin As Double, xmax As Double, xnum As Long, xwid As Double, theta1 As Double, theta2 As Double, phi1 As Double, phi2 As Double)
 ' Save spectrum data to passed Penepma spectrum file (for synthetic wavescan data in demo mode)
 '
 ' Default header shown here:
@@ -540,9 +540,9 @@ Print #tfilenumber%, " #  2nd column: probability density (1/(eV*sr*electron))."
 Print #tfilenumber%, " #  3rd column: statistical uncertainty (3 sigma)."
 Print #tfilenumber%, " #"
 
-' Save array to disk (nPoints&, xdata#(), ydata#(), zdata#())
-For n& = 1 To npts&(chan%)
-Print #tfilenumber%, " ", Format$(Format$(xdata#(chan%, n&), e104$), a14$), Format$(Format$(ydata#(chan%, n&), e104$), a14$), Format$(Format$(zdata#(chan%, n&), e104$), a14$)
+' Save array to disk (npts&, xdata#(), ydata#(), zdata#())
+For n& = 1 To npts&
+Print #tfilenumber%, " ", Format$(Format$(xdata#(n&), e104$), a14$), Format$(Format$(ydata#(n&), e104$), a14$), Format$(Format$(zdata#(n&), e104$), a14$)
 Next n&
 
 Close #tfilenumber%
@@ -557,4 +557,154 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Function Penepma08ExtractTransitionEnergy(ielm As Integer, iray As Integer, tfilename As String) As Double
+' Return the specified emission energy from the Penepma output
+'
+' Sample input file:
+' #  Results from PENEPMA. Output from photon detector #  1
+' #
+' #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01
+' #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02
+' #
+' #  Intensities of characteristic lines. All in 1/(sr*electron).
+' #    P = primary photons (from electron interactions);
+' #    C = flourescence from characteristic x rays;
+' #    B = flourescence from bremsstrahlung quanta;
+' #   TF = C+B, total fluorescence;
+' #  unc = statistical uncertainty (3 sigma).
+' #
+' # IZ S0 S1  E (eV)      P            unc       C            unc       B            unc       TF           unc       T            unc
+'   29  K M3  8.9054E+03  6.622094E-06 1.80E-07  0.000000E+00 0.00E+00  3.641611E-07 1.99E-07  3.641611E-07 1.99E-07  6.986255E-06 2.68E-07
+'   29  K M2  8.9054E+03  3.352315E-06 1.26E-07  0.000000E+00 0.00E+00  2.427741E-07 1.63E-07  2.427741E-07 1.63E-07  3.595089E-06 2.06E-07
+'   29  K M5  8.9771E+03  7.045851E-09 5.65E-09  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  7.045851E-09 5.65E-09
+'   29  K M4  8.9771E+03  3.522926E-09 3.99E-09  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  3.522926E-09 3.99E-09
+
+ierror = False
+On Error GoTo Penepma08ExtractTransitionEnergyError
+
+Dim elementfound As Boolean
+Dim l As Integer
+Dim astring As String, bstring As String, tstring As String
+Dim atnum As Integer
+Dim S0 As String, s1 As String
+Dim eV As Single
+
+' Make sure input file is closed
+Close #Temp1FileNumber%
+
+If Dir$(Trim$(tfilename$)) = vbNullString Then Exit Function
+Open tfilename$ For Input As #Temp1FileNumber%
+
+' Load array (IZ, SO, S1, E (eV), P, unc, etc.
+Do Until EOF(Temp1FileNumber%)
+Line Input #Temp1FileNumber%, astring$
+If Len(Trim$(astring$)) > 0 And InStr(astring$, "#") = 0 Then            ' skip to first data line (also skips if value is -1.#IND0E+000)
+
+' Load k-ratio data
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Function
+atnum% = Val(Trim$(bstring$))                        ' IZ (atomic number)
+
+' Check atomic number
+If atnum% = ielm% Then
+
+' Load transition strings
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Function
+S0$ = Trim$(bstring$)                                ' S0 (inner transition)
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Function
+s1$ = Trim$(bstring$)                                ' S1 (outer transition)
+
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Function
+eV! = Val(Trim$(bstring$))                           ' E (eV)
+
+' Load x-ray index for x-ray line
+l% = 0
+tstring$ = S0$ & " " & s1$
+If tstring$ = "K L3" Then l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
+If tstring$ = "K M3" Then l% = 2          ' (Kb)
+If tstring$ = "L3 M5" Then l% = 3         ' (La)
+If tstring$ = "L2 M4" Then l% = 4         ' (Lb)
+If tstring$ = "M5 N7" Then l% = 5         ' (Ma)
+If tstring$ = "M4 N6" Then l% = 6         ' (Mb)
+
+If tstring$ = "L2-M1" Then l% = 7         ' (Ln)
+If tstring$ = "L2-N4" Then l% = 8         ' (Lg)
+If tstring$ = "L2-N6" Then l% = 9         ' (Lv)
+If tstring$ = "L3-M1" Then l% = 10        ' (Ll)
+If tstring$ = "M3-N5" Then l% = 11        ' (Mg)
+If tstring$ = "M5-N3" Then l% = 12        ' (Mz)
+
+' Skip if not the specified primary line
+If l% > 0 And l% = iray% Then
+Penepma08ExtractTransitionEnergy# = CDbl(eV!)
+Close #Temp1FileNumber%
+Exit Function
+
+' Parse primary intensity
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'pri_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse primary intensity uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+
+' Parse characteristic fluorescence
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'flch_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse characteristic fluorescence intensity uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+
+' Parse continuum fluorescence
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'flbr_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse characteristic fluorescence uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+
+' Parse total fluorescence
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'flu_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse total fluorescence uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+
+' Parse total intensity
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'tot_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse total intensity uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'tot_int_var!(n%, l%) = Val(Trim$(bstring$))
+End If
+
+End If
+End If
+Loop
+
+Close #Temp1FileNumber%
+
+Exit Function
+
+' Errors
+Penepma08ExtractTransitionEnergyError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08ExtractTransitionEnergy"
+Close #Temp1FileNumber%
+ierror = True
+Exit Function
+
+End Function
 
