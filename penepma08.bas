@@ -11,6 +11,7 @@ Const COL7% = 7
 
 'The maximum number of channels can be changed in Penepma.f where (NEDCM) can be changed at line 464:
 'PARAMETER (NEDM=25,NEDCM=1000)     ' changed to 32000 12-02-2016
+'Also the output format changed on line 1121 from I4 to I5
 
 ' Global
 Global Const MAXPRODUCTION% = 4

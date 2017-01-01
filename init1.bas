@@ -572,6 +572,7 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINIGeneral"
 DefaultBeamCurrent! = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+OriginalBeamCurrent! = DefaultBeamCurrent!
 
 ' Get default Beam Size (microns)
 lpAppName$ = "General"

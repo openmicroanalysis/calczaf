@@ -2187,8 +2187,8 @@ Dim tmsg As String, astring As String
 Static initialized As Boolean
 
 ' Penepma WDS simulation mode
-'UsePenepmaSimulationForDemoMode = True
-UsePenepmaSimulationForDemoMode = False     ' default
+UsePenepmaSimulationForDemoMode = True
+'UsePenepmaSimulationForDemoMode = False     ' default
 
 ' Program version number
 ProgramVersionString$ = Format$(app.major) & "." & Format$(app.minor) & "." & Format$(app.Revision)

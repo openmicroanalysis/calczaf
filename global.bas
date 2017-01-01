@@ -2936,3 +2936,5 @@ Global CalcImageAnalogSignalLabels(1 To 3) As String
 Global InstrumentFacility As String
 
 Global UsePenepmaSimulationForDemoMode As Boolean
+
+Global OriginalBeamCurrent As Single

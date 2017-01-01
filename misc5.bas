@@ -625,3 +625,24 @@ ierror = True
 Exit Function
 
 End Function
+
+Public Function MiscIsLongArrayInitalized(larray() As Long) As Boolean
+' Return True if long integer array is initalized
+
+On Error GoTo MiscIsLongArrayInitalizedError ' raise error if array is not initialzied
+
+Dim temp As Long
+
+MiscIsLongArrayInitalized = False
+temp& = UBound(larray&)
+
+' We reach this point only if arr is initalized, i.e. no error occured
+If temp& > -1 Then MiscIsLongArrayInitalized = True  ' UBound is greater then -1
+Exit Function
+
+' Special error handler (if an error occurs, this function returns False. i.e. array not initialized)
+MiscIsLongArrayInitalizedError:
+Exit Function
+
+End Function
+
