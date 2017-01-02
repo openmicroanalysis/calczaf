@@ -1598,6 +1598,8 @@ Global WavePeakCenterStart As Single
 Global WavePeakCenterMotor As Integer
 Global WavePeakCenterChannel As Integer
 Global WavePeakCenterFlags(1 To MAXCHAN%) As Boolean
+Global WavePeakSuccessFlags(1 To MAXCHAN%) As Boolean
+
 Global WavescanXIncrementFlag As Integer
 Global PeakingXIncrementFlag As Integer
 Global WavescanXIncrement As Single
