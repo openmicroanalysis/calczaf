@@ -230,7 +230,7 @@ End If
 ' Check for new Penepma.exe if more than 1000 channels
 If BeamNumberOfEnergyChannels& > 1000 Then
 If Dir$(PENEPMA_Path$ & "\Penepma.exe") <> vbNullString Then
-If FileDateTime(PENEPMA_Path$ & "\Penepma.exe") < "12/01/2016" Then
+If FileDateTime(PENEPMA_Path$ & "\Penepma.exe") < CDate("12/01/2016") Then
 msg$ = "Number of energy channels requires an update to the Penepma12 distribution. Please use the Help | Update Probe for EPMA or Help | Update CalcZAF menus to update your Penepma12 distribution."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08SaveInput"
 ierror = True
@@ -4722,7 +4722,14 @@ If ierror Then Exit Sub
 
 If nCount& < 1 Then GoTo Penepma08BatchCopyRenameNoFiles
 
+' Check for pure and keV sub folders and if not found, create them
+If Dir$(PENEPMA_Path$ & "\pure\", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\"
+If Dir$(PENEPMA_Path$ & "\pure\10keV", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\10keV"
+If Dir$(PENEPMA_Path$ & "\pure\15keV", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\15keV"
+If Dir$(PENEPMA_Path$ & "\pure\20keV", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\20keV"
+
 ' Loop on all files
+Screen.MousePointer = vbHourglass
 For n& = 1 To nCount&
 tfilename$ = sAllFiles$(n&)
 
@@ -4748,6 +4755,7 @@ FileCopy MiscGetPathOnly$(tfilename$) & "pe-intens-01.dat", PENEPMA_Path$ & "\pu
 End If
 End If
 Next n&
+Screen.MousePointer = vbDefault
 
 ' Confirm with user
 msg$ = "All pure element files were copied to the Penepma12\Penepma\pure folder."
@@ -4757,11 +4765,13 @@ Exit Sub
 
 ' Errors
 Penepma08BatchCopyRenameError:
+Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "Penepma08BatchCopyRename"
 ierror = True
 Exit Sub
 
 Penepma08BatchCopyRenameNoFiles:
+Screen.MousePointer = vbDefault
 msg$ = "No files of the type specified were found."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchCopyRename"
 ierror = True
