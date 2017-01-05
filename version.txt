@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/04/17	Fix array issue when adding element in Penepma WDS simulation mode.
+
+01/03/17	Bump version to force updates.
+v.11.7.7
+
 01/02/17	Modify Penepma/penelope code to handle more energy channels.
 
 01/01/17	Improve peaking report to log window code.  Fix error bar output in plot wavescan window.

@@ -157,12 +157,16 @@ If mode% < 0 Or mode > 4 Then GoTo Penepma08RunConvolgEXEBadMode
 Call Penepma08CreateConvolgFile(mode%)
 If ierror Then Exit Sub
 
+Sleep 100
+
 ' Delete existing temp batch file (use temp2.bat because Penepma is using temp.bat)
 bfilename$ = PENDBASE_Path$ & "\temp2.bat"
 If Dir$(bfilename$) <> vbNullString Then
 Kill bfilename$
 DoEvents
 End If
+
+Sleep 100
 
 ' Write batch file for running convolg.exe
 tfilenumber% = FreeFile()
@@ -189,6 +193,8 @@ If Dir$(PENEPMA_Path$ & "\Convolg_LDE.exe") = vbNullString Then GoTo Penepma08Ru
 End If
 Print #tfilenumber%, astring$
 Close #tfilenumber%
+
+Sleep 100
 
 ' Run batch file asynchronously (/k executes but window remains, /c executes but terminates)
 'taskID& = Shell("cmd.exe /k " & VbDquote$ & bfilename$ & VbDquote$, vbNormalFocus)
@@ -280,4 +286,138 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub Penepma08GetNetIntensities(nlines As Long, penepma_iz() As Integer, penepma_s0() As String, penepma_s1() As String, penepma_eV() As Double, penepma_total() As Double, penepma_unc() As Double)
+' Extract the net intensites from the EDS pe-intens-01.dat file (for demo EDS acquisition)
+'
+' Sample input file:
+' #  Results from PENEPMA. Output from photon detector #  1
+' #
+' #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01
+' #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02
+' #
+' #  Intensities of characteristic lines. All in 1/(sr*electron).
+' #    P = primary photons (from electron interactions);
+' #    C = flourescence from characteristic x rays;
+' #    B = flourescence from bremsstrahlung quanta;
+' #   TF = C+B, total fluorescence;
+' #  unc = statistical uncertainty (3 sigma).
+' #
+' # IZ S0 S1  E (eV)      P            unc       C            unc       B            unc       TF           unc       T            unc
+'   29  K M3  8.9054E+03  6.622094E-06 1.80E-07  0.000000E+00 0.00E+00  3.641611E-07 1.99E-07  3.641611E-07 1.99E-07  6.986255E-06 2.68E-07
+'   29  K M2  8.9054E+03  3.352315E-06 1.26E-07  0.000000E+00 0.00E+00  2.427741E-07 1.63E-07  2.427741E-07 1.63E-07  3.595089E-06 2.06E-07
+'   29  K M5  8.9771E+03  7.045851E-09 5.65E-09  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  7.045851E-09 5.65E-09
+'   29  K M4  8.9771E+03  3.522926E-09 3.99E-09  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  3.522926E-09 3.99E-09
+
+ierror = False
+On Error GoTo Penepma08GetNetIntensitiesError
+
+Dim tfilename As String
+Dim tfilenumber As Integer
+Dim temp As Single
+Dim astring As String, bstring As String, tstring As String
+
+nlines& = 0
+
+tfilename$ = PENEPMA_Path$ & "\pe-intens-01.dat"
+tfilenumber% = FreeFile()
+Open tfilename$ For Input As #tfilenumber%
+
+' Load array (IZ, SO, S1, E (eV), P, unc, etc.
+Do Until EOF(tfilenumber%)
+Line Input #tfilenumber%, astring$
+If Len(Trim$(astring$)) > 0 And InStr(astring$, "#") = 0 Then            ' skip to first data line (also skips if value is -1.#IND0E+000)
+
+' Dimension arrays
+nlines& = nlines& + 1
+ReDim Preserve penepma_iz(1 To nlines&) As Integer
+ReDim Preserve penepma_s0(1 To nlines&) As String
+ReDim Preserve penepma_s1(1 To nlines&) As String
+ReDim Preserve penepma_eV(1 To nlines&) As Double
+ReDim Preserve penepma_total(1 To nlines&) As Double
+ReDim Preserve penepma_unc(1 To nlines&) As Double
+
+' Load k-ratio data
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+penepma_iz%(nlines&) = Val(Trim$(bstring$))                           ' IZ (atomic number)
+
+' Load transition strings
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+penepma_s0$(nlines&) = Trim$(bstring$)                                ' S0 (inner transition)
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+penepma_s1$(nlines&) = Trim$(bstring$)                                ' S1 (outer transition)
+
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+penepma_eV#(nlines&) = Val(Trim$(bstring$))                           ' E (eV)
+
+' Parse primary intensity
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+temp! = Val(Trim$(bstring$))
+
+' Parse primary intensity uncertainty
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+temp! = Val(Trim$(bstring$))
+
+' Parse characteristic fluorescence
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+temp! = Val(Trim$(bstring$))
+
+' Parse characteristic fluorescence intensity uncertainty
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+temp! = Val(Trim$(bstring$))
+
+' Parse continuum fluorescence
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+temp! = Val(Trim$(bstring$))
+
+' Parse characteristic fluorescence uncertainty
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+temp! = Val(Trim$(bstring$))
+
+' Parse total fluorescence
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+temp! = Val(Trim$(bstring$))
+
+' Parse total fluorescence uncertainty
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+temp! = Val(Trim$(bstring$))
+
+' Parse total intensity
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+penepma_total#(nlines&) = Val(Trim$(bstring$))
+
+' Parse total intensity uncertainty
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+penepma_unc#(nlines&) = Val(Trim$(bstring$))
+
+End If
+Loop
+
+Close #tfilenumber%
+
+Exit Sub
+
+' Errors
+Penepma08GetNetIntensitiesError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08GetNetIntensities"
+Close #tfilenumber%
+ierror = True
+Exit Sub
+
+End Sub
+
 
