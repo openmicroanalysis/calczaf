@@ -203,12 +203,12 @@ If sample(1).XrayNums%(ip%) = 4 And Trim$(trans$) <> "L2 M4" Then GoTo Secondary
 If sample(1).XrayNums%(ip%) = 5 And Trim$(trans$) <> "M5 N7" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
 If sample(1).XrayNums%(ip%) = 6 And Trim$(trans$) <> "M4 N6" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
 
-'If sample(1).XrayNums%(ip%) = 7 And Trim$(trans$) <> "L2-M1" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
-'If sample(1).XrayNums%(ip%) = 8 And Trim$(trans$) <> "L2-N4" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
-'If sample(1).XrayNums%(ip%) = 9 And Trim$(trans$) <> "L2-N6" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
-'If sample(1).XrayNums%(ip%) = 10 And Trim$(trans$) <> "L3-M1" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
-'If sample(1).XrayNums%(ip%) = 11 And Trim$(trans$) <> "M3-N5" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
-'If sample(1).XrayNums%(ip%) = 12 And Trim$(trans$) <> "M5-N3" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
+'If sample(1).XrayNums%(ip%) = 7 And Trim$(trans$) <> "L2 M1" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
+'If sample(1).XrayNums%(ip%) = 8 And Trim$(trans$) <> "L2 N4" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
+'If sample(1).XrayNums%(ip%) = 9 And Trim$(trans$) <> "L2 N6" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
+'If sample(1).XrayNums%(ip%) = 10 And Trim$(trans$) <> "L3 M1" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
+'If sample(1).XrayNums%(ip%) = 11 And Trim$(trans$) <> "M3 N5" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
+'If sample(1).XrayNums%(ip%) = 12 And Trim$(trans$) <> "M5 N3" Then GoTo SecondaryReadKratiosDATFileXrayIsDifferent
 
 ' Parse keV
 n% = InStr(UCase$(k_string2$), UCase$("#  e0 (eV) = "))

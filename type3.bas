@@ -687,7 +687,11 @@ Call IOWriteLog(msg$)
 If sample(1).Type% <> 3 Or DebugMode Then
 msg$ = "ONTIM:"
 For i% = ii% To jj%
+If sample(1).Datarows% = 0 And sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then
+msg$ = msg$ & Format$(Format$(EDSSpecifiedCountTime!, f82$), a80$)
+Else
 msg$ = msg$ & Format$(Format$(sample(1).LastOnCountTimes!(i%), f82$), a80$)
+End If
 Next i%
 Call IOWriteLog(msg$)
 

@@ -287,7 +287,7 @@ Exit Sub
 
 End Sub
 
-Sub Penepma08GetNetIntensities(nlines As Long, penepma_iz() As Integer, penepma_s0() As String, penepma_s1() As String, penepma_eV() As Double, penepma_total() As Double, penepma_unc() As Double)
+Sub Penepma08GetNetIntensities(nlines As Long, penepma_iz() As Integer, penepma_s0() As String, penepma_s1() As String, penepma_eV() As Single, penepma_total() As Single, penepma_bgd!(), penepma_unc() As Single)
 ' Extract the net intensites from the EDS pe-intens-01.dat file (for demo EDS acquisition)
 '
 ' Sample input file:
@@ -333,9 +333,10 @@ nlines& = nlines& + 1
 ReDim Preserve penepma_iz(1 To nlines&) As Integer
 ReDim Preserve penepma_s0(1 To nlines&) As String
 ReDim Preserve penepma_s1(1 To nlines&) As String
-ReDim Preserve penepma_eV(1 To nlines&) As Double
-ReDim Preserve penepma_total(1 To nlines&) As Double
-ReDim Preserve penepma_unc(1 To nlines&) As Double
+ReDim Preserve penepma_eV(1 To nlines&) As Single
+ReDim Preserve penepma_total(1 To nlines&) As Single
+ReDim Preserve penepma_bgd(1 To nlines&) As Single
+ReDim Preserve penepma_unc(1 To nlines&) As Single
 
 ' Load k-ratio data
 Call MiscParseStringToString(astring$, bstring$)
@@ -350,9 +351,10 @@ Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
 penepma_s1$(nlines&) = Trim$(bstring$)                                ' S1 (outer transition)
 
+' Laod energy in eV
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
-penepma_eV#(nlines&) = Val(Trim$(bstring$))                           ' E (eV)
+penepma_eV!(nlines&) = Val(Trim$(bstring$))                           ' E (eV)
 
 ' Parse primary intensity
 Call MiscParseStringToString(astring$, bstring$)
@@ -397,12 +399,15 @@ temp! = Val(Trim$(bstring$))
 ' Parse total intensity
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
-penepma_total#(nlines&) = Val(Trim$(bstring$))
+penepma_total!(nlines&) = Val(Trim$(bstring$))
+
+' Penepma bgd has to come from another data file so just zero for now
+penepma_bgd!(nlines&) = SIMULATION_ZERO!
 
 ' Parse total intensity uncertainty
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
-penepma_unc#(nlines&) = Val(Trim$(bstring$))
+penepma_unc!(nlines&) = Val(Trim$(bstring$))
 
 End If
 Loop

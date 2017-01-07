@@ -587,7 +587,7 @@ Dim elementfound As Boolean
 Dim l As Integer
 Dim astring As String, bstring As String, tstring As String
 Dim atnum As Integer
-Dim S0 As String, s1 As String
+Dim s0 As String, s1 As String
 Dim eV As Single
 
 ' Make sure input file is closed
@@ -612,7 +612,7 @@ If atnum% = ielm% Then
 ' Load transition strings
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Function
-S0$ = Trim$(bstring$)                                ' S0 (inner transition)
+s0$ = Trim$(bstring$)                                ' S0 (inner transition)
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Function
 s1$ = Trim$(bstring$)                                ' S1 (outer transition)
@@ -623,7 +623,7 @@ eV! = Val(Trim$(bstring$))                           ' E (eV)
 
 ' Load x-ray index for x-ray line
 l% = 0
-tstring$ = S0$ & " " & s1$
+tstring$ = s0$ & " " & s1$
 If tstring$ = "K L3" Then l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
 If tstring$ = "K M3" Then l% = 2          ' (Kb)
 If tstring$ = "L3 M5" Then l% = 3         ' (La)
@@ -631,12 +631,12 @@ If tstring$ = "L2 M4" Then l% = 4         ' (Lb)
 If tstring$ = "M5 N7" Then l% = 5         ' (Ma)
 If tstring$ = "M4 N6" Then l% = 6         ' (Mb)
 
-If tstring$ = "L2-M1" Then l% = 7         ' (Ln)
-If tstring$ = "L2-N4" Then l% = 8         ' (Lg)
-If tstring$ = "L2-N6" Then l% = 9         ' (Lv)
-If tstring$ = "L3-M1" Then l% = 10        ' (Ll)
-If tstring$ = "M3-N5" Then l% = 11        ' (Mg)
-If tstring$ = "M5-N3" Then l% = 12        ' (Mz)
+If tstring$ = "L2 M1" Then l% = 7         ' (Ln)
+If tstring$ = "L2 N4" Then l% = 8         ' (Lg)
+If tstring$ = "L2 N6" Then l% = 9         ' (Lv)
+If tstring$ = "L3 M1" Then l% = 10        ' (Ll)
+If tstring$ = "M3 N5" Then l% = 11        ' (Mg)
+If tstring$ = "M5 N3" Then l% = 12        ' (Mz)
 
 ' Skip if not the specified primary line
 If l% > 0 And l% = iray% Then

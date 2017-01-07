@@ -121,6 +121,7 @@ Global Const MAXDENSITY# = 30#           ' maximum density (gm/cm3)
 Global Const BLANKINGVALUE! = 1.70141E+38   ' Surfer blanking grid value
 Global Const MAXPATHLENGTH% = 255        ' maximum file path length
 Global Const MINCPSPERNA! = 0.00000000001 ' default minimum bgd count rate for P/B calculations
+Global Const SIMULATION_ZERO! = 0.0000000001    ' zero intensity
 
 Global Const MAXEMPFAC% = 100            ' maximum empirical alpha factors (from EMPFAC.DAT)
 Global Const MAXCALIBRATE% = 5           ' maximum number of elements for multiple peak calibration

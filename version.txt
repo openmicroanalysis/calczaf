@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/06/17	Implement quantification of Penepma simulated EDS spectra in PFE for teaching EPMA.
+v.11.7.8
+
 01/04/17	Fix array issue when adding element in Penepma WDS simulation mode.
 
 01/03/17	Bump version to force updates.
