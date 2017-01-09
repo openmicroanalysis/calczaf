@@ -597,6 +597,13 @@ sample(1).ChemicalAgeCalculationFlag = False
 sample(1).PTCDoNotNormalizeSpecifiedFlag = False
 sample(1).EDSSpectraQuantMethodOrProject$ = vbNullString
 
+sample(1).LastEDSSpecifiedCountTime! = EDSSpecifiedCountTime!
+sample(1).LastEDSUnknownCountFactor! = EDSUnknownCountFactor!
+
+sample(1).LastCLSpecifiedCountTime! = CLSpecifiedCountTime!
+sample(1).LastCLUnknownCountFactor! = CLUnknownCountFactor!
+sample(1).LastCLDarkSpectraCountTimeFraction! = CLDarkSpectraCountTimeFraction!
+
 Exit Sub
 
 InitSampleError:

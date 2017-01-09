@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/07/17	Modify EDS acquisition so that EDS count time and EDS unknown count factor are specified on a per 
+v.11.7.9	sample basis.  This way, each automated sample can utilize a different count time for EDS. Also
+		implement sample level flags for CL acquisition.
+
 01/06/17	Implement quantification of Penepma simulated EDS spectra in PFE for teaching EPMA.
 v.11.7.8
 

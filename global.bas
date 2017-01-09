@@ -817,6 +817,7 @@ Type TypeSample
     
     EDSUnknownCountFactors() As Single       ' real time, allocated in InitSample (1 to MAXROW%)
     LastEDSUnknownCountFactor As Single
+    LastEDSSpecifiedCountTime As Single
     
     EDSSpectraIntensities() As Long          ' allocated in InitSample (1 to MAXROW%, 1 to MAXSPECTRA%)
     EDSSpectraStrobes() As Long              ' allocated in InitSample (1 to MAXROW%, 1 to MAXSTROBE%) (Oxford only)
@@ -1127,7 +1128,6 @@ Type TypeSample
     CLSpectraDarkIntensities() As Long                ' allocated in InitSample (1 to MAXROW%, 1 to MAXSPECTRA_CL%)
     
     CLSpectraNumberofChannels() As Integer            ' allocated in InitSample (1 to MAXROW%)
-    
     CLAcquisitionCountTime() As Single                ' allocated in InitSample (1 to MAXROW%)
     CLSpectraStartEnergy() As Single                  ' allocated in InitSample (1 to MAXROW%)
     CLSpectraEndEnergy() As Single                    ' allocated in InitSample (1 to MAXROW%)
@@ -1135,7 +1135,10 @@ Type TypeSample
     CLDarkSpectraCountTimeFraction() As Single        ' allocated in InitSample (1 to MAXROW%)
     
     CLUnknownCountFactors() As Single                 ' allocated in InitSample (1 to MAXROW%)
+    
+    LastCLSpecifiedCountTime As Single
     LastCLUnknownCountFactor As Single
+    LastCLDarkSpectraCountTimeFraction As Single
 End Type
 
 Type TypeImage

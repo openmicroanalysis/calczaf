@@ -13,7 +13,7 @@ On Error GoTo Penepma08CreatePenepmaFileError
 Dim astring As String, bstring As String, cstring As String, dstring As String
 Dim tfilename As String, tfilename2 As String
 
-Const tSimulatedShowers# = 2000000000#
+Const tSimulatedShowers# = 20000000000#
 
 Dim tBeamMinimumEnergyRange As Double
 Dim tBeamMaximumEnergyRange As Double
@@ -287,8 +287,8 @@ Exit Sub
 
 End Sub
 
-Sub Penepma08GetNetIntensities(nlines As Long, penepma_iz() As Integer, penepma_s0() As String, penepma_s1() As String, penepma_eV() As Single, penepma_total() As Single, penepma_bgd!(), penepma_unc() As Single)
-' Extract the net intensites from the EDS pe-intens-01.dat file (for demo EDS acquisition)
+Sub Penepma08GetNetIntensities(nlines As Long, penepma_iz() As Integer, penepma_s0() As String, penepma_s1() As String, penepma_eV() As Single, penepma_total() As Single, penepma_unc() As Single, penepma_bgd() As Single)
+' Extract the net intensites from the EDS pe-intens-01.dat file (for demo EDS acquisition) (penepma_bgd!() is only dimensioned here)
 '
 ' Sample input file:
 ' #  Results from PENEPMA. Output from photon detector #  1
@@ -315,7 +315,7 @@ On Error GoTo Penepma08GetNetIntensitiesError
 Dim tfilename As String
 Dim tfilenumber As Integer
 Dim temp As Single
-Dim astring As String, bstring As String, tstring As String
+Dim astring As String, bstring As String
 
 nlines& = 0
 
@@ -351,7 +351,7 @@ Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
 penepma_s1$(nlines&) = Trim$(bstring$)                                ' S1 (outer transition)
 
-' Laod energy in eV
+' Load energy in eV
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
 penepma_eV!(nlines&) = Val(Trim$(bstring$))                           ' E (eV)
@@ -401,9 +401,6 @@ Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
 penepma_total!(nlines&) = Val(Trim$(bstring$))
 
-' Penepma bgd has to come from another data file so just zero for now
-penepma_bgd!(nlines&) = SIMULATION_ZERO!
-
 ' Parse total intensity uncertainty
 Call MiscParseStringToString(astring$, bstring$)
 If ierror Then Exit Sub
@@ -424,5 +421,89 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub Penepma08GetBgdIntensities(nlines As Long, penepma_eV() As Single, penepma_bgd() As Single)
+' Extract the generated bgd intensites from the EDS pe-gen-bremss.dat file (for demo EDS acquisition)
+'
+' Sample input file:
+' #  Results from PENEPMA.
+' #  Probability of emission of bremmstrahlung photons.
+' #  1st column: E (eV).
+' #  2nd and 3rd columns: probability density and STU (1/(eV*sr*electron)).
+'
+'   4.125000E+02  1.187693E-07  3.098989E-08
+'   4.275000E+02  1.232177E-07  2.439716E-08
+'   4.425000E+02  1.332971E-07  3.209410E-08
+'   4.575000E+02  1.092279E-07  2.268812E-08
+
+ierror = False
+On Error GoTo Penepma08GetBgdIntensitiesError
+
+Dim tfilename As String
+Dim ncont As Long, n As Long
+Dim tfilenumber As Integer
+Dim astring As String, bstring As String
+
+Dim energy_array() As Single
+Dim bremms_array() As Single
+Dim uncert_array() As Single
+
+ncont& = 0
+
+tfilename$ = PENEPMA_Path$ & "\pe-gen-bremss.dat"
+tfilenumber% = FreeFile()
+Open tfilename$ For Input As #tfilenumber%
+
+' Load array of generated bgd continuum intensities
+Do Until EOF(tfilenumber%)
+Line Input #tfilenumber%, astring$
+If Len(Trim$(astring$)) > 0 And InStr(astring$, "#") = 0 Then            ' skip to first data line (also skips if value is -1.#IND0E+000)
+
+' Dimension interpolation arrays
+ncont& = ncont& + 1
+ReDim Preserve energy_array(1 To ncont&) As Single
+ReDim Preserve bremms_array(1 To ncont&) As Single
+ReDim Preserve uncert_array(1 To ncont&) As Single
+
+' Load continuum energy
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+energy_array!(ncont&) = Val(Trim$(bstring$))                              ' generated bgd intensity
+
+' Load generated continuum intensity
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+bremms_array!(ncont&) = Val(Trim$(bstring$))                               ' generated bgd intensity
+
+' Load generated continuum intensity uncertainty
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+uncert_array!(ncont&) = Val(Trim$(bstring$))                              ' generated bgd intensity variance
+
+End If
+Loop
+
+Close #tfilenumber%
+
+' Now interpolate to get bgd intensity at each emission line energy
+For n& = 1 To nlines&
+
+' Return intensity for specified spectrometer position
+penepma_bgd!(n&) = MathGetInterpolatedYValue(penepma_eV!(n&), CInt(ncont&), energy_array!(), bremms_array!())
+If ierror Then Exit Sub
+
+Next n&
+
+Exit Sub
+
+' Errors
+Penepma08GetBgdIntensitiesError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08GetBgdIntensities"
+Close #tfilenumber%
+ierror = True
+Exit Sub
+
+End Sub
+
 
 
