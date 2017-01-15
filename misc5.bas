@@ -492,7 +492,7 @@ Exit Function
 End Function
 
 Function MiscIsElementDuplicatedSubsequent(chan As Integer, num As Integer, elementarray() As String, ipp As Integer) As Boolean
-' Check for duplicated element in the element list after the indicated element
+' Check for duplicated element in the element list after the indicated element (ipp% is the index of the duplicated element)
 
 ierror = False
 On Error GoTo MiscIsElementDuplicatedSubsequentError

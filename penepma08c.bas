@@ -12,6 +12,7 @@ On Error GoTo Penepma08CreatePenepmaFileError
 
 Dim astring As String, bstring As String, cstring As String, dstring As String
 Dim tfilename As String, tfilename2 As String
+Dim iseed1 As Integer, iseed2 As Integer
 
 Const tSimulatedShowers# = 20000000000#
 
@@ -108,6 +109,15 @@ If ierror Then Exit Sub
 Print #Temp2FileNumber%, bstring$
 Loop
 
+' Add random seed
+astring$ = "RSEED  1 2                     [Seeds of the random-number generator]"
+iseed1% = (Rnd() - 1#) * 1000
+iseed2% = 2
+cstring$ = Format$(iseed1%) & " " & Format$(iseed2%)
+Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+If ierror Then Exit Sub
+Print #Temp2FileNumber%, bstring$
+
 Close #Temp1FileNumber%
 Close #Temp2FileNumber%
 
@@ -153,11 +163,14 @@ If Dir$(PENEPMA_SPEC_File$) = vbNullString Then Exit Sub
 ' Check for valid mode
 If mode% < 0 Or mode > 4 Then GoTo Penepma08RunConvolgEXEBadMode
 
+' Check for blank convolg output file name
+If Trim$(PENEPMA_CONVOLG_File$) = vbNullString Then GoTo Penepma08RunConvolgEXENoConvolgFilename
+
 ' Create Convolg input file
 Call Penepma08CreateConvolgFile(mode%)
 If ierror Then Exit Sub
 
-Sleep 100
+Sleep 200
 
 ' Delete existing temp batch file (use temp2.bat because Penepma is using temp.bat)
 bfilename$ = PENDBASE_Path$ & "\temp2.bat"
@@ -166,7 +179,7 @@ Kill bfilename$
 DoEvents
 End If
 
-Sleep 100
+Sleep 200
 
 ' Write batch file for running convolg.exe
 tfilenumber% = FreeFile()
@@ -194,7 +207,7 @@ End If
 Print #tfilenumber%, astring$
 Close #tfilenumber%
 
-Sleep 100
+Sleep 200
 
 ' Run batch file asynchronously (/k executes but window remains, /c executes but terminates)
 'taskID& = Shell("cmd.exe /k " & VbDquote$ & bfilename$ & VbDquote$, vbNormalFocus)
@@ -202,7 +215,7 @@ taskID& = Shell("cmd.exe /c " & VbDquote$ & bfilename$ & VbDquote$, vbMinimizedN
 
 ' Loop until complete
 Do Until IOIsProcessTerminated(taskID&)
-Sleep 100
+Sleep 200
 DoEvents
 Loop
 
@@ -240,6 +253,13 @@ Exit Sub
 
 Penepma08RunConvolgEXENoConvolgCreated:
 msg$ = "The Convolg.exe output file (" & PENEPMA_CONVOLG_File$ & ") was not created properly. Go to the " & PENEPMA_Path$ & " command prompt and type the following command to see the error: convolg.exe < " & "convolg.in"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08RunConvolgEXE"
+Close #tfilenumber%
+ierror = True
+Exit Sub
+
+Penepma08RunConvolgEXENoConvolgFilename:
+msg$ = "The Convolg.exe output file name, PENEPMA_CONVOLG_File$, is blank.  This error should not occur, please contact Probe Software technical support."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08RunConvolgEXE"
 Close #tfilenumber%
 ierror = True

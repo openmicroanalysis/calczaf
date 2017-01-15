@@ -208,6 +208,7 @@ End If
 
 Loop
 
+tStatus.Panels(1).Text = vbNullString
 Screen.MousePointer = vbDefault
 Exit Sub
 
@@ -280,4 +281,47 @@ Exit Sub
 
 End Sub
 
+Sub MiscDelay6(tStatus As StatusBar, waitingmessage As String, timeinterval As Double, previoustime As Double)
+' Waits a specified number of seconds before returning (updates status text without DoEvents)
+' Usage: Call MiscDelay6(tStatus as StatusBar, waitingmessage$, CDbl(secondsdelay!), Now)
+
+ierror = False
+On Error GoTo MiscDelay6Error
+
+Dim atemp As Double
+
+If timeinterval# <= 0# Then Exit Sub
+
+' Loop until current date/time exceeds specified interval in seconds
+Screen.MousePointer = vbHourglass
+Do
+If Now > timeinterval# / SECPERDAY# + previoustime# Then Exit Do
+
+' Update caption
+atemp# = (timeinterval# / SECPERDAY# + previoustime#) - Now
+tStatus.Panels(1).Text = Format$(atemp# * SECPERDAY#, f81$) & " seconds remaining for " & waitingmessage$
+
+Sleep (100) ' yield to other apps
+
+' Check for cancel
+If icancelauto Then
+Screen.MousePointer = vbDefault
+ierror = True
+Exit Sub
+End If
+
+Loop
+
+tStatus.Panels(1).Text = vbNullString
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+MiscDelay6Error:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "MiscDelay6"
+ierror = True
+Exit Sub
+
+End Sub
 

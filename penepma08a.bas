@@ -203,6 +203,8 @@ End Sub
 
 Sub Penepma08CreateInputFile2(astring As String, bstring As String, cstring As String, dstring As String)
 ' Make the output string based on new value and current string
+' astring$ = original input line
+' bstring$ = modified input line
 
 ierror = False
 On Error GoTo Penepma08CreateInputFile2Error
