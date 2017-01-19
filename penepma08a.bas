@@ -592,6 +592,8 @@ Dim atnum As Integer
 Dim s0 As String, s1 As String
 Dim eV As Single
 
+Penepma08ExtractTransitionEnergy# = 0#
+
 ' Make sure input file is closed
 Close #Temp1FileNumber%
 

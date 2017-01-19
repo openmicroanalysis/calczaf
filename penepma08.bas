@@ -4717,7 +4717,9 @@ If Trim$(tpath$) <> vbNullString Then PENEPMA_BATCH_FOLDER$ = tpath$
 FormPENEPMA08Batch.TextBatchFolder.Text = PENEPMA_BATCH_FOLDER$
 
 ' Now go through each folder and copy files as PENEPMA_Path$ & "\pure\" & Format$(tkeV%) & "keV\pe-spect-01" & "_" & Trim$(tSym$) & ".dat"
+Screen.MousePointer = vbHourglass
 Call DirectorySearch("pe-spect-01.dat", PENEPMA_BATCH_FOLDER$, True, nCount&, sAllFiles$())     ' get all pe-spect-01.dat files recursively
+Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 
 If nCount& < 1 Then GoTo Penepma08BatchCopyRenameNoFiles

@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/17/17	Add output of "raw" electron images from Output menu with overlaid images (Buse).
+
 01/16/17	Add Ar and Xe absorption edges to WDS simulation spectra.
 
 01/13/17	Modify GetElm form and code to allow user to select the sample basis for modifying Elements/Cations 

@@ -32,21 +32,30 @@ bstring$ = astring$
 
 If InStr(astring$, "TITLE") > 0 Then bstring$ = Left$(astring, COL7%) & Left$(sample(1).Name$, 120)
 
+' Beam energy
+If InStr(astring$, "SENERG") > 0 Then
 cstring$ = Format$(Format$(sample(1).kilovolts! * EVPERKEV#, "Scientific"), a10$)
-If InStr(astring$, "SENERG") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
+End If
 
+If InStr(astring$, "SPOSIT") > 0 Then
 cstring$ = Format$(0#) & " " & Format$(0#) & " " & Format$(1#)
-If InStr(astring$, "SPOSIT") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
+End If
 
+If InStr(astring$, "SDIREC") > 0 Then
 cstring$ = Format$(180#) & " " & Format$(0#)
-If InStr(astring$, "SDIREC") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
+End If
 
+If InStr(astring$, "SAPERT") > 0 Then
 cstring$ = Format$(0#)
-If InStr(astring$, "SAPERT") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
+End If
 
 ' Load material file and simulation parameters
 If InStr(astring$, "MFNAME") > 0 Then
@@ -65,13 +74,15 @@ If ierror Then Exit Sub
 End If
 
 ' Load geometry file
+If InStr(astring$, "GEOMFN") > 0 Then
 If Dir$(PENEPMA_Path$ & "\bulk.geo") = vbNullString Then
 If Dir$(PENEPMA_Root$ & "\bulk.geo") = vbNullString Then GoTo Penepma08CreatePenepmaFileNotFoundGEO
 FileCopy PENEPMA_Root$ & "\bulk.geo", PENEPMA_Path$ & "\bulk.geo"
 End If
 cstring$ = MiscGetFileNameOnly$(PENEPMA_Path$ & "\bulk.geo")
-If InStr(astring$, "GEOMFN") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
+End If
 
 ' Detector angles (45.0, 55.0, 0.0, 360.0, 0)
 If InStr(astring$, "PDANGL") > 0 Then
@@ -93,30 +104,36 @@ Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 End If
 
 ' Dump time (15 seconds for now)
+If InStr(astring$, "DUMPP") > 0 Then
 cstring$ = Format$(15#)
-If InStr(astring$, "DUMPP") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
+End If
 
 ' Number of simulated showers (make arbitrarily large number)
+If InStr(astring$, "NSIMSH") > 0 Then
 cstring$ = Format$(tSimulatedShowers#, e71$)
-If InStr(astring$, "NSIMSH") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
+End If
 
-cstring$ = Format$(tLiveTime!)
-If InStr(astring$, "TIME") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-Print #Temp2FileNumber%, bstring$
-Loop
-
-' Add random seed
-astring$ = "RSEED  1 2                     [Seeds of the random-number generator]"
+' Add random seed for realistic replicate EDS intensities!
+If InStr(astring$, "RSEED") > 0 Then
 iseed1% = (Rnd() - 1#) * 1000
-iseed2% = 2
+iseed2% = 1
 cstring$ = Format$(iseed1%) & " " & Format$(iseed2%)
 Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
+End If
+
+If InStr(astring$, "TIME") > 0 Then
+cstring$ = Format$(tLiveTime!)
+Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
+If ierror Then Exit Sub
+End If
+
 Print #Temp2FileNumber%, bstring$
+Loop
 
 Close #Temp1FileNumber%
 Close #Temp2FileNumber%
