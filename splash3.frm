@@ -118,7 +118,7 @@ Begin VB.Form FormSPLASH
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "Copyright (c) 1995-2016 by John J. Donovan"
+      Caption         =   "Copyright (c) 1995-2017 by John J. Donovan"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
@@ -149,7 +149,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Private Sub Form_Load()

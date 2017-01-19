@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeIO"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -549,7 +549,7 @@ FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.filename = iofilename$
+FormMAIN.CMDialog1.Filename = iofilename$
 
 If mode% < 2 Then
 'FormMAIN.CMDialog1.ShowSave
@@ -702,9 +702,9 @@ FormMAIN.CMDialog1.DefaultExt = "MDB"
 
 ' Specify default if not blank
 If mdbfilename$ <> vbNullString Then
-FormMAIN.CMDialog1.filename = mdbfilename$
+FormMAIN.CMDialog1.Filename = mdbfilename$
 Else
-FormMAIN.CMDialog1.filename = "*.mdb"
+FormMAIN.CMDialog1.Filename = "*.mdb"
 End If
 
 ' Get COMMON DIALOG Filename

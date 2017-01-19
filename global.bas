@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGLOBAL"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -121,6 +121,7 @@ Global Const MAXDENSITY# = 30#           ' maximum density (gm/cm3)
 Global Const BLANKINGVALUE! = 1.70141E+38   ' Surfer blanking grid value
 Global Const MAXPATHLENGTH% = 255        ' maximum file path length
 Global Const MINCPSPERNA! = 0.00000000001 ' default minimum bgd count rate for P/B calculations
+Global Const SIMULATION_ZERO! = 0.0000000001    ' zero intensity
 
 Global Const MAXEMPFAC% = 100            ' maximum empirical alpha factors (from EMPFAC.DAT)
 Global Const MAXCALIBRATE% = 5           ' maximum number of elements for multiple peak calibration
@@ -816,6 +817,7 @@ Type TypeSample
     
     EDSUnknownCountFactors() As Single       ' real time, allocated in InitSample (1 to MAXROW%)
     LastEDSUnknownCountFactor As Single
+    LastEDSSpecifiedCountTime As Single
     
     EDSSpectraIntensities() As Long          ' allocated in InitSample (1 to MAXROW%, 1 to MAXSPECTRA%)
     EDSSpectraStrobes() As Long              ' allocated in InitSample (1 to MAXROW%, 1 to MAXSTROBE%) (Oxford only)
@@ -1126,7 +1128,6 @@ Type TypeSample
     CLSpectraDarkIntensities() As Long                ' allocated in InitSample (1 to MAXROW%, 1 to MAXSPECTRA_CL%)
     
     CLSpectraNumberofChannels() As Integer            ' allocated in InitSample (1 to MAXROW%)
-    
     CLAcquisitionCountTime() As Single                ' allocated in InitSample (1 to MAXROW%)
     CLSpectraStartEnergy() As Single                  ' allocated in InitSample (1 to MAXROW%)
     CLSpectraEndEnergy() As Single                    ' allocated in InitSample (1 to MAXROW%)
@@ -1134,7 +1135,10 @@ Type TypeSample
     CLDarkSpectraCountTimeFraction() As Single        ' allocated in InitSample (1 to MAXROW%)
     
     CLUnknownCountFactors() As Single                 ' allocated in InitSample (1 to MAXROW%)
+    
+    LastCLSpecifiedCountTime As Single
     LastCLUnknownCountFactor As Single
+    LastCLDarkSpectraCountTimeFraction As Single
 End Type
 
 Type TypeImage
@@ -1592,16 +1596,14 @@ Global RealTimeCrystalPositions(1 To MAXSPEC%) As String
 
 Global RealTimeScalLabels(1 To MAXSPEC%) As String
 
-' Demo stuff
-Global DemoOnCounts(1 To MAXCHAN%) As Single
-Global DemoOffCounts(1 To MAXCHAN%) As Single
-
 ' Wave/Peak scan globals
 Global WaveMode As Integer  ' 1 = wavescan, 2 = peakscan
 Global WavePeakCenterStart As Single
 Global WavePeakCenterMotor As Integer
 Global WavePeakCenterChannel As Integer
 Global WavePeakCenterFlags(1 To MAXCHAN%) As Boolean
+Global WavePeakSuccessFlags(1 To MAXCHAN%) As Boolean
+
 Global WavescanXIncrementFlag As Integer
 Global PeakingXIncrementFlag As Integer
 Global WavescanXIncrement As Single
@@ -2382,6 +2384,11 @@ Global DefaultStandardCoatingElement As Integer
 Global DefaultStandardCoatingDensity As Single
 Global DefaultStandardCoatingThickness As Single    ' in angstroms
 
+Global DefaultSampleCoatingFlag As Integer    ' 0 = not coated, 1 = coated
+Global DefaultSampleCoatingElement As Integer
+Global DefaultSampleCoatingDensity As Single
+Global DefaultSampleCoatingThickness As Single    ' in angstroms
+
 Global UseConductiveCoatingCorrectionForElectronAbsorption As Boolean
 Global UseConductiveCoatingCorrectionForXrayTransmission As Boolean
 
@@ -2763,8 +2770,6 @@ Global MatrixHelpFile As String
 Global UserSpecifiedOutputStandards As Boolean
 Global UserSpecifiedOutputUnknowns As Boolean
 
-Global LightTurnedOff As Long
-
 Global MinimumOverVoltageType As Integer    ' 0 = 2%, 1 = 10%, 2 = 20%
 
 Global ProbeSoftwareInternetBrowseMethod As Integer  ' 0 = WWW, 1 = DVD
@@ -2935,3 +2940,7 @@ Global CalcImageAnalogSignalFlags(1 To 3) As Integer    ' leave as integer for C
 Global CalcImageAnalogSignalLabels(1 To 3) As String
 
 Global InstrumentFacility As String
+
+Global UsePenepmaSimulationForDemoMode As Boolean
+
+Global OriginalBeamCurrent As Single

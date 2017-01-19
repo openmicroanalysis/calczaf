@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscPlot"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Sub MiscPlotGetSymbols_PE(nsets As Integer, tPesgo As Pesgo)
@@ -141,7 +141,7 @@ tGraph.XAxisLabel = vbNullString
 tGraph.YAxisLabel = vbNullString
 
 tGraph.Subsets = 1
-tGraph.points = 1
+tGraph.Points = 1
 tGraph.xdata(0, 0) = 0                          ' for empty subset
 tGraph.ydata(0, 0) = 0
 
@@ -161,6 +161,9 @@ tGraph.ZoomWindow = True
 Else
 tGraph.AllowZooming = PEAZ_NONE&
 End If
+
+' Force modal dialog to true for maximize mode <esc> press
+tGraph.ModalDialogs = True
 
 tGraph.PEactions = REINITIALIZE_RESETIMAGE                ' generate new plot
 

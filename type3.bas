@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeTYPE3"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Sub TypeNewCounts(sample() As TypeSample)
@@ -32,6 +32,28 @@ msg$ = "Number of Data Lines: " & Format$(sample(1).Datarows%, a30$)
 msg$ = msg$ & Space$(12)
 msg$ = msg$ & " Number of 'Good' Data Lines: " & Format$(sample(1).GoodDataRows%, a30$)
 Call IOWriteLog(msg$)
+End If
+
+' Print EDS acquisition time (if no data yet)
+If UseDetailedFlag And sample(1).Datarows% = 0 Then
+If sample(1).EDSSpectraFlag Then
+If Not UseEDSPresetCountTimeFlag Then
+msg$ = "EDS Acquisition Time: " & Space$(40) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
+Else
+msg$ = "EDS Acquisition Time (preset): " & Space$(31) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
+End If
+Call IOWriteLog(msg$)
+End If
+End If
+
+' Print CL acquisition time (if no data yet)
+If UseDetailedFlag And sample(1).Datarows% = 0 Then
+If sample(1).CLSpectraFlag Then
+msg$ = "CL Acquisition Time:  " & Space$(40) & Format$(Format$(sample(1).LastCLSpecifiedCountTime!, f82$), a80$) & vbCrLf
+msg$ = msg$ & "CL Unknown Count Factor:  " & Space$(36) & Format$(Format$(sample(1).LastCLUnknownCountFactor!, f81$), a80$) & vbCrLf
+msg$ = msg$ & "CL Dark Spectra Count Time Fraction:  " & Space$(24) & Format$(Format$(sample(1).LastCLDarkSpectraCountTimeFraction!, f81$), a80$)
+Call IOWriteLog(msg$)
+End If
 End If
 
 ' Print Number of lines and number of "good" lines and date and time
@@ -687,7 +709,11 @@ Call IOWriteLog(msg$)
 If sample(1).Type% <> 3 Or DebugMode Then
 msg$ = "ONTIM:"
 For i% = ii% To jj%
+If sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then
+msg$ = msg$ & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
+Else
 msg$ = msg$ & Format$(Format$(sample(1).LastOnCountTimes!(i%), f82$), a80$)
+End If
 Next i%
 Call IOWriteLog(msg$)
 
@@ -739,7 +765,7 @@ If sample(1).Type% = 2 Then          ' unknown sample
 If sample(1).CrystalNames$(i%) <> EDS_CRYSTAL$ Then
 count_time! = sample(1).LastOnCountTimes!(i%) * sample(1).LastCountFactors!(i%)
 Else
-count_time! = sample(1).LastOnCountTimes!(i%) * sample(1).LastEDSUnknownCountFactor!
+count_time! = sample(1).LastEDSSpecifiedCountTime! * sample(1).LastEDSUnknownCountFactor!
 End If
 End If
 

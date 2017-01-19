@@ -819,7 +819,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Private Sub CommandCalibratePicture_Click()
@@ -863,7 +863,6 @@ End Sub
 
 Private Sub CommandLightModeReflected_Click()
 If Not DebugMode Then On Error Resume Next
-Light_Reflected_Transmitted& = 0
 Call RealTimeSetLightMode(Int(0))
 FormPICTURESNAP2.CommandLightModeReflected.BackColor = vbWhite
 FormPICTURESNAP2.CommandLightModeTransmitted.BackColor = vbButtonFace
@@ -871,7 +870,6 @@ End Sub
 
 Private Sub CommandLightModeTransmitted_Click()
 If Not DebugMode Then On Error Resume Next
-Light_Reflected_Transmitted& = 1
 Call RealTimeSetLightMode(Int(1))
 FormPICTURESNAP2.CommandLightModeReflected.BackColor = vbButtonFace
 FormPICTURESNAP2.CommandLightModeTransmitted.BackColor = vbWhite

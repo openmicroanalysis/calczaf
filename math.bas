@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMATH"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -1656,8 +1656,8 @@ End If
 
 ' Debug
 If DebugMode Then
-Call IOWriteLog(vbCrLf & "MathGetInterpolatedYValue: XminPnt=" & Format$(xminpnt&) & ", XmaxPnt=" & Format$(xmaxpnt&))
-Call IOWriteLog("MathGetInterpolatedYValue: Xpos=" & Format$(xpos#) & ", XDataMin=" & Format$(xdata#(xminpnt&)) & ", XDataMax=" & Format$(xdata#(xmaxpnt&)))
+Call IOWriteLog(vbCrLf & "MathGetInterpolatedYValue2: XminPnt=" & Format$(xminpnt&) & ", XmaxPnt=" & Format$(xmaxpnt&))
+Call IOWriteLog("MathGetInterpolatedYValue2: Xpos=" & Format$(xpos#) & ", XDataMin=" & Format$(xdata#(xminpnt&)) & ", XDataMax=" & Format$(xdata#(xmaxpnt&)))
 End If
 
 ' Interpolate between points

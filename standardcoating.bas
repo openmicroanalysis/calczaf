@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeStandardCoating"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -110,7 +110,7 @@ StandardCoatingThickness!(i%) = tStandardCoatingThickness!(i%)
 If StandardCoatingFlag%(i%) = 1 Then tFlag% = 1     ' update global flag if any standard uses coating
 Next i%
 
-DefaultStandardCoatingFlag% = tFlag%
+DefaultStandardCoatingFlag% = tFlag%        ' 0 = not coated, 1 = coated
 DefaultStandardCoatingElement% = tElement%
 DefaultStandardCoatingDensity! = tDensity!
 DefaultStandardCoatingThickness! = tThickness!

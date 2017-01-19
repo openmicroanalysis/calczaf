@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMISC5"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -492,7 +492,7 @@ Exit Function
 End Function
 
 Function MiscIsElementDuplicatedSubsequent(chan As Integer, num As Integer, elementarray() As String, ipp As Integer) As Boolean
-' Check for duplicated element in the element list after the indicated element
+' Check for duplicated element in the element list after the indicated element (ipp% is the index of the duplicated element)
 
 ierror = False
 On Error GoTo MiscIsElementDuplicatedSubsequentError
@@ -625,3 +625,24 @@ ierror = True
 Exit Function
 
 End Function
+
+Public Function MiscIsLongArrayInitalized(larray() As Long) As Boolean
+' Return True if long integer array is initalized
+
+On Error GoTo MiscIsLongArrayInitalizedError ' raise error if array is not initialzied
+
+Dim temp As Long
+
+MiscIsLongArrayInitalized = False
+temp& = UBound(larray&)
+
+' We reach this point only if arr is initalized, i.e. no error occured
+If temp& > -1 Then MiscIsLongArrayInitalized = True  ' UBound is greater then -1
+Exit Function
+
+' Special error handler (if an error occurs, this function returns False. i.e. array not initialized)
+MiscIsLongArrayInitalizedError:
+Exit Function
+
+End Function
+

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscReal"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -72,7 +72,13 @@ For j% = 1 To ScalNumberOfCrystals%(motor%)
 If Trim$(LCase$(crystal$)) = Trim$(LCase$(ScalCrystalNames$(j%, motor%))) Then ip% = j%
 Next j%
 
-'If ip% = 0 Then GoTo MiscGetCrystalIndexNoMatch ' disabled for GetElmSetElmCrystalUpdate
+' Check if Scalers.dat crystals are stored in the MDB file
+If ProbeDataFileVersionNumber! <= 5.36 Then
+'If ip% = 0 Then GoTo MiscGetCrystalIndexNoMatch    ' disabled for GetElmSetElmCrystalUpdate
+If ip% = 0 Then ip% = 1                             ' just assume crystal position
+End If
+
+' return index
 MiscGetCrystalIndex = ip%
 Exit Function
 

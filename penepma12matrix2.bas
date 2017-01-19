@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma12Matrix2"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Dim PENEPMA_Analysis As TypeAnalysis
@@ -246,7 +246,8 @@ BeamTakeOff! = Val(Left$(astring$, n% - 1))
 If EmittingElement% >= 6 Then
 
 ' Loop on each possible energy
-For m% = 5 To 50         ' Fanal calculations are only good down to 5 keV at this time
+For m% = 4 To 50         ' Fanal calculations are only good down to 5 keV at this time but start at 4 keV for Pouchou database calculations!
+'For m% = 5 To 50         ' Fanal calculations are only good down to 5 keV at this time
 'For m% = 1 To 50
 'For m% = 15 To 15       ' testing purposes (15 keV only)
 BeamEnergy! = CSng(m%)

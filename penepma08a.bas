@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma08a"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -14,7 +14,7 @@ Option Explicit
 Const COL7% = 7
 
 'The maximum number of channels can be changed in Penepma.f where (NEDCM) can be changed at line 464:
-'PARAMETER (NEDM=25,NEDCM=1000)     ' changed to 20000 12-02-2016
+'PARAMETER (NEDM=25,NEDCM=1000)     ' changed to 32000 12-02-2016
 
 Global Const PENEPMA_MINPERCENT! = 0.0001
 
@@ -203,6 +203,8 @@ End Sub
 
 Sub Penepma08CreateInputFile2(astring As String, bstring As String, cstring As String, dstring As String)
 ' Make the output string based on new value and current string
+' astring$ = original input line
+' bstring$ = modified input line
 
 ierror = False
 On Error GoTo Penepma08CreateInputFile2Error
@@ -217,136 +219,6 @@ Penepma08CreateInputFile2Error:
 MsgBox Error$, vbOKOnly + vbCritical, "Penepma08CreateInputFile2"
 Close #Temp1FileNumber%
 Close #Temp2FileNumber%
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub Penepma08CreatePenepmaFile(tLiveTime As Single, sample() As TypeSample)
-' Create Penepma input file (*.IN) from the passed sample
-
-ierror = False
-On Error GoTo Penepma08CreatePenepmaFileError
-
-Dim astring As String, bstring As String, cstring As String, dstring As String
-Dim tfilename As String, tfilename2 As String
-
-Const tSimulatedShowers# = 2000000000#
-
-Dim tBeamMinimumEnergyRange As Double
-Dim tBeamMaximumEnergyRange As Double
-Dim tBeamNumberOfEnergyChannels As Long
-
-' Always use 20 eV per channel to match DEMOEVPERCHANNEL! constant
-tBeamMinimumEnergyRange# = 0#
-tBeamMaximumEnergyRange# = 20000#
-tBeamNumberOfEnergyChannels& = 1000
-
-' Loop through sample production file and copy to new file with modified parameters
-tfilename$ = PENEPMA_Root$ & "\Cu_cha.in"
-Open tfilename$ For Input As #Temp1FileNumber%
-tfilename2$ = PENEPMA_Path$ & "\material.in"
-Open tfilename2$ For Output As #Temp2FileNumber%
-
-Do Until EOF(Temp1FileNumber%)
-Line Input #Temp1FileNumber%, astring$
-bstring$ = astring$
-
-If InStr(astring$, "TITLE") > 0 Then bstring$ = Left$(astring, COL7%) & Left$(sample(1).Name$, 120)
-
-cstring$ = Format$(Format$(sample(1).kilovolts! * EVPERKEV#, "Scientific"), a10$)
-If InStr(astring$, "SENERG") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-cstring$ = Format$(0#) & " " & Format$(0#) & " " & Format$(1#)
-If InStr(astring$, "SPOSIT") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-cstring$ = Format$(180#) & " " & Format$(0#)
-If InStr(astring$, "SDIREC") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-cstring$ = Format$(0#)
-If InStr(astring$, "SAPERT") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-' Load material file and simulation parameters
-If InStr(astring$, "MFNAME") > 0 Then
-cstring$ = "material.mat"
-Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-End If
-
-' Electron and photon minimum energies (1.0E+3 1.0E+3 1E+3 0.1 0.1 1E+3 1E+3)
-If InStr(astring$, "MSIMPA") > 0 Then
-cstring$ = Format$(PenepmaMinimumElectronEnergy! * EVPERKEV#, "0.0E+0") & " " & Format$(PenepmaMinimumElectronEnergy! * EVPERKEV#, "0.0E+0") & " " & Format$(PenepmaMinimumElectronEnergy! * EVPERKEV#, "0E+0") & " "
-cstring$ = cstring$ & Format$(0.1, "0.0") & " " & Format$(0.1, "0.0") & " "
-cstring$ = cstring$ & Format$(PenepmaMinimumElectronEnergy! * EVPERKEV#, "0E+0") & " " & Format$(PenepmaMinimumElectronEnergy! * EVPERKEV#, "0E+0")
-Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-End If
-
-' Load geometry file
-If Dir$(PENEPMA_Path$ & "\bulk.geo") = vbNullString Then
-If Dir$(PENEPMA_Root$ & "\bulk.geo") = vbNullString Then GoTo Penepma08CreatePenepmaFileNotFoundGEO
-FileCopy PENEPMA_Root$ & "\bulk.geo", PENEPMA_Path$ & "\bulk.geo"
-End If
-cstring$ = MiscGetFileNameOnly$(PENEPMA_Path$ & "\bulk.geo")
-If InStr(astring$, "GEOMFN") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-' Detector angles (45.0, 55.0, 0.0, 360.0, 0)
-If InStr(astring$, "PDANGL") > 0 Then
-cstring$ = Format$(90# - (sample(1).takeoff! + 5#), "0.0") & " " & Format$(90# - (sample(1).takeoff! - 5#), "0.0") & " "
-cstring$ = cstring$ & Format$(0#, "0.0") & " " & Format$(360#, "0.0") & " "
-cstring$ = cstring$ & Format$(0, "0")
-Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-End If
-
-' Spectrum energy range and channels
-If InStr(astring$, "PDENER") > 0 Then
-If sample(1).kilovolts! * EVPERKEV# > tBeamMaximumEnergyRange# Then tBeamMaximumEnergyRange# = 30# * EVPERKEV#
-cstring$ = Format$(tBeamMinimumEnergyRange#, "0.0") & " " & Format$(tBeamMaximumEnergyRange#, "0.0") & " "
-cstring$ = cstring$ & Format$(tBeamNumberOfEnergyChannels&, "0")
-Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-End If
-
-' Dump time (15 seconds for now)
-cstring$ = Format$(15#)
-If InStr(astring$, "DUMPP") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-' Number of simulated showers (make arbitrarily large number)
-cstring$ = Format$(tSimulatedShowers#, e71$)
-If InStr(astring$, "NSIMSH") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-cstring$ = Format$(tLiveTime!)
-If InStr(astring$, "TIME") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
-If ierror Then Exit Sub
-
-Print #Temp2FileNumber%, bstring$
-Loop
-
-Close #Temp1FileNumber%
-Close #Temp2FileNumber%
-
-Call IOStatusAuto(vbNullString)
-Exit Sub
-
-' Errors
-Penepma08CreatePenepmaFileError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma08CreatePenepmaFile"
-Close #Temp1FileNumber%
-Close #Temp2FileNumber%
-ierror = True
-Exit Sub
-
-Penepma08CreatePenepmaFileNotFoundGEO:
-msg$ = "The specified geometry file (" & PENEPMA_Root$ & "\bulk.geo" & ") was not found. Please download the Penepma12.ZIP file, extract and try again."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08CreatePenepmaFile"
-Close #Temp1FileNumber%
 ierror = True
 Exit Sub
 
@@ -459,80 +331,6 @@ Exit Sub
 
 End Sub
 
-Sub Penepma08RunConvolgEXE(eVPerChannel As Single)
-' Run the Convolg program to convolve the Penepma spectrum
-
-ierror = False
-On Error GoTo Penepma08RunConvolgEXEError
-
-Dim tfilenumber As Integer
-Dim taskID As Long
-Dim bfilename As String, astring As String
-
-' First check if Penepma has had time to create a spectrum file
-If PENEPMA_SPEC_File$ = vbNullString Then GoTo Penepma08RunConvolgEXENotSpecified
-If Dir$(PENEPMA_SPEC_File$) = vbNullString Then Exit Sub
-
-' Create Convg input file
-Call Penepma08CreateConvolgFile(eVPerChannel!)
-If ierror Then Exit Sub
-
-' Delete existing temp batch file (use temp2.bat because Penepma is using temp.bat)
-bfilename$ = PENDBASE_Path$ & "\temp2.bat"
-If Dir$(bfilename$) <> vbNullString Then
-Kill bfilename$
-DoEvents
-End If
-
-' Write batch file for running convolg.exe
-tfilenumber% = FreeFile()
-Open bfilename$ For Output As #tfilenumber%
-astring$ = Left$(PENEPMA_Path$, 2)                             ' change to drive
-Print #tfilenumber%, astring$
-astring$ = "cd " & VbDquote$ & PENEPMA_Path$ & VbDquote$       ' change to folder
-Print #tfilenumber%, astring$
-astring$ = "convolg.exe < " & "convolg.in"
-Print #tfilenumber%, astring$
-Close #tfilenumber%
-
-' Run batch file asynchronously (/k executes but window remains, /c executes but terminates)
-'taskID& = Shell("cmd.exe /k " & VbDquote$ & bfilename$ & VbDquote$, vbNormalFocus)
-taskID& = Shell("cmd.exe /c " & VbDquote$ & bfilename$ & VbDquote$, vbMinimizedNoFocus)
-
-' Loop until complete
-Do Until IOIsProcessTerminated(taskID&)
-Sleep 100
-DoEvents
-Loop
-
-' Check for created convolved file
-If Dir$(PENEPMA_CONVOLG_File$) = vbNullString Then GoTo Penepma08RunConvolgEXENoConvolgCreated
-
-Exit Sub
-
-' Errors
-Penepma08RunConvolgEXEError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma08RunConvolgEXE"
-Close #tfilenumber%
-ierror = True
-Exit Sub
-
-Penepma08RunConvolgEXENotSpecified:
-msg$ = "The Convolg.exe input file was not specified."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08RunConvolgEXE"
-Close #tfilenumber%
-ierror = True
-Exit Sub
-
-Penepma08RunConvolgEXENoConvolgCreated:
-msg$ = "The Convolg.exe output file (" & PENEPMA_CONVOLG_File$ & ") was not created properly. Go to the " & PENEPMA_Path$ & " command prompt and type the following command to see the error: convolg.exe < " & "convolg.in"
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08RunConvolgEXE"
-Close #tfilenumber%
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub Penepma08GraphGetPenepma(nPoints As Long, xdata() As Double, ydata() As Double)
 ' Load spectrum data from spectrum file (PENEPMA_CONVOLG_File$)
 
@@ -578,37 +376,6 @@ Exit Sub
 Penepma08GraphGetPenepmaError:
 MsgBox Error$, vbOKOnly + vbCritical, "Penepma08GraphGetPenepma"
 Close #Temp1FileNumber%
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub Penepma08CreateConvolgFile(eVPerChannel As Single)
-' Create Convolg input file (*.IN) from the passed parameters
-
-ierror = False
-On Error GoTo Penepma08CreateConvolgFileError
-
-Dim tfilename As String
-Dim tfilenumber As Integer
-
-' Create input file for Convolg.exe
-tfilename$ = PENEPMA_Path$ & "\convolg.in"
-tfilenumber% = FreeFile()
-Open tfilename$ For Output As #tfilenumber%
-
-' Output configuration
-Print #tfilenumber%, MiscGetFileNameOnly$(PENEPMA_SPEC_File$)
-Print #tfilenumber%, Format$(eVPerChannel!)
-Print #tfilenumber%, vbNullString               ' needs a crlf
-
-Close #tfilenumber%
-Exit Sub
-
-' Errors
-Penepma08CreateConvolgFileError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma08CreateConvolgFile"
-Close #tfilenumber%
 ierror = True
 Exit Sub
 
@@ -729,7 +496,7 @@ Exit Sub
 
 End Sub
 
-Sub Penepma08PenepmaSpectrumWrite(tfilename As String, chan As Integer, npts() As Long, xdata() As Double, ydata() As Double, zdata() As Double, xmin As Double, xmax As Double, xnum As Long, xwid As Double, theta1 As Double, theta2 As Double, phi1 As Double, phi2 As Double)
+Sub Penepma08PenepmaSpectrumWrite(tfilename As String, npts As Long, xdata() As Double, ydata() As Double, zdata() As Double, xmin As Double, xmax As Double, xnum As Long, xwid As Double, theta1 As Double, theta2 As Double, phi1 As Double, phi2 As Double)
 ' Save spectrum data to passed Penepma spectrum file (for synthetic wavescan data in demo mode)
 '
 ' Default header shown here:
@@ -775,9 +542,9 @@ Print #tfilenumber%, " #  2nd column: probability density (1/(eV*sr*electron))."
 Print #tfilenumber%, " #  3rd column: statistical uncertainty (3 sigma)."
 Print #tfilenumber%, " #"
 
-' Save array to disk (nPoints&, xdata#(), ydata#(), zdata#())
-For n& = 1 To npts&(chan%)
-Print #tfilenumber%, " ", Format$(Format$(xdata#(chan%, n&), e104$), a14$), Format$(Format$(ydata#(chan%, n&), e104$), a14$), Format$(Format$(zdata#(chan%, n&), e104$), a14$)
+' Save array to disk (npts&, xdata#(), ydata#(), zdata#())
+For n& = 1 To npts&
+Print #tfilenumber%, " ", Format$(Format$(xdata#(n&), e104$), a14$), Format$(Format$(ydata#(n&), e104$), a14$), Format$(Format$(zdata#(n&), e104$), a14$)
 Next n&
 
 Close #tfilenumber%
@@ -792,4 +559,156 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Function Penepma08ExtractTransitionEnergy(ielm As Integer, iray As Integer, tfilename As String) As Double
+' Return the specified emission energy from the Penepma output
+'
+' Sample input file:
+' #  Results from PENEPMA. Output from photon detector #  1
+' #
+' #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01
+' #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02
+' #
+' #  Intensities of characteristic lines. All in 1/(sr*electron).
+' #    P = primary photons (from electron interactions);
+' #    C = flourescence from characteristic x rays;
+' #    B = flourescence from bremsstrahlung quanta;
+' #   TF = C+B, total fluorescence;
+' #  unc = statistical uncertainty (3 sigma).
+' #
+' # IZ S0 S1  E (eV)      P            unc       C            unc       B            unc       TF           unc       T            unc
+'   29  K M3  8.9054E+03  6.622094E-06 1.80E-07  0.000000E+00 0.00E+00  3.641611E-07 1.99E-07  3.641611E-07 1.99E-07  6.986255E-06 2.68E-07
+'   29  K M2  8.9054E+03  3.352315E-06 1.26E-07  0.000000E+00 0.00E+00  2.427741E-07 1.63E-07  2.427741E-07 1.63E-07  3.595089E-06 2.06E-07
+'   29  K M5  8.9771E+03  7.045851E-09 5.65E-09  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  7.045851E-09 5.65E-09
+'   29  K M4  8.9771E+03  3.522926E-09 3.99E-09  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  0.000000E+00 0.00E+00  3.522926E-09 3.99E-09
+
+ierror = False
+On Error GoTo Penepma08ExtractTransitionEnergyError
+
+Dim elementfound As Boolean
+Dim l As Integer
+Dim astring As String, bstring As String, tstring As String
+Dim atnum As Integer
+Dim s0 As String, s1 As String
+Dim eV As Single
+
+Penepma08ExtractTransitionEnergy# = 0#
+
+' Make sure input file is closed
+Close #Temp1FileNumber%
+
+If Dir$(Trim$(tfilename$)) = vbNullString Then Exit Function
+Open tfilename$ For Input As #Temp1FileNumber%
+
+' Load array (IZ, SO, S1, E (eV), P, unc, etc.
+Do Until EOF(Temp1FileNumber%)
+Line Input #Temp1FileNumber%, astring$
+If Len(Trim$(astring$)) > 0 And InStr(astring$, "#") = 0 Then            ' skip to first data line (also skips if value is -1.#IND0E+000)
+
+' Load k-ratio data
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Function
+atnum% = Val(Trim$(bstring$))                        ' IZ (atomic number)
+
+' Check atomic number
+If atnum% = ielm% Then
+
+' Load transition strings
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Function
+s0$ = Trim$(bstring$)                                ' S0 (inner transition)
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Function
+s1$ = Trim$(bstring$)                                ' S1 (outer transition)
+
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Function
+eV! = Val(Trim$(bstring$))                           ' E (eV)
+
+' Load x-ray index for x-ray line
+l% = 0
+tstring$ = s0$ & " " & s1$
+If tstring$ = "K L3" Then l% = 1          ' (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
+If tstring$ = "K M3" Then l% = 2          ' (Kb)
+If tstring$ = "L3 M5" Then l% = 3         ' (La)
+If tstring$ = "L2 M4" Then l% = 4         ' (Lb)
+If tstring$ = "M5 N7" Then l% = 5         ' (Ma)
+If tstring$ = "M4 N6" Then l% = 6         ' (Mb)
+
+If tstring$ = "L2 M1" Then l% = 7         ' (Ln)
+If tstring$ = "L2 N4" Then l% = 8         ' (Lg)
+If tstring$ = "L2 N6" Then l% = 9         ' (Lv)
+If tstring$ = "L3 M1" Then l% = 10        ' (Ll)
+If tstring$ = "M3 N5" Then l% = 11        ' (Mg)
+If tstring$ = "M5 N3" Then l% = 12        ' (Mz)
+
+' Skip if not the specified primary line
+If l% > 0 And l% = iray% Then
+Penepma08ExtractTransitionEnergy# = CDbl(eV!)
+Close #Temp1FileNumber%
+Exit Function
+
+' Parse primary intensity
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'pri_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse primary intensity uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+
+' Parse characteristic fluorescence
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'flch_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse characteristic fluorescence intensity uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+
+' Parse continuum fluorescence
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'flbr_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse characteristic fluorescence uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+
+' Parse total fluorescence
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'flu_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse total fluorescence uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+
+' Parse total intensity
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'tot_int!(n%, l%) = Val(Trim$(bstring$))
+
+' Parse total intensity uncertainty
+'Call MiscParseStringToString(astring$, bstring$)
+'If ierror Then Exit Function
+'tot_int_var!(n%, l%) = Val(Trim$(bstring$))
+End If
+
+End If
+End If
+Loop
+
+Close #Temp1FileNumber%
+
+Exit Function
+
+' Errors
+Penepma08ExtractTransitionEnergyError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08ExtractTransitionEnergy"
+Close #Temp1FileNumber%
+ierror = True
+Exit Function
+
+End Function
 

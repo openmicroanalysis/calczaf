@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeINIT"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -2186,6 +2186,10 @@ Dim tmsg As String, astring As String
 
 Static initialized As Boolean
 
+' Penepma WDS simulation mode
+UsePenepmaSimulationForDemoMode = True
+'UsePenepmaSimulationForDemoMode = False     ' default
+
 ' Program version number
 ProgramVersionString$ = Format$(app.major) & "." & Format$(app.minor) & "." & Format$(app.Revision)
 ProgramVersionNumber! = Val(Format$(app.major) & "." & Format$(app.minor) & Format$(app.Revision))
@@ -3337,6 +3341,11 @@ IntegratedBackgroundFitType = 1             ' use integrated start/stop intensit
 IntegratedBackgroundFitPointsLow% = 5       ' use first points
 IntegratedBackgroundFitPointsHigh% = 5      ' use last points
 
+DefaultSampleCoatingFlag% = DefaultStandardCoatingFlag%    ' 0 = not coated, 1 = coated
+DefaultSampleCoatingElement% = DefaultStandardCoatingElement%
+DefaultSampleCoatingDensity! = DefaultStandardCoatingDensity!
+DefaultSampleCoatingThickness! = DefaultStandardCoatingThickness!
+
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
 If ierror Then Exit Sub
@@ -3356,7 +3365,7 @@ Else
 tmsg$ = "Welcome to " & app.EXEName & ", Probe for EPMA (Xtreme Edition) v. " & ProgramVersionString$
 End If
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD% Or FONT_UNDERLINE%), Int(0))
-tmsg$ = "Copyright (c) 1995-2016 John J. Donovan"
+tmsg$ = "Copyright (c) 1995-2017 John J. Donovan"
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD%), Int(0))
 tmsg$ = vbCrLf & "This software is registered to :"
 Call IOWriteLog(tmsg$)
@@ -5028,9 +5037,18 @@ If Dir$(PENEPMA_Root$ & "\Penepma", vbDirectory) <> vbNullString Then
 amsg$ = "Copying updated Penepma files..."
 If DebugMode Then Call IOWriteLog(amsg$)
 
-Call InitFilesUserData2(Int(1), "penepma.exe", PENEPMA_Root$ & "\Penepma")
+' Copy updated penepma executables, using InitFilesUserData3
+Call InitFilesUserData3(Int(1), "penepma.exe", PENEPMA_Root$ & "\Penepma")
 If ierror Then Exit Sub
-Call InitFilesUserData2(Int(1), "convolg.exe", PENEPMA_Root$ & "\Penepma")
+Call InitFilesUserData3(Int(1), "convolg.exe", PENEPMA_Root$ & "\Penepma")
+If ierror Then Exit Sub
+Call InitFilesUserData3(Int(1), "convolg_LIF.exe", PENEPMA_Root$ & "\Penepma")
+If ierror Then Exit Sub
+Call InitFilesUserData3(Int(1), "convolg_PET.exe", PENEPMA_Root$ & "\Penepma")
+If ierror Then Exit Sub
+Call InitFilesUserData3(Int(1), "convolg_TAP.exe", PENEPMA_Root$ & "\Penepma")
+If ierror Then Exit Sub
+Call InitFilesUserData3(Int(1), "convolg_LDE.exe", PENEPMA_Root$ & "\Penepma")
 If ierror Then Exit Sub
 
 ' Copy Material files
@@ -5038,7 +5056,8 @@ If Dir$(PENDBASE_Path$, vbDirectory) <> vbNullString Then
 amsg$ = "Copying updated Penepma Pendbase files..."
 If DebugMode Then Call IOWriteLog(amsg$)
 
-Call InitFilesUserData2(Int(1), "material.exe", PENDBASE_Path$)
+' Copy updated penepma executables, using InitFilesUserData3
+Call InitFilesUserData3(Int(1), "material.exe", PENDBASE_Path$)
 If ierror Then Exit Sub
 End If
 
@@ -5047,9 +5066,10 @@ If Dir$(PENEPMA_Root$ & "\Fanal", vbDirectory) <> vbNullString Then
 amsg$ = "Copying updated Penepma Penfluor and Fitall files..."
 If DebugMode Then Call IOWriteLog(amsg$)
 
-Call InitFilesUserData2(Int(1), "penfluor.exe", PENEPMA_Root$ & "\Penfluor")
+' Copy updated penepma executables, using InitFilesUserData3
+Call InitFilesUserData3(Int(1), "penfluor.exe", PENEPMA_Root$ & "\Penfluor")
 If ierror Then Exit Sub
-Call InitFilesUserData2(Int(1), "fitall.exe", PENEPMA_Root$ & "\Penfluor")
+Call InitFilesUserData3(Int(1), "fitall.exe", PENEPMA_Root$ & "\Penfluor")
 If ierror Then Exit Sub
 End If
 
@@ -5058,7 +5078,8 @@ If Dir$(PENEPMA_Root$ & "\Fanal", vbDirectory) <> vbNullString Then
 amsg$ = "Copying updated Penepma Fanal files..."
 If DebugMode Then Call IOWriteLog(amsg$)
 
-Call InitFilesUserData2(Int(1), "fanal.exe", PENEPMA_Root$ & "\Fanal")
+' Copy updated penepma executables, using InitFilesUserData3
+Call InitFilesUserData3(Int(1), "fanal.exe", PENEPMA_Root$ & "\Fanal")
 If ierror Then Exit Sub
 End If
 
@@ -5097,7 +5118,7 @@ Exit Sub
 End Sub
 
 Sub InitFilesUserData2(mode As Integer, tfilename As String, tfolder As String)
-' Procedure to copy files (if needing to be updated)
+' Procedure to copy files (if needing to be updated) from the ProgramData folder to the target folder
 '   mode = 0 warn if source file not found
 '   mode = 1 do not warn if source file not found
 
@@ -5141,6 +5162,56 @@ Exit Sub
 ' Errors
 InitFilesUserData2Error:
 MsgBox Error$ & ", Source: " & ApplicationCommonAppData$ & tfilename$ & ", Target: " & tfolder$ & "\" & tfilename$, vbOKOnly + vbCritical, "InitFilesUserData2"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub InitFilesUserData3(mode As Integer, tfilename As String, tfolder As String)
+' Procedure to copy files (if needing to be updated) from the application folder (not ProgramData) to the target
+'   mode = 0 warn if source file not found
+'   mode = 1 do not warn if source file not found
+
+ierror = False
+On Error GoTo InitFilesUserData3Error
+
+Dim dt1 As Variant, dt2 As Variant
+
+' Source file is not available
+If Dir$(ApplicationPath$ & tfilename$) = vbNullString Then
+If mode% = 0 Then Call IOWriteLog("InitFilesUserData3: " & ApplicationPath$ & tfilename$ & " cannot be located for updating, please contact Probe Software for an updated file")
+
+' Source file is available
+Else
+
+' First check if it needs to be updated based on file date/time
+dt1 = FileDateTime(ApplicationPath$ & tfilename$)
+If Dir$(tfolder$ & "\" & tfilename$) <> vbNullString Then dt2 = FileDateTime(tfolder$ & "\" & tfilename$)
+
+' Target is older than source, so update it
+If dt1 > dt2 Then
+
+' Target is not found
+If Dir$(tfolder$ & "\" & tfilename$) = vbNullString Then
+FileCopy ApplicationPath$ & tfilename$, tfolder$ & "\" & tfilename$
+
+' Target is found
+Else
+Kill tfolder$ & "\" & tfilename$
+FileCopy ApplicationPath$ & tfilename$, tfolder$ & "\" & tfilename$
+End If
+
+' Target not copied, warn user if debug
+Else
+If DebugMode Then Call IOWriteLog("InitFilesUserData3: " & ApplicationPath$ & tfilename$ & " is same date or older than target file. Source file will not be copied to target for updating.")
+End If
+End If
+
+Exit Sub
+
+' Errors
+InitFilesUserData3Error:
+MsgBox Error$ & ", Source: " & ApplicationPath$ & tfilename$ & ", Target: " & tfolder$ & "\" & tfilename$, vbOKOnly + vbCritical, "InitFilesUserData3"
 ierror = True
 Exit Sub
 

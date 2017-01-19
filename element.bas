@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeELEMENT"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -37,7 +37,7 @@ End If
 2000:  Next i%
 
 ' Check for zero analyzed elements
-If sample(1).LastElm% < 1 And Not sample(1).EDSSpectraFlag Then
+If sample(1).LastElm% < 1 And Not sample(1).EDSSpectraFlag And Not sample(1).CLSpectraFlag Then
 msg$ = TypeLoadString$(sample())
 msg$ = "Error in ElementCheckElement: No analyzed elements have been entered for sample " & msg$
 MsgBox msg$, vbOKOnly + vbExclamation, "ElementCheckElement"
@@ -247,7 +247,7 @@ ierror = False
 On Error GoTo ElementGetDataError
 
 ' Check for at least one analyzed element
-If sample(1).LastElm% < 1 And Not sample(1).EDSSpectraFlag Then
+If sample(1).LastElm% < 1 And Not sample(1).EDSSpectraFlag And Not sample(1).CLSpectraFlag Then
 msg$ = TypeLoadString$(sample())
 msg$ = "No analyzed elements have been entered for sample " & msg$
 MsgBox msg$, vbOKOnly + vbExclamation, "ElementGetData"

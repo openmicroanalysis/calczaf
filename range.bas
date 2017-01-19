@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeRANGE"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -74,7 +74,7 @@ FormRANGE.ListAtomicDensities.Clear
 For i% = 0 To MAXELM% - 1
 FormRANGE.ListAtomicDensities.AddItem "Density of " & Symup$(i% + 1) & " equals " & Format$(AllAtomicDensities!(i% + 1))
 Next i%
-FormRANGE.ListAtomicDensities.ListIndex = atomic_num_silicon% - 1        ' default = Si
+FormRANGE.ListAtomicDensities.ListIndex = ATOMIC_NUM_SILICON% - 1        ' default = Si
 
 Exit Sub
 

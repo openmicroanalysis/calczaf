@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeINIT2"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -523,11 +523,11 @@ sample(1).DisplayBiotiteCalculationFlag% = False
 sample(1).HydrogenStoichiometryFlag% = False
 sample(1).HydrogenStoichiometryRatio! = 0#
 
-sample(1).CoatingFlag = DefaultStandardCoatingFlag%  ' 0 = uncoated, 1 = coated
-sample(1).CoatingElement% = DefaultStandardCoatingElement%
-sample(1).CoatingDensity! = DefaultStandardCoatingDensity!
-sample(1).CoatingThickness! = DefaultStandardCoatingThickness!  ' in angstroms
-sample(1).CoatingSinThickness! = sample(1).CoatingThickness! / Sin(DefaultTakeOff! * PI! / 180#)
+sample(1).CoatingFlag = DefaultSampleCoatingFlag%  ' 0 = uncoated, 1 = coated
+sample(1).CoatingElement% = DefaultSampleCoatingElement%
+sample(1).CoatingDensity! = DefaultSampleCoatingDensity!
+sample(1).CoatingThickness! = DefaultSampleCoatingThickness!  ' in angstroms
+sample(1).CoatingSinThickness! = DefaultSampleCoatingThickness! / Sin(DefaultTakeOff! * PI! / 180#)
 
 ' EDS sample flags
 sample(1).EDSSpectraFlag = False
@@ -596,6 +596,13 @@ sample(1).ChemicalAgeCalculationFlag = False
 
 sample(1).PTCDoNotNormalizeSpecifiedFlag = False
 sample(1).EDSSpectraQuantMethodOrProject$ = vbNullString
+
+sample(1).LastEDSSpecifiedCountTime! = EDSSpecifiedCountTime!
+sample(1).LastEDSUnknownCountFactor! = EDSUnknownCountFactor!
+
+sample(1).LastCLSpecifiedCountTime! = CLSpecifiedCountTime!
+sample(1).LastCLUnknownCountFactor! = CLUnknownCountFactor!
+sample(1).LastCLDarkSpectraCountTimeFraction! = CLDarkSpectraCountTimeFraction!
 
 Exit Sub
 

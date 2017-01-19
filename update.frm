@@ -17,20 +17,20 @@ Begin VB.Form FormUPDATE
    ScaleWidth      =   5310
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
-   Begin FtpClientCtl.FtpClient FtpClient1 
-      Left            =   2640
-      Top             =   720
-      _cx             =   741
-      _cy             =   741
-   End
    Begin HttpClientCtl.HttpClient HttpClient1 
       Left            =   3120
       Top             =   720
       _cx             =   741
       _cy             =   741
    End
+   Begin FtpClientCtl.FtpClient FtpClient1 
+      Left            =   2640
+      Top             =   720
+      _cx             =   741
+      _cy             =   741
+   End
    Begin VB.CheckBox CheckUpdatePenepmaOnly 
-      Caption         =   "Update Penepma Monte-Carlo Files Only"
+      Caption         =   "Update Penepma Monte Carlo Files Only"
       Height          =   255
       Left            =   480
       TabIndex        =   8
@@ -169,7 +169,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
 Private Sub CommandClose_Click()
@@ -184,7 +184,7 @@ End Sub
 
 Private Sub CommandUpdate_Click()
 If Not DebugMode Then On Error Resume Next
-If FormUPDATE.OptionDownloadType(0).Value = True Then
+If FormUPDATE.OptionDownloadType(0).value = True Then
 FormUPDATE.OptionDownloadType(0).Enabled = False
 FormUPDATE.OptionDownloadType(1).Enabled = False
 FormUPDATE.OptionDownloadType(2).Enabled = False
@@ -198,7 +198,7 @@ FormUPDATE.OptionDownloadType(1).Enabled = True
 FormUPDATE.OptionDownloadType(2).Enabled = True
 If ierror Then Exit Sub
 
-ElseIf FormUPDATE.OptionDownloadType(1).Value = True Then
+ElseIf FormUPDATE.OptionDownloadType(1).value = True Then
 FormUPDATE.OptionDownloadType(0).Enabled = False
 FormUPDATE.OptionDownloadType(1).Enabled = False
 FormUPDATE.OptionDownloadType(2).Enabled = False
@@ -253,10 +253,10 @@ Call IOUpdateClose(Cancel%)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub FtpClient1_OnProgress(ByVal Filename As Variant, ByVal FileSize As Variant, ByVal BytesCopied As Variant, ByVal Percent As Variant)
+Private Sub FtpClient1_OnProgress(ByVal filename As Variant, ByVal FileSize As Variant, ByVal BytesCopied As Variant, ByVal Percent As Variant)
 If Not DebugMode Then On Error Resume Next
 DoEvents
-FormUPDATE.ProgressBar1.Value = Percent
+FormUPDATE.ProgressBar1.value = Percent
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
 If Percent > 0# Then FormUPDATE.Caption = "Update CalcZAF [" & Format$(Percent) & "% downloaded...]"
 End If
@@ -270,7 +270,7 @@ End Sub
 Private Sub HttpClient1_OnProgress(ByVal BytesTotal As Variant, ByVal BytesCopied As Variant, ByVal Percent As Variant)
 If Not DebugMode Then On Error Resume Next
 DoEvents
-FormUPDATE.ProgressBar1.Value = Percent
+FormUPDATE.ProgressBar1.value = Percent
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
 If Percent > 0# Then FormUPDATE.Caption = "Update CalcZAF [" & Format$(Percent) & "% downloaded...]"
 End If

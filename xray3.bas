@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeXRAY3"
-' (c) Copyright 1995-2016 by John J. Donovan
+' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -244,7 +244,7 @@ If Trim$(crystal$) = vbNullString Then Exit Function
 ip% = IPOS1(MAXCRYSTYPE%, crystal$, AllCrystalNames$())
 If ip% = 0 Then Exit Function
 
-' Convert position to angstroms: sin0 = N * lambda/(2d * (1.0 - k/N^2))
+' Convert position to angstroms: sin0 = N * lambda/(2d * (1.0 - k/N^2)) (assume first order reflection)
 x2d! = AllCrystal2ds!(ip%)
 k! = AllCrystalKs!(ip%)
 XrayConvert! = (pos! + offset!) * MotUnitsToAngstromMicrons!(motor%) * (x2d! * (1# - k!)) / LIF2D!
