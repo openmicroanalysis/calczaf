@@ -20,14 +20,16 @@ Global Const MAX_THROUGHPUT_ARRAY_SIZE% = 20
 
 ' Based on Cameca SX100 set times
 Global Const KILOVOLT_SET_TIME! = 6#
-Global Const BEAMCURRENT_SET_TIME_CAMECA! = 9#
-Global Const BEAMCURRENT_SET_TIME_JEOL! = 7#
+Global Const BEAMCURRENT_SET_TIME_CAMECA! = 10#
+Global Const BEAMCURRENT_SET_TIME_JEOL! = 12#
 Global Const BEAMSIZE_SET_TIME! = 2#
 Global Const HYSTERESIS_SET_TIME! = 12#
 Global Const COLUMNCONDITION_SET_TIME! = 25#
 Global Const BEAMMODE_SET_TIME! = 1#
 
-Global Const PENEPMA_STARTUP_TIME# = 16#         ' in seconds to init Penepma for demo EDS
+Global Const PENEPMA_MATERIAL_TIME# = 4#         ' in seconds to init Penepma for demo EDS (running material.exe, per compositional element)
+Global Const PENEPMA_STARTUP_TIME# = 15#         ' in seconds to init Penepma for demo EDS (starting penepma.exe)
+Global Const PENEPMA_WDS_SYNTHESIS_TIME# = 45#   ' in seconds for demo WDS spectrum synthesis (per analyzed element)
 Global Const BOUNDARYNUMBEROFPOINTS& = 100       ' number of boaundary points for cluster digitize
 
 ' Special folders for system

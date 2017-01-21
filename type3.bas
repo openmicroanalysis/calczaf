@@ -26,24 +26,14 @@ msg$ = TypeLoadDescription(sample())
 If ierror Then Exit Sub
 Call IOWriteLog(vbCrLf & msg$)
 
-' Print Number of lines and number of "good" lines
-If UseDetailedFlag Then
-msg$ = "Number of Data Lines: " & Format$(sample(1).Datarows%, a30$)
-msg$ = msg$ & Space$(12)
-msg$ = msg$ & " Number of 'Good' Data Lines: " & Format$(sample(1).GoodDataRows%, a30$)
-Call IOWriteLog(msg$)
-End If
-
 ' Print EDS acquisition time (if no data yet)
-If UseDetailedFlag And sample(1).Datarows% = 0 Then
-If sample(1).EDSSpectraFlag Then
+If UseDetailedFlag And sample(1).EDSSpectraFlag Then
 If Not UseEDSPresetCountTimeFlag Then
 msg$ = "EDS Acquisition Time: " & Space$(40) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
 Else
 msg$ = "EDS Acquisition Time (preset): " & Space$(31) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
 End If
 Call IOWriteLog(msg$)
-End If
 End If
 
 ' Print CL acquisition time (if no data yet)
@@ -54,6 +44,14 @@ msg$ = msg$ & "CL Unknown Count Factor:  " & Space$(36) & Format$(Format$(sample
 msg$ = msg$ & "CL Dark Spectra Count Time Fraction:  " & Space$(24) & Format$(Format$(sample(1).LastCLDarkSpectraCountTimeFraction!, f81$), a80$)
 Call IOWriteLog(msg$)
 End If
+End If
+
+' Print Number of lines and number of "good" lines
+If UseDetailedFlag Then
+msg$ = "Number of Data Lines: " & Format$(sample(1).Datarows%, a30$)
+msg$ = msg$ & Space$(12)
+msg$ = msg$ & " Number of 'Good' Data Lines: " & Format$(sample(1).GoodDataRows%, a30$)
+Call IOWriteLog(msg$)
 End If
 
 ' Print Number of lines and number of "good" lines and date and time
