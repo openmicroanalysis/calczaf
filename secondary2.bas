@@ -505,7 +505,7 @@ Exit Sub
 End Sub
 
 Sub SecondaryCalculateKratio(sampleline As Integer, chan As Integer, sample() As TypeSample)
-' Calculate the PAR file k-ratio for the specified absolute linear distance or mass distance
+' Calculate the PAR file secondary fluorescence k-ratio for the boundary phase for the specified absolute linear distance or mass distance
 
 ierror = False
 On Error GoTo SecondaryCalculateKratioError
@@ -544,8 +544,8 @@ Next n&
 npts% = 1
 xdata!(1) = CSng(xdist#(chan%, dpnt&))
 
-' Now load the ydata array using k ratio % AB minus A
-ydata!(1) = CSng(yktotal#(chan%, dpnt&) - (prix_k#(chan%, dpnt&) + fluA_k#(chan%, dpnt&)))
+' Now load the ydata kratio array using the mat B characteristic and continuum fluorescence only
+ydata!(1) = CSng(fluB_k#(chan%, dpnt&))
 
 ' Check for pathological conditions
 If dist! > xdist#(chan%, 1) And dist! < xdist#(chan%, nPoints&(chan%)) Then
@@ -555,16 +555,16 @@ If dpnt& - 1 > 0 Then
 npts% = npts% + 1
 ReDim Preserve xdata(1 To npts%) As Single
 ReDim Preserve ydata(1 To npts%) As Single
-xdata!(npts%) = CSng(xdist#(chan%, dpnt& - 1))
-ydata!(npts%) = CSng(yktotal#(chan%, dpnt& - 1) - (prix_k#(chan%, dpnt& - 1) + fluA_k#(chan%, dpnt& - 1)))
+xdata!(npts%) = CSng(xdist#(chan%, dpnt& - 1))          ' distance in um
+ydata!(npts%) = CSng(fluB_k#(chan%, dpnt& - 1))         ' characteristic and continuum fluorescence from mat B (boundary phase)
 End If
 
 If dpnt& + 1 <= nPoints&(chan%) Then
 npts% = npts% + 1
 ReDim Preserve xdata(1 To npts%) As Single
 ReDim Preserve ydata(1 To npts%) As Single
-xdata!(npts%) = CSng(xdist#(chan%, dpnt& + 1))
-ydata!(npts%) = CSng(yktotal#(chan%, dpnt& + 1) - (prix_k#(chan%, dpnt& + 1) + fluA_k#(chan%, dpnt& + 1)))
+xdata!(npts%) = CSng(xdist#(chan%, dpnt& + 1))          ' distance in um
+ydata!(npts%) = CSng(fluB_k#(chan%, dpnt& + 1))         ' characteristic and continuum fluorescence from mat B (boundary phase)
 End If
 
 ' Debug mode
@@ -585,10 +585,10 @@ If ierror Then Exit Sub
 ' Now interpolate to get the actual k-ratio % for the specified distance
 krat! = acoeff!(1) + dist! * acoeff!(2) + dist! ^ 2 * acoeff!(3)
 
-' Distance is outside k-ratio data range (just use end value)
+' Distance is outside k-ratio data range (just use end values)
 Else
-If dist! < xdist#(chan%, 1) Then krat! = CSng(yktotal#(chan%, 1) - (prix_k#(chan%, 1) + fluA_k#(chan%, 1)))
-If dist! > xdist#(chan%, nPoints&(chan%)) Then krat! = CSng(yktotal#(chan%, nPoints&(chan%)) - (prix_k#(chan%, nPoints&(chan%)) + fluA_k#(chan%, nPoints&(chan%))))
+If dist! <= xdist#(chan%, 1) Then krat! = CSng(fluB_k#(chan%, 1))
+If dist! >= xdist#(chan%, nPoints&(chan%)) Then krat! = CSng(fluB_k#(chan%, nPoints&(chan%)))
 End If
 
 Call IOWriteLog("SecondaryCalculateKratio: Interpolated K-ratio % is " & MiscAutoFormat$(krat!) & " at a distance " & Format$(dist!) & " um")
@@ -797,7 +797,7 @@ ykfluor(chan%, n&) = k_fluor#(n&)   ' fluorescence kratio% only (minus primary x
 
 fluA_k#(chan%, n&) = 100# * (k_flach#(n&) + k_flabr#(n&)) / k_std_int#(n&)       ' Mat A total fluorescence k-ratio %
 fluB_k#(chan%, n&) = 100# * (k_flbch#(n&) + k_flbbr#(n&)) / k_std_int#(n&)       ' Mat B total fluorescence k-ratio %
-prix_k#(chan%, n&) = k_pri_int#(n&)                                              ' Primary x-ray k-ratio % from Mat A
+prix_k#(chan%, n&) = k_pri_int#(n&) / k_std_int#(n&)                             ' Primary x-ray k-ratio % from Mat A
 Next n&
 
 ' Check that calculated distance is enough (that total intensity at max distance is close to Mat A only intensity)
@@ -810,7 +810,7 @@ temp2! = CSng(100# * temp1! / yktotal#(chan%, 1))                               
 ' Check if difference is greater than 1%
 If DebugMode And VerboseMode Then
 msg$ = vbCrLf & "The Fanal couple k-ratio data file maximum distance for channel " & Format$(chan%)
-msg$ = msg$ & " is " & Format$(xdist#(chan%, k_npts&)) & " um and the AB-A K-ratio % intensity at this distance is " & Format$(temp1!)
+msg$ = msg$ & " is " & Format$(xdist#(chan%, k_npts&)) & " um and the boundary fluorescence k-ratio% intensity at this distance is " & Format$(temp1!)
 msg$ = msg$ & " or " & Format$(temp2!) & " relative percent to the first k-ratio distance of " & Format$(xdist#(chan%, 1)) & " um,"
 msg$ = msg$ & " with a k-ratio % intensity of " & Format$(yktotal#(chan%, 1)) & "."
 Call IOWriteLog(msg$)

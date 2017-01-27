@@ -464,7 +464,7 @@ Exit Function
 End Function
 
 Function MiscAreAllElementsEDS(sample() As TypeSample) As Boolean
-' Return true if all element in the passed sample are EDS elements (no WDS elements)
+' Return true if all elements in the passed sample are EDS elements (no WDS elements)
 
 ierror = False
 On Error GoTo MiscAreAllElementsEDSError
@@ -488,4 +488,63 @@ ierror = True
 Exit Function
 
 End Function
+
+Function MiscNumberOfEDSElements(sample() As TypeSample) As Integer
+' Return the number of EDS elements in the passed sample
+
+ierror = False
+On Error GoTo MiscNumberOfEDSElementsError
+
+Dim chan As Integer, n As Integer
+
+' Assume no EDS elements
+MiscNumberOfEDSElements = 0
+
+' Check for other analying crystals
+n% = 0
+For chan% = 1 To sample(1).LastElm%
+If sample(1).CrystalNames$(chan%) = EDS_CRYSTAL$ Then n% = n% + 1
+Next chan%
+
+MiscNumberOfEDSElements = n%
+
+Exit Function
+
+' Errors
+MiscNumberOfEDSElementsError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscNumberOfEDSElements"
+ierror = True
+Exit Function
+
+End Function
+
+Function MiscNumberOfWDSElements(sample() As TypeSample) As Integer
+' Return the number of WDS elements in the passed sample
+
+ierror = False
+On Error GoTo MiscNumberOfWDSElementsError
+
+Dim chan As Integer, n As Integer
+
+' Assume no WDS elements
+MiscNumberOfWDSElements% = 0
+
+' Check for other analying crystals
+n% = 0
+For chan% = 1 To sample(1).LastElm%
+If sample(1).CrystalNames$(chan%) <> EDS_CRYSTAL$ Then n% = n% + 1
+Next chan%
+
+MiscNumberOfWDSElements = n%
+
+Exit Function
+
+' Errors
+MiscNumberOfWDSElementsError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscNumberOfWDSElements"
+ierror = True
+Exit Function
+
+End Function
+
 
