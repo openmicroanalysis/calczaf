@@ -2,7 +2,12 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/27/17	Modify CalcZAF format output in PFE to skip duplicate elements if using aggregate mode (Buse).
+
+		Modify start sample and start image code to skip setting light optics for JEOL 8900 (von der Handt/Adams)
+
 01/25/17	Improve secondary boundary fluorescence correction in CalcZAF (Buse).
+v. 11.8.0
 
 01/20/17	Modify time estimation for TDI overhead for JEOL instruments (Allaz).
 

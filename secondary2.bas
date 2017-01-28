@@ -804,8 +804,8 @@ Next n&
 temp1! = 0#
 temp2! = 0#
 If yktotal#(chan%, nPoints&(chan%)) > 0.0001 Then
-temp1! = CSng(yktotal#(chan%, k_npts&) - (prix_k#(chan%, k_npts&) + fluA_k#(chan%, k_npts&)))   ' intensity at max distance
-temp2! = CSng(100# * temp1! / yktotal#(chan%, 1))                                               ' intensity at closest distance
+temp1! = CSng(yktotal#(chan%, k_npts&) - (prix_k#(chan%, k_npts&) + fluA_k#(chan%, k_npts&)))   ' total intensity minus mat A only intensity at max distance
+temp2! = CSng(100# * temp1! / yktotal#(chan%, 1))                                               ' (percent) total intensity at closest distance
 
 ' Check if difference is greater than 1%
 If DebugMode And VerboseMode Then

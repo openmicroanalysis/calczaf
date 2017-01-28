@@ -564,7 +564,7 @@ uncts!(chan%) = voluncts!
 
 ' If negative counts, warn user
 Else
-tmsg$ = "Warning- Negative TDI counts (" & Format$(uncts!(chan%)) & ") for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " on channel " & Format$(chan%) & ", sample " & SampleGetString2$(sample()) & " (unable to perform TDI correction)."
+tmsg$ = "Warning- Negative TDI counts (" & Format$(uncts!(chan%)) & ") for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " on channel " & Format$(chan%) & ", line " & Format$(sample(1).Linenumber&(linerow%)) & ", sample " & SampleGetString2$(sample()) & " (unable to perform TDI correction)."
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
 End If
 End If
