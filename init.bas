@@ -3326,14 +3326,19 @@ ImageSizeIndex% = -1            ' to force loading of default image size
 
 If CLSpectraInterfaceType% = 0 Then
 CLSpectrumAcquisitionOverhead = 1#          ' demo mode
+CLSpectrumAcquisitionOverhead2 = 1#         ' demo mode
 ElseIf CLSpectraInterfaceType% = 1 Then
-CLSpectrumAcquisitionOverhead = 2#         ' CL acquisition overhead (Ocean Optics driver using 2. * RealTimeInterval! acquisition intervals)
+CLSpectrumAcquisitionOverhead = 3.2         ' CL acquisition overhead (Ocean Optics driver using 2. * RealTimeInterval! acquisition intervals and 5 boxcar wdith)
+CLSpectrumAcquisitionOverhead2 = 0.6        ' CL acquisition overhead (Ocean Optics driver using 2. * RealTimeInterval! acquisition intervals and 5 boxcar width)
 ElseIf CLSpectraInterfaceType% = 2 Then
 CLSpectrumAcquisitionOverhead = 1#          ' Gatan
+CLSpectrumAcquisitionOverhead2 = 1#         ' Gatan
 ElseIf CLSpectraInterfaceType% = 3 Then
 CLSpectrumAcquisitionOverhead = 1#          ' Newport
+CLSpectrumAcquisitionOverhead2 = 1#         ' Newport
 ElseIf CLSpectraInterfaceType% = 4 Then
 CLSpectrumAcquisitionOverhead = 1#          ' unused
+CLSpectrumAcquisitionOverhead2 = 1#         ' unused
 End If
 
 ' Init integrated intensity background fit option and parameters

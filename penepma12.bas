@@ -2471,25 +2471,25 @@ Open FanalInputFile$ For Output As #Temp2FileNumber%
 
 ' Load each parameter file (change extension to .mat- bless Cesc's physicist's heart)
 tfilename$ = "material1.mat"      ' Fanal is case sensitive!
-astring = Format$(tfilename$, a24$) & "Material A"
+astring$ = Format$(tfilename$, a24$) & "Material A"
 Print #Temp2FileNumber%, astring$
 
 tfilename$ = "material2.mat"      ' Fanal is case sensitive!
-astring = Format$(tfilename$, a24$) & "Material B"
+astring$ = Format$(tfilename$, a24$) & "Material B"
 Print #Temp2FileNumber%, astring$
 
 tfilename$ = "material3.mat"      ' Fanal is case sensitive!
-astring = Format$(tfilename$, a24$) & "Standard material"
+astring$ = Format$(tfilename$, a24$) & "Standard material"
 Print #Temp2FileNumber%, astring$
 
-astring = Format$(Format$(90# - MaterialMeasuredTakeoff#, f52$), a24$) & "detector angle, theta_d (deg)"    ' fixed 09/09/2014
+astring$ = Format$(Format$(90# - MaterialMeasuredTakeoff#, f52$), a24$) & "detector angle, theta_d (deg)"    ' fixed 09/09/2014
 Print #Temp2FileNumber%, astring$
 
-astring = Format$(Format$(MaterialMeasuredEnergy# * EVPERKEV#, e82$), a24$) & "electron beam energy (eV)"
+astring$ = Format$(Format$(MaterialMeasuredEnergy# * EVPERKEV#, e82$), a24$) & "electron beam energy (eV)"
 Print #Temp2FileNumber%, astring$
 
 ' Load element
-astring = Format$(MaterialMeasuredElement%, i30$)
+astring$ = Format$(MaterialMeasuredElement%, i30$)
 
 ' Load x-ray transitions
 If MaterialMeasuredXray% = 1 Then astring$ = astring$ & " 1 4"      ' K L3  (Ka) (see table 6.2 in Penelope-2006-NEA-pdf)
@@ -2511,8 +2511,8 @@ astring$ = astring$ & "characteristic line (IZ S1 S2)"
 Print #Temp2FileNumber%, astring$
 
 ' Note: if MaterialMeasuredDistance# = 0 then the modified Fanal will output exponential distances starting at 10 nm
-astring = Format$(MaterialMeasuredDistance# * CMPERMICRON#, e82$)   ' convert from microns to cm
-astring = astring$ & " " & Format$(MaterialMeasuredGridPoints%, i50$)
+astring$ = Format$(MaterialMeasuredDistance# * CMPERMICRON#, e82$)   ' convert from microns to cm
+astring$ = astring$ & " " & Format$(MaterialMeasuredGridPoints%, i50$)
 astring$ = Format$(astring$, a24$)
 astring$ = astring$ & "maximum distance, no. of grid points"
 Print #Temp2FileNumber%, astring$

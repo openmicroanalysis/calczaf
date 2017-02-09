@@ -2891,7 +2891,8 @@ Global ImageTime_TDI() As Single         ' for CalcImage TDI pixel arrays (dimen
 Global IntegrateEDSSpectrumImagingFlag As Integer       ' for synchronized WDS and ED SI mapping (leave as integer for CIP file input)
 Global IntegrateEDSSpectrumImagingFilename As String    ' for synchronized WDS and ED SI mapping
 
-Global CLSpectrumAcquisitionOverhead As Single
+Global CLSpectrumAcquisitionOverhead As Single          ' overhead factor for light CL spectra
+Global CLSpectrumAcquisitionOverhead2 As Single         ' overhead factor for dark CL spectra
 
 Global MDB_Template As String
 

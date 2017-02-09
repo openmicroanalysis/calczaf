@@ -209,8 +209,8 @@ Else
 BeamMinimumEnergyRange# = Val(tForm.TextEnergyRangeMinMaxNumber(0).Text)
 End If
 
-If Val(tForm.TextEnergyRangeMinMaxNumber(1).Text) < 10000 Or Val(tForm.TextEnergyRangeMinMaxNumber(1).Text) > 100000 Then
-msg$ = "Maximum Energy Range is out of range (must be between 10,000 and 100,000)"
+If Val(tForm.TextEnergyRangeMinMaxNumber(1).Text) < 5000 Or Val(tForm.TextEnergyRangeMinMaxNumber(1).Text) > 100000 Then
+msg$ = "Maximum Energy Range is out of range (must be between 5,000 and 100,000)"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08SaveInput"
 ierror = True
 Exit Sub
