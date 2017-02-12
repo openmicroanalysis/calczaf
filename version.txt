@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/10/17	Fix CL count time issue. Improve MAN GUI on startup (Roberts). Add call to Thermo TEPortal for drift compensation (Allaz).
+
 02/07/17	Improve row selection code for MAN form load (Roberts). Improve CL acquisition time estimates (Ocean Optics).
 v. 11.8.1	
 
