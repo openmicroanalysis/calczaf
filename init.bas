@@ -3325,11 +3325,11 @@ UseStageReproducibilityCorrectionFlag = False
 ImageSizeIndex% = -1            ' to force loading of default image size
 
 If CLSpectraInterfaceType% = 0 Then
-CLSpectrumAcquisitionOverhead = 1#          ' demo mode
-CLSpectrumAcquisitionOverhead2 = 1#         ' demo mode
+CLSpectrumAcquisitionOverhead = 1#          ' demo mode    (light spectra)
+CLSpectrumAcquisitionOverhead2 = 1#         ' demo mode    (dark spectra)
 ElseIf CLSpectraInterfaceType% = 1 Then
-CLSpectrumAcquisitionOverhead = 3.2         ' CL acquisition overhead (Ocean Optics driver using 2. * RealTimeInterval! acquisition intervals and 5 boxcar wdith)
-CLSpectrumAcquisitionOverhead2 = 2.1        ' CL acquisition overhead (Ocean Optics driver using 2. * RealTimeInterval! acquisition intervals and 5 boxcar width)
+CLSpectrumAcquisitionOverhead = 2.9         ' CL acquisition overhead (Ocean Optics driver using 2. * RealTimeInterval! acquisition intervals and 5 boxcar wdith)
+CLSpectrumAcquisitionOverhead2 = 1.9        ' CL acquisition overhead (Ocean Optics driver using 2. * RealTimeInterval! acquisition intervals and 5 boxcar width)
 ElseIf CLSpectraInterfaceType% = 2 Then
 CLSpectrumAcquisitionOverhead = 1#          ' Gatan
 CLSpectrumAcquisitionOverhead2 = 1#         ' Gatan
