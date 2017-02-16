@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/14/17	Improve combined conditions dialog.
+
 02/12/17	Improve CL acquisition time estimate for Automate!
 
 02/10/17	Fix CL count time issue. Improve MAN GUI on startup (Roberts). Add call to Thermo TEPortal for drift compensation (Allaz).

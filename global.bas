@@ -2892,7 +2892,6 @@ Global IntegrateEDSSpectrumImagingFlag As Integer       ' for synchronized WDS a
 Global IntegrateEDSSpectrumImagingFilename As String    ' for synchronized WDS and ED SI mapping
 
 Global CLSpectrumAcquisitionOverhead As Single          ' overhead factor for light CL spectra
-Global CLSpectrumAcquisitionOverhead2 As Single         ' overhead factor for dark CL spectra
 
 Global MDB_Template As String
 

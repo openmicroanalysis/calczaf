@@ -246,9 +246,6 @@ If GetElmOldSample(1).KilovoltsArray!(GetElmOldSample(1).LastElm%) = 0# Then Get
 If GetElmOldSample(1).BeamCurrentArray!(GetElmOldSample(1).LastElm%) = 0# Then GetElmOldSample(1).BeamCurrentArray!(GetElmOldSample(1).LastElm%) = GetElmOldSample(1).beamcurrent!
 'If GetElmOldSample(1).BeamSizeArray!(GetElmOldSample(1).LastElm%) = 0# Then GetElmOldSample(1).BeamSizeArray!(GetElmOldSample(1).LastElm%) = GetElmOldSample(1).beamsize!
 
-If GetElmOldSample(1).ColumnConditionMethodArray%(GetElmOldSample(1).LastElm%) = 0# Then GetElmOldSample(1).ColumnConditionMethodArray%(GetElmOldSample(1).LastElm%) = GetElmOldSample(1).ColumnConditionMethod%
-If GetElmOldSample(1).ColumnConditionStringArray$(GetElmOldSample(1).LastElm%) = vbNullString Then GetElmOldSample(1).ColumnConditionStringArray$(GetElmOldSample(1).LastElm%) = GetElmOldSample(1).ColumnConditionString$
-
 ' Load std assignments and element disable flags
 GetElmOldSample(1).StdAssignsFlag%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).StdAssignsFlag%(i%)
 GetElmOldSample(1).DisableQuantFlag%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).DisableQuantFlag%(i%)
