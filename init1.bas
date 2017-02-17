@@ -457,6 +457,8 @@ If tKeyword$ = "UserSpecifiedOutputOxideMolePercentFlag" Then tDefault& = 0
 If tKeyword$ = "UserSpecifiedOutputStandardPublishedValuesFlag" Then tDefault& = 0
 If tKeyword$ = "UserSpecifiedOutputStandardPercentVariancesFlag" Then tDefault& = 0
 If tKeyword$ = "UserSpecifiedOutputStandardAgebraicDifferencesFlag" Then tDefault& = 0
+
+If tKeyword$ = "UserSpecifiedOutputDetectionLimitsOxide" Then tDefault& = 0
 End If
 
 ' Load passed boolean keyword
@@ -1704,6 +1706,8 @@ Call InitINI4(UserSpecifiedOutputAbsorbedCurrentFlag, "UserSpecifiedOutputAbsorb
 
 Call InitINI4(UserSpecifiedOutputBeamCurrent2Flag, "UserSpecifiedOutputBeamCurrent2Flag", "Software")
 Call InitINI4(UserSpecifiedOutputAbsorbedCurrent2Flag, "UserSpecifiedOutputAbsorbedCurrent2Flag", "Software")
+
+Call InitINI4(UserSpecifiedOutputDetectionLimitsOxideFlag, "UserSpecifiedOutputDetectionLimitsOxide", "Software")
 
 ' Load DefaultNthPointAcquisitionInterval
 lpAppName$ = "Software"

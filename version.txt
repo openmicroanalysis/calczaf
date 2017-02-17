@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/16/17	Add output of detection limits in oxide weight percents for user specified format output (Neill).
+v. 11.8.2
+
+02/15/17	Fix new Thermo PathFinder calls for relase beam and deflect beam.
+
 02/14/17	Improve combined conditions dialog.
 
 02/12/17	Improve CL acquisition time estimate for Automate!

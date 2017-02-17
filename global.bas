@@ -2946,3 +2946,6 @@ Global InstrumentFacility As String
 Global UsePenepmaSimulationForDemoMode As Boolean
 
 Global OriginalBeamCurrent As Single
+
+Global UserSpecifiedOutputDetectionLimitsOxideFlag As Boolean
+
