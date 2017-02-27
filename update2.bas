@@ -268,7 +268,7 @@ If sample(1).StdAssignsIntfStds%(j%, i%) > 0 Then
 
 ' Find position of standard in standard list and check that it was not already calculated
 ip% = IPOS2(NumberofStandards%, sample(1).StdAssignsIntfStds%(j%, i%), StandardNumbers%())
-If ip% = 0 Then GoTo UpdateStdKfacsBadStd
+If ip% = 0 Then GoTo UpdateStdKfacsBadStdInterf
 If Not standardcalculated(ip%) Then
 
 ' Calculate the standard k ratios
@@ -360,6 +360,15 @@ Exit Sub
 UpdateStdKfacsBadStd:
 msg$ = "Standard number " & Str$(sample(1).StdAssigns%(i%)) & ", the assigned standard for " & sample(1).Elsyms$(i%) & " " & sample(1).Xrsyms$(i%) & ", does not exist in this run. " & vbCrLf & vbCrLf
 msg$ = msg$ & "Change the standard assignment or use the Add Standards to "
+msg$ = msg$ & "Run menu under the Standard menu to add the standard to the run "
+msg$ = msg$ & "and acquire data for it."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateStdKfacs"
+ierror = True
+Exit Sub
+
+UpdateStdKfacsBadStdInterf:
+msg$ = "Standard number " & Str$(sample(1).StdAssignsIntfStds%(j%, i%)) & ", the assigned interference standard for " & sample(1).Elsyms$(i%) & " " & sample(1).Xrsyms$(i%) & ", does not exist in this run. " & vbCrLf & vbCrLf
+msg$ = msg$ & "Change the standard interference assignment or use the Add Standards to "
 msg$ = msg$ & "Run menu under the Standard menu to add the standard to the run "
 msg$ = msg$ & "and acquire data for it."
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateStdKfacs"

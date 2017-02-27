@@ -2,6 +2,20 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/26/17	First implementation of TDI scanning code in CalcImage.
+v.11.8.3
+
+02/25/17	Work on "scanning TDI" code in CalcImage. Note new menu in the CalcImage menu for converting replicate scans
+		from Probe Image into _TDI_ files for processing with CalcImage.
+		
+		Modify code for determining image assignments in CalcImage. Much cleaner now.
+
+02/24/17	Work on "scanning TDI" code in CalcImage. 
+
+02/23/17	Work on "scanning TDI" code in CalcImage. 
+
+02/22/17	Work on "scanning TDI" code in CalcImage. 
+
 02/16/17	Add output of detection limits in oxide weight percents for user specified format output (Neill).
 v. 11.8.2
 

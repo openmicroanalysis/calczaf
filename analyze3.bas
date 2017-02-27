@@ -484,7 +484,7 @@ Exit Sub
 End Sub
 
 Sub AnalyzeWeightCorrect(linerow As Integer, uncts() As Single, oldcts() As Single, alldone As Boolean, firsttime As Boolean, zerror As Integer, analysis As TypeAnalysis, sample() As TypeSample)
-' Correct counts for MAN backgrounds, peak interferences, volatile element and APF corrections
+' Correct counts for MAN backgrounds, peak interferences, volatile element (TDI) and area peak factor (APF) corrections
 
 ierror = False
 On Error GoTo AnalyzeWeightCorrectError
@@ -1549,6 +1549,7 @@ Dim sString As String
 Dim temp3 As Single
 
 Dim npts As Integer, nrows As Integer
+Dim npixels As Long
 Dim txdata() As Single, tydata() As Single
 Dim tldata() As Integer, ttdata() As Single
 Dim tedata() As Single
@@ -2418,8 +2419,8 @@ If UCase$(Trim$(app.EXEName)) <> UCase$(Trim$("CalcImage")) Then
 Call VolatileCalculateFitSelfAll(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata%(), npts%, nrows%, i%, sample())
 If ierror Then Exit Sub
 Else
-'Call VolatileCalculateFitSelfAll_CI(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata%(), npts%, npixels&, i%, sample())
-'If ierror Then Exit Sub
+Call VolatileCalculateFitSelfAll_CI(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata%(), npts%, npixels&, i%, sample())
+If ierror Then Exit Sub
 End If
 msg$ = msg$ & Format$(Format$(sample(1).VolatileFitAvgTime!(i%), f82$), a80$)
 

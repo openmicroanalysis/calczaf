@@ -2882,11 +2882,19 @@ Global UseStageReproducibilityCorrectionFlag As Boolean
 Global ImageSizeIndex As Integer
 Global ImageChannelNumber As Integer
 
+Global ImageData_TDI_SampleName As String
+Global ImageData_TDI_Kilovolts As Single
+Global ImageData_TDI_nTDI As Integer     ' for CalcImage TDI pixel arrays (number of TDI intervals/images)
+Global ImageData_TDI_Time As Single      ' for CalcImage TDI pixel arrays (TDI interval time in seconds)
+Global ImageData_TDI_Beam1 As Single     ' for CalcImage TDI pixel arrays (TDI beam current- start)
+Global ImageData_TDI_Beam2 As Single     ' for CalcImage TDI pixel arrays (TDI beam current- end)
 Global ImageData_TDI_Ix As Long          ' for CalcImage TDI pixel arrays (always the same for all quant images)
 Global ImageData_TDI_Iy As Long          ' for CalcImage TDI pixel arrays (always the same for all quant images)
+Global ImageData_TDI_Start As Double     ' for CalcImage TDI pixel arrays (TDI start time)
+Global ImageData_TDI_Stop As Double      ' for CalcImage TDI pixel arrays (TDI stop time)
 
-Global ImageData_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to npts)
-Global ImageTime_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to npts)
+Global ImageData_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to nTDI)
+Global ImageTime_TDI() As Double         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to nTDI)
 
 Global IntegrateEDSSpectrumImagingFlag As Integer       ' for synchronized WDS and ED SI mapping (leave as integer for CIP file input)
 Global IntegrateEDSSpectrumImagingFilename As String    ' for synchronized WDS and ED SI mapping

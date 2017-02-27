@@ -529,7 +529,7 @@ Dim asym As String, anum As String
 Dim tfilename As String
 
 ' Loop on all six x-ray files
-For n% = 1 To MAXRAY% - 1
+For n% = 1 To MAXRAY_OLD%
 
 ' Read line and edge file if first time
 tfilename$ = "CHANTLER2005-" & Xraylo$(n%) & ".dat"
@@ -581,7 +581,7 @@ Exit Sub
 End Sub
 
 Sub AbsorbGetFFAST(ielm As Integer, ip As Integer, iray As Integer, atotal As Single)
-' Load the Chantler .DAT data files
+' Load the Chantler .DAT data files (ka, kb, la, lb, ma, mb only)
 '  ielm = absorber (1 to 92)
 '  ip = emitter (5 to 92)
 '  iray = x-ray line (1 to 6)
