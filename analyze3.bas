@@ -1550,8 +1550,8 @@ Dim temp3 As Single
 
 Dim npts As Integer, nrows As Integer
 Dim npixels As Long
-Dim txdata() As Single, tydata() As Single
-Dim tldata() As Integer, ttdata() As Single
+Dim txdata() As Single, tydata() As Single, ttdata() As Single
+Dim tldata() As Long
 Dim tedata() As Single
 
 Dim average As TypeAverage, average2 As TypeAverage
@@ -2416,10 +2416,10 @@ ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
 If sample(1).VolatileCorrectionUnks%(i%) < 0 And (Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0)) Then       ' check for duplicate element
 nthpnt& = 1                        ' use all sample rows or all pixels
 If UCase$(Trim$(app.EXEName)) <> UCase$(Trim$("CalcImage")) Then
-Call VolatileCalculateFitSelfAll(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata%(), npts%, nrows%, i%, sample())
+Call VolatileCalculateFitSelfAll(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata&(), npts%, nrows%, i%, sample())
 If ierror Then Exit Sub
 Else
-Call VolatileCalculateFitSelfAll_CI(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata%(), npts%, npixels&, i%, sample())
+Call VolatileCalculateFitSelfAll_CI(nthpnt&, txdata!(), tydata!(), ttdata!(), tedata!(), tldata&(), npts%, npixels&, i%, sample())
 If ierror Then Exit Sub
 End If
 msg$ = msg$ & Format$(Format$(sample(1).VolatileFitAvgTime!(i%), f82$), a80$)
