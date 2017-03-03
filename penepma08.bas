@@ -3563,6 +3563,7 @@ Dim astring As String
 
 ReDim Binary_ZAF_Factors(1 To MAXRAY% - 1, 1 To MAXBINARY%) As Single
 ReDim Binary_ZAF_Coeffs(1 To MAXRAY%, 1 To MAXCOEFF4%) As Single
+ReDim Binary_ZAF_Devs(1 To MAXRAY%) As Single
 
 ' Calculate k-ratios and a-factors first
 For n% = 1 To 2
@@ -3588,7 +3589,7 @@ End If
 Next k%
 
 ' Calculate alpha factors for all binaries
-Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZAF_Kratios#(), Binary_ZAF_Factors!(), Binary_ZAF_Coeffs!())
+Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZAF_Kratios#(), Binary_ZAF_Factors!(), Binary_ZAF_Coeffs!(), Binary_ZAF_Devs!())
 If ierror Then Exit Sub
 
 ' Save alpha factors

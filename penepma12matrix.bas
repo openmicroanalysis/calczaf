@@ -201,19 +201,20 @@ Exit Sub
 
 End Sub
 
-Sub Penepma12CalculateAlphaFactors(l As Integer, tBinaryRanges() As Single, tBinary_Kratios() As Double, tBinary_Factors() As Single, tBinary_Coeffs() As Single)
+Sub Penepma12CalculateAlphaFactors(l As Integer, tBinaryRanges() As Single, tBinary_Kratios() As Double, tBinary_Factors() As Single, tBinary_Coeffs() As Single, tBinary_Devs() As Single)
 ' Calculate the alpha factors and fit coefficients for the passed k-ratios (matrix alpha factors)
 '  l% is the x-ray line being calculated
 '  tBinaryRanges!(1 to MAXBINARY%)  are the compositional binaries in weight percent
 '  tBinary_Kratios#(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the k-ratios for each x-ray and binary composition
 '  tBinary_Factors!(1 to MAXRAY_OLD%, 1 to MAXBINARY%)  are the alpha factors for each x-ray and binary composition, alpha = (C/K - C)/(1 - C)
-'  tBinary_Coeffs!(1 to MAXRAY_OLD%, 1 to MAXCOEFF4%)  are the polynomial/non-linear alpha factors fit coefficients for each x-ray and MAXBINARY% alpha factors
+'  tBinary_Coeffs!(1 to MAXRAY_OLD%, 1 to MAXCOEFF4%)  are the alpha factors fit coefficients for each x-ray
+'  tBinary_Devs!(1 to MAXRAY_OLD%)  are the alpha factor fit standard deviations for each x-ray
 
 ierror = False
 On Error GoTo Penepma12CalculateAlphaFactorsError
 
 Dim n As Integer, kmax As Integer, nmax As Integer
-Dim k As Single, c As Single
+Dim k As Single, c As Single, stddev As Single
 
 ' Fit calculations
 ReDim xdata(1 To MAXBINARY%) As Single
@@ -276,10 +277,23 @@ tBinary_Coeffs!(l%, 2) = acoeff!(2)
 tBinary_Coeffs!(l%, 3) = acoeff!(3)
 tBinary_Coeffs!(l%, 4) = acoeff!(4)
 
+' Calculate average standard deviation
+If CorrectionFlag% = 4 Then
+Call LeastDeviation(Int(1), stddev!, nmax%, xdata!(), ydata!(), acoeff!())       ' quadratic deviation
+If ierror Then Exit Sub
+
+Else
+Call LeastMathNonLinearDeviation(stddev!, nmax%, xdata!(), ydata!(), acoeff!())
+If ierror Then Exit Sub
+End If
+
+' Load the standard deviation
+tBinary_Devs!(l%) = stddev!
+
 ' Display results
 If DebugMode Then
-Call IOWriteLog("  Alpha1  Alpha2  Alpha3  Alpha4")
-msg$ = Format$(Format$(acoeff!(1), f84$), a80$) & Format$(Format$(acoeff!(2), f84$), a80$) & Format$(Format$(acoeff!(3), f84$), a80$) & Format$(Format$(acoeff!(4), f84$), a80$)
+Call IOWriteLog("  Alpha1  Alpha2  Alpha3  Alpha4  StdDev")
+msg$ = Format$(Format$(acoeff!(1), f84$), a80$) & Format$(Format$(acoeff!(2), f84$), a80$) & Format$(Format$(acoeff!(3), f84$), a80$) & Format$(Format$(acoeff!(4), f84$), a80$) & Format$(Format$(stddev!, f84$), a80$)
 Call IOWriteLog(msg$)
 End If
 

@@ -450,17 +450,25 @@ Begin VB.Form FormPenepma12Random
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FF0000&
-      Height          =   2295
+      Height          =   2415
       Left            =   120
       TabIndex        =   19
       Top             =   2760
       Width           =   10935
+      Begin VB.CommandButton CommandCheckDeviations 
+         Caption         =   "Check Database Alpha Fit Deviations"
+         Height          =   375
+         Left            =   360
+         TabIndex        =   79
+         Top             =   1920
+         Width           =   3255
+      End
       Begin VB.CommandButton CommandCheckKratios 
          Caption         =   "Check Database Kratios Against CalcZAF"
          Height          =   375
          Left            =   360
          TabIndex        =   78
-         Top             =   1800
+         Top             =   1560
          Width           =   3255
       End
       Begin VB.TextBox TextBeamEnergy 
@@ -528,11 +536,11 @@ Begin VB.Form FormPenepma12Random
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   615
+         Height          =   495
          Left            =   360
          TabIndex        =   21
          TabStop         =   0   'False
-         Top             =   1080
+         Top             =   960
          Width           =   3255
       End
       Begin VB.CommandButton CommandCreateMatrix 
@@ -546,7 +554,7 @@ Begin VB.Form FormPenepma12Random
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   615
+         Height          =   495
          Left            =   360
          TabIndex        =   20
          TabStop         =   0   'False
@@ -865,6 +873,16 @@ Call Penepma12RandomRun
 FormPenepma12Random.LabelCopying.Caption = vbNullString
 If ierror Then Exit Sub
 Call Penepma12RandomRunPenfluor
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandCheckDeviations_Click()
+If Not DebugMode Then On Error Resume Next
+Call Penepma12MatrixCheckDeviations(CSng(40#))
+If ierror Then Exit Sub
+Call Penepma12MatrixCheckDeviations(CSng(52.5))
+If ierror Then Exit Sub
+Call Penepma12MatrixCheckDeviations(CSng(75#))
 If ierror Then Exit Sub
 End Sub
 

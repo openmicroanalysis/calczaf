@@ -816,8 +816,7 @@ Exit Sub
 End Sub
 
 Sub Penepma12MatrixCheckKratios()
-' This routine reads the Matrix.mdb file for the specified beam energy, emitter, x-ray, matrix.
-'  tKratios#(1 to MAXBINARY%) are the k-ratios for this x-ray and binary composition
+' This routine reads the Matrix.mdb file for beam energy, emitter, x-ray, matrix and checks against CalcZAF calculated k-ratios.
 
 ierror = False
 On Error GoTo Penepma12MatrixCheckKratiosError
@@ -835,7 +834,7 @@ Dim MtDb As Database
 Dim MtDt As Recordset
 Dim MtDs As Recordset
 
-Const maxdiff! = 0.2
+Const maxdiff! = 0.2            ' check for more than 20% relative difference between Penepma and CalcZAF k-ratios
 
 icancelauto = False
 
@@ -988,4 +987,3 @@ ierror = True
 Exit Sub
 
 End Sub
-

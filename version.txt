@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/02/17	Add menu to CalcImage log window for "cloning" the current CalcImage project (Ruscitto).
+
+		MOdify lower coarse condenser lens limit to 0 (Carpenter).
+
+		Add check for large standard deviations (see code Penepma12MatrixCheckDeviations)
+
 02/28/17	Modify scanning TDI feature to display actual pixel numbers for plot.
 
 02/26/17	First implementation of TDI scanning code in CalcImage.
