@@ -9212,7 +9212,7 @@ ReDim CalcZAF_ZA_Devs(1 To MAXRAY%) As Single
 ReDim Binary_F_Devs(1 To MAXRAY%) As Single
 ReDim CalcZAF_F_Devs(1 To MAXRAY%) As Single
 
-Const maxdev! = 20#            ' check for more than 20% average deviation
+Const maxdev! = 40#            ' check for more than 40% average deviation in alpha fit
 
 icancelauto = False
 
@@ -9260,6 +9260,9 @@ End If
 If Not notfound Then
 For n% = 1 To MAXBINARY%
 Binary_ZAF_Kratios#(l%, n%) = tKratios#(n%)
+If UsePenepmaKratiosLimitFlag And BinaryRanges(n%) > PenepmaKratiosLimitValue! Then
+Binary_ZAF_Kratios#(l%, n%) = 0#
+End If
 Next n%
 
 ' Fit alpha (assume polynomial) for this x-ray

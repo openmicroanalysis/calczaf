@@ -37,13 +37,13 @@ tList.Clear
 For samplerow% = 1 To NumberofSamples%
 
 ' Load standards or unknowns or all
-If tForm.OptionStandard.Value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
-If tForm.OptionUnknown.Value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
-If tForm.OptionWavescan.Value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
+If tForm.OptionStandard.value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
+If tForm.OptionUnknown.value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
+If tForm.OptionWavescan.value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
 
 ' Check for FormANALYZE and if so, check display only samples with data checkbox
 If tForm.Name = "FormANALYZE" Then
-If tForm.CheckOnlyDisplaySamplesWithData.Value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
+If tForm.CheckOnlyDisplaySamplesWithData.value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
 End If
 
 ' Load number set and name
@@ -106,7 +106,7 @@ End If
 End If
 
 ' Increment number of analyzed elements
-If tmpsample(1).DisableQuantFlag%(i%) = 0 Then
+'If tmpsample(1).DisableQuantFlag%(i%) = 0 Then
 If sample(1).LastElm% + 1 > MAXCHAN% Then GoTo AnalyzeCombineSamplesTooManyAnalyzedElements
 sample(1).LastElm% = sample(1).LastElm% + 1
 
@@ -299,7 +299,7 @@ sample(1).SecondaryFluorescenceBoundaryMatBStd_String$(sample(1).LastElm%) = tmp
 'sample(1).SecondaryFluorescenceBoundaryMaterialB_WtPercents!(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryMaterialB_WtPercents!(i%)
 
 sample(1).ConditionNumbers%(sample(1).LastElm%) = tmpsample(1).ConditionNumbers%(i%)    ' list order
-End If
+'End If
 End If
 4000: Next i%
 
