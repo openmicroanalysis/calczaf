@@ -3599,7 +3599,7 @@ lpKeyName$ = "ReflectedLightIntensity"
 If InterfaceType% = 5 Then
 nDefault& = 32      ' SX100 (0-64)
 Else
-nDefault& = 63      ' JEOL (0-127)
+nDefault& = 110      ' JEOL (0-127)
 End If
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
@@ -3616,7 +3616,7 @@ lpKeyName$ = "TransmittedLightIntensity"
 If InterfaceType% = 5 Then
 nDefault& = 32      ' SX100 (0-64)
 Else
-nDefault& = 63      ' JEOL (0-127)
+nDefault& = 110      ' JEOL (0-127)
 End If
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)

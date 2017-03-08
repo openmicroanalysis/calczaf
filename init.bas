@@ -12,7 +12,7 @@ Option Explicit
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Private Declare Function GetWindowsDirectory Lib "kernel32.dll" Alias "GetWindowsDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
-Private Declare Function GetModuleFileName Lib "Kernel32" Alias "GetModuleFileNameA" (ByVal hModule As Long, ByVal lpFileName As String, ByVal nSize As Long) As Long
+Private Declare Function GetModuleFileName Lib "kernel32" Alias "GetModuleFileNameA" (ByVal hModule As Long, ByVal lpFileName As String, ByVal nSize As Long) As Long
 
 Global ScalersFile As String
 Global MotorsFile As String
@@ -3277,9 +3277,11 @@ BinaryRanges!(11) = 1#
 DecontaminationTime! = 0#
 DecontaminationTimeFlag = False
 
-UsePenepmaKratiosFlag% = 1 ' do not use PENEPMA based k-ratios for alpha factor calculations (1 = no, 2 = yes)
-UseFilamentStandbyFlag = False  ' re-set flag when opening new run
+UsePenepmaKratiosFlag% = 1                  ' do not use PENEPMA based k-ratios for alpha factor calculations (1 = no, 2 = yes)
+UsePenepmaKratiosLimitFlag = True           ' default is to skip Penepma binary concentrations greater than the minimum limit (90 wt%)
+'PenepmaKratiosLimitValue! = 90#             ' set in Probewin.ini file
 
+UseFilamentStandbyFlag = False              ' re-set flag when opening new run
 OnPeakTimeFractionFlag = False
 OnPeakTimeFractionValue! = 1#
 

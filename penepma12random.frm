@@ -455,13 +455,21 @@ Begin VB.Form FormPenepma12Random
       TabIndex        =   19
       Top             =   2760
       Width           =   10935
+      Begin VB.CommandButton CommandAddMatrix 
+         Caption         =   "Add Penepma K-Ratios To Matrix.MDB"
+         Height          =   495
+         Left            =   2640
+         TabIndex        =   80
+         Top             =   960
+         Width           =   1935
+      End
       Begin VB.CommandButton CommandCheckDeviations 
          Caption         =   "Check Database Alpha Fit Deviations"
          Height          =   375
          Left            =   360
          TabIndex        =   79
          Top             =   1920
-         Width           =   3255
+         Width           =   4215
       End
       Begin VB.CommandButton CommandCheckKratios 
          Caption         =   "Check Database Kratios Against CalcZAF"
@@ -469,11 +477,11 @@ Begin VB.Form FormPenepma12Random
          Left            =   360
          TabIndex        =   78
          Top             =   1560
-         Width           =   3255
+         Width           =   4215
       End
       Begin VB.TextBox TextBeamEnergy 
          Height          =   285
-         Left            =   5880
+         Left            =   6240
          TabIndex        =   30
          ToolTipText     =   "Enter beam energy in electron volts (eV)"
          Top             =   600
@@ -481,7 +489,7 @@ Begin VB.Form FormPenepma12Random
       End
       Begin VB.TextBox TextBeamTakeoff 
          Height          =   285
-         Left            =   4800
+         Left            =   5160
          TabIndex        =   29
          ToolTipText     =   "Enter beam takeoff angle in degrees (40 for JEOL and Cameca)"
          Top             =   600
@@ -489,7 +497,7 @@ Begin VB.Form FormPenepma12Random
       End
       Begin VB.ComboBox ComboMatrixElement 
          Height          =   315
-         Left            =   9360
+         Left            =   9720
          TabIndex        =   27
          TabStop         =   0   'False
          ToolTipText     =   "Select the boundary or matrix element"
@@ -498,7 +506,7 @@ Begin VB.Form FormPenepma12Random
       End
       Begin VB.ComboBox ComboEmitterXRay 
          Height          =   315
-         Left            =   8040
+         Left            =   8400
          TabIndex        =   24
          TabStop         =   0   'False
          ToolTipText     =   "Select the measured x-ray to profile fluorescence"
@@ -507,7 +515,7 @@ Begin VB.Form FormPenepma12Random
       End
       Begin VB.ComboBox ComboEmitterElement 
          Height          =   315
-         Left            =   7080
+         Left            =   7440
          TabIndex        =   23
          TabStop         =   0   'False
          ToolTipText     =   "Select the measured element to profile fluorescence"
@@ -518,12 +526,12 @@ Begin VB.Form FormPenepma12Random
          BackColor       =   &H0080FFFF&
          Caption         =   "Read Matrix.MDB (for specified energy, emitter, x-ray and matrix)"
          Height          =   495
-         Left            =   4320
+         Left            =   4920
          Style           =   1  'Graphical
          TabIndex        =   22
          TabStop         =   0   'False
          Top             =   1080
-         Width           =   6135
+         Width           =   5655
       End
       Begin VB.CommandButton CommandScanMatrix 
          Caption         =   "Scan Input Files and Write To Matrix.MDB"
@@ -541,7 +549,7 @@ Begin VB.Form FormPenepma12Random
          TabIndex        =   21
          TabStop         =   0   'False
          Top             =   960
-         Width           =   3255
+         Width           =   2175
       End
       Begin VB.CommandButton CommandCreateMatrix 
          Caption         =   "Create New (Empty) Matrix.MDB"
@@ -559,22 +567,22 @@ Begin VB.Form FormPenepma12Random
          TabIndex        =   20
          TabStop         =   0   'False
          Top             =   360
-         Width           =   3255
+         Width           =   4215
       End
       Begin VB.Label LabelMatrixDisplay 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
          Height          =   495
-         Left            =   4320
+         Left            =   4920
          TabIndex        =   33
          Top             =   1680
-         Width           =   6135
+         Width           =   5655
       End
       Begin VB.Label Label13 
          Alignment       =   2  'Center
          Caption         =   "Take-off"
          Height          =   255
-         Left            =   4800
+         Left            =   5160
          TabIndex        =   32
          Top             =   360
          Width           =   855
@@ -583,7 +591,7 @@ Begin VB.Form FormPenepma12Random
          Alignment       =   2  'Center
          Caption         =   "KeV"
          Height          =   255
-         Left            =   5880
+         Left            =   6240
          TabIndex        =   31
          Top             =   360
          Width           =   735
@@ -594,7 +602,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Matrix"
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   9360
+         Left            =   9720
          TabIndex        =   28
          Top             =   360
          Width           =   735
@@ -605,7 +613,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "X-Ray"
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   8040
+         Left            =   8400
          TabIndex        =   26
          Top             =   360
          Width           =   735
@@ -616,7 +624,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Element"
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   7080
+         Left            =   7440
          TabIndex        =   25
          Top             =   360
          Width           =   735
@@ -851,6 +859,12 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 ' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
+
+Private Sub CommandAddMatrix_Click()
+If Not DebugMode Then On Error Resume Next
+Call Penepma12MatrixAddPenepmaKRatios
+If ierror Then Exit Sub
+End Sub
 
 Private Sub CommandBrowsePARShare_Click()
 If Not DebugMode Then On Error Resume Next

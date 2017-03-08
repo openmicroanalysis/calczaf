@@ -201,7 +201,7 @@ Exit Sub
 
 End Sub
 
-Sub Penepma12CalculateAlphaFactors(l As Integer, tBinaryRanges() As Single, tBinary_Kratios() As Double, tBinary_Factors() As Single, tBinary_Coeffs() As Single, tBinary_Devs() As Single)
+Sub Penepma12CalculateAlphaFactors(l As Integer, tBinaryRanges() As Single, tBinary_Kratios() As Double, tBinary_Factors() As Single, tBinary_Coeffs() As Single, tBinary_Devs() As Single, nmax As Integer)
 ' Calculate the alpha factors and fit coefficients for the passed k-ratios (matrix alpha factors)
 '  l% is the x-ray line being calculated
 '  tBinaryRanges!(1 to MAXBINARY%)  are the compositional binaries in weight percent
@@ -213,8 +213,8 @@ Sub Penepma12CalculateAlphaFactors(l As Integer, tBinaryRanges() As Single, tBin
 ierror = False
 On Error GoTo Penepma12CalculateAlphaFactorsError
 
-Dim n As Integer, kmax As Integer, nmax As Integer
-Dim k As Single, c As Single, stddev As Single
+Dim n As Integer, kmax As Integer
+Dim k As Single, c As Single, stddev As Single, temp As Single
 
 ' Fit calculations
 ReDim xdata(1 To MAXBINARY%) As Single
@@ -224,12 +224,18 @@ ReDim acoeff(1 To MAXCOEFF4%) As Single
 
 nmax% = 0
 For n% = 1 To MAXBINARY%
-If CSng(tBinary_Kratios#(l%, n%)) > 0# And tBinaryRanges!(n%) > 0# Then
 
 ' Calculate alpha factor for this binary composition
 c! = tBinaryRanges!(n%) / 100#
 k! = CSng(tBinary_Kratios#(l%, n%)) / 100#    ' k-ratios are in k-ratio percent
-tBinary_Factors!(l%, n%) = ((c! / k!) - c!) / (1 - c!)        ' calculate binary alpha factors
+
+' Check that k-ratios are positive
+If k! > 0# Then
+temp! = ((c! / k!) - c!) / (1 - c!)        ' calculate binary alpha factors
+
+' Check that alphas are positive
+If temp! > 0# Then
+tBinary_Factors!(l%, n%) = temp!
 
 ' Increment number of data points
 nmax% = nmax% + 1
@@ -254,6 +260,8 @@ If VerboseMode Then
 msg$ = "Penepma12CalculateAlphaFactors: Zero or negative k-ratio for binary number " & Format$(n%) & " for " & Xraylo$(l%) & " x-ray line"
 Call IOWriteLog(msg$)
 End If
+End If
+
 End If
 Next n%
 

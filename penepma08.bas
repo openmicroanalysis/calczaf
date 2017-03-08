@@ -3246,8 +3246,11 @@ If n% = 2 Then pfilename$ = Trim$(Symup$(BinaryElement2%)) & "_" & Format$(PENEP
 PENEPMASample(1).Name$ = pfilename$
 
 ' Check for Penepma intensity file (changed from pe-inten-01.dat to pe-intens-01.dat 11-2-2012)
+tfilename$ = PENEPMA_BATCH_FOLDER$ & "\" & pfilename$ & "\pe-inten-01.dat"
+If Dir$(tfilename$) = vbNullString Then
 tfilename$ = PENEPMA_BATCH_FOLDER$ & "\" & pfilename$ & "\pe-intens-01.dat"
 If Dir$(tfilename$) = vbNullString Then GoTo Penepma08BatchBinaryExtractFileNotFound
+End If
 
 msg$ = "Extracting k-ratios based on " & PENEPMASample(1).Name$ & "..."
 Call IOWriteLog(msg$)
@@ -3255,8 +3258,6 @@ Call IOStatusAuto(msg$)
 DoEvents
 If icancelauto Then
 Call IOStatusAuto(vbNullString)
-Call IOShellTerminateTask(PenepmaTaskID&)
-If ierror Then Exit Sub
 ierror = True
 Exit Sub
 End If
@@ -3294,8 +3295,11 @@ binarynames$(k%) = Trim$(Symup$(BinaryElement1%)) & "-" & Trim$(Symup$(BinaryEle
 PENEPMASample(1).Name$ = binarynames$(k%)
 
 ' Check for Penepma intensity file (changed from pe-inten-01.dat to pe-intens-01.dat 11-2-2012)
+tfilename$ = PENEPMA_BATCH_FOLDER$ & "\" & binarynames$(k%) & "\pe-inten-01.dat"
+If Dir$(tfilename$) = vbNullString Then
 tfilename$ = PENEPMA_BATCH_FOLDER$ & "\" & binarynames$(k%) & "\pe-intens-01.dat"
 If Dir$(tfilename$) = vbNullString Then GoTo Penepma08BatchBinaryExtractFileNotFound
+End If
 
 msg$ = "Extracting k-ratios based on binary " & PENEPMASample(1).Name$ & "..."
 Call IOWriteLog(msg$)
@@ -3303,8 +3307,6 @@ Call IOStatusAuto(msg$)
 DoEvents
 If icancelauto Then
 Call IOStatusAuto(vbNullString)
-Call IOShellTerminateTask(PenepmaTaskID&)
-If ierror Then Exit Sub
 ierror = True
 Exit Sub
 End If
@@ -3323,7 +3325,7 @@ Next l%
 Next n%
 Next k%
 
-' Output binary k-ratios (and alpha factors) to MAXRAY emission line output file
+' Output binary k-ratios (and alpha factors) to MAXRAY emission line output files
 For l% = 1 To MAXRAY% - 1
 astring$ = Trim$(Symup$(BinaryElement1%)) & "-" & Trim$(Symup$(BinaryElement2%))
 tfilename$ = PENEPMA_BATCH_FOLDER$ & "\" & astring$ & "_k-ratios-" & Xraylo$(l%) & ".dat"
@@ -3558,7 +3560,7 @@ Sub Penepma08BatchBinaryOutput(l As Integer, tfilename As String)
 ierror = False
 On Error GoTo Penepma08BatchBinaryOutputError
 
-Dim k As Integer, n As Integer, response As Integer
+Dim k As Integer, n As Integer, npts As Integer
 Dim astring As String
 
 ReDim Binary_ZAF_Factors(1 To MAXRAY% - 1, 1 To MAXBINARY%) As Single
@@ -3589,7 +3591,7 @@ End If
 Next k%
 
 ' Calculate alpha factors for all binaries
-Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZAF_Kratios#(), Binary_ZAF_Factors!(), Binary_ZAF_Coeffs!(), Binary_ZAF_Devs!())
+Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZAF_Kratios#(), Binary_ZAF_Factors!(), Binary_ZAF_Coeffs!(), Binary_ZAF_Devs!(), npts%)
 If ierror Then Exit Sub
 
 ' Save alpha factors
@@ -3659,15 +3661,6 @@ Print #Temp1FileNumber%, astring$
 Next k%
 
 Close #Temp1FileNumber%
-
-' Ask user whether to update Matrix.mdb update txt file
-msg$ = "Do you want to add these k-ratios to the matrix.mdb update text file?"
-response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton1, "Penepma08BatchBinaryOutput")
-If response% = vbNo Then Exit Sub
-
-' Create/add to MatrixMDBUpdate.txt
-tfilename$ = PENEPMA_Path$ & "\MatrixMDBUpdate.txt"
-
 
 Exit Sub
 
@@ -4727,9 +4720,11 @@ If nCount& < 1 Then GoTo Penepma08BatchCopyRenameNoFiles
 
 ' Check for pure and keV sub folders and if not found, create them
 If Dir$(PENEPMA_Path$ & "\pure\", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\"
+If Dir$(PENEPMA_Path$ & "\pure\5keV", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\5keV"
 If Dir$(PENEPMA_Path$ & "\pure\10keV", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\10keV"
 If Dir$(PENEPMA_Path$ & "\pure\15keV", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\15keV"
 If Dir$(PENEPMA_Path$ & "\pure\20keV", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\20keV"
+If Dir$(PENEPMA_Path$ & "\pure\25keV", vbDirectory) = vbNullString Then MkDir PENEPMA_Path$ & "\pure\25keV"
 
 ' Loop on all files
 Screen.MousePointer = vbHourglass

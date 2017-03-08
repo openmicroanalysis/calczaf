@@ -6232,7 +6232,7 @@ Sub Penepma12OutputPlotDataMatrix()
 ierror = False
 On Error GoTo Penepma12OutputPlotDataMatrixError
 
-Dim n As Integer, l As Integer
+Dim n As Integer, l As Integer, npts As Integer
 Dim tfilename As String, tfolder As String
 Dim astring As String
 Dim eng As Single, edg As Single
@@ -6254,27 +6254,27 @@ If ierror Then Exit Sub
 If eng! <> 0# And edg! <> 0# And edg! < MaterialMeasuredEnergy# Then
 
 ' Calculate Fanal ZAF matrix correction alpha factors for these binary compositions
-Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZAF_Kratios#(), Binary_ZAF_Factors!(), Binary_ZAF_Coeffs!(), Binary_ZAF_Devs!())
+Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZAF_Kratios#(), Binary_ZAF_Factors!(), Binary_ZAF_Coeffs!(), Binary_ZAF_Devs!(), npts%)
 If ierror Then Exit Sub
 
 ' Calculate CalcZAF ZAF matrix correction alpha factors for these binary compositions
-Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), CalcZAF_ZAF_Kratios#(), CalcZAF_ZAF_Factors!(), CalcZAF_ZAF_Coeffs!(), CalcZAF_ZAF_Devs!())
+Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), CalcZAF_ZAF_Kratios#(), CalcZAF_ZAF_Factors!(), CalcZAF_ZAF_Coeffs!(), CalcZAF_ZAF_Devs!(), npts%)
 If ierror Then Exit Sub
 
 ' Calculate Fanal ZA matrix correction alpha factors for these binary compositions
-Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZA_Kratios#(), Binary_ZA_Factors!(), Binary_ZA_Coeffs!(), Binary_ZA_Devs!())
+Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZA_Kratios#(), Binary_ZA_Factors!(), Binary_ZA_Coeffs!(), Binary_ZA_Devs!(), npts%)
 If ierror Then Exit Sub
 
 ' Calculate CalcZAF ZA matrix correction alpha factors for these binary compositions
-Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), CalcZAF_ZA_Kratios#(), CalcZAF_ZA_Factors!(), CalcZAF_ZA_Coeffs!(), CalcZAF_ZA_Devs!())
+Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), CalcZAF_ZA_Kratios#(), CalcZAF_ZA_Factors!(), CalcZAF_ZA_Coeffs!(), CalcZAF_ZA_Devs!(), npts%)
 If ierror Then Exit Sub
 
 ' Calculate Fanal F matrix correction alpha factors for these binary compositions
-Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_F_Kratios#(), Binary_F_Factors!(), Binary_F_Coeffs!(), Binary_F_Devs!())
+Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_F_Kratios#(), Binary_F_Factors!(), Binary_F_Coeffs!(), Binary_F_Devs!(), npts%)
 If ierror Then Exit Sub
 
 ' Calculate CalcZAF F matrix correction alpha factors for these binary compositions
-Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), CalcZAF_F_Kratios#(), CalcZAF_F_Factors!(), CalcZAF_F_Coeffs!(), CalcZAF_F_Devs!())
+Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), CalcZAF_F_Kratios#(), CalcZAF_F_Factors!(), CalcZAF_F_Coeffs!(), CalcZAF_F_Devs!(), npts%)
 If ierror Then Exit Sub
 
 ' Output the data as desired (conc vs k-ratio/alphas etc.)
@@ -9175,11 +9175,12 @@ ierror = False
 On Error GoTo Penepma12MatrixCheckDeviationsError
 
 Dim notfound As Boolean
-Dim i As Integer, j As Integer, n As Integer, l As Integer, m As Integer
+Dim i As Integer, j As Integer, n As Integer, l As Integer, m As Integer, npts As Integer
 Dim temp As Single
 Dim tKilovolts As Single
 Dim tEmitter As Integer, tXray As Integer, tMatrix As Integer
 Dim astring As String
+Dim eng As Single, edg As Single
 
 ReDim tKratios(1 To MAXBINARY%) As Double
 
@@ -9212,7 +9213,7 @@ ReDim CalcZAF_ZA_Devs(1 To MAXRAY%) As Single
 ReDim Binary_F_Devs(1 To MAXRAY%) As Single
 ReDim CalcZAF_F_Devs(1 To MAXRAY%) As Single
 
-Const maxdev! = 40#            ' check for more than 40% average deviation in alpha fit
+Const maxdev! = 20#            ' check for more than 20% average deviation in alpha fit
 
 icancelauto = False
 
@@ -9244,6 +9245,12 @@ For l% = 1 To MAXRAY_OLD%       'only original x-ray lines for now
 'For l% = 1 To 1                 ' testing purposes (Ka only)
 tXray% = l%
 
+Call XrayGetEnergy(tEmitter%, l%, eng!, edg!)
+If ierror Then Exit Sub
+
+' Check for valid x-ray line
+If eng! <> 0# And edg! <> 0# Then
+
 ' Get the next emitter
 Call Penepma12MatrixReadMDB2(tTakeoff!, tKilovolts!, tEmitter%, tXray%, tMatrix%, tKratios#(), notfound)
 If ierror Then Exit Sub
@@ -9266,7 +9273,7 @@ End If
 Next n%
 
 ' Fit alpha (assume polynomial) for this x-ray
-Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZAF_Kratios#(), Binary_ZAF_Factors!(), Binary_ZAF_Coeffs!(), Binary_ZAF_Devs!())
+Call Penepma12CalculateAlphaFactors(l%, BinaryRanges!(), Binary_ZAF_Kratios#(), Binary_ZAF_Factors!(), Binary_ZAF_Coeffs!(), Binary_ZAF_Devs!(), npts%)
 If ierror Then Exit Sub
 
 ' Check calculated standard deviation
@@ -9274,7 +9281,7 @@ If Binary_ZAF_Devs!(l%) > maxdev! Then
 
 ' Output to log window and log file
 If tKilovolts! >= 5 And tKilovolts! <= 30 Then    ' only print problematic matrix corrections if between 5 and 30 keV
-msg$ = "Average standard deviation for alpha fit is " & Format$(Binary_ZAF_Devs!(l%)) & "% for " & Symlo$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & Symlo$(tMatrix%) & " at TO= " & Format$(tTakeoff!) & ", keV= " & Format$(tKilovolts!)
+msg$ = vbCrLf & "Average standard deviation for alpha fit (npts=" & Format$(npts%) & ") is " & Format$(Binary_ZAF_Devs!(l%)) & "% for " & Symlo$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & Symlo$(tMatrix%) & " at TO= " & Format$(tTakeoff!) & ", keV= " & Format$(tKilovolts!)
 Call IOWriteLog(msg$)
 Call IOWriteError(msg$, "Penepma12MatrixCheckDeviations")
 If ierror Then Exit Sub
@@ -9282,14 +9289,17 @@ If ierror Then Exit Sub
 ' Output to log
 astring$ = Symup$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & Symup$(tMatrix%)
 Call IOWriteLog$(vbCrLf & astring$ & " at " & Format$(tTakeoff!) & " degrees and " & Format$(tKilovolts!) & " keV")
-astring$ = Format$(vbTab & "Conc%", a08$) & vbTab & Format$("Kratio%", a08$)
+astring$ = Format$(vbTab & "Conc%", a08$) & vbTab & Format$("Kratio%", a08$) & vbTab & Format$("Alpha", a08$)
 Call IOWriteLog$(astring$)
 
+' Output all binaries
 For n% = 1 To MAXBINARY%
-astring$ = vbTab & MiscAutoFormat$(BinaryRanges!(n%)) & vbTab & MiscAutoFormatD$(tKratios#(n%))
+astring$ = vbTab & MiscAutoFormat$(BinaryRanges!(n%)) & vbTab & MiscAutoFormatD$(Binary_ZAF_Kratios#(l%, n%)) & vbTab & MiscAutoFormat$(Binary_ZAF_Factors!(l%, n%))
 Call IOWriteLog$(astring$)
 Next n%
 End If
+End If
+
 End If
 
 End If
