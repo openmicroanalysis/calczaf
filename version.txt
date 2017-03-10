@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/09/17	Add keV rounding flag to matrix corrections for Penepma alpha factors.
+v. 11.8.4
+
 03/07/17	Modify default light intensity for JEOL instruments to 110 (Neill and Hanson)
 
 03/03/17	Add display on set condition delays in Combined Condition dialog (von der Handt). Check for faraday cup 

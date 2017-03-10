@@ -29,9 +29,6 @@ Global Binary_F_Kratios() As Double
 Global PureGenerated_Intensities() As Double
 Global PureEmitted_Intensities() As Double
 
-' Temporary flag to round keV to nearest integer
-Const Penepma12UseKeVRoundingFlag = True
-
 Sub Penepma12CalculateReadWriteBinaryDataMatrix(mode As Integer, tfolder As String, tfilename As String, keV As Single)
 ' Reads or write the binary fluorescence matrix k-ratio data to or from a data file for a specified beam energy
 '  mode = 0 create file and write column labels only
@@ -517,7 +514,7 @@ End If
 nrec& = MtDs("MatrixNumber")
 MtDs.Close
 
-' Search for records
+' Search for k-ratio records
 SQLQ$ = "SELECT MatrixKRatio.* FROM MatrixKRatio WHERE MatrixKRatioNumber = " & Format$(nrec&)
 Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
 If MtDs.BOF And MtDs.EOF Then GoTo Penepma12MatrixReadMDB2NoKRatios
@@ -747,6 +744,144 @@ Exit Sub
 Penepma12PureReadMDB2NoIntensities:
 msg$ = "File " & PureMDBFile$ & " did not contain any pure element intensity records for " & Format$(tTakeoff!) & " degrees, " & Format$(tKilovolt!) & " keV, " & Symup$(tEmitter%) & " " & Xraylo$(tXray%)
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12PureReadMDB2"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub Penepma12MatrixUpdateMDB(mode As Integer, tTakeoff As Single, tKilovolt As Single, tEmitter As Integer, tXray As Integer, tMatrix As Integer, tKratios() As Single)
+' This routine updates the Matrix.mdb file for the specified beam energy, emitter, x-ray, matrix. If the k-ratios exist they are overwritten, if not they are added.
+'  mode = 1 first element load order
+'  mode = 2 second element load order
+'  tKratios!(1 to MAXBINARY%) are the k-ratios (%) for this x-ray and binary composition
+
+ierror = False
+On Error GoTo Penepma12MatrixUpdateMDBError
+
+Dim i As Integer
+Dim nrec As Long, n As Long
+
+Dim SQLQ As String
+Dim MtDb As Database
+Dim MtDs As Recordset
+Dim MtDt As Recordset
+
+icancelauto = False
+
+' Check for file
+If Dir$(MatrixMDBFile$) = vbNullString Then GoTo Penepma12MatrixUpdateMDBNoMatrixMDBFile
+
+' Check for use keV rounding flag for fractional keVs
+If Penepma12UseKeVRoundingFlag Then
+tKilovolt! = Int(tKilovolt! + 0.5)
+End If
+
+' Open matrix database
+Screen.MousePointer = vbHourglass
+Set MtDb = OpenDatabase(MatrixMDBFile$, MatrixDatabaseExclusiveAccess%, False)
+
+' Try to find requested emitter, matrix, etc
+SQLQ$ = "SELECT Matrix.BeamTakeOff, Matrix.BeamEnergy, Matrix.EmittingElement, Matrix.EmittingXray, Matrix.MatrixElement, Matrix.MatrixNumber FROM Matrix WHERE"
+SQLQ$ = SQLQ$ & " BeamTakeOff = " & Format$(tTakeoff!) & " AND BeamEnergy = " & Format$(tKilovolt!) & " AND"
+SQLQ$ = SQLQ$ & " EmittingElement = " & Format$(tEmitter%) & " AND EmittingXray = " & Format$(tXray%) & " AND"
+SQLQ$ = SQLQ$ & " MatrixElement = " & Format$(tMatrix%)
+Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
+
+' RecordCount should always be 1 if the binary exists in the database
+If MtDs.RecordCount > 0 Then
+MtDs.MoveLast
+End If
+
+' If not found then add new records. If records found, delete existing k-ratios and then add new records
+For n& = 1 To MtDs.RecordCount
+nrec& = MtDs("MatrixNumber")
+
+' Delete this matrix for this record
+SQLQ$ = "DELETE from Matrix WHERE Matrix.MatrixNumber = " & Format$(nrec&)
+MtDb.Execute SQLQ$
+
+' Delete all k-ratios for this record
+SQLQ$ = "DELETE from MatrixKratio WHERE MatrixKratio.MatrixKRatioNumber = " & Format$(nrec&)
+MtDb.Execute SQLQ$
+Next n&
+MtDs.Close
+
+' Determine unique record count for new records
+SQLQ$ = "SELECT Matrix.MatrixNumber from Matrix WHERE MatrixNumber <> 0 "
+SQLQ$ = SQLQ$ & "ORDER BY Matrix.MatrixNumber DESC"
+Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
+
+' Create new unique boundary row number
+If MtDs.BOF And MtDs.EOF Then
+nrec& = 1
+Else
+nrec& = MtDs("MatrixNumber") + 1
+End If
+MtDs.Close
+
+' Add new records to "Matrix" table
+Set MtDt = MtDb.OpenRecordset("Matrix", dbOpenTable)
+If DebugMode Then
+Call IOStatusAuto("Updating record " & Format$(nrec&) & ", " & Format$(tKilovolt!) & " keV, " & Symup$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & Symup$(tMatrix%) & " to Matrix.MDB...")
+DoEvents
+End If
+
+' Add new record
+MtDt.AddNew
+MtDt("BeamTakeOff") = tTakeoff!
+MtDt("BeamEnergy") = tKilovolt!
+MtDt("EmittingElement") = tEmitter%
+MtDt("EmittingXray") = tXray%
+MtDt("MatrixElement") = tMatrix%
+
+MtDt("MatrixNumber") = nrec&
+MtDt.Update
+MtDt.Close
+
+' Add new records to "Kratios" table
+Set MtDt = MtDb.OpenRecordset("MatrixKratio", dbOpenTable)
+For i% = 1 To MAXBINARY%
+MtDt.AddNew
+MtDt("MatrixKRatioNumber") = nrec&                                      ' unique record number pointing to Matrix table
+MtDt("MatrixKRatioOrder") = i%                                          ' load order (1 to MAXBINARY%) (always 99 to 1 wt%)
+
+If mode% = 1 Then
+MtDt("MatrixKRatio_ZAF_KRatio") = CSng(tKratios!(i%))                   ' Penepma binary k-ratio
+Else
+MtDt("MatrixKRatio_ZAF_KRatio") = CSng(tKratios!(MAXBINARY% - i% + 1))  ' Penepma binary k-ratio (reverse order for 2nd element)
+End If
+
+MtDt.Update
+Next i%
+
+MtDt.Close
+MtDb.Close
+
+If DebugMode Then
+Call IOStatusAuto(vbNullString)
+DoEvents
+End If
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+Penepma12MatrixUpdateMDBError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma12MatrixUpdateMDB"
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+
+Penepma12MatrixUpdateMDBNoMatrixMDBFile:
+msg$ = "File " & MatrixMDBFile$ & " was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixUpdateMDB"
+ierror = True
+Exit Sub
+
+Penepma12MatrixUpdateMDBNoKRatios:
+msg$ = "File " & MatrixMDBFile$ & " did not contain any k-ratio records for " & Format$(tTakeoff!) & " degrees, " & Format$(tKilovolt!) & " keV, " & Symup$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & Symup$(tMatrix%)
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixUpdateMDB"
 ierror = True
 Exit Sub
 

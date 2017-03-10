@@ -51,8 +51,14 @@ FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbUnchecked
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
 End If
 
-Call GetZAFAllSetEnables(CorrectionFlag%)
-If ierror Then Exit Sub
+If Penepma12UseKeVRoundingFlag Then
+FormGETZAFALL.CheckPenepma12UseKeVRounding.Value = vbChecked
+Else
+FormGETZAFALL.CheckPenepma12UseKeVRounding.Value = vbUnchecked
+End If
+
+' Load the correction type (event sets the enables)
+FormGETZAFALL.Option6(CorrectionFlag%).Value = True
 
 Exit Sub
 
@@ -126,6 +132,12 @@ If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
 UsePenepmaKratiosLimitFlag = True
 Else
 UsePenepmaKratiosLimitFlag = False
+End If
+
+If FormGETZAFALL.CheckPenepma12UseKeVRounding.Value = vbChecked Then
+Penepma12UseKeVRoundingFlag = True
+Else
+Penepma12UseKeVRoundingFlag = False
 End If
 
 ' Indicate alpha-factor update
@@ -204,38 +216,49 @@ Exit Sub
 
 End Sub
 
-Sub GetZAFAllSetEnables(Index As Integer)
+Sub GetZAFAllSetEnables()
 ' Set form enables based on selection
 
 ierror = False
 On Error GoTo GetZAFAllSetEnablesError
 
+Dim i As Integer, tIndex As Integer
+
+' Load option index
+For i% = 0 To FormGETZAFALL.Option6.Count - 1
+If FormGETZAFALL.Option6(i%).Value = True Then tIndex% = i%
+Next i%
+
 ' Set enabled property on Empirical alpha factors
-If Index% < 1 Or Index% > 4 Then
+If tIndex% < 1 Or tIndex% > 4 Then
 FormGETZAFALL.CheckEmpiricalAlphaFlag.Enabled = False
 FormGETZAFALL.CheckUsePenepmaKratios.Enabled = False
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
-
+FormGETZAFALL.CheckPenepma12UseKeVRounding.Enabled = False
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
 
 Else
 FormGETZAFALL.CheckEmpiricalAlphaFlag.Enabled = True
 FormGETZAFALL.CheckUsePenepmaKratios.Enabled = True
-FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
 
 If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked Then
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
+FormGETZAFALL.CheckPenepma12UseKeVRounding.Enabled = True
 Else
 FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
+FormGETZAFALL.CheckPenepma12UseKeVRounding.Enabled = False
 End If
 
-If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
+If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked And FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
 FormGETZAFALL.TextPenepmaKratioLimit.Enabled = True
+Else
+FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
 End If
+
 End If
 
 ' Set enabled property for CommandOptions
-If Index% <= 4 Then
+If tIndex% <= 4 Then
 FormGETZAFALL.CommandOptions.Enabled = True
 FormGETZAFALL.CommandMACs.Enabled = True
 Else

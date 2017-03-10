@@ -2506,7 +2506,10 @@ nlinenumber& = nlinenumber& + 1
 
 ' Load specific data for current graph
 If nlinenumber& = 9 Then BeamTitle$ = Trim$(astring$)
+
 If InStr(astring$, "Initial energy =") > 0 Then BeamEnergy# = Val(Mid$(astring$, InStr(astring$, "Initial energy =") + Len("Initial energy =") + 2, 14))
+
+If InStr(astring$, "Phi:    NBPH =") > 0 Then BeamTakeOff# = 90# - Val(Mid$(astring$, InStr(astring$, "Phi:    NBPH =") + Len("Phi:    NBPH =") + 2, 4))
 
 Loop
 Close #Temp1FileNumber%
@@ -3325,9 +3328,14 @@ Next l%
 Next n%
 Next k%
 
+' Get takeoff and beam energy from Penepma.dat
+PENEPMA_DAT_File$ = PENEPMA_BATCH_FOLDER$ & "\Penepma.dat"
+Call Penepma08GetPenepmaDAT
+If ierror Then Exit Sub
+
 ' Output binary k-ratios (and alpha factors) to MAXRAY emission line output files
 For l% = 1 To MAXRAY% - 1
-astring$ = Trim$(Symup$(BinaryElement1%)) & "-" & Trim$(Symup$(BinaryElement2%))
+astring$ = Format$(BeamTakeOff#) & "deg_" & Format$(BeamEnergy# / EVPERKEV#) & "keV_" & Trim$(Symup$(BinaryElement1%)) & "-" & Trim$(Symup$(BinaryElement2%))
 tfilename$ = PENEPMA_BATCH_FOLDER$ & "\" & astring$ & "_k-ratios-" & Xraylo$(l%) & ".dat"
 Call Penepma08BatchBinaryOutput(l%, tfilename$)
 If ierror Then Exit Sub

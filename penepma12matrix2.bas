@@ -175,7 +175,7 @@ End If
 If Dir$(MatrixMDBFile$) = vbNullString Then
 msg$ = "Matrix Database: " & vbCrLf
 msg$ = msg$ & MatrixMDBFile$ & vbCrLf
-msg$ = msg$ & " does not exist. Please create a new Matrix.MDB file try updating again."
+msg$ = msg$ & " does not exist. Please create a new Matrix.MDB file and try updating again."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixScanMDB"
 ierror = True
 Exit Sub
@@ -994,12 +994,13 @@ Sub Penepma12MatrixAddPenepmaKRatios()
 ierror = False
 On Error GoTo Penepma12MatrixAddPenepmaKRatiosError
 
+Dim complete1 As Boolean, complete2 As Boolean
 Dim ip As Integer, k As Integer, m As Integer, mm As Integer
 Dim ielm1 As Integer, ielm2 As Integer, iray As Integer
 Dim n As Long, nn As Long
-Dim keV As Single
+Dim takeoff As Single, keV As Single
 Dim tfilename As String, tfilename2 As String, astring As String, sym As String
-Dim eym As String, ray As String, tpath As String, tstring As String, skeV As String
+Dim eym As String, ray As String, tpath As String, tstring As String, skeV As String, sTakeoff As String
 
 Dim tConc1(1 To MAXBINARY%) As Single, tConc2(1 To MAXBINARY%) As Single
 Dim tStd1(1 To MAXBINARY%) As Single, tStd2(1 To MAXBINARY%) As Single
@@ -1013,15 +1014,20 @@ Dim filearray() As String
 
 icancelauto = False
 
-msg$ = "Feature not implemented yet"
-MsgBox msg$, vbOKOnly + vbInformation, "Penepma12MatrixAddPenepmaKRatios"
+' If file does not exist, warn user
+If Dir$(MatrixMDBFile$) = vbNullString Then
+msg$ = "Matrix Database: " & vbCrLf
+msg$ = msg$ & MatrixMDBFile$ & vbCrLf
+msg$ = msg$ & " does not exist. Please create a new Matrix.MDB file and try updating again."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixAddPenepmaKRatios"
 ierror = True
 Exit Sub
+End If
 
 ' Ask user for folder to read Penepma k-ratios from
 tpath$ = PENEPMA_Path$
 tstring$ = "Browse Folder For Penepma K-ratio Files"
-tpath$ = IOBrowseForFolderByPath(False, tpath$, tstring$, FormPENEPMA08Batch)
+tpath$ = IOBrowseForFolderByPath(False, tpath$, tstring$, FormPenepma12Random)
 If ierror Then Exit Sub
 If Trim$(tpath$) = vbNullString Then Exit Sub
 
@@ -1063,6 +1069,23 @@ Next k%
 
 Close #Temp1FileNumber%
 
+' Determine the takeoff from filename
+tfilename2$ = MiscGetFileNameOnly$(tfilename$)
+m% = InStr(tfilename2$, "deg_")
+If m% = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosNoTakeoff
+
+sTakeoff$ = Left$(tfilename2$, m% - 1)
+If Val(sTakeoff$) = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosNoTakeoff2
+takeoff! = Val(sTakeoff$)
+
+' Determine the keV from filename
+mm% = InStr(tfilename2$, "keV_")
+If mm% = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosNoKilovolts
+
+skeV$ = Mid$(tfilename2$, m% + Len("deg_"), mm% - (m% + Len("deg_")))
+If Val(skeV$) = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosNoKilovolts2
+keV! = Val(skeV$)
+
 ' Determine the binary elements from astring
 m% = InStr(astring$, "-")
 If m% = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosNoElements
@@ -1077,7 +1100,7 @@ ip% = IPOS1%(MAXELM%, sym$, Symlo$())
 If ip% = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosInvalidElements
 ielm2% = ip%
 
-' Determine the binary x-rays from filename (tfilename$)
+' Determine the binary x-rays from filename
 tfilename2$ = MiscGetFileNameOnly$(tfilename$)
 m% = InStr(tfilename2$, ".dat")
 If m% = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosNoXrays
@@ -1087,38 +1110,35 @@ ip% = IPOS1%(MAXRAY%, ray$, Xraylo$())
 If ip% = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosInvalidXray
 iray% = ip%
 
-' Determine the keV from the folder name (tpath$)
-m% = InStr(tpath$, "(")
-If m% = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosNoKilovolts
-
-mm% = InStr(tpath$, "keV)")
-If mm% = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosNoKilovolts
-
-skeV$ = Mid$(tpath$, m% + 1, mm% - Len("keV)"))
-If Val(skeV$) = 0 Then GoTo Penepma12MatrixAddPenepmaKRatiosNoKilovolts2
-keV! = Val(skeV$)
-
-' Open matrix database and write all k-ratios for each binary
-For k% = 1 To MAXBINARY%
-
 ' Output first binary k-ratios
+complete1 = True
+For k% = 1 To MAXBINARY%
 If tKrat1!(k%) <> 0# Then
-Call IOWriteLog(tfilename$ & ", " & Format$(keV!) & " keV, " & Symup$(ielm1%) & " " & Xraylo$(iray%) & " in " & Symup$(ielm2%) & ", (" & Format$(tConc1!(k%)) & "), " & Format$(tKrat1!(k%)))
+Call IOWriteLog(tfilename$ & ", " & Format$(takeoff!) & " deg, " & Format$(keV!) & " keV, " & Symup$(ielm1%) & " " & Xraylo$(iray%) & " in " & Symup$(ielm2%) & ", (" & Format$(tConc1!(k%)) & "), " & Format$(tKrat1!(k%)))
+Else
+complete1 = False
+End If
+Next k%
 
-
-
-
+If complete1 Then
+Call Penepma12MatrixUpdateMDB(Int(1), takeoff!, keV!, ielm1%, iray%, ielm2%, tKrat1!())
+If ierror Then Exit Sub
 End If
 
 ' Output second binary k-ratios
+complete2 = True
+For k% = 1 To MAXBINARY%
 If tKrat2!(k%) <> 0# Then
-Call IOWriteLog(tfilename$ & ", " & Format$(keV!) & " keV, " & Symup$(ielm2%) & " " & Xraylo$(iray%) & " in " & Symup$(ielm1%) & ", (" & Format$(tConc2!(k%)) & "), " & Format$(tKrat2!(k%)))
-
-
-
-
+Call IOWriteLog(tfilename$ & ", " & Format$(takeoff!) & " deg, " & Format$(keV!) & " keV, " & Symup$(ielm2%) & " " & Xraylo$(iray%) & " in " & Symup$(ielm1%) & ", (" & Format$(tConc2!(k%)) & "), " & Format$(tKrat2!(k%)))
+Else
+complete2 = False
 End If
 Next k%
+
+If complete2 Then
+Call Penepma12MatrixUpdateMDB(Int(2), takeoff!, keV!, ielm2%, iray%, ielm1%, tKrat2!())
+If ierror Then Exit Sub
+End If
 
 Next n&
 
@@ -1136,6 +1156,30 @@ Exit Sub
 
 Penepma12MatrixAddPenepmaKRatiosNoFiles:
 msg$ = "No files of Penepma k-ratios were found in the specified folder. Please specify the folder containing the Penepma k-ratio files and try again."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixAddPenepmaKRatios"
+ierror = True
+Exit Sub
+
+Penepma12MatrixAddPenepmaKRatiosNoTakeoff:
+msg$ = "Unable to determine the takeoff angle from the filename"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixAddPenepmaKRatios"
+ierror = True
+Exit Sub
+
+Penepma12MatrixAddPenepmaKRatiosNoTakeoff2:
+msg$ = "The takeoff could not be determined from the string"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixAddPenepmaKRatios"
+ierror = True
+Exit Sub
+
+Penepma12MatrixAddPenepmaKRatiosNoKilovolts:
+msg$ = "The keV could not be determined from the filename"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixAddPenepmaKRatios"
+ierror = True
+Exit Sub
+
+Penepma12MatrixAddPenepmaKRatiosNoKilovolts2:
+msg$ = "The keV could not be determined from the string"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixAddPenepmaKRatios"
 ierror = True
 Exit Sub
@@ -1160,18 +1204,6 @@ Exit Sub
 
 Penepma12MatrixAddPenepmaKRatiosInvalidXray:
 msg$ = "The x-ray string (" & ray$ & ") did not contain a valid x-ray symbol"
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixAddPenepmaKRatios"
-ierror = True
-Exit Sub
-
-Penepma12MatrixAddPenepmaKRatiosNoKilovolts:
-msg$ = "The keV could not be determined from the folder name. Please name the folder so it contains the simulation keV. For example, Bulk Si-Al (15 keV)"
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixAddPenepmaKRatios"
-ierror = True
-Exit Sub
-
-Penepma12MatrixAddPenepmaKRatiosNoKilovolts2:
-msg$ = "The keV could not be determined from the string. Please name the folder so it contains the simulation keV. For example, Bulk Si-Al (15 keV)"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixAddPenepmaKRatios"
 ierror = True
 Exit Sub

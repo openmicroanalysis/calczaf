@@ -3348,6 +3348,8 @@ DefaultSampleCoatingElement% = DefaultStandardCoatingElement%
 DefaultSampleCoatingDensity! = DefaultStandardCoatingDensity!
 DefaultSampleCoatingThickness! = DefaultStandardCoatingThickness!
 
+Penepma12UseKeVRoundingFlag = True
+
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
 If ierror Then Exit Sub

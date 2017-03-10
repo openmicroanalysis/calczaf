@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormGETZAFALL 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Matrix Correction Methods"
-   ClientHeight    =   3960
+   ClientHeight    =   4290
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7680
@@ -10,7 +10,7 @@ Begin VB.Form FormGETZAFALL
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3960
+   ScaleHeight     =   4290
    ScaleWidth      =   7680
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
@@ -109,11 +109,20 @@ Begin VB.Form FormGETZAFALL
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FF0000&
-      Height          =   3735
+      Height          =   3975
       Left            =   120
       TabIndex        =   0
       Top             =   120
       Width           =   5895
+      Begin VB.CheckBox CheckPenepma12UseKeVRounding 
+         Caption         =   "Use KeV Rounding To Nearest Integer"
+         Height          =   255
+         Left            =   360
+         TabIndex        =   17
+         TabStop         =   0   'False
+         Top             =   2760
+         Width           =   4455
+      End
       Begin VB.OptionButton Option6 
          Caption         =   "Option6"
          Enabled         =   0   'False
@@ -132,7 +141,7 @@ Begin VB.Form FormGETZAFALL
          TabIndex        =   16
          TabStop         =   0   'False
          ToolTipText     =   "Use a rigorous fundamental parameters analytical matrix correction method (under development)"
-         Top             =   3360
+         Top             =   3600
          Width           =   5055
       End
       Begin VB.OptionButton Option6 
@@ -152,7 +161,7 @@ Begin VB.Form FormGETZAFALL
          TabIndex        =   15
          TabStop         =   0   'False
          ToolTipText     =   "Use a multi-standard calibration curve matrix correction similar to XRF (useful for trace carbon in steel for example)"
-         Top             =   3000
+         Top             =   3240
          Width           =   5055
       End
       Begin VB.TextBox TextPenepmaKratioLimit 
@@ -177,6 +186,7 @@ Begin VB.Form FormGETZAFALL
          Height          =   255
          Left            =   360
          TabIndex        =   13
+         TabStop         =   0   'False
          ToolTipText     =   "Select this option to limit the use of Penepma K-ratios for concentrations of the emitting element less than the specified limit"
          Top             =   2520
          Width           =   3015
@@ -304,19 +314,14 @@ Option Explicit
 
 Private Sub CheckPenepmaKratioLimit_Click()
 If Not DebugMode Then On Error Resume Next
-If FormGETZAFALL.CheckPenepmaKratioLimit.Value = vbChecked Then
-FormGETZAFALL.TextPenepmaKratioLimit.Enabled = True
-Else
-FormGETZAFALL.TextPenepmaKratioLimit.Enabled = False
-End If
+Call GetZAFAllSetEnables
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CheckUsePenepmaKratios_Click()
-If FormGETZAFALL.CheckUsePenepmaKratios.Value = vbChecked Then
-FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = True
-Else
-FormGETZAFALL.CheckPenepmaKratioLimit.Enabled = False
-End If
+If Not DebugMode Then On Error Resume Next
+Call GetZAFAllSetEnables
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandCancel_Click()
@@ -361,9 +366,9 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub Option6_Click(Index As Integer)
+Private Sub Option6_Click(index As Integer)
 If Not DebugMode Then On Error Resume Next
-Call GetZAFAllSetEnables(Index%)
+Call GetZAFAllSetEnables
 If ierror Then Exit Sub
 End Sub
 
