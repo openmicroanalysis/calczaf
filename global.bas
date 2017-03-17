@@ -57,14 +57,14 @@ Global Const SW_SHOWNORMAL& = 1
 'Global Const SW_SHOWDEFAULT& = 10
 
 ' Declare Windows API Functions
-Public Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, _
+Public Declare Function GetPrivateProfileString Lib "Kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, _
     ByVal lpReturnedString As String, ByVal nSize As Long, ByVal lpFileName As String) As Long
-Public Declare Function GetPrivateProfileInt Lib "kernel32" Alias "GetPrivateProfileIntA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal nDefault As Long, _
+Public Declare Function GetPrivateProfileInt Lib "Kernel32" Alias "GetPrivateProfileIntA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal nDefault As Long, _
     ByVal lpFileName As String) As Long
-Public Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As Any, _
+Public Declare Function WritePrivateProfileString Lib "Kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As Any, _
     ByVal lpFileName As String) As Long
 
-Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Public Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
 
 ' New constants for non-traditional emission lines
 Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,mb)
@@ -2958,4 +2958,7 @@ Global OriginalBeamCurrent As Single
 Global UserSpecifiedOutputDetectionLimitsOxideFlag As Boolean
 
 Global Penepma12UseKeVRoundingFlag As Boolean       ' flag to round keV to nearest integer (default = true)
+
+Global InsertFaradayDuringStageJogFlag As Boolean
+
 

@@ -2389,6 +2389,7 @@ On Error GoTo ZAFStdError
 
 Dim i As Integer, j As Integer, ip As Integer, ipp As Integer
 Dim tt As Single
+Dim astring As String
 
 ReDim p2(1 To MAXCHAN1%) As Single
 ReDim continuum(1 To MAXCHAN1%) As Single
@@ -2502,6 +2503,33 @@ End If
 End If
 End If
 Next i%
+
+' Print out coating parameters for this standard
+If DebugMode Then
+If UseConductiveCoatingCorrectionForElectronAbsorption = True Or UseConductiveCoatingCorrectionForXrayTransmission = True Then
+
+If stdsample(1).CoatingFlag% = 1 Then
+astring$ = "Standard " & Format$(stdsample(1).number%) & ", Coating=" & Trim$(Symup$(stdsample(1).CoatingElement%))
+astring$ = astring$ & ", Density=" & Format$(stdsample(1).CoatingDensity!) & " gm/cm3"
+astring$ = astring$ & ", Thickness=" & Format$(stdsample(1).CoatingThickness!) & " angstroms"
+astring$ = astring$ & ", Sin(Thickness)=" & Format$(stdsample(1).CoatingSinThickness!) & " angstroms"
+Else
+astring$ = "No Standard Coating"
+End If
+
+If UseConductiveCoatingCorrectionForElectronAbsorption = True And Not UseConductiveCoatingCorrectionForXrayTransmission = True Then
+msg$ = vbCrLf & "Using Conductive Coating Correction For Electron Absorption: " & vbCrLf & astring$
+End If
+If Not UseConductiveCoatingCorrectionForElectronAbsorption = True And UseConductiveCoatingCorrectionForXrayTransmission = True Then
+msg$ = vbCrLf & "Using Conductive Coating Correction For X-Ray Transmission: " & vbCrLf & astring$
+End If
+If UseConductiveCoatingCorrectionForElectronAbsorption = True And UseConductiveCoatingCorrectionForXrayTransmission = True Then
+msg$ = vbCrLf & "Using Conductive Coating Correction For Electron Absorption and X-Ray Transmission: " & vbCrLf & astring$
+End If
+Call IOWriteLog(msg$)
+
+End If
+End If
 
 ' Load ZAFPtc defaults based on current model and diameter (normally standards are bulk)
 If UseParticleCorrectionFlag And iptc% = 1 Then
