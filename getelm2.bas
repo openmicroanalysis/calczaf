@@ -276,6 +276,9 @@ GetElmOldSample(1).MultiPointBackgroundFitType%(GetElmOldSample(1).LastElm%) = G
 For m% = 1 To MAXMULTI%
 GetElmOldSample(1).MultiPointAcquirePositionsHi!(GetElmOldSample(1).LastElm%, m%) = GetElmTmpSample(1).MultiPointAcquirePositionsHi!(i%, m%)
 GetElmOldSample(1).MultiPointAcquirePositionsLo!(GetElmOldSample(1).LastElm%, m%) = GetElmTmpSample(1).MultiPointAcquirePositionsLo!(i%, m%)
+
+GetElmOldSample(1).MultiPointProcessLastManualFlagHi%(GetElmOldSample(1).LastElm%, m%) = GetElmTmpSample(1).MultiPointProcessLastManualFlagHi%(i%, m%)  ' last manual override flag (-1 = never use, 0 = automatic, 1 = always use)
+GetElmOldSample(1).MultiPointProcessLastManualFlagLo%(GetElmOldSample(1).LastElm%, m%) = GetElmTmpSample(1).MultiPointProcessLastManualFlagLo%(i%, m%)  ' last manual override flag (-1 = never use, 0 = automatic, 1 = always use)
 Next m%
 
 GetElmOldSample(1).UnknownCountTimeForInterferenceStandardChanFlag(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).UnknownCountTimeForInterferenceStandardChanFlag(i%)

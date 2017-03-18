@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/17/17	Add "last" manual flags for multi-point over-ride flags when loading a sample setup from another run (Goemann)
+
+		Improve using position conditions for automated imaging (Goemann).
+
 03/16/17	Implement new align and crop feature in CalcImage (Ruscitto).
 v. 11.8.5	
 		Improve EDS/CL control enables/disables in acquisition options.
