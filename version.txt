@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/23/17	Fix x/y image extents bug in align and crop code in CalcImage (Ruscitto).
+
 03/20/17	Add Copy To Clipboard button to Align and Crop (von der Handt).
 
 03/17/17	Add "last" manual flags for multi-point over-ride flags when loading a sample setup from another run (Goemann)
