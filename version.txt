@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/25/17	Add mutex check for Probe Image running.
+
+03/24/17	Add more file checks for loading existing images in CalcImage.
+v. 11.8.6
+
 03/23/17	Fix x/y image extents bug in align and crop code in CalcImage (Ruscitto).
 
 03/20/17	Add Copy To Clipboard button to Align and Crop (von der Handt).

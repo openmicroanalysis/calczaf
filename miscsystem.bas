@@ -274,9 +274,22 @@ Private Type WIN32_FIND_DATA
 End Type
 
 Private Type FileInfo
-    Filename As String
+    filename As String
     Modified As Currency
 End Type
+
+Private Const STANDARD_RIGHTS_REQUIRED              As Long = &HF0000
+Private Const SYNCHRONIZE                           As Long = &H100000
+Private Const MUTANT_QUERY_STATE                    As Long = &H1
+Private Const MUTANT_ALL_ACCESS                     As Long = (STANDARD_RIGHTS_REQUIRED& Or SYNCHRONIZE& Or MUTANT_QUERY_STATE&)
+Private Const SECURITY_DESCRIPTOR_REVISION          As Long = 1
+Private Const DACL_SECURITY_INFORMATION             As Long = 4
+
+Public Declare Function OpenMutex Lib "kernel32.dll" Alias "OpenMutexA" (ByVal dwDesiredAccess As Long, ByVal bInheritHandle As Boolean, ByVal lpName As String) As Long
+Public Declare Function ReleaseMutex Lib "kernel32.dll" (ByVal hMutex As Long) As Long
+Public Declare Sub CloseHandle Lib "kernel32" (ByVal hPass As Long)
+Public Declare Function CreateMutex Lib "kernel32.dll" Alias "CreateMutexA" (ByVal lpMutexAttributes As Any, ByVal bInitialOwner As Boolean, ByVal lpName As String) As Long
+Public Declare Function GetLastError Lib "kernel32.dll" () As Long
 
 Public Function MiscFindWindowPartial(ByVal TitleContains As String, Optional ByVal method As Variant) As Long
 ' Purpose:     Find an application based on title
@@ -1084,7 +1097,7 @@ hFind& = FindFirstFile(tpath$, WFD)
     Do
         If (WFD.dwFileAttributes And vbDirectory) = 0 Then
             ReDim Preserve tFiles(n&)
-            tFiles(n&).Filename = Left$(WFD.cFileName, lstrlen(WFD.cFileName))
+            tFiles(n&).filename = Left$(WFD.cFileName, lstrlen(WFD.cFileName))
             CopyMemory tFiles(n&).Modified, WFD.ftLastWriteTime, 8
             n& = n& + 1
         End If
@@ -1109,7 +1122,7 @@ ReDim tfilenames(1 To UBound(tFiles)) As String
 ReDim tfiledates(1 To UBound(tFiles)) As Variant
 
 For n& = 1 To UBound(tFiles)
-tfilenames$(n&) = tFiles(n&).Filename$
+tfilenames$(n&) = tFiles(n&).filename$
 tfiledates(n&) = FileDateTime(MiscGetPathOnly2$(tpath$) & "\" & tfilenames$(n&))
 Next n&
 
@@ -1122,3 +1135,32 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Function MiscCheckForMutex(appstring As String) As Boolean
+' Check for the mutex to see if an app is running or not
+
+ierror = False
+On Error GoTo MiscCheckForMutexError
+
+Dim tMutex As Long
+
+' Get mutex for app string
+tMutex& = OpenMutex(MUTANT_ALL_ACCESS&, 0, appstring$)
+
+' Check if app is running
+If tMutex& <> 0 Then
+    CloseHandle tMutex&
+    MiscCheckForMutex = True                            ' app is running
+Else
+    MiscCheckForMutex = False                           ' app is not running or OS error (use GetLastError to check for ERROR_FILE_NOT_FOUND)
+End If
+
+Exit Function
+
+' Errors
+MiscCheckForMutexError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscCheckForMutex"
+ierror = True
+Exit Function
+
+End Function

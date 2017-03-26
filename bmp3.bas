@@ -15,25 +15,25 @@ Private Const SRCCOPY& = &HCC0020 ' (DWORD) dest = source
 Private Const CF_BITMAP& = 2
 
 ' GDI functions
-Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
+Private Declare Function BitBlt Lib "gdi32.dll" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
 
 ' Creates a memory DC
-Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As Long
+Private Declare Function CreateCompatibleDC Lib "gdi32.dll" (ByVal hdc As Long) As Long
 
 ' Creates a bitmap in memory
-Private Declare Function CreateCompatibleBitmap Lib "gdi32" (ByVal hdc As Long, ByVal nWidth As Long, ByVal nHeight As Long) As Long
+Private Declare Function CreateCompatibleBitmap Lib "gdi32.dll" (ByVal hdc As Long, ByVal nWidth As Long, ByVal nHeight As Long) As Long
 
 ' Places a GDI Object into DC, returning the previous one
-Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObject As Long) As Long
+Private Declare Function SelectObject Lib "gdi32.dll" (ByVal hdc As Long, ByVal hObject As Long) As Long
 
 ' Deletes a GDI Object
-Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
+Private Declare Function DeleteObject Lib "gdi32.dll" (ByVal hObject As Long) As Long
 
 ' Clipboard functions
-Private Declare Function OpenClipboard Lib "user32" (ByVal hWnd As Long) As Long
-Private Declare Function CloseClipboard Lib "user32" () As Long
-Private Declare Function SetClipboardData Lib "user32" (ByVal wFormat As Long, ByVal hMem As Long) As Long
-Private Declare Function EmptyClipboard Lib "user32" () As Long
+Private Declare Function OpenClipboard Lib "user32.dll" (ByVal hWnd As Long) As Long
+Private Declare Function CloseClipboard Lib "user32.dll" () As Long
+Private Declare Function SetClipboardData Lib "user32.dll" (ByVal wFormat As Long, ByVal hMem As Long) As Long
+Private Declare Function EmptyClipboard Lib "user32.dll" () As Long
 
 Dim tarray() As Byte
 Dim narray() As Long
