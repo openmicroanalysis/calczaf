@@ -5332,9 +5332,11 @@ ierror = False
 On Error GoTo InitUserDataDirectoryError
 
 Dim response As Integer
+Dim tmsg As String
 
 ' Check that user data directory drive already exists
 firsttime = False
+tmsg$ = "InitUserDataDirectory: checking User Data drive..."
 If Not InitIsDriveMediaPresent(UserDataDirectory$) Then  ' check if drive exists
 msg$ = "The specified drive letter " & Left$(UserDataDirectory$, 2) & " does not exist, either insert the drive and/or media (if removable) or edit the " & ProbeWinINIFile$ & " file to indicate the correct user data directory and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
@@ -5342,6 +5344,7 @@ End
 End If
 
 ' Check that user data directory already exists
+tmsg$ = "InitUserDataDirectory: checking User Data folder..."
 If Dir$(UserDataDirectory$, vbDirectory) = vbNullString Then
 msg$ = "User Data Directory " & UserDataDirectory$ & " as specified in " & ProbeWinINIFile$ & " was not found." & vbCrLf & vbCrLf
 msg$ = msg$ & "Would you like Probe for EPMA to create the folder for you?"
@@ -5358,6 +5361,7 @@ End If
 End If
 
 ' Check that standard position folder exists
+tmsg$ = "InitUserDataDirectory: checking Standard Position folder..."
 If Not InitIsDriveMediaPresent(StandardPOSFileDirectory$) Then  ' check if drive exists
 msg$ = "The specified drive letter " & Left$(StandardPOSFileDirectory$, 2) & " does not exist, either insert the drive and/or media (if removable) or edit the " & ProbeWinINIFile$ & " file to indicate the correct standard POS file directory and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
@@ -5377,6 +5381,7 @@ End If
 End If
 
 ' Check that CalcZAFData directory already exists
+tmsg$ = "InitUserDataDirectory: checking CalcZAF Data folder..."
 If Not InitIsDriveMediaPresent(CalcZAFDATFileDirectory$) Then  ' check if drive exists
 msg$ = "The specified drive letter " & Left$(CalcZAFDATFileDirectory$, 2) & " does not exist, either insert the drive and/or media (if removable) or edit the " & ProbeWinINIFile$ & " file to indicate the correct CalcZAF DAT file directory and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
@@ -5390,6 +5395,7 @@ MsgBox msg$, vbOKOnly + vbInformation, "InitUserDataDirectory"
 End If
 
 ' Check that ColumnData directory already exists
+tmsg$ = "InitUserDataDirectory: checking Column PCC folder..."
 If Not InitIsDriveMediaPresent(ColumnPCCFileDirectory$) Then  ' check if drive exists
 msg$ = "The specified drive letter " & Left$(ColumnPCCFileDirectory$, 2) & " does not exist, either insert the drive and/or media (if removable) or edit the " & ProbeWinINIFile$ & " file to indicate the correct Column Condition PCC file directory and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
@@ -5403,6 +5409,7 @@ MsgBox msg$, vbOKOnly + vbInformation, "InitUserDataDirectory"
 End If
 
 ' Check that SurferData directory already exists
+tmsg$ = "InitUserDataDirectory: checking Surfer Data folder..."
 If Not InitIsDriveMediaPresent(SurferDataDirectory$) Then  ' check if drive exists
 msg$ = "The specified drive letter " & Left$(SurferDataDirectory$, 2) & " does not exist, either insert the drive and/or media (if removable) or edit the " & ProbeWinINIFile$ & " file to indicate the correct SurferData directory and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
@@ -5416,6 +5423,7 @@ MsgBox msg$, vbOKOnly + vbInformation, "InitUserDataDirectory"
 End If
 
 ' Check that GrapherData directory already exists
+tmsg$ = "InitUserDataDirectory: checking Grapher Data folder..."
 If Not InitIsDriveMediaPresent(GrapherDataDirectory$) Then  ' check if drive exists
 msg$ = "The specified drive letter " & Left$(GrapherDataDirectory$, 2) & " does not exist, either insert the drive and/or media (if removable) or edit the " & ProbeWinINIFile$ & " file to indicate the correct GrapherData directory and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
@@ -5429,6 +5437,7 @@ MsgBox msg$, vbOKOnly + vbInformation, "InitUserDataDirectory"
 End If
 
 ' Check that DemoImage directory already exists
+tmsg$ = "InitUserDataDirectory: checking Demo Images folder..."
 If Not InitIsDriveMediaPresent(OriginalDemoImagesDirectory$) Then  ' check if drive exists
 msg$ = "The specified drive letter " & Left$(OriginalDemoImagesDirectory$, 2) & " does not exist, either insert the drive and/or media (if removable) or edit the " & ProbeWinINIFile$ & " file to indicate the correct DemoImages directory and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
@@ -5445,10 +5454,12 @@ End If
 DemoImagesDirectoryJEOL$ = OriginalDemoImagesDirectory$ & "JEOL"
 DemoImagesDirectoryCameca$ = OriginalDemoImagesDirectory$ & "Cameca"
 
+tmsg$ = "InitUserDataDirectory: creating JEOL and Cameca Demo Images folder..."
 If Dir$(DemoImagesDirectoryJEOL$, vbDirectory) = vbNullString Then MkDir DemoImagesDirectoryJEOL$
 If Dir$(DemoImagesDirectoryCameca$, vbDirectory) = vbNullString Then MkDir DemoImagesDirectoryCameca$
 
 ' Check that folders were made ok
+tmsg$ = "InitUserDataDirectory: checking JEOL and Cameca Demo Images folder..."
 If Dir$(DemoImagesDirectoryJEOL$, vbDirectory) = vbNullString Then
 msg$ = "The folder " & DemoImagesDirectoryJEOL$ & " could not be created." & vbCrLf & vbCrLf
 msg$ = msg$ & "Please check that you have the necessary permissions to create a new folder on that drive."
@@ -5464,6 +5475,7 @@ End
 End If
 
 ' Check that UserImages directory already exists
+tmsg$ = "InitUserDataDirectory: checking User Images folder..."
 If Not InitIsDriveMediaPresent(UserImagesDirectory$) Then  ' check if drive exists
 msg$ = "The specified drive letter " & Left$(UserImagesDirectory$, 2) & " does not exist, either insert the drive and/or media (if removable) or edit the " & ProbeWinINIFile$ & " file to indicate the correct User Images directory and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
@@ -5488,7 +5500,7 @@ msg$ = msg$ & "SurferDataDirectory$= " & SurferDataDirectory$ & vbCrLf
 msg$ = msg$ & "GrapherDataDirectory$= " & GrapherDataDirectory$ & vbCrLf
 msg$ = msg$ & "DemoImagesDirectory$= " & OriginalDemoImagesDirectory$ & vbCrLf
 msg$ = msg$ & "UserImagesDirectory$= " & UserImagesDirectory$ & vbCrLf
-MsgBox Error$ & vbCrLf & vbCrLf & msg$, vbOKOnly + vbCritical, "InitUserDataDirectory"
+MsgBox Error$ & " while " & tmsg$ & vbCrLf & vbCrLf & msg$, vbOKOnly + vbCritical, "InitUserDataDirectory"
 ierror = True
 Exit Sub
 
