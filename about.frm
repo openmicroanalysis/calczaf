@@ -82,7 +82,7 @@ Begin VB.Form FormABOUT
       Begin VB.Image Image1 
          Height          =   960
          Left            =   240
-         Picture         =   "ABOUT.frx":0000
+         Picture         =   "About.frx":0000
          Top             =   240
          Width           =   960
       End
@@ -128,7 +128,7 @@ Begin VB.Form FormABOUT
       ForeColor       =   &H00FF0000&
       Height          =   255
       Left            =   1680
-      MouseIcon       =   "ABOUT.frx":0701
+      MouseIcon       =   "About.frx":0701
       MousePointer    =   99  'Custom
       TabIndex        =   3
       ToolTipText     =   "Click here to visit the Probe Software web site"
@@ -192,6 +192,7 @@ tmsg$ = tmsg$ & "Julien Allaz, Mike Williams and Mike Jercinovic for help with o
 tmsg$ = tmsg$ & "Julie Barkman for Surfer/Grapher scripting and Gareth Seward for programming help" & vbCrLf
 tmsg$ = tmsg$ & "Thanks to our consulting statistician Kardi Takenomo for help with image processing and" & vbCrLf
 tmsg$ = tmsg$ & "Zack Gainsforth for physics and math consulting and" & vbCrLf
+tmsg$ = tmsg$ & "Anette von der Handt for design and feature suggestions and" & vbCrLf
 tmsg$ = tmsg$ & "Brian Gaynor for help with all sorts of application and driver development work!" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "For technical support and sales, please contact John Donovan at Probe Software, Inc." & vbCrLf
@@ -201,12 +202,9 @@ FormABOUT.LabelAbout.Caption = tmsg$
 tmsg$ = "For additional support, consultation and/or training please contact our team of Microprobe Specialists:" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "Paul Carpenter, 314 602-9697, carpenter@probesoftware.com" & vbCrLf
-tmsg$ = tmsg$ & "Dan Kremser, 614 256-8063, kremser@probesoftware.com" & vbCrLf
-tmsg$ = tmsg$ & "John Fournelle, 608 438-7480, fournelle@probesoftware.com" & vbCrLf
-tmsg$ = tmsg$ & "Dave Adams, +61 415-828-312, adams@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Gareth Seward, 805 637-7265, seward@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Karsten Goemann, +61 407-101-990, goemann@probesoftware.com" & vbCrLf
-tmsg$ = tmsg$ & "Julien Allaz, 413 210-0917, allaz@probesoftware.com" & vbCrLf
+tmsg$ = tmsg$ & "Owen Neill, 207 653-6331, neill@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Anette von der Handt, 612 222-6711, vonderhandt@probesoftware.com"
 
 FormABOUT.LabelAboutSpecialists.Caption = tmsg$

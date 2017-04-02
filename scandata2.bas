@@ -266,6 +266,7 @@ Exit Sub
 
 ' Errors
 ScanDataPlotLineRGBError:
+Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "ScanDataPlotLineRGB"
 ierror = True
 Exit Sub

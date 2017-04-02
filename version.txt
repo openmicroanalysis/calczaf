@@ -2,9 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-03/29/17	Fix missing call to create new (enpty) project in CalcIMage (Buse).
+04/01/17	Add error trapping for TDI correction flags since thse flags now expect TDI replicate images to
+		be available. Fix minor bug concerning element channel order when TDI and aggregate elements are utilized 
+		at the same time (Buse).
+
+03/29/17	Fix missing call to create new (empty) project in CalcIMage (Buse).
 v. 11.8.7
-		Add code to force reregistration of copy protection if Win XP or older operasting systems (or Win 8 or Win 10).
+		Add code to force reregistration of copy protection if Win XP or older operating systems (or Win 8 or Win 10).
 		This is because Win 8 reports as Win NT and Win 10 reports as Win XP when a 32 bit asks what the OS is. So
 		now the copy protection file is always written to the ProgramData folder.
 
