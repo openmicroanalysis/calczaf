@@ -1062,7 +1062,7 @@ End If
 ' Calculate actual maximum number of standard sets
 kmax% = UpdateGetMaxSet(Int(1), sample())
 For chan% = 1 To sample(1).LastElm%
-If sample(1).DisableQuantFlag(chan%) = 0 Then
+If sample(1).DisableQuantFlag(chan%) = 0 And sample(1).CrystalNames$(chan%) <> EDS_CRYSTAL$ Then
 
 ip% = IPOS2(NumberofStandards%, sample(1).StdAssigns%(chan%), StandardNumbers%())
 If ip% = 0 Then GoTo UpdateStdMANBackgroundsNoStandard
