@@ -58,46 +58,6 @@ Exit Function
 
 End Function
 
-Function IPOS6(n As Integer, sample1() As TypeSample, analysis As TypeAnalysis) As Integer
-' This routine returns as its value a pointer to the first occurance
-' in "analysis" of the element in "sample1()" specified by channel "n".
-' If a match does not occur, IPOS6 = 0.
-
-ierror = False
-On Error GoTo IPOS6Error
-
-Dim i As Integer
-
-' Fail if not specified
-IPOS6 = 0
-If n% <= 0 Then Exit Function
-
-' Search sample for match (element, x-ray, motor, crystal)
-For i% = 1 To MAXCHAN%
-
-If Trim$(UCase$(sample1(1).Elsyms$(n%))) = Trim$(UCase$(analysis.Elsyms$(i%))) Then
-If Trim$(UCase$(sample1(1).Xrsyms$(n%))) = Trim$(UCase$(analysis.Xrsyms$(i%))) Then
-If sample1(1).MotorNumbers%(n%) = analysis.MotorNumbers%(i%) Then
-If Trim$(UCase$(sample1(1).CrystalNames$(n%))) = Trim$(UCase$(analysis.CrystalNames$(i%))) Then
-IPOS6 = i%
-Exit Function
-End If
-End If
-End If
-End If
-
-Next i%
-
-Exit Function
-
-' Errors
-IPOS6Error:
-MsgBox Error$, vbOKOnly + vbCritical, "IPOS6"
-ierror = True
-Exit Function
-
-End Function
-
 Function IPOS7(n As Integer, syme As String, symx As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the
 ' element and x-ray in "sample1()" starting at channel "n%". Checks disable flag.
@@ -306,58 +266,6 @@ Exit Function
 ' Errors
 IPOS9aError:
 MsgBox Error$, vbOKOnly + vbCritical, "IPOS9a"
-ierror = True
-Exit Function
-
-End Function
-
-Function IPOS10(mode As Integer, syme As String, symx As String, sample() As TypeSample) As Integer
-' This routine returns as its value a pointer to the first occurance of the
-' element and x-ray in "sample1()". If a match does not occur, IPOS10 = 0.
-'
-' mode = 0 do not check disable quant flag
-' mode = 1 return only if disable quant flag = 0 (not set)
-' mode = 2 return only if disable quant flag = 1 (set)
-
-ierror = False
-On Error GoTo IPOS10Error
-
-Dim i As Integer
-
-' Fail if not specified
-IPOS10 = 0
-
-' Search sample for match (element and x-ray only)
-For i% = 1 To sample(1).LastChan%
-
-If Trim$(UCase$(syme$)) = Trim$(UCase$(sample(1).Elsyms$(i%))) Then
-If Trim$(UCase$(symx$)) = Trim$(UCase$(sample(1).Xrsyms$(i%))) Then
-
-If mode% = 0 Then
-IPOS10 = i%
-Exit Function
-End If
-
-If mode% = 1 And sample(1).DisableQuantFlag%(i%) = 0 Then
-IPOS10 = i%
-Exit Function
-End If
-
-If mode% = 2 And sample(1).DisableQuantFlag%(i%) = 1 Then
-IPOS10 = i%
-Exit Function
-End If
-
-End If
-End If
-
-Next i%
-
-Exit Function
-
-' Errors
-IPOS10Error:
-MsgBox Error$, vbOKOnly + vbCritical, "IPOS10"
 ierror = True
 Exit Function
 
