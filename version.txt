@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/13/17	Modify column condition loading from PCC files to automatically fill in analytical 
+		condition fields in all condition forms. JEOL 8900/8200/8500 skip beam current field.
+
 04/11/17	Work on Thermo Pathfinder new functions for beam deflection.
 
 04/08/17	Clean up some dead code.
