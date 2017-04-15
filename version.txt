@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/14/17	Fix 15th color subset to avoid white in plot wavescan (Goemann and Lowers).
+
+		Modify replicate TDI conversion to also copy analog signal images.
+		
+		Add instrcutions for align and crop when subsequent passes do not contain an 
+		image (Ruscitto).
+
 04/13/17	Modify column condition loading from PCC files to automatically fill in analytical 
 		condition fields in all condition forms. JEOL 8900/8200/8500 skip beam current field.
 
@@ -14,7 +21,7 @@ v. 11.8.8
 
 04/03/17	Fix EDS background issue for EDS elements in GetOpt (Neill).
 
-04/01/17	Add error trapping for TDI correction flags since thse flags now expect TDI replicate images to
+04/01/17	Add error trapping for TDI correction flags since those flags now expect TDI replicate images to
 		be available. Fix minor bug concerning element channel order when TDI and aggregate elements are utilized 
 		at the same time (Buse).
 
@@ -51,7 +58,7 @@ v. 11.8.4
 03/03/17	Add display on set condition delays in Combined Condition dialog (von der Handt). Check for faraday cup 
 		before set conditions (Carpenter). Fix multi spectro bias scan in Startwin (Carpenter).
 		
-		Fix combine samples feature in Analyze! window for disabled acq elements (Capenter).
+		Fix combine samples feature in Analyze! window for disabled acq elements (Carpenter).
 
 03/02/17	Add menu to CalcImage log window for "cloning" the current CalcImage project (Ruscitto).
 
@@ -78,7 +85,7 @@ v.11.8.3
 02/16/17	Add output of detection limits in oxide weight percents for user specified format output (Neill).
 v. 11.8.2
 
-02/15/17	Fix new Thermo PathFinder calls for relase beam and deflect beam.
+02/15/17	Fix new Thermo PathFinder calls for release beam and deflect beam.
 
 02/14/17	Improve combined conditions dialog.
 
@@ -125,7 +132,7 @@ v.11.7.8
 01/03/17	Bump version to force updates.
 v.11.7.7
 
-01/02/17	Modify Penepma/penelope code to handle more energy channels.
+01/02/17	Modify Penepma/Penelope code to handle more energy channels.
 
 01/01/17	Improve peaking report to log window code.  Fix error bar output in plot wavescan window.
 
@@ -147,7 +154,7 @@ v.11.7.5
 		Fix multi-standard calibration curve analytical mode to work with aggregate mode (duplicate elements) (Neill).
 
 12/16/16	Modify Analytical Conditions dialogs so Column Condition (PCC) FIle option is selected automatically
-v.11.7.4	if user browses nand selected PCC file (Buse).
+v.11.7.4	if user browses a selected PCC file (Buse).
 
 		Insert faraday cup before loading PCC file (Poeml).  Fix defaulting of sample carbon coating parameters in 
 		CalcZAF (Colombo).  Fix wavescan labels for raw wavescan counts (von der Handt)
@@ -163,7 +170,7 @@ v. 11.7.3	more locked file code for DataVolatile check routines.
 
 12/04/16	Work on WDS simulated spectra feature.
 
-		Finish testing 8230 filament stauration code (Poirier).  That and save/load PCC all working now 
+		Finish testing 8230 filament saturation code (Poirier).  That and save/load PCC all working now 
 		for 8230 and 8530 (Yu and Buse).
 
 12/02/16	Modify Standard.exe and Penepma.f to allow for more energy channels (for WDS demo simulation).
@@ -227,7 +234,7 @@ v. 11.6.8
 10/16/16	Add code to warmup filaments for 8230 instruments.
 v. 11.6.7
 
-10/15/16	Add set regulated probe current to JEOL 8x30 set column conditons code (Buse).
+10/15/16	Add set regulated probe current to JEOL 8x30 set column conditions code (Buse).
 
 10/14/16	Fix biotite file handle output issue (Lowers).
 
@@ -245,7 +252,7 @@ v. 11.6.7
 
 		Replace commonly used element numbers with global constants.
 
-10/06/16	Save fit flag in TDI disp[lay dialog (B. Wade). Improve estimated automation time by including
+10/06/16	Save fit flag in TDI display dialog (B. Wade). Improve estimated automation time by including
 v. 11.6.6	running standard after probe Image from PFE.
 
 		New matrix.mdb k-ratio database for fast Monte Carlo matrix calculations.
@@ -380,7 +387,7 @@ v. 11.5.1
 
 05/31/16	Add light brightness control to StageMap window.
 
-05/30/16	Add 300 millsec delay after 8x30 stage move calls (EIKS) to avoid "stage already moving" warning 
+05/30/16	Add 300 millisec delay after 8x30 stage move calls (EIKS) to avoid "stage already moving" warning 
 v. 11.4.9		on JEOL PC-SEM software).
 
 05/28/16	Fix oxygen bug in Elements/Cations (Roberts/Fournelle).
@@ -407,7 +414,7 @@ v. 11.4.7
 
 04/11/16	Fix bug for PI automation sample setup number.
 
-		Fix STRATAGem output bug when outputing separate lines (Fournelle).
+		Fix STRATAGem output bug when outputting separate lines (Fournelle).
 
 04/09/16	Add disable of WDS/EDS option in Elements/cations if x-ray is blank.
 v. 11.4.6		
@@ -437,12 +444,12 @@ v. 11.4.6
 03/18/16	Add beam deflection and get/set image shift to Remote Automation COM interface (Ruscitto).
 v. 11.4.5
 
-03/17/16	Fux last bug on using quick stds with automated digitized conditions (Poeml).
+03/17/16	Fix last bug on using quick stds with automated digitized conditions (Poeml).
 
 03/15/16	Fix use digitized conditions issue (Poeml).
 v. 11.4.4
 
-03/14/16	Fiz minor bugs in Time.bas and New.bas for Cathey and Poeml.
+03/14/16	Fix minor bugs in Time.bas and New.bas for Cathey and Poeml.
 
 03/11/16	Improve Automate! Plot button to better support multiple samples.
 
@@ -467,9 +474,9 @@ v. 11.4.1
 
 02/27/16	Add ThermoNSSVersionNUmber keyword to probewin.ini file (Severin)
 v. 11.4.0
-		Modify MAN code to automatically handle combined condition amples, add KeV column to element grid (von der Handt).
+		Modify MAN code to automatically handle combined condition samples, add KeV column to element grid (von der Handt).
 		
-		Add check for deleted point in unknown balnk and force recalculation of blank sample on next analysis (Severin).
+		Add check for deleted point in unknown blank and force recalculation of blank sample on next analysis (Severin).
 		
 		Update PFE user manual.
 
@@ -629,7 +636,7 @@ v. 11.1.6
 11/29/15	Work on FormSCAN graphics conversion.  Add better warning if 2048 imaging selected for Sx100 and not in 
 		single channel mode (Seward).
 		
-		Fix Stage.exe mosiac corner updating for move to buttons (Seward).
+		Fix Stage.exe mosaic corner updating for move to buttons (Seward).
 
 11/27/15	Fix minor bug in Standard and StartWin X-Ray menus and CalcZAF x-ray transmission code (Neill).
 v. 11.1.5
@@ -1421,7 +1428,7 @@ v. 10.4.5
 
 		Add takeoff to Fanal output folder name. Modify CalcZAF SF correction for this change.
 
-09/04/14	Improve "shared" bgds feature. Fix penepma batch folder display issue.
+09/04/14	Improve "shared" bgds feature. Fix Penepma batch folder display issue.
 
 08/29/14	Work on mosaic acquisition in Stage.exe (Topa).
 
@@ -1539,7 +1546,7 @@ v. 10.3.8
 	
 		Enable more "interactive help" buttons to user forum.
 	
-06/02/14	Modify penepma binary extraction form to utilize several overvoltages.
+06/02/14	Modify Penepma binary extraction form to utilize several overvoltages.
 
 05/29/14	Add data bar option to image display and output (Morgan).
 v. 10.3.7
@@ -2425,7 +2432,7 @@ v. 9.3.5	New SF boundary code.
 		Fix duplicate element display for standard published values in Analyze! average grid.
 
 3/22/13		Add warning to Acquire code if user tries to change analytical conditions or perform peak centering
-		on standard or wavescan samples. (Meir)
+		on standard or wavescan samples. (Meier)
 	
 3/20/13		Add support for alpha factors calculations in CalcZAF binary k-ratio calculations.
 
@@ -2572,7 +2579,7 @@ v. 9.2.1
 		[software] 
 		
 		Implement Penepma12 MC code for EDS spectra "acquisition" in demo mode. Uses actual standard compositions and random
-		compositions for unknowns. Uses Comvolg.exe for spectrum convolution. User can set minimum energy of calculated spectrum
+		compositions for unknowns. Uses Convolg.exe for spectrum convolution. User can set minimum energy of calculated spectrum
 		in Probewin.ini, e.g.,
 
 		Remove Elionix interface.	
@@ -2725,7 +2732,7 @@ v. 9.03
 
 		Fix XYMODAL.BAS and MODALXY.BAS for aspect ratio issues.	
 	
-		Fix some minor bugs in CalcImage create new project wizard. Add save analog image to GRD during prbimg conversion.
+		Fix some minor bugs in CalcImage create new project wizard. Add save analog image to GRD during PrbImg conversion.
 	
 		Modify polygon extraction and slice scripts for Surfer output to allow user to easily edit the GRD file to use
 		for digitizing (Carpenter).
@@ -2746,7 +2753,7 @@ v. 9.02
 	
 		Add new keywords to Probewin.ini, UserImagesDirectory, SurferPlotsPerPage in [software] section.
 
-12/9/12 	Add Prbimg direct import to CalcImage Create New Project Wizard menu.
+12/9/12 	Add PrbImg direct import to CalcImage Create New Project Wizard menu.
 	
 12/8/12		Add base64 decoding to CalcImage.
 
@@ -2947,7 +2954,7 @@ v. 8.96		using hyperbolic subset fit- see Test3d).
 	
 		Modify SX50 write string error messages (Fournelle).
 
-10/10/12	Modify Standard penepma code to avoid problematic elements until FORTRAN resolved.
+10/10/12	Modify Standard Penepma code to avoid problematic elements until FORTRAN resolved.
 v. 8.95
 	
 		Update documentation and help.
@@ -3035,7 +3042,7 @@ v. 8.89
 	
 		Fix null "atime" in MiscConvertTimeToClockTime (when importing old version user.dat database fields).
 	
-		Grey out threshold fields if not one of ROM methods using them.
+		Gray out threshold fields if not one of ROM methods using them.
 	
 		Modify Standard multi-line import to handle if density field is missing from old versions.	
 	
@@ -3060,7 +3067,7 @@ v. 8.87
 	
 		New msi installer (fixes issue with DAO350.dll).	
 
-		Modify CalcImage menu order and automatically load beam current from prbimg file (in case different from MDB).
+		Modify CalcImage menu order and automatically load beam current from PrbImg file (in case different from MDB).
 
 9/4/12		Modify Sx100 hysteresis command to run after set beam size.
 v. 8.86
