@@ -2,11 +2,16 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/15/17	Add code to ask user for subsequent pass acquisitions for TDI scanning conversion 
+		of replicate samples to TDI PrbImg files in CalcImage.
+		
+		Add code to automatically skip missing maps from align and crop code (Ruscitto).
+
 04/14/17	Fix 15th color subset to avoid white in plot wavescan (Goemann and Lowers).
 
 		Modify replicate TDI conversion to also copy analog signal images.
 		
-		Add instrcutions for align and crop when subsequent passes do not contain an 
+		Add instructions for align and crop when subsequent passes do not contain an 
 		image (Ruscitto).
 
 04/13/17	Modify column condition loading from PCC files to automatically fill in analytical 
@@ -25,7 +30,7 @@ v. 11.8.8
 		be available. Fix minor bug concerning element channel order when TDI and aggregate elements are utilized 
 		at the same time (Buse).
 
-03/29/17	Fix missing call to create new (empty) project in CalcIMage (Buse).
+03/29/17	Fix missing call to create new (empty) project in CalcImage (Buse).
 v. 11.8.7
 		Add code to force reregistration of copy protection if Win XP or older operating systems (or Win 8 or Win 10).
 		This is because Win 8 reports as Win NT and Win 10 reports as Win XP when a 32 bit asks what the OS is. So
