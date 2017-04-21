@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/20/17	Minor bug fixes in Standard (Interf2.bas).
+
+		Add calculation and output of TDI correction (percent correction) maps (von 
+		der Handt).
+
 04/15/17	Add code to ask user for subsequent pass acquisitions for TDI scanning conversion 
 		of replicate samples to TDI PrbImg files in CalcImage.
 		

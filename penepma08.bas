@@ -2937,11 +2937,13 @@ icancelauto = False
 
 ' Check that user has all Penepma input parameters properly specified
 msg$ = "Before creating the binary composition input files, be sure to check that not only is the correct batch folder for saving results properly specified, but that all Penepma input parameters are properly specified, for example, title of run (e.g., Bulk Fe-Ni, 15 keV), beam energy, number of showers, simulation time, etc..." & vbCrLf & vbCrLf
-msg$ = msg$ & Space(8) & "Penepma Batch Simulation Title:  " & BeamTitle$ & vbCrLf
-msg$ = msg$ & Space(8) & "Penepma Batch Save To Folder:    " & PENEPMA_BATCH_FOLDER$ & vbCrLf
-msg$ = msg$ & Space(8) & "Penepma Beam Energy (eV) :       " & Format$(BeamEnergy#, e71$) & " (" & Format$(BeamEnergy# / EVPERKEV#) & " keV)" & vbCrLf
-msg$ = msg$ & Space(8) & "Penepma Number of Showers:       " & Format$(BeamNumberSimulatedShowers#, e71$) & vbCrLf
-msg$ = msg$ & Space(8) & "Penepma Simulation Time (sec):   " & Format$(BeamSimulationTimePeriod#, e71$) & " (" & Format$(BeamSimulationTimePeriod# / SECPERHOUR#, f82$) & " hours per binary or " & Format$((MAXBINARY% + 2) * BeamSimulationTimePeriod# / SECPERDAY#, f82$) & " days for all " & Format$(MAXBINARY%) & " binaries plus two end-members)" & vbCrLf & vbCrLf
+msg$ = msg$ & "Penepma Simulation Title:  " & BeamTitle$ & vbCrLf
+msg$ = msg$ & "Batch Save To Folder:    " & PENEPMA_BATCH_FOLDER$ & vbCrLf & vbCrLf
+msg$ = msg$ & Space(4) & "Takeoff (degrees) :         " & Format$(BeamTakeOff#) & " degrees" & vbCrLf
+msg$ = msg$ & Space(4) & "Beam Energy (eV) :         " & Format$(BeamEnergy#, e71$) & " (" & Format$(BeamEnergy# / EVPERKEV#) & " keV)" & vbCrLf
+msg$ = msg$ & Space(4) & "Number of Showers:      " & Format$(BeamNumberSimulatedShowers#, e71$) & vbCrLf
+msg$ = msg$ & Space(4) & "Simulation Time (sec):   " & Format$(BeamSimulationTimePeriod#, e71$) & " (" & Format$(BeamSimulationTimePeriod# / SECPERHOUR#, f82$) & " hours per binary) or " & vbCrLf
+msg$ = msg$ & Space(4) & "Simulation Time (days):  " & Format$((MAXBINARY% + 2) * BeamSimulationTimePeriod# / SECPERDAY#, f82$) & " days for 11 binaries plus 2 end members" & vbCrLf & vbCrLf
 msg$ = msg$ & "Is everything ready to create the binary composition Penepma input files?"
 response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton1, "Penepma08BatchBinaryCreate")
 If response% = vbNo Then

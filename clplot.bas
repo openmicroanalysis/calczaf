@@ -113,7 +113,7 @@ ierror = True
 Exit Sub
 
 CLDisplaySpectra_PEZeroAcqTime:
-msg$ = "CL acquisitiion time is zero for datarow " & Format$(datarow%)
+msg$ = "CL acquisition time is zero for datarow " & Format$(datarow%)
 IOMsgBox msg$, vbOKOnly + vbExclamation, "CLDisplaySpectra_PE"
 ierror = True
 Exit Sub

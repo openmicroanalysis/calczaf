@@ -38,7 +38,7 @@ ierror = True
 Exit Sub
 
 CLDisplaySpectraZeroAcqTime:
-msg$ = "CL acquisitiion time is zero for datarow " & Format$(datarow%)
+msg$ = "CL acquisition time is zero for datarow " & Format$(datarow%)
 IOMsgBox msg$, vbOKOnly + vbExclamation, "CLDisplaySpectra"
 ierror = True
 Exit Sub

@@ -39,6 +39,13 @@ nominalintensity!(4) = 25#  ' Lb
 nominalintensity!(5) = 200# ' Ma
 nominalintensity!(6) = 100# ' Mb
 
+nominalintensity!(7) = 1# ' Ln
+nominalintensity!(8) = 1# ' Lg
+nominalintensity!(9) = 1# ' Lv
+nominalintensity!(10) = 1# ' Ll
+nominalintensity!(11) = 1# ' Mg
+nominalintensity!(12) = 1# ' Mz
+
 ' Check for valid ranges
 If lifwidth! <= 0# Or lifwidth! > 10# Then GoTo Interf2CalculateBadWidth
 If minimumoverlap! <= 0# Or minimumoverlap! > 100# Then GoTo Interf2CalculateBadOverlap
