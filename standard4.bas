@@ -123,6 +123,7 @@ StandardIndexNumbers%(NumberOfAvailableStandards%) = StandardTmpSample(1).number
 StandardIndexNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).Name$
 StandardIndexDescriptions$(NumberOfAvailableStandards%) = StandardTmpSample(1).Description$
 StandardIndexDensities!(NumberOfAvailableStandards%) = StandardTmpSample(1).SampleDensity!
+StandardIndexMaterialTypes(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
 End If
 
 Loop
@@ -872,6 +873,7 @@ StandardIndexNumbers%(NumberOfAvailableStandards%) = StandardTmpSample(1).number
 StandardIndexNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).Name$
 StandardIndexDescriptions$(NumberOfAvailableStandards%) = StandardTmpSample(1).Description$
 StandardIndexDensities!(NumberOfAvailableStandards%) = StandardTmpSample(1).SampleDensity!
+StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
 End If
 
 End If
@@ -956,6 +958,7 @@ StandardIndexNumbers%(NumberOfAvailableStandards%) = StandardTmpSample(1).number
 StandardIndexNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).Name$
 StandardIndexDescriptions$(NumberOfAvailableStandards%) = StandardTmpSample(1).Description$
 StandardIndexDensities!(NumberOfAvailableStandards%) = StandardTmpSample(1).SampleDensity!
+StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
 End If
 
 Loop

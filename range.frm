@@ -55,10 +55,10 @@ Begin VB.Form FormRANGE
       Begin VB.Label LabelElectronEnergyFinal 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Height          =   495
+         Height          =   615
          Left            =   240
          TabIndex        =   37
-         Top             =   1080
+         Top             =   960
          Width           =   5055
       End
       Begin VB.Label Label9 
@@ -73,11 +73,11 @@ Begin VB.Form FormRANGE
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   855
+         Height          =   615
          Left            =   120
          TabIndex        =   39
          Top             =   240
-         Width           =   1575
+         Width           =   1695
       End
    End
    Begin VB.ListBox ListAtomicDensities 

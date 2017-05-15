@@ -17,6 +17,8 @@ Dim AddStdStandardsToAdd(1 To MAXSTD%) As Integer
 Dim tNumberofStandards As Integer
 Dim tStandardNumbers(1 To MAXSTD%) As Integer
 
+Const MAXMATERIALTYPES% = 20
+
 Sub AddStdAdd()
 ' Routine to add selected standard(s) to the "add to" list
 
@@ -173,6 +175,10 @@ AddStdNumberToAdd% = 0
 For i% = 1 To MAXSTD%
 AddStdStandardsToAdd%(i%) = 0
 Next i%
+
+' Load material types
+Call AddStdMaterialTypeLoad
+If ierror Then Exit Sub
 
 Exit Sub
 
@@ -386,3 +392,110 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub AddStdMaterialTypeLoad()
+' Load the checkboxes based on the material types in the standard database
+
+ierror = False
+On Error GoTo AddStdMaterialTypeLoadError
+
+Dim n As Integer, ip As Integer
+
+Dim tt As Integer
+Dim tMaterialTypes() As String
+
+' Find unique strings
+For n% = 1 To NumberOfAvailableStandards%
+If StandardIndexMaterialTypes$(n%) <> vbNullString Then
+ip% = IPOS1%(tt%, StandardIndexMaterialTypes$(n%), tMaterialTypes$())
+
+If ip% = 0 Then
+tt% = tt% + 1
+ReDim Preserve tMaterialTypes(1 To tt%) As String
+tMaterialTypes$(tt%) = StandardIndexMaterialTypes$(n%)
+End If
+
+End If
+Next n%
+
+' Only list for the number of controls
+If tt% > MAXMATERIALTYPES% Then
+tt% = MAXMATERIALTYPES%
+Call IOWriteLog("AddStdMaterialTypeLoad: Warning, too many material types to display")
+End If
+
+' Load unique strings into check boxes
+For n% = 1 To tt%
+If tMaterialTypes$(n%) <> vbNullString Then
+FormADDSTD.CheckMaterialType(n% - 1).Caption = tMaterialTypes$(n%)
+End If
+Next n%
+
+' Disable remaining check boxes
+For n% = tt% + 1 To MAXMATERIALTYPES%
+FormADDSTD.CheckMaterialType(n% - 1).Enabled = False
+Next n%
+
+Exit Sub
+
+' Errors
+AddStdMaterialTypeLoadError:
+MsgBox Error$, vbOKOnly + vbCritical, "AddStdMaterialTypeLoad"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub AddStdMaterialTypeFilter()
+' Filter the available standard list based on checked material types
+
+ierror = False
+On Error GoTo AddStdMaterialTypeFilterError
+
+Dim n As Integer, ip As Integer
+
+Dim tt As Integer
+Dim tMaterialTypes() As String
+
+' Load material types that are checked
+tt% = 0
+For n% = 1 To MAXMATERIALTYPES%
+If FormADDSTD.CheckMaterialType(n% - 1).Value = vbChecked Then
+tt% = tt% + 1
+ReDim Preserve tMaterialTypes(1 To tt%) As String
+tMaterialTypes$(tt%) = FormADDSTD.CheckMaterialType(n% - 1).Caption
+End If
+Next n%
+
+' Check if any checked. If not, load all standards and exit
+If tt% = 0 Then
+Call StandardLoadList(FormADDSTD.ListAvailableStandards)
+If ierror Then Exit Sub
+Exit Sub
+End If
+
+' Load available list based on check boxes
+FormADDSTD.ListAvailableStandards.Clear
+For n% = 1 To NumberOfAvailableStandards%
+If StandardIndexMaterialTypes$(n%) <> vbNullString Then
+ip% = IPOS1%(tt%, StandardIndexMaterialTypes$(n%), tMaterialTypes$())
+If ip% > 0 Then
+
+FormADDSTD.ListAvailableStandards.AddItem StandardGetString$(n%)
+FormADDSTD.ListAvailableStandards.ItemData(FormADDSTD.ListAvailableStandards.NewIndex) = StandardIndexNumbers%(n%)
+
+End If
+End If
+Next n%
+
+Exit Sub
+
+' Errors
+AddStdMaterialTypeFilterError:
+MsgBox Error$, vbOKOnly + vbCritical, "AddStdMaterialTypeFilter"
+ierror = True
+Exit Sub
+
+End Sub
+
+

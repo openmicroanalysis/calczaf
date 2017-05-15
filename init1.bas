@@ -456,7 +456,7 @@ If tKeyword$ = "UserSpecifiedOutputOxideMolePercentFlag" Then tDefault& = 0
 
 If tKeyword$ = "UserSpecifiedOutputStandardPublishedValuesFlag" Then tDefault& = 0
 If tKeyword$ = "UserSpecifiedOutputStandardPercentVariancesFlag" Then tDefault& = 0
-If tKeyword$ = "UserSpecifiedOutputStandardAgebraicDifferencesFlag" Then tDefault& = 0
+If tKeyword$ = "UserSpecifiedOutputStandardAlgebraicDifferencesFlag" Then tDefault& = 0
 
 If tKeyword$ = "UserSpecifiedOutputDetectionLimitsOxide" Then tDefault& = 0
 End If

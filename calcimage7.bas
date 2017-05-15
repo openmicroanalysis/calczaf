@@ -217,7 +217,7 @@ Exit Sub
 ' Errors
 CalcImageCreateGRDFromArray2Error:
 Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "CalcImageCreateGRDFromArray2"
+MsgBox Error$ & ", processing grid file " & tfilename$, vbOKOnly + vbCritical, "CalcImageCreateGRDFromArray2"
 ierror = True
 Exit Sub
 

@@ -256,8 +256,7 @@ End If
 If mode% = 5 Then
 Call ConvertCalculateElectronEnergy(energy!, XrayLastKev!, XrayLastDensity!, XrayLastThickness!, RangeTmpSample(1).LastChan%, RangeTmpSample(1).Elsyms$(), RangeTmpSample(1).ElmPercents!())
 If ierror Then Exit Sub
-msg$ = "Electron energy transmitted at incident electron energy of " & Format$(XrayLastKev!) & " keV, " & Format$(XrayLastDensity!) & " grams/cm^3, thickness of " & Format$(XrayLastThickness!) & " um = " & Format$(energy!) & " keV,"
-Call IOWriteLog(msg$)
+msg$ = "Electron energy transmitted at incident electron energy of " & Format$(XrayLastKev!) & " keV, " & Format$(XrayLastDensity!) & " grams/cm^3, thickness of " & Format$(XrayLastThickness!) & " um = " & Format$(energy!) & " keV"
 FormRANGE.LabelElectronEnergyFinal.Caption = msg$
 Call IOWriteLog(msg$)
 End If

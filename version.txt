@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/13/17	Allow for "negative" element by difference if very small concentration near 100% (e.g., water by difference)
+v. 11.8.9
+		Add material type database field to standard database structure.  Modify AddStd form for standard filtering.
+
 04/26/17	Comment out setting optical modes when loading PCC file on JEOL 8900 (von der Handt).
 
 04/20/17	Minor bug fixes in Standard (Interf2.bas).

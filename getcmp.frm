@@ -25,11 +25,20 @@ Begin VB.Form FormGETCMP
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   9705
    ScaleWidth      =   9840
+   Begin VB.TextBox TextMaterialType 
+      Height          =   285
+      Left            =   240
+      TabIndex        =   5
+      ToolTipText     =   "Enter an optional material type description for this standard (for filtering the standard list in Add/Remove Standards)"
+      Top             =   7680
+      Width           =   5175
+   End
    Begin VB.CommandButton CommandDeleteCLSpectrum 
       Caption         =   "Delete CL Spectrum"
       Height          =   495
       Left            =   5040
-      TabIndex        =   40
+      TabIndex        =   41
+      TabStop         =   0   'False
       Top             =   9120
       Width           =   1935
    End
@@ -37,7 +46,8 @@ Begin VB.Form FormGETCMP
       Caption         =   "Delete EDS Spectrum"
       Height          =   495
       Left            =   2880
-      TabIndex        =   39
+      TabIndex        =   40
+      TabStop         =   0   'False
       Top             =   9120
       Width           =   2055
    End
@@ -47,7 +57,8 @@ Begin VB.Form FormGETCMP
       Height          =   495
       Left            =   5040
       Style           =   1  'Graphical
-      TabIndex        =   38
+      TabIndex        =   39
+      TabStop         =   0   'False
       Top             =   8640
       Width           =   1935
    End
@@ -57,21 +68,24 @@ Begin VB.Form FormGETCMP
       Height          =   495
       Left            =   2880
       Style           =   1  'Graphical
-      TabIndex        =   37
+      TabIndex        =   38
+      TabStop         =   0   'False
       Top             =   8640
       Width           =   2055
    End
    Begin VB.ListBox ListCLSpectra 
       Height          =   1425
       Left            =   7080
-      TabIndex        =   36
+      TabIndex        =   37
+      TabStop         =   0   'False
       Top             =   8160
       Width           =   2655
    End
    Begin VB.ListBox ListEDSSpectra 
       Height          =   1425
       Left            =   120
-      TabIndex        =   35
+      TabIndex        =   36
+      TabStop         =   0   'False
       Top             =   8160
       Width           =   2655
    End
@@ -79,7 +93,8 @@ Begin VB.Form FormGETCMP
       Caption         =   "Import CL Spectrum"
       Height          =   495
       Left            =   5040
-      TabIndex        =   34
+      TabIndex        =   35
+      TabStop         =   0   'False
       Top             =   8160
       Width           =   1935
    End
@@ -87,7 +102,8 @@ Begin VB.Form FormGETCMP
       Caption         =   "Import EDS Spectrum"
       Height          =   495
       Left            =   2880
-      TabIndex        =   33
+      TabIndex        =   34
+      TabStop         =   0   'False
       Top             =   8160
       Width           =   2055
    End
@@ -105,7 +121,7 @@ Begin VB.Form FormGETCMP
       EndProperty
       Height          =   495
       Left            =   8040
-      TabIndex        =   32
+      TabIndex        =   33
       TabStop         =   0   'False
       Top             =   2040
       Width           =   1455
@@ -125,7 +141,7 @@ Begin VB.Form FormGETCMP
       Height          =   375
       Left            =   5640
       Style           =   1  'Graphical
-      TabIndex        =   21
+      TabIndex        =   22
       TabStop         =   0   'False
       ToolTipText     =   "Update the composition for the entered excess oxygen"
       Top             =   7560
@@ -138,7 +154,7 @@ Begin VB.Form FormGETCMP
       Height          =   495
       Left            =   360
       Style           =   1  'Graphical
-      TabIndex        =   20
+      TabIndex        =   21
       TabStop         =   0   'False
       ToolTipText     =   "Enter the standard composition as a formula (e.g., Fe2SiO4 or MgCaSi2O6)"
       Top             =   6840
@@ -158,14 +174,14 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H00FF0000&
       Height          =   2295
       Left            =   120
-      TabIndex        =   13
+      TabIndex        =   14
       Top             =   120
       Width           =   7575
       Begin VB.CommandButton CommandAddCR 
          Caption         =   "Add <cr>"
          Height          =   255
          Left            =   6480
-         TabIndex        =   41
+         TabIndex        =   42
          ToolTipText     =   "Add a carriage return to the text description (place cursor and hit Add <cr>)"
          Top             =   600
          Width           =   975
@@ -203,14 +219,14 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H00FF0000&
       Height          =   1095
       Left            =   240
-      TabIndex        =   9
+      TabIndex        =   10
       Top             =   5640
       Width           =   2295
       Begin VB.OptionButton OptionEnterElemental 
          Caption         =   "Elemental Percent"
          Height          =   255
          Left            =   120
-         TabIndex        =   14
+         TabIndex        =   15
          TabStop         =   0   'False
          ToolTipText     =   "Click this option to enter the standard composition in elemental weight percents"
          Top             =   720
@@ -220,7 +236,7 @@ Begin VB.Form FormGETCMP
          Caption         =   "Oxide Percent"
          Height          =   255
          Left            =   120
-         TabIndex        =   12
+         TabIndex        =   13
          TabStop         =   0   'False
          ToolTipText     =   "Click this option to enter the standard composition in oxide weight percents"
          Top             =   360
@@ -233,14 +249,14 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H00FF0000&
       Height          =   1095
       Left            =   2760
-      TabIndex        =   8
+      TabIndex        =   9
       Top             =   5640
       Width           =   2295
       Begin VB.OptionButton OptionNotDisplayAsOxide 
          Caption         =   "Elemental Standard"
          Height          =   255
          Left            =   120
-         TabIndex        =   11
+         TabIndex        =   12
          TabStop         =   0   'False
          ToolTipText     =   "Click this option to display the standard composition in elemental weight percents"
          Top             =   720
@@ -250,7 +266,7 @@ Begin VB.Form FormGETCMP
          Caption         =   "Oxide Standard"
          Height          =   255
          Left            =   120
-         TabIndex        =   10
+         TabIndex        =   11
          TabStop         =   0   'False
          ToolTipText     =   "Click this option to display the standard composition in oxide weight percents"
          Top             =   360
@@ -263,7 +279,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Cancel"
       Height          =   375
       Left            =   7920
-      TabIndex        =   7
+      TabIndex        =   8
       TabStop         =   0   'False
       Top             =   840
       Width           =   1695
@@ -276,7 +292,7 @@ Begin VB.Form FormGETCMP
       Height          =   495
       Left            =   7920
       Style           =   1  'Graphical
-      TabIndex        =   6
+      TabIndex        =   7
       TabStop         =   0   'False
       Top             =   240
       Width           =   1695
@@ -287,13 +303,13 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H00FF0000&
       Height          =   2895
       Left            =   120
-      TabIndex        =   5
+      TabIndex        =   6
       Top             =   2640
       Width           =   9615
       Begin MSFlexGridLib.MSFlexGrid GridElementList 
          Height          =   2415
          Left            =   120
-         TabIndex        =   42
+         TabIndex        =   43
          TabStop         =   0   'False
          Top             =   360
          Width           =   9375
@@ -303,6 +319,15 @@ Begin VB.Form FormGETCMP
          Rows            =   73
          Cols            =   8
       End
+   End
+   Begin VB.Label Label10 
+      Alignment       =   2  'Center
+      Caption         =   "Optional Material Type (e.g., silicate, alloy, feldspar, etc.)"
+      Height          =   255
+      Left            =   240
+      TabIndex        =   44
+      Top             =   7440
+      Width           =   5175
    End
    Begin VB.Line Line1 
       X1              =   120
@@ -315,7 +340,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Density (gm/cm3"
       Height          =   255
       Left            =   8040
-      TabIndex        =   31
+      TabIndex        =   32
       Top             =   1440
       Width           =   1455
    End
@@ -326,7 +351,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   8520
-      TabIndex        =   30
+      TabIndex        =   31
       ToolTipText     =   "Total oxygen minus oxygen equivalent from halogens"
       Top             =   7200
       Width           =   1095
@@ -335,7 +360,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Halogen Corrected Oxygen"
       Height          =   255
       Left            =   5640
-      TabIndex        =   29
+      TabIndex        =   30
       Top             =   7200
       Width           =   2655
    End
@@ -346,7 +371,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   8520
-      TabIndex        =   28
+      TabIndex        =   29
       ToolTipText     =   "Total oxygen equivalent from halogens (F, Cl, Br, I)"
       Top             =   6840
       Width           =   1095
@@ -355,7 +380,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Total Oxygen from Halogens"
       Height          =   255
       Left            =   5640
-      TabIndex        =   27
+      TabIndex        =   28
       Top             =   6840
       Width           =   2655
    End
@@ -366,7 +391,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   8520
-      TabIndex        =   26
+      TabIndex        =   27
       ToolTipText     =   "Total oxygen calculated from oxide stoichiometry (enter as elemental oxygen when entering composition in oxide percents)"
       Top             =   6480
       Width           =   1095
@@ -377,7 +402,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   5640
-      TabIndex        =   25
+      TabIndex        =   26
       Top             =   6480
       Width           =   2415
    End
@@ -388,7 +413,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   8520
-      TabIndex        =   24
+      TabIndex        =   25
       Top             =   6120
       Width           =   1095
    End
@@ -399,7 +424,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   7080
-      TabIndex        =   23
+      TabIndex        =   24
       ToolTipText     =   "Oxide Total (sum)"
       Top             =   6120
       Width           =   1095
@@ -411,7 +436,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   5640
-      TabIndex        =   22
+      TabIndex        =   23
       ToolTipText     =   "Elemental total (sum)"
       Top             =   6120
       Width           =   1095
@@ -431,7 +456,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   7320
-      TabIndex        =   19
+      TabIndex        =   20
       Top             =   7560
       Width           =   1215
    End
@@ -442,7 +467,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   8520
-      TabIndex        =   18
+      TabIndex        =   19
       Top             =   5880
       Width           =   1095
    End
@@ -453,7 +478,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   7080
-      TabIndex        =   17
+      TabIndex        =   18
       Top             =   5880
       Width           =   1095
    End
@@ -464,7 +489,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   5640
-      TabIndex        =   16
+      TabIndex        =   17
       Top             =   5880
       Width           =   1095
    End
@@ -475,7 +500,7 @@ Begin VB.Form FormGETCMP
       ForeColor       =   &H80000008&
       Height          =   255
       Left            =   5640
-      TabIndex        =   15
+      TabIndex        =   16
       Top             =   5640
       Width           =   3975
    End
@@ -635,6 +660,11 @@ Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
 Private Sub TextExcessOxygen_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub TextMaterialType_GotFocus()
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

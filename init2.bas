@@ -604,6 +604,8 @@ sample(1).LastCLSpecifiedCountTime! = CLSpecifiedCountTime!
 sample(1).LastCLUnknownCountFactor! = CLUnknownCountFactor!
 sample(1).LastCLDarkSpectraCountTimeFraction! = CLDarkSpectraCountTimeFraction!
 
+sample(1).MaterialType$ = vbNullString
+
 Exit Sub
 
 InitSampleError:
@@ -658,6 +660,7 @@ StandardIndexNumbers%(i%) = 0
 StandardIndexNames$(i%) = vbNullString
 StandardIndexDescriptions$(i%) = vbNullString
 StandardIndexDensities!(i%) = 0#
+StandardIndexMaterialTypes$(i%) = vbNullString
 Next i%
 
 Exit Sub

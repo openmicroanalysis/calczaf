@@ -103,8 +103,12 @@ Else
 GetCmpTmpSample(1).DisplayAsOxideFlag = False
 End If
 
+' Save density
 If Val(FormGETCMP.TextDensity.Text) <= 0# Or Val(FormGETCMP.TextDensity.Text) > MAXDENSITY# Then GoTo GetCmpSaveBadDensity
 GetCmpTmpSample(1).SampleDensity! = Val(FormGETCMP.TextDensity.Text)
+
+' Save material type (text string)
+GetCmpTmpSample(1).MaterialType$ = Trim$(FormGETCMP.TextMaterialType.Text)
 
 ' Load the element, xray, cation, oxygen and wtpercents lists into the GetCmpOldSample array to remove possible blank spaces
 Call InitSample(GetCmpOldSample())
@@ -148,6 +152,8 @@ GetCmpOldSample(1).DisplayAsOxideFlag% = GetCmpTmpSample(1).DisplayAsOxideFlag%
 GetCmpOldSample(1).OxideOrElemental% = GetCmpTmpSample(1).OxideOrElemental%
 
 GetCmpOldSample(1).SampleDensity! = GetCmpTmpSample(1).SampleDensity!
+
+GetCmpOldSample(1).MaterialType$ = GetCmpTmpSample(1).MaterialType$
 
 GetCmpOldSample(1).takeoff! = GetCmpTmpSample(1).takeoff!
 GetCmpOldSample(1).kilovolts! = GetCmpTmpSample(1).kilovolts!
@@ -843,6 +849,8 @@ FormGETCMP.TextDescription.Text = GetCmpTmpSample(1).Description$
 FormGETCMP.TextName.Text = GetCmpTmpSample(1).Name$
 
 FormGETCMP.TextDensity.Text = MiscAutoFormat$(GetCmpTmpSample(1).SampleDensity!)
+
+FormGETCMP.TextMaterialType.Text = Trim$(GetCmpTmpSample(1).MaterialType$)
 
 ' Initialize the Enter As option buttons (if sample has elements)
 If GetCmpTmpSample(1).LastElm > 0 Then

@@ -44,6 +44,7 @@ StandardIndexNumbers%(NumberOfAvailableStandards%) = stds("Numbers")
 StandardIndexNames$(NumberOfAvailableStandards%) = Trim$(vbNullString & stds("Names"))
 StandardIndexDescriptions$(NumberOfAvailableStandards%) = Trim$(vbNullString & stds("Descriptions"))
 StandardIndexDensities!(NumberOfAvailableStandards%) = stds("Densities")
+StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = Trim$(vbNullString & stds("MaterialTypes"))
 
 stds.MoveNext
 Loop
@@ -126,6 +127,7 @@ sample(1).Name$ = Trim$(vbNullString & StDt("Names"))
 sample(1).Description$ = Trim$(vbNullString & StDt("Descriptions"))
 sample(1).DisplayAsOxideFlag% = StDt("DisplayAsOxideFlags")
 sample(1).SampleDensity! = StDt("Densities")
+sample(1).MaterialType$ = Trim$(vbNullString & StDt("MaterialTypes"))
 StDt.Close
 
 ' Get standard composition data for specified standard from standard database
@@ -640,6 +642,8 @@ Dim StdKRatiosKRatios As New Field
 Dim StdKRatiosStdAssigns As New Field
 Dim StdKRatiosFileName As New Field
 
+Dim StdMaterialTypes As New Field
+
 ' Check for valid file name
 If Trim$(tfilename$) = vbNullString Then
 msg$ = "Standard data file name is blank"
@@ -845,6 +849,17 @@ StDb.TableDefs("StdKratios").Fields.Append StdKRatiosFileName
 updated = True
 End If
 
+' Add material type to standard table
+If versionnumber! < 11.89 Then
+StdMaterialTypes.Name = "MaterialTypes"
+StdMaterialTypes.Type = dbText
+StdMaterialTypes.Size = DbTextNameLength%
+StdMaterialTypes.AllowZeroLength = True
+StDb.TableDefs("Standard").Fields.Append StdMaterialTypes
+
+updated = True
+End If
+
 ' Add new fields and records based on "versionnumber"
 
 
@@ -931,6 +946,7 @@ StDt("Names") = Left$(sample(1).Name$, DbTextNameLength%)
 StDt("Descriptions") = Left$(sample(1).Description$, DbTextDescriptionLength%)
 StDt("DisplayAsOxideFlags") = sample(1).DisplayAsOxideFlag%
 StDt("Densities") = sample(1).SampleDensity!
+StDt("MaterialTypes") = Left$(sample(1).MaterialType$, DbTextNameLength%)
 StDt.Update
 StDt.Close
 
@@ -1031,6 +1047,7 @@ If ierror Then Exit Function
 tmsg$ = tmsg$ & vbCrLf & "TakeOff = " & Format$(Format$(sample(1).takeoff!, f41$), a40$)
 tmsg$ = tmsg$ & "  KiloVolt = " & Format$(Format$(sample(1).kilovolts!, f41$), a40$)
 tmsg$ = tmsg$ & "  Density = " & Format$(Format$(sample(1).SampleDensity!, f63$), a60$)
+If Trim$(sample(1).MaterialType$) <> vbNullString Then tmsg$ = tmsg$ & "  Type = " & sample(1).MaterialType$
 
 ' Add sample description field
 If sample(1).Description$ <> vbNullString Then
