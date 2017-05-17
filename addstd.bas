@@ -498,4 +498,74 @@ Exit Sub
 
 End Sub
 
+Sub AddStdImportPOS()
+' Import standard names (numbers) from POS file
+
+ierror = False
+On Error GoTo AddStdImportPOSError
+
+Dim tfilename As String
+
+Dim temp1 As Single, temp2 As Single, temp3 As Single, temp4 As Single
+Dim pxdata As Single, pydata As Single, pzdata As Single, pwdata As Single
+Dim ptyp As Integer, pnum As Integer, pgnum As Integer, pauto As Integer, psetup As Integer
+Dim pnam As String, pfile As String
+
+Dim lastpnum As Integer
+
+' Get POS file from user
+Call IOGetFileName(Int(2), "POS", tfilename$, FormADDSTD)
+If ierror Then Exit Sub
+
+' Open import file, see exit on error below
+Call IOStatusAuto(vbNullString)
+Open tfilename$ For Input As #Position1FileNumber%
+
+' Import fiducials
+Input #Position1FileNumber%, temp1!, temp2!, temp3!, temp4!
+Input #Position1FileNumber%, temp1!, temp2!, temp3!, temp4!
+Input #Position1FileNumber%, temp1!, temp2!, temp3!, temp4!
+
+' Loop on import position samples
+Call IOStatusAuto(vbNullString)
+Do Until EOF(Position1FileNumber%)
+
+' Read data from file
+If PositionImportExportFileType% = 1 Then
+Input #Position1FileNumber%, ptyp%, pnum%, pnam$, pxdata!, pydata!, pzdata!, pwdata!, pgnum%
+
+' With setup number, etc
+ElseIf PositionImportExportFileType% = 2 Then
+Input #Position1FileNumber%, ptyp%, pnum%, pnam$, pxdata!, pydata!, pzdata!, pwdata!, pgnum%, pauto%, psetup%, pfile$
+End If
+
+' See if standard is already in the run and add to "add to" list if not
+If ptyp% = 1 And pnum% <> lastpnum% Then
+Call AddStdCheck(pnum%)
+If ierror Then
+Close #Position1FileNumber%
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+End If
+End If
+
+' Save last std number to skip multiple points
+lastpnum% = pnum%
+Loop
+
+Close #Position1FileNumber%
+Call IOStatusAuto(vbNullString)
+
+Exit Sub
+
+' Errors
+AddStdImportPOSError:
+MsgBox Error$ & ". (check that correct PositionImportExportFileType is defined in the [software] section of the PFE configuration file " & ProbeWinINIFile$ & ")", vbOKOnly + vbCritical, "AddStdImportPOS"
+Close #Position1FileNumber%
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+
+End Sub
 

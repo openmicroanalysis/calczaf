@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/16/17	MOdify Penepma 12 GUI to utilize microns instead of cm.
+
+05/15/17	Add button to load standards from .POS file to Add/Remove Standards dialog (von der Handt).
+
 05/13/17	Allow for "negative" element by difference if very small concentration near 100% (e.g., water by difference)
 v. 11.8.9
 		Add material type database field to standard database structure.  Modify AddStd form for standard filtering.

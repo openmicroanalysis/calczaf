@@ -27,7 +27,7 @@ Dim PenepmaTaskID As Long
 
 Dim BeamTitle As String
 Dim BeamTakeOff As Double, BeamEnergy As Double
-Dim BeamPosition(1 To 3) As Double
+Dim BeamPosition(1 To 3) As Double                                  ' file parameter is in cm, display in um
 Dim BeamDirection(1 To 2) As Double, BeamAperture As Double
 Dim BeamDumpPeriod As Double
 
@@ -149,12 +149,12 @@ Else
 BeamEnergy# = Val(tForm.TextBeamEnergy.Text)
 End If
 
-' Beam position (in cm)
+' Beam position (in um)
 For i% = 1 To 3
-If Val(tForm.TextBeamPosition(i% - 1).Text) < -1 Or Val(tForm.TextBeamPosition(i% - 1).Text) > 1 Then
-If i% = 1 Then msg$ = "Beam position X is out of range (must be between -1 and 1 cm)"
-If i% = 2 Then msg$ = "Beam position Y is out of range (must be between -1 and 1 cm)"
-If i% = 3 Then msg$ = "Beam position Z is out of range (must be between -1 and 1 cm)"
+If Val(tForm.TextBeamPosition(i% - 1).Text) < -MICRONSPERCM& Or Val(tForm.TextBeamPosition(i% - 1).Text) > MICRONSPERCM& Then
+If i% = 1 Then msg$ = "Beam position X is out of range (must be between -10000 and 10000 um)"
+If i% = 2 Then msg$ = "Beam position Y is out of range (must be between -10000 and 10000 um)"
+If i% = 3 Then msg$ = "Beam position Z is out of range (must be between -10000 and 10000 um)"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08SaveInput"
 ierror = True
 Exit Sub
@@ -501,9 +501,9 @@ If MaterialWcb# = 0# Then MaterialWcb# = 0#     ' zero means use calculated defa
 If BeamTitle$ = vbNullString Then BeamTitle$ = "PENEPMA Input File Title"
 If BeamTakeOff# = 0# Then BeamTakeOff# = CDbl(DefaultTakeOff!)
 If BeamEnergy# = 0# Then BeamEnergy# = CDbl(DefaultKiloVolts! * EVPERKEV#)
-If BeamPosition#(1) = 0# Then BeamPosition#(1) = 0#     ' X
-If BeamPosition#(2) = 0# Then BeamPosition#(2) = 0#     ' Y
-If BeamPosition#(3) = 0# Then BeamPosition#(3) = 1#      ' Z (1 cm WD)
+If BeamPosition#(1) = 0# Then BeamPosition#(1) = 0#                 ' X
+If BeamPosition#(2) = 0# Then BeamPosition#(2) = 0#                 ' Y
+If BeamPosition#(3) = 0# Then BeamPosition#(3) = MICRONSPERCM&      ' Z (1 cm WD)
 
 If BeamDirection#(1) = 0# Then BeamDirection#(1) = 180#
 If BeamDirection#(2) = 0# Then BeamDirection#(2) = 0#
@@ -580,7 +580,8 @@ cstring$ = Format$(Format$(BeamEnergy#, "Scientific"), a10$)
 If InStr(astring$, "SENERG") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
-cstring$ = Format$(BeamPosition#(1), "Scientific") & " " & Format$(BeamPosition#(2)) & " " & Format$(BeamPosition#(3))
+' Convert microns to cm for output to .in input file
+cstring$ = Format$(BeamPosition#(1) / MICRONSPERCM&) & " " & Format$(BeamPosition#(2) / MICRONSPERCM&) & " " & Format$(BeamPosition#(3) / MICRONSPERCM&)
 If InStr(astring$, "SPOSIT") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
@@ -994,7 +995,7 @@ tForm.TextGeometryFile.Text = GeometryFile$
 If Not initialized And tForm.OptionProduction(3).Value = True Then
 If Val(tForm.TextBeamPosition(0).Text) <> 0# And InStr(tForm.TextGeometryFile.Text, "sphere") > 0 Then
 msg$ = "When using a hemisphere geometry file (*sphere.geo), be sure the X beam position is properly specified."
-msg$ = msg$ & vbCrLf & vbCrLf & "The beam position is in the center of the hemisphere only when both the X and Y Beam Position parameters above are zero."
+msg$ = msg$ & vbCrLf & vbCrLf & "The beam position is generally in the center of the hemisphere when both the X and Y Beam Position parameters are zero."
 MsgBox msg$, vbOKOnly + vbInformation, "Penepma08BrowseGeometryFile"
 End If
 initialized = True
@@ -1273,6 +1274,12 @@ If ierror Then
 MsgBox "Problem reading file " & PENEPMA_Path$ & "\" & InputFiles$(Index% + 1), vbOKOnly + vbExclamation, "Penepma08BatchGetInputParameters [Penepma08LoadProduction4]"
 Exit Sub
 End If
+If InStr(astring$, "PDANGL") > 0 Then Call Penepma08LoadProduction5(astring$, bstring$)
+FormPENEPMA08Batch.TextBeamTakeoff.Text = Format$(90 - (InputTheta1# + InputTheta2#) / 2)
+If ierror Then
+MsgBox "Problem reading file " & PENEPMA_Path$ & "\" & InputFiles$(Index% + 1), vbOKOnly + vbExclamation, "Penepma08BatchGetInputParameters [Penepma08LoadProduction3]"
+Exit Sub
+End If
 If InStr(astring$, "PDENER") > 0 Then Call Penepma08LoadProduction3(astring$, bstring$, FormPENEPMA08Batch)
 If ierror Then
 MsgBox "Problem reading file " & PENEPMA_Path$ & "\" & InputFiles$(Index% + 1), vbOKOnly + vbExclamation, "Penepma08BatchGetInputParameters [Penepma08LoadProduction3]"
@@ -1544,6 +1551,7 @@ ierror = False
 On Error GoTo Penepma08LoadProduction3Error
 
 Dim cstring As String
+Dim temp As Single
 
 If astring$ = vbNullString Then GoTo Penepma08LoadProduction3EmptyString
 If Len(astring$) < COL7% + 1 Then GoTo Penepma08LoadProduction3ShortString
@@ -1552,13 +1560,17 @@ If InStr(astring$, "[") = 0 Then GoTo Penepma08LoadProduction3MissingBracket
 ' Load the parameter text
 bstring$ = Mid$(astring, COL7% + 1, InStr(astring$, "[") - (COL7% + 1))
 
+' Input file units are in cm, display in um units
 If InStr(astring$, "SPOSIT") > 0 Then
 Call MiscParseStringToString(bstring$, cstring$)
-tForm.TextBeamPosition(0).Text = Trim$(cstring$)
+temp! = Val(Trim$(cstring$)) * MICRONSPERCM&
+tForm.TextBeamPosition(0).Text = Format$(temp!)     ' X position
 Call MiscParseStringToString(bstring$, cstring$)
-tForm.TextBeamPosition(1).Text = Trim$(cstring$)
+temp! = Val(Trim$(cstring$)) * MICRONSPERCM&
+tForm.TextBeamPosition(1).Text = Format$(temp!)     ' Y position
 Call MiscParseStringToString(bstring$, cstring$)
-tForm.TextBeamPosition(2).Text = Trim$(cstring$)
+temp! = Val(Trim$(cstring$)) * MICRONSPERCM&
+tForm.TextBeamPosition(2).Text = Format$(temp!)     ' Z position
 
 ElseIf InStr(astring$, "SDIREC") > 0 Then
 Call MiscParseStringToString(bstring$, cstring$)
@@ -3194,7 +3206,7 @@ Exit Sub
 End Sub
 
 Sub Penepma08BatchBinaryExtract()
-' Extract the k-ratios from a series of binary composition Penepma input files based on the two elements
+' Extract the k-ratios from a series of binary composition Penepma input files based on the two elements (based on current specified batch folder and binary elements)
 
 ierror = False
 On Error GoTo Penepma08BatchBinaryExtractError
@@ -3850,6 +3862,9 @@ ElseIf InputPhi1# = 250# And InputPhi2# = 290# Then
 tForm.OptionDetectorGeometry(4).Value = True    ' west
 End If
 
+' Load takeoff angle (assume midpoint of PDANGL)
+tForm.TextBeamTakeoff.Text = Format$(90 - (InputTheta1# + InputTheta2#) / 2)
+
 Exit Sub
 
 ' Errors
@@ -4141,19 +4156,17 @@ If ierror Then Exit Sub
 If InStr(ptext1$, "couple") > 0 Then
 Call Penepma08LoadInputFileParameter(tfilename2$, "SPOSIT", ptext2$, tForm)
 If ierror Then Exit Sub
-dist_or_rad! = Abs(Val(ptext2$) * MICRONSPERCM&)         ' x position only (from center)
+dist_or_rad! = Abs(Val(ptext2$))         ' x position only (from center)
 End If
 
-' Determine the radius if hemisphere file
-If InStr(ptext1$, "sphere") > 0 Then
-If InStr(ptext1$, "mic") > 0 Then
-dist_or_rad! = Val(Left$(ptext1$, InStr(ptext1$, "mic"))) / 2#      ' radius of hemisphere
-End If
+' Determine the radius (in um) if hemisphere file, e.g., 5mic_sphere.geo
+If InStr(ptext1$, "sphere") > 0 And InStr(ptext1$, "mic") > 0 Then
+dist_or_rad! = Val(Left$(ptext1$, InStr(ptext1$, "mic"))) / 2#      ' radius of hemisphere (in um)
 End If
 
 astring$ = vbNullString
 astring$ = astring$ & VbDquote$ & MiscGetLastFolderOnly$(tfilename$) & VbDquote$ & vbTab
-astring$ = astring$ & Format$(dist_or_rad!, f82$) & vbTab
+astring$ = astring$ & Format$(dist_or_rad!) & vbTab
 astring$ = astring$ & Format$(std_int!(1, ExtractXray%), e82$) & vbTab
 astring$ = astring$ & Format$(tot_int!(1, ExtractXray%), e82$) & vbTab
 astring$ = astring$ & Format$(tot_int_var!(1, ExtractXray%), e82$) & vbTab

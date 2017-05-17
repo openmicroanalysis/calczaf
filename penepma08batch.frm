@@ -256,7 +256,7 @@ Begin VB.Form FormPENEPMA08Batch
          Left            =   2280
          TabIndex        =   21
          TabStop         =   0   'False
-         ToolTipText     =   "Create binary composition files from 1 to 99%"
+         ToolTipText     =   "Create binary composition files from 1 to 99% (be sure to specify the proper batch folder)"
          Top             =   360
          Width           =   1935
       End
@@ -284,7 +284,7 @@ Begin VB.Form FormPENEPMA08Batch
          Left            =   5040
          TabIndex        =   18
          TabStop         =   0   'False
-         ToolTipText     =   "Extract the k-ratios from the folder containing the binary composition calculations"
+         ToolTipText     =   "Extract the k-ratios from the batch folder containing the binary composition calculations"
          Top             =   360
          Width           =   1935
       End
@@ -333,15 +333,27 @@ Begin VB.Form FormPENEPMA08Batch
       TabIndex        =   4
       Top             =   5160
       Width           =   7215
+      Begin VB.TextBox TextBeamTakeoff 
+         BackColor       =   &H00E0E0E0&
+         Enabled         =   0   'False
+         Height          =   285
+         Left            =   3120
+         Locked          =   -1  'True
+         TabIndex        =   47
+         TabStop         =   0   'False
+         ToolTipText     =   "Takeoff angle in degrees"
+         Top             =   720
+         Width           =   1215
+      End
       Begin VB.TextBox TextEnergyRangeMinMaxNumber 
          BackColor       =   &H00E0E0E0&
          Enabled         =   0   'False
          Height          =   285
          Index           =   2
-         Left            =   5880
+         Left            =   5760
          TabIndex        =   44
          Top             =   1800
-         Width           =   1215
+         Width           =   1335
       End
       Begin VB.TextBox TextEnergyRangeMinMaxNumber 
          BackColor       =   &H00E0E0E0&
@@ -393,13 +405,13 @@ Begin VB.Form FormPENEPMA08Batch
          BackColor       =   &H00E0E0E0&
          Enabled         =   0   'False
          Height          =   285
-         Left            =   5160
+         Left            =   5760
          Locked          =   -1  'True
          TabIndex        =   12
          TabStop         =   0   'False
-         ToolTipText     =   "Enter the time interval for the dump files to be updated (for live display)"
+         ToolTipText     =   "Time interval for the dump files to be updated (for live display)"
          Top             =   720
-         Width           =   1935
+         Width           =   1335
       End
       Begin VB.TextBox TextNumberSimulatedShowers 
          BackColor       =   &H00E0E0E0&
@@ -429,13 +441,13 @@ Begin VB.Form FormPENEPMA08Batch
          BackColor       =   &H00E0E0E0&
          Enabled         =   0   'False
          Height          =   285
-         Left            =   3120
+         Left            =   4440
          Locked          =   -1  'True
          TabIndex        =   6
          TabStop         =   0   'False
-         ToolTipText     =   "Enter beam energy in electron volts (eV)"
+         ToolTipText     =   "Beam energy in electron volts (eV)"
          Top             =   720
-         Width           =   1935
+         Width           =   1215
       End
       Begin VB.TextBox TextInputTitle 
          BackColor       =   &H00E0E0E0&
@@ -474,7 +486,7 @@ Begin VB.Form FormPENEPMA08Batch
          Width           =   2895
       End
       Begin VB.Label Label13 
-         Caption         =   "Beam Energy (eV), Dump Period (in sec)"
+         Caption         =   "Takeoff (deg), Energy (eV), Dump (sec)"
          Height          =   255
          Left            =   120
          TabIndex        =   8

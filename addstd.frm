@@ -23,6 +23,15 @@ Begin VB.Form FormADDSTD
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   5865
    ScaleWidth      =   10440
+   Begin VB.CommandButton CommandLoadFromPOS 
+      Caption         =   "Load POS"
+      Height          =   375
+      Left            =   7680
+      TabIndex        =   37
+      ToolTipText     =   "Load standards from a selected .POS file"
+      Top             =   3840
+      Width           =   1095
+   End
    Begin VB.CheckBox CheckMaterialType 
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -434,7 +443,7 @@ Begin VB.Form FormADDSTD
       BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       Height          =   375
-      Left            =   7320
+      Left            =   6720
       Style           =   1  'Graphical
       TabIndex        =   12
       ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
@@ -497,23 +506,23 @@ Begin VB.Form FormADDSTD
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
-      Left            =   8880
+      Left            =   9000
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   3840
-      Width           =   1335
+      Width           =   1215
    End
    Begin VB.CommandButton CommandOK 
       BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   8880
+      Left            =   9000
       Style           =   1  'Graphical
       TabIndex        =   0
       TabStop         =   0   'False
       Top             =   3240
-      Width           =   1335
+      Width           =   1215
    End
    Begin VB.Line Line1 
       X1              =   120
@@ -649,6 +658,12 @@ End Sub
 Private Sub CommandHelpAddStd_Click()
 If Not DebugMode Then On Error Resume Next
 Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=15.0")
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandLoadFromPOS_Click()
+If Not DebugMode Then On Error Resume Next
+Call AddStdImportPOS
 If ierror Then Exit Sub
 End Sub
 

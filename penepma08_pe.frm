@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Begin VB.Form FormPENEPMA08_PE 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Create PENEPMA Material and Input Files"
@@ -1292,7 +1292,7 @@ Begin VB.Form FormPENEPMA08_PE
          Width           =   4095
       End
       Begin VB.Label Label12 
-         Caption         =   "Beam Position (cm) (X, Y, Z)"
+         Caption         =   "Beam Position (um) (X, Y, Z)"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -1888,6 +1888,11 @@ Else
 End If
 End Sub
 
+Private Sub TextBeamDirection_GotFocus(Index As Integer)
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
 Private Sub TextEnergyRangeMinMaxNumber_GotFocus(Index As Integer)
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
@@ -1910,11 +1915,6 @@ If ierror Then Exit Sub
 End Sub
 
 Private Sub TextBeamAperture_GotFocus()
-If Not DebugMode Then On Error Resume Next
-Call MiscSelectText(Screen.ActiveForm.ActiveControl)
-End Sub
-
-Private Sub TextBeamDirection_Change(Index As Integer)
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

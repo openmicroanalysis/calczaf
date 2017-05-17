@@ -329,16 +329,8 @@ Begin VB.Form FormPenepma12Binary
          Height          =   375
          Left            =   240
          TabIndex        =   70
+         TabStop         =   0   'False
          Top             =   2880
-         Width           =   4335
-      End
-      Begin VB.CommandButton CommandExtractPureElementIntensities 
-         Caption         =   "Extract Pure Element Intensities"
-         Height          =   495
-         Left            =   2400
-         TabIndex        =   69
-         ToolTipText     =   "Extract pure element intensities using Fanal (always uses element range mode)"
-         Top             =   2400
          Width           =   2175
       End
       Begin VB.CommandButton CommandExtract2 
@@ -472,6 +464,26 @@ Begin VB.Form FormPenepma12Binary
          ToolTipText     =   "Select the first element in the boundary binary"
          Top             =   1920
          Width           =   615
+      End
+      Begin VB.CommandButton CommandExtractBinary 
+         Caption         =   "Extract From Input File"
+         Height          =   375
+         Left            =   2400
+         TabIndex        =   72
+         TabStop         =   0   'False
+         ToolTipText     =   "Extract binary (alpha) element intensities using Fanal from an input file, e.g., Pouchou2.dat"
+         Top             =   2880
+         Width           =   2175
+      End
+      Begin VB.CommandButton CommandExtractPureElementIntensities 
+         Caption         =   "Extract Pure Element Intensities"
+         Height          =   495
+         Left            =   2400
+         TabIndex        =   69
+         TabStop         =   0   'False
+         ToolTipText     =   "Extract pure element intensities using Fanal (always uses element range mode)"
+         Top             =   2400
+         Width           =   2175
       End
       Begin VB.Label LabelExtractMatrixA1 
          Alignment       =   2  'Center
@@ -848,6 +860,12 @@ If ierror Then Exit Sub
 Call Penepma12BinarySave
 If ierror Then Exit Sub
 Call Penepma12Extract2
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandExtractBinary_Click()
+If Not DebugMode Then On Error Resume Next
+Call Penepma12ExtractBinary(FormPenepma12Binary)
 If ierror Then Exit Sub
 End Sub
 

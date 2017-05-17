@@ -9338,3 +9338,246 @@ Exit Sub
 
 End Sub
 
+Sub Penepma12ExtractBinary(tForm As Form)
+' Extract k-ratios from binary compositions in file
+
+ierror = False
+On Error GoTo Penepma12ExtractBinaryError
+
+Dim ibin As Integer, n As Integer
+Dim tMaterialMeasuredGridPoints As Integer
+
+Dim eO As Single, TOA As Single
+
+Dim tfilename As String
+Dim binaryname As String
+
+Dim BinarySwapped As Boolean
+
+Dim kratios(1 To MAXBINARY%) As Single
+
+ReDim isym(1 To 2) As Integer
+ReDim iray(1 To 2) As Integer
+ReDim conc(1 To 2) As Single
+ReDim kexp(1 To 2) As Single
+
+Dim BinaryLineCount As Long
+
+Static lastfilename As String
+
+' Ask user for input file
+icancelauto = False
+
+Close #ImportDataFileNumber%
+
+' Get import filename from user
+If lastfilename$ = vbNullString Then lastfilename$ = CalcZAFDATFileDirectory$ & "\Pouchou2_Au,Cu,Ag_only.dat"
+tfilename$ = lastfilename$
+Call IOGetFileName(Int(2), "DAT", tfilename$, tForm)
+If ierror Then
+Close #ImportDataFileNumber%
+Exit Sub
+End If
+
+' Save current path
+CalcZAFDATFileDirectory$ = CurDir$
+
+' No errors, save file name
+lastfilename$ = tfilename$
+ImportDataFile$ = lastfilename$
+
+' Open input file
+Open ImportDataFile$ For Input As #ImportDataFileNumber%
+BinaryLineCount& = 0
+Call IOStatusAuto(vbNullString)
+
+' Extract k-ratios for all lines in input file
+Do While Not EOF(ImportDataFileNumber%)
+BinaryLineCount& = BinaryLineCount& + 1
+
+' Read binary elements, kilovolts and takeoff
+Input #ImportDataFileNumber%, isym%(1), isym%(2), iray%(1), iray%(2), eO!, TOA!, conc!(1), conc!(2), kexp!(1), kexp!(2)
+If conc!(2) = 0# Then conc!(2) = 1# - conc!(1)
+
+' Check limits
+If isym%(1) < 1 Or isym%(1) > MAXELM% Then GoTo Penepma12ExtractBinaryOutofLimits
+If isym%(2) < 1 Or isym%(2) > MAXELM% Then GoTo Penepma12ExtractBinaryOutofLimits
+If iray%(1) < 1 Or iray%(1) > MAXRAY% Then GoTo Penepma12ExtractBinaryOutofLimits
+If iray%(2) < 1 Or iray%(2) > MAXRAY% Then GoTo Penepma12ExtractBinaryOutofLimits
+If eO! < 1# Or eO! > 100# Then GoTo Penepma12ExtractBinaryOutofLimits
+If TOA! < 1# Or TOA! > 90# Then GoTo Penepma12ExtractBinaryOutofLimits
+If conc!(1) < 0# Or conc!(1) > 1# Then GoTo Penepma12ExtractBinaryOutofLimits
+If conc!(2) < 0# Or conc!(2) > 1# Then GoTo Penepma12ExtractBinaryOutofLimits
+If kexp!(1) < 0# Or kexp!(1) > 1# Then GoTo Penepma12ExtractBinaryOutofLimits
+If kexp!(2) < 0# Or kexp!(2) > 1# Then GoTo Penepma12ExtractBinaryOutofLimits
+
+' Check that both elements are not by difference
+If iray%(1) = MAXRAY% And iray%(2) = MAXRAY% Then GoTo Penepma12ExtractBinaryBothByDifference
+
+' Check that at least one concentration is entered
+If conc!(1) = 0# And conc!(2) = 0# Then GoTo Penepma12ExtractBinaryNoConcData
+
+' Extract k-ratios for both binaries
+For ibin% = 1 To 2
+If iray%(ibin%) < MAXRAY% Then  ' skip if x-ray is "not analyzed"
+
+If ibin% = 1 Then msg$ = "Extracting k-ratios from binary " & Format$(BinaryLineCount&) & " (" & Symlo$(isym%(ibin%)) & " " & Xraylo$(iray%(ibin%)) & " in " & Symlo$(isym%(2)) & " at " & Format$(TOA!) & " deg, " & Format$(eO!) & " kev)..."
+If ibin% = 2 Then msg$ = "Extracting k-ratios from binary " & Format$(BinaryLineCount&) & " (" & Symlo$(isym%(ibin%)) & " " & Xraylo$(iray%(ibin%)) & " in " & Symlo$(isym%(1)) & " at " & Format$(TOA!) & " deg, " & Format$(eO!) & " kev)..."
+Call IOWriteLog(vbCrLf & msg$)
+Call IOStatusAuto(msg$)
+If icancelauto Then
+Call IOStatusAuto(vbNullString)
+Close #ImportDataFileNumber%
+ierror = True
+Exit Sub
+End If
+
+' Specify the Fanal parameters
+MaterialMeasuredTakeoff# = TOA!
+MaterialMeasuredEnergy# = eO!
+
+MaterialMeasuredElement% = isym%(ibin%)
+MaterialMeasuredXray% = iray%(ibin%)
+
+' Loop on each binary composition (1:99, 5:95, 90:10, etc.)
+For n% = 1 To MAXBINARY%
+PENEPMA_Sample(1).ElmPercents!(1) = BinaryRanges!(n%)
+PENEPMA_Sample(1).ElmPercents!(2) = 100# - BinaryRanges!(n%)
+
+' Create material (and PAR) file name
+If isym%(1) < isym%(2) Then
+binaryname$ = Symup$(isym%(1)) & "-" & Symup$(isym%(2)) & "_" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
+BinarySwapped = False
+Else
+binaryname$ = Symup$(isym%(2)) & "-" & Symup$(isym%(1)) & "_" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
+BinarySwapped = True
+End If
+
+ParameterFileA$ = binaryname$ & ".par"
+ParameterFileB$ = binaryname$ & ".par"                          ' same as A for matrix calculations
+ParameterFileBStd$ = Trim$(Symup$(isym%(ibin%))) & ".par"       ' use pure element always (use Trim$ for single letter elements)
+
+' Check for pure element PAR file in Penfluor\Pure folder
+If Dir$(PENEPMA_Root$ & "\Penfluor\" & ParameterFileBStd$) = vbNullString Then
+tfilename$ = PENEPMA_Root$ & "\Penfluor\Pure\" & ParameterFileBStd$
+If Dir$(tfilename$) <> vbNullString Then FileCopy tfilename$, PENEPMA_Root$ & "\Penfluor\" & ParameterFileBStd$
+If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".in") <> vbNullString Then FileCopy MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_Root$ & "\Penfluor\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(ParameterFileBStd$)) & ".in"
+End If
+
+' Check the parameters files
+Call Penepma12RunFanal
+If ierror Then
+Close #ImportDataFileNumber%
+Exit Sub
+End If
+
+' Run the Fanal program
+tMaterialMeasuredGridPoints% = MaterialMeasuredGridPoints%      ' save
+MaterialMeasuredGridPoints% = 1     ' use a single point for matrix calculations
+Call Penepma12RunFanal1
+MaterialMeasuredGridPoints% = tMaterialMeasuredGridPoints%      ' restore
+If ierror Then
+Close #ImportDataFileNumber%
+Exit Sub
+End If
+
+' Get k-ratio data from Fanal k-ratio file
+Call Penepma12LoadPlotData
+If ierror Then
+Close #ImportDataFileNumber%
+Exit Sub
+End If
+
+' Save k-ratio to array
+kratios!(n%) = yktotal#(1)   ' from bulk Fanal calculation (store in k-ratio percent)
+
+' Check for Pause button
+Do Until Not RealTimePauseAutomation
+DoEvents
+Sleep 200
+Loop
+
+' Check for cancel
+Call IOStatusAuto(msg$)
+If icancelauto Then
+Call IOStatusAuto(vbNullString)
+Close #ImportDataFileNumber%
+ierror = True
+Exit Sub
+End If
+
+' Next binary composition
+Next n%
+
+' Store calculated binary alpha k-ratios to matrix.mdb file
+If ibin% = 1 Then
+If Not BinarySwapped Then
+Call Penepma12MatrixUpdateMDB(Int(1), TOA!, eO!, isym%(1), iray%(1), isym%(2), kratios!())
+If ierror Then Exit Sub
+
+Else
+Call Penepma12MatrixUpdateMDB(Int(2), TOA!, eO!, isym%(1), iray%(1), isym%(2), kratios!())
+If ierror Then Exit Sub
+End If
+
+Else
+If Not BinarySwapped Then
+Call Penepma12MatrixUpdateMDB(Int(1), TOA!, eO!, isym%(2), iray%(2), isym%(1), kratios!())
+If ierror Then Exit Sub
+
+Else
+Call Penepma12MatrixUpdateMDB(Int(2), TOA!, eO!, isym%(2), iray%(2), isym%(1), kratios!())
+If ierror Then Exit Sub
+End If
+End If
+
+' Next element of binary
+End If
+Next ibin%
+
+' Next import line from file
+Loop
+
+' Close files
+Close #ImportDataFileNumber%
+
+Call IOStatusAuto(vbNullString)
+msg$ = "Binary Fanal alpha calculations completed on file " & ImportDataFile$ & ", and k-ratios saved to matrix.mdb file."
+MsgBox msg$, vbOKOnly + vbInformation, "Penepma12ExtractBinary"
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+Penepma12ExtractBinaryError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma12ExtractBinaryError"
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+
+Penepma12ExtractBinaryBothByDifference:
+Close #ImportDataFileNumber%
+msg$ = "Both elements are by difference on line " & Str$(BinaryLineCount&) & " in " & ImportDataFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12ExtractBinary"
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+
+Penepma12ExtractBinaryOutofLimits:
+Close #ImportDataFileNumber%
+msg$ = "Bad data on line " & Str$(BinaryLineCount&) & " in " & ImportDataFile$ & " (file format may be wrong)."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12ExtractBinary"
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+
+Penepma12ExtractBinaryNoConcData:
+Close #ImportDataFileNumber%
+msg$ = "No Conc data on line " & Str$(BinaryLineCount&) & " in " & ImportDataFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12ExtractBinary"
+Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+
+End Sub
