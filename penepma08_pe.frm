@@ -22,6 +22,16 @@ Begin VB.Form FormPENEPMA08_PE
    ScaleHeight     =   12480
    ScaleWidth      =   13950
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton CommandPlot 
+      Caption         =   "Plot Spectra"
+      Height          =   495
+      Left            =   12120
+      TabIndex        =   103
+      TabStop         =   0   'False
+      ToolTipText     =   "Plot a spectrum from a previous calculation"
+      Top             =   5160
+      Width           =   1695
+   End
    Begin Pesgo32fLib.Pesgo Pesgo1 
       Height          =   3615
       Left            =   120
@@ -93,6 +103,7 @@ Begin VB.Form FormPENEPMA08_PE
       Left            =   12120
       Style           =   1  'Graphical
       TabIndex        =   84
+      TabStop         =   0   'False
       ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
       Top             =   3120
       Width           =   1695
@@ -119,13 +130,13 @@ Begin VB.Form FormPENEPMA08_PE
    Begin VB.CommandButton CommandBatch 
       BackColor       =   &H0080FFFF&
       Caption         =   "Batch Mode"
-      Height          =   735
+      Height          =   495
       Left            =   12120
       Style           =   1  'Graphical
       TabIndex        =   76
       TabStop         =   0   'False
       ToolTipText     =   "Run a number of PENEPMA simulations in ""batch"" mode"
-      Top             =   4920
+      Top             =   4560
       Width           =   1695
    End
    Begin VB.CheckBox CheckUseLogScale 
@@ -295,7 +306,7 @@ Begin VB.Form FormPENEPMA08_PE
       BackColor       =   &H0080FFFF&
       Caption         =   "Run Input File In PENEPMA"
       Default         =   -1  'True
-      Height          =   975
+      Height          =   615
       Left            =   12120
       Style           =   1  'Graphical
       TabIndex        =   47
@@ -600,6 +611,7 @@ Begin VB.Form FormPENEPMA08_PE
          Height          =   375
          Left            =   120
          TabIndex        =   83
+         TabStop         =   0   'False
          ToolTipText     =   "Browse to an existing Penepma input file and modify and save again if desired"
          Top             =   7320
          Width           =   975
@@ -1789,6 +1801,12 @@ If Not DebugMode Then On Error Resume Next
 Dim taskID As Long
 ChDrive PENEPMA_Path$
 taskID& = Shell("cmd.exe /k cd " & VbDquote$ & PENEPMA_Path$ & VbDquote$, vbNormalFocus)
+End Sub
+
+Private Sub CommandPlot_Click()
+If Not DebugMode Then On Error Resume Next
+Call Penepma08PlotSpectra
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandRunPENEPMA_Click()

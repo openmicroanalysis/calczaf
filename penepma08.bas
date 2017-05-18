@@ -4799,3 +4799,78 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub Penepma08PlotSpectra()
+' Plot a selected Penepma calculation
+
+ierror = False
+On Error GoTo Penepma08PlotSpectraError
+
+Dim tflag As Boolean
+Dim tpath As String, tstring As String, tfolder As String, tfilename As String
+
+' Ask user for Penepma.dat
+tflag = False
+tpath$ = PENEPMA_Path$
+tstring$ = "Browse Folder For Penepma Files"
+tfolder$ = IOBrowseForFolderByPath(tflag, tpath$, tstring$, FormPENEPMA08_PE)
+If ierror Then Exit Sub
+If Trim$(tfolder$) = vbNullString Then Exit Sub
+
+' Load filename and delete dump file
+PENEPMA_Path$ = tfolder$
+
+' Load Penepma output (display) files
+PENEPMA_DAT_File$ = PENEPMA_Path$ & "\PENEPMA.DAT"
+PENEPMA_SPEC_File$ = PENEPMA_Path$ & "\PE-SPECT-01.DAT"
+PENEPMA_CHAR_File$ = PENEPMA_Path$ & "\PE-CHARACT-01.DAT"
+
+If Penepma08CheckPenepmaVersion%() = 8 Then
+PENEPMA_EL_TRANS_File$ = PENEPMA_Path$ & "\PE-ENERGY-EL-TRANS.DAT"
+Else
+PENEPMA_EL_TRANS_File$ = PENEPMA_Path$ & "\PE-ENERGY-EL-UP.DAT"
+End If
+
+PENEPMA_CONVOLG_File$ = PENEPMA_Path$ & "\CHSPECT.DAT"
+
+' Check for existing file
+If Dir$(PENEPMA_DAT_File$) = vbNullString Then GoTo Penepma08PlotSpectraNotFound
+
+' Clear graph
+icancelauto = False
+Call Penepma08GraphClear
+If ierror Then Exit Sub
+
+Screen.MousePointer = vbHourglass
+Call Penepma08LoadPenepmaDAT(FormPENEPMA08_PE)
+Screen.MousePointer = vbDefault
+If ierror Then Exit Sub
+Call Penepma08GraphUpdate(GraphDisplayOption%)
+If ierror Then Exit Sub
+
+' Find .in file
+tfilename$ = Dir$(PENEPMA_Path$ & "\*.in")      ' get first file (only one per folder)
+
+' Load controls
+Call Penepma08LoadInputFile(PENEPMA_Path$ & "\" & tfilename$, FormPENEPMA08_PE)
+If ierror Then Exit Sub
+
+Exit Sub
+
+' Errors
+Penepma08PlotSpectraError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08PlotSpectra"
+ierror = True
+Exit Sub
+
+Penepma08PlotSpectraNotFound:
+Screen.MousePointer = vbDefault
+msg$ = "The Penepma.dat file was not found in folder " & tfolder$
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08PlotSpectra"
+ierror = True
+Exit Sub
+
+End Sub
+
+

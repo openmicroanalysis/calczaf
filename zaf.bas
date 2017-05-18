@@ -1950,7 +1950,7 @@ Next i%
 ' Calculate element by difference
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) = 13 Then
-'If zaf.ksum! < 1# Then              ' commented out to allow for "negative" element (e.g., hydrogen) by difference if very small concentration near 100%
+If zaf.ksum! < 1# Or zaf.ksum! >= 1# And Not ForceNegativeKratiosToZeroFlag Then  ' to allow for "negative" element (e.g., hydrogen) by difference if very small concentration near 100%
 r1!(i%) = 1# - zaf.ksum!
 If zaf.il%(zaf.in0%) = 0 Then
 r1!(i%) = r1!(i%) / (1# + zaf.p1!(i%))
@@ -1958,7 +1958,7 @@ r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
 End If
 zaf.krat!(i%) = r1!(i%)
 zaf.ksum! = 1#
-'End If
+End If
 End If
 Next i%
 
