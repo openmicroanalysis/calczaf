@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/18/17	Add output of standard descriptions in Report feature (von der Handt).
+v. 11.9.0
+		Add analog signal images to clone project feature in CalcImage.
+
 05/17/17	Move CalcImage Help menu to log window. See Window menu for log window access.
 
 		Add flag to zero negative k-ratios to element by difference calculation (Chouinard).

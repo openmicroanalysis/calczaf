@@ -369,14 +369,13 @@ End Function
 Function MiscIsInstrumentStageStored(InstType As String) As Boolean
 ' Return true if instrument stage is passed type based on "InterfaceTypeStored"
 ' InstType$ = "JEOL"
-' InstType$ = "ARL"
 ' InstType$ = "CAMECA"
 
 ierror = False
 On Error GoTo MiscIsInstrumentStageStoredError
 
 ' Check for valid instrument types
-If InstType$ <> "JEOL" And InstType$ <> "ARL" And InstType$ <> "CAMECA" Then GoTo MiscIsInstrumentStageStoredInvalidInstType
+If InstType$ <> "JEOL" And InstType$ <> "CAMECA" Then GoTo MiscIsInstrumentStageStoredInvalidInstType
 
 ' Assume no match
 MiscIsInstrumentStageStored = False

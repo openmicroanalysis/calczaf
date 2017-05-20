@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form FormPENEPMA08_PE 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Create PENEPMA Material and Input Files"
@@ -23,9 +23,11 @@ Begin VB.Form FormPENEPMA08_PE
    ScaleWidth      =   13950
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton CommandPlot 
-      Caption         =   "Plot Spectra"
+      BackColor       =   &H0080FFFF&
+      Caption         =   "Plot Spectrum"
       Height          =   495
       Left            =   12120
+      Style           =   1  'Graphical
       TabIndex        =   103
       TabStop         =   0   'False
       ToolTipText     =   "Plot a spectrum from a previous calculation"

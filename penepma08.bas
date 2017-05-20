@@ -997,6 +997,7 @@ If Val(tForm.TextBeamPosition(0).Text) <> 0# And InStr(tForm.TextGeometryFile.Te
 msg$ = "When using a hemisphere geometry file (*sphere.geo), be sure the X beam position is properly specified."
 msg$ = msg$ & vbCrLf & vbCrLf & "The beam position is generally in the center of the hemisphere when both the X and Y Beam Position parameters are zero."
 MsgBox msg$, vbOKOnly + vbInformation, "Penepma08BrowseGeometryFile"
+FormPENEPMA08_PE.TextBeamPosition(0).SetFocus
 End If
 initialized = True
 End If
@@ -4806,14 +4807,14 @@ Sub Penepma08PlotSpectra()
 ierror = False
 On Error GoTo Penepma08PlotSpectraError
 
-Dim tflag As Boolean
+Dim tFlag As Boolean
 Dim tpath As String, tstring As String, tfolder As String, tfilename As String
 
 ' Ask user for Penepma.dat
-tflag = False
+tFlag = False
 tpath$ = PENEPMA_Path$
 tstring$ = "Browse Folder For Penepma Files"
-tfolder$ = IOBrowseForFolderByPath(tflag, tpath$, tstring$, FormPENEPMA08_PE)
+tfolder$ = IOBrowseForFolderByPath(tFlag, tpath$, tstring$, FormPENEPMA08_PE)
 If ierror Then Exit Sub
 If Trim$(tfolder$) = vbNullString Then Exit Sub
 
@@ -4854,6 +4855,15 @@ tfilename$ = Dir$(PENEPMA_Path$ & "\*.in")      ' get first file (only one per f
 ' Load controls
 Call Penepma08LoadInputFile(PENEPMA_Path$ & "\" & tfilename$, FormPENEPMA08_PE)
 If ierror Then Exit Sub
+
+' Load input file into text field
+FormPENEPMA08_PE.TextInputFile = MiscGetFileNameOnly$(tfilename$)
+
+' Load geo file
+tfilename$ = Dir$(PENEPMA_Path$ & "\*.geo")      ' get first file (only one per folder)
+
+' Load geo file into text field
+FormPENEPMA08_PE.TextGeometryFile = MiscGetFileNameOnly$(tfilename$)
 
 Exit Sub
 
