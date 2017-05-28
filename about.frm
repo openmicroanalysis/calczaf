@@ -82,7 +82,7 @@ Begin VB.Form FormABOUT
       Begin VB.Image Image1 
          Height          =   960
          Left            =   240
-         Picture         =   "About.frx":0000
+         Picture         =   "ABOUT.frx":0000
          Top             =   240
          Width           =   960
       End
@@ -128,7 +128,7 @@ Begin VB.Form FormABOUT
       ForeColor       =   &H00FF0000&
       Height          =   255
       Left            =   1680
-      MouseIcon       =   "About.frx":0701
+      MouseIcon       =   "ABOUT.frx":0701
       MousePointer    =   99  'Custom
       TabIndex        =   3
       ToolTipText     =   "Click here to visit the Probe Software web site"
@@ -158,26 +158,25 @@ Private Sub Form_Activate()
 If Not DebugMode Then On Error Resume Next
 Dim tmsg As String
 
-If UCase$(app.EXEName) = UCase$("Probewin") Then
+If UCase$(App.EXEName) = UCase$("Probewin") Then
 tmsg$ = "Probe for EPMA v. " & ProgramVersionString$ & vbCrLf
 Else
-tmsg$ = "Program " & app.EXEName & " v. " & ProgramVersionString$ & vbCrLf
+tmsg$ = "Program " & App.EXEName & " v. " & ProgramVersionString$ & vbCrLf
 End If
 
-tmsg$ = tmsg$ & "For Windows 2000/XP/Vista/Win7/Win8/Win10" & vbCrLf
+tmsg$ = tmsg$ & "For Windows XP/Vista/Win7/Win8/Win10" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "Written by John J. Donovan, Probe Software, Inc." & vbCrLf
-tmsg$ = tmsg$ & "(c) Copyright 1995-2016, All Rights Reserved" & vbCrLf & vbCrLf
+tmsg$ = tmsg$ & "(c) Copyright 1995-2017, All Rights Reserved" & vbCrLf & vbCrLf
 tmsg$ = tmsg$ & "Special thanks to Paul Carpenter for his tireless testing and many helpful discussions"
 FormABOUT.LabelAboutTitle.Caption = tmsg$
 
-tmsg$ = "Many thanks to our excellent and hard working beta testing team:" & vbCrLf
-tmsg$ = tmsg$ & "Dave Adams and Philippe Pinard (JEOL 8530), Eric Hellebrand (JEOL 8500), Paul Carpenter and Ma Chi (JEOL 8200), "
-tmsg$ = tmsg$ & "Heather Lowers (JEOL 8900), Angus Netting (Cameca SXFIVE), Gareth Seward and Karsten Goemann (Cameca SX100), "
-tmsg$ = tmsg$ & "John Fournelle (Cameca SX50/51) and Dan Kremser (JEOL 8600/733)"
+tmsg$ = "Many thanks to our excellent and hard working beta testing team:" & vbCrLf & vbCrLf
+tmsg$ = tmsg$ & "Anette von der Handt and Karsten Goemann (JEOL 8530), Owen Neill (JEOL 8500), Paul Carpenter (JEOL 8200), "
+tmsg$ = tmsg$ & "Heather Lowers (JEOL 8900), Angus Netting (Cameca SXFIVE), Gareth Seward and Karsten Goemann (Cameca SX100)"
 FormABOUT.LabelAboutBeta.Caption = tmsg$
 
-tmsg$ = "Thanks to Paul Carpenter, Don Snyder and Mark Rivers for their helpful advice and" & vbCrLf
+tmsg$ = vbCrLf & "Thanks to Paul Carpenter, Don Snyder and Mark Rivers for their helpful advice and" & vbCrLf
 tmsg$ = tmsg$ & "Thanks also to Tracy Tingle and Dan Kremser for beta testing and suggestions" & vbCrLf
 tmsg$ = tmsg$ & "Special thanks to John Armstrong for the CITZAF quantitative routines and" & vbCrLf
 tmsg$ = tmsg$ & "John Friday and Brian Gaynor for help with the hardware interfacing and" & vbCrLf
@@ -199,7 +198,7 @@ tmsg$ = tmsg$ & "For technical support and sales, please contact John Donovan at
 tmsg$ = tmsg$ & "TEL: (541) 343-3400  or  URL: www.probesoftware.com, donovan@probesoftware.com"
 FormABOUT.LabelAbout.Caption = tmsg$
 
-tmsg$ = "For additional support, consultation and/or training please contact our team of Microprobe Specialists:" & vbCrLf
+tmsg$ = vbCrLf & "For additional support, consultation and/or training please contact our team of Microprobe Specialists:" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "Paul Carpenter, 314 602-9697, carpenter@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Gareth Seward, 805 637-7265, seward@probesoftware.com" & vbCrLf

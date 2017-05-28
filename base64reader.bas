@@ -387,3 +387,40 @@ Exit Sub
 
 End Sub
 
+Sub Base64ReaderSetINIString(lpFileName As String, lpAppName As String, lpKeyName As String, lpString As String)
+' Writes a single INI string
+
+ierror = False
+On Error GoTo Base64ReaderSetINIStringError
+
+Dim valid As Long
+
+' Check for existing INI file
+If Dir$(lpFileName$) = vbNullString Then GoTo Base64ReaderSetINIStringMissingINI
+
+' Get value
+valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, lpString$, lpFileName$)
+If valid& = 0 Then GoTo Base64ReaderSetINIStringWriteError
+
+Exit Sub
+
+' Errors
+Base64ReaderSetINIStringError:
+MsgBox Error$, vbOKOnly + vbCritical, "Base64ReaderSetINIString"
+ierror = True
+Exit Sub
+
+Base64ReaderSetINIStringMissingINI:
+msg$ = "Unable to open file " & lpFileName$
+MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderSetINIString"
+ierror = True
+Exit Sub
+
+Base64ReaderSetINIStringWriteError:
+msg$ = "Unable to write parameter (" & lpKeyName$ & ") to file " & lpFileName$
+MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderSetINIString"
+ierror = True
+Exit Sub
+
+End Sub
+

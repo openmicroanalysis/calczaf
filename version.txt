@@ -2,9 +2,19 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/27/17	Add CalcImage log window menu for converting single pixel scans to two pixels for Surfer output.
+
+		Start working on new app for JEOL/Cameca x-ray map conversion (will be available from Probe Image File menu)
+
+05/25/17	Disable and hide driver logging mode menu (still activated from Probein.ini file).
+
+		Make sure analog signal images are copied when converting replicate PrbImg files to TDI PrbImg files.
+
 05/18/17	Add output of standard descriptions in Report feature (von der Handt).
 v. 11.9.0
 		Add analog signal images to clone project feature in CalcImage.
+		
+		Add Probe for EPMA project to Bitbucket team repository.
 
 05/17/17	Move CalcImage Help menu to log window. See Window menu for log window access.
 
