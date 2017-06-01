@@ -150,7 +150,7 @@ If Trim$(iofilename$) = vbNullString Then
 If ProbeDataFile$ <> vbNullString Then
 iofilename$ = MiscGetFileNameNoExtension$(ProbeDataFile$) & ".out"
 Else
-iofilename$ = UserDataDirectory$ & "\" & app.EXEName$ & ".out"
+iofilename$ = UserDataDirectory$ & "\" & App.EXEName$ & ".out"
 End If
 End If
 If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.out"
@@ -508,6 +508,32 @@ Else
 FormMAIN.CMDialog1.DialogTitle = "Open File To Input Comma Delimited Data From"
 End If
 
+' CND JEOL Mapping files
+ElseIf UCase$(ioextension$) = UCase$("CND") Then
+FormMAIN.CMDialog1.Filter = "CND JEOL Mapping Data (*.CND)|*.CND|All Files (*.*)|*.*|"
+If mode% < 2 Then
+If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.cnd"
+End If
+
+If mode% < 2 Then
+FormMAIN.CMDialog1.DialogTitle = "Open File To Output JEOL Mapping Data To"
+Else
+FormMAIN.CMDialog1.DialogTitle = "Open File To Input JEOL Mapping Data From"
+End If
+
+' ImpDAT Cameca Mapping files
+ElseIf UCase$(ioextension$) = UCase$("ImpDAT") Then
+FormMAIN.CMDialog1.Filter = "ImpDAT Cameca Mapping Data (*.ImpDAT)|*.ImpDAT|All Files (*.*)|*.*|"
+If mode% < 2 Then
+If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.ImpDAT"
+End If
+
+If mode% < 2 Then
+FormMAIN.CMDialog1.DialogTitle = "Open File To Output Cameca Mapping Data To"
+Else
+FormMAIN.CMDialog1.DialogTitle = "Open File To Input Cameca Mapping Data From"
+End If
+
 End If
 
 ' Specify default filter
@@ -527,7 +553,7 @@ FormMAIN.CMDialog1.flags = FormMAIN.CMDialog1.flags Or OFN_EXPLORER Or OFN_ENABL
 
 ' Specify initial directory
 FormMAIN.CMDialog1.InitDir = UserDataDirectory$
-If UCase$(ioextension$) = UCase$("DAT") And MiscStringsAreSame(app.EXEName, "CalcZAF") Then FormMAIN.CMDialog1.InitDir = CalcZAFDATFileDirectory$
+If UCase$(ioextension$) = UCase$("DAT") And MiscStringsAreSame(App.EXEName, "CalcZAF") Then FormMAIN.CMDialog1.InitDir = CalcZAFDATFileDirectory$
 If UCase$(ioextension$) = UCase$("POS") Then FormMAIN.CMDialog1.InitDir = StandardPOSFileDirectory$
 If UCase$(ioextension$) = UCase$("LEP") Then FormMAIN.CMDialog1.InitDir = StandardPOSFileDirectory$
 If UCase$(ioextension$) = UCase$("DCD") Then FormMAIN.CMDialog1.InitDir = StandardPOSFileDirectory$
@@ -543,13 +569,15 @@ If UCase$(ioextension$) = UCase$("IMG") Then FormMAIN.CMDialog1.InitDir = UserDa
 If UCase$(ioextension$) = UCase$("CLR") Then FormMAIN.CMDialog1.InitDir = SurferAppDirectory$
 If UCase$(ioextension$) = UCase$("PrbAcq") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
 If UCase$(ioextension$) = UCase$("CSV") Then FormMAIN.CMDialog1.InitDir = UserDataDirectory$
+If UCase$(ioextension$) = UCase$("CND") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
+If UCase$(ioextension$) = UCase$("ImpDAT") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
 
 ' Specify default extension
 FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.Filename = iofilename$
+FormMAIN.CMDialog1.filename = iofilename$
 
 If mode% < 2 Then
 'FormMAIN.CMDialog1.ShowSave
@@ -607,7 +635,7 @@ Dim lpKeyName As String
 Dim lpFileName As String
 
 ' In case loading FormMAIN (before Activate event for InitFiles is called)
-If ProgramPath$ = vbNullString Then ProgramPath$ = app.Path & "\"
+If ProgramPath$ = vbNullString Then ProgramPath$ = App.Path & "\"
 lpFileName$ = ProgramPath$ & "\PROBEHLP.INI"
 
 ' Check for existing PROBEHLP.INI   ' just return if not found
@@ -615,7 +643,7 @@ IOGetHelpContextID% = 1 ' default is Help Contents
 If Dir$(lpFileName$) = vbNullString Then Exit Function
 
 ' Get FormMAIN as default first in case no specific form entry exists
-lpAppName$ = app.EXEName
+lpAppName$ = App.EXEName
 lpKeyName$ = "FormMAIN"
 nDefault% = 1
 valid% = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault%, lpFileName$)
@@ -702,9 +730,9 @@ FormMAIN.CMDialog1.DefaultExt = "MDB"
 
 ' Specify default if not blank
 If mdbfilename$ <> vbNullString Then
-FormMAIN.CMDialog1.Filename = mdbfilename$
+FormMAIN.CMDialog1.filename = mdbfilename$
 Else
-FormMAIN.CMDialog1.Filename = "*.mdb"
+FormMAIN.CMDialog1.filename = "*.mdb"
 End If
 
 ' Get COMMON DIALOG Filename
@@ -901,7 +929,7 @@ FormMAIN.CMDialog1.ShowPrinter
 ' Print text
 Screen.MousePointer = vbHourglass
 'Printer.Print vbNullString
-FormMAIN.TextLog.SelPrint FormMAIN.CMDialog1.hdc
+FormMAIN.TextLog.SelPrint FormMAIN.CMDialog1.hDC
 'FormMAIN.TextLog.SelPrint FormMAIN.CMDialog1.hDC, SelPrintStartDocFlag% ' VB6 only
 Printer.EndDoc
 Screen.MousePointer = vbDefault
@@ -1480,7 +1508,7 @@ Const cdl_MaxBuffer = 512
   With cdl_OpenFileName
     .hwndOwner = tFormhWnd
     
-    .hInstance = app.hInstance
+    .hInstance = App.hInstance
     .lpstrTitle = tTitle$
     .lpstrInitialDir = tInitDir$
     .flags = tFlags&
@@ -1601,10 +1629,10 @@ n% = InStr(aURL$, "/smf/")
 If n% > 0 Then
 sDVD$ = Left$(sDVD$, 2) & "/"   ' replace backslash with forward slash
 If aURL$ <> "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index.html" Then
-If InStr(UCase$(app.EXEName), UCase$("CalcZAF")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index8b25.html?board=7.0"
-If InStr(UCase$(app.EXEName), UCase$("Standard")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index8b25.html?board=7.0"
-If InStr(UCase$(app.EXEName), UCase$("Probewin")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index9c2d.html?board=2.0"
-If InStr(UCase$(app.EXEName), UCase$("CalcImage")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/indexfc47.html?board=4.0"
+If InStr(UCase$(App.EXEName), UCase$("CalcZAF")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index8b25.html?board=7.0"
+If InStr(UCase$(App.EXEName), UCase$("Standard")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index8b25.html?board=7.0"
+If InStr(UCase$(App.EXEName), UCase$("Probewin")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index9c2d.html?board=2.0"
+If InStr(UCase$(App.EXEName), UCase$("CalcImage")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/indexfc47.html?board=4.0"
 End If
 End If
 
