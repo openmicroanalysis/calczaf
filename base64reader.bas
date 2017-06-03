@@ -504,7 +504,7 @@ ReDim barray(0 To ImageWidth% * 4 - 1) As Byte
 ' Write data scan lines one at a time
 For j% = 1 To ImageHeight%
 
-' Convert single precision floats to bytes (note that Y dimension needs to be inverted!)
+' Convert single precision floats to bytes
 Call Base64ReaderConvertLine2(barray(), ImageWidth%, ImageHeight% - (j% - 1), sarray!())
 If ierror Then
 Screen.MousePointer = vbDefault
@@ -537,4 +537,3 @@ ierror = True
 Exit Sub
 
 End Sub
-

@@ -433,6 +433,8 @@ On Error GoTo Penepma12SaveError
 Dim ip As Integer, ipp As Integer
 Dim esym As String, xsym As String
 
+Static userwarned As Boolean
+
 ' Save selected materials (if selected)
 If FormPENEPMA12.ListAvailableStandardsA.ListIndex >= 0 And FormPENEPMA12.ListAvailableStandardsA.ListCount >= 1 Then
 MaterialSelectedA% = FormPENEPMA12.ListAvailableStandardsA.ItemData(FormPENEPMA12.ListAvailableStandardsA.ListIndex)
@@ -573,6 +575,11 @@ ierror = True
 Exit Sub
 Else
 MaterialMeasuredEnergy# = Val(FormPENEPMA12.TextBeamEnergy.Text)
+If MaterialMeasuredEnergy# > 50 And Not userwarned Then
+msg$ = "Beam Energy is beyond default PAR file modeling range (5 to 50 keV). Be aware that extrapolation outside this range may result in decreased accuracy."
+MsgBox msg$, vbOKOnly + vbInformation, "Penepma12Save"
+userwarned = True
+End If
 End If
 
 If Val(FormPENEPMA12.TextSimulationTime.Text) < 100# Or Val(FormPENEPMA12.TextSimulationTime.Text) > SECPERDAY# Then
