@@ -7663,7 +7663,7 @@ If kcmp!(2, n%) = 0# Then kcmp!(2, n%) = 1# - kcmp!(1, n%)
 PENEPMA_Sample(1).ElmPercents!(2) = 100# * kcmp!(2, n%)
 
 ' Create material (and PAR) file name
-binaryname$ = Symup$(ksym%(1, n%)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "_" & Symup$(ksym%(2, n%)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
+binaryname$ = Trim$(Symup$(ksym%(1, n%))) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "_" & Trim$(Symup$(ksym%(2, n%))) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
 pfilename$ = PENEPMA_Root$ & "\Penfluor\" & binaryname$ & ".par"
 
 If Not CalculateDoNotOverwritePAR Or (CalculateDoNotOverwritePAR And Dir$(pfilename$) = vbNullString) Then
@@ -7704,7 +7704,7 @@ PENEPMA_Sample(1).AtomicNums%(1) = ksym%(1, n%)
 PENEPMA_Sample(1).AtomicNums%(2) = ksym%(2, n%)
 
 ' Create material (and PAR) file name
-binaryname$ = Symup$(ksym%(1, n%)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "_" & Symup$(ksym%(2, n%)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
+binaryname$ = Trim$(Symup$(ksym%(1, n%))) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "_" & Trim$(Symup$(ksym%(2, n%))) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
 MaterialFileA$ = binaryname$ & ".mat"
 
 PENEPMA_Sample(1).Name$ = binaryname$
@@ -7850,7 +7850,7 @@ PENEPMA_Sample(1).ElmPercents!(2) = 100# * kcmp!(1, n%)
 PENEPMA_Sample(1).ElmPercents!(2) = 100# * kcmp!(2, n%)
 
 ' Create material (and PAR) file name
-binaryname$ = Symup$(ksym%(1, n%)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "_" & Symup$(ksym%(2, n%)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
+binaryname$ = Trim$(Symup$(ksym%(1, n%))) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "_" & Trim$(Symup$(ksym%(2, n%))) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
 
 ParameterFileA$ = binaryname$ & ".par"
 ParameterFileB$ = binaryname$ & ".par"                          ' same as A for matrix calculations
@@ -9453,10 +9453,10 @@ PENEPMA_Sample(1).ElmPercents!(2) = 100# - BinaryRanges!(n%)
 
 ' Create material (and PAR) file name
 If isym%(1) < isym%(2) Then
-binaryname$ = Symup$(isym%(1)) & "-" & Symup$(isym%(2)) & "_" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
+binaryname$ = Trim$(Symup$(isym%(1))) & "-" & Trim$(Symup$(isym%(2))) & "_" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
 BinarySwapped = False
 Else
-binaryname$ = Symup$(isym%(2)) & "-" & Symup$(isym%(1)) & "_" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
+binaryname$ = Trim$(Symup$(isym%(2))) & "-" & Trim$(Symup$(isym%(1))) & "_" & Format$(PENEPMA_Sample(1).ElmPercents!(1)) & "-" & Format$(PENEPMA_Sample(1).ElmPercents!(2))
 BinarySwapped = True
 End If
 

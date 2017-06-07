@@ -107,7 +107,7 @@ ierror = True
 Exit Sub
 End If
 
-If UseBeamDriftCorrectionFlag And Not sample(1).CombinedConditionsFlag Then
+If UseBeamDriftCorrectionFlag Then
 msg$ = vbCrLf & "Off-Peak Corrected or MAN On-Peak X-ray Counts (cps/" & Format$(NominalBeam!) & FaradayCurrentUnits$ & ") (and Faraday/Absorbed Currents):"
 Else
 msg$ = vbCrLf & "Off-Peak Corrected or MAN On-Peak X-ray Counts (cps):"
