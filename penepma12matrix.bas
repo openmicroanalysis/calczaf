@@ -787,7 +787,7 @@ SQLQ$ = SQLQ$ & " EmittingElement = " & Format$(tEmitter%) & " AND EmittingXray 
 SQLQ$ = SQLQ$ & " MatrixElement = " & Format$(tMatrix%)
 Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
 
-' RecordCount should always be 1 if the binary exists in the database
+' RecordCount should be 1 if the binary exists in the database
 If MtDs.RecordCount > 0 Then
 MtDs.MoveLast
 End If

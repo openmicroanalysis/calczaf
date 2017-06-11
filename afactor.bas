@@ -561,7 +561,19 @@ zout%(m%) = AFactorTmpSample(1).AtomicNums%(ibin%)
 Next n%
 Next ibin%
 
-' Initialize calculations for ZAF or phi-rho-z calculations (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
+' If use Penepma k-ratios flag then load values for this binary (if found) (1 = do not use, 2 = use)
+If UsePenepmaKratiosFlag = 2 Then
+notfoundA = True
+notfoundB = True
+Call AFactorPenepmaReadMatrix(wout!(), rout!(), eout$(), xout$(), zout%(), notfoundA, notfoundB, AFactorTmpSample())
+If ierror Then Exit Sub
+If Not notfoundA And sample(1).Xrsyms$(k%) <> vbNullString Then PenepmaKratiosFlag(k%, l%) = True
+If Not notfoundB And sample(1).Xrsyms$(l%) <> vbNullString Then PenepmaKratiosFlag(l%, k%) = True
+End If
+
+' If Penepma k-ratios were not found, initialize calculations for ZAF or phi-rho-z calculations (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
+If UsePenepmaKratiosFlag = 1 Or (UsePenepmaKratiosFlag = 2 And (notfoundA And sample(1).Xrsyms$(k%) <> vbNullString) Or (notfoundB And sample(1).Xrsyms$(l%) <> vbNullString)) Then
+
 If CorrectionFlag% <> MAXCORRECTION% Then
 Call ZAFSetZAF(AFactorTmpSample())
 If ierror Then Exit Sub
@@ -573,32 +585,6 @@ End If
 ' Calculate array of intensities using ZAF or Phi-Rho-Z (zout() is the atomic number for alpha record)
 Call ZAFAFactor(wout!(), rout!(), eout$(), xout$(), zout%(), analysis, AFactorTmpSample())
 If ierror Then Exit Sub
-
-' Adjust if specified element is present
-If sample(1).Xrsyms$(l%) <> vbNullString Then
-AFactorTmpSample(1).LastElm% = 1    ' one absorber
-AFactorTmpSample(1).Elsyms$(1) = sample(1).Elsyms$(l%)
-AFactorTmpSample(1).Xrsyms$(1) = sample(1).Xrsyms$(l%)
-AFactorTmpSample(1).Elsyms$(2) = sample(1).Elsyms$(k%)
-AFactorTmpSample(1).Xrsyms$(2) = sample(1).Xrsyms$(k%)
-End If
-
-If sample(1).Xrsyms$(k%) <> vbNullString Then
-AFactorTmpSample(1).LastElm% = 1    ' one absorber
-AFactorTmpSample(1).Elsyms$(1) = sample(1).Elsyms$(k%)
-AFactorTmpSample(1).Xrsyms$(1) = sample(1).Xrsyms$(k%)
-AFactorTmpSample(1).Elsyms$(2) = sample(1).Elsyms$(l%)
-AFactorTmpSample(1).Xrsyms$(2) = sample(1).Xrsyms$(l%)
-End If
-
-' If use Penepma k-ratios flag then load values for this binary (if found) (1 = do not use, 2 = use)
-If UsePenepmaKratiosFlag = 2 Then
-notfoundA = True
-notfoundB = True
-Call AFactorPenepmaReadMatrix(wout!(), rout!(), eout$(), xout$(), zout%(), notfoundA, notfoundB, AFactorTmpSample())
-If ierror Then Exit Sub
-If Not notfoundA And sample(1).Xrsyms$(k%) <> vbNullString Then PenepmaKratiosFlag(k%, l%) = True
-If Not notfoundB And sample(1).Xrsyms$(l%) <> vbNullString Then PenepmaKratiosFlag(l%, k%) = True
 End If
 
 ' Calculate alpha factors, fit and load into alpha-factor look up tables
@@ -622,7 +608,6 @@ Call IOWriteLog$(astring$)
 
 For n% = 1 To MAXBINARY%
 m% = (n% - 1) * 2 + ibin%
-'If Not UsePenepmaKratiosLimitFlag Or (UsePenepmaKratiosLimitFlag And BinaryRanges!(n%) <= PenepmaKratiosLimitValue!) Then
 
 If ibin% = 1 Then
 astring$ = vbTab & MiscAutoFormat$(wout!(m%)) & vbTab & MiscAutoFormat$(rout!(m%)) & MiscAutoFormat$(AlphaYdata1!(n%))
@@ -631,7 +616,6 @@ astring$ = vbTab & MiscAutoFormat$(wout!(m%)) & vbTab & MiscAutoFormat$(rout!(m%
 End If
 Call IOWriteLog$(astring$)
 
-'End If
 Next n%
 
 End If

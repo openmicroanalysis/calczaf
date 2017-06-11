@@ -9393,6 +9393,12 @@ CalcZAFDATFileDirectory$ = CurDir$
 lastfilename$ = tfilename$
 ImportDataFile$ = lastfilename$
 
+' Set keV rounding flag to false for input file calculations
+Penepma12UseKeVRoundingFlag = False
+
+msg$ = "Setting keV rounding flag to false..."
+Call IOWriteLog(vbCrLf & msg$ & vbCrLf)
+
 ' Open input file
 Open ImportDataFile$ For Input As #ImportDataFileNumber%
 BinaryLineCount& = 0
