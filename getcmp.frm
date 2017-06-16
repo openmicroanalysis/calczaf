@@ -25,6 +25,49 @@ Begin VB.Form FormGETCMP
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   9705
    ScaleWidth      =   9840
+   Begin VB.CommandButton CommandEnterAtomFormula 
+      Appearance      =   0  'Flat
+      BackColor       =   &H0080FFFF&
+      Caption         =   "Enter Atom Formula Composition"
+      Height          =   375
+      Left            =   360
+      Style           =   1  'Graphical
+      TabIndex        =   21
+      TabStop         =   0   'False
+      ToolTipText     =   "Enter the standard composition as a formula (e.g., Fe2SiO4 or MgCaSi2O6)"
+      Top             =   6600
+      Width           =   4695
+   End
+   Begin VB.ComboBox ComboFormula 
+      Appearance      =   0  'Flat
+      Height          =   315
+      Left            =   4440
+      Style           =   2  'Dropdown List
+      TabIndex        =   47
+      TabStop         =   0   'False
+      ToolTipText     =   $"GETCMP.frx":0000
+      Top             =   7080
+      Width           =   735
+   End
+   Begin VB.TextBox TextFormula 
+      Height          =   285
+      Left            =   3000
+      TabIndex        =   46
+      TabStop         =   0   'False
+      ToolTipText     =   "Number of atoms for the formula basis"
+      Top             =   7080
+      Width           =   615
+   End
+   Begin VB.CheckBox CheckFormula 
+      Caption         =   "Calculate Formula Based On"
+      Height          =   255
+      Left            =   240
+      TabIndex        =   45
+      TabStop         =   0   'False
+      ToolTipText     =   "Perform a formula atom calculation"
+      Top             =   7080
+      Width           =   2775
+   End
    Begin VB.TextBox TextMaterialType 
       Height          =   285
       Left            =   240
@@ -147,19 +190,6 @@ Begin VB.Form FormGETCMP
       Top             =   7560
       Width           =   1455
    End
-   Begin VB.CommandButton CommandEnterAtomFormula 
-      Appearance      =   0  'Flat
-      BackColor       =   &H0080FFFF&
-      Caption         =   "Enter Atom Formula Composition"
-      Height          =   495
-      Left            =   360
-      Style           =   1  'Graphical
-      TabIndex        =   21
-      TabStop         =   0   'False
-      ToolTipText     =   "Enter the standard composition as a formula (e.g., Fe2SiO4 or MgCaSi2O6)"
-      Top             =   6840
-      Width           =   4575
-   End
    Begin VB.TextBox TextExcessOxygen 
       Height          =   285
       Left            =   8520
@@ -217,7 +247,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Enter Composition In"
       ClipControls    =   0   'False
       ForeColor       =   &H00FF0000&
-      Height          =   1095
+      Height          =   975
       Left            =   240
       TabIndex        =   10
       Top             =   5640
@@ -229,7 +259,7 @@ Begin VB.Form FormGETCMP
          TabIndex        =   15
          TabStop         =   0   'False
          ToolTipText     =   "Click this option to enter the standard composition in elemental weight percents"
-         Top             =   720
+         Top             =   600
          Width           =   1935
       End
       Begin VB.OptionButton OptionEnterOxide 
@@ -247,8 +277,8 @@ Begin VB.Form FormGETCMP
       Caption         =   "Display Composition As"
       ClipControls    =   0   'False
       ForeColor       =   &H00FF0000&
-      Height          =   1095
-      Left            =   2760
+      Height          =   975
+      Left            =   2880
       TabIndex        =   9
       Top             =   5640
       Width           =   2295
@@ -259,7 +289,7 @@ Begin VB.Form FormGETCMP
          TabIndex        =   12
          TabStop         =   0   'False
          ToolTipText     =   "Click this option to display the standard composition in elemental weight percents"
-         Top             =   720
+         Top             =   600
          Width           =   2055
       End
       Begin VB.OptionButton OptionDisplayAsOxide 
@@ -319,6 +349,26 @@ Begin VB.Form FormGETCMP
          Rows            =   73
          Cols            =   8
       End
+   End
+   Begin VB.Label Label11 
+      Alignment       =   2  'Center
+      Appearance      =   0  'Flat
+      Caption         =   "Atoms Of"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000008&
+      Height          =   255
+      Left            =   3600
+      TabIndex        =   48
+      Top             =   7080
+      Width           =   855
    End
    Begin VB.Label Label10 
       Alignment       =   2  'Center
@@ -513,6 +563,17 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
+Private Sub CheckFormula_Click()
+If Not DebugMode Then On Error Resume Next
+If FormGETCMP.CheckFormula.Value = vbChecked Then
+FormGETCMP.TextFormula.Enabled = True
+FormGETCMP.ComboFormula.Enabled = True
+Else
+FormGETCMP.TextFormula.Enabled = False
+FormGETCMP.ComboFormula.Enabled = False
+End If
+End Sub
+
 Private Sub CommandAddCR_Click()
 If Not DebugMode Then On Error Resume Next
 Call MiscAddCRToText(FormGETCMP.TextDescription)
@@ -660,6 +721,11 @@ Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
 Private Sub TextExcessOxygen_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub TextFormula_GotFocus()
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

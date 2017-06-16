@@ -12,6 +12,36 @@ Begin VB.Form FormSECONDARY
    ScaleHeight     =   9270
    ScaleWidth      =   13425
    StartUpPosition =   3  'Windows Default
+   Begin VB.PictureBox Picture3 
+      Height          =   735
+      Left            =   7440
+      ScaleHeight     =   675
+      ScaleWidth      =   795
+      TabIndex        =   52
+      Top             =   6000
+      Visible         =   0   'False
+      Width           =   855
+   End
+   Begin VB.PictureBox Picture1 
+      AutoRedraw      =   -1  'True
+      AutoSize        =   -1  'True
+      Height          =   735
+      Left            =   6000
+      ScaleHeight     =   675
+      ScaleWidth      =   795
+      TabIndex        =   51
+      Top             =   6000
+      Visible         =   0   'False
+      Width           =   855
+   End
+   Begin VB.CommandButton CommandPrintImage 
+      Caption         =   "Print Image"
+      Height          =   375
+      Left            =   4800
+      TabIndex        =   50
+      Top             =   8400
+      Width           =   2175
+   End
    Begin VB.CommandButton CommandHelp 
       BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
@@ -56,7 +86,7 @@ Begin VB.Form FormSECONDARY
    Begin VB.CommandButton CommandCopyToClipboard 
       Caption         =   "Copy To Clipboard"
       Height          =   375
-      Left            =   6000
+      Left            =   7200
       TabIndex        =   45
       ToolTipText     =   "Copy the above image (with graphics onjects) to the system clipboard"
       Top             =   8400
@@ -784,6 +814,13 @@ End Sub
 Private Sub CommandHelp_Click()
 If Not DebugMode Then On Error Resume Next
 Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=58.msg223#msg223")
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandPrintImage_Click()
+If Not DebugMode Then On Error Resume Next
+' Print image and graphical elements to printer
+Call SecondaryPrintImage(FormSECONDARY)
 If ierror Then Exit Sub
 End Sub
 

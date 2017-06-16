@@ -110,6 +110,40 @@ GetCmpTmpSample(1).SampleDensity! = Val(FormGETCMP.TextDensity.Text)
 ' Save material type (text string)
 GetCmpTmpSample(1).MaterialType$ = Trim$(FormGETCMP.TextMaterialType.Text)
 
+' New code to save formula options (06/15/2017)
+If FormGETCMP.ComboFormula.ListCount > 0 Then
+If FormGETCMP.ComboFormula.ListIndex > -1 Then
+If Val(FormGETCMP.TextFormula.Text) > 0# Then
+i% = FormGETCMP.ComboFormula.ListIndex     ' zero index indicates sum all cations
+GetCmpTmpSample(1).FormulaRatio! = Val(FormGETCMP.TextFormula.Text)
+
+' If element is greater than zero then it is a specific cation (no element indicates sum all cations)
+If i% > 0 And i% <= GetCmpTmpSample(1).LastChan% Then
+GetCmpTmpSample(1).FormulaElement$ = GetCmpTmpSample(1).Elsyms$(i%)
+End If
+
+End If
+End If
+End If
+
+If FormGETCMP.CheckFormula.Value = vbChecked Then
+GetCmpTmpSample(1).FormulaElementFlag% = True
+Else
+GetCmpTmpSample(1).FormulaElementFlag% = False
+End If
+
+' Check for no formula atoms
+If GetCmpTmpSample(1).FormulaElementFlag% And GetCmpTmpSample(1).FormulaRatio! = 0# Then GoTo GetCmpSaveNoFormulaAtoms
+
+' Warn user if formula option is checked but no atoms is specified
+'  (no element is ok since that indicates sum all cations)
+If FormGETCMP.CheckFormula.Value = vbChecked And GetCmpTmpSample(1).FormulaRatio! = 0# Then
+msg$ = "Formula option was selected, but no formula atoms were specified"
+MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSave"
+ierror = True
+Exit Sub
+End If
+
 ' Load the element, xray, cation, oxygen and wtpercents lists into the GetCmpOldSample array to remove possible blank spaces
 Call InitSample(GetCmpOldSample())
 If ierror Then Exit Sub
@@ -154,6 +188,10 @@ GetCmpOldSample(1).OxideOrElemental% = GetCmpTmpSample(1).OxideOrElemental%
 GetCmpOldSample(1).SampleDensity! = GetCmpTmpSample(1).SampleDensity!
 
 GetCmpOldSample(1).MaterialType$ = GetCmpTmpSample(1).MaterialType$
+
+GetCmpOldSample(1).FormulaElementFlag = GetCmpTmpSample(1).FormulaElementFlag
+GetCmpOldSample(1).FormulaRatio! = GetCmpTmpSample(1).FormulaRatio!
+GetCmpOldSample(1).FormulaElement$ = GetCmpTmpSample(1).FormulaElement$
 
 GetCmpOldSample(1).takeoff! = GetCmpTmpSample(1).takeoff!
 GetCmpOldSample(1).kilovolts! = GetCmpTmpSample(1).kilovolts!
@@ -204,6 +242,12 @@ Exit Sub
 
 GetCmpSaveBadDensity:
 msg$ = "Standard number " & Str$(GetCmpTmpSample(1).number%) & " has an invalid density value (must be between 0 and " & Format$(MAXDENSITY#) & ")"
+MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSave"
+ierror = True
+Exit Sub
+
+GetCmpSaveNoFormulaAtoms:
+msg$ = "No formula atoms were specified. Either uncheck the Formula Element checkbox or specify the formula atoms."
 MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSave"
 ierror = True
 Exit Sub
@@ -803,7 +847,7 @@ Sub GetCmpLoad(sample() As TypeSample)
 ierror = False
 On Error GoTo GetCmpLoadError
 
-Dim i As Integer
+Dim i As Integer, ip As Integer
 
 ' Initialize standard calculation arrays
 Call InitStandards(GetCmpAnalysis)
@@ -851,6 +895,32 @@ FormGETCMP.TextName.Text = GetCmpTmpSample(1).Name$
 FormGETCMP.TextDensity.Text = MiscAutoFormat$(GetCmpTmpSample(1).SampleDensity!)
 
 FormGETCMP.TextMaterialType.Text = Trim$(GetCmpTmpSample(1).MaterialType$)
+
+' Load formula calculation controls (new code 06/15/2017)
+FormGETCMP.ComboFormula.Clear
+FormGETCMP.ComboFormula.AddItem "Sum"  ' zero index indicates sum all cations
+For i% = 1 To GetCmpTmpSample(1).LastChan%
+FormGETCMP.ComboFormula.AddItem GetCmpTmpSample(1).Elsyms$(i%)
+Next i%
+
+If GetCmpTmpSample(1).FormulaElementFlag% Then
+FormGETCMP.CheckFormula.Value = vbChecked
+FormGETCMP.TextFormula.Enabled = True
+FormGETCMP.ComboFormula.Enabled = True
+Else
+FormGETCMP.CheckFormula.Value = vbUnchecked
+FormGETCMP.TextFormula.Enabled = False
+FormGETCMP.ComboFormula.Enabled = False
+End If
+
+FormGETCMP.ComboFormula.ListIndex = 0  ' default to sum of cations
+If GetCmpTmpSample(1).FormulaRatio! > 0# Then FormGETCMP.TextFormula.Text = Format$(GetCmpTmpSample(1).FormulaRatio!)
+If GetCmpTmpSample(1).FormulaElement$ <> vbNullString Then
+ip% = IPOS1(GetCmpTmpSample(1).LastChan%, GetCmpTmpSample(1).FormulaElement$, GetCmpTmpSample(1).Elsyms$())
+If ip% > 0 Then
+FormGETCMP.ComboFormula.ListIndex = ip%
+End If
+End If
 
 ' Initialize the Enter As option buttons (if sample has elements)
 If GetCmpTmpSample(1).LastElm > 0 Then

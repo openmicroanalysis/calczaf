@@ -339,9 +339,11 @@ GetElmOldSample(1).ElmPercents!(GetElmOldSample(1).LastChan%) = GetElmTmpSample(
 GetElmOldSample(1).AtomicCharges!(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).AtomicCharges!(i%)
 3000:  Next n%
 
-' Check assignments
+' Check assignments if in Probe for EPMA
+If GetElmOldSample(1).Type% <> 1 Or (GetElmOldSample(1).Type% = 1 And GetElmOldSample(1).Set% > 0) Then
 Call GetElmCheckAssignments(GetElmOldSample())
 If ierror Then Exit Sub
+End If
 
 ' Reload the GetElmTmpSample
 GetElmTmpSample(1) = GetElmOldSample(1)

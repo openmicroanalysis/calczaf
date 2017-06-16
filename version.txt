@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/15/17	Add Print button in CalcZAF for print secondary fluorescence image and boundary line (Vasquez).
+v. 11.9.2
+		Add new fields for formula calculations in Standard (Carpenter).
+
 06/10/17	More work on ConvertToPrbImg.
 
 06/06/17	Add blanking values to GRD files in CalcImage for polygon maps. Work more on ConvertToPrbImg.

@@ -65,6 +65,12 @@ If ierror Then Exit Sub
 Call StanFormCalculateOxideAtomic(StanFormTmpSample())
 If ierror Then Exit Sub
 
+' Calculate formula (new code 06/15/2017)
+If StanFormTmpSample(1).FormulaElementFlag Then
+Call ConvertWeightToFormula(StanFormAnalysis, StanFormTmpSample())
+If ierror Then Exit Sub
+End If
+
 ' Subtract calculated from total oxygen
 StanFormOldSample(1) = StanFormTmpSample(1)
 Call StanFormCalculateExcessOxygen(StanFormAnalysis, StanFormOldSample(), StanFormTmpSample())
@@ -770,6 +776,15 @@ msg$ = msg$ & Format$(Format$(24# * AtPercents!(i%) / AtPercents!(sample(1).Oxyg
 Next i%
 Call IOWriteLog(msg$)
 End If
+End If
+
+' Display formula if specified (new code 06/15/2017)
+If sample(1).FormulaElementFlag Then
+msg$ = "FORM: "
+For i% = ii% To jj%
+msg$ = msg$ & Format$(Format$(analysis.Formulas!(i%), f83$), a80$)
+Next i%
+Call IOWriteLog(msg$)
 End If
 
 Loop

@@ -128,6 +128,10 @@ sample(1).Description$ = Trim$(vbNullString & StDt("Descriptions"))
 sample(1).DisplayAsOxideFlag% = StDt("DisplayAsOxideFlags")
 sample(1).SampleDensity! = StDt("Densities")
 sample(1).MaterialType$ = Trim$(vbNullString & StDt("MaterialTypes"))
+
+sample(1).FormulaElementFlag = StDt("FormulaFlags")
+sample(1).FormulaRatio! = Val(StDt("FormulaRatios"))
+sample(1).FormulaElement$ = Trim$(vbNullString & StDt("FormulaElements"))
 StDt.Close
 
 ' Get standard composition data for specified standard from standard database
@@ -632,7 +636,7 @@ Dim EDSFileNames As New Field
 Dim CLFileNames As New Field
 Dim CLKilovolts As New Field
 
-Dim StdKRatios As TableDef              ' measured k-ratios
+Dim StdKratios As TableDef              ' measured k-ratios
 
 Dim StdKRatiosTakeoffs As New Field
 Dim StdKRatiosKilovolts As New Field
@@ -643,6 +647,10 @@ Dim StdKRatiosStdAssigns As New Field
 Dim StdKRatiosFileName As New Field
 
 Dim StdMaterialTypes As New Field
+
+Dim StdFormulaFlags As New Field
+Dim StdFormulaRatios As New Field
+Dim StdFormulaElements As New Field
 
 ' Check for valid file name
 If Trim$(tfilename$) = vbNullString Then
@@ -819,10 +827,10 @@ End If
 ' Create StdKratios table
 If versionnumber! < 11.06 Then
 
-Set StdKRatios = StDb.CreateTableDef("NewTableDef")
-StdKRatios.Name = "StdKratios"
+Set StdKratios = StDb.CreateTableDef("NewTableDef")
+StdKratios.Name = "StdKratios"
 
-With StdKRatios
+With StdKratios
 .Fields.Append .CreateField("StdKRatiosToNumber", dbInteger)        ' points back to Standard table/Numbers field
 .Fields.Append .CreateField("StdKRatiosNumber", dbLong)             ' for k-ratio import set number (see StdKRatiosFileName field)
 
@@ -834,7 +842,7 @@ With StdKRatios
 .Fields.Append .CreateField("StdKRatiosStdAssigns", dbInteger)
 End With
 
-StDb.TableDefs.Append StdKRatios
+StDb.TableDefs.Append StdKratios
 
 updated = True
 End If
@@ -856,6 +864,36 @@ StdMaterialTypes.Type = dbText
 StdMaterialTypes.Size = DbTextNameLength%
 StdMaterialTypes.AllowZeroLength = True
 StDb.TableDefs("Standard").Fields.Append StdMaterialTypes
+
+updated = True
+End If
+
+' Add formula parameters to standard table
+If versionnumber! < 11.92 Then
+StdFormulaFlags.Name = "FormulaFlags"
+StdFormulaFlags.Type = dbBoolean
+StDb.TableDefs("Standard").Fields.Append StdFormulaFlags
+
+StdFormulaRatios.Name = "FormulaRatios"
+StdFormulaRatios.Type = dbSingle
+StDb.TableDefs("Standard").Fields.Append StdFormulaRatios
+
+StdFormulaElements.Name = "FormulaElements"
+StdFormulaElements.Type = dbText
+StdFormulaElements.Size = DbTextElementStringLength%
+StdFormulaElements.AllowZeroLength = True
+StDb.TableDefs("Standard").Fields.Append StdFormulaElements
+
+' Open standard table in standard database
+Set StRs = StDb.OpenRecordset("Standard", dbOpenTable)
+
+' Add default formula ratio fields to all records
+Do Until StRs.EOF
+StRs.Edit
+StRs("FormulaRatios") = 0#      ' use this for now as default
+StRs.Update
+StRs.MoveNext
+Loop
 
 updated = True
 End If
@@ -947,6 +985,11 @@ StDt("Descriptions") = Left$(sample(1).Description$, DbTextDescriptionLength%)
 StDt("DisplayAsOxideFlags") = sample(1).DisplayAsOxideFlag%
 StDt("Densities") = sample(1).SampleDensity!
 StDt("MaterialTypes") = Left$(sample(1).MaterialType$, DbTextNameLength%)
+
+StDt("FormulaFlags") = sample(1).FormulaElementFlag
+StDt("FormulaRatios") = sample(1).FormulaRatio!
+StDt("FormulaElements") = Left$(sample(1).FormulaElement$, DbTextElementStringLength%)
+
 StDt.Update
 StDt.Close
 

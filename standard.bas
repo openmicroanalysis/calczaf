@@ -190,6 +190,14 @@ Dim CLSpectraIndex As New Index  ' CL spectra index (to sample row numbers)
 Dim CLParameters As TableDef ' CL parameters
 Dim CLParametersIndex As New Index  ' CL parameters index (to sample row numbers)
 
+Dim StdKratios As New TableDef
+
+Dim StdMaterialTypes As New Field
+
+Dim StdFormulaFlags As New Field
+Dim StdFormulaRatios As New Field
+Dim StdFormulaElements As New Field
+
 ImportDataFile$ = vbNullString
 ExportDataFile$ = vbNullString
 
@@ -460,6 +468,48 @@ CLParametersIndex.Primary = False
 CLParameters.Indexes.Append CLParametersIndex
 
 StDb.TableDefs.Append CLParameters
+
+' Create StdKratios table (new code 06/15/2017)
+Set StdKratios = StDb.CreateTableDef("NewTableDef")
+StdKratios.Name = "StdKratios"
+
+With StdKratios
+.Fields.Append .CreateField("StdKRatiosToNumber", dbInteger)        ' points back to Standard table/Numbers field
+.Fields.Append .CreateField("StdKRatiosNumber", dbLong)             ' for k-ratio import set number (see StdKRatiosFileName field)
+
+.Fields.Append .CreateField("StdKRatiosTakeOffs", dbSingle)
+.Fields.Append .CreateField("StdKRatiosKilovolts", dbSingle)
+.Fields.Append .CreateField("StdKRatiosElements", dbText, DbTextElementStringLength%)
+.Fields.Append .CreateField("StdKRatiosXrays", dbText, DbTextXrayStringLength%)
+.Fields.Append .CreateField("StdKRatiosKRatios", dbSingle)
+.Fields.Append .CreateField("StdKRatiosStdAssigns", dbInteger)
+
+.Fields.Append .CreateField("StdKRatiosFileName", dbText, DbTextFilenameLengthNew%)
+End With
+
+StDb.TableDefs.Append StdKratios
+
+' Add material type to standard table (new code 06/15/2017)
+StdMaterialTypes.Name = "MaterialTypes"
+StdMaterialTypes.Type = dbText
+StdMaterialTypes.Size = DbTextNameLength%
+StdMaterialTypes.AllowZeroLength = True
+StDb.TableDefs("Standard").Fields.Append StdMaterialTypes
+
+' Add formula parameters to standard table (new code 06/17/2017)
+StdFormulaFlags.Name = "FormulaFlags"
+StdFormulaFlags.Type = dbBoolean
+StDb.TableDefs("Standard").Fields.Append StdFormulaFlags
+
+StdFormulaRatios.Name = "FormulaRatios"
+StdFormulaRatios.Type = dbSingle
+StDb.TableDefs("Standard").Fields.Append StdFormulaRatios
+
+StdFormulaElements.Name = "FormulaElements"
+StdFormulaElements.Type = dbText
+StdFormulaElements.Size = DbTextElementStringLength%
+StdFormulaElements.AllowZeroLength = True
+StDb.TableDefs("Standard").Fields.Append StdFormulaElements
 
 Call TransactionCommit("StandardOpenNewFile", StandardDataFile$)
 If ierror Then Exit Sub

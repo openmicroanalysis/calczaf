@@ -80,9 +80,9 @@ End If
 
 ' Load form
 If SecondaryFluorescenceFlag Then
-FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbChecked     ' this control is invisible in CalcZAF
+FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.Value = vbChecked     ' this control is invisible in CalcZAF
 Else
-FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbUnchecked
+FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.Value = vbUnchecked
 End If
 
 FormSECONDARY.TextHFW.Text = Format$(ImageHFW!)                        ' in um
@@ -129,8 +129,8 @@ tmsg$ = TypeWeight$(Int(2), SecondaryMatBSample())
 FormSECONDARY.TextMaterialBComposition.Text = tmsg$
 
 ' Load options
-FormSECONDARY.OptionCorrectionMethod(SecondaryFluorescenceCorrectionMethod%).value = True
-FormSECONDARY.OptionDistanceMethod(SecondaryFluorescenceDistanceMethod%).value = True
+FormSECONDARY.OptionCorrectionMethod(SecondaryFluorescenceCorrectionMethod%).Value = True
+FormSECONDARY.OptionDistanceMethod(SecondaryFluorescenceDistanceMethod%).Value = True
 
 ' Load k-ratio file if already specified
 If SecondaryFluorescenceCorrectionMethod% = 0 And BoundaryKratiosDATFile$ <> vbNullString Then
@@ -169,7 +169,7 @@ On Error GoTo SecondarySaveError
 
 Dim radians As Single
 
-If FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbChecked Then    ' this control is invisible in CalcZAF
+If FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.Value = vbChecked Then    ' this control is invisible in CalcZAF
 SecondaryFluorescenceFlag = True                            ' module level flag
 UseSecondaryBoundaryFluorescenceCorrectionFlag = True       ' set global flag if any element is true (PFE only)
 Else
@@ -188,11 +188,11 @@ End If
 
 ' Save distance option
 SecondaryFluorescenceDistanceMethod% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 SecondaryFluorescenceDistanceMethod% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 SecondaryFluorescenceDistanceMethod% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 SecondaryFluorescenceDistanceMethod% = 3
 End If
 
@@ -280,7 +280,7 @@ End If
 ' Graphical method is saved during mouse up/mouse down events (just check for inbounds below)
 
 ' Save correction option
-If FormSECONDARY.OptionCorrectionMethod(0).value = True Then
+If FormSECONDARY.OptionCorrectionMethod(0).Value = True Then
 SecondaryFluorescenceCorrectionMethod% = 0
 Else
 SecondaryFluorescenceCorrectionMethod% = 1
@@ -666,7 +666,7 @@ Exit Sub
 End Sub
 
 Sub SecondaryLoadImage(tfilename As String)
-' Load the image
+' Load the image into image control (and picturebox for printing)
 
 ierror = False
 On Error GoTo SecondaryLoadImageError
@@ -684,6 +684,7 @@ If Dir$(tfilename$) = vbNullString Then GoTo SecondaryLoadImageNotFound
 
 Screen.MousePointer = vbHourglass
 Set FormSECONDARY.Image1 = LoadPicture(tfilename$)
+Set FormSECONDARY.Picture1 = LoadPicture(tfilename$)        ' for printing image and graphics to printer
 Set FormSECONDARY.Picture2 = LoadPicture(tfilename$)        ' for PictureSnapConvert and Copy To Clipboard (with graphics objects)
 Screen.MousePointer = vbDefault
 
@@ -791,11 +792,11 @@ Dim fractionx As Single, fractiony As Single
 
 ' Get current distance mode
 mode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 mode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 mode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 mode% = 3
 End If
 
@@ -851,11 +852,11 @@ Dim fractionx2 As Single, fractiony2 As Single
 
 ' Check if proper mode and image is loaded
 dmode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 dmode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 dmode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 dmode% = 3
 End If
 
@@ -949,6 +950,7 @@ Dim fractionx2 As Single, fractiony2 As Single
 ' First reload the image to clean up previously drawn boundaries
 tForm.Refresh
 tForm.Image1.Refresh
+tForm.Picture1.Picture = tForm.Image1       ' to clear previous boundary (refresh doesn't work!)
 
 ' Check if a calibration is loaded
 If Not PictureSnapCalibrated Then Exit Sub
@@ -1003,18 +1005,26 @@ msg$ = "X1,Y1= " & Format$(scx1!) & "," & Format$(scy1!) & ", X2,Y2= " & Format$
 Call IOWriteLog("SecondaryDrawBoundary: Offset Screen : " & msg$)
 End If
 
-' Draw on form
+' Draw boundary line on form
 tcolor& = RGB(255, 0, 0)
 tForm.DrawWidth = 2
 tForm.Line (scx1!, scy1!)-(scx2!, scy2!), tcolor&
 
-' Draw also on FormSECONDARY.Picture1 for clipboard
+' Draw on FormSECONDARY.Picture2 for clipboard
 tForm.Picture2.DrawWidth = 2
 scx1! = tForm.Picture2.ScaleWidth * fractionx1!
 scy1! = tForm.Picture2.ScaleHeight * fractiony1!
 scx2! = tForm.Picture2.ScaleWidth * fractionx2!
 scy2! = tForm.Picture2.ScaleHeight * fractiony2!
 tForm.Picture2.Line (scx1!, scy1!)-(scx2!, scy2!), tcolor&
+
+' Draw also on FormSECONDARY.Picture1 for printer
+tForm.Picture1.DrawWidth = 2
+scx1! = tForm.Picture1.ScaleWidth * fractionx1!
+scy1! = tForm.Picture1.ScaleHeight * fractiony1!
+scx2! = tForm.Picture1.ScaleWidth * fractionx2!
+scy2! = tForm.Picture1.ScaleHeight * fractiony2!
+tForm.Picture1.Line (scx1!, scy1!)-(scx2!, scy2!), tcolor&
 
 Exit Sub
 
@@ -1041,11 +1051,11 @@ Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Sin
 
 ' Get current distance mode
 dmode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 dmode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 dmode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 dmode% = 3
 End If
 
@@ -1287,6 +1297,7 @@ FormSECONDARY.TextX2StageCoordinate.Enabled = False
 FormSECONDARY.TextY2StageCoordinate.Enabled = False
 FormSECONDARY.TextHFW.Enabled = False
 FormSECONDARY.CommandCopyToClipboard.Enabled = False
+FormSECONDARY.CommandPrintImage.Enabled = False
 FormSECONDARY.Image1.Enabled = False
 FormSECONDARY.Image1.Picture = LoadPicture()
 FormSECONDARY.LabelBoundaryCoordinates.Caption = vbNullString
@@ -1303,6 +1314,7 @@ FormSECONDARY.TextX2StageCoordinate.Enabled = False
 FormSECONDARY.TextY2StageCoordinate.Enabled = False
 FormSECONDARY.TextHFW.Enabled = True
 FormSECONDARY.CommandCopyToClipboard.Enabled = False
+FormSECONDARY.CommandPrintImage.Enabled = False
 FormSECONDARY.Image1.Enabled = True
 FormSECONDARY.Image1.Picture = LoadPicture()
 FormSECONDARY.LabelBoundaryCoordinates.Caption = vbNullString
@@ -1319,6 +1331,7 @@ FormSECONDARY.TextX2StageCoordinate.Enabled = True
 FormSECONDARY.TextY2StageCoordinate.Enabled = True
 FormSECONDARY.TextHFW.Enabled = True
 FormSECONDARY.CommandCopyToClipboard.Enabled = False
+FormSECONDARY.CommandPrintImage.Enabled = False
 FormSECONDARY.Image1.Enabled = True
 FormSECONDARY.Image1.Picture = LoadPicture()
 FormSECONDARY.LabelBoundaryCoordinates.Caption = vbNullString
@@ -1335,6 +1348,7 @@ FormSECONDARY.TextX2StageCoordinate.Enabled = False
 FormSECONDARY.TextY2StageCoordinate.Enabled = False
 FormSECONDARY.TextHFW.Enabled = False
 FormSECONDARY.CommandCopyToClipboard.Enabled = True
+FormSECONDARY.CommandPrintImage.Enabled = True
 FormSECONDARY.Image1.Enabled = True
 If BoundaryImageFileName$ <> vbNullString Then
 Call SecondaryLoadImage(BoundaryImageFileName$)
@@ -1378,6 +1392,26 @@ Exit Sub
 ' Errors
 SecondaryCopyToClipboardError:
 MsgBox Error$, vbOKOnly + vbCritical, "SecondaryCopyToClipboard"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub SecondaryPrintImage(tForm As Form)
+' Print the object picture property to the printer
+
+ierror = False
+On Error GoTo SecondaryPrintImageError
+
+' Print image in Picture1 (Picture3 is for temporary use)
+Call BMPPrintDiagram(tForm.Picture1, tForm.Picture3, CSng(0.5), CSng(0.5), CSng(7 * ImageInterfaceImageIxIy!), CSng(7#))
+If ierror Then Exit Sub
+
+Exit Sub
+
+' Errors
+SecondaryPrintImageError:
+MsgBox Error$, vbOKOnly + vbCritical, "SecondaryPrintImage"
 ierror = True
 Exit Sub
 
