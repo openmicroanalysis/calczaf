@@ -340,10 +340,8 @@ GetElmOldSample(1).AtomicCharges!(GetElmOldSample(1).LastChan%) = GetElmTmpSampl
 3000:  Next n%
 
 ' Check assignments if in Probe for EPMA
-If GetElmOldSample(1).Type% <> 1 Or (GetElmOldSample(1).Type% = 1 And GetElmOldSample(1).Set% > 0) Then
 Call GetElmCheckAssignments(GetElmOldSample())
 If ierror Then Exit Sub
-End If
 
 ' Reload the GetElmTmpSample
 GetElmTmpSample(1) = GetElmOldSample(1)
@@ -392,7 +390,7 @@ Next i%
 
 ' Make sure that elements by difference, stoichiometry or formula basis are ok for new sample setup
 ip% = IPOS1(sample(1).LastChan%, sample(1).FormulaElement$, sample(1).Elsyms$())
-If ip% = 0 Then
+If ip% = 0 And sample(1).FormulaElement$ <> vbNullString Then               ' allow blank element for sum of cations (new code 06-16-2017)
 sample(1).FormulaElementFlag% = False
 sample(1).FormulaElement$ = vbNullString
 sample(1).FormulaRatio! = 0#

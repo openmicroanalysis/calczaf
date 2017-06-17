@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/16/17	Add loading of formula parameters from standard database to standard acquisition in PFE (Carpenter).
+
 06/15/17	Add Print button in CalcZAF for print secondary fluorescence image and boundary line (Vasquez).
 v. 11.9.2
 		Add new fields for formula calculations in Standard (Carpenter).
