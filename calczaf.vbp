@@ -169,6 +169,7 @@ Module=CodeMiscPlot; MiscPlot.bas
 Module=CodeMiscGrid2; MiscGrid2.bas
 Module=CodeScanData2; ScanData2.bas
 ResFile32="CalcZAF.RES"
+Module=CodeRealTime8; RealTime8.bas
 IconForm="FormMAIN"
 Startup="Sub Main"
 HelpFile="ProbeWin.chm"

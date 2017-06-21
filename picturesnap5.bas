@@ -75,3 +75,38 @@ Exit Sub
 
 End Sub
 
+Sub RealTimeGetBeamMode(tbeammode As Integer)
+' Dummy routine for CalcImage
+
+ierror = False
+On Error GoTo RealTimeGetBeamModeError
+
+
+Exit Sub
+
+' Errors
+RealTimeGetBeamModeError:
+MsgBox Error$, vbOKOnly + vbCritical, "RealTimeGetBeamMode"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub RealTimeGetMagnification(mag As Single)
+' Dummy routine for CalcImage
+
+ierror = False
+On Error GoTo RealTimeGetMagnificationError
+
+
+Exit Sub
+
+' Errors
+RealTimeGetMagnificationError:
+MsgBox Error$, vbOKOnly + vbCritical, "RealTimeGetMagnification"
+ierror = True
+Exit Sub
+
+End Sub
+
+

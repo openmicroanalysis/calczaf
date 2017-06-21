@@ -622,6 +622,10 @@ Call PictureSnapDisplayCalibrationPoints(FormPICTURESNAP, FormPICTURESNAP3)
 If ierror Then Exit Sub
 End If
 
+' Display current mag box
+Call PictureSnapDisplayCurrentMagBox
+If ierror Then Exit Sub
+
 ' Save this position
 oldx! = formx!
 oldy! = formy!
@@ -912,3 +916,93 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub PictureSnapDisplayCurrentMagBox()
+' Draw the current magnification scan box
+
+ierror = False
+On Error GoTo PictureSnapDisplayCurrentMagBoxError
+
+Dim tWidth As Single
+
+Dim formx1 As Single, formy1 As Single, formz1 As Single
+Dim formx2 As Single, formy2 As Single, formz2 As Single
+Dim xdata1 As Single, ydata1 As Single, zdata1 As Single
+Dim xdata2 As Single, ydata2 As Single, zdata2 As Single
+Dim fraction1x As Single, fraction1y As Single
+Dim fraction2x As Single, fraction2y As Single
+Dim xoffset As Single, yoffset As Single
+
+Dim tmagnification As Single
+Dim tbeammode As Integer
+
+Static oldx As Single, oldy As Single
+
+' Check for pathological conditions
+If NumberOfStageMotors% < 1 Then Exit Sub
+
+' Get beam mode
+If Not UseSharedMonitorDataFlag% Then
+Call RealTimeGetBeamMode(tbeammode%)
+If ierror Then Exit Sub
+Else
+tbeammode% = MonitorStateBeamMode%  ' 0 = spot, 1  = scan, 2 = digital
+End If
+
+' Read magnification (only read magnification if scan mode)
+If tbeammode% = 1 Then
+If Not UseSharedMonitorDataFlag% Then
+Call RealTimeGetMagnification(tmagnification!)
+If ierror Then Exit Sub
+Else
+tmagnification! = MonitorStateMagnification!
+End If
+End If
+
+' Calculate mag box corners in +/- microns
+If tmagnification! <> 0# Then
+xoffset! = (RealTimeGetBeamScanCalibration!(XMotor%, DefaultKiloVolts!, tmagnification!, DefaultScanRotation!)) / 2#
+yoffset! = (RealTimeGetBeamScanCalibration!(YMotor%, DefaultKiloVolts!, tmagnification!, DefaultScanRotation!)) / 2#
+
+' Calculate absolute stage positions of mag box
+xdata1! = RealTimeMotorPositions!(XMotor%) - xoffset! / MotUnitsToAngstromMicrons!(XMotor%)
+ydata1! = RealTimeMotorPositions!(YMotor%) + yoffset! / MotUnitsToAngstromMicrons!(YMotor%)
+
+xdata2! = RealTimeMotorPositions!(XMotor%) + xoffset! / MotUnitsToAngstromMicrons!(XMotor%)
+ydata2! = RealTimeMotorPositions!(YMotor%) - yoffset! / MotUnitsToAngstromMicrons!(YMotor%)
+
+' Convert to form coordinates
+Call PictureSnapConvert(Int(2), formx1!, formy1!, formz1!, xdata1!, ydata1!, zdata1!, fraction1x!, fraction1y!)
+If ierror Then Exit Sub
+
+Call PictureSnapConvert(Int(2), formx2!, formy2!, formz1!, xdata2!, ydata2!, zdata2!, fraction2x!, fraction2y!)
+If ierror Then Exit Sub
+End If
+
+If oldx! <> formx1! Or oldy! <> formy1! Then
+FormPICTURESNAP.Picture2.Refresh
+End If
+
+' Update mag box if scan mode
+If tbeammode% = 1 Then
+FormPICTURESNAP.Picture2.DrawWidth = 1
+FormPICTURESNAP.Picture2.Line (formx1!, formy1!)-(formx2!, formy1!), RGB(0, 0, 150)
+FormPICTURESNAP.Picture2.Line (formx1!, formy2!)-(formx2!, formy2!), RGB(0, 0, 150)
+
+FormPICTURESNAP.Picture2.Line (formx1!, formy1!)-(formx1!, formy2!), RGB(0, 0, 150)
+FormPICTURESNAP.Picture2.Line (formx2!, formy1!)-(formx2!, formy2!), RGB(0, 0, 150)
+End If
+
+' Save this position
+oldx! = formx1!
+oldy! = formy1!
+Exit Sub
+
+' Errors
+PictureSnapDisplayCurrentMagBoxError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDisplayCurrentMagBox"
+ierror = True
+Exit Sub
+
+End Sub
+

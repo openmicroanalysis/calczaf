@@ -325,6 +325,10 @@ StandardDataFile$ = ApplicationCommonAppData$ & DefaultMatchStandardDatabase$
 ' Check that it exists
 If Dir$(StandardDataFile$) = vbNullString Then GoTo MatchSaveNotFound
 
+' Update the selected match database in case if needs to be updated
+Call StandardUpdateMDBFile(StandardDataFile$)
+If ierror Then Exit Sub
+
 ' Restore default
 Else
 If OriginalStandardDataFile$ <> vbNullString$ Then StandardDataFile$ = OriginalStandardDataFile$
