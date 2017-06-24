@@ -2442,7 +2442,7 @@ End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 ' EDS TCP/IP socket parameters
-If EDSSpectraInterfaceType% = 5 Then    ' Thermo
+If EDSSpectraInterfaceType% = 5 Or EDSSpectraInterfaceType% = 6 Then     ' Thermo and JEOL EDS
 lpAppName$ = "Hardware"
 lpKeyName$ = "EDS_IPAddress"
 lpDefault$ = vbNullString
@@ -2450,22 +2450,24 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then EDS_IPAddress$ = Left$(lpReturnString$, valid&)
-If Trim$(EDS_IPAddress$) = vbNullString And EDSSpectraInterfaceType% = 5 Then
-msg$ = "EDS_IPAddress keyword value (Thermo NSS interface) is blank in " & ProbeWinINIFile$
+If Trim$(EDS_IPAddress$) = vbNullString Then
+msg$ = "EDS_IPAddress keyword value (Thermo NSS/Pathfinder or JEOL OEM interface) is blank in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
+End If                                                                   ' Thermo and JEOL EDS
 lpDefault$ = Trim$(EDS_IPAddress$)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+If EDSSpectraInterfaceType% = 5 Then                                     ' JEOL EDS only
 lpAppName$ = "Hardware"
-lpKeyName$ = "EDS_ServicePort"         ' not used by any EDS vendor currently
+lpKeyName$ = "EDS_ServicePort"
 lpDefault$ = vbNullString
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then EDS_ServicePort$ = Left$(lpReturnString$, valid&)
-End If
+End If                                                                   ' JEOL EDS Only
 lpDefault$ = Trim$(EDS_ServicePort$)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
@@ -3263,35 +3265,6 @@ If DetectorModeType% < 0 Or DetectorModeType% > 0 Then
 msg$ = "DetectorModeType keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 DetectorModeType% = nDefault&
-End
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-End If
-
-' Tilt/Rotation
-lpAppName$ = "Hardware"
-lpKeyName$ = "TiltRotationPresent"
-nDefault& = 0
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-If valid& <> 0 Then
-TiltRotationPresent% = True
-Else
-TiltRotationPresent% = False
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-If TiltRotationPresent% Then
-lpAppName$ = "Hardware"
-lpKeyName$ = "TiltRotationType"
-nDefault& = 0
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-TiltRotationType% = valid&
-If TiltRotationType% < 0 Or TiltRotationType% > 0 Then
-msg$ = "TiltRotationType keyword value out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
-TiltRotationType% = nDefault&
 End
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -4192,7 +4165,7 @@ End If
 
 lpAppName$ = "Image"
 lpKeyName$ = "ImageInterfaceType"
-nDefault& = 0   ' 0=Demo, 1=Unused, 2=Unused, 3=Unused, 4=8900/8200/8500/8x30, 5=SX100/SXFive Mapping, 6=SX100/SXFive Video, 7=Unused, 8=Unused, 9=Bruker, 10=Thermo
+nDefault& = 0   ' 0=Demo, 1=Unused, 2=Unused, 3=Unused, 4=8900/8200/8500/8x30, 5=SX100/SXFive Mapping, 6=SX100/SXFive Video, 7=JEOL 8230/8530 Video, 8=Unused, 9=Bruker, 10=Thermo
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 ImageInterfaceType% = valid&
@@ -4201,10 +4174,28 @@ msg$ = "ImageInterfaceType keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 ImageInterfaceType% = nDefault&
 End If
-If ImageInterfaceType% = 1 Or ImageInterfaceType% = 2 Or ImageInterfaceType% = 3 Or ImageInterfaceType% = 7 Or ImageInterfaceType% = 8 Then
+If ImageInterfaceType% = 1 Or ImageInterfaceType% = 2 Or ImageInterfaceType% = 3 Or ImageInterfaceType% = 8 Then
 msg$ = "ImageInterfaceType keyword value (" & Format$(ImageInterfaceType%) & ") is no longer supported by Probe for EPMA in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 ImageInterfaceType% = nDefault&
+End If
+' Check for Cameca interface
+If InterfaceType% > 0 And (ImageInterfaceType% = 5 Or ImageInterfaceType% = 6) And InterfaceType% <> 5 Then
+msg$ = "ImageInterfaceType keyword value (" & Format$(ImageInterfaceType%) & ") requires the Cameca instrument interface in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
+End
+End If
+' Check for JEOL interface
+If InterfaceType% > 0 And (ImageInterfaceType% = 4 Or ImageInterfaceType% = 7) And InterfaceType% <> 2 Then
+msg$ = "ImageInterfaceType keyword value (" & Format$(ImageInterfaceType%) & ") requires the JEOL instrument interface in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
+End
+End If
+' Check if 8230/8530 if JEOL video imaging interface
+If InterfaceType% > 0 And ImageInterfaceType% = 7 And JeolEOSInterfaceType& <> 3 Then
+msg$ = "ImageInterfaceType keyword value (" & Format$(ImageInterfaceType%) & ") requires the JEOL 8230/8530 instrument interface in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
+End
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -5087,34 +5078,6 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then FaradayStagePositions!(4) = Val(Left$(lpReturnString$, valid&))
-If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-
-lpAppName$ = "Faraday"
-lpKeyName$ = "FaradayStagePositionsT"
-lpDefault$ = "0.0"
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-If Left$(lpReturnString$, valid&) <> vbNullString Then FaradayStagePositions!(5) = Val(Left$(lpReturnString$, valid&))
-If FaradayStagePositions!(5) < 0# Or FaradayStagePositions!(5) > 90# Then
-msg$ = "FaradayStagePositionT keyword value out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIFaraday"
-End
-End If
-If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-
-lpAppName$ = "Faraday"
-lpKeyName$ = "FaradayStagePositionsR"
-lpDefault$ = "0.0"
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-If Left$(lpReturnString$, valid&) <> vbNullString Then FaradayStagePositions!(6) = Val(Left$(lpReturnString$, valid&))
-If FaradayStagePositions!(6) < 0# Or FaradayStagePositions!(6) > 360# Then
-msg$ = "FaradayStagePositionsR keyword value out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIFaraday"
-End
-End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 Exit Sub

@@ -2,7 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-6/20/17		Add mag "box" display on PictureSnap window.
+06/23/17	Add JEOL EDS "filename" parameter to database EDS parameter table. Add "blanking" flags
+v. 11.9.3	to CalcImage (Wark) for detection limits and analytical sensitivity calculations.
+	
+
+06/20/17	Add mag "box" display on PictureSnap window.
 
 		Add blanking values to areas outside polygon x-ray maps in CalcImage.
 

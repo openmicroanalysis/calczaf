@@ -2331,7 +2331,7 @@ MaxThroughputArrayValue!(10) = 6400#
 MaxThroughputArrayValue!(11) = 0#
 End If
 
-' Image interface type, 0=Demo, 1=Unused, 2=Unused, 3=Unused, 4=8900/8200/8500/8x30, 5=SX100/SXFive mapping, 6=SX100/SXFive Video, 7=Unused, 8=Unused, 9=Bruker, 10=Thermo
+' Image interface type, 0=Demo, 1=Unused, 2=Unused, 3=Unused, 4=8900/8200/8500/8x30, 5=SX100/SXFive mapping, 6=SX100/SXFive Video, 7=JEOL 8230/8530 Video, 8=Unused, 9=Bruker, 10=Thermo
 InterfaceStringImage(0) = "Demonstration (Imaging)"
 InterfaceStringImage(1) = "Unused"
 InterfaceStringImage(2) = "Unused"
@@ -2869,19 +2869,19 @@ ierror = True
 Exit Sub
 End If
 If FaradayStagePositions!(2) < MotLoLimits!(YMotor%) Or FaradayStagePositions!(2) > MotHiLimits!(YMotor%) Then
-msg$ = "Faraday Cup X Stage Position out of range in " & ProbeWinINIFile$
+msg$ = "Faraday Cup Y Stage Position out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
 End If
 If FaradayStagePositions!(3) < MotLoLimits!(ZMotor%) Or FaradayStagePositions!(3) > MotHiLimits!(ZMotor%) Then
-msg$ = "Faraday Cup X Stage Position out of range in " & ProbeWinINIFile$
+msg$ = "Faraday Cup Z Stage Position out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
 End If
 If FaradayStagePositions!(4) < MotLoLimits!(WMotor%) Or FaradayStagePositions!(4) > MotHiLimits!(WMotor%) Then
-msg$ = "Faraday Cup X Stage Position out of range in " & ProbeWinINIFile$
+msg$ = "Faraday Cup W Stage Position out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
@@ -3716,15 +3716,12 @@ linecount% = linecount% + 1
 msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs%
 Input #Temp1FileNumber%, atemp!(i%) ' unused
-'If atemp!(i%) = 2 Then
-'If Not MiscMotorInBounds(i% , atemp!(i%)) Then GoTo InitDetectorsBadPosition
-'End If
 msg$ = msg$ & Format$(atemp!(i%), a80$)
 Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
 
-' Exchange rowland
+' Exchange rowland (obsolete)
 linecount% = linecount% + 1
 msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs%
@@ -3993,7 +3990,7 @@ astring$ = astring$ & Format$("0.0", a80$)
 Next i%
 Print #Temp1FileNumber%, astring$ & Space$(8) & VbDquote$ & "Unused Exchange Positions" & VbDquote$
 
-' Exchange Rowland circle
+' Exchange Rowland circle (obsolete)
 astring$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs%
 astring$ = astring$ & Format$("0.0", a80$)
@@ -4624,7 +4621,7 @@ Function InitIsDriveMediaPresent(tdrive As String) As Boolean
 ierror = False
 On Error GoTo InitIsDriveMediaPresentError
 
-Dim Buffer As String
+Dim buffer As String
 
 ' Check if string contains a drive letter (no colon means not a drive)
 InitIsDriveMediaPresent = True
@@ -4634,15 +4631,15 @@ If Mid$(tdrive$, 2, 1) <> ":" Then Exit Function
 On Error Resume Next
 
 ' Check for current directory (failure means drive is not present)
-Buffer$ = CurDir$(tdrive$)
-If Buffer$ = vbNullString Then
+buffer$ = CurDir$(tdrive$)
+If buffer$ = vbNullString Then
 InitIsDriveMediaPresent = False
 Exit Function
 End If
 
 ' Try root directory (failure means media not present)
 If Err.number = 0 Then
-Buffer$ = Dir(Left$(tdrive$, 1) & ":\")
+buffer$ = Dir(Left$(tdrive$, 1) & ":\")
 InitIsDriveMediaPresent = (Err.number = 0)
 End If
 

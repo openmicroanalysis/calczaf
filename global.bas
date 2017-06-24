@@ -842,29 +842,10 @@ Type TypeSample
     EDSSpectraKLineBCoefficient() As Single     ' used by Bruker only
     EDSSpectraKLineCCoefficient() As Single     ' used by Bruker only
     
-    EDSSpectraQuantMethodOrProject As String    ' currently only used by Bruker
+    EDSSpectraQuantMethodOrProject As String    ' only used by Bruker
    
-'    EDSSpectraMaxPeakChannelNumber() As Integer
-'    EDSSpectraAnalysisType() As Integer
-'    EDSSpectraEscapePeakRemoved() As Integer
-'    EDSSpectraAnalyzerType() As Long
-'    EDSSpectraTiltAngle() As Single
-'    EDSSpectraBeamCurrentFactor() As Single
-'    EDSSpectraDetectorResolution() As Single
-'    EDSSpectraDetectorType() As Long
-'    EDSSpectraParlodianLightShieldThickness() As Single
-'    EDSSpectraAluminumLightShieldThickness() As Single
-'    EDSSpectraBerylliumThickness() As Single
-'    EDSSpectraGoldLightShieldThickness() As Single
-'    EDSSpectraSiDeadlayerThickness() As Single
-'    EDSSpectraSiLivelayerThickness() As Single
-'    EDSSpectraXrayIncidenceAngle() As Single
-'    EDSSpectraAzimuthAngle() As Single
-'    EDSSpectraElevationAngle() As Single
-'    EDSSpectraTailFunctionMaximumChannel() As Single
-'    EDSSpectraTailHeightAdjustmentPercentage() As Single
-'    EDSSpectraAPWindowThickness() As Single
-
+    EDSSpectraEDSFileName() As String           ' only used by JEOL OEM EDS
+    
     FiducialSetNumber As Integer        ' data is stored in Fiducial table
     FiducialSetDescription As String        ' data is stored in Fiducial table
     fiducialpositions(1 To MAXAXES%, 1 To MAXDIM%) As Single
@@ -2094,9 +2075,7 @@ Global DefaultScanRotation As Single
 
 ' For specimen mounted faraday cups
 Global FaradayStagePresent As Integer
-Global FaradayStagePositions(1 To MAXAXES% + 2) As Single   ' X, Y, Z, W, plus T (tilt) and R (rotation)
-
-Global RealTimeTiltRotationPositions(1 To 2) As Single      ' tilt and rotation
+Global FaradayStagePositions(1 To MAXAXES%) As Single   ' X, Y, Z, W
 
 ' Detector globals
 Global DetectorsFile As String
@@ -2118,12 +2097,6 @@ Global RealTimeDetectorSlitSizes(1 To MAXSPEC%) As Integer          ' array poin
 Global RealTimeDetectorSlitPositions(1 To MAXSPEC%) As Integer      ' array pointer
 Global RealTimeDetectorModes(1 To MAXSPEC%) As Integer              ' array pointer
 
-Global RealTimeRowlandPositions(1 To MAXSPEC%) As Single
-Global RealTimeRowlandStatus(1 To MAXSPEC%) As Integer
-
-Global TiltRotationPresent As Integer
-Global TiltRotationType As Integer
-
 Global DetSlitSizeExchangeFlags(1 To MAXSPEC%) As Integer
 Global DetSlitPositionExchangeFlags(1 To MAXSPEC%) As Integer
 Global DetDetectorModeExchangeFlags(1 To MAXSPEC%) As Integer
@@ -2132,9 +2105,9 @@ Global DetSlitSizeExchangePositions(1 To MAXSPEC%) As Single
 Global DetSlitPositionExchangePositions(1 To MAXSPEC%) As Single
 Global DetDetectorModeExchangePositions(1 To MAXSPEC%) As Single
 
-Global DetSlitSizeExchangeRowlands(1 To MAXSPEC%) As Single
-Global DetSlitPositionExchangeRowlands(1 To MAXSPEC%) As Single
-Global DetDetectorModeExchangeRowlands(1 To MAXSPEC%) As Single
+Global DetSlitSizeExchangeRowlands(1 To MAXSPEC%) As Single         ' obsolete
+Global DetSlitPositionExchangeRowlands(1 To MAXSPEC%) As Single     ' obsolete
+Global DetDetectorModeExchangeRowlands(1 To MAXSPEC%) As Single     ' obsolete
 
 Global DetSlitSizeDefaultIndexes(1 To MAXSPEC%) As Integer
 Global DetSlitPositionDefaultIndexes(1 To MAXSPEC%) As Integer

@@ -413,26 +413,7 @@ ReDim sample(1).EDSSpectraADCTimeConstant(1 To MAXROW%) As Single
 ReDim sample(1).EDSSpectraKLineBCoefficient(1 To MAXROW%) As Single         ' used by Bruker only
 ReDim sample(1).EDSSpectraKLineCCoefficient(1 To MAXROW%) As Single         ' used by Bruker only
 
-'ReDim sample(1).EDSSpectraMaxPeakChannelNumber(1 To MAXROW%) As Integer
-'ReDim sample(1).EDSSpectraAnalysisType(1 To MAXROW%) As Integer
-'ReDim sample(1).EDSSpectraEscapePeakRemoved(1 To MAXROW%) As Integer
-'ReDim sample(1).EDSSpectraAnalyzerType(1 To MAXROW%) As Long
-'ReDim sample(1).EDSSpectraTiltAngle(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraBeamCurrentFactor(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraDetectorResolution(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraDetectorType(1 To MAXROW%) As Long
-'ReDim sample(1).EDSSpectraParlodianLightShieldThickness(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraAluminumLightShieldThickness(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraBerylliumThickness(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraGoldLightShieldThickness(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraSiDeadlayerThickness(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraSiLivelayerThickness(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraXrayIncidenceAngle(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraAzimuthAngle(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraElevationAngle(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraTailFunctionMaximumChannel(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraTailHeightAdjustmentPercentage(1 To MAXROW%) As Single
-'ReDim sample(1).EDSSpectraAPWindowThickness(1 To MAXROW%) As Single
+ReDim sample(1).EDSSpectraEDSFileName(1 To MAXROW%) As String               ' used by JEOL OEM EDS only
 
 amsg$ = "Dimensioning CL sample arrays..."
 
