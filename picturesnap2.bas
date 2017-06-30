@@ -391,8 +391,8 @@ End If
 Call ImageLoadPalette(ImagePaletteNumber%, ImagePaletteArray())
 If ierror Then Exit Sub
 
-' Save to BMP file (leave .GRD extension for identification as imported GRD)
-tfilename2$ = MiscGetFileNameNoExtension$(tfilename$) & "_GRD.BMP"
+' Save to BMP file
+tfilename2$ = MiscGetFileNameNoExtension$(tfilename$) & ".BMP"
 Screen.MousePointer = vbHourglass
 Call BMPSaveArrayToBMPFile(GridImageData(1).ix%, GridImageData(1).iy%, iarray(), tfilename2$, ImagePaletteNumber%, ImagePaletteArray&())
 Screen.MousePointer = vbDefault

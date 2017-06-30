@@ -814,7 +814,6 @@ If ierror Then Exit Sub
 
 ' Update micron scale bar conversion
 If Default_Stage_Units$ = "um" Then tStageConversion! = 1#
-If Default_Stage_Units$ = "hm" Then tStageConversion! = 100#
 If Default_Stage_Units$ = "mm" Then tStageConversion! = 1000#
 
 ' Calculate stage distance in microns

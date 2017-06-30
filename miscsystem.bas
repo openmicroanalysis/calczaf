@@ -220,7 +220,7 @@ Private Declare Function IsWow64Process Lib "Kernel32" (ByVal hProc As Long, ByR
 Global Const FWP_STARTSWITH As Long = 0
 Global Const FWP_CONTAINS As Long = 1
 
-Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cX As Long, ByVal cY As Long, ByVal wFlags As Long) As Long
+Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 Declare Function OSFindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 Declare Function OSGetWindow Lib "user32" Alias "GetWindow" (ByVal hWnd As Long, ByVal wCmd As Long) As Long
 'Declare Function OSSetActiveWindow Lib "user32" Alias "SetForegroundWindow" (ByVal hWnd As Long) As Long
@@ -290,6 +290,51 @@ Public Declare Function ReleaseMutex Lib "kernel32.dll" (ByVal hMutex As Long) A
 Public Declare Sub CloseHandle Lib "Kernel32" (ByVal hPass As Long)
 Public Declare Function CreateMutex Lib "kernel32.dll" Alias "CreateMutexA" (ByVal lpMutexAttributes As Any, ByVal bInitialOwner As Boolean, ByVal lpName As String) As Long
 Public Declare Function GetLastError Lib "kernel32.dll" () As Long
+
+Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
+Private Const GDC_LOGPIXELSX As Long = 88
+
+Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
+Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hDC As Long) As Long
+
+Public Function MiscGetWindowsDPI() As Double
+' Returns the current screen DPI, *as set in Windows display settings.*  This obviously has no relationship to physical screen DPI,
+' which would need to be calculated on a per-monitor basis using something like EDID data.
+'
+' For convenience, DPI is returned as a float where 1.0 = 96 DPI (the default Windows setting).  2.0 = 200% DPI scaling, etc.
+
+Dim screenDC As Long, logPixelsX As Double
+    
+ierror = False
+On Error GoTo MiscGetWindowsDPIError
+    
+' Get device context
+screenDC& = GetDC(0)
+    
+' Retrieve logPixelsX via the API; this will be 96 at 100% DPI scaling
+logPixelsX# = CDbl(GetDeviceCaps(screenDC&, GDC_LOGPIXELSX&))
+ReleaseDC 0, screenDC&
+
+' Convert that value into a fractional DPI modified (e.g. 1.0 for 100% scaling, 2.0 for 200% scaling)
+If logPixelsX# = 0# Then
+    MiscGetWindowsDPI# = 1#
+    msg$ = "WARNING!  System DPI could not be retrieved; this system may be running in a VM or on Linux via Wine."
+    MsgBox msg$, vbOKOnly + vbExclamation, "MiscGetWindowsDPI"
+    ierror = True
+    Exit Function
+Else
+    MiscGetWindowsDPI# = logPixelsX# / 96#
+End If
+
+Exit Function
+
+' Errors
+MiscGetWindowsDPIError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscGetWindowsDPI"
+ierror = True
+Exit Function
+
+End Function
 
 Public Function MiscFindWindowPartial(ByVal TitleContains As String, Optional ByVal method As Variant) As Long
 ' Purpose:     Find an application based on title
@@ -514,9 +559,9 @@ strVersionInfo(5) = "OriginalFileName"
 strVersionInfo(6) = "ProductName"
 strVersionInfo(7) = "ProductVersion"
 
-Dim Buffer As String
+Dim buffer As String
 For i = 0 To 7
-Buffer = String(255, 0)
+buffer = String(255, 0)
 strTemp = "\StringFileInfo\" & Lang_Charset_String & "\" & strVersionInfo(i)
 lRet = VerQueryValue(sBuffer(0), strTemp, lVerPointer, lBufferLen)
 If lRet = 0 Then
@@ -524,25 +569,25 @@ ierror = True
 Exit Sub
 End If
 
-lstrcpy Buffer, lVerPointer
-Buffer = Mid$(Buffer, 1, InStr(Buffer, vbNullChar) - 1)
+lstrcpy buffer, lVerPointer
+buffer = Mid$(buffer, 1, InStr(buffer, vbNullChar) - 1)
 Select Case i
 Case 0
-tFileInfo.CompanyName = Buffer
+tFileInfo.CompanyName = buffer
 Case 1
-tFileInfo.FileDescription = Buffer
+tFileInfo.FileDescription = buffer
 Case 2
-tFileInfo.FileVersion = Buffer
+tFileInfo.FileVersion = buffer
 Case 3
-tFileInfo.InternalName = Buffer
+tFileInfo.InternalName = buffer
 Case 4
-tFileInfo.LegalCopyright = Buffer
+tFileInfo.LegalCopyright = buffer
 Case 5
-tFileInfo.OriginalFileName = Buffer
+tFileInfo.OriginalFileName = buffer
 Case 6
-tFileInfo.ProductName = Buffer
+tFileInfo.ProductName = buffer
 Case 7
-tFileInfo.ProductVersion = Buffer
+tFileInfo.ProductVersion = buffer
 End Select
 Next i
 
