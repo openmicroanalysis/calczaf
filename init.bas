@@ -2692,7 +2692,7 @@ End If
 
 ImageAnalogUnitsShortStrings$(5) = "Millisecs/Pixel"         ' SX100 mapping
 ImageAnalogUnitsShortStrings$(6) = "Scan Rate"               ' SX100 video
-ImageAnalogUnitsShortStrings$(7) = "Not Implemented"         ' Unused
+ImageAnalogUnitsShortStrings$(7) = "Micro-sec per pixel"     ' JEOL EDS OEM video
 ImageAnalogUnitsShortStrings$(8) = "Not Implemented"         ' Unused
 ImageAnalogUnitsShortStrings$(9) = "A/D Averages/Pixel"      ' Bruker RTIfcClient
 ImageAnalogUnitsShortStrings$(10) = "Frame Time in Secs"     ' Thermo TEPortal
@@ -2711,7 +2711,7 @@ End If
 
 ImageAnalogUnitsLongStrings(5) = "Millisecs/Pixel (1-1000)"         ' SX100 mapping
 ImageAnalogUnitsLongStrings(6) = "Scan Rate (1-7)"                  ' SX100 video
-ImageAnalogUnitsLongStrings(7) = "Not Implemented"                  ' Unused
+ImageAnalogUnitsLongStrings(7) = "Micro-sec per pixel"              ' JEOL EDS OEM video
 ImageAnalogUnitsLongStrings(8) = "Not Implemented"                  ' Unused
 ImageAnalogUnitsLongStrings(9) = "A/D Averages/Pixel (2 to 1000)"   ' Bruker RTIfcClient
 ImageAnalogUnitsLongStrings(10) = "Frame Time in Secs (1-100)"      ' Thermo TEPortal
@@ -2730,7 +2730,7 @@ End If
 
 ImageAnalogUnitsToolTipStrings(5) = "Specify the image dwell time in milli-seconds per pixel (range 1 - 1000)"          ' SX100 mapping
 ImageAnalogUnitsToolTipStrings(6) = "Specify the image scan speed (range = 1 - 7)"                                      ' SX100 Video
-ImageAnalogUnitsToolTipStrings(7) = "Not Implemented"                                                                   ' Unused
+ImageAnalogUnitsToolTipStrings(7) = "Video frame time is specified by imaging resolution"                               ' JEOL EDS OEM
 ImageAnalogUnitsToolTipStrings(8) = "Not implemented"                                                                   ' Unused
 ImageAnalogUnitsToolTipStrings(9) = "Specify the number of A-D conversions to average per pixel (range 2 - 1000)"       ' Bruker RTIfcClient
 ImageAnalogUnitsToolTipStrings(10) = "Enter the imaging frame time in seconds (1 to 100)"                               ' Thermo TEPortal
@@ -3106,7 +3106,7 @@ ElseIf ImageInterfaceType% = 6 Then     ' SX100 video scan speed (range 1 - 7)
     DefaultImageAnalogAverages% = 5
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
-ElseIf ImageInterfaceType% = 7 Then     ' Unused
+ElseIf ImageInterfaceType% = 7 Then     ' JEOL EDS OEM
     DefaultImageAnalogAverages% = 1
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
