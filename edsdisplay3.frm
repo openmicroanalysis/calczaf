@@ -368,7 +368,6 @@ If ip% < 0 Then ip% = FormEDSDISPLAY3.ComboSpecificElement.ListCount - 1
 
 ' Change list element
 FormEDSDISPLAY3.ComboSpecificElement.ListIndex = ip%
-'FormEDSDISPLAY3.ComboSpecificElement.Refresh
 End Sub
 
 Private Sub UpDown1_UpClick()
@@ -383,5 +382,4 @@ If ip% > FormEDSDISPLAY3.ComboSpecificElement.ListCount - 1 Then ip% = 0
 
 ' Change list element
 FormEDSDISPLAY3.ComboSpecificElement.ListIndex = ip%
-'FormEDSDISPLAY3.ComboSpecificElement.Refresh
 End Sub

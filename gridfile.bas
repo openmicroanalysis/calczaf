@@ -98,6 +98,11 @@ ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As 
 Get #Temp1FileNumber%, , idata(findex%).gData!
 Close #Temp1FileNumber%
 
+' Profile the code below
+'Dim startTime As Currency
+'Tanner_SupportCode.EnableHighResolutionTimers
+'Tanner_SupportCode.GetHighResTime startTime
+
 ' Set out of range values to min and max
 For j% = 1 To idata(findex%).iy%
 For i% = 1 To idata(findex%).ix%
@@ -105,6 +110,9 @@ If idata(findex%).gData(i%, j%) < idata(findex%).zmin# Then idata(findex%).gData
 If idata(findex%).gData(i%, j%) > idata(findex%).zmax# Then idata(findex%).gData(i%, j%) = idata(findex%).zmax#
 Next i%
 Next j%
+
+'Debug.Print "GridFileReadWrite - min/max check:"
+'Tanner_SupportCode.PrintTimeTakenInMs startTime
 
 ' Check for appropriate stage polarity and units conversion of image data and min/max
 Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, idata())
@@ -164,7 +172,7 @@ Sub GridFileReadWrite2(mode As Integer, findex As Integer, idata() As TypeImageD
 ierror = False
 On Error GoTo GridFileReadWrite2Error
 
-Dim i As Integer, j As Integer
+Dim ii As Long, jj As Long
 
 ' Version 7 structures for reading and writing
 Dim theader As TypeGridHeader
@@ -246,16 +254,41 @@ Close #Temp1FileNumber%
 
 ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Single
 
-'  Load image array and set out of range values to min and max (to avoid "blanking values")
-For j% = 1 To idata(findex%).iy%
-For i% = 1 To idata(findex%).ix%
-idata(findex%).gData!(i%, j%) = CSng(tData.hdata#(i%, j%))
-If idata(findex%).gData!(i%, j%) <> BLANKINGVALUE! Then
-If idata(findex%).gData(i%, j%) < idata(findex%).zmin# Then idata(findex%).gData(i%, j%) = idata(findex%).zmin#
-If idata(findex%).gData(i%, j%) > idata(findex%).zmax# Then idata(findex%).gData(i%, j%) = idata(findex%).zmax#
-End If
-Next i%
-Next j%
+' Profile the code below
+'Dim startTime As Currency
+'Tanner_SupportCode.EnableHighResolutionTimers
+'Tanner_SupportCode.GetHighResTime startTime
+    
+    ' Load image array and set out of range values to min and max (to avoid "blanking values")
+    Dim tmpFloat As Single
+    
+    ' Cache relevant array properties inside local variables for speed
+    Dim iBound As Long, jBound As Long
+    iBound& = idata(findex%).ix%
+    jBound& = idata(findex%).iy%
+    
+    Dim zMinVal As Single, zMaxVal As Single
+    zMinVal! = idata(findex%).zmin#
+    zMaxVal! = idata(findex%).zmax#
+    
+    For jj& = 1 To jBound&
+    For ii& = 1 To iBound&
+        
+        ' To minimize the number of times we need to access tData.hdata#(), cache its value up front.
+        tmpFloat! = CSng(tData.hdata#(ii&, jj&))
+        If (tmpFloat! <> BLANKINGVALUE!) Then
+            If (tmpFloat! < zMinVal!) Then tmpFloat! = zMinVal!
+            If (tmpFloat! > zMaxVal!) Then tmpFloat! = zMaxVal!
+            idata(findex%).gData!(ii&, jj&) = tmpFloat!
+        Else
+            idata(findex%).gData!(ii&, jj&) = tmpFloat!
+        End If
+        
+    Next ii&
+    Next jj&
+    
+'Debug.Print "GridFileReadWrite2 - min/max check:"
+'Tanner_SupportCode.PrintTimeTakenInMs startTime
 
 ' Check for appropriate stage polarity and units conversion of image data and min/max
 Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, idata())
@@ -301,11 +334,11 @@ tData.tag& = 1096040772
 tData.Size& = tGrid.nRow& * tGrid.nCol& * 8
 
 ' Load data for writing
-For j% = 1 To idata(findex%).iy%
-For i% = 1 To idata(findex%).ix%
-tData.hdata#(i%, j%) = CDbl(idata(findex%).gData!(i%, j%))
-Next i%
-Next j%
+For jj& = 1 To idata(findex%).iy%
+For ii& = 1 To idata(findex%).ix%
+tData.hdata#(ii&, jj&) = CDbl(idata(findex%).gData!(ii&, jj&))
+Next ii&
+Next jj&
 
 Close #Temp1FileNumber%
 DoEvents
@@ -566,11 +599,13 @@ Private Sub GridCheckGRDConvert(method As Integer, tfilename As String, gX_Polar
 ierror = False
 On Error GoTo GridCheckGRDConvertError
 
-Dim i As Integer, j As Integer
 Dim ix As Integer, iy As Integer
 Dim temp As Double
 Dim dstring As String, gstring As String
 Dim tX_Polarity As Integer, tY_Polarity As Integer
+
+Dim ii As Long, jj As Long
+Dim iBound As Long, jBound As Long
 
 ' Load error string for error messages
 dstring$ = "DEFAULT: X_Polarity=" & Format$(Default_X_Polarity%) & ", Y_Polarity=" & Format$(Default_Y_Polarity%) & ", Stage Units=" & Default_Stage_Units$
@@ -698,23 +733,48 @@ ix% = idata(findex%).ix%
 If ix% = 0 Then GoTo GridCheckGRDConvertBadIx
 If iy% = 0 Then GoTo GridCheckGRDConvertBadIy
 
-For j% = 1 To iy%
-For i% = 1 To ix%
-If tX_Polarity = 0 And tY_Polarity = 0 Then
-idata(findex%).gData!(i%, j%) = sarray!(i%, j%)
+' Profile the code below
+'Dim startTime As Currency
+'Tanner_SupportCode.EnableHighResolutionTimers
+'Tanner_SupportCode.GetHighResTime startTime
 
-ElseIf tX_Polarity <> 0 And tY_Polarity = 0 Then
-idata(findex%).gData!(i%, j%) = sarray!(ix% - (i% - 1), j%)
-
-ElseIf tX_Polarity = 0 And tY_Polarity <> 0 Then
-idata(findex%).gData!(i%, j%) = sarray!(i%, iy% - (j% - 1))
-
-ElseIf tX_Polarity <> 0 And tY_Polarity <> 0 Then
-idata(findex%).gData!(i%, j%) = sarray!(ix% - (i% - 1), iy% - (j% - 1))
-End If
-Next i%
-Next j%
-
+    ' Load into longs for better perormance
+    iBound& = ix%
+    jBound& = iy%
+        
+    If (tX_Polarity% = 0) And (tY_Polarity% = 0) Then
+        
+        idata(findex%).gData = sarray
+        
+    ' Invert X
+    ElseIf (tX_Polarity% <> 0) And (tY_Polarity% = 0) Then
+        For jj& = 1 To jBound&
+            For ii& = 1 To iBound&
+                idata(findex%).gData!(ii&, jj&) = sarray!(iBound& - (ii& - 1), jj&)
+            Next ii&
+        Next jj&
+    
+    ' Invert Y
+    ElseIf (tX_Polarity% = 0) And (tY_Polarity% <> 0) Then
+        For jj& = 1 To jBound&
+            For ii& = 1 To iBound&
+                idata(findex).gData!(ii&, jj&) = sarray!(ii&, jBound& - (jj& - 1))
+            Next ii&
+        Next jj&
+    
+    ' Invert X and Y
+    ElseIf (tX_Polarity% <> 0) And (tY_Polarity% <> 0) Then
+        For jj& = 1 To jBound&
+            For ii& = 1 To iBound&
+                idata(findex).gData!(ii&, jj&) = sarray!(iBound& - (ii& - 1), jBound& - (jj& - 1))
+            Next ii&
+        Next jj&
+    
+    End If
+        
+'Debug.Print "GridCheckGRDConvert:"
+'Tanner_SupportCode.PrintTimeTakenInMs startTime
+    
 ' Fix units if necessary
 If Default_Stage_Units$ <> gStage_Units$ Then
 If method% = 1 Then         ' reading GRD
@@ -857,6 +917,3 @@ ierror = True
 Exit Sub
 
 End Sub
-
-
-

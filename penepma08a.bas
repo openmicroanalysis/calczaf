@@ -412,7 +412,9 @@ Dim cstring As String, dstring As String
 Dim tfilenumber As Integer
 
 ' Check production file
-If Dir$(Trim$(tfilename$)) = vbNullString Then Exit Sub
+If Dir$(Trim$(tfilename$)) = vbNullString Then GoTo Penepma08PenepmaSpectrumReadFileNotFound
+
+' Open file
 tfilenumber% = FreeFile()
 Open tfilename$ For Input As #tfilenumber%
 
@@ -494,6 +496,12 @@ Close #tfilenumber%
 ierror = True
 Exit Sub
 
+Penepma08PenepmaSpectrumReadFileNotFound:
+msg$ = "The specified file (" & tfilename$ & ") was not found."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08PenepmaSpectrumRead"
+ierror = True
+Exit Sub
+
 End Sub
 
 Sub Penepma08PenepmaSpectrumWrite(tfilename As String, npts As Long, xdata() As Double, ydata() As Double, zdata() As Double, xmin As Double, xmax As Double, xnum As Long, xwid As Double, theta1 As Double, theta2 As Double, phi1 As Double, phi2 As Double)
@@ -560,8 +568,8 @@ Exit Sub
 
 End Sub
 
-Function Penepma08ExtractTransitionEnergy(ielm As Integer, iray As Integer, tfilename As String) As Double
-' Return the specified emission energy from the Penepma output
+Sub Penepma08ExtractTransitionEnergy(ielm As Integer, iray As Integer, tfilename As String, tenergy As Double)
+' Return the specified emission energy from the Penepma output (for synthetic wavescan data in demo mode)
 '
 ' Sample input file:
 ' #  Results from PENEPMA. Output from photon detector #  1
@@ -586,28 +594,33 @@ ierror = False
 On Error GoTo Penepma08ExtractTransitionEnergyError
 
 Dim elementfound As Boolean
-Dim l As Integer
+Dim l As Integer, tfilenumber As Integer
 Dim astring As String, bstring As String, tstring As String
 Dim atnum As Integer
 Dim s0 As String, s1 As String
 Dim eV As Single
 
-Penepma08ExtractTransitionEnergy# = 0#
+tenergy# = 0#
 
-' Make sure input file is closed
-Close #Temp1FileNumber%
+' Check for element and xray number
+If ielm% = 0 Then GoTo Penepma08ExtractTransitionEnergyZeroAtomicNumber
+If iray% = 0 Then GoTo Penepma08ExtractTransitionEnergyZeroXrayNumber
 
-If Dir$(Trim$(tfilename$)) = vbNullString Then Exit Function
-Open tfilename$ For Input As #Temp1FileNumber%
+' Check for file
+If Dir$(Trim$(tfilename$)) = vbNullString Then GoTo Penepma08ExtractTransitionEnergyFileNotFound
+
+' Open file and read (specified emission energy may not be present if the specified element is not in the composition)
+tfilenumber% = FreeFile()
+Open tfilename$ For Input As #tfilenumber%
 
 ' Load array (IZ, SO, S1, E (eV), P, unc, etc.
-Do Until EOF(Temp1FileNumber%)
-Line Input #Temp1FileNumber%, astring$
+Do Until EOF(tfilenumber%)
+Line Input #tfilenumber%, astring$
 If Len(Trim$(astring$)) > 0 And InStr(astring$, "#") = 0 Then            ' skip to first data line (also skips if value is -1.#IND0E+000)
 
 ' Load k-ratio data
 Call MiscParseStringToString(astring$, bstring$)
-If ierror Then Exit Function
+If ierror Then Exit Sub
 atnum% = Val(Trim$(bstring$))                        ' IZ (atomic number)
 
 ' Check atomic number
@@ -615,14 +628,14 @@ If atnum% = ielm% Then
 
 ' Load transition strings
 Call MiscParseStringToString(astring$, bstring$)
-If ierror Then Exit Function
+If ierror Then Exit Sub
 s0$ = Trim$(bstring$)                                ' S0 (inner transition)
 Call MiscParseStringToString(astring$, bstring$)
-If ierror Then Exit Function
+If ierror Then Exit Sub
 s1$ = Trim$(bstring$)                                ' S1 (outer transition)
 
 Call MiscParseStringToString(astring$, bstring$)
-If ierror Then Exit Function
+If ierror Then Exit Sub
 eV! = Val(Trim$(bstring$))                           ' E (eV)
 
 ' Load x-ray index for x-ray line
@@ -644,9 +657,9 @@ If tstring$ = "M5 N3" Then l% = 12        ' (Mz)
 
 ' Skip if not the specified primary line
 If l% > 0 And l% = iray% Then
-Penepma08ExtractTransitionEnergy# = CDbl(eV!)
-Close #Temp1FileNumber%
-Exit Function
+tenergy# = CDbl(eV!)
+Close #tfilenumber%
+Exit Sub
 
 ' Parse primary intensity
 'Call MiscParseStringToString(astring$, bstring$)
@@ -699,16 +712,34 @@ End If
 End If
 Loop
 
-Close #Temp1FileNumber%
+' Specified element and x-ray not found (not present in file composition)
+Close #tfilenumber%
 
-Exit Function
+Exit Sub
 
 ' Errors
 Penepma08ExtractTransitionEnergyError:
 MsgBox Error$, vbOKOnly + vbCritical, "Penepma08ExtractTransitionEnergy"
-Close #Temp1FileNumber%
+Close #tfilenumber%
 ierror = True
-Exit Function
+Exit Sub
 
-End Function
+Penepma08ExtractTransitionEnergyZeroAtomicNumber:
+msg$ = "Zero atomic number passed for file " & tfilename$
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08ExtractTransitionEnergy"
+ierror = True
+Exit Sub
 
+Penepma08ExtractTransitionEnergyZeroXrayNumber:
+msg$ = "Zero xray number passed for file " & tfilename$
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08ExtractTransitionEnergy"
+ierror = True
+Exit Sub
+
+Penepma08ExtractTransitionEnergyFileNotFound:
+msg$ = "The specified file (" & tfilename$ & ") was not found."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08ExtractTransitionEnergy"
+ierror = True
+Exit Sub
+
+End Sub

@@ -12,9 +12,9 @@ Option Explicit
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ' Win32 Function Declarations
-Private Declare Function GetObjectAPI Lib "GDI32.dll" Alias "GetObjectA" (ByVal hObject As Long, ByVal ncount As Long, lpObject As Any) As Long
-Private Declare Function GetDIBits Lib "GDI32.dll" (ByVal aHDC As Long, ByVal hBitmap As Long, ByVal nStartScan As Long, ByVal nNumScans As Long, lpBits As Any, lpBI As BITMAPINFO, ByVal wUsage As Long) As Long
-Private Declare Function SetDIBits Lib "GDI32.dll" (ByVal hdc As Long, ByVal hBitmap As Long, ByVal nStartScan As Long, ByVal nNumScans As Long, ByRef lpBits As Any, ByRef lpBI As BITMAPINFO, ByVal wUsage As Long) As Long
+Private Declare Function GetObjectAPI Lib "gdi32.dll" Alias "GetObjectA" (ByVal hObject As Long, ByVal ncount As Long, lpObject As Any) As Long
+Private Declare Function GetDIBits Lib "gdi32.dll" (ByVal aHDC As Long, ByVal hBitmap As Long, ByVal nStartScan As Long, ByVal nNumScans As Long, lpBits As Any, lpBI As BITMAPINFO, ByVal wUsage As Long) As Long
+Private Declare Function SetDIBits Lib "gdi32.dll" (ByVal hdc As Long, ByVal hBitmap As Long, ByVal nStartScan As Long, ByVal nNumScans As Long, ByRef lpBits As Any, ByRef lpBI As BITMAPINFO, ByVal wUsage As Long) As Long
 'Private Declare Sub CopyMemory Lib "kernel32.dll" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Const MAXLEVELS& = BIT8&
@@ -161,7 +161,7 @@ ierror = False
 On Error GoTo BMPSaveArrayToBMPFileError
 
 Dim tfilenumber As Integer
-Dim i As Integer, j As Integer
+Dim i As Long, j As Long
 Dim BPL As Long, aBPL As Long
 
 Dim tint4 As TypeInt4
@@ -170,6 +170,9 @@ Dim tbyt4 As TypeByt4
 Dim BMPHeader As TypeBMPHeader
 Dim BMPInfo As TypeBMPInfo
 Dim BMPRGBQuad As TypeBMPRGBQuad
+
+Dim lineOfBytes() As Byte
+Dim lineOfBytesSize As Long
 
 ' Calculate bytes per line
 BPL& = BMPBytesPerLine&(CLng(ix%), 8)   ' assume always 8 bit images
@@ -204,18 +207,18 @@ BMPInfo.NumSignificantColors& = 0
 Put #tfilenumber%, , BMPInfo
 
 ' Fill RGB quad (gray palette)
-For i% = 0 To BIT8&
+For i& = 0 To BIT8&
 If ImagePaletteNumber% = 0 Then
-BMPRGBQuad.Blue = CByte(i%)
-BMPRGBQuad.Green = CByte(i%)
-BMPRGBQuad.Red = CByte(i%)
+BMPRGBQuad.Blue = CByte(i&)
+BMPRGBQuad.Green = CByte(i&)
+BMPRGBQuad.Red = CByte(i&)
 BMPRGBQuad.Reserved = 0
 
 Put #tfilenumber%, , BMPRGBQuad
 Else
 
 ' Load palette from .FC file (swap red and blue bytes)
-tint4.intval& = ImagePaletteArray&(i%)
+tint4.intval& = ImagePaletteArray&(i)
 LSet tbyt4 = tint4
 BMPRGBQuad.Blue = tbyt4.strval(3)
 BMPRGBQuad.Green = tbyt4.strval(2)
@@ -224,21 +227,30 @@ BMPRGBQuad.Reserved = 0
 
 Put #tfilenumber%, , BMPRGBQuad
 End If
-Next i%
+Next i&
 
-' Save to file
-For j% = 1 To iy%
-For i% = 1 To ix%
-Put #tfilenumber%, , jarray(i%, j%)
-Next i%
+    ' Profile the code below
+    'Dim startTime As Currency
+    'Tanner_SupportCode.EnableHighResolutionTimers
+    'Tanner_SupportCode.GetHighResTime startTime
+    
+    ' Create a line of bytes that is aligned on a DWORD boundary (as required by bitmaps)
+    lineOfBytesSize& = aBPL&
+    ReDim lineOfBytes(0 To lineOfBytesSize& - 1) As Byte
 
-' Load extra bytes per line
-For i% = ix% + 1 To aBPL&
-Put #tfilenumber%, , CByte(0)
-Next i%
+    For j& = 1 To iy%
 
-Next j%
+        ' Copy this line of pixel values into the DWORD0-aligned array
+        Tanner_SupportCode.CopyMemory_Strict VarPtr(lineOfBytes(0)), VarPtr(jarray(1, j&)), ix%
 
+        ' Dump the entire array out to file at once
+        Put #tfilenumber, , lineOfBytes
+
+    Next j&
+        
+    'Debug.Print "BMPSaveArrayToBMPFile:"
+    'Tanner_SupportCode.PrintTimeTakenInMs startTime
+        
 Close #tfilenumber%
 Exit Sub
 
@@ -426,61 +438,104 @@ End Sub
 
 Sub BMPConvertSingleArrayToByteArray(ix As Integer, iy As Integer, sarray() As Single, jarray() As Byte)
 ' Converts an single precision array to a byte array (normalizes the data to 0 to 255)
+    
+    ierror = False
+    On Error GoTo BMPConvertSingleArrayToByteArrayError
+    
+    ' Profile the code below
+    'Dim startTime As Currency
+    'Tanner_SupportCode.EnableHighResolutionTimers
+    'Tanner_SupportCode.GetHighResTime startTime
+    
+    Dim i As Long, j As Long
+    
+    ' Instead of intermixing singles and doubles, let's stick to just one data type
+    Dim minmax As Single
+    Dim smax As Single, smin As Single
+    Dim sTemp As Single
+    Dim tmpValueF As Single
+    
+    ' Declare globals as local variables for speed
+    Dim blankValueF As Single
+    blankValueF! = BLANKINGVALUE!
 
-ierror = False
-On Error GoTo BMPConvertSingleArrayToByteArrayError
+    Dim maxLevelsF As Single
+    maxLevelsF! = MAXLEVELS&
 
-Dim i As Integer, j As Integer
-Dim minmax As Double
-Dim smax As Double, smin As Double
-Dim stemp As Double
+    Dim maxBit8 As Single
+    maxBit8! = BIT8&
 
-' Find minimum and maximum of data
-smax# = CSng(MINSINGLE!)
-smin# = CSng(MAXSINGLE!)
-For j% = 1 To iy%
-For i% = 1 To ix%
-If sarray!(i%, j%) <> BLANKINGVALUE! Then
-If sarray!(i%, j%) > smax# Then smax# = CSng(sarray!(i%, j%))
-If sarray!(i%, j%) < smin# Then smin# = CSng(sarray!(i%, j%))
-End If
-Next i%
-Next j%
-DoEvents
+    ' Find minimum and maximum of data
+    smax! = MINSINGLE!
+    smin! = MAXSINGLE!
+    For j& = 1 To iy%
+    For i& = 1 To ix%
+    
+        ' Array comparisons are expensive (because the location of the array value in memory has to be
+        ' resolved multiple times).  To speed things up, cache the array value locally.
+        tmpValueF = sarray!(i&, j&)
+        If (tmpValueF! <> blankValueF!) Then
+            If (tmpValueF! > smax!) Then smax! = tmpValueF!
+            If (tmpValueF! < smin!) Then smin! = tmpValueF!
+        End If
+        
+    Next i&
+    Next j&
 
-' Normalize data and load into byte array (this is time consuming!)
-minmax# = (smax# - smin#)
-If minmax# <> 0# Then
-For j% = 1 To iy%
-For i% = 1 To ix%
-If sarray!(i%, j%) <> BLANKINGVALUE! Then
-stemp# = MAXLEVELS& * (sarray!(i%, j%) - smin#) / minmax#
-If stemp# < 0 Then stemp# = 0
-If stemp# > BIT8& Then stemp# = BIT8&
-jarray(i%, j%) = CByte(stemp#)
-Else
-jarray(i%, j%) = 0      ' if BLANKINGVALUE! then zero
-End If
-Next i%
-Next j%
+    ' Normalize data and load into byte array
+    minmax! = (smax! - smin!)
+    If (minmax! <> 0!) Then
 
-' No data
-Else
-For j% = 1 To iy%
-For i% = 1 To ix%
-jarray(i%, j%) = 0
-Next i%
-Next j%
-End If
+        ' Avoid division on the inner loop (multiplying is faster)
+        minmax! = 1! / minmax!
+        
+        For j& = 1 To iy%
+        For i& = 1 To ix%
 
-Exit Sub
+            If (sarray!(i&, j&) <> blankValueF!) Then
+                
+                ' Normalize
+                sTemp! = maxLevelsF! * (sarray!(i&, j&) - smin!) * minmax!
+                
+                ' Restructure the If/Then statements to make the most likely branch the default path
+                ' (e.g. stack likely outcomes under "Then", not "Else", and avoid unnecessary comparisons).
+                If (sTemp! >= 0!) Then
+                    If (sTemp! <= maxBit8!) Then
+                        jarray(i&, j&) = sTemp!
+                    Else
+                        jarray(i&, j&) = maxBit8!
+                    End If
+                Else
+                    jarray(i&, j&) = 0!
+                End If
 
-' Errors
+            Else
+                jarray(i&, j&) = 0!       ' if BLANKINGVALUE! then zero
+            End If
+
+        Next i&
+        Next j&
+
+    ' The "no data" case can be handled specially
+    Else
+        For j& = 1 To iy%
+        For i& = 1 To ix%
+            jarray(i&, j&) = 0!
+        Next i&
+        Next j&
+    End If
+   
+    'Debug.Print "BMPConvertSingleArrayToByteArray:"
+    'Tanner_SupportCode.PrintTimeTakenInMs startTime
+        
+    Exit Sub
+    
+    ' Errors
 BMPConvertSingleArrayToByteArrayError:
-Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "BMPConvertSingleArrayToByteArray"
-ierror = True
-Exit Sub
+    Screen.MousePointer = vbDefault
+    MsgBox Error$, vbOKOnly + vbCritical, "BMPConvertSingleArrayToByteArray"
+    ierror = True
+    Exit Sub
 
 End Sub
 
@@ -688,10 +743,6 @@ GetDIBits tPicture.hdc, tPicture.Image, CLng(0), nY&, pixels(1, 1, 1), bitmap_in
 For j% = 1 To nY&
 For i% = 1 To nX&
 larray&(i%, j%) = RGB(pixels(1, i%, j%), pixels(2, i%, j%), pixels(3, i%, j%))
-
-'If larray&(i%, j%) <> 0 Then
-'DoEvents
-'End If
 
 Next i%
 Next j%
@@ -915,3 +966,5 @@ ierror = True
 Exit Sub
 
 End Sub
+
+

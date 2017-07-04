@@ -2459,7 +2459,7 @@ End If                                                                   ' Therm
 lpDefault$ = Trim$(EDS_IPAddress$)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
-If EDSSpectraInterfaceType% = 5 Then                                     ' JEOL EDS only
+If EDSSpectraInterfaceType% = 6 Then                                     ' JEOL EDS only
 lpAppName$ = "Hardware"
 lpKeyName$ = "EDS_ServicePort"
 lpDefault$ = vbNullString

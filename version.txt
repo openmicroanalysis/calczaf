@@ -2,7 +2,12 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-06/30/17	Work on JEOL EDS/Video interface.
+07/03/17	Compile CalcImage wo native code flag. Issue in RGB when compiled as native code.
+v. 11.9.4
+
+07/02/17	Work with Tanner on improving code performance in GridFile.bas and BMP.bas.
+
+06/30/17	Work on JEOL EDS/Video interface. Set PFE and Startwin apps back to p-code compile. Timing issues in native exe.
 
 06/29/17	Add new parameters to .ACQ files.  Work on Stage.exe mosaic feature (Carpenter).
 
@@ -11,7 +16,6 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 06/23/17	Add JEOL EDS "filename" parameter to database EDS parameter table. Add "blanking" flags
 v. 11.9.3	to CalcImage (Wark) for detection limits and analytical sensitivity calculations.
 	
-
 06/20/17	Add mag "box" display on PictureSnap window.
 
 		Add blanking values to areas outside polygon x-ray maps in CalcImage.
