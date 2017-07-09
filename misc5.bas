@@ -364,12 +364,12 @@ imax& = 0
 For i% = 0 To n& - 1
 If barray(i%) < bmin Then
 bmin = barray(i%)
-imin& = CLng(i%)
+imin& = i%
 End If
 
 If barray(i%) > bmax Then
 bmax = barray(i%)
-imax& = CLng(i%)
+imax& = i%
 End If
 Next i%
 

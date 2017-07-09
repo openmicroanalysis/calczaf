@@ -309,32 +309,32 @@ Exit Function
 
 End Function
 
-Sub Base64ReaderConvertLine(barray() As Byte, ix As Integer, j As Integer, sarray() As Single)
+Sub Base64ReaderConvertLine(barray() As Byte, ix As Integer, jj As Long, sarray() As Single)
 ' Converts a single scan line from 4 1 byte values into a 4 byte float
 
 ierror = False
 On Error GoTo Base64ReaderConvertLineError
 
-Dim i As Integer
+Dim ii As Long
 
 Dim tstr As TypeByt4
 Dim treal As TypeReal
 
 ' Loop on scan line
-For i% = 1 To ix%
+For ii& = 1 To ix%
 
 ' Load byte array in string array
-tstr.strval(1) = barray((1 + 4 * (i% - 1)) - 1)
-tstr.strval(2) = barray((2 + 4 * (i% - 1)) - 1)
-tstr.strval(3) = barray((3 + 4 * (i% - 1)) - 1)
-tstr.strval(4) = barray((4 + 4 * (i% - 1)) - 1)
+tstr.strval(1) = barray((1 + 4 * (ii& - 1)) - 1)
+tstr.strval(2) = barray((2 + 4 * (ii& - 1)) - 1)
+tstr.strval(3) = barray((3 + 4 * (ii& - 1)) - 1)
+tstr.strval(4) = barray((4 + 4 * (ii& - 1)) - 1)
 
 ' Copy memory location
 LSet treal = tstr
 
 ' Load return array
-sarray!(i%, j%) = treal.realval!
-Next i%
+sarray!(ii&, jj&) = treal.realval!
+Next ii&
 
 Exit Sub
 
@@ -428,7 +428,7 @@ Sub Base64ReaderGetRawData(lpFileName As String, ImageHeight As Integer, ImageWi
 ierror = False
 On Error GoTo Base64ReaderGetRawDataError
 
-Dim j As Integer
+Dim n As Long
 Dim ii As Integer, jj As Integer
 Dim tWidth As Integer
 Dim sRow As String, astring As String
@@ -436,10 +436,10 @@ Dim sRow As String, astring As String
 Dim barray() As Byte
 
 ' Read in data scan lines one at a time
-For j% = 1 To ImageHeight%
+For n& = 1 To ImageHeight%
 
 ' Get each scan line (do NOT remove the trailing "=" symbol(s) in the returned string buffer!)
-sRow$ = Base64ReaderGetINIString$(lpFileName$, "RawData", "Row" & Format$(j% - 1), vbNullString$)
+sRow$ = Base64ReaderGetINIString$(lpFileName$, "RawData", "Row" & Format$(n& - 1), vbNullString$)
 If ierror Then
 Screen.MousePointer = vbDefault
 Exit Sub
@@ -460,13 +460,13 @@ tWidth% = (jj% - ii%) + 1
 If tWidth% <> ImageWidth% * 4 Then GoTo Base64ReaderGetRawDataBadScanLine
 
 ' Convert bytes to single precision floats (note that Y dimension needs to be inverted!)
-Call Base64ReaderConvertLine(barray(), ImageWidth%, ImageHeight% - (j% - 1), sarray!())
+Call Base64ReaderConvertLine(barray(), ImageWidth%, CLng(ImageHeight% - (n& - 1)), sarray!())
 If ierror Then
 Screen.MousePointer = vbDefault
 Exit Sub
 End If
 
-Next j%
+Next n&
 
 Exit Sub
 
@@ -479,7 +479,7 @@ Exit Sub
 
 Base64ReaderGetRawDataBadScanLine:
 Screen.MousePointer = vbDefault
-msg$ = "Unable to read scan line " & Format$(j%) & " (expected width of " & Format$(ImageWidth%) & " but found " & Format$(tWidth%) & ") in file " & lpFileName$
+msg$ = "Unable to read scan line " & Format$(n&) & " (expected width of " & Format$(ImageWidth%) & " but found " & Format$(tWidth%) & ") in file " & lpFileName$
 MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderGetRawData"
 ierror = True
 Exit Sub

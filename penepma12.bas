@@ -4897,7 +4897,7 @@ Call IOWriteLog(msg$)
 For m% = 1 To 50
 'For m% = 15 To 15       ' testing purposes (15 keV only)
 'For m% = 15 To 16       ' testing purposes (15 and 16 keV only)
-MaterialMeasuredEnergy# = CDbl(m%)
+MaterialMeasuredEnergy# = m%
 
 ' Get x-ray data
 Call XrayGetEnergy(MaterialMeasuredElement%, MaterialMeasuredXray%, eng!, edg!)
@@ -5410,7 +5410,7 @@ For m% = 1 To 50
 'For m% = 15 To 16       ' testing purposes (15 and 16 keV only)
 'For m% = 19 To 19       ' testing purposes (19 keV only)
 'For m% = 28 To 28       ' testing purposes (28 keV only for In ka in Na)
-MaterialMeasuredEnergy# = CDbl(m%)
+MaterialMeasuredEnergy# = m%
 
 msg$ = vbCrLf & "Extracting Matrix K-Ratios for " & Trim$(Symup$(ExtractElement%)) & " in " & Trim$(Symup$(ExtractMatrix%)) & " at " & Format$(MaterialMeasuredEnergy#) & " keV..."
 Call IOWriteLog(msg$)
@@ -8708,7 +8708,7 @@ For m% = 1 To 50
 'For m% = 15 To 16       ' testing purposes (15 and 16 keV only)
 'For m% = 19 To 19       ' testing purposes (19 keV only)
 'For m% = 28 To 28       ' testing purposes (28 keV only for In ka in Na)
-MaterialMeasuredEnergy# = CDbl(m%)
+MaterialMeasuredEnergy# = m%
 
 msg$ = vbCrLf & "Extracting Matrix K-Ratios for " & Trim$(Symup$(ExtractElement%)) & " in " & Trim$(Symup$(ExtractMatrix%)) & " at " & Format$(MaterialMeasuredEnergy#) & " keV..."
 Call IOWriteLog(msg$)

@@ -749,7 +749,7 @@ If tadjacent# <> 0# Then
 
 ' Calculate angle from two points
 radians# = topposite# / tadjacent#
-BoundaryAngle! = CSng(90# - Atn(radians#) * 180# / PID#)
+BoundaryAngle! = (90# - Atn(radians#) * 180# / PID#)
 
 ' Vertical boundary is zero angle
 Else
@@ -834,7 +834,7 @@ Exit Sub
 
 End Sub
 
-Sub SecondaryGetBoundary(mode As Integer, x1 As Single, y1 As Single, x2 As Single, y2 As Single, tForm As Form)
+Sub SecondaryGetBoundary(mode As Integer, x1 As Single, y1 As Single, X2 As Single, Y2 As Single, tForm As Form)
 ' Get the boundary coordinates from the user's click and drag amd convert to stage positions and store
 ' mode = 0 first boundary points (mouse down)
 ' mode = 1 second boundary points (mouse up)
@@ -872,8 +872,8 @@ scy1! = y1!
 Exit Sub
 End If
 
-scx2! = x2!
-scy2! = y2!
+scx2! = X2!
+scy2! = Y2!
 
 ' Check if zero distance (double click)
 If scx1! = scx2! And scy1! = scy2! Then GoTo SecondaryGetBoundaryPointsSame

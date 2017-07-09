@@ -1022,7 +1022,7 @@ Call IOWriteLog(tmsg$)
 End If
 
 ' Calculate relative line weight for this emitter-matrix pair (Reed uses emitter/fluorescer for relative line weight ratios, that is Fe Ka / W La)
-tLineWeightRatio! = CSng(emitter_corrected# / matrix_corrected#)
+tLineWeightRatio! = emitter_corrected# / matrix_corrected#
 
 If VerboseMode Then
 tmsg$ = "Corrected relative line weight for emitter " & Trim$(Symup$(iemitter_elem%)) & " " & Trim$(Xraylo$(iemitter_xray%)) & " by " & Trim$(Symup$(imatrix_elem%)) & " " & Trim$(Xraylo$(imatrix_xray%)) & " is " & MiscAutoFormat$(tLineWeightRatio!)

@@ -194,9 +194,9 @@ Next j%
 For n% = i% + 1 To j% - 1
 fraction! = 1#
 If (i% <> j%) Then fraction! = (n% - i%) / CSng(j% - i%)
-ired& = CLng(ired1& + (ired2& - ired1&) * fraction!)
-igreen& = CLng(igreen1& + (igreen2& - igreen1&) * fraction!)
-iblue& = CLng(iblue1& + (iblue2& - iblue1&) * fraction!)
+ired& = ired1& + (ired2& - ired1&) * fraction!
+igreen& = igreen1& + (igreen2& - igreen1&) * fraction!
+iblue& = iblue1& + (iblue2& - iblue1&) * fraction!
 narray&(n%) = RGB(CInt(ired&), CInt(igreen&), CInt(iblue&))
 Next n%
 End If
@@ -366,7 +366,7 @@ Do Until EOF(Temp1FileNumber%)
 Input #Temp1FileNumber%, Percent!, rval&, gval&, bval&
 
 ' Convert percent to color index
-n% = CInt(Percent! / 100# * 255#)
+n% = Percent! / 100# * 255#
 If n% < 0# Then n% = 0
 If n% > 255# Then n% = 255
 

@@ -634,7 +634,7 @@ If ierror Then Exit Sub
 For m% = 1 To 50
 'For m% = 15 To 15       ' testing purposes (15 keV only)
 'For m% = 15 To 16       ' testing purposes (15 and 16 keV only)
-BeamEnergy! = CSng(m%)
+BeamEnergy! = m%
 
 Call IOWriteLog("Reading data at " & Format$(m%) & " keV, for " & Symup$(EmittingElement%) & " " & Xraylo$(EmittingXray%) & ", from input file " & tfilename$ & "...")
 DoEvents
@@ -714,7 +714,7 @@ MtDt.AddNew
 MtDt("BoundaryKRatioNumber") = nrec&         ' unique record number pointing to Boundary table
 MtDt("BoundaryKRatioOrderA") = j%          ' load order (1 to MAXBINARY%)
 MtDt("BoundaryKRatioOrderB") = k%          ' load order (1 to MAXBINARY%)
-MtDt("BoundaryKRatio_ZAF_KRatio") = CSng(Boundary_ZAF_Kratios#(k%, j%, n&))
+MtDt("BoundaryKRatio_ZAF_KRatio") = Boundary_ZAF_Kratios#(k%, j%, n&)
 MtDt.Update
 Next k%
 Next j%
@@ -980,7 +980,7 @@ ReDim Preserve ydata(1 To npts%) As Single
 xdata!(1) = tMassDistances!(j%, nn&)
 
 ' Now load the ydata array using k ratio
-ydata!(1) = CSng(tKratios2#(k%, j%, nn&))
+ydata!(1) = tKratios2#(k%, j%, nn&)
 
 ' Check for pathological conditions
 If tDistanceMass! > tMassDistances!(j%, 1) And tDistanceMass! < tMassDistances!(j%, nPoints&) Then
@@ -991,7 +991,7 @@ npts% = npts% + 1
 ReDim Preserve xdata(1 To npts%) As Single
 ReDim Preserve ydata(1 To npts%) As Single
 xdata!(npts%) = tMassDistances!(j%, nn& - 1)
-ydata!(npts%) = CSng(tKratios2#(k%, j%, nn& - 1))
+ydata!(npts%) = tKratios2#(k%, j%, nn& - 1)
 End If
 
 If nn& + 1 <= nPoints& Then
@@ -999,7 +999,7 @@ npts% = npts% + 1
 ReDim Preserve xdata(1 To npts%) As Single
 ReDim Preserve ydata(1 To npts%) As Single
 xdata!(npts%) = tMassDistances!(j%, nn& + 1)
-ydata!(npts%) = CSng(tKratios2#(k%, j%, nn& + 1))
+ydata!(npts%) = tKratios2#(k%, j%, nn& + 1)
 End If
 
 ' Debug mode
@@ -1022,8 +1022,8 @@ krat! = acoeff!(1) + tDistanceMass! * acoeff!(2) + tDistanceMass! ^ 2 * acoeff!(
 
 ' Distance is outside k-ratio data range (just use end value)
 Else
-If tDistanceMass! < tMassDistances!(j%, 1) Then krat! = CSng(tKratios2#(k%, j%, 1))
-If tDistanceMass! > tMassDistances!(j%, nPoints&) Then krat! = CSng(tKratios2#(k%, j%, nPoints&))
+If tDistanceMass! < tMassDistances!(j%, 1) Then krat! = tKratios2#(k%, j%, 1)
+If tDistanceMass! > tMassDistances!(j%, nPoints&) Then krat! = tKratios2#(k%, j%, nPoints&)
 End If
 
 If DebugMode Then Call IOWriteLog("Penepma12BoundaryInterpolate: Interpolated K-ratio % is " & MiscAutoFormat$(krat!) & " at a mass distance " & Format$(tDistanceMass!) & " ug/cm^2")

@@ -166,7 +166,7 @@ If sample(1).Type% = 1 Then
 ip% = IPOS2(NumberofStandards%, sample(1).number%, StandardNumbers%())
 If ip% > 0 Then
 For i% = 1 To sample(1).LastChan%
-analysis.StdPercents!(ip%, i%) = NotAnalyzedValue!
+analysis.StdPercents!(ip%, i%) = NOT_ANALYZED_VALUE_SINGLE!
 
 ' Add to sample (also if using duplicated element)
 ipp% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample()) ' find if element is duplicated in sample
@@ -477,7 +477,7 @@ stdsample(1).CrystalNames$(stdsample(1).LastChan%) = sample(1).CrystalNames$(j%)
 stdsample(1).numcat%(stdsample(1).LastChan%) = sample(1).numcat%(j%)
 stdsample(1).numoxd%(stdsample(1).LastChan%) = sample(1).numoxd%(j%)
 stdsample(1).AtomicCharges!(stdsample(1).LastChan%) = sample(1).AtomicCharges!(j%)
-stdsample(1).ElmPercents!(stdsample(1).LastChan%) = NotAnalyzedValue!  ' use a non-zero value
+stdsample(1).ElmPercents!(stdsample(1).LastChan%) = NOT_ANALYZED_VALUE_SINGLE!  ' use a non-zero value
 stdsample(1).LastElm% = stdsample(1).LastChan%
 End If
 Next j%
@@ -508,7 +508,7 @@ stdsample(1).CrystalNames$(stdsample(1).LastChan%) = sample(1).CrystalNames$(j%)
 stdsample(1).numcat%(stdsample(1).LastChan%) = sample(1).numcat%(j%)
 stdsample(1).numoxd%(stdsample(1).LastChan%) = sample(1).numoxd%(j%)
 stdsample(1).AtomicCharges!(stdsample(1).LastChan%) = sample(1).AtomicCharges!(j%)
-stdsample(1).ElmPercents!(stdsample(1).LastChan%) = NotAnalyzedValue!  ' use a non-zero value
+stdsample(1).ElmPercents!(stdsample(1).LastChan%) = NOT_ANALYZED_VALUE_SINGLE!  ' use a non-zero value
 stdsample(1).LastElm% = stdsample(1).LastChan%
 End If
 Next j%

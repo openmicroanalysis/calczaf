@@ -82,8 +82,8 @@ tGraph.GetLastMouseMove pX%, pY%
 tGraph.GetRectGraph nLeft%, nTop%, nRight%, nBottom%
 If mode% = 0 Or (mode% = 1 And pX% > nLeft% And pX% < nRight% And pY% > nTop% And pY% < nBottom%) Then
    nA& = 0              ' initialize subset to use (if using OverlapMultiAxes)
-   nX& = CLng(pX%)      ' initialize nX and nY with mouse location
-   nY& = CLng(pY%)
+   nX& = pX%      ' initialize nX and nY with mouse location
+   nY& = pY%
    tGraph.PEconvpixeltograph nA&, nX&, nY&, fX#, fY#, 0, 0, 0
 End If
 
@@ -141,7 +141,7 @@ tGraph.XAxisLabel = vbNullString
 tGraph.YAxisLabel = vbNullString
 
 tGraph.Subsets = 1
-tGraph.Points = 1
+tGraph.points = 1
 tGraph.xdata(0, 0) = 0                          ' for empty subset
 tGraph.ydata(0, 0) = 0
 

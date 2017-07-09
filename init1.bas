@@ -1158,11 +1158,11 @@ lpKeyName$ = "MaxMenuFileArray"
 nDefault& = 12
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-MaxMenuFileArray% = CInt(valid&)
+MaxMenuFileArray% = valid&
 If MaxMenuFileArray% < 0 Or MaxMenuFileArray% > 12 Then
 msg$ = "MaxMenuFileArray keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-MaxMenuFileArray% = CInt(nDefault&)
+MaxMenuFileArray% = nDefault&
 End If
 MaxMenuFileArray% = MaxMenuFileArray% + 1   ' add one for separator bar
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -1185,7 +1185,7 @@ lpKeyName$ = "MACTypeFlag"
 nDefault& = 1   ' LINEMU.DAT
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-MACTypeFlag% = CInt(valid&)
+MACTypeFlag% = valid&
 If MACTypeFlag% < 1 Or MACTypeFlag% > MAXMACTYPE% Then
 msg$ = "MACTypeFlag keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
@@ -1224,7 +1224,7 @@ lpKeyName$ = "AutoFocusStyle"
 nDefault& = 1
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-AutoFocusStyle% = CInt(valid&)
+AutoFocusStyle% = valid&
 If AutoFocusStyle% < 1 Or AutoFocusStyle% > 4 Then
 msg$ = "AutoFocusStyle keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
@@ -1237,7 +1237,7 @@ lpKeyName$ = "AutoFocusInterval"
 nDefault& = 5
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-AutoFocusInterval% = CInt(valid&)
+AutoFocusInterval% = valid&
 If AutoFocusInterval% < 1 Or AutoFocusInterval% > 1000 Then
 msg$ = "AutoFocusInterval keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
@@ -1337,11 +1337,11 @@ lpKeyName$ = "CommandPacingInterval"
 nDefault& = 0
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-CommandPacingInterval% = CInt(valid&)
+CommandPacingInterval% = valid&
 If CommandPacingInterval% < 0 Or CommandPacingInterval% > 100 Then
 msg$ = "CommandPacingInterval keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-CommandPacingInterval% = CInt(nDefault&)
+CommandPacingInterval% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -1436,11 +1436,11 @@ lpKeyName$ = "SurferOutputVersionNumber"
 nDefault& = 7       ' new default to use VBA code for versions 7 and up
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-SurferOutputVersionNumber% = CInt(valid&)
+SurferOutputVersionNumber% = valid&
 If SurferOutputVersionNumber% < 6 Then
 msg$ = "SurferOutputVersionNumber keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-SurferOutputVersionNumber% = CInt(nDefault&)
+SurferOutputVersionNumber% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -1513,11 +1513,11 @@ lpKeyName$ = "DefaultVacuumUnitsType"
 nDefault& = 0       ' assume Pascals (1 = Torr, 2 = mBar)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-DefaultVacuumUnitsType% = CInt(valid&)
+DefaultVacuumUnitsType% = valid&
 If DefaultVacuumUnitsType% < 0 Or DefaultVacuumUnitsType% > 2 Then
 msg$ = "DefaultVacuumUnitsType keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-DefaultVacuumUnitsType% = CInt(nDefault&)
+DefaultVacuumUnitsType% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -1527,11 +1527,11 @@ lpKeyName$ = "DefaultCorrectionType"
 nDefault& = 0       ' assume ZAF/Phi-Rho-Z (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-CorrectionFlag% = CInt(valid&)
+CorrectionFlag% = valid&
 If CorrectionFlag% < 0 Or CorrectionFlag% > MAXCORRECTION% Then
 msg$ = "DefaultCorrectionType keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-CorrectionFlag% = CInt(nDefault&)
+CorrectionFlag% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -1541,11 +1541,11 @@ lpKeyName$ = "DefaultZAFType"
 nDefault& = 1       ' assume Armstrong Phi-Rho-Z
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-izaf% = CInt(valid&)
+izaf% = valid&
 If izaf% < 1 Or izaf% > 10 Then
 msg$ = "DefaultZAFType keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-izaf% = CInt(nDefault&)
+izaf% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 Call InitGetZAFSetZAF2(izaf%)   ' load default ZAF selections
@@ -1715,11 +1715,11 @@ lpKeyName$ = "DefaultNthPointAcquisitionInterval"
 nDefault& = 10       ' assume 10 points per interval
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-DefaultNthPointAcquisitionInterval% = CInt(valid&)
+DefaultNthPointAcquisitionInterval% = valid&
 If DefaultNthPointAcquisitionInterval% < 1 Or DefaultNthPointAcquisitionInterval% > 100 Then
 msg$ = "DefaultNthPointAcquisitionInterval keyword value out of range (must be between 1 and 100) in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-DefaultNthPointAcquisitionInterval% = CInt(nDefault&)
+DefaultNthPointAcquisitionInterval% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -1729,11 +1729,11 @@ lpKeyName$ = "GeologicalSortOrder"
 nDefault& = 0       ' 0 = no sorting, 1 = traditional, 2 = low to high Z, 3 = high to low Z
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-GeologicalSortOrderFlag% = CInt(valid&)
+GeologicalSortOrderFlag% = valid&
 If GeologicalSortOrderFlag% < 0 Or GeologicalSortOrderFlag% > MAXELEMENTSORTMETHODS% Then
 msg$ = "GeolgicalSortOrder keyword value out of range (must be between 0 and " & Format$(MAXELEMENTSORTMETHODS%) & ") in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-GeologicalSortOrderFlag% = CInt(nDefault&)
+GeologicalSortOrderFlag% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -1756,11 +1756,11 @@ lpKeyName$ = "ThermoNSSLocalRemoteMode"
 nDefault& = 0       ' assume local mode (Thermo NSS and Probe for EPMA running on the same computer)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-ThermoNSSLocalRemoteMode% = CInt(valid&)
+ThermoNSSLocalRemoteMode% = valid&
 If ThermoNSSLocalRemoteMode% < 0 Or ThermoNSSLocalRemoteMode% > 1 Then
 msg$ = "ThermoNSSLocalRemoteMode keyword value out of range (must be 0 or 1) in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-ThermoNSSLocalRemoteMode% = CInt(nDefault&)
+ThermoNSSLocalRemoteMode% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -1988,7 +1988,7 @@ ProbeSoftwareInternetBrowseMethod% = valid&
 If ProbeSoftwareInternetBrowseMethod% < 0 Or ProbeSoftwareInternetBrowseMethod% > 1 Then
 msg$ = "ProbeSoftwareInternetBrowseMethod keyword value is invalid in " & ProbeWinINIFile$ & ", (must be 0 or 1)"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-ProbeSoftwareInternetBrowseMethod% = CInt(nDefault&)
+ProbeSoftwareInternetBrowseMethod% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -2542,7 +2542,7 @@ lpKeyName$ = "WDS_ServicePort"    ' for JEOL SC (8900/8200/8500/8230/8530) or SX
 nDefault& = 0                     ' should be 2785 for JEOL 8900/8200/8500, 22200 for 8230/8530, 4000 for SX100
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-WDS_ServicePort% = CInt(valid&)
+WDS_ServicePort% = valid&
 If WDS_ServicePort% = 0 Then
 msg$ = "WDS_ServicePort keyword value (TCP/IP interface) is blank in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
@@ -2572,7 +2572,7 @@ lpKeyName$ = "WDS_ServicePort2"     ' EOS or Notify socket
 nDefault& = 0                       ' should be 2785 for 8900, 22200 for 8200/8500 and 22210 for 8230/8530
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-WDS_ServicePort2% = CInt(valid&)
+WDS_ServicePort2% = valid&
 If WDS_ServicePort2% = 0 Then
 msg$ = "WDS_ServicePort2 keyword value (TCP/IP interface) is blank in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
@@ -3839,11 +3839,11 @@ If InterfaceType% = 5 Then nDefault& = 63   ' SX100/SXFive
 If InterfaceType% = 6 Then nDefault& = 40   ' Axioscope
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-MinMagWindow! = CSng(valid&)
+MinMagWindow! = valid&
 If MinMagWindow! <= 1 Or MinMagWindow! > 10000 Then
 msg$ = "MinMagWindow keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
-MinMagWindow! = CSng(nDefault&)
+MinMagWindow! = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -3858,11 +3858,11 @@ If InterfaceType% = 5 Then nDefault& = 12000000   ' SX100/SXFive
 If InterfaceType% = 6 Then nDefault& = 900000     ' Axioscope
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-MaxMagWindow! = CSng(valid&)
+MaxMagWindow! = valid&
 If MaxMagWindow! <= 1 Or MaxMagWindow! > 50000000 Then
 msg$ = "MaxMagWindow keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
-MaxMagWindow! = CSng(nDefault&)
+MaxMagWindow! = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 

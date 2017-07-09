@@ -11,9 +11,9 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
-Private Declare Function SetLocaleInfo Lib "Kernel32" Alias "SetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String) As Boolean
-Private Declare Function GetUserDefaultLCID% Lib "Kernel32" ()
+Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function SetLocaleInfo Lib "kernel32" Alias "SetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String) As Boolean
+Private Declare Function GetUserDefaultLCID% Lib "kernel32" ()
  
 'Public Const LOCALE_ICENTURY& = &H24
 'Public Const LOCALE_ICOUNTRY& = &H5
@@ -96,7 +96,7 @@ Public Const LOCALE_STHOUSAND& = &HF
 'Public Const LOCALE_STIME& = &H1E
 'Public Const LOCALE_STIMEFORMAT& = &H1003
  
-Private Declare Function GetSystemDefaultLangID Lib "Kernel32" () As Integer
+Private Declare Function GetSystemDefaultLangID Lib "kernel32" () As Integer
 
 ' OS constants
 Global Const OS_VERSION_WIN32S& = 0
@@ -189,14 +189,14 @@ Private Const MAX_PATH& = 512
 Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
 
 ' Old functions
-Private Declare Function GetTempPath Lib "Kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
-Private Declare Function GetTempFileName Lib "Kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
+Private Declare Function GetTempPath Lib "kernel32" Alias "GetTempPathA" (ByVal nBufferLength As Long, ByVal lpBuffer As String) As Long
+Private Declare Function GetTempFileName Lib "kernel32" Alias "GetTempFileNameA" (ByVal lpszPath As String, ByVal lpPrefixString As String, ByVal wUnique As Long, ByVal lpTempFileName As String) As Long
 
-Private Declare Function GetWindowsDirectoryB Lib "Kernel32" Alias "GetWindowsDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
-Private Declare Function GetSystemDirectoryB Lib "Kernel32" Alias "GetSystemDirectoryA" (ByVal Path As String, ByVal cbBytes As Long) As Long
+Private Declare Function GetWindowsDirectoryB Lib "kernel32" Alias "GetWindowsDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
+Private Declare Function GetSystemDirectoryB Lib "kernel32" Alias "GetSystemDirectoryA" (ByVal Path As String, ByVal cbBytes As Long) As Long
 Private Const MAX_LENGTH& = 512
 
-Private Declare Function GetVersionEx Lib "Kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
+Private Declare Function GetVersionEx Lib "kernel32" Alias "GetVersionExA" (lpVersionInformation As OSVERSIONINFO) As Long
 
 Private Type OSVERSIONINFO
     OSVSize         As Long
@@ -211,16 +211,16 @@ Private Const VER_PLATFORM_WIN32s = 0
 Private Const VER_PLATFORM_WIN32_WINDOWS = 1
 Private Const VER_PLATFORM_WIN32_NT = 2
 
-Private Declare Function GetProcAddress Lib "Kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
-Private Declare Function GetModuleHandle Lib "Kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
-Private Declare Function GetCurrentProcess Lib "Kernel32" () As Long
-Private Declare Function IsWow64Process Lib "Kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
+Private Declare Function GetProcAddress Lib "kernel32" (ByVal hModule As Long, ByVal lpProcName As String) As Long
+Private Declare Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
+Private Declare Function GetCurrentProcess Lib "kernel32" () As Long
+Private Declare Function IsWow64Process Lib "kernel32" (ByVal hProc As Long, ByRef bWow64Process As Boolean) As Long
 
 ' Constants used by MiscFindWindowPartial
 Global Const FWP_STARTSWITH As Long = 0
 Global Const FWP_CONTAINS As Long = 1
 
-Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cX As Long, ByVal cY As Long, ByVal wFlags As Long) As Long
 Declare Function OSFindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 Declare Function OSGetWindow Lib "user32" Alias "GetWindow" (ByVal hWnd As Long, ByVal wCmd As Long) As Long
 'Declare Function OSSetActiveWindow Lib "user32" Alias "SetForegroundWindow" (ByVal hWnd As Long) As Long
@@ -231,8 +231,8 @@ Private Declare Function GetFileVersionInfo Lib "Version.dll" Alias "GetFileVers
 Private Declare Function GetFileVersionInfoSize Lib "Version.dll" Alias "GetFileVersionInfoSizeA" (ByVal lptstrFilename As String, lpdwHandle As Long) As Long
 Private Declare Function VerQueryValue Lib "Version.dll" Alias "VerQueryValueA" (pBlock As Any, ByVal lpSubBlock As String, lplpBuffer As Any, puLen As Long) As Long
 
-Private Declare Sub MoveMemory Lib "Kernel32" Alias "RtlMoveMemory" (dest As Any, ByVal Source As Long, ByVal Length As Long)
-Private Declare Function lstrcpy Lib "Kernel32" Alias "lstrcpyA" (ByVal lpString1 As String, ByVal lpString2 As Long) As Long
+Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" (dest As Any, ByVal Source As Long, ByVal Length As Long)
+Private Declare Function lstrcpy Lib "kernel32" Alias "lstrcpyA" (ByVal lpString1 As String, ByVal lpString2 As Long) As Long
 
 Public Type TypeFileInformation
 CompanyName As String
@@ -249,11 +249,11 @@ End Type
 Private Const GW_HWNDNEXT As Long = 2
 
 ' API for MiscDirectorySort
-Private Declare Function FindFirstFile Lib "Kernel32" Alias "FindFirstFileA" (ByVal lpFileName As String, lpFindFileData As WIN32_FIND_DATA) As Long
-Private Declare Function FindNextFile Lib "Kernel32" Alias "FindNextFileA" (ByVal hFindFile As Long, lpFindFileData As WIN32_FIND_DATA) As Long
-Private Declare Function FindClose Lib "Kernel32" (ByVal hFindFile As Long) As Long
-Private Declare Function lstrlen Lib "Kernel32" Alias "lstrlenA" (ByVal lpString As String) As Long
-Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+Private Declare Function FindFirstFile Lib "kernel32" Alias "FindFirstFileA" (ByVal lpFileName As String, lpFindFileData As WIN32_FIND_DATA) As Long
+Private Declare Function FindNextFile Lib "kernel32" Alias "FindNextFileA" (ByVal hFindFile As Long, lpFindFileData As WIN32_FIND_DATA) As Long
+Private Declare Function FindClose Lib "kernel32" (ByVal hFindFile As Long) As Long
+Private Declare Function lstrlen Lib "kernel32" Alias "lstrlenA" (ByVal lpString As String) As Long
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 
 Private Type FILETIME
     dwLowDateTime As Long
@@ -287,15 +287,15 @@ Private Const DACL_SECURITY_INFORMATION             As Long = 4
 
 Public Declare Function OpenMutex Lib "kernel32.dll" Alias "OpenMutexA" (ByVal dwDesiredAccess As Long, ByVal bInheritHandle As Boolean, ByVal lpName As String) As Long
 Public Declare Function ReleaseMutex Lib "kernel32.dll" (ByVal hMutex As Long) As Long
-Public Declare Sub CloseHandle Lib "Kernel32" (ByVal hPass As Long)
+Public Declare Sub CloseHandle Lib "kernel32" (ByVal hPass As Long)
 Public Declare Function CreateMutex Lib "kernel32.dll" Alias "CreateMutexA" (ByVal lpMutexAttributes As Any, ByVal bInitialOwner As Boolean, ByVal lpName As String) As Long
 Public Declare Function GetLastError Lib "kernel32.dll" () As Long
 
-Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nIndex As Long) As Long
+Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hdc As Long, ByVal nIndex As Long) As Long
 Private Const GDC_LOGPIXELSX As Long = 88
 
 Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
-Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hDC As Long) As Long
+Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hdc As Long) As Long
 
 Public Function MiscGetWindowsDPI() As Double
 ' Returns the current screen DPI, *as set in Windows display settings.*  This obviously has no relationship to physical screen DPI,
@@ -312,7 +312,7 @@ On Error GoTo MiscGetWindowsDPIError
 screenDC& = GetDC(0)
     
 ' Retrieve logPixelsX via the API; this will be 96 at 100% DPI scaling
-logPixelsX# = CDbl(GetDeviceCaps(screenDC&, GDC_LOGPIXELSX&))
+logPixelsX# = GetDeviceCaps(screenDC&, GDC_LOGPIXELSX&)
 ReleaseDC 0, screenDC&
 
 ' Convert that value into a fractional DPI modified (e.g. 1.0 for 100% scaling, 2.0 for 200% scaling)

@@ -120,32 +120,32 @@ Sub BMPInvertByteArray(mode As Integer, ix As Integer, iy As Integer, iarray() A
 ierror = False
 On Error GoTo BMPInvertByteArrayError
 
-Dim i As Integer, j As Integer
+Dim ii As Long, jj As Long
 
 ' Invert array in X direction
 If mode% = 0 Then
 ReDim tarray(1 To ix%) As Byte
-For j% = 1 To iy%
-For i% = 1 To ix%
-tarray(ix% - (i% - 1)) = iarray(i%, j%)
-Next i%
-For i% = 1 To ix%
-iarray(i%, j%) = tarray(i%)
-Next i%
-Next j%
+For jj& = 1 To iy%
+For ii& = 1 To ix%
+tarray(ix% - (ii& - 1)) = iarray(ii&, jj&)
+Next ii&
+For ii& = 1 To ix%
+iarray(ii&, jj&) = tarray(ii&)
+Next ii&
+Next jj&
 End If
 
 ' Invert array in Y direction
 If mode% = 1 Then
 ReDim tarray(1 To iy%) As Byte
-For i% = 1 To ix%
-For j% = 1 To iy%
-tarray(iy% - (j% - 1)) = iarray(i%, j%)
-Next j%
-For j% = 1 To iy%
-iarray(i%, j%) = tarray(j%)
-Next j%
-Next i%
+For ii& = 1 To ix%
+For jj& = 1 To iy%
+tarray(iy% - (jj& - 1)) = iarray(ii&, jj&)
+Next jj&
+For jj& = 1 To iy%
+iarray(ii&, jj&) = tarray(jj&)
+Next jj&
+Next ii&
 End If
 
 Exit Sub
@@ -165,32 +165,32 @@ Sub BMPInvertLongArray(mode As Integer, ix As Integer, iy As Integer, darray() A
 ierror = False
 On Error GoTo BMPInvertLongArrayError
 
-Dim i As Integer, j As Integer
+Dim ii As Long, jj As Long
 
 ' Invert array in X direction
 If mode% = 0 Then
 ReDim narray(1 To ix%) As Long
-For j% = 1 To iy%
-For i% = 1 To ix%
-narray&(ix% - (i% - 1)) = darray&(i%, j%)
-Next i%
-For i% = 1 To ix%
-darray&(i%, j%) = narray&(i%)
-Next i%
-Next j%
+For jj& = 1 To iy%
+For ii& = 1 To ix%
+narray&(ix% - (ii& - 1)) = darray&(ii&, jj&)
+Next ii&
+For ii& = 1 To ix%
+darray&(ii&, jj&) = narray&(ii&)
+Next ii&
+Next jj&
 End If
 
 ' Invert array in Y direction
 If mode% = 1 Then
 ReDim narray(1 To iy%) As Long
-For i% = 1 To ix%
-For j% = 1 To iy%
-narray&(iy% - (j% - 1)) = darray&(i%, j%)
-Next j%
-For j% = 1 To iy%
-darray&(i%, j%) = narray&(j%)
-Next j%
-Next i%
+For ii& = 1 To ix%
+For jj& = 1 To iy%
+narray&(iy% - (jj& - 1)) = darray&(ii&, jj&)
+Next jj&
+For jj& = 1 To iy%
+darray&(ii&, jj&) = narray&(jj&)
+Next jj&
+Next ii&
 End If
 
 Exit Sub
@@ -210,32 +210,32 @@ Sub BMPInvertSingleArray(mode As Integer, ix As Integer, iy As Integer, sarray()
 ierror = False
 On Error GoTo BMPInvertSingleArrayError
 
-Dim i As Integer, j As Integer
+Dim ii As Long, jj As Long
 
 ' Invert array in X direction
 If mode% = 0 Then
 ReDim aarray(1 To ix%) As Single
-For j% = 1 To iy%
-For i% = 1 To ix%
-aarray!(ix% - (i% - 1)) = sarray!(i%, j%)
-Next i%
-For i% = 1 To ix%
-sarray!(i%, j%) = aarray!(i%)
-Next i%
-Next j%
+For jj& = 1 To iy%
+For ii& = 1 To ix%
+aarray!(ix% - (ii& - 1)) = sarray!(ii&, jj&)
+Next ii&
+For ii& = 1 To ix%
+sarray!(ii&, jj&) = aarray!(ii&)
+Next ii&
+Next jj&
 End If
 
 ' Invert array in Y direction
 If mode% = 1 Then
 ReDim aarray(1 To iy%) As Single
-For i% = 1 To ix%
-For j% = 1 To iy%
-aarray!(iy% - (j% - 1)) = sarray!(i%, j%)
-Next j%
-For j% = 1 To iy%
-sarray!(i%, j%) = aarray!(j%)
-Next j%
-Next i%
+For ii& = 1 To ix%
+For jj& = 1 To iy%
+aarray!(iy% - (jj& - 1)) = sarray!(ii&, jj&)
+Next jj&
+For jj& = 1 To iy%
+sarray!(ii&, jj&) = aarray!(jj&)
+Next jj&
+Next ii&
 End If
 
 Exit Sub

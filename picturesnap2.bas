@@ -726,14 +726,14 @@ Next j%
 
 ' Load grid structure
 GridImageData(1).id$ = "DSBB"
-GridImageData(1).ix% = CInt(nX&)
-GridImageData(1).iy% = CInt(nY&)
-GridImageData(1).xmin# = CDbl(xmin!)
-GridImageData(1).xmax# = CDbl(xmax!)
-GridImageData(1).ymin# = CDbl(ymin!)
-GridImageData(1).ymax# = CDbl(ymax!)
-GridImageData(1).zmin# = CDbl(zmin!)
-GridImageData(1).zmax# = CDbl(zmax!)
+GridImageData(1).ix% = nX&
+GridImageData(1).iy% = nY&
+GridImageData(1).xmin# = xmin!
+GridImageData(1).xmax# = xmax!
+GridImageData(1).ymin# = ymin!
+GridImageData(1).ymax# = ymax!
+GridImageData(1).zmin# = zmin!
+GridImageData(1).zmax# = zmax!
 
 ' Dimension array
 ReDim GridImageData(1).gData(1 To nX&, 1 To nY&) As Single
@@ -743,16 +743,16 @@ Screen.MousePointer = vbHourglass
 For j% = 1 To nY&
 For i% = 1 To nX&
 If ImageInterfaceDisplayXPolarity And ImageInterfaceDisplayYPolarity Then
-GridImageData(1).gData!(i%, j%) = CSng(larray(nX& - (i% - 1), nY& - (j% - 1)))
+GridImageData(1).gData!(i%, j%) = larray(nX& - (i% - 1), nY& - (j% - 1))
 
 ElseIf ImageInterfaceDisplayXPolarity And Not ImageInterfaceDisplayYPolarity Then
-GridImageData(1).gData!(i%, j%) = CSng(larray(nX& - (i% - 1), j%))
+GridImageData(1).gData!(i%, j%) = larray(nX& - (i% - 1), j%)
 
 ElseIf Not ImageInterfaceDisplayXPolarity And ImageInterfaceDisplayYPolarity Then
-GridImageData(1).gData!(i%, j%) = CSng(larray(i%, nY& - (j% - 1)))
+GridImageData(1).gData!(i%, j%) = larray(i%, nY& - (j% - 1))
 
 Else
-GridImageData(1).gData!(i%, j%) = CSng(larray(i%, j%))
+GridImageData(1).gData!(i%, j%) = larray(i%, j%)
 End If
 Next i%
 Next j%
@@ -1019,7 +1019,7 @@ Call PositionGetSampleDataOnly(samplerow%, npts%, ImageXdata!(), ImageYdata!(), 
 If ierror Then Exit Sub
 
 ' Dimension unused arrays
-ImagePoints& = CLng(npts%)
+ImagePoints& = npts%
 If ImagePoints& > 0 Then
 ReDim ImageNData(1 To ImagePoints&) As Integer
 ReDim ImageSData(1 To ImagePoints&) As Integer
@@ -1112,10 +1112,10 @@ ImageXdata!(i&) = xdata!(i&)
 ImageYdata!(i&) = ydata!(i&)
 ImageZdata!(i&) = zdata!(i&)
 If methodlong Then
-ImageNData%(i&) = CInt(ndata&(i&))    ' line numbers
-ImageSData%(i&) = CInt(sdata&(i&))    ' sample numbers
+ImageNData%(i&) = ndata&(i&)    ' line numbers
+ImageSData%(i&) = sdata&(i&)    ' sample numbers
 ElseIf methodshort Then
-ImageNData%(i&) = CInt(ndata&(i&))    ' line numbers only
+ImageNData%(i&) = ndata&(i&)    ' line numbers only
 End If
 Next i&
 End If

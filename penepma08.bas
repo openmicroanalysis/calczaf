@@ -3607,9 +3607,9 @@ If std_int!(n%, l%) <> 0# Then
 unk_krat!(n%, k%, l%) = 100# * unk_tot_int!(n%, k%, l%) / std_int!(n%, l%)
 End If
 If n% = 1 Then
-Binary_ZAF_Kratios#(l%, k%) = CDbl(unk_krat!(n%, k%, l%))
+Binary_ZAF_Kratios#(l%, k%) = unk_krat!(n%, k%, l%)
 Else
-Binary_ZAF_Kratios#(l%, MAXBINARY% - (k% - 1)) = CDbl(unk_krat!(n%, k%, l%))
+Binary_ZAF_Kratios#(l%, MAXBINARY% - (k% - 1)) = unk_krat!(n%, k%, l%)
 End If
 Next k%
 

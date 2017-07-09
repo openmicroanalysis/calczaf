@@ -20,7 +20,7 @@ Sub CalcImageCreateGRDFromArray(tfilename As String, ix As Integer, iy As Intege
 ierror = False
 On Error GoTo CalcImageCreateGRDFromArrayError
 
-Dim i As Integer, j As Integer
+Dim ii As Long, jj As Long
 
 ' Check for no x or y extents
 If xmax# = xmin# Or ymax# = ymin# Then GoTo CalcImageCreateGRDFromArrayBadExtents
@@ -45,11 +45,11 @@ ReDim PrbImgData(1).gData(1 To ix%, 1 To iy%) As Single
 Screen.MousePointer = vbHourglass
 
 ' Load data image data
-For j% = 1 To iy%
-For i% = 1 To ix%
-PrbImgData(1).gData!(i%, j%) = sarray!(i%, j%)
-Next i%
-Next j%
+For jj& = 1 To iy%
+For ii& = 1 To ix%
+PrbImgData(1).gData!(ii&, jj&) = sarray!(ii&, jj&)
+Next ii&
+Next jj&
 
 ' Load the file based on actual file version number
 If SurferOutputVersionNumber% = 6 Then
@@ -118,7 +118,7 @@ Screen.MousePointer = vbHourglass
 ' Load data image data
 For j& = 1 To iy&
 For i& = 1 To ix&
-PrbImgData(1).gData!(i&, j&) = CSng(sarray#(i&, j&))
+PrbImgData(1).gData!(i&, j&) = sarray#(i&, j&)
 Next i&
 Next j&
 

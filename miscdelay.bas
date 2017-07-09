@@ -25,10 +25,10 @@ If timeinterval! > SECPERDAY# Then GoTo MiscTimerBadInterval
 
 Screen.MousePointer = vbHourglass
 icancelauto = False
-startsec! = CSng(Timer)   ' set start seconds
+startsec! = Timer()   ' set start seconds
 Do While elapsedsec! < startsec! + timeinterval!
     
-    elapsedsec! = CSng(Timer)
+    elapsedsec! = Timer()
     If elapsedsec! < startsec! Then startsec! = startsec! - SECPERDAY#     ' in case timer goes through midnight
     DoEvents   ' yield to other processes
     Sleep (timeinterval! * MSECPERSEC# / 10#) ' yield to other apps
@@ -73,10 +73,10 @@ If timeinterval! <= 0# Then Exit Sub
 If timeinterval! > SECPERDAY# Then GoTo MiscTimer2BadInterval
 
 icancelauto = False
-startsec! = CSng(Timer)   ' set start seconds
+startsec! = Timer()                ' set start seconds
 Do While elapsedsec! < startsec! + timeinterval!
     
-    elapsedsec! = CSng(Timer)
+    elapsedsec! = Timer()
     If elapsedsec! < startsec! Then startsec! = startsec! - SECPERDAY#     ' in case timer goes through midnight
     DoEvents   ' yield to other processes
     Sleep (timeinterval! * MSECPERSEC# / 10#) ' yield to other apps

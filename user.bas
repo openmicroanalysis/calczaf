@@ -356,7 +356,7 @@ UsDt("Custom3") = Left$(user.CustomText3$, DbTextNameLength%)
 End If
 
 If fileversionnumber! >= 7.45 Then
-UsDt("TotalAcquisitionTime") = CDbl(user.TotalAcquisitionTime)
+UsDt("TotalAcquisitionTime") = user.TotalAcquisitionTime
 End If
 
 UsDt.Update

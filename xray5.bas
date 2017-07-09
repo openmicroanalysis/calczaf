@@ -70,9 +70,9 @@ FormXRAY.TextkeV.Text = Str$(keV!)
 
 ' Load absorption edges checkbox
 If DefaultAbsorptionEdgeDisplay% = 1 Then
-FormXRAY.CheckAbsorptionEdges.Value = vbChecked
+FormXRAY.CheckAbsorptionEdges.value = vbChecked
 Else
-FormXRAY.CheckAbsorptionEdges.Value = vbUnchecked
+FormXRAY.CheckAbsorptionEdges.value = vbUnchecked
 End If
 
 ' Set "Graph Selected" button ebale
@@ -204,7 +204,7 @@ Do Until PrDs.EOF
 msg$ = Space$(MAXKLMORDERCHAR%)     ' make place holder for order = 1 lines
 tmsg$ = String$(MAXKLMORDERCHAR%, 64)   ' use "@" format specifier for higher orders
 If PrDs("XrayOrder") > 1 Then msg$ = Format$(RomanNum$(PrDs("XrayOrder")), tmsg$)
-msg$ = PrDs("XraySymbol") & " " & PrDs("XrayLine") & " " & msg$ & vbTab & MiscAutoFormat$(CSng(PrDs("XrayLambda"))) & " " & MiscAutoFormat$(CSng(PrDs("XrayEnergy"))) & " " & MiscAutoFormat$(CSng(PrDs("XrayIntensity")))
+msg$ = PrDs("XraySymbol") & " " & PrDs("XrayLine") & " " & msg$ & vbTab & MiscAutoFormat$(PrDs("XrayLambda")) & " " & MiscAutoFormat$(PrDs("XrayEnergy")) & " " & MiscAutoFormat$(PrDs("XrayIntensity"))
 msg$ = msg$ & " " & Format$(PrDs("XrayAbsEdge"), "@@@") & vbTab & PrDs("XrayReference")
 
 FormXRAY.ListXray.AddItem msg$
@@ -327,7 +327,7 @@ xstop! = Val(FormXRAY.TextStop.Text)
 End If
 
 ' Load x-ray absorption edges flag
-If FormXRAY.CheckAbsorptionEdges.Value = vbChecked Then
+If FormXRAY.CheckAbsorptionEdges.value = vbChecked Then
 method% = 1
 Else
 method% = 0

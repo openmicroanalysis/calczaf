@@ -19,68 +19,80 @@ On Error GoTo ScanDataPlotFitCurve_PEError
 Dim firstpointdone As Boolean
 Dim i As Integer
 Dim tX As Single, tY As Single
-Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
-Dim sxmin As Double, sxmax As Double, symin As Double, symax As Double
+Dim xmin As Single, xmax As Single, ymin As Single, ymax As Single
+Dim sxmin As Single, sxmax As Single, symin As Single, symax As Single
+Dim tsymin As Double, tsymax As Double
 
 tGraph.PEactions = REINITIALIZE_RESETIMAGE
 
 ' Determine min and max of graph
-xmin# = tGraph.ManualMinX
-xmax# = tGraph.ManualMaxX
+xmin! = tGraph.ManualMinX
+xmax! = tGraph.ManualMaxX
 
-ymin# = tGraph.ManualMinY
-ymax# = tGraph.ManualMaxY
+ymin! = tGraph.ManualMinY
+ymax! = tGraph.ManualMaxY
 
 ' Check for valid curve
 If (acoeff1! <> 0# And acoeff2! <> 0# And acoeff3! <> 0#) Or mode% = 5 Then
 
 ' Calculate line to draw based on fit coefficients
-sxmax# = xmin#
+sxmax! = xmin!
 For i% = 1 To MAXSEGMENTS%
 
 ' Calculate partial line segments for x
-sxmin# = sxmax#
-sxmax# = sxmin# + (xmax# - xmin#) / (MAXSEGMENTS% - 1)
+sxmin! = sxmax!
+sxmax! = sxmin! + (xmax! - xmin!) / (MAXSEGMENTS% - 1)
 
 ' Calculate partial line segments for y
 If mode% = 1 Then               ' parabolic
-symin# = acoeff1! + sxmin# * acoeff2! + sxmin# ^ 2 * acoeff3!
-symax# = acoeff1! + sxmax# * acoeff2! + sxmax# ^ 2 * acoeff3!
+tsymin# = acoeff1! + sxmin! * acoeff2! + sxmin! ^ 2 * acoeff3!
+tsymax# = acoeff1! + sxmax! * acoeff2! + sxmax! ^ 2 * acoeff3!
 
 ElseIf mode% = 2 Then           ' gaussian
-symin# = acoeff1! + sxmin# * acoeff2! + sxmin# ^ 2 * acoeff3!
-symax# = acoeff1! + sxmax# * acoeff2! + sxmax# ^ 2 * acoeff3!
-If symin# > MAXLOGEXPD! Then symin# = MAXLOGEXPD!
-If symax# > MAXLOGEXPD! Then symax# = MAXLOGEXPD!
-symin# = NATURALE# ^ symin#
-symax# = NATURALE# ^ symax#
+tsymin# = acoeff1! + sxmin! * acoeff2! + sxmin! ^ 2 * acoeff3!
+tsymax# = acoeff1! + sxmax! * acoeff2! + sxmax! ^ 2 * acoeff3!
+If tsymin# > MAXLOGEXPD! Then tsymin# = MAXLOGEXPD!
+If tsymax# > MAXLOGEXPD! Then tsymax# = MAXLOGEXPD!
+tsymin# = NATURALE# ^ tsymin#
+tsymax# = NATURALE# ^ tsymax#
 
 ElseIf mode% = 5 Then           ' cubic spline
-tX! = CSng(sxmin#)
+tX! = sxmin!
 Call SplineInterpolate(xdata!(), ydata!(), ycoeff#(), CLng(nPoints%), tX!, tY!)
 If ierror Then Exit Sub
-symin# = CDbl(tY!)
-tX! = CSng(sxmax#)
+tsymin# = tY!
+tX! = sxmax!
 Call SplineInterpolate(xdata!(), ydata!(), ycoeff#(), CLng(nPoints%), tX!, tY!)
 If ierror Then Exit Sub
-symax# = CDbl(tY!)
+tsymax# = tY!
 
 ElseIf mode% = 6 Then           ' multi-point exponential
-symin# = acoeff1! + sxmin# * acoeff2! + sxmin# ^ 2 * acoeff3!
-symax# = acoeff1! + sxmax# * acoeff2! + sxmax# ^ 2 * acoeff3!
-If symin# > MAXLOGEXPD! Then symin# = MAXLOGEXPD!
-If symax# > MAXLOGEXPD! Then symax# = MAXLOGEXPD!
-symin# = NATURALE# ^ symin#
-symax# = NATURALE# ^ symax#
+tsymin# = acoeff1! + sxmin! * acoeff2! + sxmin! ^ 2 * acoeff3!
+tsymax# = acoeff1! + sxmax! * acoeff2! + sxmax! ^ 2 * acoeff3!
+If tsymin# > MAXLOGEXPD! Then tsymin# = MAXLOGEXPD!
+If tsymax# > MAXLOGEXPD! Then tsymax# = MAXLOGEXPD!
+tsymin# = NATURALE# ^ tsymin#
+tsymax# = NATURALE# ^ tsymax#
 End If
+
+' Clip
+If tsymin# < ymin! Then tsymin# = ymin!
+If tsymax# > ymax! Then tsymax# = ymax!
+
+If tsymin# > ymax! Then tsymin# = ymax!
+If tsymax# < ymin! Then tsymax# = ymin!
+
+' Load from temp doubles
+symin! = tsymin#
+symax! = tsymax#
 
 ' Plot fit
 If Not firstpointdone Then
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, tBold, Int(255), Int(0), Int(0), Int(255))     ' blue
+Call ScanDataPlotLine(tGraph, linecount&, sxmin!, symin!, sxmax!, symax!, False, tBold, Int(255), Int(0), Int(0), Int(255))     ' blue
 If ierror Then Exit Sub
 firstpointdone = True
 Else
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, True, tBold, Int(255), Int(0), Int(0), Int(255))      ' blue
+Call ScanDataPlotLine(tGraph, linecount&, sxmin!, symin!, sxmax!, symax!, True, tBold, Int(255), Int(0), Int(0), Int(255))      ' blue
 If ierror Then Exit Sub
 End If
 Next i%
@@ -88,19 +100,19 @@ End If
 
 ' Plot centroid
 If centroid! <> 0# Then
-Call ScanDataPlotLine(tGraph, linecount&, CDbl(centroid!), ymin#, CDbl(centroid!), ymax#, False, True, Int(255), Int(255), Int(0), Int(0))              ' red
+Call ScanDataPlotLine(tGraph, linecount&, centroid!, ymin!, centroid!, ymax!, False, True, Int(255), Int(255), Int(0), Int(0))              ' red
 If ierror Then Exit Sub
 End If
 
 ' Plot threshold
 If threshold! <> 0# Then
-Call ScanDataPlotLine(tGraph, linecount&, xmin#, CDbl(threshold!), xmax#, CDbl(threshold!), False, True, Int(255), Int(0), Int(255), Int(255))          ' cyan
+Call ScanDataPlotLine(tGraph, linecount&, xmin!, threshold!, xmax!, threshold!, False, True, Int(255), Int(0), Int(255), Int(255))          ' cyan
 If ierror Then Exit Sub
 End If
 
 ' Plot current on-peak
 If currentonpeak! <> 0# Then
-Call ScanDataPlotLine(tGraph, linecount&, CDbl(currentonpeak!), ymin#, CDbl(currentonpeak!), ymax#, False, True, Int(255), Int(0), Int(255), Int(0))    ' green
+Call ScanDataPlotLine(tGraph, linecount&, currentonpeak!, ymin!, currentonpeak!, ymax!, False, True, Int(255), Int(0), Int(255), Int(0))    ' green
 If ierror Then Exit Sub
 End If
 
@@ -151,18 +163,18 @@ Sub ScanDataPlotOnPeak_PE(tGraph As Pesgo, linecount As Long, onpeak As Single)
 ierror = False
 On Error GoTo ScanDataPlotOnPeak_PEError
 
-Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
+Dim xmin As Single, xmax As Single, ymin As Single, ymax As Single
 
 ' Determine min and max of graph
-xmin# = tGraph.ManualMinX
-xmax# = tGraph.ManualMaxX
+xmin! = tGraph.ManualMinX
+xmax! = tGraph.ManualMaxX
 
-ymin# = tGraph.ManualMinY
-ymax# = tGraph.ManualMaxY
+ymin! = tGraph.ManualMinY
+ymax! = tGraph.ManualMaxY
 
 ' Plot on-peak position
 If onpeak! <> 0# Then
-Call ScanDataPlotLine(tGraph, linecount&, CDbl(onpeak!), ymin#, CDbl(onpeak!), ymax#, False, True, Int(255), Int(0), Int(255), Int(0))   ' light green
+Call ScanDataPlotLine(tGraph, linecount&, onpeak!, ymin!, onpeak!, ymax!, False, True, Int(255), Int(0), Int(255), Int(0))   ' light green
 If ierror Then Exit Sub
 End If
 
@@ -176,7 +188,7 @@ Exit Sub
 
 End Sub
 
-Sub ScanDataPlotLine(tGraph As Pesgo, linecount As Long, txmin As Double, tymin As Double, txmax As Double, tymax As Double, tContinue As Boolean, tBold As Boolean, tAlpha As Integer, tRed As Integer, tGreen As Integer, tBlue As Integer)
+Sub ScanDataPlotLine(tGraph As Pesgo, linecount As Long, txmin As Single, tymin As Single, txmax As Single, tymax As Single, tContinue As Boolean, tBold As Boolean, tAlpha As Integer, tRed As Integer, tGreen As Integer, tBlue As Integer)
 ' Plots a line on the passed graph using the passed color
 
 ierror = False
@@ -185,8 +197,8 @@ On Error GoTo ScanDataPlotLineError
 tGraph.ShowAnnotations = True
 
 ' Start point
-tGraph.GraphAnnotationX(linecount&) = txmin#
-tGraph.GraphAnnotationY(linecount&) = tymin#
+tGraph.GraphAnnotationX(linecount&) = txmin!
+tGraph.GraphAnnotationY(linecount&) = tymin!
 If Not tContinue Then
 If Not tBold Then
 tGraph.GraphAnnotationType(linecount&) = PEGAT_THIN_SOLIDLINE&
@@ -199,19 +211,17 @@ End If
 tGraph.GraphAnnotationColor(linecount&) = tGraph.PEargb(tAlpha%, tRed%, tGreen%, tBlue%)
 
 ' No text (at this time)
-tGraph.GraphAnnotationText(linecount&) = ""
-'tGraph.GraphAnnotationText(linecount&) = vbNullString      ' this does not work!!!
+tGraph.GraphAnnotationText(linecount&) = ""         ' vbNullString does not work here!!!
 
 ' End point
 linecount& = linecount& + 1
-tGraph.GraphAnnotationX(linecount&) = txmax#
-tGraph.GraphAnnotationY(linecount&) = tymax#
+tGraph.GraphAnnotationX(linecount&) = txmax!
+tGraph.GraphAnnotationY(linecount&) = tymax!
 tGraph.GraphAnnotationType(linecount&) = PEGAT_LINECONTINUE&
 tGraph.GraphAnnotationColor(linecount&) = tGraph.PEargb(tAlpha%, tRed%, tGreen%, tBlue%)
 
 ' No text (at this time)
-tGraph.GraphAnnotationText(linecount&) = ""
-'tGraph.GraphAnnotationText(linecount&) = vbNullString      ' this does not work!!!
+tGraph.GraphAnnotationText(linecount&) = ""         ' vbNullString does not work here!!!
 linecount& = linecount& + 1
 
 Exit Sub
@@ -224,7 +234,7 @@ Exit Sub
 
 End Sub
 
-Sub ScanDataPlotLineRGB(tGraph As Pesgo, linecount As Long, txmin As Double, tymin As Double, txmax As Double, tymax As Double, tContinue As Boolean, tBold As Boolean, tRGB As Long)
+Sub ScanDataPlotLineRGB(tGraph As Pesgo, linecount As Long, txmin As Single, tymin As Single, txmax As Single, tymax As Single, tContinue As Boolean, tBold As Boolean, tRGB As Long)
 ' Plots a line on the passed graph using the passed RGB color
 
 ierror = False
@@ -233,8 +243,8 @@ On Error GoTo ScanDataPlotLineRGBError
 tGraph.ShowAnnotations = True
 
 ' Start point
-tGraph.GraphAnnotationX(linecount&) = txmin#
-tGraph.GraphAnnotationY(linecount&) = tymin#
+tGraph.GraphAnnotationX(linecount&) = txmin!
+tGraph.GraphAnnotationY(linecount&) = tymin!
 If Not tContinue Then
 If Not tBold Then
 tGraph.GraphAnnotationType(linecount&) = PEGAT_THIN_SOLIDLINE&
@@ -247,19 +257,17 @@ End If
 tGraph.GraphAnnotationColor(linecount&) = tRGB&
 
 ' No text (at this time)
-tGraph.GraphAnnotationText(linecount&) = ""
-'tGraph.GraphAnnotationText(linecount&) = vbNullString      ' this does not work!!!
+tGraph.GraphAnnotationText(linecount&) = ""                  ' vbNullString does not work here!!!
 
 ' End point
 linecount& = linecount& + 1
-tGraph.GraphAnnotationX(linecount&) = txmax#
-tGraph.GraphAnnotationY(linecount&) = tymax#
+tGraph.GraphAnnotationX(linecount&) = txmax!
+tGraph.GraphAnnotationY(linecount&) = tymax!
 tGraph.GraphAnnotationType(linecount&) = PEGAT_LINECONTINUE&
 tGraph.GraphAnnotationColor(linecount&) = tRGB&
 
 ' No text (at this time)
-tGraph.GraphAnnotationText(linecount&) = ""
-'tGraph.GraphAnnotationText(linecount&) = vbNullString      ' this does not work!!!
+tGraph.GraphAnnotationText(linecount&) = ""                  ' vbNullString does not work here!!!
 linecount& = linecount& + 1
 
 Exit Sub
@@ -314,33 +322,33 @@ Sub ScanDataPlotPHAWindow_PE(tGraph As Pesgo, linecount As Long, baseline As Sin
 ierror = False
 On Error GoTo ScanDataPlotPHAWindow_PEError
 
-Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
-Dim sxmin As Double, sxmax As Double, symin As Double, symax As Double
+Dim xmin As Single, xmax As Single, ymin As Single, ymax As Single
+Dim sxmin As Single, sxmax As Single, symin As Single, symax As Single
 
 tGraph.PEactions = REINITIALIZE_RESETIMAGE                   ' generate new plot
 
 ' Determine min and max of graph
-xmin# = tGraph.ManualMinX
-xmax# = tGraph.ManualMaxX
+xmin! = tGraph.ManualMinX
+xmax! = tGraph.ManualMaxX
 
-ymin# = tGraph.ManualMinY
-ymax# = tGraph.ManualMaxY
+ymin! = tGraph.ManualMinY
+ymax! = tGraph.ManualMaxY
 
 ' Calculate PHA window
-sxmin# = CSng(baseline!)
-sxmax# = CSng(baseline! + window!)
-symin# = ymin# + (ymax# - ymin#) / 2#
-symax# = symin#
+sxmin! = baseline!
+sxmax! = baseline! + window!
+symin! = ymin! + (ymax! - ymin!) / 2#
+symax! = symin!
 
 ' Plot PHA window
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin#, sxmax#, symax#, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
+Call ScanDataPlotLine(tGraph, linecount&, sxmin!, symin!, sxmax!, symax!, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
 If ierror Then Exit Sub
 
 ' Calculate end bars
-Call ScanDataPlotLine(tGraph, linecount&, sxmin#, symin# - (ymax# - ymin#) * 0.1, sxmin#, symax# + (ymax# - ymin#) * 0.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
+Call ScanDataPlotLine(tGraph, linecount&, sxmin!, symin! - (ymax! - ymin!) * 0.1, sxmin!, symax! + (ymax! - ymin!) * 0.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
 If ierror Then Exit Sub
 
-Call ScanDataPlotLine(tGraph, linecount&, sxmax#, symin# - (ymax# - ymin#) * 0.1, sxmax#, symax# + (ymax# - ymin#) * 0.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
+Call ScanDataPlotLine(tGraph, linecount&, sxmax!, symin! - (ymax! - ymin!) * 0.1, sxmax!, symax! + (ymax! - ymin!) * 0.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
 If ierror Then Exit Sub
 
 Exit Sub

@@ -78,7 +78,7 @@ If sample(1).AtomicNums%(chan%) = 0 Then GoTo ZAFCalZbarNoAtomicNumbers
 atoms!(chan%) = analysis.WtPercents!(chan%) / sample(1).AtomicWts!(chan%)
 sum_atoms! = sum_atoms! + atoms!(chan%)
 If sample(1).AtomicCharges!(chan%) > 0# Then sum_cations! = sum_cations! + atoms!(chan%)
-analysis.AtomicNumbers!(chan%) = CSng(sample(1).AtomicNums%(chan%))
+analysis.AtomicNumbers!(chan%) = sample(1).AtomicNums%(chan%)
 analysis.AtomicWeights!(chan%) = sample(1).AtomicWts!(chan%)
 End If
 Next chan%
@@ -416,7 +416,7 @@ Dim alloxygen As Single, extraoxygen As Single
 ' Calculate stoichiometric oxygen
 stoichiometricoxygen! = 0#
 For j% = 1 To zaf.in1%
-p1! = CSng(sample(1).numoxd%(j%)) / CSng(sample(1).numcat%(j%)) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / sample(1).AtomicWts!(j%)
+p1! = sample(1).numoxd%(j%) / CSng(sample(1).numcat%(j%)) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / sample(1).AtomicWts!(j%)
 If j% <> sample(1).OxygenChannel% Then
 stoichiometricoxygen! = stoichiometricoxygen! + conc!(j%) * p1!
 End If

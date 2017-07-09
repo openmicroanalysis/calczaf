@@ -361,7 +361,7 @@ temp! = acoeff!(1) + acoeff!(2) * txdata!(i%) + acoeff!(3) * txdata!(i%) ^ 2
 ElseIf mode% = 2 Then   ' gaussian
 temp! = acoeff!(1) + acoeff!(2) * txdata!(i%) + acoeff!(3) * txdata!(i%) ^ 2
 If temp! > MAXLOGEXPS! Then temp! = MAXLOGEXPS!
-temp! = CSng(NATURALE# ^ temp!)
+temp! = NATURALE# ^ temp!
 
 ElseIf mode% = 3 Then   ' logarithmic
 temp! = acoeff!(1) + acoeff!(2) * Log(txdata!(i%))
@@ -652,7 +652,7 @@ If ierror Then Exit Sub
 
 ' Return fit coefficients
 For i% = 1 To MAXFITS%
-acoeff!(i%) = CSng(fitparam#(i%))
+acoeff!(i%) = fitparam#(i%)
 Next i%
 
 ' Display fit
@@ -744,7 +744,7 @@ If ierror Then Exit Sub
 
 ' Return fit coefficients
 For i% = 1 To MAXFITS%
-acoeff!(i%) = CSng(fitparam#(i%))
+acoeff!(i%) = fitparam#(i%)
 Next i%
 
 ' Display fit
@@ -837,7 +837,7 @@ If ierror Then Exit Sub
 
 ' Return fit coefficients
 For i% = 1 To MAXFITS%
-acoeff!(i%) = CSng(fitparam#(i%))
+acoeff!(i%) = fitparam#(i%)
 Next i%
 
 ' Display fit

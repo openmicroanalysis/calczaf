@@ -65,7 +65,7 @@ Dim cpoint1(1 To 3) As Single, cpoint2(1 To 3) As Single, cpoint3(1 To 3) As Sin
 Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Single
 
 ' First load and save current screeen DPI
-ACQScreenDPI_Current! = CSng(MiscGetWindowsDPI#())
+ACQScreenDPI_Current! = MiscGetWindowsDPI#()
 If ierror Then Exit Sub
 
 ' Read version number of ACQ file
@@ -143,8 +143,8 @@ End If
 End If
 
 ' Load globals
-PictureSnapMode% = CInt(pmode!)
-PictureSnapCalibrationNumberofZPoints% = CInt(zpoints!)
+PictureSnapMode% = pmode!
+PictureSnapCalibrationNumberofZPoints% = zpoints!
 
 ' Check for existing GRD info
 Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
@@ -538,7 +538,7 @@ If Trim$(pFileName$) = vbNullString Then GoTo PictureSnapSaveCalibrationNoPictur
 If Not PictureSnapCalibrated Then GoTo PictureSnapSaveCalibrationNotCalibrated
 
 ' First load and save current screeen DPI
-ACQScreenDPI_Current! = CSng(MiscGetWindowsDPI#())
+ACQScreenDPI_Current! = MiscGetWindowsDPI#()
 If ierror Then Exit Sub
 
 ' ****************************************************************************
@@ -837,10 +837,10 @@ ierror = False
 On Error GoTo PictureSnapSaveCalibration3Error
 
 ' Assume unflipped coordinates
-cpoint1x! = CSng(tImage.ImageIx% * Screen.TwipsPerPixelX) ' reference screen coordinates
+cpoint1x! = tImage.ImageIx% * Screen.TwipsPerPixelX ' reference screen coordinates
 cpoint2x! = CSng(0) ' reference screen coordinates
 
-cpoint1y! = CSng(tImage.ImageIy% * Screen.TwipsPerPixelY) ' reference screen coordinates
+cpoint1y! = tImage.ImageIy% * Screen.TwipsPerPixelY ' reference screen coordinates
 cpoint2y! = CSng(0)  ' reference screen coordinates
 
 apoint1x! = tImage.ImageXmax!  ' reference stage coordinates
@@ -1128,7 +1128,7 @@ If ierror Then Exit Sub
 hfw! = Abs(xmax! - xmin!) * MotUnitsToAngstromMicrons!(XMotor%)
 
 ' Convert from um field of view
-mag! = CSng((ImageDisplaySizeInCentimeters! * MICRONSPERCM&) / hfw!)
+mag! = (ImageDisplaySizeInCentimeters! * MICRONSPERCM&) / hfw!
 
 Exit Sub
 

@@ -144,7 +144,7 @@ Dim esym(1 To MAXAMPHI%) As String
       
 ' Pre-load small values
 For j% = 1 To MAXAMPHI%
-    WTPC!(j%) = NotAnalyzedValue!
+    WTPC!(j%) = NOT_ANALYZED_VALUE_SINGLE!
 Next j%
 
 IDEBUG% = 0

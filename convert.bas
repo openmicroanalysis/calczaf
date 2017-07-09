@@ -68,7 +68,7 @@ temp# = 0#
 ip% = IPOS1(MAXELM%, sym$, Symlo$())
 If ip% > 0 Then
 temp# = weight! * (AllAtomicWts!(ip%) * cat% + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * oxd%)
-ConvertElmToOxd! = CSng(temp# / (AllAtomicWts!(ip%) * cat%))
+ConvertElmToOxd! = temp# / (AllAtomicWts!(ip%) * cat%)
 End If
 
 Exit Function

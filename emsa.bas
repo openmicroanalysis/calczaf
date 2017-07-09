@@ -782,7 +782,7 @@ If InStr(astring$, "#ENDOFDATA   : ") > 0 Then Exit Do
 If mode% = 0 Then
 temp! = Val(astring$)
 If tIntensityOption% > 0 Then temp! = temp! * sample(1).EDSSpectraLiveTime!(datarow%)
-sample(1).EDSSpectraIntensities&(datarow%, n%) = CLng(temp!)
+sample(1).EDSSpectraIntensities&(datarow%, n%) = temp!
 End If
 
 ' Read CL spectrum data (two columns, comma delimited)
@@ -797,8 +797,8 @@ If ierror Then Exit Sub
 temp2! = Val(bstring$)
 If tIntensityOption% > 0 Then temp2! = temp2! * sample(1).CLAcquisitionCountTime!(datarow%)     ' assumes CL and dark spectra acquired with same acquisition time (fraction = 1.0)
 
-sample(1).CLSpectraIntensities&(datarow%, n%) = CLng(temp1!)
-sample(1).CLSpectraDarkIntensities&(datarow%, n%) = CLng(temp2!)
+sample(1).CLSpectraIntensities&(datarow%, n%) = temp1!
+sample(1).CLSpectraDarkIntensities&(datarow%, n%) = temp2!
 End If
 Loop
 

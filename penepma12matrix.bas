@@ -224,7 +224,7 @@ For n% = 1 To MAXBINARY%
 
 ' Calculate alpha factor for this binary composition
 c! = tBinaryRanges!(n%) / 100#
-k! = CSng(tBinary_Kratios#(l%, n%)) / 100#    ' k-ratios are in k-ratio percent
+k! = tBinary_Kratios#(l%, n%) / 100#    ' k-ratios are in k-ratio percent
 
 ' Check that k-ratios are positive
 If k! > 0# Then
@@ -304,10 +304,10 @@ End If
 
 ' No data to fit, just load default values
 Else
-tBinary_Coeffs!(l%, 1) = CSng(INT_ONE%)
-tBinary_Coeffs!(l%, 2) = CSng(INT_ZERO%)
-tBinary_Coeffs!(l%, 3) = CSng(INT_ZERO%)
-tBinary_Coeffs!(l%, 4) = CSng(INT_ZERO%)
+tBinary_Coeffs!(l%, 1) = INT_ONE%
+tBinary_Coeffs!(l%, 2) = INT_ZERO%
+tBinary_Coeffs!(l%, 3) = INT_ZERO%
+tBinary_Coeffs!(l%, 4) = INT_ZERO%
 End If
 
 Exit Sub
@@ -522,7 +522,7 @@ If MtDs.BOF And MtDs.EOF Then GoTo Penepma12MatrixReadMDB2NoKRatios
 ' Load kratio array
 Do Until MtDs.EOF
 i% = MtDs("MatrixKRatioOrder")          ' load order (1 to MAXBINARY%)
-tKratios#(i%) = CDbl(MtDs("MatrixKRatio_ZAF_KRatio"))
+tKratios#(i%) = MtDs("MatrixKRatio_ZAF_KRatio")
 MtDs.MoveNext
 Loop
 MtDs.Close
@@ -717,8 +717,8 @@ Set MtDs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
 If MtDs.BOF And MtDs.EOF Then GoTo Penepma12PureReadMDB2NoIntensities
 
 ' Load pure element intensities
-tIntensityGenerated# = CDbl(MtDs("PureIntensityGenerated"))
-tIntensityEmitted# = CDbl(MtDs("PureIntensityEmitted"))
+tIntensityGenerated# = MtDs("PureIntensityGenerated")
+tIntensityEmitted# = MtDs("PureIntensityEmitted")
 MtDs.Close
 
 notfound = False
@@ -846,9 +846,9 @@ MtDt("MatrixKRatioNumber") = nrec&                                      ' unique
 MtDt("MatrixKRatioOrder") = i%                                          ' load order (1 to MAXBINARY%) (always 99 to 1 wt%)
 
 If mode% = 1 Then
-MtDt("MatrixKRatio_ZAF_KRatio") = CSng(tKratios!(i%))                   ' Penepma binary k-ratio
+MtDt("MatrixKRatio_ZAF_KRatio") = tKratios!(i%)                   ' Penepma binary k-ratio
 Else
-MtDt("MatrixKRatio_ZAF_KRatio") = CSng(tKratios!(MAXBINARY% - i% + 1))  ' Penepma binary k-ratio (reverse order for 2nd element)
+MtDt("MatrixKRatio_ZAF_KRatio") = tKratios!(MAXBINARY% - i% + 1)  ' Penepma binary k-ratio (reverse order for 2nd element)
 End If
 
 MtDt.Update

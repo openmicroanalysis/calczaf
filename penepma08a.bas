@@ -381,6 +381,56 @@ Exit Sub
 
 End Sub
 
+Sub Penepma08GraphGetPenepma2(nPoints As Long, xdata() As Single, ydata() As Single)
+' Load spectrum data from spectrum file (PENEPMA_CONVOLG_File$) (single precision version)
+
+ierror = False
+On Error GoTo Penepma08GraphGetPenepma2Error
+
+Dim astring As String, bstring As String
+
+' Check production file
+If Trim$(PENEPMA_CONVOLG_File$) = vbNullString Then Exit Sub
+If Dir$(Trim$(PENEPMA_CONVOLG_File$)) = vbNullString Then Exit Sub
+Open PENEPMA_CONVOLG_File$ For Input As #Temp1FileNumber%
+
+' Load array (npts&, xdata!(), ydata!())
+nPoints& = 0
+Do Until EOF(Temp1FileNumber%)
+Line Input #Temp1FileNumber%, astring$
+If Len(Trim$(astring$)) > 0 And InStr(astring$, "#") = 0 Then            ' skip to first data line
+
+' Load total spectrum
+nPoints& = nPoints& + 1
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+ReDim Preserve xdata(1 To nPoints&) As Single
+ReDim Preserve ydata(1 To nPoints&) As Single
+xdata!(nPoints&) = Val(Trim$(bstring$))
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+ydata!(nPoints&) = Val(Trim$(bstring$))
+
+If VerboseMode And DebugMode Then
+Call IOWriteLog("N=" & Format$(nPoints&) & ", X=" & Format$(xdata!(nPoints&)) & ", Y=" & Format$(ydata!(nPoints&), e104$))
+End If
+
+End If
+Loop
+
+Close #Temp1FileNumber%
+
+Exit Sub
+
+' Errors
+Penepma08GraphGetPenepma2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08GraphGetPenepma2"
+Close #Temp1FileNumber%
+ierror = True
+Exit Sub
+
+End Sub
+
 Sub Penepma08PenepmaSpectrumRead(tfilename As String, nPoints As Long, xdata() As Double, ydata() As Double, zdata() As Double, xmin As Double, xmax As Double, xnum As Long, xwidth As Double, theta1 As Double, theta2 As Double, phi1 As Double, phi2 As Double)
 ' Load spectrum data from passed Penepma spectrum file (for synthetic wavescan data in demo mode)
 '
@@ -504,6 +554,129 @@ Exit Sub
 
 End Sub
 
+Sub Penepma08PenepmaSpectrumRead2(tfilename As String, nPoints As Long, xdata() As Single, ydata() As Single, zdata() As Single, xmin As Single, xmax As Single, xnum As Long, xwidth As Single, theta1 As Single, theta2 As Single, phi1 As Single, phi2 As Single)
+' Load spectrum data from passed Penepma spectrum file (for synthetic wavescan data in demo mode) (single precision version for increased speed)
+'
+' Default header shown here:
+' #  Results from PENEPMA. Output from photon detector #  1
+' #
+' #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01
+' #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02
+' #  Energy window = ( 0.00000E+00, 2.00000E+04) eV, no. of channels = 1000
+' #  Channel width = 2.000000E+01 eV
+' #
+' #  Whole spectrum. Characteristic peaks and background.
+' #  1st column: photon energy (eV).
+' #  2nd column: probability density (1/(eV*sr*electron)).
+' #  3rd column: statistical uncertainty (3 sigma).
+' #
+'   1.000000E+01  1.000000E-35  1.000000E-35
+'   3.000000E+01  1.000000E-35  1.000000E-35
+'   5.000001E+01  1.000000E-35  1.000000E-35
+'   7.000001E+01  1.000000E-35  1.000000E-35
+'   9.000001E+01  1.000000E-35  1.000000E-35
+' ....
+
+ierror = False
+On Error GoTo Penepma08PenepmaSpectrumRead2Error
+
+Dim astring As String, bstring As String
+Dim cstring As String, dstring As String
+Dim tfilenumber As Integer
+
+' Check production file
+If Dir$(Trim$(tfilename$)) = vbNullString Then GoTo Penepma08PenepmaSpectrumRead2FileNotFound
+
+' Open file
+tfilenumber% = FreeFile()
+Open tfilename$ For Input As #tfilenumber%
+
+' Load array (nPoints&, xdata!(), ydata!())
+nPoints& = 0
+Do Until EOF(tfilenumber%)
+Line Input #tfilenumber%, astring$
+cstring$ = astring$
+
+' Load theta parameters
+If Len(Trim$(astring$)) > 0 And InStr(astring$, "theta_1") > 0 Then
+Call MiscParseStringToStringA(cstring$, ",", dstring$)
+If ierror Then Exit Sub
+theta1! = Val(Trim$(Right$(dstring$, 12)))
+theta2! = Val(Trim$(Right$(cstring$, 12)))
+
+' Load phi parameters
+ElseIf Len(Trim$(cstring$)) > 0 And InStr(cstring$, "phi_1") > 0 Then
+Call MiscParseStringToStringA(cstring$, ",", dstring$)
+If ierror Then Exit Sub
+phi1! = Val(Trim$(Right$(dstring$, 12)))
+phi2! = Val(Trim$(Right$(cstring$, 12)))
+
+' Load energy window parameters
+ElseIf Len(Trim$(cstring$)) > 0 And InStr(cstring$, "Energy window") > 0 Then
+Call MiscParseStringToStringA(cstring$, ",", dstring$)
+If ierror Then Exit Sub
+xmin! = Val(Trim$(Right$(dstring$, 11)))
+Call MiscParseStringToStringA(cstring$, ")", dstring$)
+If ierror Then Exit Sub
+xmax! = Val(Trim$(Right$(dstring$, 11)))
+Call MiscParseStringToStringA(cstring$, "=", dstring$)
+If ierror Then Exit Sub
+xnum& = Val(Trim$(cstring$))
+
+' Load channel resolution parameter
+ElseIf Len(Trim$(cstring$)) > 0 And InStr(cstring$, "Channel width") > 0 Then
+Call MiscParseStringToStringA(cstring$, "=", dstring$)
+If ierror Then Exit Sub
+xwidth! = Val(Trim$(Left$(cstring$, 13)))
+End If
+
+' Skip until comments are read
+If Len(Trim$(astring$)) > 0 And InStr(astring$, "#") = 0 Then            ' skip to first data line
+
+' Load total spectrum
+nPoints& = nPoints& + 1
+ReDim Preserve xdata(1 To nPoints&) As Single
+ReDim Preserve ydata(1 To nPoints&) As Single
+ReDim Preserve zdata(1 To nPoints&) As Single
+
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+xdata!(nPoints&) = Val(Trim$(bstring$))
+
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+ydata!(nPoints&) = Val(Trim$(bstring$))
+
+Call MiscParseStringToString(astring$, bstring$)
+If ierror Then Exit Sub
+zdata!(nPoints&) = Val(Trim$(bstring$))
+
+If VerboseMode And DebugMode Then
+Call IOWriteLog("N=" & Format$(nPoints&) & ", X=" & Format$(xdata!(nPoints&)) & ", Y=" & Format$(ydata!(nPoints&), e104$) & ", Z=" & Format$(zdata!(nPoints&), e104$))
+End If
+
+End If
+Loop
+
+Close #tfilenumber%
+
+Exit Sub
+
+' Errors
+Penepma08PenepmaSpectrumRead2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08PenepmaSpectrumRead2"
+Close #tfilenumber%
+ierror = True
+Exit Sub
+
+Penepma08PenepmaSpectrumRead2FileNotFound:
+msg$ = "The specified file (" & tfilename$ & ") was not found."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08PenepmaSpectrumRead2"
+ierror = True
+Exit Sub
+
+End Sub
+
 Sub Penepma08PenepmaSpectrumWrite(tfilename As String, npts As Long, xdata() As Double, ydata() As Double, zdata() As Double, xmin As Double, xmax As Double, xnum As Long, xwid As Double, theta1 As Double, theta2 As Double, phi1 As Double, phi2 As Double)
 ' Save spectrum data to passed Penepma spectrum file (for synthetic wavescan data in demo mode)
 '
@@ -562,6 +735,70 @@ Exit Sub
 ' Errors
 Penepma08PenepmaSpectrumWriteError:
 MsgBox Error$, vbOKOnly + vbCritical, "Penepma08PenepmaSpectrumWrite"
+Close #tfilenumber%
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub Penepma08PenepmaSpectrumWrite2(tfilename As String, npts As Long, xdata() As Single, ydata() As Single, zdata() As Single, xmin As Single, xmax As Single, xnum As Long, xwid As Single, theta1 As Single, theta2 As Single, phi1 As Single, phi2 As Single)
+' Save spectrum data to passed Penepma spectrum file (for synthetic wavescan data in demo mode) (single precision version for increased speed)
+'
+' Default header shown here:
+' #  Results from PENEPMA. Output from photon detector #  1
+' #
+' #  Angular intervals : theta_1 = 4.500000E+01,  theta_2 = 5.500000E+01
+' #                        phi_1 = 0.000000E+00,    phi_2 = 3.600000E+02
+' #  Energy window = ( 0.00000E+00, 2.00000E+04) eV, no. of channels = 1000
+' #  Channel width = 2.000000E+01 eV
+' #
+' #  Whole spectrum. Characteristic peaks and background.
+' #  1st column: photon energy (eV).
+' #  2nd column: probability density (1/(eV*sr*electron)).
+' #  3rd column: statistical uncertainty (3 sigma).
+' #
+'   1.000000E+01  1.000000E-35  1.000000E-35
+'   3.000000E+01  1.000000E-35  1.000000E-35
+'   5.000001E+01  1.000000E-35  1.000000E-35
+'   7.000001E+01  1.000000E-35  1.000000E-35
+'   9.000001E+01  1.000000E-35  1.000000E-35
+' ....
+
+ierror = False
+On Error GoTo Penepma08PenepmaSpectrumWrite2Error
+
+Dim tfilenumber As Integer
+Dim n As Long
+
+tfilenumber% = FreeFile()
+Open tfilename$ For Output As #tfilenumber%
+
+' Write header information
+Print #tfilenumber%, " #  Results from PENEPMA. Output from photon detector #  1"
+Print #tfilenumber%, " #"
+Print #tfilenumber%, " #  Angular intervals : theta_1 = " & Format$(theta1!, e125$) & ",  theta_2 = " & Format$(theta2!, e125$)
+Print #tfilenumber%, " #                        phi_1 = " & Format$(phi1!, e125$) & ",    phi_2 = " & Format$(phi2!, e125$)
+Print #tfilenumber%, " #  Energy window = ( " & Format$(xmin!, e115$) & ", " & Format$(xmax!, e115$) & ") eV, no. of channels = " & Format$(xnum&)
+Print #tfilenumber%, " #  Channel width = "; Format$(xwid!, e115$) & " eV"
+Print #tfilenumber%, " #"
+Print #tfilenumber%, " #  Whole spectrum. Characteristic peaks and background."
+Print #tfilenumber%, " #  1st column: photon energy (eV)."
+Print #tfilenumber%, " #  2nd column: probability density (1/(eV*sr*electron))."
+Print #tfilenumber%, " #  3rd column: statistical uncertainty (3 sigma)."
+Print #tfilenumber%, " #"
+
+' Save array to disk (npts&, xdata!(), ydata!(), zdata!())
+For n& = 1 To npts&
+Print #tfilenumber%, " ", Format$(Format$(xdata!(n&), e104$), a14$), Format$(Format$(ydata!(n&), e104$), a14$), Format$(Format$(zdata!(n&), e104$), a14$)
+Next n&
+
+Close #tfilenumber%
+
+Exit Sub
+
+' Errors
+Penepma08PenepmaSpectrumWrite2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08PenepmaSpectrumWrite2"
 Close #tfilenumber%
 ierror = True
 Exit Sub
@@ -657,7 +894,7 @@ If tstring$ = "M5 N3" Then l% = 12        ' (Mz)
 
 ' Skip if not the specified primary line
 If l% > 0 And l% = iray% Then
-tenergy# = CDbl(eV!)
+tenergy# = eV!
 Close #tfilenumber%
 Exit Sub
 

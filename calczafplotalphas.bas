@@ -368,8 +368,8 @@ On Error GoTo CalcZAFPlotAlphaFit_PEError
 Dim i As Integer
 Dim linecount As Long
 
-Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double
-Dim sxmin As Double, sxmax As Double, symin As Double, symax As Double
+Dim xmin As Single, xmax As Single, ymin As Single, ymax As Single
+Dim sxmin As Single, sxmax As Single, symin As Single, symax As Single
 
 Dim npts As Integer
 Dim xdata() As Single, ydata() As Single, acoeff() As Single, stddev As Single
@@ -381,53 +381,53 @@ Call AFactorReturnAFactors(Int(1), npts%, xdata!(), ydata!(), acoeff!(), stddev!
 If ierror Then Exit Sub
 
 ' Determine min and max of graph (in user data units)
-xmin# = tForm.Pesgo1.ManualMinX
-xmax# = tForm.Pesgo1.ManualMaxX
-ymin# = tForm.Pesgo1.ManualMinY
-ymax# = tForm.Pesgo1.ManualMaxY
+xmin! = tForm.Pesgo1.ManualMinX
+xmax! = tForm.Pesgo1.ManualMaxX
+ymin! = tForm.Pesgo1.ManualMinY
+ymax! = tForm.Pesgo1.ManualMaxY
 
 ' Calculate line to draw based on fit coefficients
-sxmax# = xmin#
+sxmax! = xmin!
 For i% = 1 To MAXSEGMENTS%
 
 ' Calculate partial line segments for x and y
-sxmin# = sxmax#
-sxmax# = sxmin# + (xmax# - xmin#) / (MAXSEGMENTS% - 1)
-If sxmin# > 0# Then
+sxmin! = sxmax!
+sxmax! = sxmin! + (xmax! - xmin!) / (MAXSEGMENTS% - 1)
+If sxmin! > 0# Then
 
 ' Constant fit (assume 50:50 composition only)
 If tCorrectionFlag% = 1 Then
-symin# = FormPlotAlpha_PE.Pesgo1.ydata(0, 5)            ' use mid point
-symax# = FormPlotAlpha_PE.Pesgo1.ydata(0, 5)
+symin! = FormPlotAlpha_PE.Pesgo1.ydata(0, 5)            ' use mid point
+symax! = FormPlotAlpha_PE.Pesgo1.ydata(0, 5)
 
 ' Linear fit
 ElseIf tCorrectionFlag% = 2 Then
-symin# = CDbl(acoeff!(1) + sxmin# * acoeff!(2))
-symax# = CDbl(acoeff!(1) + sxmax# * acoeff!(2))
+symin! = CDbl(acoeff!(1) + sxmin! * acoeff!(2))
+symax! = CDbl(acoeff!(1) + sxmax! * acoeff!(2))
 
 ' Polynomial fit
 ElseIf tCorrectionFlag% = 3 Then
-symin# = CDbl(acoeff!(1) + sxmin# * acoeff!(2) + sxmin# ^ 2 * acoeff!(3))
-symax# = CDbl(acoeff!(1) + sxmax# * acoeff!(2) + sxmax# ^ 2 * acoeff!(3))
+symin! = CDbl(acoeff!(1) + sxmin! * acoeff!(2) + sxmin! ^ 2 * acoeff!(3))
+symax! = CDbl(acoeff!(1) + sxmax! * acoeff!(2) + sxmax! ^ 2 * acoeff!(3))
 
 ' Non-linear fit
 ElseIf tCorrectionFlag% = 4 Then
-symin# = CDbl(acoeff!(1) + sxmin# * acoeff!(2) + sxmin# ^ 2 * acoeff!(3) + Exp(sxmin#) * acoeff!(4))
-symax# = CDbl(acoeff!(1) + sxmax# * acoeff!(2) + sxmax# ^ 2 * acoeff!(3) + Exp(sxmax#) * acoeff!(4))
+symin! = CDbl(acoeff!(1) + sxmin! * acoeff!(2) + sxmin! ^ 2 * acoeff!(3) + Exp(sxmin!) * acoeff!(4))
+symax! = CDbl(acoeff!(1) + sxmax! * acoeff!(2) + sxmax! ^ 2 * acoeff!(3) + Exp(sxmax!) * acoeff!(4))
 End If
 
 ' Clip
-If symin# < ymin# Then symin# = ymin#
-If symax# > ymax# Then symax# = ymax#
+If symin! < ymin! Then symin! = ymin!
+If symax! > ymax! Then symax! = ymax!
 
-If symin# > ymax# Then symin# = ymax#
-If symax# < ymin# Then symax# = ymin#
+If symin! > ymax! Then symin! = ymax!
+If symax! < ymin! Then symax! = ymin!
 
 If i% = 1 Then
-Call ScanDataPlotLine(tForm.Pesgo1, linecount&, sxmin#, symin#, sxmax#, symax#, False, True, Int(255), Int(0), Int(0), Int(255))     ' blue
+Call ScanDataPlotLine(tForm.Pesgo1, linecount&, sxmin!, symin!, sxmax!, symax!, False, True, Int(255), Int(0), Int(0), Int(255))     ' blue
 If ierror Then Exit Sub
 Else
-Call ScanDataPlotLine(tForm.Pesgo1, linecount&, sxmin#, symin#, sxmax#, symax#, True, True, Int(255), Int(0), Int(0), Int(255))      ' blue
+Call ScanDataPlotLine(tForm.Pesgo1, linecount&, sxmin!, symin!, sxmax!, symax!, True, True, Int(255), Int(0), Int(0), Int(255))      ' blue
 If ierror Then Exit Sub
 End If
 

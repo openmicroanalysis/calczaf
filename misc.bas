@@ -1988,8 +1988,8 @@ End Function
 
 Function MiscSetRounding2(tvalue As Single, ndigits As Integer) As Single
 ' Function to asymmetrically round a value to a specified number of decimal digits.
-'  e.g., MiscSetRounding2(CSng(5.248), Cint(2)) = 5.25
-'  e.g., MiscSetRounding2(CSng(-2.5), Cint(0)) = -2
+'  e.g., MiscSetRounding2(CSng(5.248), CInt(2)) = 5.25
+'  e.g., MiscSetRounding2(CSng(-2.5), CInt(0)) = -2
 
 ierror = False
 On Error GoTo MiscSetRounding2Error
@@ -2013,8 +2013,8 @@ End Function
 
 Function MiscSetRounding3(tvalue As Single, ndigits As Integer) As Single
 ' Function to symmetrically round a value to a specified number of decimal digits
-'  e.g., MiscSetRounding3(CSng(5.248), Cint(2)) = 5.25
-'  e.g., MiscSetRounding3(CSng(-2.5), Cint(0)) = -3
+'  e.g., MiscSetRounding3(CSng(5.248), CInt(2)) = 5.25
+'  e.g., MiscSetRounding3(CSng(-2.5), CInt(0)) = -3
 
 ierror = False
 On Error GoTo MiscSetRounding3Error
@@ -2033,8 +2033,8 @@ End Function
 
 Function MiscSetRounding4(tvalue As Double, ndigits As Integer) As Double
 ' Function to symmetrically round a value to a specified double precision number of decimal digits
-'  e.g., MiscSetRounding4(CDbl(5.248), Cint(2)) = 5.25
-'  e.g., MiscSetRounding4(CDbl(-2.5), Cint(0)) = -3
+'  e.g., MiscSetRounding4(CDbl(5.248), CInt(2)) = 5.25
+'  e.g., MiscSetRounding4(CDbl(-2.5), CInt(0)) = -3
 
 ierror = False
 On Error GoTo MiscSetRounding4Error

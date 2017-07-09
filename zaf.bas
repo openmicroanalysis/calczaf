@@ -482,7 +482,7 @@ zaf.n8& = n%
 
 zaf.ksum! = 1#     ' must sum to 1.000
 zaf.krat!(1) = amount!(n%)
-zaf.krat!(2) = CSng(1# - amount!(n%))
+zaf.krat!(2) = 1# - amount!(n%)
 zaf.conc!(1) = zaf.krat!(1)
 zaf.conc!(2) = zaf.krat!(2)
 
@@ -627,7 +627,7 @@ zaf.n8& = 0
 
 zaf.ksum! = 1#     ' must sum to 1.000
 zaf.krat!(1) = amount!(1)
-zaf.krat!(2) = CSng(1# - amount!(1))
+zaf.krat!(2) = 1# - amount!(1)
 zaf.conc!(1) = zaf.krat!(1)
 zaf.conc!(2) = zaf.krat!(2)
 
@@ -1607,11 +1607,11 @@ zaf.kraw!(i%) = unkcnts!(i%) / stdcnts!(i%)
 zaf.krat!(i%) = (unkcnts!(i%) / stdcnts!(i%)) * analysis.StdAssignsKfactors!(i%)
 End If
 End If
-If zaf.krat!(i%) = 0# Then zaf.krat!(i%) = NotAnalyzedValue! / 100# ' use a non-zero value
+If zaf.krat!(i%) = 0# Then zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE! / 100# ' use a non-zero value
 
 ' Check for force to zero flag
 If ForceNegativeKratiosToZeroFlag = True Then
-If zaf.krat!(i%) <= 0# Then zaf.krat!(i%) = NotAnalyzedValue! / 100# ' use a non-zero value
+If zaf.krat!(i%) <= 0# Then zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE! / 100# ' use a non-zero value
 End If
 
 ' Load voltage
@@ -1687,7 +1687,7 @@ Next i%
 ' First estimate of composition (First sum unknown K-ratios)
 zaf.ksum! = 0#
 For i% = 1 To zaf.in1%
-If zaf.krat!(i%) = 0# Then zaf.krat!(i%) = NotAnalyzedValue! / 100#
+If zaf.krat!(i%) = 0# Then zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE! / 100#
 zaf.ksum! = zaf.ksum! + zaf.krat!(i%)
 Next i%
 
@@ -2078,7 +2078,7 @@ zaf.conc!(i%) = zaf.conc!(i%) * zaf.ksum!
 Next i%
 
 ' Load return arrays with analyzed elements
-analysis.ZAFIter! = CSng(zaf.iter%)
+analysis.ZAFIter! = zaf.iter%
 For i% = 1 To sample(1).LastElm%
 analysis.Elsyms$(i%) = sample(1).Elsyms$(i%)
 analysis.Xrsyms$(i%) = sample(1).Xrsyms$(i%)
@@ -2441,7 +2441,7 @@ zaf.il%(i%) = stdsample(1).XrayNums%(i%)
 If stdsample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 16    ' use for disabled element
 
 ' Standards are ALWAYS elemental!!!!! (OxideOrElemental% = 2), but do p2 calculation anyway for CalcZAF
-p2!(i%) = CSng(stdsample(1).numoxd%(i%)) / CSng(stdsample(1).numcat%(i%))
+p2!(i%) = stdsample(1).numoxd%(i%) / CSng(stdsample(1).numcat%(i%))
 Next i%
 
 ' If oxide run or element to oxide conversion and oxygen is not being
@@ -2588,7 +2588,7 @@ If Not MiscIsElementDuplicated2(i%, stdsample(), ipp%) Then
 If stdsample(1).DisableQuantFlag%(i%) = 0 Or (stdsample(1).DisableQuantFlag%(i%) = 1 And sample(1).OxideOrElemental% = 1) Then      ' modified 05/13/2015 for Seward (this is correct!!!)
 zaf.krat!(i%) = analysis.WtPercents!(i%) / 100#
 Else
-zaf.krat!(i%) = NotAnalyzedValue!
+zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE!
 End If
 
 ' Duplicate element found, so just load the first valid occurance of the element, and set duplicates to a small number
@@ -2599,7 +2599,7 @@ If Trim$(UCase$(stdsample(1).Elsyms$(j%))) = Trim$(UCase$(stdsample(1).Elsyms$(i
 If j% = ip% Then
 zaf.krat!(j%) = analysis.WtPercents!(ip%) / 100#
 Else
-zaf.krat!(j%) = NotAnalyzedValue! / 100#
+zaf.krat!(j%) = NOT_ANALYZED_VALUE_SINGLE! / 100#
 End If
 End If
 Next j%
@@ -3214,7 +3214,7 @@ If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 15    ' use for disabl
 p2!(i%) = 0#
 If sample(1).OxideOrElemental% = 1 Or sample(1).numoxd%(i%) <> 0 Then
 If sample(1).numcat%(i%) < 1 Then GoTo ZAFSetZAFNoCations
-p2!(i%) = CSng(sample(1).numoxd%(i%)) / CSng(sample(1).numcat%(i%))
+p2!(i%) = sample(1).numoxd%(i%) / CSng(sample(1).numcat%(i%))
 End If
 Next i%
 
@@ -3870,12 +3870,12 @@ Dim fp1 As Double, fp2 As Double, fp3 As Double
 Dim fff As Double
 
 ' Load voltage, overvoltage and critical excitation locals
-eO# = CDbl(zaf.eO!(ii%))
-u0# = CDbl(zaf.v!(ii%))       ' used to be zaf.y!(ii%)
-eC# = CDbl(zaf.eC!(ii%))
-b# = CDbl(zaf.atwts!(ii%))    ' used to be zaf.b!(ii%)
-emm# = CDbl(em!(ii%))
-zip# = CDbl(zipi!(ii%))
+eO# = zaf.eO!(ii%)
+u0# = zaf.v!(ii%)       ' used to be zaf.y!(ii%)
+eC# = zaf.eC!(ii%)
+b# = zaf.atwts!(ii%)    ' used to be zaf.b!(ii%)
+emm# = em!(ii%)
+zip# = zipi!(ii%)
 
 ' Full PAP
 If mode% = 1 Then

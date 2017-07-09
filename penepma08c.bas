@@ -97,7 +97,7 @@ End If
 If InStr(astring$, "PDENER") > 0 Then
 tBeamMinimumEnergyRange# = 0
 tBeamMaximumEnergyRange# = sample(1).kilovolts! * EVPERKEV#
-tBeamNumberOfEnergyChannels& = CInt((tBeamMaximumEnergyRange# - tBeamMinimumEnergyRange#) / DEMO_EDS_EVPERCHANNEL!)
+tBeamNumberOfEnergyChannels& = (tBeamMaximumEnergyRange# - tBeamMinimumEnergyRange#) / DEMO_EDS_EVPERCHANNEL!
 cstring$ = Format$(tBeamMinimumEnergyRange#, "0.0") & " " & Format$(tBeamMaximumEnergyRange#, "0.0") & " "
 cstring$ = cstring$ & Format$(tBeamNumberOfEnergyChannels&, "0")
 Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)

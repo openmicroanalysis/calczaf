@@ -225,8 +225,8 @@ If tGrid.nCol& > MAXINTEGER% Then GoTo GridFileReadWrite2TooLarge
 If tGrid.nRow& > MAXINTEGER% Then GoTo GridFileReadWrite2TooLarge
 
 ' Load into image array
-idata(findex%).ix% = CInt(tGrid.nCol&)    ' number of horizontal columns
-idata(findex%).iy% = CInt(tGrid.nRow&)    ' number of vertical rows
+idata(findex%).ix% = tGrid.nCol&    ' number of horizontal columns
+idata(findex%).iy% = tGrid.nRow&    ' number of vertical rows
 
 ' Calculate X dimensions
 idata(findex%).xmin# = tGrid.xLL#
@@ -275,7 +275,7 @@ ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As 
     For ii& = 1 To iBound&
         
         ' To minimize the number of times we need to access tData.hdata#(), cache its value up front.
-        tmpFloat! = CSng(tData.hdata#(ii&, jj&))
+        tmpFloat! = tData.hdata#(ii&, jj&)
         If (tmpFloat! <> BLANKINGVALUE!) Then
             If (tmpFloat! < zMinVal!) Then tmpFloat! = zMinVal!
             If (tmpFloat! > zMaxVal!) Then tmpFloat! = zMaxVal!
@@ -336,7 +336,7 @@ tData.Size& = tGrid.nRow& * tGrid.nCol& * 8
 ' Load data for writing
 For jj& = 1 To idata(findex%).iy%
 For ii& = 1 To idata(findex%).ix%
-tData.hdata#(ii&, jj&) = CDbl(idata(findex%).gData!(ii&, jj&))
+tData.hdata#(ii&, jj&) = idata(findex%).gData!(ii&, jj&)
 Next ii&
 Next jj&
 

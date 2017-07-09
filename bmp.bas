@@ -186,7 +186,7 @@ Open tfilename$ For Binary Access Write As #tfilenumber%
 
 ' Fill in BitMap header
 BMPHeader.ImageFileType% = &H4D42
-BMPHeader.FileSize& = 14 + 40 + 256 * 4 + (aBPL& * CLng(iy%))
+BMPHeader.FileSize& = 14 + 40 + 256 * 4 + (aBPL& * iy%)
 BMPHeader.Reserved1% = 0
 BMPHeader.Reserved2% = 0
 BMPHeader.ImageDataOffset& = 14 + 40 + 256 * 4
@@ -194,8 +194,8 @@ Put #tfilenumber%, , BMPHeader
 
 ' Fill in BitMap Info
 BMPInfo.HeaderSize& = 40
-BMPInfo.ImageWidth& = CLng(ix%)
-BMPInfo.ImageHeight& = CLng(iy%)
+BMPInfo.ImageWidth& = ix%
+BMPInfo.ImageHeight& = iy%
 BMPInfo.NumberOfImagePlanes% = 1
 BMPInfo.BitsPerPixel% = 8
 BMPInfo.CompressionMethod& = 0
@@ -791,7 +791,7 @@ Const pixB& = 3
     End With
 
 ' Check if too large to allocate pixel array
-If CSng(picColor.ScaleWidth) * CSng(picColor.ScaleHeight) * 4# < MAXLONG& Then Exit Sub
+If CSng(picColor.ScaleWidth) * CSng(picColor.ScaleHeight) * 4# > MAXLONG& Then Exit Sub
 
     ' Load the bitmap's data
     nBytes& = 4

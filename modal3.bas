@@ -92,7 +92,7 @@ sum! = 0#
 For chan% = 1 To ModalOldSample(1).LastChan%
 ip% = IPOS1(ModalTmpSample(1).LastChan%, ModalOldSample(1).Elsyms$(chan%), ModalTmpSample(1).Elsyms$())
 If ip% > 0 Then
-allpercents#(chan%, stdnum%, phanum%) = CDbl(ModalTmpSample(1).ElmPercents!(ip%))
+allpercents#(chan%, stdnum%, phanum%) = ModalTmpSample(1).ElmPercents!(ip%)
 End If
 
 sum! = sum! + allpercents#(chan%, stdnum%, phanum%)
@@ -165,13 +165,13 @@ Next chan%
 totaloxygen! = 0#
 For chan% = 1 To ModalOldSample(1).LastChan%
 If ModalOldSample(1).OxideOrElemental% = 1 Then
-upercents#(chan%) = CDbl(ConvertOxdToElm!(tPercents!(chan%), ModalOldSample(1).Elsyms$(chan%), ModalOldSample(1).numcat%(chan%), ModalOldSample(1).numoxd%(chan%)))
+upercents#(chan%) = ConvertOxdToElm!(tPercents!(chan%), ModalOldSample(1).Elsyms$(chan%), ModalOldSample(1).numcat%(chan%), ModalOldSample(1).numoxd%(chan%))
 If ierror Then Exit Sub
 totaloxygen! = totaloxygen! + (tPercents!(chan%) - upercents#(chan%))
 
 ' Just load to unknown array
 Else
-upercents#(chan%) = CDbl(tPercents!(chan%))
+upercents#(chan%) = tPercents!(chan%)
 End If
 Next chan%
 
@@ -179,7 +179,7 @@ Next chan%
 If ModalOldSample(1).OxideOrElemental% = 1 Then
 ip% = IPOS1(ModalOldSample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), ModalOldSample(1).Elsyms$())
 If ip% > 0 Then
-upercents#(ip%) = CDbl(totaloxygen!)
+upercents#(ip%) = totaloxygen!
 End If
 End If
 
@@ -254,7 +254,7 @@ If ierror Then Exit Sub
 
 ' Store fit coefficients for this phase
 If fitcoeff# < lowvector! Then
-lowvector! = CDbl(fitcoeff#)
+lowvector! = fitcoeff#
 If lowvector! < ModalGroup.MinimumVectors!(phanum%) Then
 phasevector! = lowvector!
 phasenumber% = phanum%

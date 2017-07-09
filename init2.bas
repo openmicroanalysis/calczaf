@@ -460,7 +460,7 @@ sample(1).WavescanAcquisitionType% = 0  ' 1 = normal, 2 = quick, 3 = normal ROM,
 sample(1).kilovolts! = 0#
 sample(1).takeoff! = 0#
 sample(1).beamcurrent! = 0#
-sample(1).beamsize! = NotAnalyzedValue!     ' since it can be zero
+sample(1).beamsize! = NOT_ANALYZED_VALUE_SINGLE!     ' since it can be zero
 sample(1).ColumnConditionMethod% = 0
 sample(1).ColumnConditionString$ = vbNullString
 sample(1).Magnification! = 0#

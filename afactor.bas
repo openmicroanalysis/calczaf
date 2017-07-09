@@ -1260,7 +1260,7 @@ unkwts!(chan%) = 100# * kratios2!(chan%) * analysis.UnkBetas!(chan%)            
 
 ' Check for force to zero flag
 If ForceNegativeKratiosToZeroFlag = True Then
-If unkwts!(chan%) <= 0# Then unkwts!(chan%) = NotAnalyzedValue! ' use a non-zero value
+If unkwts!(chan%) <= 0# Then unkwts!(chan%) = NOT_ANALYZED_VALUE_SINGLE! ' use a non-zero value
 End If
 
 End If
@@ -2036,9 +2036,9 @@ If Not UsePenepmaKratiosLimitFlag Or (UsePenepmaKratiosLimitFlag And BinaryRange
 wout!(m%) = BinaryRanges!(n%)
 
 If ibin% = 1 Then
-rout!(m%) = CSng(tKratios1#(n%) / 100#)
+rout!(m%) = tKratios1#(n%) / 100#
 Else
-rout!(m%) = CSng(tKratios2#(n%) / 100#)
+rout!(m%) = tKratios2#(n%) / 100#
 End If
 
 ' Load symbols for print out
@@ -2242,7 +2242,7 @@ If ip% = 0 Then GoTo AFactorAlphaNotLoaded
 
 For row% = 1 To sample(1).Datarows%
 For i% = 1 To sample(1).LastElm%
-If analysis.StdPercents!(ip%, i%) > NotAnalyzedValue! Then
+If analysis.StdPercents!(ip%, i%) > NOT_ANALYZED_VALUE_SINGLE! Then
 
 ' Calculate alpha factor for this composition
 c! = analysis.StdPercents!(ip%, i%) / 100#

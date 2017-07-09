@@ -1049,7 +1049,7 @@ msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs%
 Input #Temp1FileNumber%, ScalInteDeadTimes%(i%)
 msg$ = msg$ & Format$(ScalInteDeadTimes%(i%), a80$)
-If ScalInteDeadTimes%(i%) = 0 Then ScalInteDeadTimes%(i%) = CInt(tScalDeadtimes!(i%))   ' just truncate for default if not specified in SCALERS.DAT
+If ScalInteDeadTimes%(i%) = 0 Then ScalInteDeadTimes%(i%) = tScalDeadtimes!(i%)   ' just truncate for default if not specified in SCALERS.DAT
 If ScalInteDeadTimes%(i%) < 1 Then GoTo InitScalersInvalidData  ' SX100/SXFive requires non-zero integer deadtime
 If ScalInteDeadTimes%(i%) > 10 Then GoTo InitScalersInvalidData
 Next i%
@@ -2370,7 +2370,6 @@ End If
 
 ' Standard database flags
 MinSpecifiedValue! = 0.05 ' minimum value (wt%) to force specified load for standard analysis
-NotAnalyzedValue! = 0.00000001
 StdMinimumValue! = 0.01  ' minimum value (wt%) for use as assigned standard
 MANMaximumValue! = 0.01  ' maximum value (wt%) for use as MAN background standard
 MinTotalValue! = 0.0001  ' minimum valid total
@@ -2968,7 +2967,7 @@ If StageBitMapIndex% < 1 Then StageBitMapIndex% = 1
 End If
 
 ' Initialize x-axis increment for wavescans
-WavescanXIncrement! = CSng(IncrementXForAdditionalPoints%)
+WavescanXIncrement! = IncrementXForAdditionalPoints%
 WavescanYIncrement! = 0#    ' make zero the default
 WavescanXIncrementInterval! = 10#
 

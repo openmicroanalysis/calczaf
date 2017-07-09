@@ -254,8 +254,8 @@ Dim astring As String
 ' Load all elements as integer weight percents
 astring$ = vbNullString
 For i% = 1 To sample(1).LastChan%
-If CInt(sample(1).ElmPercents!(i%)) > 0 Then
-astring$ = astring$ & sample(1).Elsyms$(i%) & CInt(sample(1).ElmPercents!(i%))
+If sample(1).ElmPercents!(i%) > 0# Then
+astring$ = astring$ & sample(1).Elsyms$(i%) & Int(sample(1).ElmPercents!(i%) + 0.5)
 End If
 Next i%
 

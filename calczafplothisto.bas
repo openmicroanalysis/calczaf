@@ -189,7 +189,7 @@ On Error GoTo CalcZAFPlotHistogram_PEError
 
 Dim i As Integer, nCol As Integer, acounter As Integer
 Dim xannotation As Single, yannotation As Single, ydecrement As Single
-Dim ymin As Double, ymax As Double
+Dim ymin As Single, ymax As Single
 
 Dim xdata() As Single, ydata() As Single
 
@@ -550,9 +550,9 @@ End If
 
 ' Draw line at 1.0
 acounter% = acounter% + 1
-ymin# = FormPLOTHISTO_PE.Pesgo1.ManualMinY
-ymax# = FormPLOTHISTO_PE.Pesgo1.ManualMaxY
-Call ScanDataPlotLine(FormPLOTHISTO_PE.Pesgo1, CLng(acounter%), CDbl(1#), ymin#, CDbl(1#), ymax#, False, True, Int(255), Int(0), Int(0), Int(0))       ' black
+ymin! = FormPLOTHISTO_PE.Pesgo1.ManualMinY
+ymax! = FormPLOTHISTO_PE.Pesgo1.ManualMaxY
+Call ScanDataPlotLine(FormPLOTHISTO_PE.Pesgo1, CLng(acounter%), CSng(1#), ymin!, CSng(1#), ymax!, False, True, Int(255), Int(0), Int(0), Int(0))       ' black
 If ierror Then Exit Sub
 
 FormPLOTHISTO_PE.Pesgo1.PEactions = REINITIALIZE_RESETIMAGE    ' generate new plot

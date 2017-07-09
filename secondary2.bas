@@ -542,10 +542,10 @@ Next n&
 
 ' Now load the xdata array using linear distance
 npts% = 1
-xdata!(1) = CSng(xdist#(chan%, dpnt&))
+xdata!(1) = xdist#(chan%, dpnt&)
 
 ' Now load the ydata kratio array using the mat B characteristic and continuum fluorescence only
-ydata!(1) = CSng(fluB_k#(chan%, dpnt&))
+ydata!(1) = fluB_k#(chan%, dpnt&)
 
 ' Check for pathological conditions
 If dist! > xdist#(chan%, 1) And dist! < xdist#(chan%, nPoints&(chan%)) Then
@@ -555,16 +555,16 @@ If dpnt& - 1 > 0 Then
 npts% = npts% + 1
 ReDim Preserve xdata(1 To npts%) As Single
 ReDim Preserve ydata(1 To npts%) As Single
-xdata!(npts%) = CSng(xdist#(chan%, dpnt& - 1))          ' distance in um
-ydata!(npts%) = CSng(fluB_k#(chan%, dpnt& - 1))         ' characteristic and continuum fluorescence from mat B (boundary phase)
+xdata!(npts%) = xdist#(chan%, dpnt& - 1)          ' distance in um
+ydata!(npts%) = fluB_k#(chan%, dpnt& - 1)         ' characteristic and continuum fluorescence from mat B (boundary phase)
 End If
 
 If dpnt& + 1 <= nPoints&(chan%) Then
 npts% = npts% + 1
 ReDim Preserve xdata(1 To npts%) As Single
 ReDim Preserve ydata(1 To npts%) As Single
-xdata!(npts%) = CSng(xdist#(chan%, dpnt& + 1))          ' distance in um
-ydata!(npts%) = CSng(fluB_k#(chan%, dpnt& + 1))         ' characteristic and continuum fluorescence from mat B (boundary phase)
+xdata!(npts%) = xdist#(chan%, dpnt& + 1)          ' distance in um
+ydata!(npts%) = fluB_k#(chan%, dpnt& + 1)         ' characteristic and continuum fluorescence from mat B (boundary phase)
 End If
 
 ' Debug mode
@@ -587,8 +587,8 @@ krat! = acoeff!(1) + dist! * acoeff!(2) + dist! ^ 2 * acoeff!(3)
 
 ' Distance is outside k-ratio data range (just use end values)
 Else
-If dist! <= xdist#(chan%, 1) Then krat! = CSng(fluB_k#(chan%, 1))
-If dist! >= xdist#(chan%, nPoints&(chan%)) Then krat! = CSng(fluB_k#(chan%, nPoints&(chan%)))
+If dist! <= xdist#(chan%, 1) Then krat! = fluB_k#(chan%, 1)
+If dist! >= xdist#(chan%, nPoints&(chan%)) Then krat! = fluB_k#(chan%, nPoints&(chan%))
 End If
 
 Call IOWriteLog("SecondaryCalculateKratio: Interpolated K-ratio % is " & MiscAutoFormat$(krat!) & " at a distance " & Format$(dist!) & " um")
@@ -804,8 +804,8 @@ Next n&
 temp1! = 0#
 temp2! = 0#
 If yktotal#(chan%, nPoints&(chan%)) > 0.0001 Then
-temp1! = CSng(yktotal#(chan%, k_npts&) - (prix_k#(chan%, k_npts&) + fluA_k#(chan%, k_npts&)))   ' total intensity minus mat A only intensity at max distance
-temp2! = CSng(100# * temp1! / yktotal#(chan%, 1))                                               ' (percent) total intensity at closest distance
+temp1! = yktotal#(chan%, k_npts&) - (prix_k#(chan%, k_npts&) + fluA_k#(chan%, k_npts&))   ' total intensity minus mat A only intensity at max distance
+temp2! = 100# * temp1! / yktotal#(chan%, 1)                                               ' (percent) total intensity at closest distance
 
 ' Check if difference is greater than 1%
 If DebugMode And VerboseMode Then

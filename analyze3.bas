@@ -440,7 +440,7 @@ End If
 ' Calculate and load peak to background ratios. MAN data calculated in routine AnalyzeWeightCorrect and
 ' loaded into "...BgdData()". Add background back in since we are now using corrected counts for both off-peak and MAN.
 temp! = 0#
-If CSng(sample(1).BgdData!(linerow%, chan%)) > MINCPSPERNA! Then    ' to avoid issues with missing off-peak data
+If sample(1).BgdData!(linerow%, chan%) > MINCPSPERNA! Then    ' to avoid issues with missing off-peak data
 temp! = (sample(1).CorData!(linerow%, chan%) + sample(1).BgdData!(linerow%, chan%)) / sample(1).BgdData!(linerow%, chan%)
 End If
 RowUnkPeakToBgds!(linerow%, chan%) = temp!
@@ -451,8 +451,8 @@ Next chan%
 
 ' Load total weight percents, ZAF iterations and zbar from routine ZAFCalZbar
 analysis.WtsData!(linerow%, sample(1).LastChan% + 1) = analysis.TotalPercent!
-RowUnkZAFIters!(linerow%) = CSng(analysis.ZAFIter!)
-RowUnkMANIters!(linerow%) = CSng(analysis.MANIter!)
+RowUnkZAFIters!(linerow%) = analysis.ZAFIter!
+RowUnkMANIters!(linerow%) = analysis.MANIter!
 
 RowUnkTotalPercents!(linerow%) = analysis.TotalPercent!
 RowUnkTotalOxygens!(linerow%) = analysis.totaloxygen!
@@ -1897,9 +1897,9 @@ If ierror Then Exit Sub
 End If
 
 If mode% = 1 Then
-msg$ = msg$ & MiscAutoFormatQ$(temp3!, NotAnalyzedValue!, analysis.WtsData!(linerow%, sample(1).LastChan% + 1))
+msg$ = msg$ & MiscAutoFormatQ$(temp3!, NOT_ANALYZED_VALUE_SINGLE!, analysis.WtsData!(linerow%, sample(1).LastChan% + 1))
 Else
-msg$ = msg$ & MiscAutoFormatQ$(temp3!, NotAnalyzedValue!, analysis.CalData!(linerow%, sample(1).LastChan% + 1))
+msg$ = msg$ & MiscAutoFormatQ$(temp3!, NOT_ANALYZED_VALUE_SINGLE!, analysis.CalData!(linerow%, sample(1).LastChan% + 1))
 End If
 End If
 End If
@@ -1958,7 +1958,7 @@ temp3! = temp3! * 3#
 If UseAutomaticFormatForResultsType% = 0 Then
 msg$ = msg$ & AnalyzeFormatAnalysisResult$(Int(0), Int(0), average.averags!(sample(1).LastChan% + 1), analysis, sample())
 Else
-msg$ = msg$ & MiscAutoFormatQ$(temp3!, NotAnalyzedValue!, average.averags!(sample(1).LastChan% + 1))
+msg$ = msg$ & MiscAutoFormatQ$(temp3!, NOT_ANALYZED_VALUE_SINGLE!, average.averags!(sample(1).LastChan% + 1))
 End If
 End If
 Call IOWriteLogRichText(msg$, vbNullString, Int(0), VbDarkBlue&, Int(0), Int(0))
@@ -2848,11 +2848,11 @@ msg$ = vbCrLf & "PUBL: "
 For i% = ii% To jj%
 stdpercent! = analysis.StdPercents!(ip%, i%)
 ippp% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())   ' check if duplicate element
-If mode% = 2 And analysis.StdPercents!(ip%, i%) <> NotAnalyzedValue! Then
+If mode% = 2 And analysis.StdPercents!(ip%, i%) <> NOT_ANALYZED_VALUE_SINGLE! Then
 stdpercent! = ConvertElmToOxd(analysis.StdPercents!(ip%, i%), sample(1).Elsyms$(i%), sample(1).numcat%(i%), sample(1).numoxd%(i%))
 If i% = sample(1).OxygenChannel% Then stdpercent! = ConvertTotalToExcessOxygen!(mode%, sample(), stdsample())
 End If
-If stdpercent! <> NotAnalyzedValue! And sample(1).DisableQuantFlag%(i%) = 0 And (Not UseAggregateIntensitiesFlag Or UseAggregateIntensitiesFlag And ippp% = 0) Then
+If stdpercent! <> NOT_ANALYZED_VALUE_SINGLE! And sample(1).DisableQuantFlag%(i%) = 0 And (Not UseAggregateIntensitiesFlag Or UseAggregateIntensitiesFlag And ippp% = 0) Then
 If Not UseAutomaticFormatForResultsFlag Then
 msg$ = msg$ & Format$(Format$(stdpercent!, f83$), a80$)
 StandardPublishedValues!(i%) = stdpercent!
@@ -2876,12 +2876,12 @@ Call IOWriteLogRichText(msg$, vbNullString, Int(0), VbDarkBlue&, Int(0), Int(0))
 For i% = ii% To jj%
 stdpercent! = analysis.StdPercents!(ip%, i%)
 ippp% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())   ' check if duplicate element
-If mode% = 2 And analysis.StdPercents!(ip%, i%) <> NotAnalyzedValue! Then
+If mode% = 2 And analysis.StdPercents!(ip%, i%) <> NOT_ANALYZED_VALUE_SINGLE! Then
 stdpercent! = ConvertElmToOxd(analysis.StdPercents!(ip%, i%), sample(1).Elsyms$(i%), sample(1).numcat%(i%), sample(1).numoxd%(i%))
 If i% = sample(1).OxygenChannel% Then stdpercent! = ConvertTotalToExcessOxygen!(mode%, sample(), stdsample())
 End If
 temp!(i%) = 0#
-If stdpercent! <> NotAnalyzedValue! And stdpercent! <> 0# And (Not UseAggregateIntensitiesFlag Or UseAggregateIntensitiesFlag And ippp% = 0) Then
+If stdpercent! <> NOT_ANALYZED_VALUE_SINGLE! And stdpercent! <> 0# And (Not UseAggregateIntensitiesFlag Or UseAggregateIntensitiesFlag And ippp% = 0) Then
 temp!(i%) = (average.averags!(i%) - stdpercent!) * 100# / stdpercent!
 End If
 Next i%
@@ -2889,7 +2889,7 @@ Next i%
 msg$ = "%VAR: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-If analysis.StdPercents!(ip%, i%) <> NotAnalyzedValue! Then
+If analysis.StdPercents!(ip%, i%) <> NOT_ANALYZED_VALUE_SINGLE! Then
 If sample(1).StdAssigns%(i%) <> sample(1).number% Then
 msg$ = msg$ & Format$(Format$(temp!(i%), f82$), a80$)
 StandardPercentVariances!(i%) = temp!(i%)
@@ -2912,12 +2912,12 @@ Call IOWriteLogRichText(msg$, vbNullString, Int(0), VbDarkBlue&, Int(0), Int(0))
 If UseDetailedFlag Then
 For i% = ii% To jj%
 stdpercent! = analysis.StdPercents!(ip%, i%)
-If mode% = 2 And analysis.StdPercents!(ip%, i%) <> NotAnalyzedValue! Then
+If mode% = 2 And analysis.StdPercents!(ip%, i%) <> NOT_ANALYZED_VALUE_SINGLE! Then
 stdpercent! = ConvertElmToOxd(analysis.StdPercents!(ip%, i%), sample(1).Elsyms$(i%), sample(1).numcat%(i%), sample(1).numoxd%(i%))
 If i% = sample(1).OxygenChannel% Then stdpercent! = ConvertTotalToExcessOxygen!(mode%, sample(), stdsample())
 End If
 temp!(i%) = 0#
-If stdpercent! <> NotAnalyzedValue! And stdpercent! <> 0# Then
+If stdpercent! <> NOT_ANALYZED_VALUE_SINGLE! And stdpercent! <> 0# Then
 temp!(i%) = average.averags!(i%) - stdpercent!
 End If
 Next i%
@@ -2926,7 +2926,7 @@ msg$ = "DIFF: "
 For i% = ii% To jj%
 ippp% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())   ' check if duplicate element
 If sample(1).DisableQuantFlag%(i%) = 0 And (Not UseAggregateIntensitiesFlag Or UseAggregateIntensitiesFlag And ippp% = 0) Then
-If analysis.StdPercents!(ip%, i%) <> NotAnalyzedValue! Then
+If analysis.StdPercents!(ip%, i%) <> NOT_ANALYZED_VALUE_SINGLE! Then
 If Not UseAutomaticFormatForResultsFlag Then
 If sample(1).StdAssigns%(i%) <> sample(1).number% Then
 msg$ = msg$ & Format$(Format$(temp!(i%), f83$), a80$)

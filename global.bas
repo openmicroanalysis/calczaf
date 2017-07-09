@@ -57,14 +57,14 @@ Global Const SW_SHOWNORMAL& = 1
 'Global Const SW_SHOWDEFAULT& = 10
 
 ' Declare Windows API Functions
-Public Declare Function GetPrivateProfileString Lib "Kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, _
+Public Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, _
     ByVal lpReturnedString As String, ByVal nSize As Long, ByVal lpFileName As String) As Long
-Public Declare Function GetPrivateProfileInt Lib "Kernel32" Alias "GetPrivateProfileIntA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal nDefault As Long, _
+Public Declare Function GetPrivateProfileInt Lib "kernel32" Alias "GetPrivateProfileIntA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal nDefault As Long, _
     ByVal lpFileName As String) As Long
-Public Declare Function WritePrivateProfileString Lib "Kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As Any, _
+Public Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As Any, _
     ByVal lpFileName As String) As Long
 
-Public Declare Sub Sleep Lib "Kernel32" (ByVal dwMilliseconds As Long)
+Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 ' New constants for non-traditional emission lines
 Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,mb)
@@ -321,12 +321,15 @@ Global Const MAXROMPEAKTYPES% = 6                   ' maximum number of ROM scan
 Global Const DEFAULTVOLATILEINTERVALS% = 5          ' default number of volatile intervals
 
 Global Const JEOL_SPECTRO_JOG_SIZE# = 0.6           ' additional room for JEOL spectro low limit jog (in mm)
-Global Const JEOL_IMAGE_SHIFT_FACTOR! = 163.8       ' image_shift = CInt(um_shift * 163.8)
+Global Const JEOL_IMAGE_SHIFT_FACTOR! = 163.8       ' image_shift = um_shift * 163.8
 
 Global Const MAXKLMORDER% = 20           ' maximum number of KLM higher order lines to display
 Global Const MAXKLMORDERCHAR% = 5        ' maximum number of KLM higher order Roman characters to display
 Global Const MAXSAMPLETYPES% = 3         ' maximumn types of samples (standard, unknown, wavescan)
 Global Const MAXFORBIDDEN% = 20          ' maximum number of forbidden elements
+
+Global Const NOT_ANALYZED_VALUE_SINGLE! = 0.00000001       ' 10^-8
+Global Const NOT_ANALYZED_VALUE_DOUBLE# = 0.00000001       ' 10^-8
 
 Global Const MAX_EXCEL_2003_COLS% = 256  ' maximum number of columns supported by Excel 2003 (version 11)
 
@@ -1845,7 +1848,6 @@ Global NumberofLines As Long            ' changed from integer 11/11/05
 
 ' Variable "constants"
 Global MinSpecifiedValue As Single  ' minimum amount for force loading as specified concentration
-Global NotAnalyzedValue As Single
 Global StdMinimumValue As Single    ' minimum amount for use as assigned standard
 Global MANMaximumValue As Single    ' maximum amount for use as MAN standard background
 

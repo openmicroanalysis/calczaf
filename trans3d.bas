@@ -30,7 +30,7 @@ ReDim up(1 To MAXDIM%) As Double
 ReDim vp(1 To MAXDIM%) As Double
 ReDim wp(1 To MAXDIM%) As Double
 
-ReDim vw(1 To MAXDIM%) As Double
+ReDim vW(1 To MAXDIM%) As Double
 ReDim wu(1 To MAXDIM%) As Double
 
 ReDim tc(1 To MAXDIM%) As Double
@@ -84,7 +84,7 @@ Vol# = Vol# + w#(i%) ^ 2
 Next i%
 If Vol# = 0# Then GoTo Trans3dCalculateMatrixVectorLinear
 
-Call Trans3dCrossProduct(v#(), w#(), vw#())
+Call Trans3dCrossProduct(v#(), w#(), vW#())
 If ierror Then Exit Sub
 Call Trans3dCrossProduct(w#(), u#(), wu#())
 If ierror Then Exit Sub
@@ -98,7 +98,7 @@ Next i%
 
 ' Load the matrix to transpose
 For i% = 1 To MAXDIM%
-at#(i%, 1) = vw#(i%)
+at#(i%, 1) = vW#(i%)
 at#(i%, 2) = wu#(i%)
 at#(i%, 3) = w#(i%)
 Next i%
@@ -260,17 +260,17 @@ On Error GoTo Trans3dTransformPositionVectorError
 ReDim xyz1(1 To MAXDIM%) As Double
 ReDim xyz2(1 To MAXDIM%) As Double
 
-xyz1#(1) = CDbl(xyz!(1))
-xyz1#(2) = CDbl(xyz!(2))
-xyz1#(3) = CDbl(xyz!(3))
+xyz1#(1) = xyz!(1)
+xyz1#(2) = xyz!(2)
+xyz1#(3) = xyz!(3)
 
 ' Multiply times fiducial matrix to transform coordinate to new position
 Call Trans3dMultiplyMatrix(MAXDIM%, fiducialmatrix#(), xyz1#(), xyz2#())
 If ierror Then Exit Sub
 
-xyz!(1) = CSng(xyz2#(1) + fiducialtranslation#(1))
-xyz!(2) = CSng(xyz2#(2) + fiducialtranslation#(2))
-xyz!(3) = CSng(xyz2#(3) + fiducialtranslation#(3))
+xyz!(1) = xyz2#(1) + fiducialtranslation#(1)
+xyz!(2) = xyz2#(2) + fiducialtranslation#(2)
+xyz!(3) = xyz2#(3) + fiducialtranslation#(3)
 
 Exit Sub
 
