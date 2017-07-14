@@ -52,7 +52,7 @@ Dim PMOL(1 To MAXBIOT%) As Single, ANIO(1 To MAXBIOT%) As Single
 Dim esym(1 To MAXBIOT%) As String
 
 ' Print calculation
-Call IOWriteLog(vbCrLf & "Biotite Formula Calculations (from Brimhal and Ague, v. 1.3, HALOG.F code)...")
+Call IOWriteLog(vbCrLf & "Biotite Formula Calculations (from Brimhall and Ague, v. 1.3, HALOG.F code)...")
       
 ' Load oxide percents
 For i% = 1 To sample(1).LastChan%

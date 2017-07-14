@@ -836,11 +836,11 @@ Type TypeSample
     
     EDSSpectraEVPerChannel() As Single
     EDSSpectraTakeOff() As Single
-    EDSSpectraAcceleratingVoltage() As Single
-    EDSSpectraStartEnergy() As Single
-    EDSSpectraEndEnergy() As Single
+    EDSSpectraAcceleratingVoltage() As Single   ' in keV
+    EDSSpectraStartEnergy() As Single           ' in keV
+    EDSSpectraEndEnergy() As Single             ' in keV
     EDSSpectraMaxCounts() As Long
-    EDSSpectraADCTimeConstant() As Single
+    EDSSpectraADCTimeConstant() As Single       ' pulse processing time (in vendor units)
     
     EDSSpectraKLineBCoefficient() As Single     ' used by Bruker only
     EDSSpectraKLineCCoefficient() As Single     ' used by Bruker only

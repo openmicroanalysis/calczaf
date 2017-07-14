@@ -2329,6 +2329,18 @@ MaxThroughputArrayValue!(8) = 3200#
 MaxThroughputArrayValue!(9) = 4000#
 MaxThroughputArrayValue!(10) = 6400#
 MaxThroughputArrayValue!(11) = 0#
+
+' JEOL OEM
+ElseIf EDSSpectraInterfaceType% = 6 Then
+MaxEnergyArraySize% = 1
+MaxEnergyArrayValue!(1) = 20#       ' JEOL OEM EDS is always 20 keV
+
+MaxThroughputArraySize% = 5         ' ???
+MaxThroughputArrayValue!(1) = 200#
+MaxThroughputArrayValue!(2) = 400#
+MaxThroughputArrayValue!(3) = 600#
+MaxThroughputArrayValue!(4) = 800#
+MaxThroughputArrayValue!(5) = 1000#
 End If
 
 ' Image interface type, 0=Demo, 1=Unused, 2=Unused, 3=Unused, 4=8900/8200/8500/8x30, 5=SX100/SXFive mapping, 6=SX100/SXFive Video, 7=JEOL 8230/8530 Video, 8=Unused, 9=Bruker, 10=Thermo
@@ -4475,7 +4487,11 @@ If astring$ <> vbNullString Then
 Call InitParseStringToReal(astring$, Int(4), twindow!())
 If ierror Then Exit Sub
 
+' Don't move or re-size if form is maximized
 If tForm.WindowState = vbMaximized Then Exit Sub
+
+' Don't move or re-size if form is minimized
+If tForm.WindowState = vbMinimized Then Exit Sub
 
 ' Check if saved window position is outside visible area (different monitor) (Screen object in VB6 does not handle dual monitors)
 Call MonitorsGetVirtualExtents(nMonitors&, tWidth&(), tHeight&(), vWidth&, vHeight&)
