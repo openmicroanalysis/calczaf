@@ -2281,7 +2281,7 @@ If CLSpectraInterfaceType% = 2 Then InterfaceStringCLUnitsX$(2) = "nm"
 If CLSpectraInterfaceType% = 3 Then InterfaceStringCLUnitsX$(3) = "nm"
 If CLSpectraInterfaceType% = 4 Then InterfaceStringCLUnitsX$(4) = "nm"
 
-' Demo (Bruker)
+' Demo (Bruker style config)
 MaxEnergyArraySize% = 4
 MaxEnergyArrayValue!(1) = 10#
 MaxEnergyArrayValue!(2) = 20#
@@ -2335,12 +2335,10 @@ ElseIf EDSSpectraInterfaceType% = 6 Then
 MaxEnergyArraySize% = 1
 MaxEnergyArrayValue!(1) = 20#       ' JEOL OEM EDS is always 20 keV
 
-MaxThroughputArraySize% = 5         ' ???
+MaxThroughputArraySize% = 3         ' confirmed 07/14/2017
 MaxThroughputArrayValue!(1) = 200#
 MaxThroughputArrayValue!(2) = 400#
 MaxThroughputArrayValue!(3) = 600#
-MaxThroughputArrayValue!(4) = 800#
-MaxThroughputArrayValue!(5) = 1000#
 End If
 
 ' Image interface type, 0=Demo, 1=Unused, 2=Unused, 3=Unused, 4=8900/8200/8500/8x30, 5=SX100/SXFive mapping, 6=SX100/SXFive Video, 7=JEOL 8230/8530 Video, 8=Unused, 9=Bruker, 10=Thermo
@@ -3035,7 +3033,7 @@ PTCNumericalIntegrationStep! = 0.00001
 PTCDoNotNormalizeSpecifiedFlag = False
 
 ' Initialize preset count time flag
-UseEDSPresetCountTimeFlag = False   ' use passed count time for EDS
+UseEDSPresetCountTimeFlag = False   ' use user specified count time for EDS integration live time
 EDSPresetCountTime! = DefaultOnCountTime! * 4
 EDSSpecifiedCountTime! = DefaultOnCountTime! * 4
 
