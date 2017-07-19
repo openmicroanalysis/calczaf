@@ -3986,7 +3986,7 @@ If Left$(lpReturnString$, valid&) <> vbNullString Then ThermoNSSVersionNumber! =
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 ' Load max energy values for EDS (0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM)
-If EDSInterfaceMaxEnergyThroughputPresent And MaxEnergyArraySize% > 0 And MaxThroughputArraySize% > 0 Then
+If EDSInterfaceMaxEnergyThroughputPresent Then
 lpAppName$ = "Hardware"
 lpKeyName$ = "MaxEnergyArraySize"
 nDefault& = MaxEnergyArraySize%
@@ -4008,7 +4008,7 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then MaxEnergyArrayValue!(i%) = Val(Left$(lpReturnString$, valid&))
-If MaxEnergyArrayValue!(i%) < 1# Or MaxEnergyArrayValue!(i%) > 100# Then
+If MaxEnergyArrayValue!(i%) < 0# Or MaxEnergyArrayValue!(i%) > 100# Then
 msg$ = "MaxEnergyArrayValue" & Format$(i%) & " keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 MaxEnergyArrayValue!(i%) = Val(lpDefault$)

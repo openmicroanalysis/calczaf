@@ -2282,6 +2282,7 @@ If CLSpectraInterfaceType% = 3 Then InterfaceStringCLUnitsX$(3) = "nm"
 If CLSpectraInterfaceType% = 4 Then InterfaceStringCLUnitsX$(4) = "nm"
 
 ' Demo (Bruker style config)
+If MaxEnergyArraySize% = 0 Or MaxThroughputArraySize% = 0 Then
 MaxEnergyArraySize% = 4
 MaxEnergyArrayValue!(1) = 10#
 MaxEnergyArrayValue!(2) = 20#
@@ -2339,6 +2340,7 @@ MaxThroughputArraySize% = 3         ' confirmed 07/14/2017
 MaxThroughputArrayValue!(1) = 200#
 MaxThroughputArrayValue!(2) = 400#
 MaxThroughputArrayValue!(3) = 600#
+End If
 End If
 
 ' Image interface type, 0=Demo, 1=Unused, 2=Unused, 3=Unused, 4=8900/8200/8500/8x30, 5=SX100/SXFive mapping, 6=SX100/SXFive Video, 7=JEOL 8230/8530 Video, 8=Unused, 9=Bruker, 10=Thermo
