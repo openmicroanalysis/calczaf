@@ -316,7 +316,7 @@ Exit Sub
 
 End Sub
 
-Sub ScanDataPlotPHAWindow_PE(tGraph As Pesgo, linecount As Long, baseline As Single, window As Single, tBold As Boolean)
+Sub ScanDataPlotPHAWindow_PE(tGraph As Pesgo, linecount As Long, baseline As Single, window As Single, intediff As Integer, tBold As Boolean)
 ' Display the PHA window on the graph (Pro Essentials code)
 
 ierror = False
@@ -348,8 +348,11 @@ If ierror Then Exit Sub
 Call ScanDataPlotLine(tGraph, linecount&, sxmin!, symin! - (ymax! - ymin!) * 0.1, sxmin!, symax! + (ymax! - ymin!) * 0.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
 If ierror Then Exit Sub
 
+' Plot end bar if differential
+If intediff% <> 0 Then
 Call ScanDataPlotLine(tGraph, linecount&, sxmax!, symin! - (ymax! - ymin!) * 0.1, sxmax!, symax! + (ymax! - ymin!) * 0.1, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
 If ierror Then Exit Sub
+End If
 
 Exit Sub
 

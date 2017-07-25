@@ -1625,17 +1625,17 @@ Dim deltaposition As Double, deltacounts As Double, shiftposition As Double
 xmindif# = 1E+38
 xmaxdif# = 1E+38
 For i& = 1 To nPoints&
-If ydata#(i&) <> NOT_ANALYZED_VALUE_DOUBLE# Then
+If ydata#(i&) <> NOT_ANALYZED_VALUE_SINGLE! Then
 If defminpnt& = 0 Then defminpnt& = i&
 defmaxpnt& = i&
 End If
 
-If xpos# <= xdata#(i&) And Abs(xpos# - xdata#(i&)) <= xmindif# And ydata#(i&) <> NOT_ANALYZED_VALUE_DOUBLE# Then     ' modified 07/15/2016 for cases where the values are equal
+If xpos# <= xdata#(i&) And Abs(xpos# - xdata#(i&)) <= xmindif# And ydata#(i&) <> NOT_ANALYZED_VALUE_SINGLE! Then     ' modified 07/15/2016 for cases where the values are equal
 xminpnt& = i&
 xmindif# = Abs(xpos# - xdata#(i&))
 End If
 
-If xpos# > xdata#(i&) And Abs(xpos# - xdata#(i&)) < xmaxdif# And ydata#(i&) <> NOT_ANALYZED_VALUE_DOUBLE# Then       ' do not change this, it is correct
+If xpos# > xdata#(i&) And Abs(xpos# - xdata#(i&)) < xmaxdif# And ydata#(i&) <> NOT_ANALYZED_VALUE_SINGLE! Then       ' do not change this, it is correct
 xmaxpnt& = i&
 xmaxdif# = Abs(xpos# - xdata#(i&))
 End If

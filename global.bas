@@ -329,7 +329,7 @@ Global Const MAXSAMPLETYPES% = 3         ' maximumn types of samples (standard, 
 Global Const MAXFORBIDDEN% = 20          ' maximum number of forbidden elements
 
 Global Const NOT_ANALYZED_VALUE_SINGLE! = 0.00000001       ' 10^-8
-Global Const NOT_ANALYZED_VALUE_DOUBLE# = 0.00000001       ' 10^-8
+'Global Const NOT_ANALYZED_VALUE_DOUBLE# = 0.00000001       ' 10^-8     (do not utilize as it causes a problem for Pro Essentials with .NullDataValueX property)
 
 Global Const MAX_EXCEL_2003_COLS% = 256  ' maximum number of columns supported by Excel 2003 (version 11)
 

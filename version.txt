@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/24/17	Plot PHA baseline window bar differently if integral mode.
+
+07/19/17	Move TestFid from TestProbe.msi to CalcZAF.msi. Replace double precision Not_Analyzed_Value with single precision 
+v. 11.9.5	because of issues in Pro Essentials graphics library with null data value property.
+
+		Improve DataGetBeamSize code to run faster.
+
 07/18/17	Modify PlotWaveGetData to skip data points where x value is missing (occurs sometimes in continuous wavescans).
 
 		Implement improved code to read maximum energy cutoff and processing throughput for Thermo and Bruker EDS systems.

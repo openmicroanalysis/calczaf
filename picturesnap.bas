@@ -961,7 +961,8 @@ End If
 ' Calculate mag box corners in +/- microns
 If tmagnification! <> 0# Then
 xoffset! = (RealTimeGetBeamScanCalibration!(XMotor%, DefaultKiloVolts!, tmagnification!, DefaultScanRotation!)) / 2#
-yoffset! = (RealTimeGetBeamScanCalibration!(YMotor%, DefaultKiloVolts!, tmagnification!, DefaultScanRotation!)) / 2#
+'yoffset! = (RealTimeGetBeamScanCalibration!(YMotor%, DefaultKiloVolts!, tmagnification!, DefaultScanRotation!)) / 2#
+yoffset! = xoffset! / ImageInterfaceImageIxIy!          ' use this instead for aspect ratio?
 
 ' Calculate absolute stage positions of mag box
 xdata1! = RealTimeMotorPositions!(XMotor%) - xoffset! / MotUnitsToAngstromMicrons!(XMotor%)

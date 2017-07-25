@@ -174,6 +174,9 @@ Dim BMPRGBQuad As TypeBMPRGBQuad
 Dim lineOfBytes() As Byte
 Dim lineOfBytesSize As Long
 
+' Sanity check
+If ix% = 0 Or iy% = 0 Then GoTo BMPSaveArrayToBMPFileBadIxIy
+
 ' Calculate bytes per line
 BPL& = BMPBytesPerLine&(CLng(ix%), 8)   ' assume always 8 bit images
 
@@ -257,6 +260,13 @@ Exit Sub
 ' Errors
 BMPSaveArrayToBMPFileError:
 MsgBox Error$, vbOKOnly + vbCritical, "BMPSaveArrayToBMPFile"
+Close #tfilenumber%
+ierror = True
+Exit Sub
+
+BMPSaveArrayToBMPFileBadIxIy:
+msg$ = "Ix or Iy pixel dimensions are zero (this error should not occur, please contact Probe Software technical support)"
+MsgBox msg$, vbOKOnly + vbExclamation, "BMPSaveArrayToBMPFile"
 Close #tfilenumber%
 ierror = True
 Exit Sub
