@@ -380,12 +380,13 @@ If InstType$ <> "JEOL" And InstType$ <> "CAMECA" Then GoTo MiscIsInstrumentStage
 ' Assume no match
 MiscIsInstrumentStageStored = False
 
-' For demo mode, base on stage units
-If InterfaceTypeStored% = 0 Or InterfaceTypeStored% = 1 Then
+' For demo mode, base on Stage units
+If InterfaceTypeStored% = 0 Then
 MiscIsInstrumentStageStored = MiscIsInstrumentStage(InstType$)
 Exit Function
 End If
 
+If InterfaceTypeStored% = 1 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
 If InterfaceTypeStored% = 2 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' JEOL 8900/8200/8500/8x30
 If InterfaceTypeStored% = 3 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
 If InterfaceTypeStored% = 4 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
@@ -545,5 +546,3 @@ ierror = True
 Exit Function
 
 End Function
-
-

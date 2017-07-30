@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/29/17	Minor GUI tweaks in form SETELM (Carpenter).
+
+07/28/17	Work on JEOL .map conversion code for PI.
+
 07/24/17	Plot PHA baseline window bar differently if integral mode.
 
 07/19/17	Move TestFid from TestProbe.msi to CalcZAF.msi. Replace double precision Not_Analyzed_Value with single precision 

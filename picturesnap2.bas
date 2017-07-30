@@ -148,7 +148,7 @@ End Sub
 Sub PictureSnapFileOpen(mode As Integer, tfilename As String, tForm As Form)
 ' Load the PictureSnap form
 '  mode = 0 file is specified in tfilename$
-'  mode = 1 open BMP. GIF or JPG
+'  mode = 1 open BMP, GIF or JPG
 '  mode = 2 open GRD (special treatment)
 '  tfilename$ = file to open automatically (if not blank)
 
@@ -157,6 +157,8 @@ On Error GoTo PictureSnapFileOpenError
 
 Dim gX_Polarity As Integer, gY_Polarity As Integer
 Dim gStage_Units As String
+
+Dim m_Width As Long, m_Height As Long, m_Depth As Long, m_ImageType As Long
 
 Static ofilename1 As String, ofilename2 As String
 
@@ -225,6 +227,11 @@ End If
 Else
 If Dir$(tfilename$) = vbNullString Then GoTo PictureSnapFileOpenNotFound
 End If
+
+' Check if image is a valid type
+'Call BMPReadImageInfo(tfilename$, m_Width&, m_Height&, m_Depth&, m_ImageType&)
+'If ierror Then Exit Sub
+'If m_ImageType& = 0 Then GoTo PictureSnapFileOpenUnknownType
 
 ' Minimize form to force resize
 FormPICTURESNAP.WindowState = vbMinimized
@@ -322,6 +329,12 @@ Exit Sub
 
 PictureSnapFileOpenNotGRD:
 msg$ = "The specified file " & tfilename$ & " was not a GRD file."
+MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapFileOpen"
+ierror = True
+Exit Sub
+
+PictureSnapFileOpenUnknownType:
+msg$ = "The specified image file " & tfilename$ & ", is an unknown image type. Please try again with a different image."
 MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapFileOpen"
 ierror = True
 Exit Sub

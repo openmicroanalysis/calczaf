@@ -129,7 +129,7 @@ If i2% = 5 Then in8% = 9   ' Ma
 If i2% = 6 Then in8% = 8   ' Mb
 
 ' Check for missing absorption edge data
-If zaf.edg!(in8%, i1%) = 0# Then
+If zaf.edg!(in8%, i1%) = 0# And DebugMode Then
 msg$ = "WARNING in ZAFFlu1- " & Format$(Symup$(zaf.Z%(i1%)), a20$) & " " & Format$(Edglo$(in8%), a20$) & " absorption edge is zero"
 Call IOWriteLog(msg$)
 GoTo 6960
@@ -419,7 +419,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
             If i2% = 12 Then in8% = 9   ' Mz
 
             ' Check for missing absorption edge data
-            If zaf.edg!(in8%, i1%) = 0# Then
+            If zaf.edg!(in8%, i1%) = 0# And DebugMode Then
             msg$ = "WARNING in ZAFFlu2- " & Format$(Symup$(zaf.Z%(i1%)), a20$) & " " & Format$(Edglo$(in8%), a20$) & " absorption edge is zero"
             Call IOWriteLog(msg$)
             GoTo 6960

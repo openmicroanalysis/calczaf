@@ -278,6 +278,7 @@ AddStdSaveStdNotFound:
 Screen.MousePointer = vbDefault
 msg$ = "Standard number " & Format$(number%) & " was not found in " & StandardDataFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "AddStdSaveStd"
+Call IOStatusAuto(vbNullString)
 ierror = True
 Exit Sub
 
@@ -460,7 +461,7 @@ Dim tMaterialTypes() As String
 ' Load material types that are checked
 tt% = 0
 For n% = 1 To MAXMATERIALTYPES%
-If FormADDSTD.CheckMaterialType(n% - 1).Value = vbChecked Then
+If FormADDSTD.CheckMaterialType(n% - 1).value = vbChecked Then
 tt% = tt% + 1
 ReDim Preserve tMaterialTypes(1 To tt%) As String
 tMaterialTypes$(tt%) = FormADDSTD.CheckMaterialType(n% - 1).Caption

@@ -1,4 +1,4 @@
-FormMAIN = 154, 154, 618, 594, Z, 22, 22, 880, 462, C
+FormMAIN = 154, 154, 618, 594, , 22, 22, 880, 462, C
 CodeABSORB = 132, 132, 658, 580, C
 CodeINIT = 198, 198, 704, 646, 
 CodeIMAGE4 = 0, 0, 0, 0, C
@@ -19,7 +19,6 @@ CodeINIT1 = 198, 198, 806, 814, C
 CodeInit11 = 0, 0, 1081, 600, C
 CodeMISCForm = 100, 100, 978, 539, 
 CodeMiscFile = 0, 0, 0, 0, C
-CodeMiscReal = 0, 0, 0, 0, C
 CodeSTUDENT = 125, 125, 1388, 725, C
 CodeMISC5 = 88, 88, 721, 640, C
 FormMSGBOXTIME = 0, 0, 0, 0, C, 100, 100, 911, 539, C
