@@ -120,43 +120,6 @@ Exit Function
 
 End Function
 
-Function IPOS2B(n As Long, num1 As Integer, num2 As Integer, array1() As Integer, array2() As Integer) As Integer
-' This routine returns as its value a pointer to the first occurance of 'num1' and 'num2' in the integer
-' arrays 'array1' and 'array2'.  The first 'n' positions are searched.  If 'num2' and 'num2' do not occur in
-' those positions then IPOS2A is equal to -1. Example:
-'  n = 4
-'  num1    = 22
-'  num2    = 2
-'  array1() = 16,22,22,24       ' zero based array
-'  array2() = 1,1,2,4           ' zero based array
-'  IPOS2B    will be set to 3
-
-ierror = False
-On Error GoTo IPOS2BError
-
-Dim i As Integer
-
-If n& <= 0 Then GoTo Fail2B
-For i% = 1 To n&
-If array1%(i% - 1) = num1% And array2%(i% - 1) = num2% Then GoTo Found2B
-Next i%
-
-Fail2B:
-IPOS2B = -1
-Exit Function
-
-Found2B:
-IPOS2B = i% - 1
-Exit Function
-
-' Errors
-IPOS2BError:
-MsgBox Error$, vbOKOnly + vbCritical, "IPOS2B"
-ierror = True
-Exit Function
-
-End Function
-
 Function IPOS22(n As Long, num As Long, narray() As Long) As Long
 ' This routine returns as its value a pointer to the first occurance
 ' of 'num' in the LONG integer array 'narray'.  The first 'n' positions

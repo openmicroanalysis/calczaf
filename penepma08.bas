@@ -1301,6 +1301,62 @@ Exit Sub
 
 End Sub
 
+Sub Penepma08BatchGetInputParameterString(tfilename As String, bstring As String, cstring As String)
+' Return the specified parameter string from the specified input file
+'  tfilename$ = input file name
+'  bstring$ = parameter string to return
+'  cstring$ = returned parameter string
+
+ierror = False
+On Error GoTo Penepma08BatchGetInputParameterStringError
+
+Dim astring As String
+
+' Check input file name
+If Dir$(tfilename$) = vbNullString Then GoTo Penepma08BatchGetInputParameterStringNotFound
+
+' Open file and load values
+Open tfilename$ For Input As #Temp1FileNumber%
+
+cstring$ = vbNullString
+Do Until EOF(Temp1FileNumber%)
+Line Input #Temp1FileNumber%, astring$
+
+' See if specified parameter is in string
+If InStr(astring$, bstring$) > 0 Then
+cstring$ = astring$
+Exit Do
+End If
+
+Loop
+
+Close #Temp1FileNumber%
+
+' Check for a return value
+If cstring$ = vbNullString Then GoTo Penepma08BatchGetInputParameterStringNoString
+Exit Sub
+
+' Errors
+Penepma08BatchGetInputParameterStringError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08BatchGetInputParameterString"
+Close #Temp1FileNumber%
+ierror = True
+Exit Sub
+
+Penepma08BatchGetInputParameterStringNotFound:
+msg$ = "Penepma input file (" & tfilename$ & ") was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchGetInputParameterString"
+ierror = True
+Exit Sub
+
+Penepma08BatchGetInputParameterStringNoString:
+msg$ = "The specified parameter string (" & bstring$ & ") was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchGetInputParameterString"
+ierror = True
+Exit Sub
+
+End Sub
+
 Sub Penepma08LoadProduction(Index As Integer, tForm As Form)
 ' Load values from selected production file
 
@@ -3216,7 +3272,7 @@ Dim ip As Integer
 Dim esym As String
 
 Dim n As Integer, k As Integer, l As Integer
-Dim pfilename As String, tfilename As String, astring As String
+Dim pfilename As String, tfilename As String, astring As String, bstring As String
 
 Dim binarynames(1 To MAXBINARY%) As String
 
@@ -3290,6 +3346,32 @@ std_int!(n%, l%) = tot_int!(n%, l%)
 Next l%
 
 Next n%
+
+' Now read one (the last) pure element input file for the takeoff and beam energy
+tfilename$ = PENEPMA_BATCH_FOLDER$ & "\" & pfilename$ & "\" & Symup$(BinaryElement2%) & "_100.in"
+If Dir$(tfilename$) = vbNullString Then GoTo Penepma08BatchBinaryExtractFileNotFound2
+
+' Get beam energy
+Call Penepma08BatchGetInputParameterString(tfilename$, "SENERG", astring$)
+If ierror Then Exit Sub
+Call MiscParseStringToStringA(astring$, VbSpace, bstring$)
+If ierror Then Exit Sub
+Call MiscParseStringToStringA(astring$, VbSpace, bstring$)
+If ierror Then Exit Sub
+BeamEnergy# = Val(bstring$)
+
+' Get takeoff angle
+Call Penepma08BatchGetInputParameterString(tfilename$, "PDANGL", astring$)
+If ierror Then Exit Sub
+Call MiscParseStringToStringA(astring$, VbSpace, bstring$)
+If ierror Then Exit Sub
+Call MiscParseStringToStringA(astring$, VbSpace, bstring$)
+If ierror Then Exit Sub
+InputTheta1# = Val(bstring$)
+Call MiscParseStringToStringA(astring$, VbSpace, bstring$)
+If ierror Then Exit Sub
+InputTheta2# = Val(bstring$)
+BeamTakeOff# = 90 - (InputTheta1# + InputTheta2#) / 2
 
 ' Create binary sample
 PENEPMASample(1).LastElm% = 2
@@ -3390,6 +3472,12 @@ Exit Sub
 
 Penepma08BatchBinaryExtractFileNotFound:
 msg$ = "The specified pure element or binary k-ratio output file (" & tfilename$ & ") was not found. Please check that the specified folder containing the Penepma pure element and binary k-ratio output files exists."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchBinaryExtract"
+ierror = True
+Exit Sub
+
+Penepma08BatchBinaryExtractFileNotFound2:
+msg$ = "The pure element input file (" & tfilename$ & ") was not found. Please check that the specified folder containing the Penepma pure element and binary k-ratio output files exists."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchBinaryExtract"
 ierror = True
 Exit Sub
