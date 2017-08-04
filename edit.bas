@@ -1347,13 +1347,7 @@ End If
 
 ' If MAC file exists then get value
 If Dir$(MACFile$) <> vbNullString Then
-
-If iray% <= MAXRAY_OLD% Then
 Call EditGetMACData(ielm%, iray%, iabsorb%, temp!)
-Else
-Call EditGetMACData(ielm%, iray% - MAXRAY_OLD%, iabsorb%, temp!)
-End If
-
 msg$ = "MAC value for " & esym$ & " " & xsym$ & " in " & absorb$ & " = " & Format$(Format$(temp!, f102$), a100$) & "  (" & macstring$(MACTypeFlag%) & ")"
 Call IOWriteLog(msg$)
 End If
