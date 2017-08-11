@@ -2584,12 +2584,8 @@ analysis.WtPercents!(i%) = stdsample(1).ElmPercents!(i%)
 ' Check that only the first (not quant disabled) element gets loaded for std k-factor calculation (added 04/15/2014, also see changes in UpdateCalculateUpdateStandard)
 If Not MiscIsElementDuplicated2(i%, stdsample(), ipp%) Then
 
-' No duplicate element, just load std percent (only load if not disabled quant) added 12-03-2014
-'If stdsample(1).DisableQuantFlag%(i%) = 0 Or (stdsample(1).DisableQuantFlag%(i%) = 1 And sample(1).OxideOrElemental% = 1) Or (stdsample(1).DisableQuantFlag%(i%) = 1 And sample(1).OxideOrElemental% = 2 And sample(1).OxygenChannel% > 0) Then       ' modified 05/13/2015 for Seward and 08/09/2017 for Poeml (always load all non-duplicate elements!)
+' Not duplicate element, always load std percent
 zaf.krat!(i%) = analysis.WtPercents!(i%) / 100#
-'Else
-'zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE!
-'End If
 
 ' Duplicate element found, so just load the first valid occurance of the element, and set duplicates to a small number
 Else

@@ -2066,7 +2066,7 @@ Global RealTimePauseAutomation As Integer
 Global UseZeroPointCalibrationCurveFlag As Integer
 Global VerboseMode As Integer
 
-' Plot and PlotWave parameters
+' Plot and PlotWave parameters (and multi-point bgd plot)
 Global ErrorbarSigmaIndex As Integer
 Global ErrorbarSigmaNumber As Integer
 Global ErrorbarSpacingIndex As Integer
