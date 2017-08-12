@@ -1460,6 +1460,7 @@ If sample(1).Type% = 1 Then
 If UseConductiveCoatingCorrectionForElectronAbsorption = True Or UseConductiveCoatingCorrectionForXrayTransmission = True Then
 ippp% = IPOS2(NumberofStandards%, sample(1).number%, StandardNumbers%())
 If ippp% > 0 Then
+sample(1).CoatingFlag% = StandardCoatingFlag%(ippp%)
 sample(1).CoatingElement% = StandardCoatingElement%(ippp%)
 sample(1).CoatingDensity! = StandardCoatingDensity!(ippp%)
 sample(1).CoatingThickness! = StandardCoatingThickness!(ippp%)
@@ -1469,8 +1470,8 @@ End If
 End If
 
 ' Conductive coating debug
+msg$ = vbNullString
 If DebugMode Then
-If UseConductiveCoatingCorrectionForElectronAbsorption = True Or UseConductiveCoatingCorrectionForXrayTransmission = True Then
 
 ' Print out coating parameters for this sample
 If sample(1).CoatingFlag% = 1 Then
@@ -1478,9 +1479,6 @@ astring$ = "Sample Coating=" & Trim$(Symup$(sample(1).CoatingElement%))
 astring$ = astring$ & ", Density=" & Format$(sample(1).CoatingDensity!) & " gm/cm3"
 astring$ = astring$ & ", Thickness=" & Format$(sample(1).CoatingThickness!) & " angstroms"
 astring$ = astring$ & ", Sin(Thickness)=" & Format$(sample(1).CoatingSinThickness!) & " angstroms"
-Else
-astring$ = "No Sample Coating"
-End If
 
 If UseConductiveCoatingCorrectionForElectronAbsorption = True And Not UseConductiveCoatingCorrectionForXrayTransmission = True Then
 msg$ = vbCrLf & "Using Conductive Coating Correction For Electron Absorption: " & vbCrLf & astring$
@@ -1491,12 +1489,16 @@ End If
 If UseConductiveCoatingCorrectionForElectronAbsorption = True And UseConductiveCoatingCorrectionForXrayTransmission = True Then
 msg$ = vbCrLf & "Using Conductive Coating Correction For Electron Absorption and X-Ray Transmission: " & vbCrLf & astring$
 End If
-Call IOWriteLog(msg$)
+
+' No coating correction
+Else
+msg$ = vbCrLf & "No Sample Coating and/or No Sample Coating Correction"
 End If
+Call IOWriteLog(msg$)
 
 ' Print out coating calculations (display final coating calculations in ZAFPrintSmp)
 If VerboseMode Then
-If UseConductiveCoatingCorrectionForElectronAbsorption = True Or UseConductiveCoatingCorrectionForXrayTransmission = True Then
+If sample(1).CoatingFlag% = 1 And UseConductiveCoatingCorrectionForElectronAbsorption = True Or UseConductiveCoatingCorrectionForXrayTransmission = True Then
 msg$ = vbCrLf & "Coating Correction (X-ray transmission):"
 msg$ = msg$ & vbCrLf & "UNKCOAT "
 For j% = 1 To sample(1).LastElm%
@@ -2508,14 +2510,12 @@ Next i%
 If DebugMode Then
 If UseConductiveCoatingCorrectionForElectronAbsorption = True Or UseConductiveCoatingCorrectionForXrayTransmission = True Then
 
+msg$ = vbNullString
 If stdsample(1).CoatingFlag% = 1 Then
 astring$ = "Standard " & Format$(stdsample(1).number%) & ", Coating=" & Trim$(Symup$(stdsample(1).CoatingElement%))
 astring$ = astring$ & ", Density=" & Format$(stdsample(1).CoatingDensity!) & " gm/cm3"
 astring$ = astring$ & ", Thickness=" & Format$(stdsample(1).CoatingThickness!) & " angstroms"
 astring$ = astring$ & ", Sin(Thickness)=" & Format$(stdsample(1).CoatingSinThickness!) & " angstroms"
-Else
-astring$ = "No Standard Coating"
-End If
 
 If UseConductiveCoatingCorrectionForElectronAbsorption = True And Not UseConductiveCoatingCorrectionForXrayTransmission = True Then
 msg$ = vbCrLf & "Using Conductive Coating Correction For Electron Absorption: " & vbCrLf & astring$
@@ -2525,6 +2525,11 @@ msg$ = vbCrLf & "Using Conductive Coating Correction For X-Ray Transmission: " &
 End If
 If UseConductiveCoatingCorrectionForElectronAbsorption = True And UseConductiveCoatingCorrectionForXrayTransmission = True Then
 msg$ = vbCrLf & "Using Conductive Coating Correction For Electron Absorption and X-Ray Transmission: " & vbCrLf & astring$
+End If
+
+' No coating
+Else
+msg$ = vbCrLf & "No Standard Coating and/or No Standard Coating Correction"
 End If
 Call IOWriteLog(msg$)
 

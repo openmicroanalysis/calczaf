@@ -421,6 +421,7 @@ Call IOWriteLog(msg$)
 End If
 
 ' Conductive coating flags
+msg$ = vbNullString
 If (UCase$(app.EXEName) = UCase$("CalcZAF")) Or ProbeDataFileVersionNumber! > 7.42 Then
 If UseConductiveCoatingCorrectionForElectronAbsorption = True Or UseConductiveCoatingCorrectionForXrayTransmission = True Then
 If sample(1).CoatingFlag% = 1 Then
@@ -428,9 +429,6 @@ astring$ = "Sample Coating=" & Trim$(Symup$(sample(1).CoatingElement%))
 astring$ = astring$ & ", Density=" & Format$(sample(1).CoatingDensity!) & " gm/cm3"
 astring$ = astring$ & ", Thickness=" & Format$(sample(1).CoatingThickness!) & " angstroms"
 astring$ = astring$ & ", Sin(Thickness)=" & Format$(sample(1).CoatingSinThickness!) & " angstroms"
-Else
-astring$ = "No Sample Coating"
-End If
 
 If UseConductiveCoatingCorrectionForElectronAbsorption = True And Not UseConductiveCoatingCorrectionForXrayTransmission = True Then
 msg$ = vbCrLf & "Using Conductive Coating Correction For Electron Absorption: " & vbCrLf & astring$
@@ -440,6 +438,11 @@ msg$ = vbCrLf & "Using Conductive Coating Correction For X-Ray Transmission: " &
 End If
 If UseConductiveCoatingCorrectionForElectronAbsorption = True And UseConductiveCoatingCorrectionForXrayTransmission = True Then
 msg$ = vbCrLf & "Using Conductive Coating Correction For Electron Absorption and X-Ray Transmission: " & vbCrLf & astring$
+End If
+
+' No sample coating
+Else
+msg$ = vbCrLf & "No Sample Coating and/or No Sample Coating Correction"
 End If
 
 Call IOWriteLog(msg$)

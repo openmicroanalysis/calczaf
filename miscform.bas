@@ -139,42 +139,42 @@ Dim App_Icon_Name As String
 
 ' Load icon based on application name
 App_Icon_Name$ = vbNullString
-If UCase$(App.EXEName) = UCase$("CalcImage") Then App_Icon_Name$ = "CalcImage_Icon"
-If UCase$(App.EXEName) = UCase$("CalcZAF") Then App_Icon_Name$ = "CalcZAF_Icon"
-If UCase$(App.EXEName) = UCase$("Probewin") Then App_Icon_Name$ = "Probewin_Icon"
-If UCase$(App.EXEName) = UCase$("Stage") Then App_Icon_Name$ = "Stage_Icon"
-If UCase$(App.EXEName) = UCase$("Standard") Then App_Icon_Name$ = "Standard_Icon"
-If UCase$(App.EXEName) = UCase$("Startwin") Then App_Icon_Name$ = "Startwin_Icon"
+If UCase$(app.EXEName) = UCase$("CalcImage") Then App_Icon_Name$ = "CalcImage_Icon"
+If UCase$(app.EXEName) = UCase$("CalcZAF") Then App_Icon_Name$ = "CalcZAF_Icon"
+If UCase$(app.EXEName) = UCase$("Probewin") Then App_Icon_Name$ = "Probewin_Icon"
+If UCase$(app.EXEName) = UCase$("Stage") Then App_Icon_Name$ = "Stage_Icon"
+If UCase$(app.EXEName) = UCase$("Standard") Then App_Icon_Name$ = "Standard_Icon"
+If UCase$(app.EXEName) = UCase$("Startwin") Then App_Icon_Name$ = "Startwin_Icon"
 
-If UCase$(App.EXEName) = UCase$("Calibrate") Then App_Icon_Name$ = "Calibrate_Icon"
-If UCase$(App.EXEName) = UCase$("CalMAC") Then App_Icon_Name$ = "CalMAC_Icon"
-If UCase$(App.EXEName) = UCase$("Coat") Then App_Icon_Name$ = "Coat_Icon"
-If UCase$(App.EXEName) = UCase$("ConvertToPrbImg") Then App_Icon_Name$ = "ConvertToPrbImg_Icon"
-If UCase$(App.EXEName) = UCase$("Drift") Then App_Icon_Name$ = "Drift_Icon"
-If UCase$(App.EXEName) = UCase$("Evaluate") Then App_Icon_Name$ = "Evaluate_Icon"
-If UCase$(App.EXEName) = UCase$("Faraday") Then App_Icon_Name$ = "Faraday_Icon"
-If UCase$(App.EXEName) = UCase$("GunAlign") Then App_Icon_Name$ = "GunAlign_Icon"
-If UCase$(App.EXEName) = UCase$("Matrix") Then App_Icon_Name$ = "Matrix_Icon"
-If UCase$(App.EXEName) = UCase$("Monitor") Then App_Icon_Name$ = "Monitor_Icon"
-If UCase$(App.EXEName) = UCase$("PenPFE") Then App_Icon_Name$ = "PenPFE_Icon"
-If UCase$(App.EXEName) = UCase$("ProbeUserWizard") Then App_Icon_Name$ = "ProbeUserWizard_Icon"
-If UCase$(App.EXEName) = UCase$("Remote") Then App_Icon_Name$ = "Remote_Icon"
-If UCase$(App.EXEName) = UCase$("Search") Then App_Icon_Name$ = "Search_Icon"
-If UCase$(App.EXEName) = UCase$("StripChart") Then App_Icon_Name$ = "StripChart_Icon"
-If UCase$(App.EXEName) = UCase$("TestSX100") Then App_Icon_Name$ = "TestSX100_Icon"
-If UCase$(App.EXEName) = UCase$("TestEDS") Then App_Icon_Name$ = "TestEDS_Icon"
-If UCase$(App.EXEName) = UCase$("TestFid") Then App_Icon_Name$ = "TestFid_Icon"
-If UCase$(App.EXEName) = UCase$("TestImage") Then App_Icon_Name$ = "TestImage_Icon"
-If UCase$(App.EXEName) = UCase$("TestJEOL") Then App_Icon_Name$ = "TestJEOL_Icon"
-If UCase$(App.EXEName) = UCase$("TestMatrix") Then App_Icon_Name$ = "TestMatrix_Icon"
-If UCase$(App.EXEName) = UCase$("TestMonitor") Then App_Icon_Name$ = "TestMonitor_Icon"
-If UCase$(App.EXEName) = UCase$("TestRemote") Then App_Icon_Name$ = "TestRemote_Icon"
-If UCase$(App.EXEName) = UCase$("TestStage") Then App_Icon_Name$ = "TestStage_Icon"
-If UCase$(App.EXEName) = UCase$("TestThermo") Then App_Icon_Name$ = "TestThermo_Icon"
-If UCase$(App.EXEName) = UCase$("TestType") Then App_Icon_Name$ = "TestType_Icon"
-If UCase$(App.EXEName) = UCase$("Userwin") Then App_Icon_Name$ = "Userwin_Icon"
-If UCase$(App.EXEName) = UCase$("Vacuum") Then App_Icon_Name$ = "Vacuum_Icon"
-If UCase$(App.EXEName) = UCase$("Wizard") Then App_Icon_Name$ = "Wizard_Icon"
+If UCase$(app.EXEName) = UCase$("Calibrate") Then App_Icon_Name$ = "Calibrate_Icon"
+If UCase$(app.EXEName) = UCase$("CalMAC") Then App_Icon_Name$ = "CalMAC_Icon"
+If UCase$(app.EXEName) = UCase$("Coat") Then App_Icon_Name$ = "Coat_Icon"
+If UCase$(app.EXEName) = UCase$("ConvertToPrbImg") Then App_Icon_Name$ = "ConvertToPrbImg_Icon"
+If UCase$(app.EXEName) = UCase$("Drift") Then App_Icon_Name$ = "Drift_Icon"
+If UCase$(app.EXEName) = UCase$("Evaluate") Then App_Icon_Name$ = "Evaluate_Icon"
+If UCase$(app.EXEName) = UCase$("Faraday") Then App_Icon_Name$ = "Faraday_Icon"
+If UCase$(app.EXEName) = UCase$("GunAlign") Then App_Icon_Name$ = "GunAlign_Icon"
+If UCase$(app.EXEName) = UCase$("Matrix") Then App_Icon_Name$ = "Matrix_Icon"
+If UCase$(app.EXEName) = UCase$("Monitor") Then App_Icon_Name$ = "Monitor_Icon"
+If UCase$(app.EXEName) = UCase$("PenPFE") Then App_Icon_Name$ = "PenPFE_Icon"
+If UCase$(app.EXEName) = UCase$("ProbeUserWizard") Then App_Icon_Name$ = "ProbeUserWizard_Icon"
+If UCase$(app.EXEName) = UCase$("Remote") Then App_Icon_Name$ = "Remote_Icon"
+If UCase$(app.EXEName) = UCase$("Search") Then App_Icon_Name$ = "Search_Icon"
+If UCase$(app.EXEName) = UCase$("StripChart") Then App_Icon_Name$ = "StripChart_Icon"
+If UCase$(app.EXEName) = UCase$("TestSX100") Then App_Icon_Name$ = "TestSX100_Icon"
+If UCase$(app.EXEName) = UCase$("TestEDS") Then App_Icon_Name$ = "TestEDS_Icon"
+If UCase$(app.EXEName) = UCase$("TestFid") Then App_Icon_Name$ = "TestFid_Icon"
+If UCase$(app.EXEName) = UCase$("TestImage") Then App_Icon_Name$ = "TestImage_Icon"
+If UCase$(app.EXEName) = UCase$("TestJEOL") Then App_Icon_Name$ = "TestJEOL_Icon"
+If UCase$(app.EXEName) = UCase$("TestMatrix") Then App_Icon_Name$ = "TestMatrix_Icon"
+If UCase$(app.EXEName) = UCase$("TestMonitor") Then App_Icon_Name$ = "TestMonitor_Icon"
+If UCase$(app.EXEName) = UCase$("TestRemote") Then App_Icon_Name$ = "TestRemote_Icon"
+If UCase$(app.EXEName) = UCase$("TestStage") Then App_Icon_Name$ = "TestStage_Icon"
+If UCase$(app.EXEName) = UCase$("TestThermo") Then App_Icon_Name$ = "TestThermo_Icon"
+If UCase$(app.EXEName) = UCase$("TestType") Then App_Icon_Name$ = "TestType_Icon"
+If UCase$(app.EXEName) = UCase$("Userwin") Then App_Icon_Name$ = "Userwin_Icon"
+If UCase$(app.EXEName) = UCase$("Vacuum") Then App_Icon_Name$ = "Vacuum_Icon"
+If UCase$(app.EXEName) = UCase$("Wizard") Then App_Icon_Name$ = "Wizard_Icon"
 
 ' If nothing loaded use default icon
 If App_Icon_Name$ = vbNullString Then Exit Sub
@@ -198,6 +198,10 @@ Sub MiscCenterForm(tForm As Form)
 
 ierror = False
 On Error GoTo MiscCenterFormError
+
+' Check if maxmimized or minimized
+If tForm.WindowState = vbMaximized Then Exit Sub
+If tForm.WindowState = vbMinimized Then Exit Sub
 
 ' Center the form
 tForm.Left = (Screen.Width - tForm.Width) / 2
@@ -321,8 +325,8 @@ On Error GoTo MiscFormSetIconError
 
 Dim lhWndTop As Long
 Dim lhWnd As Long
-Dim cx As Long
-Dim cy As Long
+Dim cX As Long
+Dim cY As Long
 Dim hIconLarge As Long
 Dim hIconSmall As Long
       
@@ -338,10 +342,10 @@ Dim hIconSmall As Long
         Loop
     End If
    
-    cx& = GetSystemMetrics(SM_CXICON&)
-    cy& = GetSystemMetrics(SM_CYICON&)
+    cX& = GetSystemMetrics(SM_CXICON&)
+    cY& = GetSystemMetrics(SM_CYICON&)
     
-    hIconLarge& = LoadImageAsString(App.hInstance, sIconResName$, IMAGE_ICON&, cx&, cy&, LR_SHARED&)
+    hIconLarge& = LoadImageAsString(app.hInstance, sIconResName$, IMAGE_ICON&, cX&, cY&, LR_SHARED&)
     
     If (bSetAsAppIcon) Then
         SendMessageLong lhWndTop&, WM_SETICON&, ICON_BIG&, hIconLarge&
@@ -349,9 +353,9 @@ Dim hIconSmall As Long
     
     SendMessageLong hWnd&, WM_SETICON&, ICON_BIG&, hIconLarge&
    
-    cx& = GetSystemMetrics(SM_CXSMICON&)
-    cy& = GetSystemMetrics(SM_CYSMICON&)
-    hIconSmall& = LoadImageAsString(App.hInstance, sIconResName$, IMAGE_ICON&, cx&, cy&, LR_SHARED&)
+    cX& = GetSystemMetrics(SM_CXSMICON&)
+    cY& = GetSystemMetrics(SM_CYSMICON&)
+    hIconSmall& = LoadImageAsString(app.hInstance, sIconResName$, IMAGE_ICON&, cX&, cY&, LR_SHARED&)
          
     If (bSetAsAppIcon) Then
         SendMessageLong lhWndTop&, WM_SETICON&, ICON_SMALL&, hIconSmall&
@@ -378,10 +382,10 @@ On Error GoTo MiscFormLoadHelpError
 Dim istatus As Long
 
 If DebugMode Then
-Call IOWriteLog("Help file : " & App.HelpFile & ", Help Context : " & Format$(helpindex&))
+Call IOWriteLog("Help file : " & app.HelpFile & ", Help Context : " & Format$(helpindex&))
 End If
 
-istatus = HtmlHelp(FormMAIN.hWnd, App.HelpFile, HH_HELP_CONTEXT&, helpindex&)
+istatus = HtmlHelp(FormMAIN.hWnd, app.HelpFile, HH_HELP_CONTEXT&, helpindex&)
 'istatus& = HtmlHelp(FormMAIN.hWnd, app, HelpFile, HH_DISPLAY_TOPIC&, ByVal "Sample.html")
             
 Exit Sub
