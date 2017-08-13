@@ -2416,6 +2416,17 @@ End
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+' Check for JEOL 8230/8530 interface if JEOL EDS
+If InterfaceType% <> 0 Then
+If EDSSpectraInterfaceType% = 6 Then
+If InterfaceType% <> 2 Or JeolEOSInterfaceType& <> 3 Then
+msg$ = "EDSSpectraInterfaceType (" & Format$(EDSSpectraInterfaceType%) & ") is only available on JEOL 8230/8530 instruments in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
+End
+End If
+End If
+End If
+
 lpAppName$ = "Hardware"
 lpKeyName$ = "EDSSpectraNetIntensityInterfaceType"
 nDefault& = EDSSpectraInterfaceType%   ' 0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM

@@ -2,9 +2,13 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/12/17	Modify acquisition code to skip crystal flip if already done by OEM software (Poeml).
+
+		Modify higher order Bragg simulated peak calculations (Buse).
+
 08/11/17	Finish JEOL 8230/8530 .map to PrbImg mapping conversion code (Buse). 
 
-		Improve output of coating corredction flags for samples and standards (Poeml).
+		Improve output of coating correction flags for samples and standards (Poeml).
 
 08/10/17	Add error bars to MAN plot dialog (von der Handt)
 v. 11.9.8

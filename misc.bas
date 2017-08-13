@@ -11,7 +11,7 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Function IPOS1(n As Integer, sym As String, symarray() As String) As Integer
+Function IPOS1(ByVal n As Integer, ByVal sym As String, symarray() As String) As Integer
 ' This routine returns as its value a pointer to the first occurance
 ' of 'sym' in the character array 'symarray'.  The first 'n' positions
 ' in  'symarray' are searched.  If 'sym' does not occur in those positions
@@ -47,7 +47,7 @@ Exit Function
 
 End Function
 
-Function IPOS2(n As Integer, num As Integer, iarray() As Integer) As Integer
+Function IPOS2(ByVal n As Integer, ByVal num As Integer, iarray() As Integer) As Integer
 ' This routine returns as its value a pointer to the first occurance
 ' of 'num' in the integer array 'iarray'.  The first 'n' positions
 ' in  'iarray' are searched.  If 'num' does not occur in those positions
@@ -83,7 +83,7 @@ Exit Function
 
 End Function
 
-Function IPOS2A(n As Long, num1 As Integer, num2 As Integer, array1() As Long, array2() As Long) As Integer
+Function IPOS2A(ByVal n As Long, ByVal num1 As Integer, ByVal num2 As Integer, array1() As Long, array2() As Long) As Integer
 ' This routine returns as its value a pointer to the first occurance of 'num1' and 'num2' in the integer
 ' arrays 'array1' and 'array2'.  The first 'n' positions are searched.  If 'num2' and 'num2' do not occur in
 ' those positions then IPOS2A is equal to 0. Example:
@@ -120,7 +120,7 @@ Exit Function
 
 End Function
 
-Function IPOS22(n As Long, num As Long, narray() As Long) As Long
+Function IPOS22(ByVal n As Long, ByVal num As Long, narray() As Long) As Long
 ' This routine returns as its value a pointer to the first occurance
 ' of 'num' in the LONG integer array 'narray'.  The first 'n' positions
 ' in  'narray' are searched.  If 'num' does not occur in those positions
@@ -156,7 +156,7 @@ Exit Function
 
 End Function
 
-Function IPOS3(n As Integer, temp As Single, rarray() As Single) As Integer
+Function IPOS3(ByVal n As Integer, ByVal temp As Single, rarray() As Single) As Integer
 ' This routine returns as its value a pointer to the first occurance
 ' of 'temp' in the real array 'rarray'.  The first 'n' positions
 ' in  'rarray' are searched.  If 'temp' does not occur in those positions
@@ -192,7 +192,7 @@ Exit Function
 
 End Function
 
-Function IPOS4(n As Integer, sym As String, symray() As String) As Integer
+Function IPOS4(ByVal n As Integer, ByVal sym As String, symray() As String) As Integer
 ' This routine returns as its value a pointer to the first occurance
 ' of 'sym' in the character array 'symray'.  The first 'n' positions
 ' in  'symray' are searched but only the first character is checked!
@@ -256,7 +256,7 @@ Exit Sub
 
 End Sub
 
-Function MiscAutoFormat(treal As Single) As String
+Function MiscAutoFormat(ByVal treal As Single) As String
 ' Function to return an automatically formatted real number
 
 ierror = False
@@ -297,7 +297,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatA(treal As Single) As String
+Function MiscAutoFormatA(ByVal treal As Single) As String
 ' Function to return an automatically formatted real number (maximum 4 decimals)
 
 ierror = False
@@ -338,7 +338,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatB(treal As Single) As String
+Function MiscAutoFormatB(ByVal treal As Single) As String
 ' Function to return an automatically formatted real number (maximum 3 decimals)
 
 ierror = False
@@ -379,7 +379,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatBB(treal As Single) As String
+Function MiscAutoFormatBB(ByVal treal As Single) As String
 ' Function to return an automatically formatted real number (maximum 4 decimals)
 
 ierror = False
@@ -422,7 +422,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatC(treal As Single) As String
+Function MiscAutoFormatC(ByVal treal As Single) As String
 ' Function to return an automatically formatted real number (maximum decimals)
 
 ierror = False
@@ -466,7 +466,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatI(itemp As Integer) As String
+Function MiscAutoFormatI(ByVal itemp As Integer) As String
 ' Function to return an automatically formatted integer (8 characters)
 
 ierror = False
@@ -485,7 +485,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatL(ntemp As Long) As String
+Function MiscAutoFormatL(ByVal ntemp As Long) As String
 ' Function to return an automatically formatted long integer (8 characters)
 
 ierror = False
@@ -504,7 +504,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatM(treal As Single) As String
+Function MiscAutoFormatM(ByVal treal As Single) As String
 ' Function to return an automatically formatted real number (maximum decimals) in 10 characters
 
 ierror = False
@@ -552,7 +552,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatN(treal As Single, n As Integer) As String
+Function MiscAutoFormatN(ByVal treal As Single, ByVal n As Integer) As String
 ' Function to return an automatically formatted real number (n=decimals)
 
 ierror = False
@@ -581,7 +581,7 @@ Exit Function
 
 End Function
 
-Function MiscDifferenceIsSmall(temp1 As Single, temp2 As Single, toler As Single) As Integer
+Function MiscDifferenceIsSmall(ByVal temp1 As Single, ByVal temp2 As Single, ByVal toler As Single) As Boolean
 ' Checks if the difference between two numbers is small realtive to a tolerance
 ' toler in fraction (0.01 = 1%)
 
@@ -589,25 +589,25 @@ ierror = False
 On Error GoTo MiscDifferenceIsSmallError
 
 ' Assume large difference
-MiscDifferenceIsSmall% = False
+MiscDifferenceIsSmall = False
 
 ' If temp1! is not zero, check
 If temp1! <> 0# Then
 If Abs((temp1! - temp2!) / temp1!) < toler! Then
-MiscDifferenceIsSmall% = True
+MiscDifferenceIsSmall = True
 Exit Function
 End If
 
 ' If temp2! is not zero, check
 ElseIf temp2! <> 0# Then
 If Abs((temp1! - temp2!) / temp2!) < toler! Then
-MiscDifferenceIsSmall% = True
+MiscDifferenceIsSmall = True
 Exit Function
 End If
 
 ' If they are zero, see if they are equal
 ElseIf temp1! = temp2! Then
-MiscDifferenceIsSmall% = True
+MiscDifferenceIsSmall = True
 Exit Function
 End If
 
@@ -1015,7 +1015,7 @@ Exit Function
 
 End Function
 
-Sub MiscSortIntegerArray(n As Integer, inarray() As Integer, outarray() As Integer, arrayindex() As Integer)
+Sub MiscSortIntegerArray(ByVal n As Integer, inarray() As Integer, outarray() As Integer, arrayindex() As Integer)
 ' This routine accepts an integer array 'inarray' of length 'n'.  It returns
 ' in  'outarray' the array sorted in increasing order.  It returns in 'arrayindex'
 ' an indexing array which contains pointers to the elements of 'inarray' in
@@ -1058,7 +1058,7 @@ Exit Sub
 
 End Sub
 
-Sub MiscSortRealArray(mode As Integer, n As Integer, inintarray() As Integer, outintarray() As Integer, insinarray() As Single, outsinarray() As Single)
+Sub MiscSortRealArray(ByVal mode As Integer, ByVal n As Integer, inintarray() As Integer, outintarray() As Integer, insinarray() As Single, outsinarray() As Single)
 ' This routine sorts a real number array. The integer array is just along for the ride as an index
 '  mode% = 1  sort by increasing real number order
 '  mode% = 2  sort by decreasing real number order
@@ -1100,7 +1100,7 @@ Exit Sub
 
 End Sub
 
-Sub MiscSortStringArray(mode As Integer, n As Integer, instrarray() As String, outstrarray() As String, insinarray() As Single, outsinarray() As Single)
+Sub MiscSortStringArray(ByVal mode As Integer, ByVal n As Integer, instrarray() As String, outstrarray() As String, insinarray() As Single, outsinarray() As Single)
 ' This routine sorts a real number array; The string array is just along for the ride
 '  mode% = 1  sort by increasing real number order
 '  mode% = 2  sort by decreasing real number order
@@ -1142,7 +1142,7 @@ Exit Sub
 
 End Sub
 
-Function MiscStringsAreSame(astring As String, bstring As String) As Integer
+Function MiscStringsAreSame(ByVal astring As String, ByVal bstring As String) As Integer
 ' Checks if the two passed strings are the same (not case sensitive)
 
 ierror = False
@@ -1166,7 +1166,7 @@ Exit Function
 
 End Function
 
-Function MiscStringsAreSimilar(astring As String, bstring As String) As Integer
+Function MiscStringsAreSimilar(ByVal astring As String, ByVal bstring As String) As Integer
 ' Checks if the two passed strings are similar (same or contain one another)
 
 ierror = False
@@ -1198,7 +1198,7 @@ Exit Function
 
 End Function
 
-Sub MiscDoEvents(numberofloops As Integer)
+Sub MiscDoEvents(ByVal numberofloops As Integer)
 ' Performs a specified number of Doevents
 
 ierror = False
@@ -1220,7 +1220,7 @@ Exit Sub
 
 End Sub
 
-Function MiscAutoUcase(sym As String) As String
+Function MiscAutoUcase(ByVal sym As String) As String
 ' Make the element or x-ray symbol upper case (1st character only)
 
 ierror = False
@@ -1244,7 +1244,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatD(treal As Double) As String
+Function MiscAutoFormatD(ByVal treal As Double) As String
 ' Function to return an automatically formatted real number (double precision)
 
 ierror = False
@@ -1287,7 +1287,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatQQ(precision As Single, detectionlimit As Single, treal As Single) As String
+Function MiscAutoFormatQQ(ByVal precision As Single, ByVal detectionlimit As Single, ByVal treal As Single) As String
 ' Function (no longer used) to return an automatically formatted real number (based on passed precision and detection limit)
 
 ierror = False
@@ -1373,7 +1373,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatQ(precision As Single, detectionlimit As Single, treal As Single) As String
+Function MiscAutoFormatQ(ByVal precision As Single, ByVal detectionlimit As Single, ByVal treal As Single) As String
 ' Function to return an automatically formatted real number (based on passed percent precision and detection limit)
 
 ierror = False
@@ -1473,7 +1473,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatZ(precision As Single, treal As Single) As Single
+Function MiscAutoFormatZ(ByVal precision As Single, ByVal treal As Single) As Single
 ' Function to return an automatically rounded real number (based on passed percent error)
 
 ierror = False
@@ -1532,7 +1532,7 @@ Exit Function
 
 End Function
 
-Function MiscElementToNumber(sym As String) As Integer
+Function MiscElementToNumber(ByVal sym As String) As Integer
 ' Convert the element to an atomic number
 
 ierror = False
@@ -1637,7 +1637,7 @@ Exit Function
 
 End Function
 
-Function IPOSDQ(n As Integer, sym1 As String, sym2 As String, sym1array() As String, sym2array() As String, dq() As Integer) As Integer
+Function IPOSDQ(ByVal n As Integer, ByVal sym1 As String, ByVal sym2 As String, sym1array() As String, sym2array() As String, dq() As Integer) As Integer
 ' This routine returns as its value a pointer to the first occurance (interference corrections only)
 ' of 'sym1' and 'sym2' in the character array 'sym1array' and 'sym2array' that are not disabled.
 ' The first 'n' positions in  'symarray' are searched.  If 'sym1' and 'sym2' does not occur in those
@@ -1690,7 +1690,7 @@ Exit Function
 
 End Function
 
-Function IPOS1B(m As Integer, n As Integer, sym As String, symray() As String) As Integer
+Function IPOS1B(ByVal m As Integer, ByVal n As Integer, ByVal sym As String, symray() As String) As Integer
 ' This routine returns as its value a pointer to the first occurance
 ' of 'sym' in the character array 'symray'.  The 'm' through 'n' positions
 ' in  'symray' are searched.  If 'sym' does not occur in those positions
@@ -1727,7 +1727,7 @@ Exit Function
 
 End Function
 
-Function IPOS1DQ(n As Integer, sym As String, symarray() As String, dqarray() As Integer) As Integer
+Function IPOS1DQ(ByVal n As Integer, ByVal sym As String, symarray() As String, dqarray() As Integer) As Integer
 ' This routine returns as its value a pointer to the first occurance
 ' of 'sym' in the character array 'symarray'.  The first 'n' positions
 ' in  'symarray' are searched and the disable flag is checked.
@@ -1764,7 +1764,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormat4(treal As Single) As String
+Function MiscAutoFormat4(ByVal treal As Single) As String
 ' Function to return an automatically formatted real number in 4 characters
 
 ierror = False
@@ -1799,7 +1799,7 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormat6(treal As Single) As String
+Function MiscAutoFormat6(ByVal treal As Single) As String
 ' Function to return an automatically formatted real number in 6 characters
 
 ierror = False
@@ -1838,7 +1838,7 @@ Exit Function
 
 End Function
 
-Function IPOS1A(n As Integer, sym1 As String, sym2 As String, sym1array() As String, sym2array() As String) As Integer
+Function IPOS1A(ByVal n As Integer, ByVal sym1 As String, ByVal sym2 As String, sym1array() As String, sym2array() As String) As Integer
 ' This routine returns as its value a pointer to the first occurance of 'sym1' and 'sym2' in the character
 ' arrays 'sym1array' and 'sym2array'. The first 'n' positions in  'sym1array' and sym2array' are searched.
 ' If 'sym1' and 'sym2' does not occur in those positions IPOS1A is equal to 0. Example:
