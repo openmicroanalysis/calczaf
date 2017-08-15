@@ -2264,9 +2264,6 @@ End If
 If UpdateTmpSample(1).Datarows% < 1 Then GoTo 9000
 If UpdateTmpSample(1).GoodDataRows% < 1 Then GoTo 9000
 
-' Check that sample integrated intensity flag matches (this line is commented out as it prevents mixing integrated intensities and MAN elements)
-'If UpdateTmpSample(1).IntegratedIntensitiesUseFlag% <> sample(1).IntegratedIntensitiesUseFlag% Then GoTo 9000
-
 ' If analytical conditions do not match selected sample, skip (if passed MAN sample has combined conditions, this check is skipped)
 If Not UpdateTmpSample(1).CombinedConditionsFlag And Not sample(1).CombinedConditionsFlag Then
 If UpdateTmpSample(1).takeoff! <> sample(1).takeoff! Then GoTo 9000
@@ -2344,9 +2341,6 @@ If sample(1).IntegratedIntensitiesUseIntegratedFlags%(i%) <> UpdateTmpSample(1).
 ' Check for disabled acquisition in standard
 If UpdateTmpSample(1).DisableAcqFlag%(ip%) = 1 Then GoTo 7400
 
-' Check for disabled quant in standard (do not check standard flags)
-'If UpdateTmpSample(1).DisableQuantFlag%(ip%) = 1 Then GoTo 7400
-
 ' Matching conditions, now increment set counter
 If MANAssignsSets%(j, i%) + 1 <= MAXSET% Then
 MANAssignsSets%(j, i%) = MANAssignsSets%(j, i%) + 1
@@ -2405,7 +2399,7 @@ For n% = 1 To MissingMANAssignmentsStringsNumberOf%
 If Not alreadyasked Then
 msg$ = vbCrLf & "One or more MAN elements are missing standard intensities. Either acquire data for the "
 msg$ = msg$ & "indicated element/standard at the indicated conditions or "
-msg$ = msg$ & "remove the MAN assignment by clicking " & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " from "
+msg$ = msg$ & "remove the MAN assignment by clicking the indicated element from "
 msg$ = msg$ & "the MAN Assignments element grid, then <ctrl> click on the Standards list box to unselect the MAN assignment and "
 msg$ = msg$ & "click the Update Fit button." & vbCrLf & vbCrLf
 msg$ = msg$ & "If you loaded a file setup from another run and removed or changed any standards you should "
