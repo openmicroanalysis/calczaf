@@ -829,7 +829,7 @@ Type TypeSample
     
     EDSSpectraElapsedTime() As Single        ' real time, allocated in InitSample (1 to MAXROW%)
     EDSSpectraDeadTime() As Single           ' dead time as percentage
-    EDSSpectraPresetTime() As Single         ' preset time
+    EDSSpectraSampleTime() As Single         ' sample counting time (estimated)
     EDSSpectraLiveTime() As Single           ' actual count integration time
     EDSSpectraNumberofChannels() As Integer  ' in spectrum
     EDSSpectraNumberofStrobes() As Integer   ' in strobe (new 11/06/04)
@@ -2011,8 +2011,8 @@ Global ImageInterfaceDisplayXPolarity As Integer    ' acquisition flag to fix im
 Global ImageInterfaceDisplayYPolarity As Integer    ' acquisition flag to fix image display problems (obsolete?)
 
 Global UseBeamDeflectionFlag As Integer
-Global UseEDSPresetCountTimeFlag As Integer
-Global EDSPresetCountTime As Single
+Global UseEDSSampleCountTimeFlag As Integer
+Global EDSSampleCountTime As Single
 Global EDSSpecifiedCountTime As Single
 Global EDSUnknownCountFactor As Single
 

@@ -393,9 +393,9 @@ ReDim sample(1).EDSUnknownCountFactors(1 To MAXROW%) As Single
 'ReDim sample(1).EDSSpectraIntensities(1 To MAXROW%, 1 To MAXSPECTRA%) As Long
 'ReDim sample(1).EDSSpectraStrobes(1 To MAXROW%, 1 To MAXSTROBE%) As Long    ' only for Oxford EDS
 
+ReDim sample(1).EDSSpectraSampleTime(1 To MAXROW%) As Single     ' sample counting time (estimated)
 ReDim sample(1).EDSSpectraElapsedTime(1 To MAXROW%) As Single    ' real time
 ReDim sample(1).EDSSpectraDeadTime(1 To MAXROW%) As Single       ' dead time (in percentage)
-ReDim sample(1).EDSSpectraPresetTime(1 To MAXROW%) As Single     ' preset time (in EDS application)
 ReDim sample(1).EDSSpectraLiveTime(1 To MAXROW%) As Single       ' live time (actual count integration time)
 
 ReDim sample(1).EDSSpectraNumberofChannels(1 To MAXROW%) As Integer

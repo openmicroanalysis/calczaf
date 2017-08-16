@@ -3034,9 +3034,9 @@ PTCThicknessFactor! = 1#
 PTCNumericalIntegrationStep! = 0.00001
 PTCDoNotNormalizeSpecifiedFlag = False
 
-' Initialize preset count time flag
-UseEDSPresetCountTimeFlag = False   ' use user specified count time for EDS integration live time
-EDSPresetCountTime! = DefaultOnCountTime! * 4
+' Initialize sample count time flag
+UseEDSSampleCountTimeFlag = False                   ' use user specified count time for EDS integration live time as default
+EDSSampleCountTime! = DefaultOnCountTime! * 4
 EDSSpecifiedCountTime! = DefaultOnCountTime! * 4
 
 CLSpecifiedCountTime! = DefaultOnCountTime! * 4

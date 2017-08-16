@@ -11,7 +11,7 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Function IPOS5(mode As Integer, n%, sample1() As TypeSample, sample2() As TypeSample) As Integer
+Function IPOS5(ByVal mode As Integer, ByVal n As Integer, sample1() As TypeSample, sample2() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance in "sample2()" of the element in "sample1()" specified by channel "n".
 ' If a match does not occur, IPOS5 = 0.
 ' mode = 0 check only the analyzed elements
@@ -58,7 +58,7 @@ Exit Function
 
 End Function
 
-Function IPOS7(n As Integer, syme As String, symx As String, sample() As TypeSample) As Integer
+Function IPOS7(ByVal n As Integer, ByVal syme As String, ByVal symx As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the
 ' element and x-ray in "sample1()" starting at channel "n%". Checks disable flag.
 ' If a match does not occur, IPOS7 = 0.
@@ -95,7 +95,7 @@ Exit Function
 
 End Function
 
-Function IPOS7A(n As Integer, syme As String, symx As String, sample() As TypeSample) As Integer
+Function IPOS7A(ByVal n As Integer, ByVal syme As String, ByVal symx As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the last occurance of the
 ' element and x-ray in "sample1()" starting at channel "n%+1".
 ' If a match does not occur, IPOS7A = 0.
@@ -132,7 +132,7 @@ Exit Function
 
 End Function
 
-Function IPOS8(n As Integer, syme As String, symx As String, sample() As TypeSample) As Integer
+Function IPOS8(ByVal n As Integer, ByVal syme As String, ByVal symx As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the element and x-ray
 ' in "sample()" up to (but not including) channel "n%". Checks disable quant flag!!! (added 10/5/07)
 ' If a match does not occur, IPOS8 = 0.
@@ -169,7 +169,7 @@ Exit Function
 
 End Function
 
-Function IPOS8A(n As Integer, syme As String, symx As String, keV As Single, sample() As TypeSample) As Integer
+Function IPOS8A(ByVal n As Integer, ByVal syme As String, ByVal symx As String, ByVal keV As Single, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the element and x-ray and keV
 ' in "sample()" up to (but not including) channel "n%". Checks disable quant flag!!! (added 11/12/16)
 ' If a match does not occur, IPOS8A = 0.
@@ -208,7 +208,7 @@ Exit Function
 
 End Function
 
-Function IPOS9(syme As String, sample() As TypeSample) As Integer
+Function IPOS9(ByVal syme As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the
 ' element in "sample1()". Checks the DisableQuant flag! If no match, IPOS9 = 0.
 
@@ -240,7 +240,7 @@ Exit Function
 
 End Function
 
-Function IPOS9a(syme As String, sample() As TypeSample) As Integer
+Function IPOS9a(ByVal syme As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the
 ' element in "sample1()". Does NOT check the DisableQuant flag! (see IPOS9)
 ' If no match, IPOS9a = 0.
@@ -271,7 +271,7 @@ Exit Function
 
 End Function
 
-Function IPOS11(syme As String, sample() As TypeSample) As Integer
+Function IPOS11(ByVal syme As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the specified element in "sample1()".
 ' If a match does not occur, IPOS11 = 0.
 
@@ -313,7 +313,7 @@ Exit Function
 
 End Function
 
-Function IPOS12(syme As String, iray As Integer, imot As Integer, icry As Integer, sample() As TypeSample) As Integer
+Function IPOS12(ByVal syme As String, ByVal iray As Integer, ByVal imot As Integer, ByVal icry As Integer, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance
 ' in "sample()" of the matching element, xray, motor and crystal index.
 ' If a match does not occur, IPOS12 = 0.
@@ -366,7 +366,7 @@ Exit Function
 
 End Function
 
-Function IPOS13(syme As String, symx As String, imot As Integer, crys As String, sample() As TypeSample) As Integer
+Function IPOS13(ByVal syme As String, ByVal symx As String, ByVal imot As Integer, ByVal crys As String, sample() As TypeSample) As Integer
 ' Same as IPOS12 but uses a string for x-ray and crystal.
 
 ierror = False
@@ -402,7 +402,7 @@ Exit Function
 
 End Function
 
-Function IPOS13A(syme As String, symx As String, imot As Integer, crys As String, sample() As TypeSample) As Integer
+Function IPOS13A(ByVal syme As String, ByVal symx As String, ByVal imot As Integer, ByVal crys As String, sample() As TypeSample) As Integer
 ' Same as IPOS12 but uses a string for x-ray and crystal. Checks disable quant flag
 
 ierror = False
@@ -441,7 +441,7 @@ Exit Function
 
 End Function
 
-Function IPOS13B(syme As String, symx As String, imot As Integer, crys As String, keV As Single, sample() As TypeSample) As Integer
+Function IPOS13B(ByVal syme As String, ByVal symx As String, ByVal imot As Integer, ByVal crys As String, ByVal keV As Single, sample() As TypeSample) As Integer
 ' Same as IPOS13A but also checks keV (for MAN fits)
 
 ierror = False
@@ -482,7 +482,7 @@ Exit Function
 
 End Function
 
-Function IPOS14(chan As Integer, sample1() As TypeSample, sample2() As TypeSample) As Integer
+Function IPOS14(ByVal chan As Integer, sample1() As TypeSample, sample2() As TypeSample) As Integer
 ' Check for first occurance of element, x-ray, takeoff and keV in the sample2 element list (not disabled)
 
 ierror = False
@@ -519,7 +519,3 @@ ierror = True
 Exit Function
 
 End Function
-
-
-
-

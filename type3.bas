@@ -28,10 +28,10 @@ Call IOWriteLog(vbCrLf & msg$)
 
 ' Print EDS acquisition time (if no data yet)
 If UseDetailedFlag And sample(1).EDSSpectraFlag Then
-If Not UseEDSPresetCountTimeFlag Then
-msg$ = "EDS Acquisition Time: " & Space$(40) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
+If UseEDSSampleCountTimeFlag Then
+msg$ = "EDS Acquisition (sample count) Time: " & Space$(25) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
 Else
-msg$ = "EDS Acquisition Time (preset): " & Space$(31) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
+msg$ = "EDS Acquisition (user specified) Time: " & Space$(23) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
 End If
 Call IOWriteLog(msg$)
 End If
