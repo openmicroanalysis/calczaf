@@ -32,7 +32,7 @@ Call ElementCheckXray(Int(0), StanFormTmpSample())
 If ierror Then Exit Sub
 
 ' Sort for hydrogen and helium
-Call GetElmSaveSampleOnly(StanFormTmpSample(), Int(0), Int(0))
+Call GetElmSaveSampleOnly(Int(0), StanFormTmpSample(), Int(0), Int(0))
 If ierror Then Exit Sub
 
 ' Set StanformOldSample equal to Tmp sample so k factors and ZAF corrections get loaded in ZAFStd

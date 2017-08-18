@@ -130,7 +130,7 @@ If ierror Then Exit Sub
 
 ' Sort for hydrogen and helium
 Screen.MousePointer = vbHourglass
-Call GetElmSaveSampleOnly(StandardTmpSample(), Int(0), Int(0))
+Call GetElmSaveSampleOnly(Int(0), StandardTmpSample(), Int(0), Int(0))
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 

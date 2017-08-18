@@ -1464,7 +1464,7 @@ If ierror Then Exit Sub
 End If
 
 ' Calculate standard k-factors
-Call UpdateAllStdKfacs(CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
+Call UpdateAllStdKfacs(Int(0), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
 If ierror Then Exit Sub
 
 Exit Sub
@@ -2867,7 +2867,7 @@ End If
 End If
 
 ' Calculate standard k-factors
-Call UpdateAllStdKfacs(CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
+Call UpdateAllStdKfacs(Int(0), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
 If ierror Then Exit Sub
 
 Exit Sub
@@ -3749,7 +3749,7 @@ StandardDataFile$ = tfilename$
 
 ' Calculate ZAF again
 If ProbeDataFile$ <> vbNullString Then
-Call UpdateAllStdKfacs(CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
+Call UpdateAllStdKfacs(Int(0), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
 If ierror Then Exit Sub
 End If
 
@@ -4648,7 +4648,7 @@ Else
 End If
 
 ' Update the standard kfacs based on changed conditions
-Call UpdateAllStdKfacs(analysis, sample(), stdsample())
+Call UpdateAllStdKfacs(Int(0), analysis, sample(), stdsample())
 If ierror Then Exit Sub
 
 ' Force re-load of standard counts

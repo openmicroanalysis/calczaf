@@ -180,7 +180,7 @@ If chan2% < 1 Then Exit Sub
 End If
 
 ' Sort new sample
-Call GetElmSaveSampleOnly(CondTmpSample(), chan%, chan2%)
+Call GetElmSaveSampleOnly(Int(0), CondTmpSample(), chan%, chan2%)
 If ierror Then Exit Sub
 
 ' Reload the form

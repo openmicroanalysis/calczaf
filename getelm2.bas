@@ -14,8 +14,10 @@ Option Explicit
 Dim GetElmOldSample(1 To 1) As TypeSample
 Dim GetElmTmpSample(1 To 1) As TypeSample
 
-Sub GetElmSaveSampleOnly(sample() As TypeSample, chan As Integer, chan2 As Integer)
+Sub GetElmSaveSampleOnly(method As Integer, sample() As TypeSample, chan As Integer, chan2 As Integer)
 ' Loads the passed sample and saves it re-ordered
+'   method = 0 normal call (check for different element, x-ray, spectro and crystal)
+'   method = 1 MAN call (check for different element, x-ray, spectro and crystal *and* keV)
 
 ierror = False
 On Error GoTo GetElmSaveSampleOnlyError
@@ -24,7 +26,7 @@ On Error GoTo GetElmSaveSampleOnlyError
 GetElmTmpSample(1) = sample(1)
 
 ' Save the sample
-Call GetElmSave(chan%, chan2%)
+Call GetElmSave(method%, chan%, chan2%)
 
 ' Return the saved sample
 sample(1) = GetElmTmpSample(1)
@@ -39,10 +41,12 @@ Exit Sub
 
 End Sub
 
-Sub GetElmSave(chan As Integer, chan2 As Integer)
+Sub GetElmSave(method As Integer, chan As Integer, chan2 As Integer)
 ' Load the GetElmOldSample array from the GetElmTmpSample and sort the elements into
 ' analyzed and specified in case the user has changed the analyzed and
 ' specified elements (added or deleted elements).
+'   method = 0 normal call (check for different element, x-ray, spectro and crystal)
+'   method = 1 MAN call (check for different element, x-ray, spectro and crystal *and* keV)
 
 ierror = False
 On Error GoTo GetElmSaveError
@@ -99,10 +103,12 @@ ipp% = IPOS1(MAXRAY%, sym, Xraylo$())   ' including unanalyzed element
 ' Skip if element if NOT analyzed
 If ip% = 0 Or ipp% = 0 Or ipp% > MAXRAY% - 1 Then GoTo 2000
 
-' Check for element already loaded (element, x-ray, motor, crystal)
-ippp% = IPOS5(Int(0), i%, GetElmTmpSample(), GetElmOldSample())
+' Check for *analyzed* element already loaded (element, x-ray, motor, crystal) (also add check for different keV, for call from MAN dialog, 08-17-2017)
+If method% = 0 Then ippp% = IPOS5(Int(0), i%, GetElmTmpSample(), GetElmOldSample())
+If method% = 0 Then ippp% = IPOS13B(Int(0), GetElmTmpSample(1).Elsyms$(i%), GetElmTmpSample(1).Xrsyms$(i%), GetElmTmpSample(1).MotorNumbers%(i%), GetElmTmpSample(1).CrystalNames$(i%), GetElmTmpSample(1).KilovoltsArray!(i%), GetElmOldSample())
 If ippp% > 0 Then
-msg$ = "Error in " & SampleGetString2$(GetElmTmpSample()) & ", " & GetElmTmpSample(1).Elsyms$(i%) & " " & GetElmTmpSample(1).Xrsyms$(i%) & ", Spectrometer " & Str$(GetElmTmpSample(1).MotorNumbers%(i%)) & " " & GetElmTmpSample(1).CrystalNames$(i%) & " is already present as an analyzed element, it will be skipped"
+If method% = 0 Then msg$ = "Error in " & SampleGetString2$(GetElmTmpSample()) & ", " & GetElmTmpSample(1).Elsyms$(i%) & " " & GetElmTmpSample(1).Xrsyms$(i%) & ", Spectrometer " & Str$(GetElmTmpSample(1).MotorNumbers%(i%)) & " " & GetElmTmpSample(1).CrystalNames$(i%) & ", is already present as an analyzed element, it will be skipped"
+If method% = 1 Then msg$ = "Error in " & SampleGetString2$(GetElmTmpSample()) & ", " & GetElmTmpSample(1).Elsyms$(i%) & " " & GetElmTmpSample(1).Xrsyms$(i%) & ", Spectrometer " & Str$(GetElmTmpSample(1).MotorNumbers%(i%)) & " " & GetElmTmpSample(1).CrystalNames$(i%) & ", " & Format$(GetElmTmpSample(1).KilovoltsArray!(i%)) & " keV, is already present as an analyzed element, it will be skipped"
 MsgBox msg$, vbOKOnly + vbExclamation, "GetElmSave"
 GoTo 2000
 End If
@@ -318,7 +324,7 @@ ipp% = IPOS1(MAXRAY%, sym$, Xraylo$())  ' including unanalyzed element
 ' Skip if element if IS analyzed
 If ip% = 0 Or ipp% = 0 Or ipp% <= MAXRAY% - 1 Then GoTo 3000
 
-' Check for element already analyzed or specified and skip if found
+' Check for *specified* element already analyzed or specified and skip if found
 ippp% = IPOS5(Int(1), i%, GetElmTmpSample(), GetElmOldSample())
 If ippp% > 0 Then GoTo 3000
 

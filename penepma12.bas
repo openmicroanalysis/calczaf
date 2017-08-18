@@ -2732,7 +2732,7 @@ End If
 Next i%
 
 ' Re-load in case absorber only was set
-Call GetElmSaveSampleOnly(sample(), Int(0), Int(0))
+Call GetElmSaveSampleOnly(Int(0), sample(), Int(0), Int(0))
 If ierror Then Exit Sub
 
 ' Force unknown if type not specified
@@ -5492,7 +5492,7 @@ If ierror Then Exit Sub
 ip% = IPOS1(PENEPMA_SampleA(1).LastChan%, Symlo$(ExtractMatrix%), PENEPMA_SampleA(1).Elsyms$())
 If ip% > 0 Then
 PENEPMA_SampleA(1).Xrsyms$(ip%) = Xraylo$(MAXRAY%)
-Call GetElmSaveSampleOnly(PENEPMA_SampleA(), Int(0), Int(0))
+Call GetElmSaveSampleOnly(Int(0), PENEPMA_SampleA(), Int(0), Int(0))
 If ierror Then Exit Sub
 End If
 

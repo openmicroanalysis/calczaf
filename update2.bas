@@ -13,9 +13,11 @@ Option Explicit
 
 Dim UpdateStdSample(1 To 1) As TypeSample
 
-Sub UpdateAllStdKfacs(analysis As TypeAnalysis, sample() As TypeSample, stdsample() As TypeSample)
+Sub UpdateAllStdKfacs(method As Integer, analysis As TypeAnalysis, sample() As TypeSample, stdsample() As TypeSample)
 ' This routine calculates the standard k-factors for all standards. This
 ' routine is called to make sure that no anomalous conditions exist.
+'   method = 0 normal call (check for different element, x-ray, spectro and crystal)
+'   method = 1 MAN call (check for different element, x-ray, spectro and crystal *and* keV)
 
 ierror = False
 On Error GoTo UpdateAllStdKfacsError
@@ -32,7 +34,7 @@ Call IOWriteLog(msg$)
 DoEvents
 
 ' Get standard composition and cations from the standard database and load in Tmp sample arrays
-Call UpdateCalculate(i%, StandardNumbers%(i%), analysis, sample(), stdsample())
+Call UpdateCalculate(method%, i%, StandardNumbers%(i%), analysis, sample(), stdsample())
 If ierror Then Exit Sub
 Next i%
 
@@ -62,16 +64,18 @@ Exit Sub
 
 End Sub
 
-Sub UpdateCalculate(row As Integer, num As Integer, analysis As TypeAnalysis, sample() As TypeSample, stdsample() As TypeSample)
+Sub UpdateCalculate(method As Integer, row As Integer, num As Integer, analysis As TypeAnalysis, sample() As TypeSample, stdsample() As TypeSample)
 ' Loads a single standard stdsample array and calculates k-ratios
-' "row" is the standard position in the standard list
-' "num" is the standard number
+'   method = 0 normal call (check for different element, x-ray, spectro and crystal)
+'   method = 1 MAN call (check for different element, x-ray, spectro and crystal *and* keV)
+'   "row" is the standard position in the standard list
+'   "num" is the standard number
 
 ierror = False
 On Error GoTo UpdateCalculateError
 
 ' Update the standard for current sample conditions
-Call UpdateCalculateUpdateStandard(num%, sample(), stdsample())
+Call UpdateCalculateUpdateStandard(method%, num%, sample(), stdsample())
 If ierror Then Exit Sub
 
 ' Reload the element arrays for the current sample
@@ -235,7 +239,7 @@ End If
 If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
 Call AnalyzeStatusAnal("Calculating standard beta-factors for standard " & Format$(sample(1).StdAssigns%(i%)) & "...")
 End If
-Call UpdateCalculate(ip%, sample(1).StdAssigns%(i%), analysis, sample(), stdsample())
+Call UpdateCalculate(Int(0), ip%, sample(1).StdAssigns%(i%), analysis, sample(), stdsample())
 If ierror Then Exit Sub
 
 If VerboseMode% Then
@@ -272,7 +276,7 @@ If ip% = 0 Then GoTo UpdateStdKfacsBadStdInterf
 If Not standardcalculated(ip%) Then
 
 ' Calculate the standard k ratios
-Call UpdateCalculate(ip%, sample(1).StdAssignsIntfStds%(j%, i%), analysis, sample(), stdsample())
+Call UpdateCalculate(Int(0), ip%, sample(1).StdAssignsIntfStds%(j%, i%), analysis, sample(), stdsample())
 If ierror Then Exit Sub
 
 standardcalculated(ip%) = True
@@ -298,7 +302,7 @@ If ip% = 0 Then GoTo UpdateStdKfacsBadMANStd
 If Not standardcalculated(ip%) Then
 
 ' Calculate the standard k ratios
-Call UpdateCalculate(ip%, sample(1).MANStdAssigns%(j%, i%), analysis, sample(), stdsample())
+Call UpdateCalculate(Int(0), ip%, sample(1).MANStdAssigns%(j%, i%), analysis, sample(), stdsample())
 If ierror Then Exit Sub
 
 standardcalculated(ip%) = True
@@ -395,8 +399,10 @@ Exit Sub
 
 End Sub
 
-Sub UpdateCalculateUpdateStandard(num As Integer, sample() As TypeSample, stdsample() As TypeSample)
+Sub UpdateCalculateUpdateStandard(method As Integer, num As Integer, sample() As TypeSample, stdsample() As TypeSample)
 ' Update the standard composition for the current sample conditions
+'   method = 0 normal call (check for different element, x-ray, spectro and crystal)
+'   method = 1 MAN call (check for different element, x-ray, spectro and crystal *and* keV)
 
 ierror = False
 On Error GoTo UpdateCalculateUpdateStandardError
@@ -491,9 +497,10 @@ Call IOWriteLog(msg$)
 Next i%
 End If
 
-' Add in duplicate elements with different x-ray, motor, crystal (composition will total over 100% unless quant disabled or aggregate mode)
+' Add in duplicate elements with different x-ray, motor, crystal (composition will total over 100% unless quant disabled or aggregate mode) (add check for different keV, for call from MAN dialog, 08-17-2017)
 For j% = 1 To sample(1).LastElm%
-ip% = IPOS5(Int(1), j%, sample(), stdsample())  ' find position of sample element in std
+If method% = 0 Then ip% = IPOS5(Int(1), j%, sample(), stdsample())  ' find position of sample element in std
+If method% = 1 Then ip% = IPOS13B(Int(1), sample(1).Elsyms$(j%), sample(1).Xrsyms$(j%), sample(1).MotorNumbers%(j%), sample(1).CrystalNames$(j%), sample(1).KilovoltsArray!(j%), stdsample())
 If ip% = 0 Then
 If stdsample(1).LastChan% + 1 > MAXCHAN% Then GoTo UpdateCalculateUpdateStandardTooManyElements
 
@@ -557,7 +564,7 @@ Next i%
 End If
 
 ' Re-order standard sample in case x-ray lines were changed to unanalyzed
-Call GetElmSaveSampleOnly(stdsample(), Int(0), Int(0))
+Call GetElmSaveSampleOnly(method%, stdsample(), Int(0), Int(0))
 If ierror Then Exit Sub
 
 If VerboseMode% Then

@@ -441,19 +441,27 @@ Exit Function
 
 End Function
 
-Function IPOS13B(ByVal syme As String, ByVal symx As String, ByVal imot As Integer, ByVal crys As String, ByVal keV As Single, sample() As TypeSample) As Integer
+Function IPOS13B(ByVal mode As Integer, ByVal syme As String, ByVal symx As String, ByVal imot As Integer, ByVal crys As String, ByVal keV As Single, sample() As TypeSample) As Integer
 ' Same as IPOS13A but also checks keV (for MAN fits)
+' mode = 0 check only the analyzed elements
+' mode = 1 check both analyzed and specified elements
 
 ierror = False
 On Error GoTo IPOS13BError
 
-Dim i As Integer
+Dim i As Integer, k As Integer
 
 ' Fail if not specified
 IPOS13B = 0
 
-' Search sample for match (element, x-ray, motor, crystal)
-For i% = 1 To sample(1).LastChan%
+If mode% = 0 Then
+k% = sample(1).LastElm%
+Else
+k% = sample(1).LastChan%
+End If
+
+' Search sample for match (element, x-ray, motor, crystal and keV)
+For i% = 1 To k%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
 
 If Trim$(UCase$(syme$)) = Trim$(UCase$(sample(1).Elsyms$(i%))) Then
