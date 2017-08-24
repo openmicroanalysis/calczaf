@@ -78,7 +78,7 @@ Global Const MAXINTERFACE_CL% = 4       ' maximum number of CL spectra interface
 
 Global Const MAXCHAN% = 72              ' maximum elements per sample
 Global Const MAXCHAN1% = MAXCHAN% + 1   ' maximum elements plus 1 (stoichiometric oxygen)
-Global Const MAXSTD% = 128              ' maximum standards per run
+Global Const MAXSTD% = 132              ' maximum standards per run (changed from 128 to 132 08-23-2017)
 Global Const MAXROW% = 500              ' maximum lines per sample (changed to 500 rows 08-11-2012)
 Global Const MAXVOLATILE% = 400         ' maximum volatile/alternating intensities per chan per line per sample
 Global Const MAXEDG% = 9                ' maximum emission edges
@@ -87,7 +87,7 @@ Global Const MAXEMP% = 20               ' maximum empirical MAC/APFs
 Global Const MAXSAMPLE% = 19999         ' maximum samples per run
 Global Const MAXINTF% = 6               ' maximum interferences per element
 Global Const MAXINDEX% = 10000          ' maximum standards per standard database   (changed to 10000 as of 2-27-2007)
-Global Const MAXMAN% = 98               ' maximum MAN assignments per element   (changed from 36 to 98 08-14-2017)
+Global Const MAXMAN% = 112              ' maximum MAN assignments per element   (changed from 36 to 112 08-23-2017)
 Global Const MAXSET% = 30               ' maximum sets for drift correction
 Global Const MAXCRYSTYPE% = 60          ' maximum crystal types
 Global Const MAXCRYS% = 6               ' maximum crystals per spectrometer
