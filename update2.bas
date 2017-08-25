@@ -39,7 +39,7 @@ If ierror Then Exit Sub
 Next i%
 
 ' Print the standard parameters (after the last standard is calculated)
-If DebugMode And (CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION%) Then
+If DebugMode And method% = 0 And (CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION%) Then
 Call ZAFPrintStandards(analysis, sample())
 If ierror Then Exit Sub
 End If
