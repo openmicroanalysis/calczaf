@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/05/17	Modify plot wavescan code to handle different x axies ranges for multiple samples (Buse).
+
+
 08/24/17	Modify z-bar calculation in MAN dialog code to handle duplicate elements at different keVs (Buse).
 
 08/23/17	Enable element list in Sample Setup dialog (Poeml). Increase MAXSTD to 132 and MAXMAN to 112 (Adams).
