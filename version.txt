@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/15/17	Remove unnecessary exe files from git repository.
+
+		Remove mag iteration from MosaicLoadImage (Carpenter).
+
 09/08/17	Fix MAN display issue with errors bars and Defaults button (B. Wade).
 
 09/07/17	Modify reflected light behavior after acquisition and automation (Carpenter).
