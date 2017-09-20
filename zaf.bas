@@ -1054,7 +1054,7 @@ On Error GoTo ZAFPhiCalError
 
 Dim i As Integer, i1 As Integer
 
-Dim X2 As Single, x3 As Single, x4 As Single, x5 As Single
+Dim x2 As Single, x3 As Single, x4 As Single, x5 As Single
 Dim zz As Single, za As Single, spi As Single, tx4 As Single
 
 Dim a1 As Single, a2 As Single, uu As Single, v0 As Single, aa As Single
@@ -1065,7 +1065,7 @@ Dim ww As Single, rr As Single, hh As Single, v1 As Single
 Dim qeO As Single, ff As Single, rbas As Single
 
 Dim beta_iter As Integer
-Dim y1 As Single, Y2 As Single, beta0 As Single, beta1 As Single    ' variables for beta refinement by Brian Joy
+Dim y1 As Single, y2 As Single, beta0 As Single, beta1 As Single    ' variables for beta refinement by Brian Joy
 
 ' Calculate square root of pi (used to be  Sqr(3.14159) / 2, fixed 7/14/2011, Carpenter)
 spi! = Sqr(3.14159)
@@ -1117,7 +1117,7 @@ xx! = m7!   ' loaded by ZAFMACCal above
 uu! = zaf.eO!(i%) / zaf.eC!(i%)
 
 ' x2! = Gamma(0), x3! = Beta, x4! = Alpha, R! = Phi(0)
-X2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * (1# / uu! ^ 0.2))
+x2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * (1# / uu! ^ 0.2))
 ' was x2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * uu! ^ (-.2))
 
 ' PACKWOOD-BROWN 1982 XRS PHI(PZ) ALPHA EXPRESSION
@@ -1132,7 +1132,7 @@ ElseIf iabs% = 8 Then
 tx4! = Log(1.166 * v0! / ww!) / v1!
 If tx4! < 0# Then GoTo ZAFPhiCalBadX4
 x4! = 175000# / (v0! ^ 1.25 * (uu! - 1#) ^ 0.55) * (tx4!) ^ 0.5
-X2! = 0.98 * X2! * Exp(0.001 * zz!)
+x2! = 0.98 * x2! * Exp(0.001 * zz!)
 x3! = 0.4 * x4! * (zz! ^ 1.7 / aa!) * (uu! - 1#) ^ 0.3
 
 ' BROWN 1981 JTA PHI(PZ) ALPHA EXPRESSION
@@ -1140,15 +1140,15 @@ ElseIf iabs% = 9 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
 If tx4! < 0# Then GoTo ZAFPhiCalBadX4
 x4! = 297000# * zz! ^ 1.05 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
-x3! = 850000# * zz! * zz! / (aa! * v0! * v0! * (X2! - 1#))
+x3! = 850000# * zz! * zz! / (aa! * v0! * v0! * (x2! - 1#))
 
 ' BASTIN 1986/SCANNING
 ElseIf iabs% = 10 Then
 tx4! = Log(1.166 * v0! / ww!) / v1!
 If tx4! < 0# Then GoTo ZAFPhiCalBadX4
 x4! = 175000# / (v0! ^ 1.25 * (uu! - 1#) ^ 0.55) * (tx4!) ^ 0.5
-X2! = 5# * 3.14159 * (uu! + 1#) / (Log(uu! + 1#) * uu!) * (Log(uu! + 1#) - 5# + 5# * (uu! + 1#) ^ (-0.2))
-If uu! < 3# Then X2! = 1# + (uu! - 1#) / (0.3384 + 0.4742 * (uu! - 1#))
+x2! = 5# * 3.14159 * (uu! + 1#) / (Log(uu! + 1#) * uu!) * (Log(uu! + 1#) - 5# + 5# * (uu! + 1#) ^ (-0.2))
+If uu! < 3# Then x2! = 1# + (uu! - 1#) / (0.3384 + 0.4742 * (uu! - 1#))
 x3! = zz! / (0.4765 + 0.5473 * zz!)
 x3! = x4! * (zz! ^ x3!) / aa!
        
@@ -1157,12 +1157,12 @@ ElseIf iabs% = 11 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
 If tx4! < 0# Then GoTo ZAFPhiCalBadX4
 x4! = 214000# * zz! ^ 1.16 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
-X2! = (1# + hh!) * uu! * Log(uu!) / (uu! - 1#)
+x2! = (1# + hh!) * uu! * Log(uu!) / (uu! - 1#)
 x3! = 10900# * zz! ^ 1.5 / (aa! * (v0! - v1!))
         
 ' PACKWOOD EPQ-1991
 ElseIf iabs% = 14 Then
-X2! = 10# * 3.14159 * (uu! / (uu! - 1#)) * (1# + (10# / Log(uu!)) * ((uu! ^ -0.1) - 1))
+x2! = 10# * 3.14159 * (uu! / (uu! - 1#)) * (1# + (10# / Log(uu!)) * ((uu! ^ -0.1) - 1))
 
 If zafinit% = 0 Then
 x4! = 450000# * ((zz! - 1.3) / zz!) * (zz! / aa!) ^ 0.5 * v0! ^ -0.75
@@ -1205,23 +1205,23 @@ x4! = 1# / x4!
 End If
 
 If uu! > 6# Then
-X2! = 2.814333 * uu! ^ (0.262702 * zz! ^ -0.1614454)
+x2! = 2.814333 * uu! ^ (0.262702 * zz! ^ -0.1614454)
 Else
 'x2! = 3.98352 * uu! ^ -0.0516861 * (1.2276233 - uu! ^ (-1.225558 * zz! ^ -0.1424549))  ' original typo
-X2! = 3.98352 * uu! ^ -0.0516861 * (1.276233 - uu! ^ (-1.25558 * zz! ^ -0.1424549))     ' fixed from "green book", 7-14-2011, Carpenter
+x2! = 3.98352 * uu! ^ -0.0516861 * (1.276233 - uu! ^ (-1.25558 * zz! ^ -0.1424549))     ' fixed from "green book", 7-14-2011, Carpenter
 End If
-If v1! < 0.7 Then X2! = X2! * v1! / (-0.041878 + 1.05975 * v1!)
+If v1! < 0.7 Then x2! = x2! * v1! / (-0.041878 + 1.05975 * v1!)
 End If
 
 ' End of all procedures, now calculate phi expression ("rr")
 Call ZAFPhi(i%, uu!, hh!, zz!, v1!, rr!)
 If ierror Then Exit Sub
 
-x5! = X2! - rr!
+x5! = x2! - rr!
 
 ' PTC modification
 If UseParticleCorrectionFlag And iptc% = 1 Then
-x5! = x5! / X2!
+x5! = x5! / x2!
 End If
 
 ' Special code for Bastin PROZA
@@ -1230,13 +1230,13 @@ qeO! = Log(zaf.v!(i%)) / (zaf.eC!(i%) * zaf.eC!(i%) * Exp(em!(i%) * Log(zaf.v!(i
 xp! = xp! / (zipi!(i%) * 66892#) * zaf.atwts!(i%)
 ff! = xp! / qeO!
 If Not UseBrianJoyModifications Then
-rbas! = (X2! - x4! * ff! / spi!) / x5!              ' original code from CITZAF
+rbas! = (x2! - x4! * ff! / spi!) / x5!              ' original code from CITZAF
 Else
-rbas! = (X2! - 2 * x4! * ff! / spi!) / x5!          ' corrected by Brian Joy, 01-2016
+rbas! = (x2! - 2 * x4! * ff! / spi!) / x5!          ' corrected by Brian Joy, 01-2016
 End If
 
 If rbas! <= 0# Or rbas! >= 1# Then
-x4! = (rr! + X2!) * spi! / (4# * ff!)   ' used to be (2# * ff!), fixed 7/14/2011, Carpenter
+x4! = (rr! + x2!) * spi! / (4# * ff!)   ' used to be (2# * ff!), fixed 7/14/2011, Carpenter
 rbas! = 0.5
 End If
 
@@ -1270,10 +1270,10 @@ beta0! = x3!
 y1! = x3! / (2# * x4!)
 Do
     beta1! = beta0!
-    Y2! = ZAFErrorFunction!(y1!) / rbas! * y1!
-    beta0! = Y2! * (2# * x4!)
+    y2! = ZAFErrorFunction!(y1!) / rbas! * y1!
+    beta0! = y2! * (2# * x4!)
     If (Abs((beta1! - beta0!) / beta1!) < 0.0001) Then Exit Do
-    y1! = Y2!
+    y1! = y2!
 beta_iter% = beta_iter% + 1
 If beta_iter% > 100 Then Exit Do
 Loop
@@ -1286,7 +1286,7 @@ chi! = xx! * zaf.m1!(i%)
 
 ' New call to ZAFPtc for particles and thin films
 If UseParticleCorrectionFlag And iptc% = 1 Then
-Call ZAFPtc(i%, aa!, v0!, zz!, er1!, er2!, er3!, a1!, a2!, xx!, X2!, x3!, x4!, x5!)
+Call ZAFPtc(i%, aa!, v0!, zz!, er1!, er2!, er3!, a1!, a2!, xx!, x2!, x3!, x4!, x5!)
 If ierror Then Exit Sub
 
 ' Normal bulk sample calculation
@@ -1300,8 +1300,8 @@ er2! = ZAFErrorFunction(erfx!)
 erfx! = (x3! + chi!) / (2# * x4!)
 er3! = ZAFErrorFunction(erfx!)
 
-a1! = spi! * (X2! - x5! * er1!) / x4!
-a2! = spi! * (X2! * er2! - x5! * er3!) / x4!
+a1! = spi! * (x2! - x5! * er1!) / x4!
+a2! = spi! * (x2! * er2! - x5! * er3!) / x4!
 End If
 
 ' Calculate intensities
@@ -3911,10 +3911,14 @@ a1# = phi0# / rm# / (rc# - rx# * (rc# / rm# - 1#))
 b1# = phi0# - a1# * rm# * rm#
 a2# = a1# * (rc# - rm#) / (rc# - rx#)
 
+' Deal with bad intensities (epoxy, etc.)
+If -xi * rc# > MAXLOGEXPS! Then GoTo ZAFPapBadFp1
 fp1# = ((rc# - rm#) * (rc# - rm# + 2 / xi!) + 2# / xi! / xi!) * Exp(-xi! * rc#)
 fp1# = -a1# / xi! * (fp1# - rm# * (rm# - 2# / xi!) - 2# / xi! / xi!)
 fp2# = -b1# / xi! * (Exp(-xi! * rc#) - 1#)
 fp3# = ((rc# - rx#) * (rc# - rx# + 2# / xi!) + 2# / xi! / xi!) * Exp(-xi! * rc#)
+
+If -xi * rx# > MAXLOGEXPS! Then GoTo ZAFPapBadFp1
 fp3# = -a2# / xi! * (-fp3# + 2# / xi! / xi! * Exp(-xi! * rx#))
 fff# = a1# / 3# * ((rc# - rm#) * (rc# - rm#) * (rc# - rm#) + rm# * rm# * rm#) + b1# * rc#
 fff# = fff# + a2# / 3# * (rx# - rc#) * (rx# - rc#) * (rx# - rc#)
@@ -3977,6 +3981,18 @@ End If
 'ierror = True
 Exit Sub
 
+ZAFPapBadFp1:
+msg$ = "Bad fp parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf & vbCrLf
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+If Not CalcImageQuantFlag Then
+MiscMsgBoxTim FormMSGBOXTIME, "ZAFPap", msg$, 20#
+Call IOWriteLog(msg$)
+Else
+Call IOWriteLog(msg$)
+End If
+'ierror = True
+Exit Sub
+
 End Sub
 
 Function ZAFPap2(rc As Single, rm As Single, rx As Single, a1 As Single, a2 As Single, b1 As Single, xi As Single) As Single
@@ -4026,7 +4042,7 @@ Exit Function
 
 End Function
 
-Sub ZAFPtc(ii As Integer, aa As Single, v0 As Single, zz As Single, er1 As Single, er2 As Single, er3 As Single, a1 As Single, a2 As Single, xx As Single, X2 As Single, x3 As Single, x4 As Single, x5 As Single)
+Sub ZAFPtc(ii As Integer, aa As Single, v0 As Single, zz As Single, er1 As Single, er2 As Single, er3 As Single, a1 As Single, a2 As Single, xx As Single, x2 As Single, x3 As Single, x4 As Single, x5 As Single)
 ' Subroutine for calculation of numerical integration of thin film and
 ' particle path lengths.
 
@@ -4065,7 +4081,7 @@ p4! = xx! * zaf.t1! * er1!
 p5! = Exp(-p4!)
 p6! = Exp(-xx! * zaf.g! * er1!)
 r4! = er1! * 10000!
-b9! = X2! * (1# - x5! * Exp(-x3! * er1!)) * Exp(-x4! * x4! * er1! * er1!)
+b9! = x2! * (1# - x5! * Exp(-x3! * er1!)) * Exp(-x4! * x4! * er1! * er1!)
 If b9! < 0.000001 Then
 zaf.erange!(ii%) = er1!
 Exit Sub

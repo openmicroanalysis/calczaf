@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/19/17	Modify JEOL EDS get net intensity call for new parameter.
+
+09/18/17	Add warning to CalcImage if off-peak sammple setup and no off-peak images.
+
 09/15/17	Remove unnecessary exe files from git repository.
 
 		Remove mag iteration from MosaicLoadImage (Carpenter).

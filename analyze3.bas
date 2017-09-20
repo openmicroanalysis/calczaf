@@ -570,7 +570,7 @@ End If
 End If
 End If
 
-' Do MAN background correction if MAN channel data based on unknown zbar
+' Do MAN background correction if MAN channel data based on unknown zbar (background type is set to MAN in DataCorrectData if UseMANForOffPeakElementsFlag is true)
 If sample(1).BackgroundTypes%(chan%) = 1 Then  ' 0=off-peak, 1=MAN, 2=multipoint
 If analysis.Zbar! <= 0# Then GoTo AnalyzeWeightCorrectBadZbar
 bgdcts!(chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFitCoefficients!(2, chan%) * analysis.Zbar! + analysis.MANFitCoefficients!(3, chan%) * analysis.Zbar! ^ 2
