@@ -2,7 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-09/19/17	Modify JEOL EDS get net intensity call for new parameter.
+09/20/17	Add trap for too long path in CalcImage (Carpenter).
+
+		Modify align and crop code to skip processed images (von der Handt).
+
+09/19/17	Modify JEOL EDS get net intensity call for new parameter (Poirier).
 
 09/18/17	Add warning to CalcImage if off-peak sammple setup and no off-peak images.
 
@@ -15,8 +19,7 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 09/07/17	Modify reflected light behavior after acquisition and automation (Carpenter).
 v. 11.9.9
 
-09/05/17	Modify plot wavescan code to handle different x axies ranges for multiple samples (Buse).
-
+09/05/17	Modify plot wavescan code to handle different x axes ranges for multiple samples (Buse).
 
 08/24/17	Modify z-bar calculation in MAN dialog code to handle duplicate elements at different keVs (Buse).
 
@@ -28,7 +31,7 @@ v. 11.9.9
 
 08/15/17	Fix orientation for 8x30 stage maps (Buse). Modify code to support estimated sample acquisition time for EDS).
 
-08/14/17	Increase MAN assignments arrys to 98 standards (Adams). Fix Bruker preset time issue (Marr).
+08/14/17	Increase MAN assignments arrays to 98 standards (Adams). Fix Bruker preset time issue (Marr).
 
 08/12/17	Modify acquisition code to skip crystal flip if already done by OEM software (Poeml).
 

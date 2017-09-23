@@ -335,7 +335,8 @@ Global Const MAX_EXCEL_2003_COLS% = 256  ' maximum number of columns supported b
 
 Global Const LOTSOFGRIDPOINTS% = 1000    ' lots of polygon points (hide FormAUTOMATE)
 Global Const TOOMANYGRIDSTEPS% = 2000    ' too many grid steps
-Global Const MAXTITLELENGTH% = 80       ' maximum graph title length
+Global Const MAXTITLELENGTH% = 80        ' maximum graph title length
+Global Const MAX_PATH% = 259             ' maximum file and path length for Dir$ command
 
 Global Const FONT_REGULAR% = 0           ' regular format
 Global Const FONT_BOLD% = 1              ' bold
