@@ -4419,7 +4419,7 @@ End Sub
 
 Sub InitWindow(mode As Integer, userstring As String, tForm As Form)
 ' Open the WINDOW.INI file and write or read window positions for the user
-' mode = 1 then write settings
+' mode = 1 write settings
 ' mode = 2 read settings
 
 ierror = False
