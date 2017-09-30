@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/30/17	Add PHA settings output to Drift (von der Handt).
+
 09/28/17	Make autofocus checkbox on also for Stds in Automate (Walshaw).
 
 		Add skip column conditions flag to Startwin paking and PHA code (Goemann).
