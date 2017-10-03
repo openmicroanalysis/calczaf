@@ -295,7 +295,7 @@ ReDim sample(1).HiCountTimes(1 To MAXROW%, 1 To MAXCHAN%) As Single
 ReDim sample(1).LoCountTimes(1 To MAXROW%, 1 To MAXCHAN%) As Single
 
 ' Dimension corrected data arrays (allocated in DataGetMDBSample to get around 64K limit for user defined type)
-amsg$ = "Dimensioning corrected data sample arrays..."
+'amsg$ = "Dimensioning corrected data sample arrays..."
 'ReDim sample(1).CorData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
 'ReDim sample(1).BgdData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
 'ReDim sample(1).ErrData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
@@ -336,7 +336,7 @@ ReDim sample(1).StdAssignsIntfOrders(1 To MAXINTF%, 1 To MAXCHAN%) As Integer   
 ReDim sample(1).StagePositions(1 To MAXROW%, 1 To MAXAXES%) As Single
 
 ' Integrated intensity arrays (allocated in DataGetMDBSample to avoid 64K limit)
-amsg$ = "Dimensioning integrated intensity sample arrays..."
+'amsg$ = "Dimensioning integrated intensity sample arrays..."
 'ReDim sample(1).IntegratedPoints(1 To MAXROW%, 1 To MAXCHAN%) As Integer
 'ReDim sample(1).IntegratedPeakIntensities(1 To MAXROW%, 1 To MAXCHAN%) As Single
 'ReDim sample(1).IntegratedPositions(1 To MAXROW%, 1 To MAXCHAN%, 1 To n%) As Single
