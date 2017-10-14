@@ -66,7 +66,7 @@ Begin VB.Form FormMODAL
          Left            =   1080
          TabIndex        =   32
          Top             =   1320
-         Width           =   1095
+         Width           =   1335
       End
       Begin VB.OptionButton OptionEndMember 
          Caption         =   "Olivine"
@@ -84,7 +84,7 @@ Begin VB.Form FormMODAL
          Left            =   120
          TabIndex        =   30
          Top             =   1200
-         Width           =   855
+         Width           =   1095
       End
       Begin VB.TextBox TextMinimumVector 
          Height          =   285

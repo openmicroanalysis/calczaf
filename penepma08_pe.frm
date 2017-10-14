@@ -7,7 +7,7 @@ Begin VB.Form FormPENEPMA08_PE
    ClientHeight    =   12480
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   13950
+   ClientWidth     =   14070
    BeginProperty Font 
       Name            =   "MS Sans Serif"
       Size            =   8.25
@@ -20,13 +20,13 @@ Begin VB.Form FormPENEPMA08_PE
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    ScaleHeight     =   12480
-   ScaleWidth      =   13950
+   ScaleWidth      =   14070
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton CommandPlot 
       BackColor       =   &H0080FFFF&
       Caption         =   "Plot Spectrum"
       Height          =   495
-      Left            =   12120
+      Left            =   12240
       Style           =   1  'Graphical
       TabIndex        =   103
       TabStop         =   0   'False
@@ -39,9 +39,9 @@ Begin VB.Form FormPENEPMA08_PE
       Left            =   120
       TabIndex        =   97
       Top             =   8760
-      Width           =   11055
+      Width           =   11175
       _Version        =   65536
-      _ExtentX        =   19500
+      _ExtentX        =   19711
       _ExtentY        =   6376
       _StockProps     =   96
       _AllProps       =   "PENEPMA08_PE.frx":0000
@@ -50,7 +50,7 @@ Begin VB.Form FormPENEPMA08_PE
       Caption         =   "Graph Display"
       ForeColor       =   &H00FF0000&
       Height          =   1095
-      Left            =   11280
+      Left            =   11400
       TabIndex        =   93
       Top             =   10200
       Width           =   2535
@@ -63,7 +63,7 @@ Begin VB.Form FormPENEPMA08_PE
          TabStop         =   0   'False
          ToolTipText     =   "Display current total x-ray spectrum"
          Top             =   360
-         Width           =   2175
+         Width           =   2295
       End
       Begin VB.OptionButton OptionDisplayGraph 
          Caption         =   "Char X-ray Spectrum"
@@ -102,7 +102,7 @@ Begin VB.Form FormPENEPMA08_PE
       BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       Height          =   495
-      Left            =   12120
+      Left            =   12240
       Style           =   1  'Graphical
       TabIndex        =   84
       TabStop         =   0   'False
@@ -122,7 +122,7 @@ Begin VB.Form FormPENEPMA08_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   12720
+      Left            =   12840
       TabIndex        =   80
       TabStop         =   0   'False
       ToolTipText     =   "Copy the graph to the system clipboard"
@@ -133,7 +133,7 @@ Begin VB.Form FormPENEPMA08_PE
       BackColor       =   &H0080FFFF&
       Caption         =   "Batch Mode"
       Height          =   495
-      Left            =   12120
+      Left            =   12240
       Style           =   1  'Graphical
       TabIndex        =   76
       TabStop         =   0   'False
@@ -153,7 +153,7 @@ Begin VB.Form FormPENEPMA08_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   11520
+      Left            =   11640
       TabIndex        =   75
       TabStop         =   0   'False
       ToolTipText     =   "Use log scale for Y axis"
@@ -164,7 +164,7 @@ Begin VB.Form FormPENEPMA08_PE
       Caption         =   "Output Parameters"
       ForeColor       =   &H00FF0000&
       Height          =   1455
-      Left            =   11280
+      Left            =   11400
       TabIndex        =   67
       Top             =   8520
       Width           =   2535
@@ -274,7 +274,7 @@ Begin VB.Form FormPENEPMA08_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   11280
+      Left            =   11400
       TabIndex        =   66
       TabStop         =   0   'False
       ToolTipText     =   "Rescale the graph to display all the spectrum data"
@@ -293,7 +293,7 @@ Begin VB.Form FormPENEPMA08_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Left            =   11520
+      Left            =   11640
       TabIndex        =   65
       TabStop         =   0   'False
       ToolTipText     =   "Show grid lines on graph"
@@ -309,7 +309,7 @@ Begin VB.Form FormPENEPMA08_PE
       Caption         =   "Run Input File In PENEPMA"
       Default         =   -1  'True
       Height          =   615
-      Left            =   12120
+      Left            =   12240
       Style           =   1  'Graphical
       TabIndex        =   47
       TabStop         =   0   'False
@@ -329,7 +329,7 @@ Begin VB.Form FormPENEPMA08_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   12120
+      Left            =   12240
       TabIndex        =   46
       TabStop         =   0   'False
       ToolTipText     =   "Edit the current PENEPMA input file using the default text editor"
@@ -348,7 +348,7 @@ Begin VB.Form FormPENEPMA08_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   12120
+      Left            =   12240
       TabIndex        =   45
       TabStop         =   0   'False
       ToolTipText     =   "Delete the temporary ""dump"" files for starting an interrupted simulation over from the beginning"
@@ -367,7 +367,7 @@ Begin VB.Form FormPENEPMA08_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   12120
+      Left            =   12240
       TabIndex        =   22
       TabStop         =   0   'False
       ToolTipText     =   "Create a command prompt in the PENEPMA directory. Type: penepma < ""input file name"""
@@ -386,7 +386,7 @@ Begin VB.Form FormPENEPMA08_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   12120
+      Left            =   12240
       TabIndex        =   21
       TabStop         =   0   'False
       ToolTipText     =   "Create a command prompt in the PENDBASE directory"
@@ -397,7 +397,7 @@ Begin VB.Form FormPENEPMA08_PE
       BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Height          =   495
-      Left            =   12120
+      Left            =   12240
       Style           =   1  'Graphical
       TabIndex        =   3
       TabStop         =   0   'False
@@ -408,7 +408,7 @@ Begin VB.Form FormPENEPMA08_PE
       Cancel          =   -1  'True
       Caption         =   "Close"
       Height          =   375
-      Left            =   12120
+      Left            =   12240
       TabIndex        =   2
       TabStop         =   0   'False
       Top             =   720
@@ -421,7 +421,7 @@ Begin VB.Form FormPENEPMA08_PE
       Left            =   4920
       TabIndex        =   1
       Top             =   120
-      Width           =   7095
+      Width           =   7215
       Begin VB.TextBox TextEnergyRangeMinMaxNumber 
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -434,7 +434,7 @@ Begin VB.Form FormPENEPMA08_PE
          EndProperty
          Height          =   285
          Index           =   2
-         Left            =   6120
+         Left            =   6240
          TabIndex        =   102
          ToolTipText     =   "Enter the number of energy channels for the Penepma simulation"
          Top             =   1800
@@ -506,7 +506,7 @@ Begin VB.Form FormPENEPMA08_PE
          Left            =   3960
          TabIndex        =   87
          Top             =   5640
-         Width           =   3015
+         Width           =   3135
          Begin VB.OptionButton OptionDetectorGeometry 
             Caption         =   "West"
             BeginProperty Font 
@@ -525,7 +525,7 @@ Begin VB.Form FormPENEPMA08_PE
             TabStop         =   0   'False
             ToolTipText     =   "Select the annular detector geometry option for greatest sensitivity"
             Top             =   480
-            Width           =   735
+            Width           =   855
          End
          Begin VB.OptionButton OptionDetectorGeometry 
             Caption         =   "South"
@@ -545,7 +545,7 @@ Begin VB.Form FormPENEPMA08_PE
             TabStop         =   0   'False
             ToolTipText     =   "Select the annular detector geometry option for greatest sensitivity"
             Top             =   480
-            Width           =   735
+            Width           =   855
          End
          Begin VB.OptionButton OptionDetectorGeometry 
             Caption         =   "East"
@@ -565,7 +565,7 @@ Begin VB.Form FormPENEPMA08_PE
             TabStop         =   0   'False
             ToolTipText     =   "Select the annular detector geometry option for greatest sensitivity"
             Top             =   480
-            Width           =   615
+            Width           =   735
          End
          Begin VB.OptionButton OptionDetectorGeometry 
             Caption         =   "North"
@@ -585,7 +585,7 @@ Begin VB.Form FormPENEPMA08_PE
             TabStop         =   0   'False
             ToolTipText     =   "Select the annular detector geometry option for greatest sensitivity"
             Top             =   480
-            Width           =   735
+            Width           =   855
          End
          Begin VB.OptionButton OptionDetectorGeometry 
             Caption         =   "Annular (0 to 360 degrees)"
@@ -605,7 +605,7 @@ Begin VB.Form FormPENEPMA08_PE
             TabStop         =   0   'False
             ToolTipText     =   "Select the annular detector geometry option for greatest sensitivity"
             Top             =   240
-            Width           =   2295
+            Width           =   2535
          End
       End
       Begin VB.CommandButton CommandBrowseInputFiles 
@@ -880,7 +880,7 @@ Begin VB.Form FormPENEPMA08_PE
          TabIndex        =   43
          ToolTipText     =   "Enter title for this input file (up to 120 characters)"
          Top             =   360
-         Width           =   5055
+         Width           =   5175
       End
       Begin VB.OptionButton OptionProduction 
          Caption         =   "Optimize Secondary Fluorescent X-rays (use couple or sphere *.geo files)"
@@ -891,7 +891,7 @@ Begin VB.Form FormPENEPMA08_PE
          TabStop         =   0   'False
          ToolTipText     =   "Based on template file CuFe_sec.in"
          Top             =   3360
-         Width           =   6615
+         Width           =   6855
       End
       Begin VB.OptionButton OptionProduction 
          Caption         =   "Optimize Production of Continuum X-rays"
@@ -934,7 +934,7 @@ Begin VB.Form FormPENEPMA08_PE
             Strikethrough   =   0   'False
          EndProperty
          Height          =   285
-         Left            =   5160
+         Left            =   5280
          TabIndex        =   36
          ToolTipText     =   "Enter the total simulation time period in seconds"
          Top             =   2160
@@ -972,7 +972,7 @@ Begin VB.Form FormPENEPMA08_PE
          TabIndex        =   31
          ToolTipText     =   "Enter the file name of the target PENEPMA Input file"
          Top             =   6960
-         Width           =   6855
+         Width           =   6975
       End
       Begin VB.TextBox TextBeamAperture 
          BeginProperty Font 
@@ -985,7 +985,7 @@ Begin VB.Form FormPENEPMA08_PE
             Strikethrough   =   0   'False
          EndProperty
          Height          =   285
-         Left            =   5760
+         Left            =   5880
          TabIndex        =   30
          ToolTipText     =   "Enter beam aperture (in degrees)"
          Top             =   1440
@@ -1078,7 +1078,7 @@ Begin VB.Form FormPENEPMA08_PE
          EndProperty
          Height          =   285
          Index           =   2
-         Left            =   5760
+         Left            =   5880
          TabIndex        =   11
          ToolTipText     =   "Enter beam position z in cm units (working distance)"
          Top             =   1080
@@ -1131,7 +1131,7 @@ Begin VB.Form FormPENEPMA08_PE
             Strikethrough   =   0   'False
          EndProperty
          Height          =   285
-         Left            =   5160
+         Left            =   5280
          TabIndex        =   8
          ToolTipText     =   "Enter beam energy in electron volts (eV)"
          Top             =   720
@@ -1195,7 +1195,7 @@ Begin VB.Form FormPENEPMA08_PE
          Left            =   3960
          TabIndex        =   55
          Top             =   4080
-         Width           =   2895
+         Width           =   3015
       End
       Begin VB.Label Label16 
          Caption         =   "Input File Title"
@@ -1207,7 +1207,7 @@ Begin VB.Form FormPENEPMA08_PE
       End
       Begin VB.Line Line5 
          X1              =   120
-         X2              =   6960
+         X2              =   7080
          Y1              =   2520
          Y2              =   2520
       End
@@ -1238,7 +1238,7 @@ Begin VB.Form FormPENEPMA08_PE
       End
       Begin VB.Line Line4 
          X1              =   120
-         X2              =   6960
+         X2              =   7080
          Y1              =   3960
          Y2              =   3960
       End
@@ -1250,7 +1250,7 @@ Begin VB.Form FormPENEPMA08_PE
       End
       Begin VB.Line Line1 
          X1              =   120
-         X2              =   6960
+         X2              =   7080
          Y1              =   6600
          Y2              =   6600
       End
@@ -1546,7 +1546,7 @@ Begin VB.Form FormPENEPMA08_PE
    End
    Begin VB.TextBox TextTemp 
       Height          =   285
-      Left            =   12120
+      Left            =   12240
       TabIndex        =   85
       TabStop         =   0   'False
       Top             =   7320
@@ -1558,7 +1558,7 @@ Begin VB.Form FormPENEPMA08_PE
       BorderStyle     =   1  'Fixed Single
       ForeColor       =   &H000000FF&
       Height          =   255
-      Left            =   12120
+      Left            =   12240
       TabIndex        =   78
       Top             =   7680
       Width           =   1695
@@ -1568,7 +1568,7 @@ Begin VB.Form FormPENEPMA08_PE
       BorderStyle     =   1  'Fixed Single
       ForeColor       =   &H000000FF&
       Height          =   375
-      Left            =   11280
+      Left            =   11400
       TabIndex        =   74
       Top             =   8040
       Width           =   2535
@@ -1623,7 +1623,7 @@ Begin VB.Form FormPENEPMA08_PE
       Left            =   1320
       TabIndex        =   48
       Top             =   8040
-      Width           =   9615
+      Width           =   9855
    End
    Begin VB.Label Label15 
       Alignment       =   2  'Center
@@ -1638,7 +1638,7 @@ Begin VB.Form FormPENEPMA08_PE
          Strikethrough   =   0   'False
       EndProperty
       Height          =   1815
-      Left            =   12120
+      Left            =   12240
       TabIndex        =   37
       Top             =   1200
       Width           =   1695

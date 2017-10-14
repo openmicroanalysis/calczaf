@@ -327,7 +327,7 @@ Begin VB.Form FormZAFOPT
          TabStop         =   0   'False
          ToolTipText     =   "Calculate an element by stoichiometry to another element"
          Top             =   2640
-         Width           =   3255
+         Width           =   3375
       End
       Begin VB.ComboBox ComboStoichiometry 
          Appearance      =   0  'Flat
@@ -401,7 +401,7 @@ Begin VB.Form FormZAFOPT
          TabStop         =   0   'False
          ToolTipText     =   "Calculate the composition with oxygen by stoichiometry added to the matrix correction"
          Top             =   360
-         Width           =   3495
+         Width           =   3615
       End
       Begin VB.Label Label1 
          Alignment       =   2  'Center

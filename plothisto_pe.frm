@@ -83,7 +83,7 @@ Begin VB.Form FormPLOTHISTO_PE
       TabIndex        =   2
       ToolTipText     =   "Plot the second element (B)"
       Top             =   960
-      Width           =   1215
+      Width           =   1335
    End
    Begin VB.OptionButton OptionColumnNumber 
       Caption         =   "Element A"
@@ -103,7 +103,7 @@ Begin VB.Form FormPLOTHISTO_PE
       ToolTipText     =   "Plot the first element (A)"
       Top             =   720
       Value           =   -1  'True
-      Width           =   1215
+      Width           =   1335
    End
    Begin VB.CommandButton CommandClose 
       BackColor       =   &H00C0FFC0&

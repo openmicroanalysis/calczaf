@@ -338,7 +338,7 @@ ierror = False
 On Error GoTo GetCmpSetCmpClearError
 
 FormSETCMP.ComboElement.Text = vbNullString
-FormSETCMP.ComboXray.Text = vbNullString
+FormSETCMP.ComboXRay.Text = vbNullString
 FormSETCMP.ComboCations.Text = vbNullString
 FormSETCMP.ComboOxygens.Text = vbNullString
 FormSETCMP.TextComposition.Text = vbNullString
@@ -385,7 +385,7 @@ End If
 
 If FormGETCMP.OptionEnterOxide.Value Then msg$ = " Oxide Weight Percent " & oxup$
 If FormGETCMP.OptionEnterElemental.Value Then msg$ = " Elemental Weight Percent " & elup$
-FormSETCMP.LabelComposition.Caption = "Enter Composition In" & msg$
+FormSETCMP.LabelComposition.Caption = "Enter Composition in" & msg$
 
 ' Add the list box items
 FormSETCMP.ComboElement.Clear
@@ -393,9 +393,9 @@ For i% = 0 To MAXELM% - 1
 FormSETCMP.ComboElement.AddItem Symlo$(i% + 1)
 Next i%
 
-FormSETCMP.ComboXray.Clear
+FormSETCMP.ComboXRay.Clear
 For i% = 0 To MAXRAY% - 2
-FormSETCMP.ComboXray.AddItem Xraylo$(i% + 1)
+FormSETCMP.ComboXRay.AddItem Xraylo$(i% + 1)
 Next i%
 
 FormSETCMP.ComboCations.Clear
@@ -418,7 +418,7 @@ Next i%
 ' Load the current element properties
 If GetCmpRow% > 0 Then
 FormSETCMP.ComboElement.Text = GetCmpTmpSample(1).Elsyms$(GetCmpRow%)
-FormSETCMP.ComboXray.Text = GetCmpTmpSample(1).Xrsyms$(GetCmpRow%)
+FormSETCMP.ComboXRay.Text = GetCmpTmpSample(1).Xrsyms$(GetCmpRow%)
 FormSETCMP.ComboCations.Text = Format$(GetCmpTmpSample(1).numcat%(GetCmpRow%))
 FormSETCMP.ComboOxygens.Text = Format$(GetCmpTmpSample(1).numoxd%(GetCmpRow%))
 End If
@@ -432,7 +432,7 @@ FormSETCMP.ComboOxygens.Enabled = True
 End If
 
 FormSETCMP.ComboElement.Enabled = True
-FormSETCMP.ComboXray.Enabled = True
+FormSETCMP.ComboXRay.Enabled = True
 
 ' Load the composition field, convert to oxide if indicated
 temp! = GetCmpTmpSample(1).ElmPercents!(GetCmpRow%)
@@ -522,7 +522,7 @@ If ip% <> 0 And ip% <> GetCmpRow% Then GoTo GetCmpSetCmpDuplicateElement
 GetCmpTmpSample(1).Elsyms$(GetCmpRow%) = sym$
 
 ' Check for a valid x-ray symbol
-sym$ = FormSETCMP.ComboXray.Text
+sym$ = FormSETCMP.ComboXRay.Text
 ip% = IPOS1(MAXRAY% - 1, sym$, Xraylo$())
 If ip% = 0 Then GoTo GetCmpSetCmpBadXray
 GetCmpTmpSample(1).Xrsyms$(GetCmpRow%) = sym$
@@ -645,8 +645,8 @@ sym$ = FormSETCMP.ComboElement.Text
 ip% = IPOS1(MAXELM%, sym$, Symlo$())
 
 If ip% > 0 Then
-If FormSETCMP.ComboXray.Text = vbNullString Then FormSETCMP.ComboXray.Text = Deflin$(ip%)
-If sym$ <> GetCmpTmpSample(1).Elsyms$(GetCmpRow%) Then FormSETCMP.ComboXray.Text = Deflin$(ip%)
+If FormSETCMP.ComboXRay.Text = vbNullString Then FormSETCMP.ComboXRay.Text = Deflin$(ip%)
+If sym$ <> GetCmpTmpSample(1).Elsyms$(GetCmpRow%) Then FormSETCMP.ComboXRay.Text = Deflin$(ip%)
 
 If FormSETCMP.ComboCations.Text = vbNullString Then FormSETCMP.ComboCations.Text = AllCat%(ip%)
 If sym$ <> GetCmpTmpSample(1).Elsyms$(GetCmpRow%) Then FormSETCMP.ComboCations.Text = AllCat%(ip%)

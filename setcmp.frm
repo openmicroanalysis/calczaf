@@ -160,7 +160,7 @@ Begin VB.Form FormSETCMP
       Begin VB.Label LabelComposition 
          Alignment       =   2  'Center
          Appearance      =   0  'Flat
-         Caption         =   "Enter Composition In "
+         Caption         =   "Enter Composition in "
          ForeColor       =   &H000000FF&
          Height          =   495
          Left            =   120

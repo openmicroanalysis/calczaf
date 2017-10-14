@@ -57,7 +57,7 @@ Begin VB.Form FormFIND
       TabIndex        =   13
       ToolTipText     =   "Find all matrix corrections at least 10% greater than 1.0 (large absorption)"
       Top             =   1320
-      Width           =   1695
+      Width           =   1935
    End
    Begin VB.OptionButton OptionGreaterOrLess 
       Caption         =   "> 5% Fluorescence"
@@ -77,7 +77,7 @@ Begin VB.Form FormFIND
       ToolTipText     =   "Find all matrix corrections 5% or less than 1.0 (large fluorescence)"
       Top             =   1080
       Value           =   -1  'True
-      Width           =   1695
+      Width           =   1935
    End
    Begin VB.Frame Frame2 
       Caption         =   "Standards Found (double-click to see composition data)"

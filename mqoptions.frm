@@ -317,7 +317,7 @@ Begin VB.Form FormMQOPTIONS
          TabIndex        =   36
          TabStop         =   0   'False
          Top             =   1080
-         Width           =   3615
+         Width           =   3735
       End
       Begin VB.CheckBox CheckMassZedDiffMin 
          Caption         =   "Use Minimum Mass - Electron Zbar Difference"
@@ -326,7 +326,7 @@ Begin VB.Form FormMQOPTIONS
          TabIndex        =   35
          TabStop         =   0   'False
          Top             =   360
-         Width           =   3615
+         Width           =   3735
       End
       Begin VB.TextBox TextMassZedDiffMax 
          Height          =   285

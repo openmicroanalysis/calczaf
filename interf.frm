@@ -79,7 +79,7 @@ Begin VB.Form FormINTERF
          TabStop         =   0   'False
          ToolTipText     =   "Calculate low off-peak interferences"
          Top             =   840
-         Width           =   2775
+         Width           =   3135
       End
       Begin VB.OptionButton OptionInterferencePeak 
          Caption         =   "High Off Peak Interferences"
@@ -90,7 +90,7 @@ Begin VB.Form FormINTERF
          TabStop         =   0   'False
          ToolTipText     =   "Calculate high off-peak interferences"
          Top             =   600
-         Width           =   2775
+         Width           =   3255
       End
       Begin VB.OptionButton OptionInterferencePeak 
          Caption         =   "On Peak Interferences"

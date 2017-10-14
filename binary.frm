@@ -187,7 +187,7 @@ Begin VB.Form FormBINARY
          TabIndex        =   18
          TabStop         =   0   'False
          Top             =   1080
-         Width           =   4935
+         Width           =   5655
       End
    End
    Begin VB.Frame Frame2 

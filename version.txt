@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/13/17	Adjust controls for non default DPI screens (von der Handt).
+v. 12.0.1
+		Remove obsolete Move2.bas, Move2.frm and Recalb2.bas.
+
+10/11/17	Trap zero sum in ZAFStd.
+
 10/06/17	Modify code to load standard formula flags from standard database (Carpenter).
 
 10/02/17	Modify JEOL EDS open/close for get net intensities to improve throughput (Poirier).

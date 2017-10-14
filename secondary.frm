@@ -398,7 +398,7 @@ Begin VB.Form FormSECONDARY
          TabIndex        =   16
          ToolTipText     =   "Specify the boundary as a coordinate and an angle (0 to 180 where 0 degrees equals north-south, 90 degrees equals east-west)"
          Top             =   1320
-         Width           =   3255
+         Width           =   3615
       End
       Begin VB.OptionButton OptionDistanceMethod 
          Caption         =   "Specify Fixed Distance"

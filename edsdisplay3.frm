@@ -105,7 +105,7 @@ Begin VB.Form FormEDSDISPLAY3
          TabStop         =   0   'False
          ToolTipText     =   "Display KLM markers for a specific element"
          Top             =   720
-         Width           =   1815
+         Width           =   2055
       End
       Begin VB.OptionButton OptionKLM 
          Caption         =   "All Elements"
@@ -146,7 +146,7 @@ Begin VB.Form FormEDSDISPLAY3
          TabStop         =   0   'False
          ToolTipText     =   "Display KLM markers for the specified EDS elements"
          Top             =   360
-         Width           =   1935
+         Width           =   2175
       End
       Begin VB.OptionButton OptionKLM 
          Caption         =   "None"

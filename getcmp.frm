@@ -60,13 +60,22 @@ Begin VB.Form FormGETCMP
    End
    Begin VB.CheckBox CheckFormula 
       Caption         =   "Calculate Formula Based On"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   240
       TabIndex        =   45
       TabStop         =   0   'False
       ToolTipText     =   "Perform a formula atom calculation"
       Top             =   7080
-      Width           =   2775
+      Width           =   2655
    End
    Begin VB.TextBox TextMaterialType 
       Height          =   285
@@ -260,7 +269,7 @@ Begin VB.Form FormGETCMP
          TabStop         =   0   'False
          ToolTipText     =   "Click this option to enter the standard composition in elemental weight percents"
          Top             =   600
-         Width           =   1935
+         Width           =   2055
       End
       Begin VB.OptionButton OptionEnterOxide 
          Caption         =   "Oxide Percent"
@@ -278,10 +287,10 @@ Begin VB.Form FormGETCMP
       ClipControls    =   0   'False
       ForeColor       =   &H00FF0000&
       Height          =   975
-      Left            =   2880
+      Left            =   2760
       TabIndex        =   9
       Top             =   5640
-      Width           =   2295
+      Width           =   2415
       Begin VB.OptionButton OptionNotDisplayAsOxide 
          Caption         =   "Elemental Standard"
          Height          =   255
@@ -290,7 +299,7 @@ Begin VB.Form FormGETCMP
          TabStop         =   0   'False
          ToolTipText     =   "Click this option to display the standard composition in elemental weight percents"
          Top             =   600
-         Width           =   2055
+         Width           =   2175
       End
       Begin VB.OptionButton OptionDisplayAsOxide 
          Caption         =   "Oxide Standard"

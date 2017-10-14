@@ -19,7 +19,7 @@ Begin VB.Form FormAUTOMATE
       TabIndex        =   7
       ToolTipText     =   "Check this box to not blank the beam for stage moves using the Automate! window Go button"
       Top             =   4200
-      Width           =   135
+      Width           =   255
    End
    Begin VB.ComboBox ComboFiducial 
       Height          =   315
@@ -34,7 +34,7 @@ Begin VB.Form FormAUTOMATE
       Caption         =   "On Stds"
       Height          =   255
       Index           =   0
-      Left            =   840
+      Left            =   720
       TabIndex        =   5
       ToolTipText     =   "Acquire standard position samples using beam deflection"
       Top             =   3360
@@ -49,18 +49,18 @@ Begin VB.Form FormAUTOMATE
       ToolTipText     =   "Acquire unknown position samples using beam deflection"
       Top             =   3360
       Value           =   1  'Checked
-      Width           =   975
+      Width           =   1095
    End
    Begin VB.CheckBox CheckBeamDeflection 
       Caption         =   "On Wavs"
       Height          =   255
       Index           =   2
-      Left            =   2880
+      Left            =   3000
       TabIndex        =   3
       ToolTipText     =   "Acquire wavescan position samples using beam deflection"
       Top             =   3360
       Value           =   1  'Checked
-      Width           =   975
+      Width           =   1095
    End
    Begin VB.ListBox ListDigitize 
       Height          =   1425

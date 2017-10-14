@@ -23,15 +23,6 @@ Begin VB.Form FormPICTURESNAP4
    End
    Begin VB.CommandButton Command1 
       Caption         =   "Export Digitized Coordinates"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
       Height          =   375
       Left            =   480
       TabIndex        =   7
@@ -86,6 +77,7 @@ Begin VB.Form FormPICTURESNAP4
    End
    Begin VB.CommandButton CommandClose 
       BackColor       =   &H00C0FFC0&
+      Cancel          =   -1  'True
       Caption         =   "Close"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -121,15 +113,6 @@ Begin VB.Form FormPICTURESNAP4
       Width           =   3255
       Begin VB.OptionButton OptionBeamOrStage 
          Caption         =   "Stage Scan"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   195
          Index           =   1
          Left            =   1680
@@ -140,15 +123,6 @@ Begin VB.Form FormPICTURESNAP4
       End
       Begin VB.OptionButton OptionBeamOrStage 
          Caption         =   "Beam Scan"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   195
          Index           =   0
          Left            =   240

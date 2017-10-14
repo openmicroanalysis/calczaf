@@ -113,7 +113,7 @@ Begin VB.Form FormCALCSPEC
       TabIndex        =   15
       TabStop         =   0   'False
       Top             =   840
-      Width           =   4095
+      Width           =   4215
    End
    Begin VB.CommandButton CommandCalculate 
       BackColor       =   &H0080FFFF&
@@ -233,7 +233,7 @@ Begin VB.Form FormCALCSPEC
       Alignment       =   2  'Center
       Caption         =   "Crystal"
       Height          =   255
-      Left            =   3480
+      Left            =   3720
       TabIndex        =   12
       Top             =   120
       Width           =   1215
@@ -255,7 +255,7 @@ Begin VB.Form FormCALCSPEC
       Caption         =   "X-Ray Line"
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   1800
+      Left            =   1920
       TabIndex        =   9
       Top             =   120
       Width           =   1335
@@ -264,7 +264,7 @@ Begin VB.Form FormCALCSPEC
       Alignment       =   2  'Center
       Caption         =   "Bragg Order"
       Height          =   255
-      Left            =   5040
+      Left            =   5400
       TabIndex        =   8
       Top             =   120
       Width           =   1215
