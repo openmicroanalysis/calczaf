@@ -449,7 +449,8 @@ Next j%
 
 ' Load x-ray lines (and motor and crystal) for elements present in analyzed sample for standard k-factor calculation
 For j% = 1 To stdsample(1).LastChan%
-ip% = IPOS9a(stdsample(1).Elsyms$(j%), sample())  ' changed 09/28/2012 for Pt La/Ma disable quant issue, IPOS9 checks disable flag, IPOS9a does NOT check disable flag
+'ip% = IPOS9a(stdsample(1).Elsyms$(j%), sample())  ' changed 09/28/2012 for Pt La/Ma disable quant issue, IPOS9 checks disable flag, IPOS9a does NOT check disable flag
+ip% = IPOS6(Int(1), j%, stdsample(), sample())     ' changed 10/18/2017 to check both element and x-ray but not disable quant flag!)
 If ip% > 0 And ip% <= sample(1).LastElm% And stdsample(1).MotorNumbers%(j%) = 0 Then
 stdsample(1).Xrsyms$(j%) = sample(1).Xrsyms$(ip%)
 stdsample(1).MotorNumbers%(j%) = sample(1).MotorNumbers%(ip%)
@@ -497,11 +498,11 @@ Call IOWriteLog(msg$)
 Next i%
 End If
 
-' Add in duplicate elements with different x-ray, motor, crystal (composition will total over 100% unless quant disabled or aggregate mode) (add check for different keV, for call from MAN dialog, 08-17-2017)
+' Add in duplicate elements with different x-ray, motor, crystal (composition will total over 100%, unless quant disabled or aggregate mode) (add check for different keV, for call from MAN dialog, 08-17-2017)
 For j% = 1 To sample(1).LastElm%
-If method% = 0 Then ip% = IPOS5(Int(1), j%, sample(), stdsample())  ' find position of sample element in std
+If method% = 0 Then ip% = IPOS5(Int(1), j%, sample(), stdsample())      ' find position of sample element in std
 If method% = 1 Then ip% = IPOS13B(Int(1), sample(1).Elsyms$(j%), sample(1).Xrsyms$(j%), sample(1).MotorNumbers%(j%), sample(1).CrystalNames$(j%), sample(1).KilovoltsArray!(j%), stdsample())
-If ip% = 0 Then
+If ip% = 0 And sample(1).DisableQuantFlag%(j%) = 0 Then                 ' add check for sample disable quant flag 10/19/2017 for Fe Ka/La disable quant issue (Ben Buse)
 If stdsample(1).LastChan% + 1 > MAXCHAN% Then GoTo UpdateCalculateUpdateStandardTooManyElements
 
 ' Add the analyzed element to the standard element arrays

@@ -2030,22 +2030,38 @@ Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFAbs: "
 For i% = 1 To sample(1).LastElm%
+If sample(1).DisableQuantFlag%(i%) = 0 Then
 msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%), f84), a80$)
+Else
+msg$ = msg$ & Format$(Format$(0#, f84), a80$)
+End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFFlu: "
 For i% = 1 To sample(1).LastElm%
+If sample(1).DisableQuantFlag%(i%) = 0 Then
 msg$ = msg$ & Format$(Format$(1# / (1# + zaf.vv!(i%)), f84), a80$)
+Else
+msg$ = msg$ & Format$(Format$(0#, f84), a80$)
+End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFZed: "
 For i% = 1 To sample(1).LastElm%
+If sample(1).DisableQuantFlag%(i%) = 0 Then
 msg$ = msg$ & Format$(Format$(zaf.zed!(i%), f84), a80$)
+Else
+msg$ = msg$ & Format$(Format$(0#, f84), a80$)
+End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFCOR: "
 For i% = 1 To sample(1).LastElm%
+If sample(1).DisableQuantFlag%(i%) = 0 Then
 msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%) * zaf.zed!(i%) / (1# + zaf.vv!(i%)), f84), a80$)
+Else
+msg$ = msg$ & Format$(Format$(0#, f84), a80$)
+End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "UNKRAT: "

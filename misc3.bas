@@ -58,6 +58,49 @@ Exit Function
 
 End Function
 
+Function IPOS6(ByVal mode As Integer, ByVal n As Integer, sample1() As TypeSample, sample2() As TypeSample) As Integer
+' This routine returns as its value a pointer to the first occurance in "sample2()" of the element in "sample1()" specified by channel "n".
+' If a match does not occur, IPOS6 = 0.
+' mode = 0 check only the analyzed elements
+' mode = 1 check both analyzed and specified elements
+
+ierror = False
+On Error GoTo IPOS6Error
+
+Dim i As Integer, k As Integer
+
+' Fail if not specified
+IPOS6 = 0
+If n% <= 0 Then Exit Function
+
+If mode% = 0 Then
+k% = sample2(1).LastElm%
+Else
+k% = sample2(1).LastChan%
+End If
+
+' Search sample for match (element, x-ray only)
+For i% = 1 To k%
+
+If Trim$(UCase$(sample1(1).Elsyms$(n%))) = Trim$(UCase$(sample2(1).Elsyms$(i%))) Then
+If Trim$(UCase$(sample1(1).Xrsyms$(n%))) = Trim$(UCase$(sample2(1).Xrsyms$(i%))) Then
+IPOS6 = i%
+Exit Function
+End If
+End If
+
+Next i%
+
+Exit Function
+
+' Errors
+IPOS6Error:
+MsgBox Error$, vbOKOnly + vbCritical, "IPOS6"
+ierror = True
+Exit Function
+
+End Function
+
 Function IPOS7(ByVal n As Integer, ByVal syme As String, ByVal symx As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the
 ' element and x-ray in "sample1()" starting at channel "n%". Checks disable flag.
@@ -253,7 +296,7 @@ Dim i As Integer
 ' Fail if not specified
 IPOS9a = 0
 
-' Search sample for match (element and disable quant only)
+' Search sample for match (element only)
 For i% = 1 To sample(1).LastChan%
 If Trim$(UCase$(syme$)) = Trim$(UCase$(sample(1).Elsyms$(i%))) Then
 IPOS9a = i%
