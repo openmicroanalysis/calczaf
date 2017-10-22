@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/20/17	Add third position to rectangular grid to allow for Z interpolation (Ryerson).
+
+		Modify code to plot JEOL coordinates correctly in digitize polygon grid plot routines.
+
 10/18/17	Modify UpdateCalculateStandard code to handle duplicate elements with 
 v. 12.0.2	different x-ray lines (Buse).
 
