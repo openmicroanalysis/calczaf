@@ -187,7 +187,6 @@ Global Const MAXMAXIMUM2& = -2147483648# ' (reversed) for calculating maximums
 Global Const MAXMINIMUM3% = 32767        ' (reversed) for calculating minimums
 Global Const MAXMAXIMUM3% = -32768       ' (reversed) for calculating maximums
 
-Global Const XTALFLIP! = 20              ' crystal flip time
 Global Const MAXCRYSTAL2D_NOT_LDE! = 30# ' maximum 2d for non LDE crystal
 Global Const MAXCRYSTAL2D_LARGE_LDE! = 100# ' maximum 2d for non large LDE crystal
 Global Const ANALYTICALMAGTHRESHOLD# = 50000#    ' minimum mag for analytical warning
@@ -2940,4 +2939,5 @@ Global Penepma12UseKeVRoundingFlag As Boolean       ' flag to round keV to neare
 
 Global InsertFaradayDuringStageJogFlag As Boolean
 
+Global XtalFlipDuration As Single              ' Bragg crystal flip time
 

@@ -3359,6 +3359,19 @@ DefaultSampleCoatingThickness! = DefaultStandardCoatingThickness!
 
 Penepma12UseKeVRoundingFlag = True
 
+' Load nominal Bragg crystal flip time
+If InterfaceType% = 0 Then XtalFlipDuration! = 10#                 ' Demo
+'If InterfaceType% = 1 Then XtalFlipDuration! = 10#
+If InterfaceType% = 2 Then
+If JeolEOSInterfaceType& = 0 Then XtalFlipDuration! = 20#          ' JEOL 8900
+If JeolEOSInterfaceType& = 1 Then XtalFlipDuration! = 20#          ' JEOL 8200/8500
+If JeolEOSInterfaceType& = 2 Then XtalFlipDuration! = 3#           ' JEOL 8230/8530
+End If
+'If InterfaceType% = 3 Then XtalFlipDuration! = 10#
+'If InterfaceType% = 4 Then XtalFlipDuration! = 10#
+If InterfaceType% = 5 Then XtalFlipDuration! = 20#                 ' Cameca
+'If InterfaceType% = 6 Then XtalFlipDuration! = 10#
+
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
 If ierror Then Exit Sub
