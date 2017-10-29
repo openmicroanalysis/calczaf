@@ -288,8 +288,10 @@ Call FileInfoLoadData(Int(1), tfilename$)
 If ierror Then Exit Sub
 
 ' Check if the standard database needs to be updated
+If tfilename$ <> vbNullString Then
 Call StandardUpdateMDBFile(tfilename$)
 If ierror Then Exit Sub
+End If
 
 ' Clear match list
 FormMATCH.ListStandards.Clear
@@ -326,8 +328,10 @@ StandardDataFile$ = ApplicationCommonAppData$ & DefaultMatchStandardDatabase$
 If Dir$(StandardDataFile$) = vbNullString Then GoTo MatchSaveNotFound
 
 ' Update the selected match database in case if needs to be updated
+If StandardDataFile$ <> vbNullString Then
 Call StandardUpdateMDBFile(StandardDataFile$)
 If ierror Then Exit Sub
+End If
 
 ' Restore default
 Else

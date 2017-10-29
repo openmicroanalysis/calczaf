@@ -2388,7 +2388,7 @@ Exit Sub
 
 End Sub
 
-Sub ZAFStd(row As Integer, analysis As TypeAnalysis, sample() As TypeSample, stdsample() As TypeSample)
+Sub ZAFStd2(row As Integer, analysis As TypeAnalysis, sample() As TypeSample, stdsample() As TypeSample)
 ' This routine calculates K-factors for each standard using the Tmp sample arrays. The
 ' algorithims based on John Armstrong's ZAF/Phi-Rho-Z program CITZAF, using
 ' data in the stdsample array.
@@ -2403,7 +2403,7 @@ Sub ZAFStd(row As Integer, analysis As TypeAnalysis, sample() As TypeSample, std
 '  analysis.StdZAFCors(8,row%,chan%) = sample intensity
 
 ierror = False
-On Error GoTo ZAFStdError
+On Error GoTo ZAFStd2Error
 
 Dim i As Integer, j As Integer, ip As Integer, ipp As Integer
 Dim tt As Single
@@ -2426,7 +2426,7 @@ If ierror Then Exit Sub
 
 ' Confirm on screen
 If VerboseMode Then
-Call IOWriteLog(vbCrLf & "Entering ZAFStd...")
+Call IOWriteLog(vbCrLf & "Entering ZAFStd2...")
 Call IOWriteLog("Standard " & Str$(stdsample(1).number%) & ", " & stdsample(1).Name$)
 Call IOWriteLog("DisplayAsOxideFlag = " & Str$(stdsample(1).DisplayAsOxideFlag%))
 If Not stdsample(1).CombinedConditionsFlag% Then
@@ -2445,12 +2445,12 @@ stdsample(1).KilovoltsArray!(i%) = sample(1).kilovolts!
 End If
 
 ' Calculate takeoff parameter and variables
-If stdsample(1).TakeoffArray!(i%) = 0# Then GoTo ZAFStdBadTakeoff
+If stdsample(1).TakeoffArray!(i%) = 0# Then GoTo ZAFStd2BadTakeoff
 tt! = stdsample(1).TakeoffArray!(i%) * PI! / 180#
 zaf.m1!(i%) = 1# / Sin(tt!)
 
 ' Check voltage
-If stdsample(1).KilovoltsArray!(i%) = 0# Then GoTo ZAFStdBadKilovolts
+If stdsample(1).KilovoltsArray!(i%) = 0# Then GoTo ZAFStd2BadKilovolts
 zaf.eO!(i%) = stdsample(1).KilovoltsArray!(i%)
 
 zaf.Z%(i%) = stdsample(1).AtomicNums%(i%)
@@ -2601,31 +2601,11 @@ zaf.n8& = stdsample(1).number%
 ' Load stdpcnts into k-ratio array
 For i% = 1 To stdsample(1).LastChan%
 analysis.WtPercents!(i%) = stdsample(1).ElmPercents!(i%)
-
-' Check that only the first (not quant disabled) element gets loaded for std k-factor calculation (added 04/15/2014, also see changes in UpdateCalculateUpdateStandard)
-If Not MiscIsElementDuplicated2(i%, stdsample(), ipp%) Then
-
-' Not duplicate element, always load std percent
 zaf.krat!(i%) = analysis.WtPercents!(i%) / 100#
-
-' Duplicate element found, so just load the first valid occurance of the element, and set duplicates to a small number
-Else
-ip% = IPOS1DQ(stdsample(1).LastChan%, stdsample(1).Elsyms$(i%), stdsample(1).Elsyms$(), stdsample(1).DisableQuantFlag()) ' only check first non-disabled occurance of each element in standard
-For j% = 1 To stdsample(1).LastChan%
-If Trim$(UCase$(stdsample(1).Elsyms$(j%))) = Trim$(UCase$(stdsample(1).Elsyms$(ip%))) Then
-If j% = ip% Then
-zaf.krat!(j%) = analysis.WtPercents!(ip%) / 100#
-Else
-zaf.krat!(j%) = NOT_ANALYZED_VALUE_SINGLE! / 100#
-End If
-End If
-Next j%
-
-End If
 Next i%
 
 If VerboseMode% Then
-msg$ = vbCrLf & "ZAFSTD: Standard " & Format$(stdsample(1).number%) & ":"
+msg$ = vbCrLf & "ZAFStd2: Standard " & Format$(stdsample(1).number%) & ":"
 Call IOWriteLog(msg$)
 For i% = 1 To stdsample(1).LastChan%
 msg$ = Format$(i%) & " " & stdsample(1).Elsyms$(i%) & " " & stdsample(1).Xrsyms$(i%) & ", " & MiscAutoFormat$(100# * zaf.krat!(i%))
@@ -2647,8 +2627,8 @@ End If
 
 ' Check for zero ksum (total)
 If zaf.ksum! <= 0# Then
-If sample(1).Type% = 1 Then GoTo ZAFStdZeroSum
-If sample(1).Type% = 2 Then GoTo ZAFStdZeroSum2
+If sample(1).Type% = 1 Then GoTo ZAFStd2ZeroSum
+If sample(1).Type% = 2 Then GoTo ZAFStd2ZeroSum2
 End If
 
 ' Add in stoichiometric element (NOT USED FOR STD K-RATIOS!)
@@ -2669,11 +2649,11 @@ End If
 ' Warn if total is under 98.0 percent (if not unknown sample for demo counts)
 If sample(1).Type% = 1 Then
 If zaf.ksum! * 100# < 98# Then
-msg$ = "WARNING in ZAFSTD- Standard " & Str$(stdsample(1).number%) & " total is only " & Format$(zaf.ksum! * 100#, f83$) & " wt.%"
+msg$ = "WARNING in ZAFStd2- Standard " & Str$(stdsample(1).number%) & " total is only " & Format$(zaf.ksum! * 100#, f83$) & " wt.%"
 Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int(FONT_REGULAR%), Int(0))
 End If
 If zaf.ksum! * 100# > 102# Then
-msg$ = "WARNING in ZAFSTD- Standard " & Str$(stdsample(1).number%) & " total is " & Format$(zaf.ksum! * 100#, f83$) & " wt.%"
+msg$ = "WARNING in ZAFStd2- Standard " & Str$(stdsample(1).number%) & " total is " & Format$(zaf.ksum! * 100#, f83$) & " wt.%"
 Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int(FONT_REGULAR%), Int(0))
 End If
 End If
@@ -2749,6 +2729,7 @@ For i% = 1 To sample(1).LastElm%
 
 ' See if this standard is the assigned standard for this element
 If sample(1).StdAssigns%(i%) <> stdsample(1).number% Then GoTo 8400
+
 ip% = IPOS14(i%, sample(), stdsample())  ' check element, xray, take-off and kilovolts
 If ip% = 0 Then GoTo 8400
 
@@ -2798,7 +2779,7 @@ Next i%
 
 ' Load standard arrays for this standard into the standard list arrays
 For i% = 1 To sample(1).LastChan%
-ip% = IPOS14(i%, sample(), stdsample())  ' check element, xray, take-off and kilovolts
+ip% = IPOS14(i%, sample(), stdsample())  ' check element, xray, take-off and kilovolts for loading standard k-factors corrections
 If ip% = 0 Then GoTo 8500
 
 ' Load the standard percents
@@ -2848,32 +2829,32 @@ End If
 Exit Sub
 
 ' Errors
-ZAFStdError:
-MsgBox Error$, vbOKOnly + vbCritical, "ZAFStd"
+ZAFStd2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFStd2"
 ierror = True
 Exit Sub
 
-ZAFStdBadTakeoff:
+ZAFStd2BadTakeoff:
 msg$ = "Takeoff array is not loaded properly"
-MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd2"
 ierror = True
 Exit Sub
 
-ZAFStdBadKilovolts:
+ZAFStd2BadKilovolts:
 msg$ = "Kilovolt array is not loaded properly"
-MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd2"
 ierror = True
 Exit Sub
 
-ZAFStdZeroSum:
+ZAFStd2ZeroSum:
 msg$ = "Concentration sum of standard " & Str$(stdsample(1).number%) & " is " & Str$(zaf.ksum! * 100#) & " wt.%"
-MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd2"
 ierror = True
 Exit Sub
 
-ZAFStdZeroSum2:
+ZAFStd2ZeroSum2:
 msg$ = "Concentration sum of passed unknown sample is " & Str$(zaf.ksum! * 100#) & " wt.%"
-MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd2"
 ierror = True
 Exit Sub
 

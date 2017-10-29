@@ -2777,7 +2777,8 @@ StandardCoatingElement%(1) = sample(1).CoatingElement%
 End If
 
 ' Run the intensity from concentration calculations on the "standard"
-Call ZAFStd(Int(1), analysis, sample(), tmpsample())
+'Call ZAFStd(Int(1), analysis, sample(), tmpsample())
+Call ZAFStd2(Int(1), analysis, sample(), tmpsample())
 If ierror Then Exit Sub
 
 Exit Sub

@@ -46,7 +46,7 @@ Else
 End If
 
 ' Update the standard kfacs based on changed conditions
-Call UpdateAllStdKfacs(Int(0), analysis, sample(), stdsample())
+Call UpdateAllStdKfacs(analysis, sample(), stdsample())
 If ierror Then Exit Sub
 
 Exit Sub

@@ -491,6 +491,41 @@ Exit Function
 
 End Function
 
+Function MiscIsElementDuplicatedAndXrayOrKilovoltsDifferent(sample() As TypeSample) As Boolean
+' Check sample for duplicated element but different x-ray or different kilovolts (analyzed elements only)
+
+ierror = False
+On Error GoTo MiscIsElementDuplicatedAndXrayOrKilovoltsDifferentError
+
+Dim i As Integer, j As Integer
+
+' Fail if not duplicated
+MiscIsElementDuplicatedAndXrayOrKilovoltsDifferent = False
+
+' Search sample for matching element but different x-ray or kilovolts
+For i% = 1 To sample(1).LastElm%
+For j% = 1 To sample(1).LastElm%
+
+If Trim$(UCase$(sample(1).Elsyms$(i%))) = Trim$(UCase$(sample(1).Elsyms$(j%))) Then
+If Trim$(UCase$(sample(1).Xrsyms$(i%))) <> Trim$(UCase$(sample(1).Xrsyms$(j%))) Or sample(1).KilovoltsArray!(i%) <> sample(1).KilovoltsArray!(j%) Then
+MiscIsElementDuplicatedAndXrayOrKilovoltsDifferent = True
+Exit Function
+End If
+End If
+
+Next j%
+Next i%
+
+Exit Function
+
+' Errors
+MiscIsElementDuplicatedAndXrayOrKilovoltsDifferentError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscIsElementDuplicatedAndXrayOrKilovoltsDifferent"
+ierror = True
+Exit Function
+
+End Function
+
 Function MiscIsElementDuplicatedSubsequent(chan As Integer, num As Integer, elementarray() As String, ipp As Integer) As Boolean
 ' Check for duplicated element in the element list after the indicated element (ipp% is the index of the duplicated element)
 

@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/28/17	Modify ZAFStd (and UpdateCalculate) code to better handle duplicate elements
+v. 12/0.3	where the x-ray lines are different or the kilovolts are different (Buse and Moy).
+
+		Adjust crystal flip time estimation code (Poirier).
+
 10/24/17	Modify crystal flip time calculation code (Poirier).
 
 10/20/17	Add third position to rectangular grid to allow for Z interpolation (Ryerson).

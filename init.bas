@@ -3360,12 +3360,13 @@ DefaultSampleCoatingThickness! = DefaultStandardCoatingThickness!
 Penepma12UseKeVRoundingFlag = True
 
 ' Load nominal Bragg crystal flip time
-If InterfaceType% = 0 Then XtalFlipDuration! = 10#                 ' Demo
+If InterfaceType% = 0 And MiscIsInstrumentStage("JEOL") Then XtalFlipDuration! = 5#                  ' Demo (JEOL)
+If InterfaceType% = 0 And MiscIsInstrumentStage("CAMECA") Then XtalFlipDuration! = 20#                  ' Demo (Cameca)
 'If InterfaceType% = 1 Then XtalFlipDuration! = 10#
 If InterfaceType% = 2 Then
-If JeolEOSInterfaceType& = 0 Then XtalFlipDuration! = 20#          ' JEOL 8900
-If JeolEOSInterfaceType& = 1 Then XtalFlipDuration! = 20#          ' JEOL 8200/8500
-If JeolEOSInterfaceType& = 2 Then XtalFlipDuration! = 3#           ' JEOL 8230/8530
+If JeolEOSInterfaceType& = 0 Then XtalFlipDuration! = 5#          ' JEOL 8900
+If JeolEOSInterfaceType& = 1 Then XtalFlipDuration! = 5#          ' JEOL 8200/8500
+If JeolEOSInterfaceType& = 2 Then XtalFlipDuration! = 5#          ' JEOL 8230/8530
 End If
 'If InterfaceType% = 3 Then XtalFlipDuration! = 10#
 'If InterfaceType% = 4 Then XtalFlipDuration! = 10#

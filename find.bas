@@ -149,7 +149,8 @@ Next j%
 ' Run the calculations on the standard
 stdrow% = MAXSTD%
 Screen.MousePointer = vbHourglass
-Call ZAFStd(stdrow%, StandardAnalysis, StandardOldSample(), StandardTmpSample())
+'Call ZAFStd(stdrow%, StandardAnalysis, StandardOldSample(), StandardTmpSample())
+Call ZAFStd2(stdrow%, StandardAnalysis, StandardOldSample(), StandardTmpSample())
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 

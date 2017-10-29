@@ -181,7 +181,7 @@ End If
 
 ' Run the intensity from concentration calculations on the "standard"
 If CorrectionFlag% = 0 Then
-Call ZAFStd(Int(1), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
+Call ZAFStd2(Int(1), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
 If ierror Then Exit Sub
 ElseIf CorrectionFlag% = MAXCORRECTION% Then
 'Call ZAFStd3(Int(1), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
@@ -1464,7 +1464,7 @@ If ierror Then Exit Sub
 End If
 
 ' Calculate standard k-factors
-Call UpdateAllStdKfacs(Int(0), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
+Call UpdateAllStdKfacs(CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
 If ierror Then Exit Sub
 
 Exit Sub
@@ -2867,7 +2867,7 @@ End If
 End If
 
 ' Calculate standard k-factors
-Call UpdateAllStdKfacs(Int(0), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
+Call UpdateAllStdKfacs(CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
 If ierror Then Exit Sub
 
 Exit Sub
@@ -3698,7 +3698,7 @@ End If
 ' Run the calculations on the "standard"
 If CorrectionFlag% = 0 Then
 VerboseMode% = True
-Call ZAFStd(Int(1), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
+Call ZAFStd2(Int(1), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
 VerboseMode% = False
 If ierror Then Exit Sub
 ElseIf CorrectionFlag% = MAXCORRECTION% Then
@@ -3749,7 +3749,7 @@ StandardDataFile$ = tfilename$
 
 ' Calculate ZAF again
 If ProbeDataFile$ <> vbNullString Then
-Call UpdateAllStdKfacs(Int(0), CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
+Call UpdateAllStdKfacs(CalcZAFAnalysis, CalcZAFOldSample(), CalcZAFTmpSample())
 If ierror Then Exit Sub
 End If
 
@@ -4648,7 +4648,7 @@ Else
 End If
 
 ' Update the standard kfacs based on changed conditions
-Call UpdateAllStdKfacs(Int(0), analysis, sample(), stdsample())
+Call UpdateAllStdKfacs(analysis, sample(), stdsample())
 If ierror Then Exit Sub
 
 ' Force re-load of standard counts

@@ -49,7 +49,8 @@ Next i%
 
 ' Run the calculations on the standard
 stdrow% = MAXSTD%
-Call ZAFStd(stdrow%, StanFormAnalysis, StanFormOldSample(), StanFormTmpSample())
+'Call ZAFStd(stdrow%, StanFormAnalysis, StanFormOldSample(), StanFormTmpSample())
+Call ZAFStd2(stdrow%, StanFormAnalysis, StanFormOldSample(), StanFormTmpSample())
 If ierror Then Exit Sub
 
 If CorrectionFlag% > 0 And CorrectionFlag% < 4 Then
