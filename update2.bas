@@ -48,7 +48,7 @@ msg$ = "Standard K-factors Calculated"
 Call IOWriteLog(msg$)
 
 Else
-msg$ = "Standard Beta-factors Calculated at " & Str$(sample(1).takeoff!) & " takeoff and " & Str$(sample(1).kilovolts!) & " keV"
+msg$ = "Standard Beta-factors Calculated"
 Call IOWriteLog(msg$)
 End If
 
@@ -113,7 +113,7 @@ Exit Sub
 End Sub
 
 Sub UpdateCalculate2(row As Integer, num As Integer, analysis As TypeAnalysis, sample() As TypeSample, stdsample() As TypeSample)
-' Loads a single standard stdsample array and calculates k-ratios (version to handle duplicfate elements)
+' Loads a single standard stdsample array and calculates k-ratios (version to handle duplicate elements)
 '   "row" is the standard position in the standard list
 '   "num" is the standard number
 
@@ -122,19 +122,13 @@ On Error GoTo UpdateCalculate2Error
 
 Dim chan As Integer, i As Integer, j As Integer, ip As Integer
 
-' Get standard composition and cations from the standard database and load in stdsample arrays
-If num% > 0 Then
+' Get standard composition and cations from the standard database and load in stdsample arrays (if zero std num, load random composition)
 Call StandardGetMDBStandard(num%, stdsample())
 If ierror Then Exit Sub
-
-' Load standard as unknown composition if stdnum is zero (random composition)
-Else
-Call StandardGetMDBStandard(num%, stdsample())
-If ierror Then Exit Sub
-End If
 
 ' Loop on each analyzed element in original sample and load standard composition
 For chan% = 1 To sample(1).LastElm%
+If sample(1).DisableQuantFlag%(chan%) = 0 Then
 
 ' Loop on each analyzed element in original sample and calculate standard k-factors *one element at a time*
 If VerboseMode% Then
@@ -150,6 +144,15 @@ For i% = 1 To UpdateStdSample(1).LastChan%
 UpdateStdSample(1).ElmPercents!(i%) = NOT_ANALYZED_VALUE_SINGLE!                                 ' use a non-zero value
 Next i%
 
+If VerboseMode% Then
+msg$ = vbCrLf & "Standard " & Format$(num%) & ", (original sample):"
+Call IOWriteLog(msg$)
+For i% = 1 To UpdateStdSample(1).LastChan%
+msg$ = Str$(i%) & " " & UpdateStdSample(1).Elsyms$(i%) & " " & UpdateStdSample(1).Xrsyms$(i%) & Str$(UpdateStdSample(1).MotorNumbers%(i%)) & " " & UpdateStdSample(1).CrystalNames$(i%) & ", " & Format$(UpdateStdSample(1).TakeoffArray!(i%)) & " " & Format$(UpdateStdSample(1).KilovoltsArray!(i%))
+Call IOWriteLog(msg$)
+Next i%
+End If
+
 ' Now check for elements in the standard that are not in the sample, and add them if necesssary as specified elements
 For j% = 1 To stdsample(1).LastChan%
 ip% = IPOS1(UpdateStdSample(1).LastChan%, stdsample(1).Elsyms$(j%), UpdateStdSample(1).Elsyms$())         ' only check element
@@ -160,6 +163,8 @@ If UpdateStdSample(1).LastChan% + 1 > MAXCHAN% Then GoTo UpdateCalculate2TooMany
 UpdateStdSample(1).LastChan% = UpdateStdSample(1).LastChan% + 1
 UpdateStdSample(1).Elsyms$(UpdateStdSample(1).LastChan%) = stdsample(1).Elsyms$(j%)
 UpdateStdSample(1).Xrsyms$(UpdateStdSample(1).LastChan%) = vbNullString
+UpdateStdSample(1).MotorNumbers%(UpdateStdSample(1).LastChan%) = 0
+UpdateStdSample(1).CrystalNames$(UpdateStdSample(1).LastChan%) = vbNullString
 UpdateStdSample(1).numcat%(UpdateStdSample(1).LastChan%) = stdsample(1).numcat%(j%)
 UpdateStdSample(1).numoxd%(UpdateStdSample(1).LastChan%) = stdsample(1).numoxd%(j%)
 UpdateStdSample(1).AtomicCharges!(UpdateStdSample(1).LastChan%) = stdsample(1).AtomicCharges!(j%)
@@ -168,9 +173,11 @@ UpdateStdSample(1).KilovoltsArray!(UpdateStdSample(1).LastChan%) = 0#
 End If
 Next j%
 
-' Now make all element specified
+' Now make all elements specified
 For i% = 1 To UpdateStdSample(1).LastChan%
 UpdateStdSample(1).Xrsyms$(i%) = vbNullString
+UpdateStdSample(1).MotorNumbers%(i%) = 0
+UpdateStdSample(1).CrystalNames$(i%) = vbNullString
 UpdateStdSample(1).TakeoffArray!(i%) = 0#
 UpdateStdSample(1).KilovoltsArray!(i%) = 0#
 Next i%
@@ -197,11 +204,13 @@ Next j%
 ' Now load the concentration for the current element in the current sample for ZAFStd calculations
 ip% = IPOS1(stdsample(1).LastChan%, sample(1).Elsyms$(chan%), stdsample(1).Elsyms$())
 If ip% > 0 Then
-UpdateStdSample(1).ElmPercents!(chan%) = stdsample(1).ElmPercents!(ip%)                            ' load concentration from standard database
+UpdateStdSample(1).ElmPercents!(chan%) = stdsample(1).ElmPercents!(ip%)                            ' load concentration from standard database if present in standard composition
+End If
 UpdateStdSample(1).Xrsyms$(chan%) = sample(1).Xrsyms$(chan%)                                       ' load original x-ray line (still in original sample order)
+UpdateStdSample(1).MotorNumbers%(chan%) = sample(1).MotorNumbers%(chan%)                           ' load original sample spectrometer number (still in original sample order)
+UpdateStdSample(1).CrystalNames$(chan%) = sample(1).CrystalNames$(chan%)                           ' load original sample crystal name (still in original sample order)
 UpdateStdSample(1).TakeoffArray!(chan%) = sample(1).TakeoffArray!(chan%)                           ' load original sample takeoff angle (still in original sample order)
 UpdateStdSample(1).KilovoltsArray!(chan%) = sample(1).KilovoltsArray!(chan%)                       ' load original sample kilovolts (still in original sample order)
-End If
 
 If VerboseMode% Then
 msg$ = vbCrLf & "Standard " & Format$(num%) & ", (after update for standard concentrations):"
@@ -251,6 +260,18 @@ If ierror Then Exit Sub
 End If
 End If
 
+' Print out StdZAFCors for MAN dialog (continuum absorption correction)
+If DebugMode And VerboseMode Then
+Call IOWriteLog("UpdateCalculate2: Standard " & Format$(num%) & " " & StandardNames$(row%) & ", " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & ", " & Format$(sample(1).TakeoffArray!(chan%)) & " " & Format$(sample(1).KilovoltsArray!(chan%)))
+For i% = 1 To sample(1).LastElm%
+ip% = IPOS14(i%, sample(), UpdateStdSample())  ' check element, xray, take-off and kilovolts (only one element will qualify at a time)
+If ip% > 0 Then
+msg$ = UpdateStdSample(1).Elsyms$(ip%) & " " & UpdateStdSample(1).Xrsyms$(ip%) & ", " & Format$(UpdateStdSample(1).TakeoffArray!(ip%)) & " " & Format$(UpdateStdSample(1).KilovoltsArray!(ip%)) & ", " & Format$(UpdateStdSample(1).ElmPercents!(ip%)) & ", " & Format$(analysis.StdZAFCors!(1, row%, ip%))
+Call IOWriteLog(msg$)
+End If
+Next i%
+End If
+
 ' Re-set current element to specified
 UpdateStdSample(1).ElmPercents!(chan%) = NOT_ANALYZED_VALUE_SINGLE!
 UpdateStdSample(1).Xrsyms$(chan%) = vbNullString
@@ -258,6 +279,7 @@ UpdateStdSample(1).TakeoffArray!(chan%) = 0#
 UpdateStdSample(1).KilovoltsArray!(chan%) = 0#
 
 ' Calculate std k-factors for next original sample element
+End If
 Next chan%
 
 Exit Sub
@@ -574,16 +596,9 @@ On Error GoTo UpdateCalculateUpdateStandard2Error
 
 Dim i As Integer, j As Integer, ip As Integer
 
-' Get standard composition and cations from the standard database and load in stdsample arrays
-If num% > 0 Then
+' Get standard composition and cations from the standard database and load in stdsample arrays (if zero std num, load random composition)
 Call StandardGetMDBStandard(num%, stdsample())
 If ierror Then Exit Sub
-
-' Load standard as unknown composition if stdnum is zero (random composition)
-Else
-Call StandardGetMDBStandard(num%, stdsample())
-If ierror Then Exit Sub
-End If
 
 ' Load passed sample into temp std sample
 UpdateStdSample(1) = sample(1)
