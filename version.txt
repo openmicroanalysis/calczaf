@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/31/17	Modify standard assignments for interferences to utilize sorted combo 
+		controls (just like primary standards) (Goemann).
+		
+		Fix bug for normalized intensitiers in plot wavescan code.  Add more 
+		debug output for setting beam modes.
+
 10/30/17	Fix bug in UpdateCalculate2 for MAN elements in standards.
 
 10/28/17	Modify ZAFStd (and UpdateCalculate) code to better handle duplicate elements

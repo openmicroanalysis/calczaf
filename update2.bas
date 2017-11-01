@@ -128,7 +128,13 @@ If ierror Then Exit Sub
 
 ' Loop on each analyzed element in original sample and load standard composition
 For chan% = 1 To sample(1).LastElm%
+
+' Skip disable quant element
 If sample(1).DisableQuantFlag%(chan%) = 0 Then
+
+' Skip duplicate element
+ip% = IPOS8A(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample(1).KilovoltsArray!(chan%), sample()) ' find if element is duplicated
+If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then
 
 ' Loop on each analyzed element in original sample and calculate standard k-factors *one element at a time*
 If VerboseMode% Then
@@ -279,6 +285,7 @@ UpdateStdSample(1).TakeoffArray!(chan%) = 0#
 UpdateStdSample(1).KilovoltsArray!(chan%) = 0#
 
 ' Calculate std k-factors for next original sample element
+End If
 End If
 Next chan%
 
