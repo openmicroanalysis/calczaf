@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/01/17	Fix bug introduced in Update2.bas for demo mode of unknowns and wavescans.
+v. 12.0.4
+		Modify calculation of estimated EDS time form automation. Modify FormGETOPT.
+
 10/31/17	Modify standard assignments for interferences to utilize sorted combo 
 		controls (just like primary standards) (Goemann).
 		

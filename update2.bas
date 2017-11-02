@@ -122,9 +122,17 @@ On Error GoTo UpdateCalculate2Error
 
 Dim chan As Integer, i As Integer, j As Integer, ip As Integer
 
-' Get standard composition and cations from the standard database and load in stdsample arrays (if zero std num, load random composition)
+' Get standard composition and cations from the standard database and load in stdsample arrays
+If num% > 0 Then
 Call StandardGetMDBStandard(num%, stdsample())
 If ierror Then Exit Sub
+
+' Load standard as unknown composition if stdnum is zero (random composition)
+Else
+Call StandardGetMDBStandard(num%, sample())
+If ierror Then Exit Sub
+stdsample(1) = sample(1)
+End If
 
 ' Loop on each analyzed element in original sample and load standard composition
 For chan% = 1 To sample(1).LastElm%
@@ -603,9 +611,17 @@ On Error GoTo UpdateCalculateUpdateStandard2Error
 
 Dim i As Integer, j As Integer, ip As Integer
 
-' Get standard composition and cations from the standard database and load in stdsample arrays (if zero std num, load random composition)
+' Get standard composition and cations from the standard database and load in stdsample arrays
+If num% > 0 Then
 Call StandardGetMDBStandard(num%, stdsample())
 If ierror Then Exit Sub
+
+' Load standard as unknown composition if stdnum is zero (random composition)
+Else
+Call StandardGetMDBStandard(num%, sample())
+If ierror Then Exit Sub
+stdsample(1) = sample(1)
+End If
 
 ' Load passed sample into temp std sample
 UpdateStdSample(1) = sample(1)
