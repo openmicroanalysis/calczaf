@@ -106,10 +106,13 @@ def commit(workdir, message, tag, commit=True, push=True):
     logger.info('Running git push...')
     args = ['git', 'push', '--all']
     if not push: args.append('--dry-run')
-    if has_tag:
-        args.append('--tags')
-
     subprocess.check_call(args, cwd=workdir)
+
+    if has_tag:
+        args = ['git', 'push', '--tags']
+        if not push: args.append('--dry-run')
+        subprocess.check_call(args, cwd=workdir)
+
     logger.info('Running git push... DONE')
 
 def compare(filepath, workdir):
