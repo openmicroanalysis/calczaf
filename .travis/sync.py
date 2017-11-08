@@ -58,7 +58,10 @@ def parse_version(fp):
             lines.append(line)
         elif tag_pattern.match(line):
             if dt is not None:
-                tags[dt] = line[2:].split('\t', 1)[0].strip()
+                tag_value = line[2:].split('\t', 1)[0].strip()
+                if tag_value.endswith('.'):
+                    tag_value = tag_value[:-1]
+                tags[dt] = tag_value
         else:
             lines.append(line)
 
@@ -92,15 +95,20 @@ def commit(workdir, message, tag, commit=True, push=True):
     subprocess.check_call(args, cwd=workdir)
     logger.info('Running git commit... DONE')
 
+    has_tag = False
     if tag is not None and commit:
         logger.info('Running git tag...')
         args = ['git', 'tag', tag]
         subprocess.check_call(args, cwd=workdir)
         logger.info('Running git tag... DONE')
+        has_tag = True
 
     logger.info('Running git push...')
     args = ['git', 'push', '--all']
     if not push: args.append('--dry-run')
+    if has_tag:
+        args.append('--tags')
+
     subprocess.check_call(args, cwd=workdir)
     logger.info('Running git push... DONE')
 
