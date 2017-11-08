@@ -1771,6 +1771,12 @@ If zaf.ksum! < 1# Then
 ip% = IPOS1B(Int(1), FormulaTmpSample(1).LastChan%, sample(1).Elsyms$(i%), FormulaTmpSample(1).Elsyms$())
 If ip% > 0 Then
 zaf.krat!(i%) = FormulaTmpSample(1).ElmPercents!(ip%) / 100# * temp!
+
+'If zaf.il%(zaf.in0%) = 0 And zaf.Z%(i%) Then        ' if calculating oxygen by stoichiometry
+'zaf.krat!(i%) = zaf.krat!(i%) / (1# + zaf.p1!(i%))
+'zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) + zaf.krat!(i%) * zaf.p1!(i%)
+'End If
+
 End If
 End If
 End If
@@ -1954,7 +1960,7 @@ For i% = 1 To zaf.in1%
 If zaf.il%(i%) = 13 Then
 If zaf.ksum! < 1# Or zaf.ksum! >= 1# And Not ForceNegativeKratiosToZeroFlag Then  ' to allow for "negative" element (e.g., hydrogen) by difference if very small concentration near 100%
 r1!(i%) = 1# - zaf.ksum!
-If zaf.il%(zaf.in0%) = 0 Then
+If zaf.il%(zaf.in0%) = 0 Then       ' if calculating oxygen by stoichiometry
 r1!(i%) = r1!(i%) / (1# + zaf.p1!(i%))
 r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
 End If
@@ -1985,12 +1991,37 @@ If zaf.ksum! < 1# Then
 ip% = IPOS1B(Int(1), FormulaTmpSample(1).LastChan%, sample(1).Elsyms$(i%), FormulaTmpSample(1).Elsyms$())
 If ip% > 0 Then
 r1!(i%) = FormulaTmpSample(1).ElmPercents!(ip%) / 100# * temp!
+
+'If zaf.il%(zaf.in0%) = 0 Then         ' if calculating oxygen by stoichiometry
+'r1!(i%) = r1!(i%) / (1# + zaf.p1!(i%))
+'r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
+'End If
+
 zaf.krat!(i%) = r1!(i%)
 End If
 End If
 End If
 Next i%
 zaf.ksum! = 1#
+
+'If DebugMode Then
+'msg$ = "ELEMENT "
+'For i% = 1 To sample(1).LastChan%
+'msg$ = msg$ & Format$(sample(1).Elsyms$(i%) & " " & sample(1).Xrsyms$(i%), a80$)
+'Next i%
+'Call IOWriteLog(msg$)
+'msg$ = "UNKRAT: "
+'For i% = 1 To sample(1).LastChan%
+'msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84), a80$)
+'Next i%
+'Call IOWriteLog(msg$)
+'msg$ = "Conc*100"
+'For i% = 1 To sample(1).LastChan%
+'msg$ = msg$ & Format$(Format$(100# * zaf.conc!(i%), f84), a80$)
+'Next i%
+'Call IOWriteLog(msg$)
+'End If
+
 End If
 
 ' Normalize and check for convergence

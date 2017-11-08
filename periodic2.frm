@@ -1940,6 +1940,7 @@ Begin VB.Form FormPERIODIC2
       EndProperty
       Height          =   375
       Left            =   3360
+      Style           =   1  'Graphical
       TabIndex        =   1
       ToolTipText     =   "Close the Periodic dialog without displaying the element selections"
       Top             =   720
