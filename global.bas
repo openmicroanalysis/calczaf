@@ -2941,3 +2941,6 @@ Global InsertFaradayDuringStageJogFlag As Boolean
 
 Global XtalFlipDuration As Single              ' Bragg crystal flip time
 
+Global UseInterpolatedOffPeaksForMANFitMode As Boolean
+Global UseInterpolatedOffPeaksForMANFitFlag As Boolean
+

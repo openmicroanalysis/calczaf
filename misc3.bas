@@ -410,7 +410,7 @@ Exit Function
 End Function
 
 Function IPOS13(ByVal syme As String, ByVal symx As String, ByVal imot As Integer, ByVal crys As String, sample() As TypeSample) As Integer
-' Same as IPOS12 but uses a string for x-ray and crystal.
+' Same as IPOS12 but uses a string for x-ray and crystal. Does not check disable quant flag.
 
 ierror = False
 On Error GoTo IPOS13Error
@@ -485,7 +485,7 @@ Exit Function
 End Function
 
 Function IPOS13B(ByVal mode As Integer, ByVal syme As String, ByVal symx As String, ByVal imot As Integer, ByVal crys As String, ByVal keV As Single, sample() As TypeSample) As Integer
-' Same as IPOS13A but also checks keV (for MAN fits)
+' Same as IPOS13A but also checks keV (for MAN fits). Checks disable quant flag.
 ' mode = 0 check only the analyzed elements
 ' mode = 1 check both analyzed and specified elements
 

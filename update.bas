@@ -172,11 +172,11 @@ End If
 Call UpdateGetStandards(sample())
 If ierror Then Exit Sub
 
-' Load all MAN standard drift sets for standard and unknown MAN
-' background corrections. Note that MAN drift counts need to be loaded
-' even if the sample is off-peak corrected because some or all of the
-' standards may be MAN corrected.
+' Load all MAN standard drift sets for standard and unknown MAN background corrections. Note that MAN drift counts need to be loaded
+' even if the sample is off-peak corrected because some or all of the standards may be MAN corrected.
+UseInterpolatedOffPeaksForMANFitMode = True
 Call UpdateGetMANStandards(Int(0), sample())
+UseInterpolatedOffPeaksForMANFitMode = False
 If ierror Then Exit Sub
 
 Call AnalyzeStatusAnal("Calculating standard MAN corrections...")
@@ -2234,8 +2234,7 @@ End If
 Next chan%
 End If
 
-' Correct the data for dead time, beam drift (and off-peak
-' background if NOT using off-peak sample elements)
+' Correct the data for dead time, beam drift (and off-peak background if NOT using off-peak sample elements)
 If UseOffPeakElementsForMANFlag = False Then
 If Not UseAggregateIntensitiesFlag Then
 Call DataCorrectData(Int(0), UpdateTmpSample())

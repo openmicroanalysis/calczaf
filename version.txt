@@ -2,11 +2,21 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/09/17	Modify JEOL set beam mode code to set PIC instead of BUP for 8900 (Adams)
+
+		Fix minor bug in Plot wavescan code. Improve time estimation code for 
+		automation.
+
+11/07/16	Allow user to edit wavescan count times on unknown sample
+v. 12.0.6
+		Add flags for using interpolated off-peaks for MAN calibration 
+		curve (Hanson).
+
 11/05/17	Modify New Sample Setup code to always load formula flags from standard 
 		database (Carpenter).
 
 11/04/17	Work on EDS time estimation.  Fix beam mode bug. Minor improvements in GUI
-v. 12.0.5.
+v. 12.0.5
 
 11/01/17	Fix bug introduced in Update2.bas for demo mode of unknowns and wavescans.
 v. 12.0.4
