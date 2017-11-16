@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/14/17	Set scan mode on Imaging exit explicitly for JEOL 8900/8200/8500.
+v. 12.0.7
+		Improve save image daat speed.
+
 11/09/17	Modify JEOL set beam mode code to set PIC instead of BUP for 8900 (Adams)
 
 		Fix minor bug in Plot wavescan code. Improve time estimation code for 
