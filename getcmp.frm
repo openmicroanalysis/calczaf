@@ -197,7 +197,7 @@ Begin VB.Form FormGETCMP
       TabStop         =   0   'False
       ToolTipText     =   "Update the composition for the entered excess oxygen"
       Top             =   7560
-      Width           =   1455
+      Width           =   1575
    End
    Begin VB.TextBox TextExcessOxygen 
       Height          =   285
@@ -359,6 +359,12 @@ Begin VB.Form FormGETCMP
          Cols            =   8
       End
    End
+   Begin VB.Line Line2 
+      X1              =   5400
+      X2              =   9600
+      Y1              =   6480
+      Y2              =   6480
+   End
    Begin VB.Label Label11 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
@@ -416,12 +422,21 @@ Begin VB.Form FormGETCMP
       Width           =   1095
    End
    Begin VB.Label Label8 
-      Caption         =   "Halogen Corrected Oxygen"
+      Caption         =   "Halogen Corrected Oxygen (wt.%)"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
-      Left            =   5640
+      Left            =   5400
       TabIndex        =   30
       Top             =   7200
-      Width           =   2655
+      Width           =   3135
    End
    Begin VB.Label LabelOxygenFromHalogens 
       Appearance      =   0  'Flat
@@ -432,16 +447,25 @@ Begin VB.Form FormGETCMP
       Left            =   8520
       TabIndex        =   29
       ToolTipText     =   "Total oxygen equivalent from halogens (F, Cl, Br, I)"
-      Top             =   6840
+      Top             =   6960
       Width           =   1095
    End
    Begin VB.Label Label7 
-      Caption         =   "Total Oxygen from Halogens"
+      Caption         =   "Total Oxygen from Halogens (wt.%)"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
-      Left            =   5640
+      Left            =   5400
       TabIndex        =   28
-      Top             =   6840
-      Width           =   2655
+      Top             =   6960
+      Width           =   3135
    End
    Begin VB.Label LabelOxygenFromCations 
       Appearance      =   0  'Flat
@@ -452,18 +476,18 @@ Begin VB.Form FormGETCMP
       Left            =   8520
       TabIndex        =   27
       ToolTipText     =   "Total oxygen calculated from oxide stoichiometry (enter as elemental oxygen when entering composition in oxide percents)"
-      Top             =   6480
+      Top             =   6600
       Width           =   1095
    End
    Begin VB.Label Label6 
       Appearance      =   0  'Flat
-      Caption         =   "Total Oxygen From Cations"
+      Caption         =   "Total Oxygen From Cations (wt.%)"
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   5640
+      Left            =   5400
       TabIndex        =   26
-      Top             =   6480
-      Width           =   2415
+      Top             =   6600
+      Width           =   3135
    End
    Begin VB.Label LabelAtomic 
       Appearance      =   0  'Flat
@@ -482,7 +506,7 @@ Begin VB.Form FormGETCMP
       BorderStyle     =   1  'Fixed Single
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   7080
+      Left            =   6960
       TabIndex        =   24
       ToolTipText     =   "Oxide Total (sum)"
       Top             =   6120
@@ -494,13 +518,14 @@ Begin VB.Form FormGETCMP
       BorderStyle     =   1  'Fixed Single
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   5640
+      Left            =   5400
       TabIndex        =   23
       ToolTipText     =   "Elemental total (sum)"
       Top             =   6120
       Width           =   1095
    End
    Begin VB.Label Label5 
+      Alignment       =   2  'Center
       Appearance      =   0  'Flat
       Caption         =   "Excess Oxygen"
       BeginProperty Font 
@@ -514,10 +539,10 @@ Begin VB.Form FormGETCMP
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   7320
+      Left            =   7200
       TabIndex        =   20
       Top             =   7560
-      Width           =   1215
+      Width           =   1335
    End
    Begin VB.Label Label4 
       Alignment       =   2  'Center
@@ -536,7 +561,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Oxide"
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   7080
+      Left            =   6960
       TabIndex        =   18
       Top             =   5880
       Width           =   1095
@@ -547,7 +572,7 @@ Begin VB.Form FormGETCMP
       Caption         =   "Elemental"
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   5640
+      Left            =   5400
       TabIndex        =   17
       Top             =   5880
       Width           =   1095
@@ -558,10 +583,10 @@ Begin VB.Form FormGETCMP
       Caption         =   "Current Column Totals"
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   5640
+      Left            =   5400
       TabIndex        =   16
       Top             =   5640
-      Width           =   3975
+      Width           =   4215
    End
 End
 Attribute VB_Name = "FormGETCMP"

@@ -1432,6 +1432,19 @@ End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 lpAppName$ = "Software"
+lpKeyName$ = "GrapherOutputVersionNumber"
+nDefault& = 9       ' new default to specify Scripter app location?????
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+GrapherOutputVersionNumber% = valid&
+If GrapherOutputVersionNumber% < 9 Then
+msg$ = "GrapherOutputVersionNumber keyword value out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
+GrapherOutputVersionNumber% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Software"
 lpKeyName$ = "SurferOutputVersionNumber"
 nDefault& = 7       ' new default to use VBA code for versions 7 and up
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)

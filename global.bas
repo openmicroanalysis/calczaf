@@ -2944,3 +2944,5 @@ Global XtalFlipDuration As Single              ' Bragg crystal flip time
 Global UseInterpolatedOffPeaksForMANFitMode As Boolean
 Global UseInterpolatedOffPeaksForMANFitFlag As Boolean
 
+Global GrapherOutputVersionNumber As Integer         ' Scripter.exe app location moved from \Scripter to Surfer app folder
+

@@ -255,15 +255,15 @@ apoint3z! = apoint3!(3)  ' Z reference stage coordinates
 End If
 
 ' Load keV and mag from .ACQ file
-PictureSnap_keV! = DefaultKiloVolts!
+PictureSnap_keV! = DefaultKiloVolts!    ' load default in case parameter is missing
 Call InitINIReadWriteScaler(Int(1), tfilename$, "ColumnConditions", "kilovolts", PictureSnap_keV!)
 If ierror Then Exit Sub
 
-PictureSnap_mag! = DefaultMagnification!
+PictureSnap_mag! = DefaultMagnification!    ' load default in case parameter is missing
 Call InitINIReadWriteScaler(Int(1), tfilename$, "ColumnConditions", "magnification", PictureSnap_mag!)
 If ierror Then Exit Sub
 
-PictureSnap_scanrota! = DefaultScanRotation!
+PictureSnap_scanrota! = DefaultScanRotation!    ' load default in case parameter is missing
 Call InitINIReadWriteScaler(Int(1), tfilename$, "ColumnConditions", "scanrotation", PictureSnap_scanrota!)
 If ierror Then Exit Sub
 
@@ -662,7 +662,7 @@ If ierror Then Exit Sub
 Call InitINIReadWriteString(Int(1), tfilename$, "stage", "Stage_Units", gStage_Units$, vbNullString)    ' 0 = read, 1 = write
 If ierror Then Exit Sub
 
-' Save keV and mag also
+' Save keV, mag and scan rotation (do not load PictureSnap parameters with default parameters because image may not have instrument conditions, e.g., GRD)
 Call InitINIReadWriteScaler(Int(2), tfilename$, "ColumnConditions", "kilovolts", PictureSnap_keV!)
 If ierror Then Exit Sub
 
@@ -1181,7 +1181,7 @@ On Error GoTo PictureSnapSaveCalibration2Error
 Dim tPictureSnapMode As Integer
 Dim tPictureSnapCalibrated As Boolean
 Dim tPictureSnapCalibrationSaved As Boolean
-Dim tPictureSnapFileName As String
+Dim tPictureSnapFilename As String
 
 Dim afilename As String
 
@@ -1193,7 +1193,7 @@ If ierror Then Exit Sub
 tPictureSnapMode% = PictureSnapMode%
 tPictureSnapCalibrated = PictureSnapCalibrated
 tPictureSnapCalibrationSaved = PictureSnapCalibrationSaved
-tPictureSnapFileName$ = PictureSnapFilename$
+tPictureSnapFilename$ = PictureSnapFilename$
 
 PictureSnapMode% = 0                    ' only two point calibration supported for export of BMP file
 PictureSnapCalibrated = True
@@ -1204,7 +1204,7 @@ Call PictureSnapSaveCalibration(Int(1), PictureSnapFilename$, PictureSnapCalibra
 PictureSnapMode% = tPictureSnapMode%    ' restore original PictureSnap mode
 PictureSnapCalibrated = tPictureSnapCalibrated    ' restore original PictureSnap calibration flag
 PictureSnapCalibrationSaved = tPictureSnapCalibrationSaved
-PictureSnapFilename$ = tPictureSnapFileName$
+PictureSnapFilename$ = tPictureSnapFilename$
 If ierror Then Exit Sub
 
 ' Reload original picture calibration (if any)

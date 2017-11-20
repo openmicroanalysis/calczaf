@@ -99,7 +99,9 @@ If iarray%(i%, j%) > imax% Then imax% = iarray%(i%, j%)
 If iarray%(i%, j%) < imin% Then imin% = iarray%(i%, j%)
 Next i%
 Next j%
-DoEvents
+
+' Check if valid min/max found
+If imax% = MININTEGER% And imin% = MAXINTEGER% Then GoTo BMPConvertIntegerArrayToByteArrayInvalidMinMax
 
 ' Normalize data and load into byte array (this is time consuming!)
 minmax! = (imax% - imin%)
@@ -126,10 +128,17 @@ Exit Sub
 
 ' Errors
 BMPConvertIntegerArrayToByteArrayError:
-Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "BMPConvertIntegerArrayToByteArray"
-ierror = True
-Exit Sub
+    Screen.MousePointer = vbDefault
+    MsgBox Error$, vbOKOnly + vbCritical, "BMPConvertIntegerArrayToByteArray"
+    ierror = True
+    Exit Sub
+
+BMPConvertIntegerArrayToByteArrayInvalidMinMax:
+    Screen.MousePointer = vbDefault
+    msg$ = "Invalid data min and max. No unblanked data found."
+    MsgBox msg$, vbOK + vbExclamation, "BMPConvertIntegerArrayToByteArray"
+    ierror = True
+    Exit Sub
 
 End Sub
 
@@ -491,10 +500,13 @@ Sub BMPConvertSingleArrayToByteArray(ix As Integer, iy As Integer, sarray() As S
         
     Next i&
     Next j&
+    
+    ' Check if valid min/max found
+    If smax! = MINSINGLE! And smin! = MAXSINGLE! Then GoTo BMPConvertSingleArrayToByteArrayInvalidMinMax
 
     ' Normalize data and load into byte array
     minmax! = (smax! - smin!)
-    If (minmax! <> 0!) Then
+    If minmax! <> 0! Then
 
         ' Avoid division on the inner loop (multiplying is faster)
         minmax! = 1! / minmax!
@@ -547,6 +559,13 @@ BMPConvertSingleArrayToByteArrayError:
     ierror = True
     Exit Sub
 
+BMPConvertSingleArrayToByteArrayInvalidMinMax:
+    Screen.MousePointer = vbDefault
+    msg$ = "Invalid data min and max. No unblanked data found."
+    MsgBox msg$, vbOK + vbExclamation, "BMPConvertSingleArrayToByteArray"
+    ierror = True
+    Exit Sub
+
 End Sub
 
 Sub BMPConvertLongArrayToByteArray(ix As Integer, iy As Integer, iarray() As Long, jarray() As Byte)
@@ -568,7 +587,9 @@ If iarray&(i%, j%) > imax& Then imax& = iarray&(i%, j%)
 If iarray&(i%, j%) < imin& Then imin& = iarray&(i%, j%)
 Next i%
 Next j%
-DoEvents
+
+' Check if valid min/max found
+If imax& = MINLONG& And imin& = MAXLONG& Then GoTo BMPConvertLongArrayToByteArrayInvalidMinMax
 
 ' Normalize data and load into byte array (this is time consuming!)
 minmax! = (imax& - imin&)
@@ -595,10 +616,17 @@ Exit Sub
 
 ' Errors
 BMPConvertLongArrayToByteArrayError:
-Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "BMPConvertLongArrayToByteArray"
-ierror = True
-Exit Sub
+    Screen.MousePointer = vbDefault
+    MsgBox Error$, vbOKOnly + vbCritical, "BMPConvertLongArrayToByteArray"
+    ierror = True
+    Exit Sub
+
+BMPConvertLongArrayToByteArrayInvalidMinMax:
+    Screen.MousePointer = vbDefault
+    msg$ = "Invalid data min and max. No unblanked data found."
+    MsgBox msg$, vbOK + vbExclamation, "BMPConvertLongArrayToByteArray"
+    ierror = True
+    Exit Sub
 
 End Sub
 
@@ -621,7 +649,9 @@ If iarray#(i% - 1, j% - 1) > imax& Then imax& = iarray#(i% - 1, j% - 1)
 If iarray#(i% - 1, j% - 1) < imin& Then imin& = iarray#(i% - 1, j% - 1)
 Next i%
 Next j%
-DoEvents
+
+' Check if valid min/max found
+If imax& = MINLONG& And imin& = MAXLONG& Then GoTo BMPConvertDoubleArrayToByteArrayInvalidMinMax
 
 ' Normalize data and load into byte array (this is time consuming!)
 minmax! = (imax& - imin&)
@@ -648,10 +678,17 @@ Exit Sub
 
 ' Errors
 BMPConvertDoubleArrayToByteArrayError:
-Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "BMPConvertDoubleArrayToByteArray"
-ierror = True
-Exit Sub
+    Screen.MousePointer = vbDefault
+    MsgBox Error$, vbOKOnly + vbCritical, "BMPConvertDoubleArrayToByteArray"
+    ierror = True
+    Exit Sub
+
+BMPConvertDoubleArrayToByteArrayInvalidMinMax:
+    Screen.MousePointer = vbDefault
+    msg$ = "Invalid data min and max. No unblanked data found."
+    MsgBox msg$, vbOK + vbExclamation, "BMPConvertDoubleArrayToByteArray"
+    ierror = True
+    Exit Sub
 
 End Sub
 
@@ -709,13 +746,13 @@ Exit Sub
 
 BMPGetBitmapInfoBadHandle:
 msg$ = "Invalid handle to bitmap object"
-MsgBox msg$, vbOK + vbCritical, "BMPGetBitmapInfo"
+MsgBox msg$, vbOK + vbExclamation, "BMPGetBitmapInfo"
 ierror = True
 Exit Sub
 
 BMPGetBitmapInfoBadBitMap:
 msg$ = "Invalid bitmap object"
-MsgBox msg$, vbOK + vbCritical, "BMPGetBitmapInfo"
+MsgBox msg$, vbOK + vbExclamation, "BMPGetBitmapInfo"
 ierror = True
 Exit Sub
 
