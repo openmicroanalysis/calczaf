@@ -1957,12 +1957,9 @@ valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnStr
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then
 GrapherAppDirectory$ = Left$(lpReturnString$, valid&)
-Else
-Call InitDetermineScripterPath(Int(1), Int(0))
-If ierror Then End
 End If
 If Right$(GrapherAppDirectory$, 1) = "\" Then GrapherAppDirectory$ = Left$(GrapherAppDirectory$, Len(GrapherAppDirectory$) - 1) ' remove trailing backslash
-'If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 lpAppName$ = "Software"
 lpKeyName$ = "SurferAppDirectory"
@@ -1972,12 +1969,9 @@ valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnStr
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then
 SurferAppDirectory$ = Trim$(Left$(lpReturnString$, valid&))
-Else
-Call InitDetermineScripterPath(Int(2), Int(0))
-If ierror Then End
 End If
 If Right$(SurferAppDirectory$, 1) = "\" Then SurferAppDirectory$ = Left$(SurferAppDirectory$, Len(SurferAppDirectory$) - 1) ' remove trailing backslash
-'If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 lpAppName$ = "Software"
 lpKeyName$ = "SurferPlotsPerPagePolygon"

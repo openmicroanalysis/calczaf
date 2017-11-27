@@ -2,13 +2,26 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/26/17	Fix ocide detection limit calculation (Locock/Allaz).
+
+		Add disable/enable acq and disable/enable quant buttons.
+		
+		Improve handling Grapher/Surfer if apps are not present.
+
+11/24/17	Check flag before calling get max energy/throughput in EDS init code.
+v. 12.0.8
+		Implement reverse axis if JEOL orientation for CalcImage output 
+		(just gridxy.bas for now) if Surfer 13 or higher.
+		
+		Add disable/enable all quant button to Elements/Cations dialog (Fournelle and Moy).
+
 11/21/17	Minor tweaks.
 
 11/19/17	Modify DataFiducialsASreDifferent to be slightly less sensitive for JEOL
 		stage reproducibility.
 		
 		Add new probewin.ini parameter GrapherOutputVersionNumber for dealing
-		with new Scripter.exe app location (and Surfer also).
+		with new Scripter.exe app location (and Surfer also). Surfer 15 and Grapher 13 and higher.
 		
 		Modify analog imaging in PFE to allow for display of currently digitized 
 		points and previously digitized points.
