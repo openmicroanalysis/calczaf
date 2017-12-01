@@ -1008,3 +1008,33 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Function ConvertElmToOxdRatio(chan As Integer, sample() As TypeSample) As Single
+' Calculates the elemental to oxide ratio for the channel of a sample
+
+ierror = False
+On Error GoTo ConvertElmToOxdRatioError
+
+Dim temp1 As Single, temp2 As Single
+
+temp1! = sample(1).AtomicWts!(chan%) * sample(1).numcat%(chan%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).numoxd%(chan%)
+temp2! = sample(1).AtomicWts!(chan%) * sample(1).numcat%(chan%)
+If temp2! = 0# Then GoTo ConvertElmToOxdRatioBadParameter
+ConvertElmToOxdRatio! = temp1! / temp2!
+
+Exit Function
+
+' Errors
+ConvertElmToOxdRatioError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertElmToOxdRatio"
+ierror = True
+Exit Function
+
+ConvertElmToOxdRatioBadParameter:
+msg$ = "The atomic weight or number of cations is zero for channel " & Format$(chan%) & " in sample " & sample(1).Name$ & ". "
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertElmToOxdRatio"
+ierror = True
+Exit Function
+
+End Function
+
