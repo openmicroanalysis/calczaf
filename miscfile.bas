@@ -729,3 +729,36 @@ ierror = True
 Exit Function
 
 End Function
+
+Function MiscGetLongPath(ShortPath As String) As String
+' Returns the long path (with spaces) when passing a short path (e.g., C:\Progra~1)
+
+ierror = False
+On Error GoTo MiscGetLongPathError
+
+Dim longpath As String, n As Integer
+
+    Do While Len(ShortPath$) > 0
+        longpath$ = Dir$(ShortPath$, vbDirectory) & "\" & longpath$
+        n% = InStrRev(ShortPath$, "\") - 1
+        If n% <= 3 Then
+            longpath$ = Left(ShortPath$, 2) & "\" & longpath$
+            Exit Do
+        Else
+            ShortPath$ = Left(ShortPath$, n%)
+        End If
+    Loop
+    
+    If Right$(longpath$, 1) = "\" Then longpath$ = Left$(longpath$, Len(longpath$) - 1) ' remove trailing backslash
+
+    MiscGetLongPath$ = longpath$
+
+Exit Function
+
+' Errors
+MiscGetLongPathError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscGetLongPath"
+ierror = True
+Exit Function
+
+End Function

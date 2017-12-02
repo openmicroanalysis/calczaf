@@ -2050,6 +2050,34 @@ DisplayFullScanRangeForAcquisitionFlag = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+lpAppName$ = "Software"
+lpKeyName$ = "AnalyticalTotalMinimum"
+lpDefault$ = "95"
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then AnalyticalTotalMinimum! = Val(Left$(lpReturnString$, valid&))
+If AnalyticalTotalMinimum! < 50# Then
+msg$ = "AnalyticalTotalMinimum keyword value is out of range in " & ProbeWinINIFile$ & ", (must be greater than or equal to 50)"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
+AnalyticalTotalMinimum! = Val(lpDefault$)
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
+lpAppName$ = "Software"
+lpKeyName$ = "AnalyticalTotalMaximum"
+lpDefault$ = "105"
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then AnalyticalTotalMaximum! = Val(Left$(lpReturnString$, valid&))
+If AnalyticalTotalMaximum! > 150# Then
+msg$ = "AnalyticalTotalMaximum keyword value is out of range in " & ProbeWinINIFile$ & ", (must be less than or equal to 150)"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
+AnalyticalTotalMaximum! = Val(lpDefault$)
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
 Exit Sub
 
 ' Errors

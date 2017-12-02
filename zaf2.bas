@@ -208,6 +208,14 @@ tForm.LabelCalculated.Caption = Format$(Format$(analysis.CalculatedOxygen!, f83)
 tForm.LabelTotalOxygen.Caption = Format$(Format$(analysis.totaloxygen!, f83), a80$)
 tForm.LabelExcess.Caption = Format$(Format$(analysis.ExcessOxygen!, f83), a80$)
 
+' Check total and if below or above tolerance make red
+tForm.LabelTotal.ForeColor = vbBlack
+If analysis.TotalPercent! <> 0# Then
+If analysis.TotalPercent! < AnalyticalTotalMinimum! Or analysis.TotalPercent! > AnalyticalTotalMaximum! Then
+tForm.LabelTotal.ForeColor = vbRed
+End If
+End If
+
 Exit Sub
 
 ' Errors

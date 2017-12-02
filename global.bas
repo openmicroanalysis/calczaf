@@ -2946,3 +2946,6 @@ Global UseInterpolatedOffPeaksForMANFitFlag As Boolean
 
 Global GrapherOutputVersionNumber As Integer         ' Scripter.exe app location moved from \Scripter to Surfer app folder
 
+Global AnalyticalTotalMinimum As Single
+Global AnalyticalTotalMaximum As Single
+

@@ -999,6 +999,12 @@ End If
 2000:
 Next n&
 
+' In case no points were found to display, close debug file
+If Not calibrationsavedtodisk And ImagePoints& > 0 Then
+Close #tfilenumber%
+calibrationsavedtodisk = True
+End If
+
 Exit Sub
 
 ' Errors
