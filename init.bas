@@ -1326,12 +1326,6 @@ Dim sLocaleD As String, sLocaleT As String
 sLanguage$ = MiscSystemGetLanguage()
 If ierror Then Exit Sub
 
-'If InStr(sLanguage$, "English") = 0 Then
-'msg$ = "The Windows language is not English therefore program will not function properly unless the numerical format is changed in the Control Panel | Region and Language | Format section."
-'MsgBox msg$, vbOKOnly + vbInformation, "InitFiles"
-'End
-'End If
-
 ' Check decimal and thousands separator
 Call MiscSystemGetRegionalSettings(LOCALE_SDECIMAL&, sLocaleD$)
 If ierror Then Exit Sub
@@ -2257,7 +2251,6 @@ InterfaceString$(3) = "Unused"
 InterfaceString$(4) = "Unused"
 
 InterfaceString$(5) = "Cameca SX100 (TCP/IP Socket)"
-InterfaceString$(6) = "Axioscope (Zeiss Serial ASCII)"
 
 ' EDS interface type, 0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM
 InterfaceStringEDS$(0) = "EDS Demonstration"
@@ -3213,7 +3206,6 @@ If InterfaceType% = 2 Then LimitToLimit! = 36   ' JEOL spectrometers are slower 
 If InterfaceType% = 3 Then LimitToLimit! = 50   ' Unused
 If InterfaceType% = 4 Then LimitToLimit! = 50   ' Unused
 If InterfaceType% = 5 Then LimitToLimit! = 20   ' SX100 (use SX100Velocity&(1) in steps/sec?, assume 60000 steps full range)
-If InterfaceType% = 6 Then LimitToLimit! = 50   ' Axioscope
 
 ' Set limit to limit time for stage travel
 If InterfaceType% = 0 Then LimitToLimit2! = 10   ' Demo
@@ -3222,7 +3214,6 @@ If InterfaceType% = 2 Then LimitToLimit2! = 6    ' JEOL  (use JEOLVelocity&(XMot
 If InterfaceType% = 3 Then LimitToLimit2! = 50   ' Unused
 If InterfaceType% = 4 Then LimitToLimit2! = 50   ' Unused
 If InterfaceType% = 5 Then LimitToLimit2! = 10   ' SX100 (use SX100Velocity&(XMotor%) in steps/sec?, assume 48000 steps full range in X)
-If InterfaceType% = 6 Then LimitToLimit2! = 50   ' Axioscope
 
 'AutomationReStandardizationInterval = 0.0020833     ' in days (3 minutes for testing)
 AutomationReStandardizationInterval = 0.25     ' in days (6 hours)
@@ -3371,7 +3362,6 @@ End If
 'If InterfaceType% = 3 Then XtalFlipDuration! = 10#
 'If InterfaceType% = 4 Then XtalFlipDuration! = 10#
 If InterfaceType% = 5 Then XtalFlipDuration! = 20#                 ' Cameca
-'If InterfaceType% = 6 Then XtalFlipDuration! = 10#
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
@@ -4745,15 +4735,6 @@ MinPHABaselineWindow! = 0.05
 MaxPHABaselineWindow! = 5.6
 MinScalerCountTime! = 0.01
 MaxScalerCountTime! = 1000000#
-MinPHAGainWindow! = 1#
-MaxPHAGainWindow! = 4095#
-MaxPHABiasWindow! = 2000#
-
-ElseIf InterfaceType% = 6 Then  ' Axioscope
-MinPHABaselineWindow! = 0.05
-MaxPHABaselineWindow! = 10#
-MinScalerCountTime! = 0.1
-MaxScalerCountTime! = 600#
 MinPHAGainWindow! = 1#
 MaxPHAGainWindow! = 4095#
 MaxPHABiasWindow! = 2000#

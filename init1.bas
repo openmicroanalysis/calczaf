@@ -37,8 +37,6 @@ Call InitINIPlot
 If ierror Then Exit Sub
 Call InitINIStandards
 If ierror Then Exit Sub
-Call InitINISerial
-If ierror Then Exit Sub
 
 ' Test calls for JEOL instruments (normally commented out!)
 'Call JeolTest
@@ -2121,7 +2119,7 @@ nSize& = Len(lpReturnString$)
 ' Hardware section, first get interface type
 lpAppName$ = "Hardware"
 lpKeyName$ = "InterfaceType"
-nDefault& = 0   ' 0=Demo, 1=Unused, 2=JEOL 8900/8200/8500/8x30, 3=Unused, 4=Unused, 5=SX100, 6=Axioscope
+nDefault& = 0   ' 0=Demo, 1=Unused, 2=JEOL 8900/8200/8500/8x30, 3=Unused, 4=Unused, 5=SX100
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 InterfaceType% = valid&
@@ -3114,7 +3112,7 @@ lpFileName$ = ProbeWinINIFile$
 nSize& = Len(lpReturnString$)
 
 lpAppName$ = "Hardware"
-lpKeyName$ = "ReadOnlySpecPositions"
+lpKeyName$ = "ReadOnlySpecPositions"                           ' obsolete
 nDefault& = False
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
@@ -3123,11 +3121,10 @@ ReadOnlySpecPositions% = True
 Else
 ReadOnlySpecPositions% = False
 End If
-If InterfaceType% <> 6 Then ReadOnlySpecPositions% = False     ' only applies to axioscope interface
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 lpAppName$ = "Hardware"
-lpKeyName$ = "ReadOnlyStagePositions"
+lpKeyName$ = "ReadOnlyStagePositions"                          ' obsolete
 nDefault& = False
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
@@ -3135,11 +3132,6 @@ If valid& <> 0 Then
 ReadOnlyStagePositions% = True
 Else
 ReadOnlyStagePositions% = False
-End If
-If InterfaceType% <> 0 And InterfaceType% <> 6 Then ReadOnlyStagePositions% = False     ' only applies to axioscope interface
-If InterfaceType% = 6 And Not ReadOnlyStagePositions% Then                              ' check if axioscope
-msg$ = "ReadOnlyStagePositions keyword value must be non-zero for the specified InterfaceType in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -3712,7 +3704,6 @@ If InterfaceType% = 2 Then lpDefault$ = "10.0"            ' JEOL 8900/8200/8500/
 If InterfaceType% = 3 Then lpDefault$ = "10.0"            ' Unused
 If InterfaceType% = 4 Then lpDefault$ = "10.0"            ' Unused
 If InterfaceType% = 5 Then lpDefault$ = "10.0"            ' SX100/SXFive
-If InterfaceType% = 6 Then lpDefault$ = "10.0"            ' Axioscope
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
@@ -3882,7 +3873,6 @@ If InterfaceType% = 2 Then nDefault& = 12   ' JEOL  (40x at 11 mm WD)
 If InterfaceType% = 3 Then nDefault& = 40   ' unused
 If InterfaceType% = 4 Then nDefault& = 40   ' unused
 If InterfaceType% = 5 Then nDefault& = 63   ' SX100/SXFive
-If InterfaceType% = 6 Then nDefault& = 40   ' Axioscope
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 MinMagWindow! = valid&
@@ -3901,7 +3891,6 @@ If InterfaceType% = 2 Then nDefault& = 12000000   ' JEOL
 If InterfaceType% = 3 Then nDefault& = 900000     ' unused
 If InterfaceType% = 4 Then nDefault& = 900000     ' unused
 If InterfaceType% = 5 Then nDefault& = 12000000   ' SX100/SXFive
-If InterfaceType% = 6 Then nDefault& = 900000     ' Axioscope
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 MaxMagWindow! = valid&
@@ -5683,126 +5672,6 @@ Exit Sub
 ' Errors
 InitINIStandardsError:
 MsgBox Error$, vbOKOnly + vbCritical, "InitINIStandards"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub InitINISerial()
-' Open the PROBEWIN.INI file and read defaults
-
-ierror = False
-On Error GoTo InitINISerialError
-
-Dim valid As Long, tValid As Long
-Dim tcomment As String
-
-Dim lpAppName As String
-Dim lpKeyName As String
-Dim lpDefault As String
-Dim lpFileName As String
-Dim lpReturnString As String * 255
-Dim lpReturnString2 As String * 255
-
-Dim nSize As Long
-Dim nDefault As Long
-
-' Check for existing PROBEWIN.INI
-If Dir$(ProbeWinINIFile$) = vbNullString Then
-msg$ = "Unable to open file " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISerial"
-End
-End If
-
-' Use Windows API function to read PROBEWIN.INI
-lpFileName$ = ProbeWinINIFile$
-nSize& = Len(lpReturnString$)
-
-' Serial port parameters
-lpAppName$ = "Serial"
-lpKeyName$ = "Port"
-nDefault& = 1
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-SerialPort% = valid&
-If SerialPort% < 1 Or SerialPort% > 4 Then
-msg$ = "Serial Port keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISerial"
-SerialPort% = nDefault&
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-lpAppName$ = "Serial"
-lpKeyName$ = "HandShaking"
-nDefault& = 1
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-SerialHandShaking% = valid&
-If SerialHandShaking% < 0 Or SerialHandShaking% > 3 Then
-msg$ = "Serial HandShaking keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISerial"
-SerialHandShaking% = nDefault&
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-lpAppName$ = "Serial"
-lpKeyName$ = "Baud"
-nDefault& = 9600
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-SerialBaud% = valid&
-If SerialBaud% < 110 Or SerialBaud% > 19200 Then
-msg$ = "Serial Baud keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISerial"
-SerialBaud% = nDefault&
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-lpAppName$ = "Serial"
-lpKeyName$ = "Parity"
-lpDefault$ = "N"
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-If Left$(lpReturnString$, valid&) <> vbNullString Then SerialParity$ = Left$(lpReturnString$, valid&)
-If SerialParity$ <> "E" And SerialParity$ <> "M" And SerialParity$ <> "N" And SerialParity$ <> "O" And SerialParity$ <> "S" Then
-msg$ = "Serial Parity keyword value out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISerial"
-SerialParity$ = Left$(lpReturnString$, valid&)
-End If
-If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-
-lpAppName$ = "Serial"
-lpKeyName$ = "DataBits"
-nDefault& = 8
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-SerialDataBits% = valid&
-If SerialDataBits% < 4 Or SerialDataBits% > 8 Then
-msg$ = "Serial DataBits keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISerial"
-SerialDataBits% = nDefault&
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-lpAppName$ = "Serial"
-lpKeyName$ = "StopBits"
-nDefault& = 1
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-SerialStopBits% = valid&
-If SerialStopBits% < 1 Or SerialStopBits% > 2 Then
-msg$ = "Serial StopBits keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISerial"
-SerialStopBits% = nDefault&
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-Exit Sub
-
-' Errors
-InitINISerialError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINISerial"
 ierror = True
 Exit Sub
 

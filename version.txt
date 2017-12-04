@@ -2,10 +2,16 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/03/17	Fix screen DPI issue in PictureSnap (Poeml).
+v. 12.1.0
+		Remove Axioscope interface from PFE (and serial hardware code).
+		
+		Work on new stand-alone PictureSnap app.
+
 12/1/17		Improve code for peaking when different number of elements in combined 
 v. 12.0.9	conditions (Poirier and Fournelle).
 
-		Modify warnings when updating GRapher/Surfer app version and path in probewin.ini)
+		Modify warnings when updating Grapher/Surfer app version and path in probewin.ini (Carpenter)
 		
 		Add red warning for bad analytical total (Fournelle).
 

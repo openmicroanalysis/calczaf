@@ -160,65 +160,34 @@ Dim gStage_Units As String
 
 Dim m_Width As Long, m_Height As Long, m_Depth As Long, m_ImageType As Long
 
-Static ofilename1 As String, ofilename2 As String
-
 ' Get existing filename from user
 If mode% > 0 Then
 
-' Load default image name
+' Load image file (bmp, gif, jpg)
 If mode% = 1 Then
-If InterfaceType% = 0 Then  ' demo mode
-If MiscIsInstrumentStage("JEOL") Then
-If UCase$(app.EXEName) <> UCase$("Stage") Then
-tfilename$ = DemoImagesDirectory$ & "\Demo2_JEOL.bmp"
-Else
-tfilename$ = UserImagesDirectory$ & "\*.bmp"
-End If
-Else
-If UCase$(app.EXEName) <> UCase$("Stage") Then
-tfilename$ = DemoImagesDirectory$ & "\Demo2_Cameca.bmp"
-Else
-tfilename$ = UserImagesDirectory$ & "\*.bmp"
-End If
-End If
-End If
-If InterfaceType% > 0 Then tfilename$ = UserDataDirectory$ & "\*.bmp"
-If ofilename1$ <> vbNullString Then tfilename$ = ofilename1$
-If CalcImageProjectFile$ <> vbNullString Then tfilename$ = MiscGetPathOnly$(CalcImageProjectFile$) & "*.bmp"
-If Trim$(PictureSnapFilename$) <> vbNullString Then tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".BMP"
-tfilename$ = MiscGetFileNameNoExtension$(tfilename$)    ' remove extension so all image files are visible
+tfilename$ = vbNullString
+If Trim$(PictureSnapFilename$) <> vbNullString Then tfilename$ = PictureSnapFilename$
 Call IOGetFileName(Int(2), "IMG", tfilename$, tForm)
 If ierror Then Exit Sub
 If UCase$(MiscGetFileNameExtensionOnly$(tfilename$)) <> ".BMP" And UCase$(MiscGetFileNameExtensionOnly$(tfilename$)) <> ".GIF" And UCase$(MiscGetFileNameExtensionOnly$(tfilename$)) <> ".JPG" Then GoTo PictureSnapfileOpenWrongExtension
-ofilename1$ = tfilename$
+
+' Set global while image is loading to prevent mouse cursor convert coordinate errors
+PictureSnapCalibrated = False
 End If
 
 ' Load GRD file
 If mode% = 2 Then
-If InterfaceType% = 0 Then  ' demo mode
-If MiscIsInstrumentStage("JEOL") Then
-If UCase$(app.EXEName) <> UCase$("Stage") Then
-tfilename$ = DemoImagesDirectory$ & "\Demo2_JEOL.grd"
-Else
-tfilename$ = UserImagesDirectory$ & "\*.grd"
-End If
-Else
-If UCase$(app.EXEName) <> UCase$("Stage") Then
-tfilename$ = DemoImagesDirectory$ & "\Demo2_Cameca.grd"
-Else
-tfilename$ = UserImagesDirectory$ & "\*.grd"
-End If
-End If
-End If
-If InterfaceType% > 0 Then tfilename$ = UserDataDirectory$ & "\*.grd"
-If ofilename2$ <> vbNullString Then tfilename$ = ofilename2$
-If CalcImageProjectFile$ <> vbNullString Then tfilename$ = MiscGetPathOnly$(CalcImageProjectFile$) & "*.grd"
+tfilename$ = vbNullString
+If Trim$(PictureSnapFilename$) <> vbNullString Then tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".grd"
 Call IOGetFileName(Int(2), "GRD", tfilename$, tForm)
 If ierror Then Exit Sub
-ofilename2$ = tfilename$
 
 ' Open and convert grid file
 If Not MiscStringsAreSame(MiscGetFileNameExtensionOnly$(tfilename$), ".GRD") Then GoTo PictureSnapFileOpenNotGRD
+
+' Set global while image is loading to prevent mouse cursor convert coordinate errors
+PictureSnapCalibrated = False
+
 Call PictureSnapFileOpenGrid(tfilename)
 If ierror Then Exit Sub
 End If
@@ -241,7 +210,7 @@ DoEvents
 Screen.MousePointer = vbHourglass
 Set FormPICTURESNAP.Picture2 = LoadPicture(tfilename$)
 
-' Check for existing GRD info
+' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 
@@ -374,7 +343,7 @@ Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End If
 
-' Check for existing GRD info
+' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 
@@ -414,7 +383,7 @@ If ierror Then Exit Sub
 ' Save BMP to original name
 tfilename$ = tfilename2$
 
-' Check for existing GRD info
+' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 

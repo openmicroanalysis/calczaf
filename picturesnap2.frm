@@ -167,7 +167,7 @@ Begin VB.Form FormPICTURESNAP2
          Height          =   285
          Left            =   2040
          TabIndex        =   43
-         ToolTipText     =   "Enter the Y stage coordinate of the first calibration point"
+         ToolTipText     =   "Enter the Z stage coordinate of the first calibration point"
          Top             =   2760
          Visible         =   0   'False
          Width           =   975
@@ -419,7 +419,7 @@ Begin VB.Form FormPICTURESNAP2
          Height          =   285
          Left            =   2040
          TabIndex        =   42
-         ToolTipText     =   "Enter the Y stage coordinate of the first calibration point"
+         ToolTipText     =   "Enter the Z stage coordinate of the first calibration point"
          Top             =   2760
          Visible         =   0   'False
          Width           =   975
@@ -632,7 +632,7 @@ Begin VB.Form FormPICTURESNAP2
          Height          =   285
          Left            =   2040
          TabIndex        =   41
-         ToolTipText     =   "Enter the Y stage coordinate of the first calibration point"
+         ToolTipText     =   "Enter the Z stage coordinate of the first calibration point"
          Top             =   2760
          Visible         =   0   'False
          Width           =   975

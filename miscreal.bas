@@ -391,12 +391,6 @@ If InterfaceTypeStored% = 2 And InstType$ = "JEOL" Then MiscIsInstrumentStageSto
 If InterfaceTypeStored% = 3 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
 If InterfaceTypeStored% = 4 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
 If InterfaceTypeStored% = 5 And InstType$ = "CAMECA" Then MiscIsInstrumentStageStored = True    ' Cameca SX100/SXFive
-If InterfaceTypeStored% = 6 And InstType$ = "CAMECA" Then MiscIsInstrumentStageStored = True    ' not used
-If InterfaceTypeStored% = 7 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
-If InterfaceTypeStored% = 8 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
-If InterfaceTypeStored% = 9 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
-If InterfaceTypeStored% = 10 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True     ' assume JEOL (mm) for Axioscope
-If InterfaceTypeStored% = 11 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True     ' not used
 
 Exit Function
 

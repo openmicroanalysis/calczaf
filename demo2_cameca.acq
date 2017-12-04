@@ -15,3 +15,5 @@ Stage Z reference point3= 0.010178
 X_Polarity= 0
 Y_Polarity= 0
 Stage_Units=um
+ACQScreenDPI="1"
+

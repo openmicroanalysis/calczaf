@@ -71,7 +71,7 @@ Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,m
 Global Const MAXRAY% = 13               ' maximum xray symbols (ka,kb,la,lb,ma,mb,ln,lg,lv,ll,mg,mz," ") including blank for non-analyzed
 
 ' Constants for array declarations
-Global Const MAXINTERFACE% = 6          ' maximum number of instrument interfaces (0 to MAXINTERFACE%)
+Global Const MAXINTERFACE% = 5          ' maximum number of instrument interfaces (0 to MAXINTERFACE%)
 Global Const MAXINTERFACE_EDS% = 6      ' maximum number of EDS spectra interfaces (0 to MAXINTERFACE_EDS)
 Global Const MAXINTERFACE_IMAGE% = 10   ' maximum number of imaging interfaces (0 to MAXINTERFACE_IMAGE)
 Global Const MAXINTERFACE_CL% = 4       ' maximum number of CL spectra interfaces (0 to MAXINTERFACE_CL)
@@ -210,7 +210,6 @@ Global Const MAXDOUBLE# = 1.79769E+308   ' maximum double precision
 
 Global Const MAXOFFBGDTYPES% = 8         ' maximum off-peak background correction types (0 to 8, 0 = default linear)
 Global Const MAXMINTYPES% = 6            ' maximum mineral end-member types (including zero for none)
-Global Const MAXFLAG% = 12               ' maximum number of inter-app process flags
 Global Const MAXZAF% = 10                ' maximum number of ZAF correction options
 Global Const MAXZAFCOR% = 8              ' maximum number of stored ZAF corrections (analysis structure)
 Global Const MAXLIST% = 4999             ' maximum number of xray database listbox items
@@ -1155,6 +1154,7 @@ Type TypeImage
     ImageTitle As String
     ImageScanRotation As Single     ' added 12/12/2014
     ImageChannelNumber As Integer   ' added 11/13/2015
+    ImageDisplayDPI As Single       ' added 12/03/2017
     
     ImageData() As Long             ' image intensity data (unnormalized)
 End Type
@@ -1482,7 +1482,7 @@ Global MaxPHABiasWindow As Single
 Global MinScalerCountTime As Single
 Global MaxScalerCountTime As Single
 
-Global InterfaceType As Integer ' 0=Demo, 1=Unused, 2=JEOL 8900/8200/8500/8x30, 3=Unused, 4=Unused, 5=SX100/SXFive, 6=Unused, 7=Unused, 8=Unused, 9=Unused, 10=Axioscope, 11=Unused
+Global InterfaceType As Integer ' 0=Demo, 1=Unused, 2=JEOL 8900/8200/8500/8x30, 3=Unused, 4=Unused, 5=SX100/SXFive
 Global RealTimeMode As Integer
 Global LogWindowInterval As Single
 Global RealTimeInterval As Single
@@ -1926,12 +1926,6 @@ Global MANAssignsSampleRows() As Integer    ' (1 To MAXSET%, 1 To MAXMAN%, 1 To 
 
 Global MANAssignsCountTimes() As Single     ' (1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) allocated in InitData
 Global MANAssignsBeamCurrents() As Single   ' (1 To MAXSET%, 1 To MAXMAN%, 1 To MAXCHAN%) allocated in InitData
-
-' Serial port globals
-Global SerialPort As Integer
-Global SerialParity As String, SerialBaud As Integer
-Global SerialDataBits As Integer, SerialStopBits As Integer
-Global SerialHandShaking As Integer                             ' 0=none, 1=XON/XOFF, 2=RTS/CTS, 3=RTS/XON/XOFF
 
 ' Stage BitMap parameters
 Global StageBitMapCount As Integer

@@ -9,3 +9,5 @@ Stage reference point2=12810.8,31520.68
 X_Polarity= 0
 Y_Polarity= 0
 Stage_Units=um
+ACQScreenDPI="1"
+

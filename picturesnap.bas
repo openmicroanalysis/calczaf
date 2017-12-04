@@ -656,7 +656,7 @@ ierror = True
 Exit Sub
 End If
 
-' Check for existing GRD info
+' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(PictureSnapFilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 
@@ -753,7 +753,7 @@ Exit Sub
 
 End Sub
 Sub PictureSnapDrawScaleBar()
-' Load the palette display for the passed form
+' Draw a scale bar for the PictureSnap window
 
 ierror = False
 On Error GoTo PictureSnapDrawScaleBarError
@@ -808,7 +808,7 @@ If ierror Then Exit Sub
 Call PictureSnapConvert(Int(1), xrange!, ymax!, zmax!, sx2!, sy2!, sz2!, fractionx!, fractiony!)
 If ierror Then Exit Sub
 
-' Check for existing GRD info
+' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(PictureSnapFilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 

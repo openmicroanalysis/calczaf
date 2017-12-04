@@ -17,6 +17,10 @@ Global PictureSnapCalibrationNumberofZPoints As Integer     ' 0 if using two con
 Global PictureSnapCalibrated As Boolean
 Global PictureSnapCalibrationSaved As Boolean
 
+' New .ACQ calibration parameters,  where 1.0 = 100% (the default Windows setting), 1.25 = 125% and 2.0 = 200% DPI scaling
+Dim ACQScreenDPI_Current As Single
+Dim ACQScreenDPI_Stored As Single
+
 ' Fiducial arrays for 3 point transformation
 Dim fiducialold(1 To MAXAXES%, 1 To MAXDIM%) As Single
 Dim fiducialnew(1 To MAXAXES%, 1 To MAXDIM%) As Single
@@ -36,18 +40,8 @@ Dim apoint3x As Single, apoint3y As Single, apoint3z As Single  ' 3rd point stag
 ' Form variables for keV and mag (and scan rotation)
 Dim PictureSnap_keV As Single, PictureSnap_mag As Single, PictureSnap_scanrota As Single
 
-' New .ACQ calibration parameters
-Const ACQFileVersion_Current! = 1#
-Dim ACQScreenDPI_Current As Single
-Const ACQScreenUnits_Twips$ = "twips"
-Const ACQScreenUnits_Pixels$ = "pixels"
-
-Dim ACQFileVersion As Single    ' current ACQ file version is 1.0
-Dim ACQScreenDPI As Single      ' 1.0 = 96 DPI (the default Windows setting).  2.0 = 200% DPI scaling, etc.
-Dim ACQScreenUnits As String    ' twips or pixels
-
 Sub PictureSnapReadCalibration(tfilename$)
-' Read the screen and stage calibration from the passed ACQ file (not that procedure CalcImage also writes a "pseudo" .ACQ file)
+' Read the screen and stage calibration from the passed ACQ file (note that CalcImage also writes a "pseudo" .ACQ file)
 
 ierror = False
 On Error GoTo PictureSnapReadCalibrationError
@@ -55,6 +49,7 @@ On Error GoTo PictureSnapReadCalibrationError
 Dim pmode As Single
 Dim points As Single
 Dim zpoints As Single
+Dim DPI_Ratio As Single
 
 ' These parameters are read only by GridCheckGRDInfo
 Dim gX_Polarity As Integer, gY_Polarity As Integer
@@ -64,25 +59,14 @@ Dim gStage_Units As String
 Dim cpoint1(1 To 3) As Single, cpoint2(1 To 3) As Single, cpoint3(1 To 3) As Single
 Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Single
 
-' First load and save current screeen DPI
+' Load current screen DPI
 ACQScreenDPI_Current! = MiscGetWindowsDPI#()
 If ierror Then Exit Sub
 
-' Read version number of ACQ file
-Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "ACQFileVersion", ACQFileVersion!)                  ' 1 = read, 2 = write
+' Read stored screen resolution parameter
+ACQScreenDPI_Stored! = ACQScreenDPI_Current!        ' set default to current in case the value is not stored in the ACQ file being read
+Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "ACQScreenDPI", ACQScreenDPI_Stored!)                      ' 1 = read, 2 = write
 If ierror Then Exit Sub
-
-' Load defaults for new parameters
-ACQScreenDPI! = ACQScreenDPI_Current!
-ACQScreenUnits$ = ACQScreenUnits_Twips$
-
-' Read new ACQ calibration parameters
-If ACQFileVersion! >= 1 Then
-Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "ACQScreenDPI", ACQScreenDPI!)                      ' 1 = read, 2 = write
-If ierror Then Exit Sub
-Call InitINIReadWriteString(Int(0), tfilename$, "stage", "ACQScreenUnits", ACQScreenUnits$, ACQScreenUnits_Twips$)    ' 0 = read, 1 = write
-If ierror Then Exit Sub
-End If
 
 ' Read other parameters and calibration points from INI style ACQ file
 Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "PictureSnap mode", pmode!)                         ' pmode!, 0 = two control points, 1 = three control points
@@ -95,17 +79,10 @@ Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Number of Z calibratio
 If ierror Then Exit Sub
 
 ' Read screen calibration points
-If ACQScreenUnits$ = ACQScreenUnits_Twips$ Then
 Call InitINIReadWriteArray(Int(1), tfilename$, "stage", "Screen reference point1 (twips)", Int(2), cpoint1!())
 If ierror Then Exit Sub
 Call InitINIReadWriteArray(Int(1), tfilename$, "stage", "Screen reference point2 (twips)", Int(2), cpoint2!())
 If ierror Then Exit Sub
-Else
-Call InitINIReadWriteArray(Int(1), tfilename$, "stage", "Screen reference point1 (pixels)", Int(2), cpoint1!())
-If ierror Then Exit Sub
-Call InitINIReadWriteArray(Int(1), tfilename$, "stage", "Screen reference point2 (pixels)", Int(2), cpoint2!())
-If ierror Then Exit Sub
-End If
 
 If zpoints! > 0 Then
 Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Screen Z reference point1 (dummy)", cpoint1!(3))
@@ -146,7 +123,7 @@ End If
 PictureSnapMode% = pmode!
 PictureSnapCalibrationNumberofZPoints% = zpoints!
 
-' Check for existing GRD info
+' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 
@@ -271,6 +248,24 @@ If ierror Then Exit Sub
 FormPICTURESNAP2.TextkeV.Text = PictureSnap_keV!
 FormPICTURESNAP2.TextMag.Text = PictureSnap_mag!
 FormPICTURESNAP2.TextScan.Text = PictureSnap_scanrota!      ' scan rotation
+
+' Modify based on screen DPI ratio
+If ACQScreenDPI_Stored! <> ACQScreenDPI_Current! Then
+DPI_Ratio! = ACQScreenDPI_Stored! / ACQScreenDPI_Current!
+cpoint1x! = cpoint1x! * DPI_Ratio!   ' x reference screen coordinates
+cpoint1y! = cpoint1y! * DPI_Ratio!   ' y reference screen coordinates
+cpoint2x! = cpoint2x! * DPI_Ratio!   ' x reference screen coordinates
+cpoint2y! = cpoint2y! * DPI_Ratio!   ' y reference screen coordinates
+cpoint1z! = cpoint1z! * DPI_Ratio!   ' Z reference screen coordinates
+cpoint2z! = cpoint2z! * DPI_Ratio!   ' Z reference screen coordinates
+
+' Load third point
+If PictureSnapMode% = 1 Then
+cpoint3x! = cpoint3x! * DPI_Ratio!   ' x reference screen coordinates
+cpoint3y! = cpoint3y! * DPI_Ratio!   ' y reference screen coordinates
+cpoint3z! = cpoint3z! * DPI_Ratio!   ' Z reference screen coordinates
+End If
+End If
 
 Exit Sub
 
@@ -427,7 +422,7 @@ Dim gStage_Units As String
 ' Check for open picture snap file
 If Trim$(PictureSnapFilename$) = vbNullString Then Exit Sub
 
-' Check for existing GRD info
+' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(PictureSnapFilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 
@@ -435,8 +430,10 @@ If ierror Then Exit Sub
 If PictureSnapMode% = 0 Then
 
 ' Check for bad data
-If cpoint1x! - cpoint2x! = 0# Then GoTo PictureSnapConvertBadConvert
-If cpoint1y! - cpoint2y! = 0# Then GoTo PictureSnapConvertBadConvert
+'If cpoint1x! - cpoint2x! = 0# Then GoTo PictureSnapConvertBadConvert
+'If cpoint1y! - cpoint2y! = 0# Then GoTo PictureSnapConvertBadConvert
+If cpoint1x! - cpoint2x! = 0# Then Exit Sub     ' in case calibration hasn't finished loading yet for mouse cursor event
+If cpoint1y! - cpoint2y! = 0# Then Exit Sub     ' in case calibration hasn't finished loading yet for mouse cursor event
 
 ' Calculate offset and conversion factors
 csx! = (apoint1x! - apoint2x!) / (cpoint1x! - cpoint2x!)
@@ -506,7 +503,7 @@ ierror = True
 Exit Sub
 
 PictureSnapConvertBadConvert:
-msg$ = "One or both of the calibration points are not valid. Try the calibration again with different points"
+msg$ = "One or both of the calibration points are not valid. Try re-loading the image or the calibration again with different points"
 MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapConvert"
 PictureSnapCalibrated = False   ' disable calibration (02-28-2012 for Carpenter)
 ierror = True
@@ -536,15 +533,6 @@ If Trim$(pFileName$) = vbNullString Then GoTo PictureSnapSaveCalibrationNoPictur
 
 ' Check if picture is calibrated
 If Not PictureSnapCalibrated Then GoTo PictureSnapSaveCalibrationNotCalibrated
-
-' First load and save current screeen DPI
-ACQScreenDPI_Current! = MiscGetWindowsDPI#()
-If ierror Then Exit Sub
-
-' ****************************************************************************
-' For now (until we convert to pixel units), assume twips for all control point units
-ACQScreenUnits$ = ACQScreenUnits_Twips$
-' ****************************************************************************
 
 ' Screen coordinates
 cpoint1!(1) = cpoint1x!  ' reference screen coordinates
@@ -579,7 +567,7 @@ End If
 ' Write calibration points to INI style ACQ file
 tfilename$ = MiscGetFileNameNoExtension$(pFileName$) & ".ACQ"
 
-' Check for existing GRD info
+' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(pFileName$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 
@@ -607,17 +595,10 @@ Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Number of Z calibratio
 If ierror Then Exit Sub
 
 ' Write screen calibration points
-If ACQScreenUnits$ = ACQScreenUnits_Twips$ Then
 Call InitINIReadWriteArray(Int(2), tfilename$, "stage", "Screen reference point1 (twips)", Int(2), cpoint1!())
 If ierror Then Exit Sub
 Call InitINIReadWriteArray(Int(2), tfilename$, "stage", "Screen reference point2 (twips)", Int(2), cpoint2!())
 If ierror Then Exit Sub
-Else
-Call InitINIReadWriteArray(Int(2), tfilename$, "stage", "Screen reference point1 (pixels)", Int(2), cpoint1!())
-If ierror Then Exit Sub
-Call InitINIReadWriteArray(Int(2), tfilename$, "stage", "Screen reference point2 (pixels)", Int(2), cpoint2!())
-If ierror Then Exit Sub
-End If
 
 If PictureSnapCalibrationNumberofZPoints% > 0 Then
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Screen Z reference point1 (dummy)", cpoint1!(3))
@@ -672,16 +653,12 @@ If ierror Then Exit Sub
 Call InitINIReadWriteScaler(Int(2), tfilename$, "ColumnConditions", "ScanRotation", PictureSnap_scanrota!)
 If ierror Then Exit Sub
 
-' Get current screen DPI
-ACQScreenDPI! = CSng(MiscGetWindowsDPI())
+' Save current screen DPI for saving new images
+ACQScreenDPI_Current! = MiscGetWindowsDPI#()
 If ierror Then Exit Sub
 
-' Write new ACQ calibration parameters
-Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "ACQFileVersion", ACQFileVersion_Current!)          ' 1 = read, 2 = write
-If ierror Then Exit Sub
-Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "ACQScreenDPI", ACQScreenDPI!)                      ' 1 = read, 2 = write
-If ierror Then Exit Sub
-Call InitINIReadWriteString(Int(1), tfilename$, "stage", "ACQScreenUnits", ACQScreenUnits$, vbNullString)    ' 0 = read, 1 = write
+' Write screen resolution DPI
+Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "ACQScreenDPI", ACQScreenDPI_Current!)                      ' 1 = read, 2 = write
 If ierror Then Exit Sub
 
 pcalibrationsaved = True
@@ -726,7 +703,7 @@ Dim formx As Single, formy As Single, formz As Single
 Dim gX_Polarity As Integer, gY_Polarity As Integer
 Dim gStage_Units As String
 
-' Check for existing GRD info
+' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(PictureSnapFilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 
@@ -852,6 +829,8 @@ apoint2y! = tImage.ImageYmax!  ' reference stage coordinates (flipped for BMP)
 PictureSnap_keV! = tImage.ImageKilovolts!
 PictureSnap_mag! = tImage.ImageMag!
 PictureSnap_scanrota! = tImage.ImageScanRotation!
+
+ACQScreenDPI_Stored! = tImage.ImageDisplayDPI!          ' export of BMP image will utilize the current screen DPI value, not the stored screen DPI value
 
 Exit Sub
 
