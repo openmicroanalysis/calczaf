@@ -93,10 +93,10 @@ End Sub
 
 Private Sub CommandCopyToClipboard_Click()
 If Not DebugMode Then On Error Resume Next
-FormCLDISPLAY.Pesgo1.DpiX = 300       ' might choose to use the PE global export functionality? press X on any open graph to see it!
-FormCLDISPLAY.Pesgo1.DpiY = 300
-FormCLDISPLAY.Pesgo1.ExportImageLargeFont = False ' = True for large font
-Call FormCLDISPLAY.Pesgo1.PEcopybitmaptoclipboard(1400, 600)
+FormCLDISPLAY.Pesgo1.AllowExporting = True
+FormCLDISPLAY.Pesgo1.ExportImageLargeFont = False        ' = True for large font
+FormCLDISPLAY.Pesgo1.ExportImageDpi = 600
+Call FormCLDISPLAY.Pesgo1.PEcopybitmaptoclipboard(FormCLDISPLAY.Pesgo1.Width / 10, FormCLDISPLAY.Pesgo1.Height / 10)
 End Sub
 
 Private Sub CommandZoom_Click()

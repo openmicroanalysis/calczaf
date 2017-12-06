@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/04/17	Add third channel to Cameca video (mapping image) acquisition.
+
+		Adjust clipboard capture from graphs for consistent fonts
+
 12/03/17	Fix screen DPI issue in PictureSnap (Poeml).
 v. 12.1.0
 		Remove Axioscope interface from PFE (and serial hardware code).
