@@ -2943,3 +2943,4 @@ Global GrapherOutputVersionNumber As Integer         ' Scripter.exe app location
 Global AnalyticalTotalMinimum As Single
 Global AnalyticalTotalMaximum As Single
 
+Global UseRectangleDrawingModeFlag As Boolean

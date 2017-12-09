@@ -109,4 +109,19 @@ Exit Sub
 
 End Sub
 
+Sub PictureSnapDrawRectangle()
+' Dummy routine for CalcImage
 
+ierror = False
+On Error GoTo PictureSnapDrawRectangleError
+
+
+Exit Sub
+
+' Errors
+PictureSnapDrawRectangleError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDrawRectangle"
+ierror = True
+Exit Sub
+
+End Sub

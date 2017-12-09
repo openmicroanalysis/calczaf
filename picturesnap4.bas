@@ -2,6 +2,9 @@ Attribute VB_Name = "CodePictureSnap4"
 ' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
+Dim DrawRectanglePositions1(1 To 2) As Single
+Dim DrawRectanglePositions2(1 To 2) As Single
+
 Dim position As TypePosition
 Dim positiondata As TypePositionData
 
@@ -83,6 +86,13 @@ blankbeam = FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Checked
 Call MoveStageMoveXYZ(blankbeam, stagex!, stagey!, stagez!)
 If ierror Then Exit Sub
 
+' Store these stage positions in case drawing a rectangle
+DrawRectanglePositions1!(1) = DrawRectanglePositions2!(1)
+DrawRectanglePositions1!(2) = DrawRectanglePositions2!(2)
+
+DrawRectanglePositions2!(1) = BitMapX!
+DrawRectanglePositions2!(2) = BitMapY!
+
 Exit Sub
 
 ' Errors
@@ -103,6 +113,7 @@ Dim blankbeam As Boolean
 Dim formx As Single, formy As Single, formz As Single
 Dim stagex As Single, stagey As Single, stagez As Single
 Dim fractionx As Single, fractiony As Single
+Dim temp As Single
 
 ' If not real time then exit sub
 If Not RealTimeMode Then Exit Sub
@@ -119,6 +130,16 @@ formz! = 0#
 ' Convert to stage coordinates
 Call PictureSnapConvert(Int(1), formx!, formy!, formz!, stagex!, stagey!, stagez!, fractionx!, fractiony!)
 If ierror Then Exit Sub
+
+' Convert back to form coordinates and get fraction parameters
+Call PictureSnapConvert(Int(2), BitMapX!, BitMapY!, CSng(0#), stagex!, stagey!, stagez!, fractionx!, fractiony!)
+If ierror Then Exit Sub
+
+' Move scroll bars on main window to this position
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
+FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
+FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
 
 ' Move to position clicked by user
 blankbeam = FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Checked
@@ -194,6 +215,33 @@ Exit Sub
 ' Errors
 PictureSnapDigitizePointError:
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDigitizePoint"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub PictureSnapDrawRectangle()
+' Draws a rectangle based on the two last positions that were double clicked
+
+ierror = False
+On Error GoTo PictureSnapDrawRectangleError
+
+Dim tcolor As Long
+
+If Not UseRectangleDrawingModeFlag Then Exit Sub
+
+' Check if two positions loaded
+If DrawRectanglePositions1!(1) = 0# And DrawRectanglePositions1!(2) = 0# Then Exit Sub
+
+' Draw box
+tcolor& = RGB(255, 255, 255)
+FormPICTURESNAP.Picture2.DrawWidth = 2
+FormPICTURESNAP.Picture2.Line (DrawRectanglePositions1!(1), DrawRectanglePositions1!(2))-(DrawRectanglePositions2!(1), DrawRectanglePositions2!(2)), tcolor&, B
+
+Exit Sub
+
+PictureSnapDrawRectangleError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDrawRectangle"
 ierror = True
 Exit Sub
 

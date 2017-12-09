@@ -169,6 +169,9 @@ Begin VB.Form FormPICTURESNAP
          Caption         =   "Maintain Aspect Ratio of Full View Window"
          Checked         =   -1  'True
       End
+      Begin VB.Menu menuMiscUseRectangleDrawingMode 
+         Caption         =   "Use Rectangle Drawing Mode"
+      End
    End
 End
 Attribute VB_Name = "FormPICTURESNAP"
@@ -381,6 +384,13 @@ If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Checked = Not FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Checked
 End Sub
 
+Private Sub menuMiscUseRectangleDrawingMode_Click()
+If Not DebugMode Then On Error Resume Next
+FormPICTURESNAP.menuMiscUseRectangleDrawingMode.Checked = Not FormPICTURESNAP.menuMiscUseRectangleDrawingMode.Checked
+UseRectangleDrawingModeFlag = FormPICTURESNAP.menuMiscUseRectangleDrawingMode.Checked
+FormPICTURESNAP.Picture2.Refresh
+End Sub
+
 Private Sub menuMiscUseRightMouseClickToDigitize_Click()
 If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Checked = Not FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Checked
@@ -446,6 +456,8 @@ If ierror Then Exit Sub
 Call PictureSnapDisplayPositions
 If ierror Then Exit Sub
 Call PictureSnapDrawScaleBar
+If ierror Then Exit Sub
+Call PictureSnapDrawRectangle
 If ierror Then Exit Sub
 End Sub
 

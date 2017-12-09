@@ -1006,3 +1006,23 @@ Exit Sub
 
 End Sub
 
+Sub PictureSnapCalibrationUnLoad()
+' Check if image is calibrated before unloading calibration form
+
+ierror = False
+On Error GoTo PictureSnapCalibrationUnLoadError
+
+If Not PictureSnapCalibrated Then
+MsgBox "The current image is not calibrated to the stage coordinates. If the image was already calibrated, simply re-load the image from the file on disk.", vbOKOnly + vbInformation, "PictureSnapCalibrationUnLoad"
+End If
+
+Exit Sub
+
+' Errors
+PictureSnapCalibrationUnLoadError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapCalibrationUnLoad"
+ierror = True
+Exit Sub
+
+End Sub
+

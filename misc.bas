@@ -1287,103 +1287,13 @@ Exit Function
 
 End Function
 
-Function MiscAutoFormatQQ(ByVal precision As Single, ByVal detectionlimit As Single, ByVal treal As Single) As String
-' Function (no longer used) to return an automatically formatted real number (based on passed precision and detection limit)
-
-ierror = False
-On Error GoTo MiscAutoFormatQQError
-
-Dim nChar As Integer, i As Integer, j As Integer, k As Integer
-Dim m As Integer, n As Integer, negative As Integer
-Dim temp As Single
-Dim astring As String, bstring As String
-
-' Check for zero precision or detection limit
-If precision! = 0# Or detectionlimit! = 0# Then
-MiscAutoFormatQQ$ = Format$("   -   ", a80$)
-Exit Function
-End If
-
-' Determine number significant digits to save
-nChar% = 1
-If Abs(precision!) <= 10# Then nChar% = 2
-If Abs(precision!) <= 1# Then nChar% = 3
-If Abs(precision!) <= 0.1 Then nChar% = 4
-If Abs(precision!) <= 0.01 Then nChar% = 5
-If Abs(precision!) <= 0.001 Then nChar% = 6
-If Abs(precision!) <= 0.0001 Then nChar% = 7
-
-' Round the value based on the percent precision
-temp! = MiscAutoFormatZ!(precision!, treal!)
-If ierror Then Exit Function
-
-' Check greater or less than zero
-If temp! < 0 Then negative = True
-
-' Convert to decimal string with trailing zeros
-astring$ = Format$(temp!, ".0000000")
-
-' Find the decimal point
-m% = InStr(astring$, ".")
-
-' Find the first significant digit
-n% = 1
-For i% = 1 To Len(astring$)
-If IsNumeric(Mid$(astring$, i%, 1)) Then
-If Val(Mid$(astring$, i%, 1)) > 0 Then
-n% = i%
-Exit For
-End If
-End If
-Next i%
-
-' Set start of string
-If m% < n% Then
-j% = m%
-Else
-j% = n%
-End If
-
-' Load string starting with decimal point or first significant digit
-k% = 0
-bstring$ = vbNullString
-For i% = j% To Len(astring$)
-bstring$ = bstring$ & Mid$(astring$, i%, 1)
-If IsNumeric(Mid$(astring$, i%, 1)) Then
-If i% >= n% Then k% = k% + 1
-If k% >= nChar% And k% >= m% Then Exit For
-End If
-Next i%
-
-' Prefix with sign if necessary
-If negative Then bstring$ = "-" & bstring$
-
-' Set to "n.d.", if less than detection limit (scaled to data type)
-If treal! < detectionlimit! Then bstring$ = "n.d."
-
-' Format number
-MiscAutoFormatQQ$ = Format$(bstring$, a80$)
-Exit Function
-
-' Errors
-MiscAutoFormatQQError:
-MsgBox Error$, vbOKOnly + vbCritical, "MiscAutoFormatQQ"
-ierror = True
-Exit Function
-
-End Function
-
 Function MiscAutoFormatQ(ByVal precision As Single, ByVal detectionlimit As Single, ByVal treal As Single) As String
 ' Function to return an automatically formatted real number (based on passed percent precision and detection limit)
 
 ierror = False
 On Error GoTo MiscAutoFormatQError
 
-Dim negative As Boolean
-Dim nChar As Integer, i As Integer, j As Integer, k As Integer
-Dim m As Integer, n As Integer
-Dim temp As Single
-Dim astring As String, bstring As String
+Dim bstring As String
 
 ' Check for zero precision or detection limit
 If precision! = 0# Or detectionlimit! = 0# Then
@@ -1391,73 +1301,13 @@ MiscAutoFormatQ$ = Format$(Format$(treal!, f83$), a80$)
 Exit Function
 End If
 
-' Determine number significant digits to save
-nChar% = 1
-If Abs(precision!) <= 10# Then nChar% = 2
-If Abs(precision!) <= 1# Then nChar% = 3
-If Abs(precision!) <= 0.1 Then nChar% = 4
-If Abs(precision!) <= 0.01 Then nChar% = 5
-If Abs(precision!) <= 0.001 Then nChar% = 6
-If Abs(precision!) <= 0.0001 Then nChar% = 7
-
-' Add one digit if greater than or equal to 100
-If treal! >= 100# Then nChar% = nChar% + 1
-
-' Round the value based on the percent precision
-temp! = MiscAutoFormatZ!(precision!, treal!)
+' Round the float value based on the percent precision
+treal! = MiscAutoFormatZ!(precision!, treal!)
 If ierror Then Exit Function
 
-' Check greater or less than zero
-If temp! < 0 Then negative = True
+bstring$ = Format$(treal!, "General Number")
 
-' Convert to decimal string
-astring$ = CStr(temp!)
-
-' Remove leading zero
-If Left$(astring$, 1) = "0" Then astring$ = Mid$(astring$, 2)
-
-' Find the decimal point
-m% = InStr(astring$, ".")
-If m% = 0 Then
-astring$ = astring$ & ".000000"
-m% = InStr(astring$, ".")
-Else
-astring$ = astring$ & "000000"
-End If
-
-' Find the first significant digit
-n% = 1
-For i% = 1 To Len(astring$)
-If IsNumeric(Mid$(astring$, i%, 1)) Then
-If Val(Mid$(astring$, i%, 1)) > 0 Then
-n% = i%
-Exit For
-End If
-End If
-Next i%
-
-' Set start of string
-If m% < n% Then
-j% = m%
-Else
-j% = n%
-End If
-
-' Load string starting with decimal point or first significant digit
-k% = 0
-bstring$ = vbNullString
-For i% = j% To Len(astring$)
-bstring$ = bstring$ & Mid$(astring$, i%, 1)
-If IsNumeric(Mid$(astring$, i%, 1)) Then
-If i% >= n% Then k% = k% + 1                    ' count number of significant digits loaded
-If k% >= nChar% And k% >= m% Then Exit For
-End If
-Next i%
-
-' Prefix with sign if necessary
-If negative Then bstring$ = "-" & bstring$
-
-' Set to "n.d.", if less than detection limit (scaled to data type)
+' Set to "n.d.", if less than detection limit
 If treal! < detectionlimit! Then bstring$ = "n.d."
 
 ' Format number
@@ -1519,8 +1369,8 @@ temp! = temp! / 10 ^ nChar%
 ' Apply saved exponent from normalization to recover
 temp! = temp! * 10 ^ exponent
 
-' Format number
-MiscAutoFormatZ! = temp!
+' Format number (need to perform a round here because of rare rounding issues)
+MiscAutoFormatZ! = Round(temp!, nChar%)
 
 Exit Function
 

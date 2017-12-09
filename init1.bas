@@ -1431,11 +1431,11 @@ If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivatePro
 
 lpAppName$ = "Software"
 lpKeyName$ = "GrapherOutputVersionNumber"
-nDefault& = 9       ' new default to specify Scripter app location?????
+nDefault& = 7
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 GrapherOutputVersionNumber% = valid&
-If GrapherOutputVersionNumber% < 9 Then
+If GrapherOutputVersionNumber% < 7 Then
 msg$ = "GrapherOutputVersionNumber keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
 GrapherOutputVersionNumber% = nDefault&

@@ -566,6 +566,7 @@ Begin VB.Form FormPICTURESNAP2
    Begin VB.CommandButton CommandClose 
       BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
+      Default         =   -1  'True
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -576,12 +577,12 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3360
+      Left            =   3480
       Style           =   1  'Graphical
       TabIndex        =   13
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1935
+      Width           =   1695
    End
    Begin VB.Frame Frame1 
       Caption         =   "Point #1 Calibration"
@@ -830,6 +831,10 @@ End Sub
 
 Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
+If Not PictureSnapCalibrated Then
+Call PictureSnapCalibrationUnLoad
+If ierror Then Exit Sub
+End If
 Unload FormPICTURESNAP2
 End Sub
 
