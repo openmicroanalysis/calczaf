@@ -14,8 +14,15 @@ Option Explicit
 Global PictureSnapFilename As String
 Global PictureSnapMode As Integer                           ' 0 = normal two control point conversion, 1 = three control point transformation
 Global PictureSnapCalibrationNumberofZPoints As Integer     ' 0 if using two control points, 3 if using three control points
-Global PictureSnapCalibrated As Boolean
 Global PictureSnapCalibrationSaved As Boolean
+
+Global PictureSnapCalibrated As Boolean
+Global PictureSnapCalibratedPreviously As Boolean
+
+Global PictureSnapWindowIsModeless As Boolean
+
+' Form variables for keV and mag (and scan rotation)
+Global PictureSnap_keV As Single, PictureSnap_mag As Single, PictureSnap_scanrota As Single
 
 ' New .ACQ calibration parameters,  where 1.0 = 100% (the default Windows setting), 1.25 = 125% and 2.0 = 200% DPI scaling
 Dim ACQScreenDPI_Current As Single
@@ -36,9 +43,6 @@ Dim apoint2x As Single, apoint2y As Single, apoint2z As Single  ' (z position is
 ' Additional 3rd point for fiducial transformation (including rotation)
 Dim cpoint3x As Single, cpoint3y As Single, cpoint3z As Single  ' 3rd point screen coordinates
 Dim apoint3x As Single, apoint3y As Single, apoint3z As Single  ' 3rd point stage coordinates
-
-' Form variables for keV and mag (and scan rotation)
-Dim PictureSnap_keV As Single, PictureSnap_mag As Single, PictureSnap_scanrota As Single
 
 Sub PictureSnapReadCalibration(tfilename$)
 ' Read the screen and stage calibration from the passed ACQ file (note that CalcImage also writes a "pseudo" .ACQ file)
@@ -236,18 +240,13 @@ PictureSnap_keV! = DefaultKiloVolts!    ' load default in case parameter is miss
 Call InitINIReadWriteScaler(Int(1), tfilename$, "ColumnConditions", "kilovolts", PictureSnap_keV!)
 If ierror Then Exit Sub
 
-PictureSnap_mag! = DefaultMagnification!    ' load default in case parameter is missing
+PictureSnap_mag! = DefaultMagnificationImaging!    ' load default in case parameter is missing
 Call InitINIReadWriteScaler(Int(1), tfilename$, "ColumnConditions", "magnification", PictureSnap_mag!)
 If ierror Then Exit Sub
 
 PictureSnap_scanrota! = DefaultScanRotation!    ' load default in case parameter is missing
 Call InitINIReadWriteScaler(Int(1), tfilename$, "ColumnConditions", "scanrotation", PictureSnap_scanrota!)
 If ierror Then Exit Sub
-
-' Save to hidden controls
-FormPICTURESNAP2.TextkeV.Text = PictureSnap_keV!
-FormPICTURESNAP2.TextMag.Text = PictureSnap_mag!
-FormPICTURESNAP2.TextScan.Text = PictureSnap_scanrota!      ' scan rotation
 
 ' Modify based on screen DPI ratio
 If ACQScreenDPI_Stored! <> ACQScreenDPI_Current! Then
@@ -376,11 +375,6 @@ If PictureSnapMode% = 1 Then
 If cpoint1x! = cpoint3x! Or cpoint2x! = cpoint3x! Then GoTo PictureSnapCalibrateSavePixelCoordinatesSame
 If cpoint1y! = cpoint3y! Or cpoint2y! = cpoint3y! Then GoTo PictureSnapCalibrateSavePixelCoordinatesSame
 End If
-
-' Save keV and mag from hidden text controls
-PictureSnap_keV! = Val(FormPICTURESNAP2.TextkeV.Text)
-PictureSnap_mag! = Val(FormPICTURESNAP2.TextMag.Text)
-PictureSnap_scanrota! = Val(FormPICTURESNAP2.TextScan.Text)
 
 Exit Sub
 
@@ -643,7 +637,7 @@ If ierror Then Exit Sub
 Call InitINIReadWriteString(Int(1), tfilename$, "stage", "Stage_Units", gStage_Units$, vbNullString)    ' 0 = read, 1 = write
 If ierror Then Exit Sub
 
-' Save keV, mag and scan rotation (do not load PictureSnap parameters with default parameters because image may not have instrument conditions, e.g., GRD)
+' Save keV, mag and scan rotation
 Call InitINIReadWriteScaler(Int(2), tfilename$, "ColumnConditions", "kilovolts", PictureSnap_keV!)
 If ierror Then Exit Sub
 

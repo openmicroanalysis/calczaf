@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/09/17	Add PictureSnap buttons to traverse and grid digitize dialogs (von der Handt).
+
 12/08/17	Add new features to PictureSnap, draw rectangle and move scroll to position
 v. 12.1.1	as suggested by von der Handt.
 

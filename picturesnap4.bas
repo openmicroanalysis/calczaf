@@ -156,6 +156,51 @@ Exit Sub
 
 End Sub
 
+Sub PictureSnapMoveToCalibrationPoint(stagex As Single, stagey As Single, stagez As Single)
+' Move to the stage calibration point
+
+ierror = False
+On Error GoTo PictureSnapMoveToCalibrationPointError
+
+Dim blankbeam As Boolean
+Dim formx As Single, formy As Single, formz As Single
+Dim fractionx As Single, fractiony As Single
+Dim temp As Single
+
+' If not real time then exit sub
+If Not RealTimeMode Then Exit Sub
+
+' Check that image is loaded and calibrated
+If PictureSnapFilename$ = vbNullString Then Exit Sub
+If Not PictureSnapCalibrated Then Exit Sub
+
+' Convert back to form coordinates and get fraction parameters
+Call PictureSnapConvert(Int(2), formx!, formy!, CSng(0#), stagex!, stagey!, stagez!, fractionx!, fractiony!)
+If ierror Then Exit Sub
+
+' Move scroll bars on main window to this position
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
+FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
+FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
+
+If stagez! = 0# Then stagez! = RealTimeMotorPositions!(ZMotor%)
+
+' Move to stage position
+blankbeam = FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Checked
+Call MoveStageMoveXYZ(blankbeam, stagex!, stagey!, stagez!)
+If ierror Then Exit Sub
+
+Exit Sub
+
+' Errors
+PictureSnapMoveToCalibrationPointError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapMoveToCalibrationPoint"
+ierror = True
+Exit Sub
+
+End Sub
+
 Sub PictureSnapDigitizePoint(BitMapX As Single, BitMapY As Single)
 ' Convert and digitize the stage position on the PictureSnap image
 

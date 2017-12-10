@@ -20,14 +20,19 @@ Dim CurrentPointY As Single
 ' Scale bar variables for scroll event
 Dim oldx As Single, oldy As Single
 
-Sub PictureSnapLoad()
+Sub PictureSnapLoad(bmode As Boolean)
 ' Load the PictureSnap form (automatically load picture if already specified)
+'  bmode = True load modeless
+'  bmode = False load modal
 
 ierror = False
 On Error GoTo PictureSnapLoadError
 
 ' Check for stage motors
 If NumberOfStageMotors% < 1 Then GoTo PictureSnapLoadNoStage
+
+' Save window load mode to global
+PictureSnapWindowIsModeless = bmode
 
 ' If picture file is already specified and found then load it
 If PictureSnapFilename$ <> vbNullString And Dir$(PictureSnapFilename$) <> vbNullString Then
@@ -72,21 +77,46 @@ FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Enabled = False
 FormPICTURESNAP.menuMiscMaintainAspectRatioOfFullViewWindow.Enabled = False
 End If
 
-FormPICTURESNAP.Show vbModeless
-
 ' Check if a calibration file already exists and load if found
 If PictureSnapFilename$ <> vbNullString And Dir$(PictureSnapFilename$) <> vbNullString Then
 Call PictureSnapLoadCalibration
 If ierror Then Exit Sub
+End If
 
-' Enable output menus
+' Enable output menus if modeless (and image file is loaded)
+If PictureSnapWindowIsModeless Then
+If PictureSnapFilename$ <> vbNullString And Dir$(PictureSnapFilename$) <> vbNullString Then
+FormPICTURESNAP.menuFileSaveAsGRD.Enabled = True
 FormPICTURESNAP.menuFileClipboard1.Enabled = True
 FormPICTURESNAP.menuFileClipboard2.Enabled = True
 FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = True
 FormPICTURESNAP.menuFileSaveAsBMP.Enabled = True
 FormPICTURESNAP.menuFilePrintSetup.Enabled = True
 FormPICTURESNAP.menuFilePrint.Enabled = True
-FormPICTURESNAP.menuFileSaveAsGRD.Enabled = True
+
+FormPICTURESNAP.menuWindowCalibrate.Enabled = True
+FormPICTURESNAP.menuWindowFullPicture.Enabled = True
+End If
+
+' Disable output menus if modal
+Else
+FormPICTURESNAP.menuFileSaveAsGRD.Enabled = False
+FormPICTURESNAP.menuFileClipboard1.Enabled = False
+FormPICTURESNAP.menuFileClipboard2.Enabled = False
+FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = False
+FormPICTURESNAP.menuFileSaveAsBMP.Enabled = False
+FormPICTURESNAP.menuFilePrintSetup.Enabled = False
+FormPICTURESNAP.menuFilePrint.Enabled = False
+
+FormPICTURESNAP.menuWindowCalibrate.Enabled = False
+FormPICTURESNAP.menuWindowFullPicture.Enabled = False
+End If
+
+' Check mode parameter and load depending on value
+If PictureSnapWindowIsModeless Then
+FormPICTURESNAP.Show vbModeless
+Else
+FormPICTURESNAP.Show vbModal
 End If
 
 ' Load full view window if visible
@@ -170,7 +200,14 @@ FormPICTURESNAP2.TextZStage2.Text = RealTimeMotorPositions!(ZMotor%)
 FormPICTURESNAP2.TextZStage3.Text = RealTimeMotorPositions!(ZMotor%)
 End If
 
-' If the picture is loaded and calibrated, load the existing calibration
+' Load default calibration conditions for new calibrations
+If Not PictureSnapCalibrated Then
+PictureSnap_keV! = DefaultKiloVolts!
+PictureSnap_mag! = DefaultMagnificationImaging!
+PictureSnap_scanrota! = DefaultScanRotation!
+End If
+
+' If the picture is loaded and calibrated, load the existing calibration to the calibration form
 If PictureSnapFilename$ <> vbNullString And PictureSnapCalibrated Then
 Call PictureSnapCalibrateLoad2(FormPICTURESNAP2)
 If ierror Then Exit Sub
@@ -194,11 +231,6 @@ FormPICTURESNAP2.LabelCalibration.Caption = "Image Is Calibrated"
 Else
 FormPICTURESNAP2.LabelCalibration.Caption = "Image Is NOT Calibrated"
 End If
-
-' Load column conditions to hidden text fields
-FormPICTURESNAP2.TextkeV.Text = DefaultKiloVolts!
-FormPICTURESNAP2.TextMag.Text = DefaultMagnification!
-FormPICTURESNAP2.TextScan.Text = DefaultScanRotation!
 
 ' Load the form
 If method% = 1 Then
@@ -486,9 +518,6 @@ ierror = False
 On Error GoTo PictureSnapLoadCalibrationError
 
 Dim tfilename As String, tfilename2 As String
-
-' Load PictureSnapMode
-FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).value = True
 
 ' Read calibration points to INI style ACQ file
 tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".ACQ"
@@ -1006,21 +1035,21 @@ Exit Sub
 
 End Sub
 
-Sub PictureSnapCalibrationUnLoad()
+Sub PictureSnapCalibrateUnLoad()
 ' Check if image is calibrated before unloading calibration form
 
 ierror = False
-On Error GoTo PictureSnapCalibrationUnLoadError
+On Error GoTo PictureSnapCalibrateUnLoadError
 
-If Not PictureSnapCalibrated Then
-MsgBox "The current image is not calibrated to the stage coordinates. If the image was already calibrated, simply re-load the image from the file on disk.", vbOKOnly + vbInformation, "PictureSnapCalibrationUnLoad"
+If PictureSnapCalibratedPreviously And Not PictureSnapCalibrated Then
+MsgBox "The current image is no longer calibrated to the stage coordinates. If the image was previously calibrated, simply re-load the image from the file on disk.", vbOKOnly + vbInformation, "PictureSnapCalibrateUnLoad"
 End If
 
 Exit Sub
 
 ' Errors
-PictureSnapCalibrationUnLoadError:
-MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapCalibrationUnLoad"
+PictureSnapCalibrateUnLoadError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapCalibrateUnLoad"
 ierror = True
 Exit Sub
 

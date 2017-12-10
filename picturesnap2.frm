@@ -13,33 +13,6 @@ Begin VB.Form FormPICTURESNAP2
    ScaleHeight     =   12075
    ScaleWidth      =   5415
    StartUpPosition =   3  'Windows Default
-   Begin VB.TextBox TextScan 
-      Height          =   285
-      Left            =   3960
-      TabIndex        =   58
-      TabStop         =   0   'False
-      Top             =   11640
-      Visible         =   0   'False
-      Width           =   735
-   End
-   Begin VB.TextBox TextMag 
-      Height          =   285
-      Left            =   4440
-      TabIndex        =   57
-      TabStop         =   0   'False
-      Top             =   11280
-      Visible         =   0   'False
-      Width           =   735
-   End
-   Begin VB.TextBox TextkeV 
-      Height          =   285
-      Left            =   3480
-      TabIndex        =   56
-      TabStop         =   0   'False
-      Top             =   11280
-      Visible         =   0   'False
-      Width           =   735
-   End
    Begin VB.Frame Frame4 
       Caption         =   "Light Mode"
       BeginProperty Font 
@@ -832,7 +805,7 @@ End Sub
 Private Sub CommandClose_Click()
 If Not DebugMode Then On Error Resume Next
 If Not PictureSnapCalibrated Then
-Call PictureSnapCalibrationUnLoad
+Call PictureSnapCalibrateUnLoad
 If ierror Then Exit Sub
 End If
 Unload FormPICTURESNAP2
@@ -882,22 +855,19 @@ End Sub
 
 Private Sub CommandMoveTo1_Click()
 If Not DebugMode Then On Error Resume Next
-If Val(FormPICTURESNAP2.TextZStage1.Text) = 0# Then FormPICTURESNAP2.TextZStage1.Text = MiscAutoFormat$(RealTimeMotorPositions!(ZMotor%))
-Call DigitizeMovePosition(False, FormPICTURESNAP2.TextXStage1, FormPICTURESNAP2.TextYStage1, FormPICTURESNAP2.TextZStage1)
+Call PictureSnapMoveToCalibrationPoint(Val(FormPICTURESNAP2.TextXStage1), Val(FormPICTURESNAP2.TextYStage1), Val(FormPICTURESNAP2.TextZStage1))
 If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandMoveTo2_Click()
 If Not DebugMode Then On Error Resume Next
-If Val(FormPICTURESNAP2.TextZStage2.Text) = 0# Then FormPICTURESNAP2.TextZStage2.Text = MiscAutoFormat$(RealTimeMotorPositions!(ZMotor%))
-Call DigitizeMovePosition(False, FormPICTURESNAP2.TextXStage2, FormPICTURESNAP2.TextYStage2, FormPICTURESNAP2.TextZStage2)
+Call PictureSnapMoveToCalibrationPoint(Val(FormPICTURESNAP2.TextXStage2), Val(FormPICTURESNAP2.TextYStage2), Val(FormPICTURESNAP2.TextZStage2))
 If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandMoveTo3_Click()
 If Not DebugMode Then On Error Resume Next
-If Val(FormPICTURESNAP2.TextZStage3.Text) = 0# Then FormPICTURESNAP2.TextZStage3.Text = MiscAutoFormat$(RealTimeMotorPositions!(ZMotor%))
-Call DigitizeMovePosition(False, FormPICTURESNAP2.TextXStage3, FormPICTURESNAP2.TextYStage3, FormPICTURESNAP2.TextZStage3)
+Call PictureSnapMoveToCalibrationPoint(Val(FormPICTURESNAP2.TextXStage3), Val(FormPICTURESNAP2.TextYStage3), Val(FormPICTURESNAP2.TextZStage3))
 If ierror Then Exit Sub
 End Sub
 
@@ -971,6 +941,7 @@ Call MiscAlwaysOnTop(True, FormPICTURESNAP2)
 Call InitWindow(Int(2), MDBUserName$, Me)
 Call MiscLoadIcon(FormPICTURESNAP2)
 HelpContextID = IOGetHelpContextID("FormPICTURESNAP2")
+PictureSnapCalibratedPreviously = PictureSnapCalibrated
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)

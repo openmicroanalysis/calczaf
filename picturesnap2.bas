@@ -54,7 +54,7 @@ If ierror Then Exit Sub
 Unload FormPICTURESNAP
 DoEvents
 
-Call PictureSnapLoad
+Call PictureSnapLoad(True)     ' reload modeless
 If ierror Then Exit Sub
 End If
 
@@ -70,7 +70,7 @@ If ierror Then Exit Sub
 ' Unload and reload to prevent gunsight "trailing"
 Unload FormPICTURESNAP
 DoEvents
-Call PictureSnapLoad
+Call PictureSnapLoad(True)     ' reload modeless
 If ierror Then Exit Sub
 End If
 
@@ -86,7 +86,7 @@ If ierror Then Exit Sub
 ' Unload and reload to prevent gunsight "trailing"
 Unload FormPICTURESNAP
 DoEvents
-Call PictureSnapLoad
+Call PictureSnapLoad(True)     ' reload modeless
 If ierror Then Exit Sub
 End If
 
@@ -104,7 +104,7 @@ If ierror Then Exit Sub
 ' Unload and reload to prevent gunsight "trailing"
 Unload FormPICTURESNAP
 DoEvents
-Call PictureSnapLoad
+Call PictureSnapLoad(True)     ' reload modeless
 If ierror Then Exit Sub
 
 ' Check for a bitmap in the system clipboard
@@ -159,6 +159,9 @@ Dim gX_Polarity As Integer, gY_Polarity As Integer
 Dim gStage_Units As String
 
 Dim m_Width As Long, m_Height As Long, m_Depth As Long, m_ImageType As Long
+
+' Unload the calibration form in case loaded
+Unload FormPICTURESNAP2
 
 ' Get existing filename from user
 If mode% > 0 Then
@@ -254,14 +257,32 @@ FormPICTURESNAP.Caption = "Picture Snap [" & tfilename$ & "]"
 Call PictureSnapLoadCalibration
 If ierror Then Exit Sub
 
-' Enable output menus
+' Enable output menus if modeless mode
+If PictureSnapWindowIsModeless Then
+FormPICTURESNAP.menuFileSaveAsGRD.Enabled = True
 FormPICTURESNAP.menuFileClipboard1.Enabled = True
 FormPICTURESNAP.menuFileClipboard2.Enabled = True
 FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = True
 FormPICTURESNAP.menuFileSaveAsBMP.Enabled = True
 FormPICTURESNAP.menuFilePrintSetup.Enabled = True
 FormPICTURESNAP.menuFilePrint.Enabled = True
-FormPICTURESNAP.menuFileSaveAsGRD.Enabled = True
+
+FormPICTURESNAP.menuWindowCalibrate.Enabled = True
+FormPICTURESNAP.menuWindowFullPicture.Enabled = True
+
+' Disable output menus if modeless mode
+Else
+FormPICTURESNAP.menuFileSaveAsGRD.Enabled = False
+FormPICTURESNAP.menuFileClipboard1.Enabled = False
+FormPICTURESNAP.menuFileClipboard2.Enabled = False
+FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = False
+FormPICTURESNAP.menuFileSaveAsBMP.Enabled = False
+FormPICTURESNAP.menuFilePrintSetup.Enabled = False
+FormPICTURESNAP.menuFilePrint.Enabled = False
+
+FormPICTURESNAP.menuWindowCalibrate.Enabled = False
+FormPICTURESNAP.menuWindowFullPicture.Enabled = False
+End If
 
 ' Store image width and heigth after loading for setting aspect ratio in full view window
 If PictureSnapFilename$ <> vbNullString Then
@@ -270,7 +291,7 @@ PictureSnapImageHeight! = FormPICTURESNAP.Picture2.ScaleHeight
 End If
 
 ' Load full view window if visible (and not called from ImageSaveAs which causes non-modal when modal loaded error)
-If mode% <> 0 And FormPICTURESNAP3.Visible Then
+If mode% <> 0 And FormPICTURESNAP3.Visible And Not PictureSnapWindowIsModeless Then
 Call PictureSnapLoadFullWindow
 If ierror Then Exit Sub
 End If
@@ -511,8 +532,6 @@ Dim ixmin As Long, iymin As Long, ixmax As Long, iymax As Long
 Dim xmin As Single, ymin As Single, xmax As Single, ymax As Single
 Dim tvalue As Single
 
-Dim keV As Single, mag As Single, scan As Single
-
 ' Load pixel coordinates
 Call InitINIReadWriteScaler(Int(1), tfilename$, "Registration", "X1Pixel", tvalue!)
 If ierror Then Exit Sub
@@ -581,25 +600,17 @@ FormPICTURESNAP2.TextYPixel1.Text = iymax& * Screen.TwipsPerPixelY
 FormPICTURESNAP2.TextYPixel2.Text = iymin& * Screen.TwipsPerPixelY
 End If
 
-' Read in keV (in keV)
-keV! = DefaultKiloVolts!
-keV! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "HighVoltage", Format$(keV!)))
+' Read in keV
+PictureSnap_keV! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "HighVoltage", Format$(DefaultKiloVolts!)))
 If ierror Then Exit Sub
 
-' Read magnification (not implemented yet in PrbImg, so just use default for now)
-mag! = 0#               ' default to zero to check for mag keyword present (assume stage scan for now where mag = 0)
-mag! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "Magnification", Format$(mag!)))
+' Read imaging magnification
+PictureSnap_mag! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "Magnification", Format$(DefaultMagnificationImaging!)))
 If ierror Then Exit Sub
 
-' Read scan rotation (not implemented yet in PrbImg, so just use default for now)
-scan! = 0#               ' default to zero to check for scan keyword present (assume stage scan for now where scan = 0)
-scan! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "ScanRotation", Format$(scan!)))
+' Read scan rotation
+PictureSnap_scanrota! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "ScanRotation", Format$(DefaultScanRotation!)))
 If ierror Then Exit Sub
-
-' Load to hidden text fields
-FormPICTURESNAP2.TextkeV.Text = Format$(keV!)
-FormPICTURESNAP2.TextMag.Text = Format$(mag!)
-FormPICTURESNAP2.TextScan.Text = Format$(scan!)
 
 ' Create .ACQ file
 PictureSnapMode% = 0    ' two calibration coordinates only
@@ -1167,6 +1178,9 @@ Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Doub
 Dim gfilename As String, bfilename$
 
 Static tfilename As String
+
+' Unload the calibration form in case loaded
+Unload FormPICTURESNAP2
 
 ' Get file from user
 If tfilename$ = vbNullString Then tfilename$ = UserImagesDirectory$ & "\*.PrbImg"
