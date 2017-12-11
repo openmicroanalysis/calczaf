@@ -2,8 +2,8 @@ Attribute VB_Name = "CodePictureSnap4"
 ' (c) Copyright 1995-2017 by John J. Donovan
 Option Explicit
 
-Dim DrawRectanglePositions1(1 To 2) As Single
-Dim DrawRectanglePositions2(1 To 2) As Single
+Dim DrawLineRectanglePositions1(1 To 2) As Single
+Dim DrawLineRectanglePositions2(1 To 2) As Single
 
 Dim position As TypePosition
 Dim positiondata As TypePositionData
@@ -87,11 +87,11 @@ Call MoveStageMoveXYZ(blankbeam, stagex!, stagey!, stagez!)
 If ierror Then Exit Sub
 
 ' Store these stage positions in case drawing a rectangle
-DrawRectanglePositions1!(1) = DrawRectanglePositions2!(1)
-DrawRectanglePositions1!(2) = DrawRectanglePositions2!(2)
+DrawLineRectanglePositions1!(1) = DrawLineRectanglePositions2!(1)
+DrawLineRectanglePositions1!(2) = DrawLineRectanglePositions2!(2)
 
-DrawRectanglePositions2!(1) = BitMapX!
-DrawRectanglePositions2!(2) = BitMapY!
+DrawLineRectanglePositions2!(1) = BitMapX!
+DrawLineRectanglePositions2!(2) = BitMapY!
 
 Exit Sub
 
@@ -265,28 +265,37 @@ Exit Sub
 
 End Sub
 
-Sub PictureSnapDrawRectangle()
+Sub PictureSnapDrawLineRectangle()
 ' Draws a rectangle based on the two last positions that were double clicked
 
 ierror = False
-On Error GoTo PictureSnapDrawRectangleError
+On Error GoTo PictureSnapDrawLineRectangleError
 
 Dim tcolor As Long
 
-If Not UseRectangleDrawingModeFlag Then Exit Sub
+If Not UseLineDrawingModeFlag And Not UseRectangleDrawingModeFlag Then Exit Sub
 
 ' Check if two positions loaded
-If DrawRectanglePositions1!(1) = 0# And DrawRectanglePositions1!(2) = 0# Then Exit Sub
+If DrawLineRectanglePositions1!(1) = 0# And DrawLineRectanglePositions1!(2) = 0# Then Exit Sub
 
-' Draw box
+' Load color and thickness
 tcolor& = RGB(255, 255, 255)
 FormPICTURESNAP.Picture2.DrawWidth = 2
-FormPICTURESNAP.Picture2.Line (DrawRectanglePositions1!(1), DrawRectanglePositions1!(2))-(DrawRectanglePositions2!(1), DrawRectanglePositions2!(2)), tcolor&, B
+
+' Draw line
+If UseLineDrawingModeFlag Then
+FormPICTURESNAP.Picture2.Line (DrawLineRectanglePositions1!(1), DrawLineRectanglePositions1!(2))-(DrawLineRectanglePositions2!(1), DrawLineRectanglePositions2!(2)), tcolor&
+End If
+
+' Draw rectangle
+If UseRectangleDrawingModeFlag Then
+FormPICTURESNAP.Picture2.Line (DrawLineRectanglePositions1!(1), DrawLineRectanglePositions1!(2))-(DrawLineRectanglePositions2!(1), DrawLineRectanglePositions2!(2)), tcolor&, B
+End If
 
 Exit Sub
 
-PictureSnapDrawRectangleError:
-MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDrawRectangle"
+PictureSnapDrawLineRectangleError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDrawLineRectangle"
 ierror = True
 Exit Sub
 

@@ -169,6 +169,12 @@ Begin VB.Form FormPICTURESNAP
          Caption         =   "Maintain Aspect Ratio of Full View Window"
          Checked         =   -1  'True
       End
+      Begin VB.Menu menuMiscSeparator1 
+         Caption         =   "-"
+      End
+      Begin VB.Menu menuMiscUseLineDrawingMode 
+         Caption         =   "Use Line Drawing Mode"
+      End
       Begin VB.Menu menuMiscUseRectangleDrawingMode 
          Caption         =   "Use Rectangle Drawing Mode"
       End
@@ -384,9 +390,20 @@ If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Checked = Not FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Checked
 End Sub
 
+Private Sub menuMiscUseLineDrawingMode_Click()
+If Not DebugMode Then On Error Resume Next
+FormPICTURESNAP.menuMiscUseLineDrawingMode.Checked = Not FormPICTURESNAP.menuMiscUseLineDrawingMode.Checked
+FormPICTURESNAP.menuMiscUseRectangleDrawingMode.Checked = False
+UseLineDrawingModeFlag = FormPICTURESNAP.menuMiscUseLineDrawingMode.Checked
+UseRectangleDrawingModeFlag = FormPICTURESNAP.menuMiscUseRectangleDrawingMode.Checked
+FormPICTURESNAP.Picture2.Refresh
+End Sub
+
 Private Sub menuMiscUseRectangleDrawingMode_Click()
 If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuMiscUseRectangleDrawingMode.Checked = Not FormPICTURESNAP.menuMiscUseRectangleDrawingMode.Checked
+FormPICTURESNAP.menuMiscUseLineDrawingMode.Checked = False
+UseLineDrawingModeFlag = FormPICTURESNAP.menuMiscUseLineDrawingMode.Checked
 UseRectangleDrawingModeFlag = FormPICTURESNAP.menuMiscUseRectangleDrawingMode.Checked
 FormPICTURESNAP.Picture2.Refresh
 End Sub
@@ -457,7 +474,7 @@ Call PictureSnapDisplayPositions
 If ierror Then Exit Sub
 Call PictureSnapDrawScaleBar
 If ierror Then Exit Sub
-Call PictureSnapDrawRectangle
+Call PictureSnapDrawLineRectangle
 If ierror Then Exit Sub
 End Sub
 
