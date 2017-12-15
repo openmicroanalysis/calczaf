@@ -1294,6 +1294,7 @@ ierror = False
 On Error GoTo MiscAutoFormatQError
 
 Dim bstring As String
+Dim temp As Single
 
 ' Check for zero precision or detection limit
 If precision! = 0# Or detectionlimit! = 0# Then
@@ -1302,10 +1303,10 @@ Exit Function
 End If
 
 ' Round the float value based on the percent precision
-treal! = MiscAutoFormatZ!(precision!, treal!)
+temp! = MiscAutoFormatZ!(precision!, treal!)
 If ierror Then Exit Function
 
-bstring$ = Format$(treal!, "General Number")
+bstring$ = Format$(temp!, "General Number")
 
 ' Set to "n.d.", if less than detection limit
 If treal! < detectionlimit! Then bstring$ = "n.d."
@@ -1369,8 +1370,11 @@ temp! = temp! / 10 ^ nChar%
 ' Apply saved exponent from normalization to recover
 temp! = temp! * 10 ^ exponent
 
-' Format number (need to perform a round here because of rare rounding issues)
-MiscAutoFormatZ! = Round(temp!, nChar%)
+' Format number
+MiscAutoFormatZ! = Round(temp!, nChar%)                     ' need to perform an additional rounding here because of rare issues for scientific notation
+
+' If above rounding causes a zero, load without additional rounding
+If MiscAutoFormatZ! = 0# Then MiscAutoFormatZ! = temp!
 
 Exit Function
 

@@ -56,16 +56,8 @@ PictureSnapFilename$ = vbNullString
 PictureSnapCalibrated = False
 End If
 
-' If not realtime then disable stagemap and calibrate windows
+' If not realtime then disable some menus
 If Not RealTimeMode Then
-If MiscStringsAreSame(app.EXEName, "CalcImage") Then
-FormPICTURESNAP.menuWindowCalibrate.Enabled = True
-FormPICTURESNAP.menuWindowFullPicture.Enabled = True
-Else
-FormPICTURESNAP.menuWindowCalibrate.Enabled = False
-FormPICTURESNAP.menuWindowFullPicture.Enabled = False
-End If
-
 FormPICTURESNAP.menuDisplayStandards.Enabled = False
 FormPICTURESNAP.menuDisplayUnknowns.Enabled = False
 FormPICTURESNAP.menuDisplayWavescans.Enabled = False
@@ -74,7 +66,8 @@ FormPICTURESNAP.menuDisplayShortLabels.Enabled = False
 
 FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Enabled = False
 FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Enabled = False
-FormPICTURESNAP.menuMiscMaintainAspectRatioOfFullViewWindow.Enabled = False
+FormPICTURESNAP.menuMiscUseLineDrawingMode.Enabled = False
+FormPICTURESNAP.menuMiscUseRectangleDrawingMode.Enabled = False
 End If
 
 ' Check if a calibration file already exists and load if found
@@ -84,33 +77,8 @@ If ierror Then Exit Sub
 End If
 
 ' Enable output menus if modeless (and image file is loaded)
-If PictureSnapWindowIsModeless Then
-If PictureSnapFilename$ <> vbNullString And Dir$(PictureSnapFilename$) <> vbNullString Then
-FormPICTURESNAP.menuFileSaveAsGRD.Enabled = True
-FormPICTURESNAP.menuFileClipboard1.Enabled = True
-FormPICTURESNAP.menuFileClipboard2.Enabled = True
-FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = True
-FormPICTURESNAP.menuFileSaveAsBMP.Enabled = True
-FormPICTURESNAP.menuFilePrintSetup.Enabled = True
-FormPICTURESNAP.menuFilePrint.Enabled = True
-
-FormPICTURESNAP.menuWindowCalibrate.Enabled = True
-FormPICTURESNAP.menuWindowFullPicture.Enabled = True
-End If
-
-' Disable output menus if modal
-Else
-FormPICTURESNAP.menuFileSaveAsGRD.Enabled = False
-FormPICTURESNAP.menuFileClipboard1.Enabled = False
-FormPICTURESNAP.menuFileClipboard2.Enabled = False
-FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = False
-FormPICTURESNAP.menuFileSaveAsBMP.Enabled = False
-FormPICTURESNAP.menuFilePrintSetup.Enabled = False
-FormPICTURESNAP.menuFilePrint.Enabled = False
-
-FormPICTURESNAP.menuWindowCalibrate.Enabled = False
-FormPICTURESNAP.menuWindowFullPicture.Enabled = False
-End If
+Call PictureSnapEnableDisable
+If ierror Then Exit Sub
 
 ' Check mode parameter and load depending on value
 If PictureSnapWindowIsModeless Then
@@ -178,7 +146,7 @@ Sub PictureSnapCalibrateLoad(method As Integer)
 ierror = False
 On Error GoTo PictureSnapCalibrateLoadError
 
-If Not MiscStringsAreSame(app.EXEName, "CalcImage") And Not RealTimeMode Then Exit Sub
+If PictureSnapFilename$ = vbNullString Then GoTo PictureSnapCalibrateLoadNoPicture
 
 ' Load PictureSnap mode
 FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).value = True
@@ -232,6 +200,23 @@ Else
 FormPICTURESNAP2.LabelCalibration.Caption = "Image Is NOT Calibrated"
 End If
 
+' Disable stage buttons if not realtime mode
+If Not RealTimeMode Then
+FormPICTURESNAP2.CommandMoveTo1.Enabled = False
+FormPICTURESNAP2.CommandMoveTo2.Enabled = False
+FormPICTURESNAP2.CommandMoveTo3.Enabled = False
+FormPICTURESNAP2.CommandReadCurrentStageCoordinate1.Enabled = False
+FormPICTURESNAP2.CommandReadCurrentStageCoordinate2.Enabled = False
+FormPICTURESNAP2.CommandReadCurrentStageCoordinate3.Enabled = False
+Else
+FormPICTURESNAP2.CommandMoveTo1.Enabled = True
+FormPICTURESNAP2.CommandMoveTo2.Enabled = True
+FormPICTURESNAP2.CommandMoveTo3.Enabled = True
+FormPICTURESNAP2.CommandReadCurrentStageCoordinate1.Enabled = True
+FormPICTURESNAP2.CommandReadCurrentStageCoordinate2.Enabled = True
+FormPICTURESNAP2.CommandReadCurrentStageCoordinate3.Enabled = True
+End If
+
 ' Load the form
 If method% = 1 Then
 FormPICTURESNAP2.Show vbModeless
@@ -242,6 +227,12 @@ Exit Sub
 ' Errors
 PictureSnapCalibrateLoadError:
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapCalibrateLoad"
+ierror = True
+Exit Sub
+
+PictureSnapCalibrateLoadNoPicture:
+msg$ = "No image has been loaded in the PictureSnap window. Please open a sample image using the File | Open menu."
+MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapCalibrateLOad"
 ierror = True
 Exit Sub
 
@@ -317,7 +308,7 @@ ierror = True
 Exit Sub
 
 PictureSnapCalibrateNoPicture:
-msg$ = "No picture (*.BMP) has been loaded in the PictureSnap window. Please open a sample picture using the File | Open menu."
+msg$ = "No image has been loaded in the PictureSnap window. Please open a sample image using the File | Open menu."
 MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapCalibrate"
 ierror = True
 Exit Sub
@@ -678,12 +669,7 @@ Dim gX_Polarity As Integer, gY_Polarity As Integer
 Dim gStage_Units As String
 
 ' If picture file is already specified load it
-If PictureSnapFilename$ = vbNullString Then
-msg$ = "No picture file has been opened yet. Use the File | Open menu in the Picture Snap window to open a JPG, BMP or TIF optically scanned image of your sample."
-MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapLoadFullWindow"
-ierror = True
-Exit Sub
-End If
+If PictureSnapFilename$ = vbNullString Then GoTo PictureSnapLoadFullWindowNoPicture
 
 ' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(PictureSnapFilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
@@ -726,6 +712,12 @@ Exit Sub
 ' Errors
 PictureSnapLoadFullWindowError:
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapLoadFullWindow"
+ierror = True
+Exit Sub
+
+PictureSnapLoadFullWindowNoPicture:
+msg$ = "No image file has been opened yet. Use the File | Open menu in the Picture Snap window to open a scanned image of your sample."
+MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapLoadFullWindow"
 ierror = True
 Exit Sub
 
@@ -1054,4 +1046,49 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub PictureSnapEnableDisable()
+' Enable/disable menus in the PictureSnap form
+
+ierror = False
+On Error GoTo PictureSnapEnableDisableError
+
+' Enable output and modeless window menus if modeless
+If PictureSnapWindowIsModeless And PictureSnapFilename$ <> vbNullString Then
+FormPICTURESNAP.menuFileSaveAsGRD.Enabled = True
+FormPICTURESNAP.menuFileClipboard1.Enabled = True
+FormPICTURESNAP.menuFileClipboard2.Enabled = True
+FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = True
+FormPICTURESNAP.menuFileSaveAsBMP.Enabled = True
+FormPICTURESNAP.menuFilePrintSetup.Enabled = True
+FormPICTURESNAP.menuFilePrint.Enabled = True
+
+FormPICTURESNAP.menuWindowCalibrate.Enabled = True
+FormPICTURESNAP.menuWindowFullPicture.Enabled = True
+
+' Disable output menus and modeless window menus if not modeless (if modal)
+Else
+FormPICTURESNAP.menuFileSaveAsGRD.Enabled = False
+FormPICTURESNAP.menuFileClipboard1.Enabled = False
+FormPICTURESNAP.menuFileClipboard2.Enabled = False
+FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = False
+FormPICTURESNAP.menuFileSaveAsBMP.Enabled = False
+FormPICTURESNAP.menuFilePrintSetup.Enabled = False
+FormPICTURESNAP.menuFilePrint.Enabled = False
+
+FormPICTURESNAP.menuWindowCalibrate.Enabled = False
+FormPICTURESNAP.menuWindowFullPicture.Enabled = False
+End If
+
+Exit Sub
+
+' Errors
+PictureSnapEnableDisableError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapEnableDisable"
+ierror = True
+Exit Sub
+
+End Sub
+
 

@@ -258,31 +258,8 @@ Call PictureSnapLoadCalibration
 If ierror Then Exit Sub
 
 ' Enable output menus if modeless mode
-If PictureSnapWindowIsModeless Then
-FormPICTURESNAP.menuFileSaveAsGRD.Enabled = True
-FormPICTURESNAP.menuFileClipboard1.Enabled = True
-FormPICTURESNAP.menuFileClipboard2.Enabled = True
-FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = True
-FormPICTURESNAP.menuFileSaveAsBMP.Enabled = True
-FormPICTURESNAP.menuFilePrintSetup.Enabled = True
-FormPICTURESNAP.menuFilePrint.Enabled = True
-
-FormPICTURESNAP.menuWindowCalibrate.Enabled = True
-FormPICTURESNAP.menuWindowFullPicture.Enabled = True
-
-' Disable output menus if modeless mode
-Else
-FormPICTURESNAP.menuFileSaveAsGRD.Enabled = False
-FormPICTURESNAP.menuFileClipboard1.Enabled = False
-FormPICTURESNAP.menuFileClipboard2.Enabled = False
-FormPICTURESNAP.menuFileSaveAsBMPOnly.Enabled = False
-FormPICTURESNAP.menuFileSaveAsBMP.Enabled = False
-FormPICTURESNAP.menuFilePrintSetup.Enabled = False
-FormPICTURESNAP.menuFilePrint.Enabled = False
-
-FormPICTURESNAP.menuWindowCalibrate.Enabled = False
-FormPICTURESNAP.menuWindowFullPicture.Enabled = False
-End If
+Call PictureSnapEnableDisable
+If ierror Then Exit Sub
 
 ' Store image width and heigth after loading for setting aspect ratio in full view window
 If PictureSnapFilename$ <> vbNullString Then

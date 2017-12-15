@@ -95,7 +95,7 @@ Global Const MAXCRYS% = 6               ' maximum crystals per spectrometer
 Global Const MAXCOND% = 64              ' maximum number of analytical or column conditions per sample
 
 Global Const MAXSPEC% = 6                       ' maximum spectrometers per run (spectro 0 = EDS)
-Global Const MAXAXES% = 4                       ' maximum stage axes (x, y, z, w)
+Global Const MAXAXES% = 4                       ' maximum stage axes (x, y, z)
 Global Const MAXMOT% = MAXSPEC% + MAXAXES%      ' maximum motors (spectrometer + stage)
 
 Global Const MAXSPECTRA_CL% = 4096      ' maximum number of CL channels

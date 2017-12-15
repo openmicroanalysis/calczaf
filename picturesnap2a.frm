@@ -77,6 +77,26 @@ Begin VB.Form FormPICTURESNAP2
       TabIndex        =   30
       Top             =   8040
       Width           =   3135
+      Begin VB.CommandButton CommandReadCurrentStageCoordinate3 
+         Caption         =   "Read Stage"
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   360
+         TabIndex        =   53
+         TabStop         =   0   'False
+         Top             =   3120
+         Width           =   1215
+      End
+      Begin VB.CommandButton CommandMoveTo3 
+         Caption         =   "Move To"
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   1680
+         TabIndex        =   52
+         TabStop         =   0   'False
+         Top             =   3120
+         Width           =   1215
+      End
       Begin VB.TextBox TextZStage3 
          Height          =   285
          Left            =   2040
@@ -301,6 +321,26 @@ Begin VB.Form FormPICTURESNAP2
       TabIndex        =   19
       Top             =   4080
       Width           =   3135
+      Begin VB.CommandButton CommandReadCurrentStageCoordinate2 
+         Caption         =   "Read Stage"
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   360
+         TabIndex        =   51
+         TabStop         =   0   'False
+         Top             =   3120
+         Width           =   1215
+      End
+      Begin VB.CommandButton CommandMoveTo2 
+         Caption         =   "Move To"
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   1680
+         TabIndex        =   50
+         TabStop         =   0   'False
+         Top             =   3120
+         Width           =   1215
+      End
       Begin VB.TextBox TextZStage2 
          Height          =   285
          Left            =   2040
@@ -486,6 +526,26 @@ Begin VB.Form FormPICTURESNAP2
       TabIndex        =   12
       Top             =   120
       Width           =   3135
+      Begin VB.CommandButton CommandReadCurrentStageCoordinate1 
+         Caption         =   "Read Stage"
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   360
+         TabIndex        =   49
+         TabStop         =   0   'False
+         Top             =   3120
+         Width           =   1215
+      End
+      Begin VB.CommandButton CommandMoveTo1 
+         Caption         =   "Move To"
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   1680
+         TabIndex        =   48
+         TabStop         =   0   'False
+         Top             =   3120
+         Width           =   1215
+      End
       Begin VB.TextBox TextZStage1 
          Height          =   285
          Left            =   2040

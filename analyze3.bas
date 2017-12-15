@@ -2783,7 +2783,7 @@ If ierror Then Exit Function
 wtscalratio! = 1#
 If analysis.CalData!(row%, chan%) <> 0# Then
 wtscalratio! = analysis.WtsData!(row%, chan%) / analysis.CalData!(row%, chan%)  ' for oxide/atomic scaling
-If chan% <= sample(1).LastElm% And sample(1).AtomicNums%(chan%) = 8 And sample(1).HydrogenStoichiometryFlag Then wtscalratio! = 1#      ' turn off scaling for hydrogen stoichiometry on excess oxygen
+If chan% <= sample(1).LastElm% And sample(1).AtomicNums%(chan%) = ATOMIC_NUM_OXYGEN% And sample(1).HydrogenStoichiometryFlag Then wtscalratio! = 1#      ' turn off scaling for hydrogen stoichiometry on excess oxygen
 detectionlimit! = detectionlimit! / wtscalratio!
 End If
 AnalyzeFormatAnalysisResult$ = MiscAutoFormatQ$(percenterror!, detectionlimit!, avalue!)
