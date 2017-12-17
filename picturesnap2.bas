@@ -155,6 +155,8 @@ Sub PictureSnapFileOpen(mode As Integer, tfilename As String, tForm As Form)
 ierror = False
 On Error GoTo PictureSnapFileOpenError
 
+Dim astring As String
+
 Dim gX_Polarity As Integer, gY_Polarity As Integer
 Dim gStage_Units As String
 
@@ -200,10 +202,32 @@ Else
 If Dir$(tfilename$) = vbNullString Then GoTo PictureSnapFileOpenNotFound
 End If
 
-' Check if image is a valid type
-'Call BMPReadImageInfo(tfilename$, m_Width&, m_Height&, m_Depth&, m_ImageType&)
-'If ierror Then Exit Sub
-'If m_ImageType& = 0 Then GoTo PictureSnapFileOpenUnknownType
+' Reset globals
+PictureSnapFilename$ = vbNullString
+PictureSnapCalibrated = False           ' reset not calibrated
+PictureSnapCalibrationSaved = False     ' reset calibration not saved
+Set FormPICTURESNAP.Picture2 = LoadPicture(vbNullString)
+FormPICTURESNAP.Caption = "PictureSnapApp [" & PictureSnapFilename$ & "]"
+
+' Check for existing GRD or ACQ info
+Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
+If ierror Then Exit Sub
+
+' Check if stage orientation is different than current configuration
+If Default_X_Polarity% = 0 And Default_Y_Polarity% = 0 Then
+astring$ = "Cameca"
+Else
+astring$ = "JEOL"
+End If
+
+If Default_X_Polarity% <> gX_Polarity% Or Default_Y_Polarity% <> gY_Polarity% Then
+msg$ = "The image file " & tfilename$ & " has a different stage orientation than the current stage configuration (" & astring$ & ")." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please load an image file with the correct stage orientation or change the current stage configuration from the File menu and try again."
+MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapFileOpen"
+Screen.MousePointer = vbDefault
+ierror = True
+Exit Sub
+End If
 
 ' Minimize form to force resize
 FormPICTURESNAP.WindowState = vbMinimized
@@ -213,42 +237,12 @@ DoEvents
 Screen.MousePointer = vbHourglass
 Set FormPICTURESNAP.Picture2 = LoadPicture(tfilename$)
 
-' Check for existing GRD or ACQ info
-Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
-If ierror Then Exit Sub
-
-' Invert X (if JEOL config loading Cameca or Cameca config loading JEOL files)
-If Default_X_Polarity% <> gX_Polarity% Then
-With FormPICTURESNAP.Picture2
-    .AutoRedraw = True
-    .PaintPicture .Picture, 0, 0, .ScaleWidth, , .ScaleWidth, , -.ScaleWidth
-    .Picture = .Image
-    .AutoRedraw = False
-    .Cls
-End With
-End If
-
-' Invert Y (if JEOL config loading Cameca or Cameca config loading JEOL files)
-If Default_Y_Polarity% <> gY_Polarity% Then
-With FormPICTURESNAP.Picture2
-    .AutoRedraw = True
-    .PaintPicture .Picture, 0, 0, , .ScaleHeight, , .ScaleHeight, , -.ScaleHeight
-    .Picture = .Image
-    .AutoRedraw = False
-    .Cls
-End With
-End If
-
-' Minimize and restore to re-size
-FormPICTURESNAP.WindowState = vbMinimized
+' Restore to re-size
 FormPICTURESNAP.WindowState = vbNormal
 Screen.MousePointer = vbDefault
 
-' Save last file
+' Set image file opened
 PictureSnapFilename$ = tfilename$
-FormPICTURESNAP.WindowState = vbNormal
-PictureSnapCalibrated = False           ' reset not calibrated
-PictureSnapCalibrationSaved = False     ' reset calibration not saved
 
 ' Update form caption
 FormPICTURESNAP.Caption = "Picture Snap [" & tfilename$ & "]"
@@ -314,6 +308,8 @@ Sub PictureSnapFileOpenGrid(tfilename As String)
 ierror = False
 On Error GoTo PictureSnapFileOpenGridError
 
+Dim astring As String
+
 Dim gridversion As Single
 Dim tfilename2 As String
 
@@ -344,6 +340,22 @@ End If
 ' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
+
+' Check if stage orientation is different than current configuration
+If Default_X_Polarity% = 0 And Default_Y_Polarity% = 0 Then
+astring$ = "Cameca"
+Else
+astring$ = "JEOL"
+End If
+
+If Default_X_Polarity% <> gX_Polarity% Or Default_Y_Polarity% <> gY_Polarity% Then
+msg$ = "The image file " & tfilename$ & " has a different stage orientation than the current stage configuration (" & astring$ & ")." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please load an image file with the correct stage orientation or change the current stage configuration from the File menu and try again."
+MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapFileOpenGrid"
+Screen.MousePointer = vbDefault
+ierror = True
+Exit Sub
+End If
 
 ' Save to byte array
 ReDim iarray(1 To GridImageData(1).ix%, 1 To GridImageData(1).iy%)
@@ -408,12 +420,13 @@ ymax# = GridImageData(1).ymax# * MICRONSPERMM&     ' Y stage
 End If
 End If
 
-' Assume same stage polarity
+' Load stage extents
 FormPICTURESNAP2.TextXStage1.Text = xmin#
 FormPICTURESNAP2.TextXStage2.Text = xmax#
 FormPICTURESNAP2.TextYStage1.Text = ymin#
 FormPICTURESNAP2.TextYStage2.Text = ymax#
 
+' This code should never get called (are GRD files always Cartesian? If so then we need to deal with this?)
 If Default_X_Polarity <> gX_Polarity Then
 If Default_X_Polarity = 0 And gX_Polarity <> 0 Then
 FormPICTURESNAP2.TextXStage1.Text = xmin#

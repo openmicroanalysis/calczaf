@@ -68,17 +68,10 @@ Begin VB.Form FormPICTURESNAP
       Begin VB.Menu menuFileImportPrbImg 
          Caption         =   "Import PrbImg File (Probe Image)"
       End
-      Begin VB.Menu menuFileSeparator1 
-         Caption         =   "-"
-      End
       Begin VB.Menu menuFileImportGridFile 
          Caption         =   "Import Grid (.GRD) File As Image"
       End
-      Begin VB.Menu menuFileSaveAsGRD 
-         Caption         =   "Save Image As Grid (.GRD) File"
-         Enabled         =   0   'False
-      End
-      Begin VB.Menu menuFileSeparator2 
+      Begin VB.Menu menuFileSeparator1 
          Caption         =   "-"
       End
       Begin VB.Menu menuFileClipboard1 
@@ -95,6 +88,13 @@ Begin VB.Form FormPICTURESNAP
       End
       Begin VB.Menu menuFileSaveAsBMP 
          Caption         =   "Save As BMP (with graphics objects)"
+         Enabled         =   0   'False
+      End
+      Begin VB.Menu menuFileSeparator2 
+         Caption         =   "-"
+      End
+      Begin VB.Menu menuFileSaveAsGRD 
+         Caption         =   "Save Image As Grid (.GRD) File"
          Enabled         =   0   'False
       End
       Begin VB.Menu menuFileSeparator3 
@@ -476,6 +476,11 @@ Call PictureSnapDrawScaleBar
 If ierror Then Exit Sub
 Call PictureSnapDrawLineRectangle
 If ierror Then Exit Sub
+' Display calibration points if indicated
+If PictureSnapDisplayCalibrationPointsFlag Then
+Call PictureSnapDisplayCalibrationPoints(FormPICTURESNAP, FormPICTURESNAP3)
+If ierror Then Exit Sub
+End If
 End Sub
 
 Private Sub VScroll1_Change()

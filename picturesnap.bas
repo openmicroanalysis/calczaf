@@ -554,7 +554,7 @@ Exit Sub
 End Sub
 
 Sub PictureSnapDrawCurrentPosition()
-' Draw current position on pic2
+' Draw current position on pic2 if real time mode
 
 ierror = False
 On Error GoTo PictureSnapDrawCurrentPositionError
@@ -634,12 +634,6 @@ FormPICTURESNAP3.DrawWidth = 2
 FormPICTURESNAP3.Circle (FormPICTURESNAP3.ScaleWidth * fractionx!, FormPICTURESNAP3.ScaleHeight * fractiony!), radius!, RGB(150, 0, 150)
 FormPICTURESNAP3.DrawWidth = 1
 End If
-End If
-
-' Display calibration points if indicated
-If PictureSnapDisplayCalibrationPointsFlag Then
-Call PictureSnapDisplayCalibrationPoints(FormPICTURESNAP, FormPICTURESNAP3)
-If ierror Then Exit Sub
 End If
 
 ' Display current mag box
