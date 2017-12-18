@@ -28,8 +28,8 @@ Dim ImageSNdata() As String     ' sample names
 Sub PictureSnapPrintOrClipboard(mode As Integer, tForm As Form)
 ' Save the current image as various
 '   mode = 1 print to default printer
-'   mode = 2 copy to clipboard (method = 1)
-'   mode = 3 copy to clipboard (method = 2)
+'   mode = 2 copy to clipboard (without graphics objects)
+'   mode = 3 copy to clipboard (with graphics objects)
 '   mode = 4 copy to BMP file with graphics objects
 
 ierror = False
@@ -40,72 +40,44 @@ Dim tfilename As String
 
 ' Print to default printer
 If mode% = 1 Then
-FormPICTURESNAP.Picture2.AutoRedraw = True      ' necessary for printing position coordinates
-Call MiscDelay(CDbl(2#), Now)
+FormPICTURESNAP.Picture2.AutoRedraw = True      ' necessary for printing complete image
+Call MiscDelay(CDbl(1#), Now)
 ixiy! = FormPICTURESNAP.Picture2.ScaleWidth / FormPICTURESNAP.Picture2.ScaleHeight
 Call BMPPrintDiagram(FormPICTURESNAP.Picture2, FormPICTURESNAP.Picture3, CSng(0.5), CSng(0.5), CSng(7 * ixiy!), CSng(7#))
 FormPICTURESNAP.Picture2.AutoRedraw = False
 If ierror Then Exit Sub
 
-' Reload picture to remove current position display from "autoredraw" layer
-Call PictureSnapSave
-If ierror Then Exit Sub
-
-Unload FormPICTURESNAP
-DoEvents
-
-Call PictureSnapLoad(True)     ' reload modeless
-If ierror Then Exit Sub
+Set FormPICTURESNAP.Picture2 = LoadPicture(PictureSnapFilename$)    ' to prevent trailing
 End If
 
 ' Clipboard (does not copy graphics methods)
 If mode% = 2 Then
-FormPICTURESNAP.menuFile.Visible = False
 Clipboard.Clear
-DoEvents
+Sleep (200)     ' need for Win7 clipboard issues
 Clipboard.SetData FormPICTURESNAP.Picture2.Picture
-FormPICTURESNAP.menuFile.Visible = True
-If ierror Then Exit Sub
-
-' Unload and reload to prevent gunsight "trailing"
-Unload FormPICTURESNAP
-DoEvents
-Call PictureSnapLoad(True)     ' reload modeless
 If ierror Then Exit Sub
 End If
 
 ' Clipboard (use special function to save graphics methods)
 If mode% = 3 Then
-FormPICTURESNAP.menuFile.Visible = False
-FormPICTURESNAP.Picture2.AutoRedraw = True      ' necessary for printing position coordinates
-Call MiscDelay(CDbl(2#), Now)                   ' necessary for re-draw
+FormPICTURESNAP.Picture2.AutoRedraw = True      ' necessary for printing complete image
+Call MiscDelay(CDbl(1#), Now)                   ' necessary for re-draw
 Call BMPCopyEntirePicture(FormPICTURESNAP.Picture2)    ' does not work on "hidden" bitmaps
-FormPICTURESNAP.menuFile.Visible = True
+FormPICTURESNAP.Picture2.AutoRedraw = False
 If ierror Then Exit Sub
 
-' Unload and reload to prevent gunsight "trailing"
-Unload FormPICTURESNAP
-DoEvents
-Call PictureSnapLoad(True)     ' reload modeless
-If ierror Then Exit Sub
+Set FormPICTURESNAP.Picture2 = LoadPicture(PictureSnapFilename$)    ' to prevent trailing
 End If
 
 ' Save to BMP file via clipboard to save drawing objects
 If mode% = 4 Then
-FormPICTURESNAP.menuFile.Visible = False
-FormPICTURESNAP.Picture2.AutoRedraw = True      ' necessary for printing position coordinates
-Call MiscDelay(CDbl(2#), Now)                   ' necessary for re-draw
-Clipboard.Clear
-Sleep (200)     ' need for Win7 clipboard issues
+FormPICTURESNAP.Picture2.AutoRedraw = True      ' necessary for printing complete image
+Call MiscDelay(CDbl(1#), Now)                   ' necessary for re-draw
 Call BMPCopyEntirePicture(FormPICTURESNAP.Picture2)    ' does not work on "hidden" bitmaps
-FormPICTURESNAP.menuFile.Visible = True
+FormPICTURESNAP.Picture2.AutoRedraw = False
 If ierror Then Exit Sub
 
-' Unload and reload to prevent gunsight "trailing"
-Unload FormPICTURESNAP
-DoEvents
-Call PictureSnapLoad(True)     ' reload modeless
-If ierror Then Exit Sub
+Set FormPICTURESNAP.Picture2 = LoadPicture(PictureSnapFilename$)    ' to prevent trailing
 
 ' Check for a bitmap in the system clipboard
 If Clipboard.GetFormat(vbCFBitmap) Then
@@ -226,6 +198,21 @@ msg$ = msg$ & "Please load an image file with the correct stage orientation or c
 MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapFileOpen"
 Screen.MousePointer = vbDefault
 ierror = True
+Exit Sub
+End If
+
+' Check if stage units is different than current configuration
+If Default_Stage_Units$ = "mm" Then
+astring$ = "mm"
+Else
+astring$ = "um"
+End If
+
+If Default_Stage_Units$ <> gStage_Units$ Then
+msg$ = "The image file " & tfilename$ & " has a different stage units than the current stage configuration (" & astring$ & ")." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please load an image file with the correct stage units or change the stage configuration from the File menu and try again."
+MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapFileOpen"
+Screen.MousePointer = vbDefault
 Exit Sub
 End If
 
@@ -357,27 +344,27 @@ ierror = True
 Exit Sub
 End If
 
+' Check if stage units is different than current configuration
+If Default_Stage_Units$ = "mm" Then
+astring$ = "mm"
+Else
+astring$ = "um"
+End If
+
+If Default_Stage_Units$ <> gStage_Units$ Then
+msg$ = "The image file " & tfilename$ & " has a different stage units than the current stage configuration (" & astring$ & ")." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please load an image file with the correct stage units or change the stage configuration from the File menu and try again."
+MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapFileOpenGrid"
+Screen.MousePointer = vbDefault
+Exit Sub
+End If
+
 ' Save to byte array
 ReDim iarray(1 To GridImageData(1).ix%, 1 To GridImageData(1).iy%)
 Screen.MousePointer = vbHourglass
 Call BMPConvertSingleArrayToByteArray(GridImageData(1).ix%, GridImageData(1).iy%, GridImageData(1).gData!(), iarray())
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
-
-' Convert BMP polarity for output if polarity mismatch
-If Default_X_Polarity% <> gX_Polarity% Then
-Screen.MousePointer = vbHourglass
-Call BMPInvertByteArray(Int(0), GridImageData(1).ix%, GridImageData(1).iy%, iarray())
-Screen.MousePointer = vbDefault
-If ierror Then Exit Sub
-End If
-
-If Default_Y_Polarity% <> gY_Polarity% Then
-Screen.MousePointer = vbHourglass
-Call BMPInvertByteArray(Int(1), GridImageData(1).ix%, GridImageData(1).iy%, iarray())
-Screen.MousePointer = vbDefault
-If ierror Then Exit Sub
-End If
 
 ' Load palette
 Call ImageLoadPalette(ImagePaletteNumber%, ImagePaletteArray())
@@ -393,32 +380,11 @@ If ierror Then Exit Sub
 ' Save BMP to original name
 tfilename$ = tfilename2$
 
-' Check for existing GRD or ACQ info
-Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
-If ierror Then Exit Sub
-
 ' Assume no unit conversions to begin with
 xmin# = GridImageData(1).xmin#
 xmax# = GridImageData(1).xmax#
 ymin# = GridImageData(1).ymin#
 ymax# = GridImageData(1).ymax#
-
-' Fix units if necessary
-If Default_Stage_Units$ <> gStage_Units$ Then
-If Default_Stage_Units$ = "um" And gStage_Units$ = "mm" Then
-xmin# = GridImageData(1).xmin# / MICRONSPERMM&     ' X stage
-xmax# = GridImageData(1).xmax# / MICRONSPERMM&     ' X stage
-ymin# = GridImageData(1).ymin# / MICRONSPERMM&     ' Y stage
-ymax# = GridImageData(1).ymax# / MICRONSPERMM&     ' Y stage
-End If
-
-If Default_Stage_Units$ = "mm" And gStage_Units$ = "um" Then
-xmin# = GridImageData(1).xmin# * MICRONSPERMM&     ' X stage
-xmax# = GridImageData(1).xmax# * MICRONSPERMM&     ' X stage
-ymin# = GridImageData(1).ymin# * MICRONSPERMM&     ' Y stage
-ymax# = GridImageData(1).ymax# * MICRONSPERMM&     ' Y stage
-End If
-End If
 
 ' Load stage extents
 FormPICTURESNAP2.TextXStage1.Text = xmin#
@@ -426,56 +392,11 @@ FormPICTURESNAP2.TextXStage2.Text = xmax#
 FormPICTURESNAP2.TextYStage1.Text = ymin#
 FormPICTURESNAP2.TextYStage2.Text = ymax#
 
-' This code should never get called (are GRD files always Cartesian? If so then we need to deal with this?)
-If Default_X_Polarity <> gX_Polarity Then
-If Default_X_Polarity = 0 And gX_Polarity <> 0 Then
-FormPICTURESNAP2.TextXStage1.Text = xmin#
-FormPICTURESNAP2.TextXStage2.Text = xmax#
-End If
-If Default_X_Polarity <> 0 And gX_Polarity = 0 Then
-FormPICTURESNAP2.TextXStage1.Text = xmax#
-FormPICTURESNAP2.TextXStage2.Text = xmin#
-End If
-End If
-
-If Default_Y_Polarity <> gY_Polarity Then
-If Default_Y_Polarity = 0 And gY_Polarity <> 0 Then
-FormPICTURESNAP2.TextYStage1.Text = ymin#
-FormPICTURESNAP2.TextYStage2.Text = ymax#
-End If
-If Default_Y_Polarity <> 0 And gY_Polarity = 0 Then
-FormPICTURESNAP2.TextYStage1.Text = ymax#
-FormPICTURESNAP2.TextYStage2.Text = ymin#
-End If
-End If
-
 ' Load pixel coordinates
 FormPICTURESNAP2.TextXPixel1.Text = 0
 FormPICTURESNAP2.TextXPixel2.Text = GridImageData(1).ix% * Screen.TwipsPerPixelX
 FormPICTURESNAP2.TextYPixel1.Text = GridImageData(1).iy% * Screen.TwipsPerPixelY    ' always flip for Y for BMP load
 FormPICTURESNAP2.TextYPixel2.Text = 0
-
-If Default_X_Polarity <> gX_Polarity Then
-If Default_X_Polarity = 0 And gX_Polarity <> 0 Then
-FormPICTURESNAP2.TextXPixel1.Text = GridImageData(1).ix% * Screen.TwipsPerPixelX
-FormPICTURESNAP2.TextXPixel2.Text = 0
-End If
-If Default_X_Polarity <> 0 And gX_Polarity = 0 Then
-FormPICTURESNAP2.TextXPixel1.Text = 0
-FormPICTURESNAP2.TextXPixel2.Text = GridImageData(1).ix% * Screen.TwipsPerPixelX
-End If
-End If
-
-If Default_Y_Polarity <> gY_Polarity Then
-If Default_Y_Polarity = 0 And gY_Polarity <> 0 Then
-FormPICTURESNAP2.TextYPixel1.Text = 0
-FormPICTURESNAP2.TextYPixel2.Text = GridImageData(1).iy% * Screen.TwipsPerPixelY
-End If
-If Default_Y_Polarity <> 0 And gY_Polarity = 0 Then
-FormPICTURESNAP2.TextYPixel1.Text = GridImageData(1).iy% * Screen.TwipsPerPixelY
-FormPICTURESNAP2.TextYPixel2.Text = 0
-End If
-End If
 
 ' Create .ACQ file
 PictureSnapMode% = 0    ' two calibration coordinates only

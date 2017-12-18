@@ -41,6 +41,7 @@ Set FormPICTURESNAP.Picture2 = LoadPicture(PictureSnapFilename$)
 
 ' Minimize and restore to re-size
 FormPICTURESNAP.WindowState = vbMinimized
+DoEvents
 FormPICTURESNAP.WindowState = vbNormal
 Screen.MousePointer = vbDefault
 
@@ -659,37 +660,12 @@ Sub PictureSnapLoadFullWindow()
 ierror = False
 On Error GoTo PictureSnapLoadFullWindowError
 
-Dim gX_Polarity As Integer, gY_Polarity As Integer
-Dim gStage_Units As String
-
 ' If picture file is already specified load it
 If PictureSnapFilename$ = vbNullString Then GoTo PictureSnapLoadFullWindowNoPicture
-
-' Check for existing GRD or ACQ info
-Call GridCheckGRDInfo(PictureSnapFilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
-If ierror Then Exit Sub
 
 ' Load into picturebox control to perform flipping
 Screen.MousePointer = vbHourglass
 Set FormPICTURESNAP3.Image1.Picture = LoadPicture(PictureSnapFilename$)
-
-' Invert X (if JEOL config loading Cameca or Cameca config loading JEOL files)
-If Default_X_Polarity% <> gX_Polarity% Then
-Set FormPICTURESNAP3.Picture1.Picture = FormPICTURESNAP3.Image1.Picture
-FormPICTURESNAP3.Picture1.AutoSize = True
-FormPICTURESNAP3.Picture1.AutoRedraw = True
-FormPICTURESNAP3.Picture1.PaintPicture FormPICTURESNAP3.Picture1.Picture, FormPICTURESNAP3.Picture1.ScaleWidth, 0, -FormPICTURESNAP3.Picture1.ScaleWidth, FormPICTURESNAP3.Picture1.ScaleHeight
-FormPICTURESNAP3.Image1.Picture = FormPICTURESNAP3.Picture1.Image
-End If
-
-' Invert Y (if JEOL config loading Cameca or  Cameca config loading JEOL files)
-If Default_Y_Polarity% <> gY_Polarity% Then
-Set FormPICTURESNAP3.Picture1.Picture = FormPICTURESNAP3.Image1.Picture
-FormPICTURESNAP3.Picture1.AutoSize = True
-FormPICTURESNAP3.Picture1.AutoRedraw = True
-FormPICTURESNAP3.Picture1.PaintPicture FormPICTURESNAP3.Picture1.Picture, 0, FormPICTURESNAP3.Picture1.ScaleHeight, FormPICTURESNAP3.Picture1.ScaleWidth, -FormPICTURESNAP3.Picture1.ScaleHeight
-FormPICTURESNAP3.Image1.Picture = FormPICTURESNAP3.Picture1.Image
-End If
 
 ' Rescale form to image aspect
 If FormPICTURESNAP3.Image1.Picture.Type > 0 Then   ' bitmap
@@ -790,9 +766,6 @@ Dim xmax As Single, ymax As Single, zmax As Single
 Dim halfwidth As Single, halfheight As Single
 Dim tcurrentx As Single, tcurrenty As Single
 
-Dim gX_Polarity As Integer, gY_Polarity As Integer
-Dim gStage_Units As String
-
 Dim tStageConversion As Single
 
 ' If form not visible just exit
@@ -821,10 +794,6 @@ xrange! = FormPICTURESNAP.Picture1.Width / 8#
 Call PictureSnapConvert(Int(1), CSng(0#), ymin!, zmin!, sx1!, sy1!, sz1!, fractionx!, fractiony!)
 If ierror Then Exit Sub
 Call PictureSnapConvert(Int(1), xrange!, ymax!, zmax!, sx2!, sy2!, sz2!, fractionx!, fractiony!)
-If ierror Then Exit Sub
-
-' Check for existing GRD or ACQ info
-Call GridCheckGRDInfo(PictureSnapFilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
 If ierror Then Exit Sub
 
 ' Update micron scale bar conversion

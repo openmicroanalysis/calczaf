@@ -55,10 +55,6 @@ Dim points As Single
 Dim zpoints As Single
 Dim DPI_Ratio As Single
 
-' These parameters are read only by GridCheckGRDInfo
-Dim gX_Polarity As Integer, gY_Polarity As Integer
-Dim gStage_Units As String
-
 ' Dimension coordinates (assume using three points and XYZ)
 Dim cpoint1(1 To 3) As Single, cpoint2(1 To 3) As Single, cpoint3(1 To 3) As Single
 Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Single
@@ -127,104 +123,30 @@ End If
 PictureSnapMode% = pmode!
 PictureSnapCalibrationNumberofZPoints% = zpoints!
 
-' Check for existing GRD or ACQ info
-Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
-If ierror Then Exit Sub
-
-' Assume no unit conversions
-apoint1!(1) = apoint1!(1)      ' X stage (point 1)
-apoint1!(2) = apoint1!(2)      ' Y stage (point 1)
-apoint2!(1) = apoint2!(1)      ' X stage (point 2)
-apoint2!(2) = apoint2!(2)      ' Y stage (point 2)
-apoint3!(1) = apoint3!(1)      ' X stage (point 3)
-apoint3!(2) = apoint3!(2)      ' Y stage (point 3)
-
-' Load third point
-If PictureSnapMode% = 1 Then
-apoint1!(3) = apoint1!(3)      ' Z stage (point 1)
-apoint2!(3) = apoint2!(3)      ' Z stage (point 2)
-apoint3!(3) = apoint3!(3)      ' Z stage (point 3)
-End If
-
-' Fix units if necessary
-If Default_Stage_Units$ <> gStage_Units$ Then
-If Default_Stage_Units$ = "um" And gStage_Units$ = "mm" Then
-apoint1!(1) = apoint1!(1) * MICRONSPERMM&     ' X stage
-apoint1!(2) = apoint1!(2) * MICRONSPERMM&     ' Y stage
-apoint2!(1) = apoint2!(1) * MICRONSPERMM&     ' X stage
-apoint2!(2) = apoint2!(2) * MICRONSPERMM&     ' Y stage
-apoint3!(1) = apoint3!(1) * MICRONSPERMM&     ' X stage
-apoint3!(2) = apoint3!(2) * MICRONSPERMM&     ' Y stage
-
-If PictureSnapMode% = 1 Then
-apoint1!(3) = apoint1!(3) * MICRONSPERMM&       ' Z stage (point 1)
-apoint2!(3) = apoint2!(3) * MICRONSPERMM&       ' Z stage (point 2)
-apoint3!(3) = apoint3!(3) * MICRONSPERMM&       ' Z stage (point 3)
-End If
-End If
-
-If Default_Stage_Units$ = "mm" And gStage_Units$ = "um" Then
-apoint1!(1) = apoint1!(1) / MICRONSPERMM&     ' X stage
-apoint1!(2) = apoint1!(2) / MICRONSPERMM&     ' Y stage
-apoint2!(1) = apoint2!(1) / MICRONSPERMM&     ' X stage
-apoint2!(2) = apoint2!(2) / MICRONSPERMM&     ' Y stage
-apoint3!(1) = apoint3!(1) / MICRONSPERMM&     ' X stage
-apoint3!(2) = apoint3!(2) / MICRONSPERMM&     ' Y stage
-
-If PictureSnapMode% = 1 Then
-apoint1!(3) = apoint1!(3) / MICRONSPERMM&       ' Z stage (point 1)
-apoint2!(3) = apoint2!(3) / MICRONSPERMM&       ' Z stage (point 2)
-apoint3!(3) = apoint3!(3) / MICRONSPERMM&       ' Z stage (point 3)
-End If
-End If
-
-End If
-
-' Load to calibration variables
+' Load screen coordinates to module level variables
 cpoint1x! = cpoint1!(1)  ' x reference screen coordinates
 cpoint1y! = cpoint1!(2)  ' y reference screen coordinates
 cpoint2x! = cpoint2!(1)  ' x reference screen coordinates
 cpoint2y! = cpoint2!(2)  ' y reference screen coordinates
+
 If PictureSnapMode% = 1 Then
 cpoint1z! = cpoint1!(3)  ' Z reference screen coordinates
 cpoint2z! = cpoint2!(3)  ' Z reference screen coordinates
 End If
 
+' Load stage coordinates to module level variables
 apoint1x! = apoint1!(1)  ' x reference stage coordinates
 apoint2x! = apoint2!(1)  ' x reference stage coordinates
 
 apoint1y! = apoint1!(2)  ' y reference stage coordinates
 apoint2y! = apoint2!(2)  ' y reference stage coordinates
 
-' Load proper image orientation
-If Default_X_Polarity% <> gX_Polarity% Then
-If Default_Y_Polarity = 0 And gY_Polarity = -1 Then
-apoint1x! = apoint2!(1)  ' reference stage coordinates
-apoint2x! = apoint1!(1)  ' reference stage coordinates
-End If
-If Default_X_Polarity = -1 And gX_Polarity = 0 Then
-apoint1x! = apoint1!(1)  ' reference stage coordinates
-apoint2x! = apoint2!(1)  ' reference stage coordinates
-End If
-End If
-
-If Default_Y_Polarity% <> gY_Polarity% Then
-If Default_Y_Polarity = 0 And gY_Polarity = -1 Then
-apoint1y! = apoint2!(2)  ' reference stage coordinates
-apoint2y! = apoint1!(2)  ' reference stage coordinates
-End If
-If Default_Y_Polarity = -1 And gY_Polarity = 0 Then
-apoint1y! = apoint1!(2)  ' reference stage coordinates
-apoint2y! = apoint2!(2)  ' reference stage coordinates
-End If
-End If
-
 If PictureSnapMode% = 1 Then
 apoint1z! = apoint1!(3)  ' Z reference stage coordinates
 apoint2z! = apoint2!(3)  ' Z reference stage coordinates
 End If
 
-' Load third point
+' Load third point screen and stage coordinates to module level variables
 If PictureSnapMode% = 1 Then
 cpoint3x! = cpoint3!(1)  ' x reference screen coordinates
 cpoint3y! = cpoint3!(2)  ' y reference screen coordinates
@@ -410,15 +332,8 @@ On Error GoTo PictureSnapConvertError
 Dim csx As Single, csy As Single, cox As Single, coy As Single
 Dim smallamount As Single
 
-Dim gX_Polarity As Integer, gY_Polarity As Integer
-Dim gStage_Units As String
-
 ' Check for open picture snap file
 If Trim$(PictureSnapFilename$) = vbNullString Then Exit Sub
-
-' Check for existing GRD or ACQ info
-Call GridCheckGRDInfo(PictureSnapFilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
-If ierror Then Exit Sub
 
 ' Convert using two calibration points (no Z stage interpolation)
 If PictureSnapMode% = 0 Then
@@ -442,26 +357,12 @@ If csy! = 0# Then GoTo PictureSnapConvertBadConvert
 ' Convert form to stage
 If mode% = 1 Then
 stagex! = csx! * formx! + cox!
-If Default_X_Polarity% <> 0 And gX_Polarity% = 0 Then
-stagex! = apoint2x! + (apoint1x! - stagex!)
-End If
-
 stagey! = csy! * formy! + coy!
-If Default_X_Polarity% <> 0 And gX_Polarity% = 0 Then
-stagey! = apoint2y! + (apoint1y! - stagey!)
-End If
 
 ' Convert stage to form
 Else
 formx! = (stagex! - cox!) / csx!
-If Default_X_Polarity% <> 0 And gX_Polarity% = 0 Then
-formx! = cpoint2x! + (cpoint1x! - formx!)
-End If
-
 formy! = (stagey! - coy!) / csy!
-If Default_X_Polarity% <> 0 And gX_Polarity% = 0 Then
-formy! = cpoint2y! + (cpoint1y! - formy!)
-End If
 End If
 End If
 
@@ -515,9 +416,6 @@ On Error GoTo PictureSnapSaveCalibrationError
 
 Dim tfilename As String
 
-Dim gX_Polarity As Integer, gY_Polarity As Integer
-Dim gStage_Units As String
-
 ' Dimension coordinates (assume using three points and XYZ)
 Dim cpoint1(1 To 3) As Single, cpoint2(1 To 3) As Single, cpoint3(1 To 3) As Single
 Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Single
@@ -560,10 +458,6 @@ End If
 
 ' Write calibration points to INI style ACQ file
 tfilename$ = MiscGetFileNameNoExtension$(pFileName$) & ".ACQ"
-
-' Check for existing GRD or ACQ info
-Call GridCheckGRDInfo(pFileName$, gX_Polarity%, gY_Polarity%, gStage_Units$)
-If ierror Then Exit Sub
 
 ' Save parameters
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "PictureSnap mode", CSng(PictureSnapMode%))
@@ -630,11 +524,11 @@ End If
 End If
 
 ' Now save coordinate system of stage orientation and units
-Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "X_Polarity", CSng(gX_Polarity%))              ' 1 = read, 2 = write
+Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "X_Polarity", CSng(Default_X_Polarity%))              ' 1 = read, 2 = write
 If ierror Then Exit Sub
-Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Y_Polarity", CSng(gY_Polarity%))              ' 1 = read, 2 = write
+Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Y_Polarity", CSng(Default_Y_Polarity%))              ' 1 = read, 2 = write
 If ierror Then Exit Sub
-Call InitINIReadWriteString(Int(1), tfilename$, "stage", "Stage_Units", gStage_Units$, vbNullString)    ' 0 = read, 1 = write
+Call InitINIReadWriteString(Int(1), tfilename$, "stage", "Stage_Units", Default_Stage_Units$, vbNullString)    ' 0 = read, 1 = write
 If ierror Then Exit Sub
 
 ' Save keV, mag and scan rotation
@@ -694,97 +588,43 @@ Dim radius As Single, tWidth As Single
 Dim fractionx As Single, fractiony As Single
 Dim formx As Single, formy As Single, formz As Single
 
-Dim gX_Polarity As Integer, gY_Polarity As Integer
-Dim gStage_Units As String
-
-' Check for existing GRD or ACQ info
-Call GridCheckGRDInfo(PictureSnapFilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
-If ierror Then Exit Sub
-
 ' Calculate a radius
 tWidth! = tForm.Width
 If tWidth! = 0# Then Exit Sub
 radius! = tWidth! / 100#
 
-' Convert to form coordinates (and return fractional distance for drawing on full view window)
 tForm.Picture2.DrawWidth = 2
 
-' Draw first calibration point
-Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint1x!, apoint1y!, apoint1z!, fractionx!, fractiony!)
-If Default_X_Polarity% <> gX_Polarity% Then
-fractionx! = 1# - fractionx!
-End If
-If Default_Y_Polarity% <> gY_Polarity% Then
-fractiony! = 1# - fractiony!
-End If
-tForm.Picture2.Circle (tForm.Picture2.ScaleWidth * fractionx!, tForm.Picture2.ScaleHeight * fractiony!), radius!, RGB(0, 255, 0)
-
-' Draw second calibration point
-Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint2x!, apoint2y!, apoint2z!, fractionx!, fractiony!)
-If Default_X_Polarity% <> gX_Polarity% Then
-fractionx! = 1# - fractionx!
-End If
-If Default_Y_Polarity% <> gY_Polarity% Then
-fractiony! = 1# - fractiony!
-End If
-tForm.Picture2.Circle (tForm.Picture2.ScaleWidth * fractionx!, tForm.Picture2.ScaleHeight * fractiony!), radius!, RGB(0, 255, 0)
-
 ' Display two calibration points (this works since FormPICTURESNAP.Picture2 is 1:1 twips, that is unstretched, but doesn't deal with orientation)
-'tForm.Picture2.Circle (cpoint1x!, cpoint1y!), radius!, RGB(0, 255, 0)
-'tForm.Picture2.Circle (cpoint2x!, cpoint2y!), radius!, RGB(0, 255, 0)
+tForm.Picture2.Circle (cpoint1x!, cpoint1y!), radius!, RGB(0, 255, 0)
+tForm.Picture2.Circle (cpoint2x!, cpoint2y!), radius!, RGB(0, 255, 0)
 
 ' Display third point if indicated
 If PictureSnapMode% = 1 Then
-Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint3x!, apoint3y!, apoint3z!, fractionx!, fractiony!)
-If Default_X_Polarity% <> gX_Polarity% Then
-fractionx! = 1# - fractionx!
+tForm.Picture2.Circle (cpoint3x!, cpoint3y!), radius!, RGB(0, 255, 0)
 End If
-If Default_Y_Polarity% <> gY_Polarity% Then
-fractiony! = 1# - fractiony!
-End If
-tForm.Picture2.Circle (tForm.Picture2.ScaleWidth * fractionx!, tForm.Picture2.ScaleHeight * fractiony!), radius!, RGB(0, 255, 0)
-'tForm.Picture2.Circle (cpoint3x!, cpoint3y!), radius!, RGB(0, 255, 0)
-End If
+
+tForm.Picture2.DrawWidth = 1
 
 ' Update full window
 If tForm3.Visible Then
 tWidth! = tForm3.ScaleWidth   ' calculate a radius
 If tWidth! <> 0# Then
-radius! = (tWidth! / 50#) ^ 0.8
+radius! = tWidth! / 80#
 
-' Convert to form coordinates (and return fractional distance for drawing on full view window)
+tForm3.DrawWidth = 2
 
-' Draw first calibration point
+' Draw first calibration point for full view window (need to scale to full view form)
 Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint1x!, apoint1y!, apoint1z!, fractionx!, fractiony!)
-If Default_X_Polarity% <> gX_Polarity% Then
-fractionx! = 1# - fractionx!
-End If
-If Default_Y_Polarity% <> gY_Polarity% Then
-fractiony! = 1# - fractiony!
-End If
 tForm3.Circle (tForm3.ScaleWidth * fractionx!, tForm3.ScaleHeight * fractiony!), radius!, RGB(0, 255, 0)
 
-' Draw second calibration point
+' Draw second calibration point for full view window (need to scale to full view form)
 Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint2x!, apoint2y!, apoint2z!, fractionx!, fractiony!)
-If Default_X_Polarity% <> gX_Polarity% Then
-fractionx! = 1# - fractionx!
-End If
-If Default_Y_Polarity% <> gY_Polarity% Then
-fractiony! = 1# - fractiony!
-End If
 tForm3.Circle (tForm3.ScaleWidth * fractionx!, tForm3.ScaleHeight * fractiony!), radius!, RGB(0, 255, 0)
 
 ' Display third point if indicated
 If PictureSnapMode% = 1 Then
-
-' Convert to form coordinates (and return fractional distance for drawing on full view window)
 Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint3x!, apoint3y!, apoint3z!, fractionx!, fractiony!)
-If Default_X_Polarity% <> gX_Polarity% Then
-fractionx! = 1# - fractionx!
-End If
-If Default_Y_Polarity% <> gY_Polarity% Then
-fractiony! = 1# - fractiony!
-End If
 tForm3.Circle (tForm3.ScaleWidth * fractionx!, tForm3.ScaleHeight * fractiony!), radius!, RGB(0, 255, 0)
 End If
 End If
@@ -1196,38 +1036,6 @@ PictureSnapSaveCalibration2Error:
 PictureSnapFilename$ = vbNullString
 PictureSnapCalibrated = False
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapSaveCalibration2"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub PictureSnapInvert(mode As Integer)
-' Invert the specified x or y min/max
-'  mode = 0 invert x
-'  mode = 1 invert y
-
-ierror = False
-On Error GoTo PictureSnapInvertError
-
-Dim temp As Single
-
-' Invert x
-If mode% = 0 Then
-temp! = apoint2x!
-apoint2x! = apoint1x!
-apoint1x! = temp!
-
-Else
-temp! = apoint2y!
-apoint2y! = apoint1y!
-apoint1y! = temp!
-End If
-
-Exit Sub
-
-' Errors
-PictureSnapInvertError:
-MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapInvert"
 ierror = True
 Exit Sub
 

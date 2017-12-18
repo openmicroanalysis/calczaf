@@ -75,11 +75,11 @@ Begin VB.Form FormPICTURESNAP
          Caption         =   "-"
       End
       Begin VB.Menu menuFileClipboard1 
-         Caption         =   "Copy To Clipboard (method 1)"
+         Caption         =   "Copy To Clipboard (without graphic objects)"
          Enabled         =   0   'False
       End
       Begin VB.Menu menuFileClipboard2 
-         Caption         =   "Copy To Clipboard (method 2)"
+         Caption         =   "Copy To Clipboard (with graphic objects)"
          Enabled         =   0   'False
       End
       Begin VB.Menu menuFileSaveAsBMPOnly 
