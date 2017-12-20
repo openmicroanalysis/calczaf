@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version S
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/19/17	Improve PictureSnapApp text input mode
+
 12/17/17	Modify code to prevent loading of images in PictureSnap if not the same stage configuration.
 v. 12.1.2
 
@@ -82,7 +84,7 @@ v. 12.0.8
 
 11/14/17	Set scan mode on Imaging exit explicitly for JEOL 8900/8200/8500.
 v. 12.0.7
-		Improve save image daat speed.
+		Improve save image data speed.
 
 11/09/17	Modify JEOL set beam mode code to set PIC instead of BUP for 8900 (Adams)
 
@@ -107,7 +109,7 @@ v. 12.0.4
 10/31/17	Modify standard assignments for interferences to utilize sorted combo 
 		controls (just like primary standards) (Goemann).
 		
-		Fix bug for normalized intensitiers in plot wavescan code.  Add more 
+		Fix bug for normalized intensities in plot wavescan code.  Add more 
 		debug output for setting beam modes.
 
 10/30/17	Fix bug in UpdateCalculate2 for MAN elements in standards.
@@ -147,7 +149,7 @@ v. 12.0.1
 
 09/28/17	Make autofocus checkbox on also for Stds in Automate (Walshaw).
 
-		Add skip column conditions flag to Startwin paking and PHA code (Goemann).
+		Add skip column conditions flag to Startwin peaking and PHA code (Goemann).
 		
 		Fix unkns/stds plot output for "combined" samples (Fournelle).
 
@@ -157,7 +159,7 @@ v. 12.0.1
 
 09/19/17	Modify JEOL EDS get net intensity call for new parameter (Poirier).
 
-09/18/17	Add warning to CalcImage if off-peak sammple setup and no off-peak images.
+09/18/17	Add warning to CalcImage if off-peak sample setup and no off-peak images.
 
 09/15/17	Remove unnecessary exe files from git repository.
 
@@ -176,7 +178,7 @@ v. 11.9.9
 
 08/17/17	Fix CPQ form for increased number of MAN standards (Poeml and Poirier).
 
-		Add check for diffeernt keV to GetElmSave and UpdateCalculateUpdateStandard
+		Add check for different keV to GetElmSave and UpdateCalculateUpdateStandard
 
 08/15/17	Fix orientation for 8x30 stage maps (Buse). Modify code to support estimated sample acquisition time for EDS).
 
@@ -273,7 +275,7 @@ v. 11.9.1
 
 		Start working on new app for JEOL/Cameca x-ray map conversion (will be available from Probe Image File menu)
 
-05/25/17	Disable and hide driver logging mode menu (still activated from Probein.ini file).
+05/25/17	Disable and hide driver logging mode menu (still activated from Probewin.ini file).
 
 		Make sure analog signal images are copied when converting replicate PrbImg files to TDI PrbImg files.
 

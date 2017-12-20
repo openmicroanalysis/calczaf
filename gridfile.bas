@@ -531,7 +531,7 @@ lpKeyName$ = "Stage_Units"
 lpDefault$ = Default_Stage_Units$
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 gStage_Units$ = Left$(lpReturnString$, valid&)
-If gStage_Units$ <> "mm" And gStage_Units$ <> "hm" And gStage_Units$ <> "um" Then GoTo GridCheckGRDInfoBadUnits
+If gStage_Units$ <> "mm" And gStage_Units$ <> "um" Then GoTo GridCheckGRDInfoBadUnits
 
 ' No existing GRDInfo.ini file, so create one using global default values
 Else
