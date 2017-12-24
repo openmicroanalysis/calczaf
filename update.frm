@@ -17,14 +17,14 @@ Begin VB.Form FormUPDATE
    ScaleWidth      =   5310
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
-   Begin HttpClientCtl.HttpClient HttpClient1 
-      Left            =   3120
+   Begin FtpClientCtl.FtpClient FtpClient1 
+      Left            =   2640
       Top             =   720
       _cx             =   741
       _cy             =   741
    End
-   Begin FtpClientCtl.FtpClient FtpClient1 
-      Left            =   2640
+   Begin HttpClientCtl.HttpClient HttpClient1 
+      Left            =   3120
       Top             =   720
       _cx             =   741
       _cy             =   741
@@ -101,7 +101,8 @@ Begin VB.Form FormUPDATE
       Left            =   120
       TabIndex        =   5
       ToolTipText     =   "Download from ""epmalab"""
-      Top             =   1440
+      Top             =   1200
+      Value           =   -1  'True
       Width           =   3855
    End
    Begin VB.OptionButton OptionDownloadType 
@@ -120,8 +121,7 @@ Begin VB.Form FormUPDATE
       Left            =   120
       TabIndex        =   4
       ToolTipText     =   "Download from ""whitewater"""
-      Top             =   1200
-      Value           =   -1  'True
+      Top             =   1440
       Width           =   3855
    End
    Begin VB.CommandButton CommandClose 
