@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGETPTC"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -21,9 +21,9 @@ Dim i As Integer
 
 ' Load PTC flag
 If iptc% = 0 Then
-FormGETPTC.CheckUsePTC.Value = vbUnchecked
+FormGETPTC.CheckUsePTC.value = vbUnchecked
 Else
-FormGETPTC.CheckUsePTC.Value = vbChecked
+FormGETPTC.CheckUsePTC.value = vbChecked
 End If
 
 ' Load models
@@ -50,9 +50,9 @@ If PTCNumericalIntegrationStep! = 0 Then PTCNumericalIntegrationStep! = 0.00001
 FormGETPTC.TextPTCNumericalIntegrationStep.Text = MiscAutoFormat$(PTCNumericalIntegrationStep!)
 
 If PTCDoNotNormalizeSpecifiedFlag Then
-FormGETPTC.CheckPTCDoNotNormalizeSpecifiedFlag.Value = vbChecked
+FormGETPTC.CheckPTCDoNotNormalizeSpecifiedFlag.value = vbChecked
 Else
-FormGETPTC.CheckPTCDoNotNormalizeSpecifiedFlag.Value = vbUnchecked
+FormGETPTC.CheckPTCDoNotNormalizeSpecifiedFlag.value = vbUnchecked
 End If
 If ProbeDataFileVersionNumber! < 10.68 Then FormGETPTC.CheckPTCDoNotNormalizeSpecifiedFlag.Enabled = False
 
@@ -75,7 +75,7 @@ ierror = False
 On Error GoTo GetPTCSaveError
 
 ' Save PTC flag
-If FormGETPTC.CheckUsePTC.Value = vbUnchecked Then
+If FormGETPTC.CheckUsePTC.value = vbUnchecked Then
 iptc% = 0
 Else
 iptc% = 1
@@ -124,7 +124,7 @@ Else
 PTCNumericalIntegrationStep! = Val(FormGETPTC.TextPTCNumericalIntegrationStep.Text)
 End If
 
-If FormGETPTC.CheckPTCDoNotNormalizeSpecifiedFlag.Value = vbChecked Then
+If FormGETPTC.CheckPTCDoNotNormalizeSpecifiedFlag.value = vbChecked Then
 PTCDoNotNormalizeSpecifiedFlag = True
 Else
 PTCDoNotNormalizeSpecifiedFlag = False

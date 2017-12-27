@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSECONDARY"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 ' Horizontal filed width for non-graphical methods (in microns)

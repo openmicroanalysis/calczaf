@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeEDS2"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 Dim EDSKLMCounter As Long
@@ -101,14 +101,14 @@ EDSKLMCounter& = 0                              ' re-set KLM annotation counter
 total_num& = 0                                  ' re-set KLM symbol and xray counter
 
 ' No KLM markers
-If tForm.OptionKLM(0).Value = True Then Exit Sub
+If tForm.OptionKLM(0).value = True Then Exit Sub
 
 ' Get keV start and stop
 xstart! = Val(tForm.TextStartkeV.Text)
 xstop! = Val(tForm.TextStopkeV.Text)
 
 ' Analyzed elements
-If tForm.OptionKLM(1).Value Then
+If tForm.OptionKLM(1).value Then
 
 ' Plot analyzed and not analyzed elements (skip disable quant elements)
 For chan% = 1 To EDSOldSample(1).LastChan%
@@ -144,7 +144,7 @@ Next chan%
 End If
 
 ' All elements
-If tForm.OptionKLM(2).Value Then
+If tForm.OptionKLM(2).value Then
 For i% = 1 To MAXELM%
 ip% = i%
 
@@ -167,7 +167,7 @@ Next i%
 End If
 
 ' Specific element
-If tForm.OptionKLM(3).Value Then
+If tForm.OptionKLM(3).value Then
 sym$ = tForm.ComboSpecificElement.Text  ' specific element atomic number
 ip% = IPOS1(MAXELM%, sym$, Symlo$())
 If ip% > 0 Then
@@ -223,7 +223,7 @@ Next i%
 ' Load default KLM element and index
 If EDSKLMElement% = 0 Then EDSKLMElement% = 14   ' default to silicon
 tForm.ComboSpecificElement.ListIndex = EDSKLMElement% - 1
-tForm.OptionKLM(EDSKLMIndex%).Value = True
+tForm.OptionKLM(EDSKLMIndex%).value = True
 
 Exit Sub
 
@@ -244,7 +244,7 @@ On Error GoTo EDSSaveKLMError
 Dim i As Integer
 
 For i% = 0 To 3
-If tForm.OptionKLM(i%).Value Then EDSKLMIndex% = i%
+If tForm.OptionKLM(i%).value Then EDSKLMIndex% = i%
 Next i%
 
 ' Save the EDS specific element

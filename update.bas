@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeUPDATE"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 Private Const NOTLOADEDVALUE! = -0.0000000009   ' flag for array member not loaded

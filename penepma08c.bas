@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma08c"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 Const COL7% = 7

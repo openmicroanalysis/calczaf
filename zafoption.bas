@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeZAFOPTION"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -15,7 +15,7 @@ Dim ZAFOptionSample(1 To 1) As TypeSample
 Dim FormulaTmpSample(1 To 1) As TypeSample
 
 Sub ZAFOptionLoad(sample() As TypeSample)
-' Loads the CalcZAF calculation options form
+' Loads the CalcZAF/CalcImage calculation options form
 
 ierror = False
 On Error GoTo ZAFOptionLoadError
@@ -117,6 +117,14 @@ If UseOxygenFromHalogensCorrectionFlag Then
 FormZAFOPT.CheckUseOxygenFromHalogensCorrection.value = vbChecked
 Else
 FormZAFOPT.CheckUseOxygenFromHalogensCorrection.value = vbUnchecked
+End If
+
+If ZAFOptionSample(1).HydrogenStoichiometryFlag Then FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked
+FormZAFOPT.TextHydrogenStoichiometry.Text = MiscAutoFormatN$(ZAFOptionSample(1).HydrogenStoichiometryRatio!, 2)
+
+If UCase$(app.EXEName) = UCase$("CalcImage") And ProbeDataFileVersionNumber! <= 7.22 Then
+FormZAFOPT.CheckHydrogenStoichiometry.Enabled = False
+FormZAFOPT.TextHydrogenStoichiometry.Enabled = False
 End If
 
 ' Load formula calculations
@@ -238,14 +246,23 @@ ZAFOptionSample(1).DifferenceFormulaFlag = False
 End If
 ZAFOptionSample(1).DifferenceFormula$ = Trim$(FormZAFOPT.TextDifferenceFormula.Text)
 
+' Check for both element by difference and formula by difference
+If ZAFOptionSample(1).DifferenceElementFlag And ZAFOptionSample(1).DifferenceFormulaFlag Then
+msg$ = "You cannot specify both the element by difference and the formula by difference flags at the same time."
+MsgBox msg$, vbOKOnly + vbInformation, "ZAFOptionSave"
+ierror = True
+Exit Sub
+End If
+
 ' Convert formula by difference string to temp sample and check for errors
-If Trim$(ZAFOptionSample(1).DifferenceFormula$) <> vbNullString Then
+If ZAFOptionSample(1).DifferenceFormulaFlag And Trim$(ZAFOptionSample(1).DifferenceFormula$) <> vbNullString Then
 Call FormulaFormulaToSample(ZAFOptionSample(1).DifferenceFormula$, FormulaTmpSample())
 If ierror Then Exit Sub
 
-' Check if new elements are added (from formula by difference entry)
+' Check if new elements need to be added as specified elements (from formula by difference string)
 For chan% = 1 To FormulaTmpSample(1).LastChan%
-ip% = IPOS1(ZAFOptionSample(1).LastChan%, FormulaTmpSample(1).Elsyms$(chan%), ZAFOptionSample(1).Elsyms$())
+ip% = IPOS1(ZAFOptionSample(1).LastChan%, FormulaTmpSample(1).Elsyms$(chan%), ZAFOptionSample(1).Elsyms$())        ' check for analyzed or specified
+'ip% = IPOS1B(ZAFOptionSample(1).LastElm% + 1, ZAFOptionSample(1).LastChan%, FormulaTmpSample(1).Elsyms$(chan%), ZAFOptionSample(1).Elsyms$())       ' check only specified
 If ip% = 0 And ZAFOptionSample(1).LastChan% + 1 <= MAXCHAN% Then
 ZAFOptionSample(1).LastChan% = ZAFOptionSample(1).LastChan% + 1
 ZAFOptionSample(1).Elsyms$(ZAFOptionSample(1).LastChan%) = LCase$(FormulaTmpSample(1).Elsyms$(chan%))
@@ -257,14 +274,21 @@ ZAFOptionSample(1).numoxd%(ZAFOptionSample(1).LastChan%) = AllOxd%(ipp%)     ' s
 End If
 End If
 Next chan%
-End If
 
-' Check for both element by difference and formula by difference
-If ZAFOptionSample(1).DifferenceElementFlag And ZAFOptionSample(1).DifferenceFormulaFlag Then
-msg$ = "You cannot specify both the element by difference and the formula by difference flags at the same time."
+' Warn user if analyzed element is in formula by difference string
+For chan% = 1 To FormulaTmpSample(1).LastChan%
+ip% = IPOS1(ZAFOptionSample(1).LastElm%, FormulaTmpSample(1).Elsyms$(chan%), ZAFOptionSample(1).Elsyms$())        ' check for analyzed only
+If ip% > 0 Then
+If ZAFOptionSample(1).DisableQuantFlag(ip%) = 0 Then
+msg$ = "An element in the formula by difference string (" & FormulaTmpSample(1).Elsyms$(chan%) & ") is already present as an analyzed element that is not disabled for quant." & vbCrLf & vbCrLf
+msg$ = msg$ & "You can not have an analyzed element duplicated in the formula by difference string, unless you first disable the analyzed element for quantification (see Elements/Cations dialog)."
 MsgBox msg$, vbOKOnly + vbInformation, "ZAFOptionSave"
 ierror = True
 Exit Sub
+End If
+End If
+Next chan%
+
 End If
 
 ZAFOptionSample(1).StoichiometryElement$ = vbNullString
@@ -310,6 +334,20 @@ If FormZAFOPT.CheckUseOxygenFromHalogensCorrection.value = vbChecked Then
 UseOxygenFromHalogensCorrectionFlag = True
 Else
 UseOxygenFromHalogensCorrectionFlag = False
+End If
+
+' Save hydrogen by excess oxygen stroichiometry
+If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
+ZAFOptionSample(1).HydrogenStoichiometryFlag = True
+Else
+ZAFOptionSample(1).HydrogenStoichiometryFlag = False
+End If
+
+If Val(FormZAFOPT.TextHydrogenStoichiometry.Text) < 0# Or Val(FormZAFOPT.TextHydrogenStoichiometry.Text) > 10# Then
+msg$ = "Hydrogen stoichiometry out of range for hydrogen stoichiometry to excess oxyegn (must be between 0 and 10)"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFOptionSave"
+Else
+ZAFOptionSample(1).HydrogenStoichiometryRatio! = Val(FormZAFOPT.TextHydrogenStoichiometry.Text)
 End If
 
 ' Set calculation flags
@@ -520,5 +558,54 @@ Exit Sub
 
 End Sub
 
+Sub ZAFOptionCheckForExcessOxygen()
+' Routine to check for analyzed oxygen and specified hydrogen, if user selects "Hydrogen Stoichiometry".
 
+ierror = False
+On Error GoTo ZAFOptionCheckForExcessOxygenError
+
+Dim ip As Integer, ipp As Integer
+
+' Check for specified hydrogen (must be present)
+ip% = IPOS1(ZAFOptionSample(1).LastChan%, Symlo$(ATOMIC_NUM_HYDROGEN%), ZAFOptionSample(1).Elsyms$())
+If ip% = 0 Then GoTo ZAFOptionCheckForExcessOxygenNoHydrogen
+
+' Check for analyzed oxygen (if analyzed, just exit)
+ip% = IPOS1(ZAFOptionSample(1).LastElm%, Symlo$(ATOMIC_NUM_OXYGEN%), ZAFOptionSample(1).Elsyms$())
+If ip% > 0 Then Exit Sub
+
+' Oxygen is specified or calculated. Check if non-zero specified oxygen value and exit if non-zero
+ipp% = IPOS1(ZAFOptionSample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), ZAFOptionSample(1).Elsyms$())
+If ipp% > ZAFOptionSample(1).LastElm% Then
+If ZAFOptionSample(1).ElmPercents!(ipp%) > 0# Then Exit Sub
+End If
+
+' Check if oxygen is element by difference
+If ZAFOptionSample(1).DifferenceElementFlag% And MiscStringsAreSame(ZAFOptionSample(1).DifferenceElement$, Symlo$(ATOMIC_NUM_OXYGEN%)) Then Exit Sub
+
+' Check if oxygen is element by relative stoichiometry
+If ZAFOptionSample(1).RelativeElementFlag% And MiscStringsAreSame(ZAFOptionSample(1).RelativeElement$, Symlo$(ATOMIC_NUM_OXYGEN%)) Then Exit Sub
+
+' Stoichiometric hydrogen will not be calculated correctly
+msg$ = "WARNING: Hydrogen by Stoichiometry was selected, but oxygen is either not an analyzed "
+msg$ = msg$ & "element or an unanalyzed element with a specified concentration greater than zero "
+msg$ = msg$ & "a calculated element by difference or by relative stoichiometry. Therefore, the "
+msg$ = msg$ & "hydrogen stoichiometry calculations will not be correct."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFOptionCheckForExcessOxygen"
+
+Exit Sub
+
+' Errors
+ZAFOptionCheckForExcessOxygenError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFOptionCheckForExcessOxygen"
+ierror = True
+Exit Sub
+
+ZAFOptionCheckForExcessOxygenNoHydrogen:
+msg$ = "Hydrogen must be a specified element for calculating hydrogen by stoichiometry. See the Elements/Cations button in the Analyze! window."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFOptionCheckForExcessOxygen"
+ierror = True
+Exit Sub
+
+End Sub
 

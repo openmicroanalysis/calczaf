@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMODAL2"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 Sub ModalFitModal(numelms As Integer, numstds As Integer, upercents() As Double, spercents() As Double, fitcoeff As Double, weightflag As Integer)

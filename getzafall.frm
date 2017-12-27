@@ -309,7 +309,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 Private Sub CheckPenepmaKratioLimit_Click()
@@ -366,7 +366,7 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub Option6_Click(index As Integer)
+Private Sub Option6_Click(Index As Integer)
 If Not DebugMode Then On Error Resume Next
 Call GetZAFAllSetEnables
 If ierror Then Exit Sub

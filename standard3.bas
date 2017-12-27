@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSTANDARD3"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 Sub StandardModalCheckGroupName(grpname As String)

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeXray5"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -66,7 +66,7 @@ If ierror Then Exit Sub
 FormXRAY.TextMinimumKLM.Text = Str$(DefaultMinimumKLMDisplay!)
 FormXRAY.TextStart.Text = Str$(xstart!)
 FormXRAY.TextStop.Text = Str$(xstop!)
-FormXRAY.TextkeV.Text = Str$(keV!)
+FormXRAY.TextKev.Text = Str$(keV!)
 
 ' Load absorption edges checkbox
 If DefaultAbsorptionEdgeDisplay% = 1 Then
@@ -299,13 +299,13 @@ Else
 klm! = Val(FormXRAY.TextMinimumKLM.Text)
 End If
 
-If Val(FormXRAY.TextkeV.Text) < MINKILOVOLTS! Or Val(FormXRAY.TextkeV.Text) > MAXKILOVOLTS! Then
+If Val(FormXRAY.TextKev.Text) < MINKILOVOLTS! Or Val(FormXRAY.TextKev.Text) > MAXKILOVOLTS! Then
 msg$ = "Kilovolts value is out of range (must be between " & Format$(MINKILOVOLTS!) & " and " & Format$(MAXKILOVOLTS!) & ")"
 MsgBox msg$, vbOKOnly + vbExclamation, "XraySave"
 ierror = True
 Exit Sub
 Else
-keV! = Val(FormXRAY.TextkeV.Text)
+keV! = Val(FormXRAY.TextKev.Text)
 End If
 
 If Val(FormXRAY.TextStart.Text) < 0.5 Or Val(FormXRAY.TextStart.Text) > 240# Then

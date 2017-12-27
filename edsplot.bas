@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeEDSPlot"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 Dim TotalEnergyRange As Single
@@ -49,7 +49,7 @@ End If
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))             ' red
 
-tForm.Pesgo1.Points = sample(1).EDSSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.points = sample(1).EDSSpectraNumberofChannels%(datarow%)
 
 ' Load y axis data subset 0 - eds data
 For i% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)

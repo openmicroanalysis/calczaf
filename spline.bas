@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSpline"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 Sub SplineFit(X() As Single, Y() As Single, n As Long, yp1 As Double, ypn As Double, Y2() As Double)

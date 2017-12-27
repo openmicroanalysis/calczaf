@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeZAF"
-' (c) Copyright 1995-2017 by John J. Donovan (credit to John Armstrong for original code)
+' (c) Copyright 1995-2018 by John J. Donovan (credit to John Armstrong for original code)
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -1947,7 +1947,7 @@ zaf.krat!(i%) = r1!(i%)
 End If
 Next i%
 
-' Calculate hydrogen by stoichiometry to excess oxygen
+' Calculate hydrogen by stoichiometry to excess oxygen (function ZAFConvertExcessOxygenToHydrogen checks ForceNegativeKratiosToZeroFlag for negative excess oxygen)
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) = 18 Then
 r1!(i%) = ZAFConvertExcessOxygenToHydrogen!(r1!(), zaf, sample())
@@ -1958,7 +1958,7 @@ Next i%
 ' Calculate element by difference
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) = 13 Then
-If zaf.ksum! < 1# Or zaf.ksum! >= 1# And Not ForceNegativeKratiosToZeroFlag Then  ' to allow for "negative" element (e.g., hydrogen) by difference if very small concentration near 100%
+If zaf.ksum! < 1# Or (zaf.ksum! >= 1# And Not ForceNegativeKratiosToZeroFlag) Then  ' to allow for "negative" element (e.g., hydrogen) by difference if very small concentration near 100% total
 r1!(i%) = 1# - zaf.ksum!
 If zaf.il%(zaf.in0%) = 0 Then       ' if calculating oxygen by stoichiometry
 r1!(i%) = r1!(i%) / (1# + zaf.p1!(i%))
@@ -1987,7 +1987,7 @@ temp! = 1# - zaf.ksum!
 ' Add in formula by difference elements (search from 1 to LastChan in FormulaTmpSample())
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) = 19 Then
-If zaf.ksum! < 1# Then
+If zaf.ksum! < 1# Or (zaf.ksum! >= 1# And Not ForceNegativeKratiosToZeroFlag) Then  ' to allow for "negative" formula by difference if very small concentration near 100% total
 ip% = IPOS1B(Int(1), FormulaTmpSample(1).LastChan%, sample(1).Elsyms$(i%), FormulaTmpSample(1).Elsyms$())
 If ip% > 0 Then
 r1!(i%) = FormulaTmpSample(1).ElmPercents!(ip%) / 100# * temp!

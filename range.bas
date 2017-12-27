@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeRANGE"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -64,7 +64,7 @@ If XrayLastThickness! = 0# Then XrayLastThickness! = 1#
 If XrayLastXrayEnergy! = 0# Then XrayLastXrayEnergy! = 10#
 
 FormRANGE.TextDensity.Text = Str$(XrayLastDensity!)
-FormRANGE.TextkeV.Text = Str$(XrayLastKev!)
+FormRANGE.TextKev.Text = Str$(XrayLastKev!)
 FormRANGE.TextThickness.Text = Str$(XrayLastThickness!)
 
 FormRANGE.TextXrayEnergy.Text = Str$(XrayLastXrayEnergy!)
@@ -104,7 +104,7 @@ ipp% = IPOS1(MAXRAY% - 1, ray$, Xraylo$())
 If ipp% = 0 Then GoTo RangeSaveInvalidXray
 
 XrayLastDensity! = Val(FormRANGE.TextDensity.Text)
-XrayLastKev! = Val(FormRANGE.TextkeV.Text)
+XrayLastKev! = Val(FormRANGE.TextKev.Text)
 XrayLastThickness! = Val(FormRANGE.TextThickness.Text)
 
 XrayLastElementEmitted% = ip% - 1

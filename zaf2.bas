@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeZAF2"
-' (c) Copyright 1995-2017 by John J. Donovan (credit to John Armstrong for original code)
+' (c) Copyright 1995-2018 by John J. Donovan (credit to John Armstrong for original code)
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -448,9 +448,9 @@ extraoxygen! = alloxygen! - stoichiometricoxygen!
 
 ' Convert to hydrogen if there is excess oxygen (allow negative correction)
 temp! = 0#
-'If extraoxygen! > 0# Then
+If extraoxygen! > 0# Or (extraoxygen! < 0# And Not ForceNegativeKratiosToZeroFlag) Then
 temp! = extraoxygen! / AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).HydrogenStoichiometryRatio! * AllAtomicWts!(ATOMIC_NUM_HYDROGEN%)
-'End If
+End If
 
 ZAFConvertExcessOxygenToHydrogen! = temp!
 Exit Function

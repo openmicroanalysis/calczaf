@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormZAFOPT 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Calculation Options"
-   ClientHeight    =   5745
+   ClientHeight    =   6345
    ClientLeft      =   1440
    ClientTop       =   3480
    ClientWidth     =   9120
@@ -21,7 +21,7 @@ Begin VB.Form FormZAFOPT
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   5745
+   ScaleHeight     =   6345
    ScaleWidth      =   9120
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox TextDensity 
@@ -37,7 +37,7 @@ Begin VB.Form FormZAFOPT
       Height          =   1095
       Left            =   120
       TabIndex        =   26
-      Top             =   4560
+      Top             =   5160
       Width           =   7815
       Begin VB.TextBox TextCoatingThickness 
          Height          =   285
@@ -135,7 +135,7 @@ Begin VB.Form FormZAFOPT
       Height          =   855
       Left            =   120
       TabIndex        =   20
-      Top             =   3480
+      Top             =   3960
       Width           =   7815
       Begin VB.ComboBox ComboFormula 
          Appearance      =   0  'Flat
@@ -213,11 +213,39 @@ Begin VB.Form FormZAFOPT
    Begin VB.Frame Frame1 
       Caption         =   "Calculation Options"
       ForeColor       =   &H00FF0000&
-      Height          =   3135
+      Height          =   3495
       Left            =   120
       TabIndex        =   0
       Top             =   120
       Width           =   7815
+      Begin VB.CheckBox CheckHydrogenStoichiometry 
+         Caption         =   "Hydrogen Stoichiometry To Excess Oxygen"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   120
+         TabIndex        =   40
+         TabStop         =   0   'False
+         ToolTipText     =   $"Zafopt.frx":0000
+         Top             =   3120
+         Width           =   4095
+      End
+      Begin VB.TextBox TextHydrogenStoichiometry 
+         Height          =   285
+         Left            =   5400
+         TabIndex        =   39
+         TabStop         =   0   'False
+         ToolTipText     =   "Ratio of hydrogen to oxygen atoms (1 = OH and 2 = H2O)"
+         Top             =   3120
+         Width           =   735
+      End
       Begin VB.TextBox TextDifferenceFormula 
          Height          =   285
          Left            =   3480
@@ -403,6 +431,23 @@ Begin VB.Form FormZAFOPT
          Top             =   360
          Width           =   3615
       End
+      Begin VB.Label Label9 
+         Caption         =   "(OH = 1, H2O = 2)"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   6360
+         TabIndex        =   41
+         Top             =   3120
+         Width           =   1335
+      End
       Begin VB.Label Label1 
          Alignment       =   2  'Center
          Appearance      =   0  'Flat
@@ -508,8 +553,15 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
+
+Private Sub CheckHydrogenStoichiometry_Click()
+If Not DebugMode Then On Error Resume Next
+If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
+Call ZAFOptionCheckForExcessOxygen
+End If
+End Sub
 
 Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
@@ -557,6 +609,11 @@ Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
 Private Sub TextFormula_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub TextHydrogenStoichiometry_GotFocus()
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

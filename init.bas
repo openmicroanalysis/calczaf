@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeINIT"
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -3382,7 +3382,7 @@ Else
 tmsg$ = "Welcome to " & app.EXEName & ", Probe for EPMA (Xtreme Edition) v. " & ProgramVersionString$
 End If
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD% Or FONT_UNDERLINE%), Int(0))
-tmsg$ = "Copyright (c) 1995-2017 John J. Donovan"
+tmsg$ = "Copyright (c) 1995-2018 John J. Donovan"
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD%), Int(0))
 tmsg$ = vbCrLf & "This software is registered to :"
 Call IOWriteLog(tmsg$)

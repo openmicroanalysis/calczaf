@@ -141,7 +141,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2017 by John J. Donovan
+' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
 Private Const clrLinkActive& = vbBlue
@@ -158,16 +158,16 @@ Private Sub Form_Activate()
 If Not DebugMode Then On Error Resume Next
 Dim tmsg As String
 
-If UCase$(App.EXEName) = UCase$("Probewin") Then
+If UCase$(app.EXEName) = UCase$("Probewin") Then
 tmsg$ = "Probe for EPMA v. " & ProgramVersionString$ & vbCrLf
 Else
-tmsg$ = "Program " & App.EXEName & " v. " & ProgramVersionString$ & vbCrLf
+tmsg$ = "Program " & app.EXEName & " v. " & ProgramVersionString$ & vbCrLf
 End If
 
 tmsg$ = tmsg$ & "For Windows XP/Vista/Win7/Win8/Win10" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "Written by John J. Donovan, Probe Software, Inc." & vbCrLf
-tmsg$ = tmsg$ & "(c) Copyright 1995-2017, All Rights Reserved" & vbCrLf & vbCrLf
+tmsg$ = tmsg$ & "(c) Copyright 1995-2018, All Rights Reserved" & vbCrLf & vbCrLf
 tmsg$ = tmsg$ & "Special thanks to Paul Carpenter for his tireless testing and many helpful discussions"
 FormABOUT.LabelAboutTitle.Caption = tmsg$
 
