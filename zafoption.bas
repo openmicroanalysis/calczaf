@@ -262,7 +262,6 @@ If ierror Then Exit Sub
 ' Check if new elements need to be added as specified elements (from formula by difference string)
 For chan% = 1 To FormulaTmpSample(1).LastChan%
 ip% = IPOS1(ZAFOptionSample(1).LastChan%, FormulaTmpSample(1).Elsyms$(chan%), ZAFOptionSample(1).Elsyms$())        ' check for analyzed or specified
-'ip% = IPOS1B(ZAFOptionSample(1).LastElm% + 1, ZAFOptionSample(1).LastChan%, FormulaTmpSample(1).Elsyms$(chan%), ZAFOptionSample(1).Elsyms$())       ' check only specified
 If ip% = 0 And ZAFOptionSample(1).LastChan% + 1 <= MAXCHAN% Then
 ZAFOptionSample(1).LastChan% = ZAFOptionSample(1).LastChan% + 1
 ZAFOptionSample(1).Elsyms$(ZAFOptionSample(1).LastChan%) = LCase$(FormulaTmpSample(1).Elsyms$(chan%))
@@ -277,15 +276,13 @@ Next chan%
 
 ' Warn user if analyzed element is in formula by difference string
 For chan% = 1 To FormulaTmpSample(1).LastChan%
-ip% = IPOS1(ZAFOptionSample(1).LastElm%, FormulaTmpSample(1).Elsyms$(chan%), ZAFOptionSample(1).Elsyms$())        ' check for analyzed only
+ip% = IPOS1DQ(ZAFOptionSample(1).LastElm%, FormulaTmpSample(1).Elsyms$(chan%), ZAFOptionSample(1).Elsyms$(), ZAFOptionSample(1).DisableQuantFlag%())        ' check for analyzed only
 If ip% > 0 Then
-If ZAFOptionSample(1).DisableQuantFlag(ip%) = 0 Then
 msg$ = "An element in the formula by difference string (" & FormulaTmpSample(1).Elsyms$(chan%) & ") is already present as an analyzed element that is not disabled for quant." & vbCrLf & vbCrLf
-msg$ = msg$ & "You can not have an analyzed element duplicated in the formula by difference string, unless you first disable the analyzed element for quantification (see Elements/Cations dialog)."
+msg$ = msg$ & "You can not have an analyzed element duplicated in the formula by difference string, unless you first disable the analyzed element for quantification, and then manually add the element as a specified element (see Elements/Cations dialog)."
 MsgBox msg$, vbOKOnly + vbInformation, "ZAFOptionSave"
 ierror = True
 Exit Sub
-End If
 End If
 Next chan%
 

@@ -1,6 +1,9 @@
-PROBE for EPMA XP/Vista/Win7 (32 bit) and Win7 (64 bit) Xtreme Edition Version Software Changes
+PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
+
+12/30/17	Improve wavescan (and std/unk) plot colors and line thickness. Improve MAN error bar issues (Fournelle)
+		when std intensity data is missing.
 
 12/26/17	Utilize ForceNegativeKRatiosToZero flag in Hydrogen to Excess Oxygen calculation option (Fournelle).
 v. 12.1.3	Also add check flag to formula by difference calculation also.

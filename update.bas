@@ -775,8 +775,8 @@ UpdateGetStandardsNoIntfSets:
 msg$ = "No interference standard intensity data found for standard number " & Format$(sample(1).StdAssignsIntfStds%(j%, i%)) & " for an interference on "
 msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " by " & sample(1).StdAssignsIntfElements$(j%, i%) & " "
 msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
-msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV for standard interference assignments. Either acquire count data "
-msg$ = msg$ & "for the indicated element on the indicated standard at the indicated conditions or "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV for standard interference assignments." & vbCrLf & vbCrLf
+msg$ = msg$ & "Either acquire count data for the indicated element on the indicated standard at the indicated conditions or "
 msg$ = msg$ & "change the standard assignment by clicking on the Analyze! | Standard Assignments buttons."
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
 Call AnalyzeStatusAnal(vbNullString)
