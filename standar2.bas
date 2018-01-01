@@ -391,21 +391,42 @@ ierror = False
 On Error GoTo StandardGetRandomCompositionError
 
 Dim i As Integer
-Dim sum As Single
+Dim sum As Single, sum2 As Single
 
+' Create a random composition based on the analyzed elements
 sum! = 0#
+sample(1).LastChan% = sample(1).LastElm%
 For i% = 1 To sample(1).LastElm%
 sample(1).ElmPercents!(i%) = Rnd * 100#
 sum! = sum! + sample(1).ElmPercents!(i%)
 Next i%
 
-' Loop on analyzed elements
+' If calculating with stoichiometric oxygen, add it in
+If sample(1).OxideOrElemental% = 1 And sample(1).LastElm% + 1 <= MAXCHAN1% Then
+sum2! = 0#
 For i% = 1 To sample(1).LastElm%
+sum2! = sum2! + ConvertElmToOxd(sample(1).ElmPercents!(i%), sample(1).Elsyms$(i%), sample(1).numcat%(i%), sample(1).numoxd%(i%)) - sample(1).ElmPercents!(i%)
+Next i%
+
+' Add in stoichiometric oxygen to element arrays
+sample(1).LastChan% = sample(1).LastElm% + 1
+sample(1).Elsyms$(sample(1).LastChan%) = Symup$(ATOMIC_NUM_OXYGEN%)
+sample(1).Xrsyms$(sample(1).LastChan%) = vbNullString
+sample(1).numcat%(sample(1).LastChan%) = AllCat%(ATOMIC_NUM_OXYGEN%)
+sample(1).numoxd%(sample(1).LastChan%) = AllOxd%(ATOMIC_NUM_OXYGEN%)
+sample(1).ElmPercents!(sample(1).LastChan%) = sum2!
+
+' Add to elemental sum
+sum! = sum! + sum2!
+End If
 
 ' Normalize to 100 %
-If sum! > 0# Then
+For i% = 1 To sample(1).LastChan%
 sample(1).ElmPercents!(i%) = sample(1).ElmPercents!(i%) * 100# / sum!
-End If
+Next i%
+
+' Loop on analyzed elements and load default conditions
+For i% = 1 To sample(1).LastElm%
 
 ' Load KeV array
 If Not sample(1).CombinedConditionsFlag Then
@@ -418,16 +439,10 @@ sample(1).ColumnConditionMethodArray%(i%) = sample(1).ColumnConditionMethod%
 sample(1).ColumnConditionStringArray$(i%) = sample(1).ColumnConditionString$
 End If
 
-' If oxide, convert to elemental
-If sample(1).OxideOrElemental% = 1 Then
-sample(1).ElmPercents!(i%) = ConvertOxdToElm!(sample(1).ElmPercents!(i%), sample(1).Elsyms$(i%), sample(1).numcat%(i%), sample(1).numoxd%(i%))
-End If
-
 Next i%
 
-' Make sure no specified elements are loaded for unknown for intensity calculation
+' Disable stoichiometric oxygen parameters if present (not really necessary as they are added back in in ZAFStd2)
 For i% = sample(1).LastElm% + 1 To sample(1).LastChan%
-sample(1).ElmPercents!(i%) = 0#
 
 ' Load KeV array
 sample(1).TakeoffArray!(i%) = 0#

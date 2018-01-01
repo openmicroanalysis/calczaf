@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/31/17	Improve WDS demo simulation code.  Fix unknown oxide demo compositions.
+
 12/30/17	Improve wavescan (and std/unk) plot colors and line thickness. Improve MAN error bar issues (Fournelle)
 		when std intensity data is missing.
 

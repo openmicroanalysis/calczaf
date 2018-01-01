@@ -2475,7 +2475,7 @@ stdsample(1).TakeoffArray!(i%) = sample(1).takeoff!
 stdsample(1).KilovoltsArray!(i%) = sample(1).kilovolts!
 End If
 
-' Calculate takeoff parameter and variables
+' Calculate takeoff
 If stdsample(1).TakeoffArray!(i%) = 0# Then GoTo ZAFStd2BadTakeoff
 tt! = stdsample(1).TakeoffArray!(i%) * PI! / 180#
 zaf.m1!(i%) = 1# / Sin(tt!)
