@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/04/18	Fix error bar calculation display in log space for TDI intensities (Buse).
+
+		Add warning if current EDS configuration is different than stored EDFS configuration (Porier).
+
 12/31/17	Improve WDS demo simulation code.  Fix unknown oxide demo compositions.
 
 12/30/17	Improve wavescan (and std/unk) plot colors and line thickness. Improve MAN error bar issues (Fournelle)

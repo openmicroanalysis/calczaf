@@ -578,10 +578,10 @@ bgdcts!(chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFitCoeffic
 ' Uncorrect the calculated MAN counts for absorption of the continuum if "MANAbsCorFlags()" is true
 If UseMANAbsFlag And sample(1).MANAbsCorFlags(chan%) Then
 
-' De-normalize MAN counts for absorption correction for unknown composition (see MANFitData for standard composition correction)
+' De-correct MAN counts for absorption correction for unknown composition (see MANFitData for standard composition correction)
 If continuum_absorbtion!(chan%) > 0# Then
 RowUnkMANAbsCors!(linerow%, chan%) = bgdcts!(chan%) ' store uncorrected counts
-bgdcts!(chan%) = bgdcts!(chan%) / continuum_absorbtion!(chan%) ' de-normalize
+bgdcts!(chan%) = bgdcts!(chan%) / continuum_absorbtion!(chan%) ' de-correct for sample absorption
 If RowUnkMANAbsCors!(linerow%, chan%) > 0# Then
 RowUnkMANAbsCors!(linerow%, chan%) = 100# * (bgdcts!(chan%) - RowUnkMANAbsCors!(linerow%, chan%)) / RowUnkMANAbsCors!(linerow%, chan%)
 End If
