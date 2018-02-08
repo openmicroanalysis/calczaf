@@ -501,7 +501,7 @@ If tfilename$ = vbNullString Then GoTo GridCheckGRDInfoNoFile
 If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".ACQ") <> vbNullString Then
 lpFileName$ = MiscGetFileNameNoExtension$(tfilename$) & ".ACQ"
 Else
-lpFileName$ = MiscGetPathOnly$(MiscGetFileNameNoExtension$(tfilename$)) & "GRDInfo.INI"
+lpFileName$ = MiscGetPathOnly$(tfilename$) & "GRDInfo.INI"
 End If
 
 ' Check for existing GRDInfo.INI file and if found, load into temporary GRD variables
@@ -571,7 +571,7 @@ ierror = True
 Exit Sub
 
 GridCheckGRDInfoBadUnits:
-msg$ = "GRDInfo.INI file (" & lpFileName$ & ") does not contain mm or hm or um stage units. Please delete or edit by hand for mm (millimeter) or hm (humimeter) or um (micrometer) units and try again."
+msg$ = "GRDInfo.INI file (" & lpFileName$ & ") does not contain mm or um stage units. Please delete or edit by hand for mm (millimeter) or um (micrometer) units and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "GridCheckGRDInfo"
 ierror = True
 Exit Sub

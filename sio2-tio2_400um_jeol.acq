@@ -4,15 +4,16 @@ Number of calibration points="2"
 Number of Z calibration points="0"
 Screen reference point1 (twips)="0,5760"
 Screen reference point2 (twips)="7680,0"
-Stage reference point1="50.56,50.7"
-Stage reference point2="50.16914,50.3"
-
+Stage reference point1="50.562,50.7"
+Stage reference point2="50.171,50.3"
+ 
 X_Polarity="-1"
 Y_Polarity="-1"
 Stage_Units=mm
 ACQFileVersion="1"
+ACQScreenDPI="1"
 
 [ColumnConditions]
-kilovolts="15"
-Magnification="200"
+kilovolts="0"
+Magnification="0"
 ScanRotation="0"

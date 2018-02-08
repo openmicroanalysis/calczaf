@@ -931,8 +931,10 @@ If AcquisitionOnEDS Then Exit Sub
 If AcquisitionOnCL Then Exit Sub
 
 ' Update the light buttons
+If RealTimeMode Then
 Call MoveStageMapUpdateButtons(FormPICTURESNAP2)
 If ierror Then Exit Sub
+End If
 End Sub
 
 Private Sub Form_Load()
@@ -942,6 +944,13 @@ Call InitWindow(Int(2), MDBUserName$, Me)
 Call MiscLoadIcon(FormPICTURESNAP2)
 HelpContextID = IOGetHelpContextID("FormPICTURESNAP2")
 PictureSnapCalibratedPreviously = PictureSnapCalibrated
+End Sub
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+If Not DebugMode Then On Error Resume Next
+If WaitingForCalibrationClick Then
+FormPICTURESNAP2.MousePointer = vbDefault
+End If
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)

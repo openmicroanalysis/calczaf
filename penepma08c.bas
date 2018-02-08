@@ -231,7 +231,8 @@ Sleep 200
 taskID& = Shell("cmd.exe /c " & VbDquote$ & bfilename$ & VbDquote$, vbMinimizedNoFocus)
 
 ' Loop until complete
-Do Until IOIsProcessTerminated(taskID&)
+icancelauto = False
+Do Until IOIsProcessTerminated(taskID&) Or icancelauto
 Sleep 200
 DoEvents
 Loop

@@ -959,17 +959,6 @@ Call CalcZAFImportClose
 If ierror Then Exit Sub
 End If
 
-' Check if demo SiO2 - TiO2 SF boundary example
-If UseSecondaryBoundaryFluorescenceCorrectionFlag Then
-If InterfaceType% = 0 Then
-If MiscIsInstrumentStage("JEOL") Then
-ImportDataFile$ = "Wark-Watson Exper. Data (CalcZAF format)_JEOL.dat"       ' re-load default import file if demo mode
-Else
-ImportDataFile$ = "Wark-Watson Exper. Data (CalcZAF format)_Cameca.dat"     ' re-load default import file if demo mode
-End If
-End If
-End If
-
 ' Get filename from user
 If ImportDataFile$ <> vbNullString Then
 tfilename$ = ImportDataFile$

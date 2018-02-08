@@ -5,13 +5,65 @@ Begin VB.Form FormSECONDARY
    ClientHeight    =   9270
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   13425
+   ClientWidth     =   13440
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   9270
-   ScaleWidth      =   13425
+   ScaleWidth      =   13440
    StartUpPosition =   3  'Windows Default
+   Begin VB.Frame FrameUpdateBoundary 
+      Caption         =   "Update Boundary Position"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FF0000&
+      Height          =   1455
+      Left            =   9600
+      TabIndex        =   53
+      Top             =   720
+      Visible         =   0   'False
+      Width           =   9375
+      Begin VB.CommandButton CommandUpdatePositionCoordinateAngle 
+         Caption         =   "Update Position of Boundary Coordinate (and angle)"
+         Height          =   735
+         Left            =   240
+         TabIndex        =   56
+         Top             =   480
+         Width           =   2175
+      End
+      Begin VB.CommandButton CommandUpdatePositionCoordinatePair1 
+         Caption         =   "Update Positions of Boundary Coordinate (first pair)"
+         Height          =   735
+         Left            =   2880
+         TabIndex        =   55
+         Top             =   480
+         Width           =   2175
+      End
+      Begin VB.CommandButton CommandUpdatePositionCoordinatePair2 
+         Caption         =   "Update Positions of Boundary Coordinate (second pair)"
+         Height          =   735
+         Left            =   5160
+         TabIndex        =   54
+         Top             =   480
+         Width           =   2175
+      End
+      Begin VB.Label LabelUpdatePositions 
+         Alignment       =   2  'Center
+         Caption         =   "Adjust the stage for the boundary position and click one of the update position buttons"
+         Height          =   855
+         Left            =   7560
+         TabIndex        =   57
+         Top             =   360
+         Width           =   1695
+      End
+   End
    Begin VB.PictureBox Picture3 
       Height          =   735
       Left            =   7440
@@ -65,11 +117,12 @@ Begin VB.Form FormSECONDARY
    Begin VB.CheckBox CheckUseSecondaryFluorescenceCorrection 
       Caption         =   "Perform Boundary Correction (invisible)"
       Height          =   255
-      Left            =   480
+      Left            =   9960
       TabIndex        =   47
-      Top             =   2280
+      Top             =   480
+      Value           =   1  'Checked
       Visible         =   0   'False
-      Width           =   3735
+      Width           =   3135
    End
    Begin VB.PictureBox Picture2 
       AutoRedraw      =   -1  'True
@@ -152,6 +205,7 @@ Begin VB.Form FormSECONDARY
       End
       Begin VB.OptionButton OptionCorrectionMethod 
          Caption         =   "Calculate Using Binary Composition K-Ratios From Matrix and Boundary Databases"
+         Enabled         =   0   'False
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -166,6 +220,7 @@ Begin VB.Form FormSECONDARY
          Left            =   240
          TabIndex        =   18
          Top             =   1080
+         Visible         =   0   'False
          Width           =   8895
       End
       Begin VB.OptionButton OptionCorrectionMethod 
@@ -543,6 +598,7 @@ Begin VB.Form FormSECONDARY
       Left            =   9600
       TabIndex        =   1
       Top             =   720
+      Visible         =   0   'False
       Width           =   3735
       Begin VB.CommandButton CommandCompositionStandard 
          Caption         =   "Enter Composition as Standard"

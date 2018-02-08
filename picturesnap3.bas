@@ -588,6 +588,12 @@ Dim radius As Single, tWidth As Single
 Dim fractionx As Single, fractiony As Single
 Dim formx As Single, formy As Single, formz As Single
 
+' Check if image loaded
+If PictureSnapFilename$ = vbNullString Then Exit Sub
+
+' Check if calibrated
+If Not PictureSnapCalibrated Then Exit Sub
+
 ' Calculate a radius
 tWidth! = tForm.Width
 If tWidth! = 0# Then Exit Sub

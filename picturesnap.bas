@@ -11,7 +11,7 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Global PictureSnapClicked As Integer
+Global WaitingForCalibrationClick As Integer
 Global PictureSnapDisplayCalibrationPointsFlag As Boolean
 
 Dim CurrentPointX As Single
@@ -209,6 +209,10 @@ FormPICTURESNAP2.CommandMoveTo3.Enabled = False
 FormPICTURESNAP2.CommandReadCurrentStageCoordinate1.Enabled = False
 FormPICTURESNAP2.CommandReadCurrentStageCoordinate2.Enabled = False
 FormPICTURESNAP2.CommandReadCurrentStageCoordinate3.Enabled = False
+FormPICTURESNAP2.CommandLightModeOff.Enabled = False
+FormPICTURESNAP2.CommandLightModeOn.Enabled = False
+FormPICTURESNAP2.CommandLightModeReflected.Enabled = False
+FormPICTURESNAP2.CommandLightModeTransmitted.Enabled = False
 Else
 FormPICTURESNAP2.CommandMoveTo1.Enabled = True
 FormPICTURESNAP2.CommandMoveTo2.Enabled = True
@@ -216,6 +220,10 @@ FormPICTURESNAP2.CommandMoveTo3.Enabled = True
 FormPICTURESNAP2.CommandReadCurrentStageCoordinate1.Enabled = True
 FormPICTURESNAP2.CommandReadCurrentStageCoordinate2.Enabled = True
 FormPICTURESNAP2.CommandReadCurrentStageCoordinate3.Enabled = True
+FormPICTURESNAP2.CommandLightModeOff.Enabled = True
+FormPICTURESNAP2.CommandLightModeOn.Enabled = True
+FormPICTURESNAP2.CommandLightModeReflected.Enabled = True
+FormPICTURESNAP2.CommandLightModeTransmitted.Enabled = True
 End If
 
 ' Load the form
@@ -300,6 +308,7 @@ DebugMode = False
 If ierror Then Exit Sub
 End If
 
+FormPICTURESNAP.Picture2.Refresh
 Exit Sub
 
 ' Errors
@@ -352,16 +361,18 @@ If mode% = 1 Then
 FormPICTURESELECT.Show vbModeless
 DoEvents
 
-PictureSnapClicked = False
-Screen.MousePointer = vbArrowQuestion
+WaitingForCalibrationClick = True
 FormPICTURESNAP2.TextXPixel1.ForeColor = vbBlack
 FormPICTURESNAP2.TextYPixel1.ForeColor = vbBlack
-Do Until PictureSnapClicked Or icancel
+Do Until Not WaitingForCalibrationClick Or icancel
 Call MiscDelay5(CDbl(0.2), Now) ' delay a little
-If ierror Then Exit Sub
+If ierror Then
+WaitingForCalibrationClick = False
+FormPICTURESNAP.Picture2.MousePointer = vbDefault
+FormPICTURESNAP3.MousePointer = vbDefault
+Exit Sub
+End If
 Loop
-Screen.MousePointer = vbDefault
-DoEvents
 FormPICTURESNAP2.TextXPixel1.Text = CurrentPointX!  ' save screen coordinates
 FormPICTURESNAP2.TextYPixel1.Text = CurrentPointY!
 FormPICTURESNAP2.TextXPixel1.ForeColor = vbRed
@@ -373,16 +384,18 @@ If mode% = 2 Then
 FormPICTURESELECT.Show vbModeless
 DoEvents
 
-PictureSnapClicked = False
-Screen.MousePointer = vbArrowQuestion
+WaitingForCalibrationClick = True
 FormPICTURESNAP2.TextXPixel2.ForeColor = vbBlack
 FormPICTURESNAP2.TextYPixel2.ForeColor = vbBlack
-Do Until PictureSnapClicked Or icancel
+Do Until Not WaitingForCalibrationClick Or icancel
 Call MiscDelay5(CDbl(0.2), Now) ' delay a little
-If ierror Then Exit Sub
+If ierror Then
+WaitingForCalibrationClick = False
+FormPICTURESNAP.Picture2.MousePointer = vbDefault
+FormPICTURESNAP3.MousePointer = vbDefault
+Exit Sub
+End If
 Loop
-Screen.MousePointer = vbDefault
-DoEvents
 FormPICTURESNAP2.TextXPixel2.Text = CurrentPointX!   ' save screen coordinates
 FormPICTURESNAP2.TextYPixel2.Text = CurrentPointY!
 FormPICTURESNAP2.TextXPixel2.ForeColor = vbRed
@@ -394,21 +407,27 @@ If mode% = 3 Then
 FormPICTURESELECT.Show vbModeless
 DoEvents
 
-PictureSnapClicked = False
-Screen.MousePointer = vbArrowQuestion
+WaitingForCalibrationClick = True
 FormPICTURESNAP2.TextXPixel3.ForeColor = vbBlack
 FormPICTURESNAP2.TextYPixel3.ForeColor = vbBlack
-Do Until PictureSnapClicked Or icancel
+Do Until Not WaitingForCalibrationClick Or icancel
 Call MiscDelay5(CDbl(0.2), Now) ' delay a little
-If ierror Then Exit Sub
+If ierror Then
+WaitingForCalibrationClick = False
+FormPICTURESNAP.Picture2.MousePointer = vbDefault
+FormPICTURESNAP3.MousePointer = vbDefault
+Exit Sub
+End If
 Loop
-Screen.MousePointer = vbDefault
-DoEvents
 FormPICTURESNAP2.TextXPixel3.Text = CurrentPointX!  ' save screen coordinates
 FormPICTURESNAP2.TextYPixel3.Text = CurrentPointY!
 FormPICTURESNAP2.TextXPixel3.ForeColor = vbRed
 FormPICTURESNAP2.TextYPixel3.ForeColor = vbRed
 End If
+
+WaitingForCalibrationClick = False
+FormPICTURESNAP.Picture2.MousePointer = vbDefault
+FormPICTURESNAP3.MousePointer = vbDefault
 
 Exit Sub
 

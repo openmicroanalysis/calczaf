@@ -67,25 +67,31 @@ ImageHFW! = 400#             ' assume 400 um HFW
 
 SpecifiedDistance! = 25#    ' assume 25 microns for first point of Wark test data file
 
-' Assume vertical boundary at stage center (0 degrees equals vertical and 180 equals horizontal)
-XStageCoordinate! = MotLoLimits!(XMotor%) + (MotHiLimits!(XMotor%) - MotLoLimits!(XMotor%)) / 2#
-YStageCoordinate! = MotLoLimits!(YMotor%) + (MotHiLimits!(YMotor%) - MotLoLimits!(YMotor%)) / 2#
+' Assume vertical boundary at current position (0 degrees equals vertical and 180 equals horizontal)
+If UCase$(app.EXEName) = UCase$("CalcZAF") Then
+If Not MiscMotorInBounds(XMotor%, RealTimeMotorPositions!(XMotor%)) Then RealTimeMotorPositions!(XMotor%) = MotLoLimits!(XMotor%) + (MotHiLimits!(XMotor%) - MotLoLimits!(XMotor%)) / 2#
+If Not MiscMotorInBounds(YMotor%, RealTimeMotorPositions!(YMotor%)) Then RealTimeMotorPositions!(YMotor%) = MotLoLimits!(YMotor%) + (MotHiLimits!(YMotor%) - MotLoLimits!(YMotor%)) / 2#
+XStageCoordinate! = RealTimeMotorPositions!(XMotor%)
+YStageCoordinate! = RealTimeMotorPositions!(XMotor%)
 BoundaryAngle! = 0#
 
 ' Assume vertical boundary at stage center (Y points at +/- 0.8 of HFW
-X1StageCoordinate! = MotLoLimits!(XMotor%) + (MotHiLimits!(XMotor%) - MotLoLimits!(XMotor%)) / 2#
-Y1StageCoordinate! = MotLoLimits!(YMotor%) + (MotHiLimits!(YMotor%) - MotLoLimits!(YMotor%)) / 2# + (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
-X2StageCoordinate! = MotLoLimits!(XMotor%) + (MotHiLimits!(XMotor%) - MotLoLimits!(XMotor%)) / 2#
-Y2StageCoordinate! = MotLoLimits!(YMotor%) + (MotHiLimits!(YMotor%) - MotLoLimits!(YMotor%)) / 2# - (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
+X1StageCoordinate! = XStageCoordinate!
+Y1StageCoordinate! = YStageCoordinate! + (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
+X2StageCoordinate! = XStageCoordinate!
+Y2StageCoordinate! = YStageCoordinate! - (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
+End If
+
+SecondaryFluorescenceFlag = True    ' always true for CalcZAF (single element)
 
 initialized = True
 End If
 
 ' Load form
 If SecondaryFluorescenceFlag Then
-FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbChecked     ' this control is invisible in CalcZAF
+FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.Value = vbChecked     ' this control is invisible in CalcZAF
 Else
-FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbUnchecked
+FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.Value = vbUnchecked
 End If
 
 FormSECONDARY.TextHFW.Text = Format$(ImageHFW!)                        ' in um
@@ -132,8 +138,8 @@ tmsg$ = TypeWeight$(Int(2), SecondaryMatBSample())
 FormSECONDARY.TextMaterialBComposition.Text = tmsg$
 
 ' Load options
-FormSECONDARY.OptionCorrectionMethod(SecondaryFluorescenceCorrectionMethod%).value = True
-FormSECONDARY.OptionDistanceMethod(SecondaryFluorescenceDistanceMethod%).value = True
+FormSECONDARY.OptionCorrectionMethod(SecondaryFluorescenceCorrectionMethod%).Value = True
+FormSECONDARY.OptionDistanceMethod(SecondaryFluorescenceDistanceMethod%).Value = True
 
 ' Load k-ratio file if already specified
 If SecondaryFluorescenceCorrectionMethod% = 0 And BoundaryKratiosDATFile$ <> vbNullString Then
@@ -172,7 +178,7 @@ On Error GoTo SecondarySaveError
 
 Dim radians As Single
 
-If FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbChecked Then    ' this control is invisible in CalcZAF
+If FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.Value = vbChecked Then    ' this control is invisible in CalcZAF
 SecondaryFluorescenceFlag = True                            ' module level flag
 UseSecondaryBoundaryFluorescenceCorrectionFlag = True       ' set global flag if any element is true (PFE only)
 Else
@@ -191,11 +197,11 @@ End If
 
 ' Save distance option
 SecondaryFluorescenceDistanceMethod% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 SecondaryFluorescenceDistanceMethod% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 SecondaryFluorescenceDistanceMethod% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 SecondaryFluorescenceDistanceMethod% = 3
 End If
 
@@ -283,7 +289,7 @@ End If
 ' Graphical method is saved during mouse up/mouse down events (just check for inbounds below)
 
 ' Save correction option
-If FormSECONDARY.OptionCorrectionMethod(0).value = True Then
+If FormSECONDARY.OptionCorrectionMethod(0).Value = True Then
 SecondaryFluorescenceCorrectionMethod% = 0
 Else
 SecondaryFluorescenceCorrectionMethod% = 1
@@ -296,11 +302,11 @@ If SecondaryFluorescenceDistanceMethod% = 0 Then
 ' 1 point and angle (assume +/- 50 um)
 ElseIf SecondaryFluorescenceDistanceMethod% = 1 Then
 radians! = BoundaryAngle! * PI! / 180#
-Boundary_X_Pos1! = XStageCoordinate! + Sin(radians!) * 50# / MotUnitsToAngstromMicrons!(XMotor%)
-Boundary_Y_Pos1! = YStageCoordinate! + Cos(radians!) * 50# / MotUnitsToAngstromMicrons!(YMotor%)
+Boundary_X_Pos1! = XStageCoordinate! + Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%)
+Boundary_Y_Pos1! = YStageCoordinate! + Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
 
-Boundary_X_Pos2! = XStageCoordinate! - Sin(radians!) * 50# / MotUnitsToAngstromMicrons!(XMotor%)
-Boundary_Y_Pos2! = YStageCoordinate! - Cos(radians!) * 50# / MotUnitsToAngstromMicrons!(YMotor%)
+Boundary_X_Pos2! = XStageCoordinate! - Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%)
+Boundary_Y_Pos2! = YStageCoordinate! - Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
 
 ' 2 points (just load form coordinates)
 ElseIf SecondaryFluorescenceDistanceMethod% = 2 Then
@@ -489,13 +495,6 @@ End If
 
 ' Image file
 If mode% = 1 Then
-If Trim$(BoundaryImageFileName$) = vbNullString Then
-If MiscIsInstrumentStage("CAMECA") Then
-BoundaryImageFileName$ = DemoImagesDirectory$ & "\" & "SiO2-TiO2_400um_Cameca.bmp"
-Else
-BoundaryImageFileName$ = DemoImagesDirectory$ & "\" & "SiO2-TiO2_400um_JEOL.bmp"
-End If
-End If
 tfilename$ = BoundaryImageFileName$
 ioextension$ = "IMG"
 tfilename$ = MiscGetFileNameNoExtension$(tfilename$)    ' remove extension so all image files are visible
@@ -597,7 +596,7 @@ Sub SecondaryInitLine(sampleline As Integer, sample() As TypeSample)
 ierror = False
 On Error GoTo SecondaryInitLineError
 
-' Fixed specified distance (only used by CalcZAF)
+' Fixed specified distance (generate boundary coordinates based on fixed distance)
 If SecondaryFluorescenceDistanceMethod% = 0 Then
 Boundary_X_Pos1! = sample(1).StagePositions!(sampleline%, 1) + SpecifiedDistance! / MotUnitsToAngstromMicrons!(XMotor%)
 Boundary_Y_Pos1! = sample(1).StagePositions!(sampleline%, 2) + SpecifiedDistance! / MotUnitsToAngstromMicrons!(YMotor%)
@@ -795,11 +794,11 @@ Dim fractionx As Single, fractiony As Single
 
 ' Get current distance mode
 mode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 mode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 mode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 mode% = 3
 End If
 
@@ -855,11 +854,11 @@ Dim fractionx2 As Single, fractiony2 As Single
 
 ' Check if proper mode and image is loaded
 dmode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 dmode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 dmode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 dmode% = 3
 End If
 
@@ -1054,11 +1053,11 @@ Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Sin
 
 ' Get current distance mode
 dmode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 dmode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 dmode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 dmode% = 3
 End If
 
@@ -1511,8 +1510,8 @@ sample(1).SecondaryFluorescenceBoundaryDistanceMethod% = SecondaryFluorescenceDi
 
 ' Save boundary (all distance methods save two points)
 sample(1).SecondaryFluorescenceBoundaryCoordinateX1! = Boundary_X_Pos1!
-sample(1).SecondaryFluorescenceBoundaryCoordinateX2! = Boundary_X_Pos2!
 sample(1).SecondaryFluorescenceBoundaryCoordinateY1! = Boundary_Y_Pos1!
+sample(1).SecondaryFluorescenceBoundaryCoordinateX2! = Boundary_X_Pos2!
 sample(1).SecondaryFluorescenceBoundaryCoordinateY2! = Boundary_Y_Pos2!
 
 Exit Sub
@@ -1520,6 +1519,50 @@ Exit Sub
 ' Errors
 SecondarySampleSaveToError:
 MsgBox Error$, vbOKOnly + vbCritical, "SecondarySampleSaveTo"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub SecondaryUpdatePositions(mode As Integer)
+' Update the boundary coordinates based on current stage position
+' mode = 0 update boundary coordinate (and angle)
+' mode = 1 update boundary coordinate (first pair)
+' mode = 2 update boundary coordinate (second pair)
+
+ierror = False
+On Error GoTo SecondaryUpdatePositionsError
+
+If Not RealTimeMode Then GoTo SecondaryUpdatePositionsNotRealTime
+
+' Get current positions
+If mode% = 0 Then
+FormSECONDARY.TextXStageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(XMotor%))
+FormSECONDARY.TextYStageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(YMotor%))
+FormSECONDARY.OptionDistanceMethod(1).Value = True
+
+ElseIf mode% = 1 Then
+FormSECONDARY.TextX1StageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(XMotor%))
+FormSECONDARY.TextY1StageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(YMotor%))
+FormSECONDARY.OptionDistanceMethod(2).Value = True
+
+ElseIf mode% = 2 Then
+FormSECONDARY.TextX2StageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(XMotor%))
+FormSECONDARY.TextY2StageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(YMotor%))
+FormSECONDARY.OptionDistanceMethod(2).Value = True
+End If
+
+Exit Sub
+
+' Errors
+SecondaryUpdatePositionsError:
+MsgBox Error$, vbOKOnly + vbCritical, "SecondaryUpdatePositions"
+ierror = True
+Exit Sub
+
+SecondaryUpdatePositionsNotRealTime:
+msg$ = "The software is not currently connected to an instrument.  Please make a connection to the instrument and try again, or enter the boundary coordinates manually."
+MsgBox msg$, vbOKOnly + vbExclamation, "SecondaryUpdatePositions"
 ierror = True
 Exit Sub
 

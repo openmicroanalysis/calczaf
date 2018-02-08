@@ -13,6 +13,64 @@ Begin VB.Form FormPICTURESNAP2
    ScaleHeight     =   11790
    ScaleWidth      =   5415
    StartUpPosition =   3  'Windows Default
+   Begin VB.Frame Frame4 
+      Caption         =   "Light Mode"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FF0000&
+      Height          =   855
+      Left            =   3360
+      TabIndex        =   54
+      Top             =   5400
+      Width           =   1935
+      Begin VB.CommandButton CommandLightModeReflected 
+         Caption         =   "Refl"
+         Height          =   255
+         Left            =   240
+         Style           =   1  'Graphical
+         TabIndex        =   58
+         ToolTipText     =   "Select to switch optical mode to reflected light"
+         Top             =   240
+         Width           =   735
+      End
+      Begin VB.CommandButton CommandLightModeTransmitted 
+         Caption         =   "Tran"
+         Height          =   255
+         Left            =   960
+         Style           =   1  'Graphical
+         TabIndex        =   57
+         ToolTipText     =   "Select to switch optical mode to transmitted light"
+         Top             =   240
+         Width           =   735
+      End
+      Begin VB.CommandButton CommandLightModeOn 
+         Caption         =   "On"
+         Height          =   255
+         Left            =   240
+         Style           =   1  'Graphical
+         TabIndex        =   56
+         ToolTipText     =   "Turn optical light on (reflected or transmitted)"
+         Top             =   480
+         Width           =   735
+      End
+      Begin VB.CommandButton CommandLightModeOff 
+         Caption         =   "Off"
+         Height          =   255
+         Left            =   960
+         Style           =   1  'Graphical
+         TabIndex        =   55
+         ToolTipText     =   "Turn optical light off (reflected or transmitted)"
+         Top             =   480
+         Width           =   735
+      End
+   End
    Begin VB.TextBox TextScan 
       Height          =   285
       Left            =   3960
@@ -57,7 +115,7 @@ Begin VB.Form FormPICTURESNAP2
       Style           =   1  'Graphical
       TabIndex        =   36
       ToolTipText     =   "Click this button to have the program display the location of the calibration points on the calibrated image"
-      Top             =   5280
+      Top             =   4680
       Width           =   1935
    End
    Begin VB.Frame Frame3 
@@ -301,7 +359,7 @@ Begin VB.Form FormPICTURESNAP2
       TabIndex        =   25
       TabStop         =   0   'False
       ToolTipText     =   "Click this button when both calibration coordinates in pixel and stage coordinates have been entered to calibrate the picture"
-      Top             =   4200
+      Top             =   3600
       Width           =   1935
    End
    Begin VB.Frame Frame2 
@@ -710,7 +768,7 @@ Begin VB.Form FormPICTURESNAP2
       Height          =   255
       Left            =   3360
       TabIndex        =   41
-      Top             =   4920
+      Top             =   4320
       Width           =   1935
    End
    Begin VB.Label Label15 

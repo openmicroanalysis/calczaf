@@ -1490,9 +1490,6 @@ Global RealTimeInterfaceBusy As Integer
 Global EnterPositionsRelativeFlag As Integer
 Global UpdatePeakWaveScanPositionsFlag As Integer
 
-Global ReadOnlySpecPositions As Integer
-Global ReadOnlyStagePositions As Integer
-
 Global PositionImportExportFileType As Integer
 Global DeadTimeCorrectionType As Integer
 Global AutoFocusStyle As Integer
@@ -1706,7 +1703,6 @@ Global DefaultPeakCenterMethod As Integer   ' 0 = interval halving, 1 = paraboli
 
 Global NumberOfTunableSpecs As Integer
 Global NumberOfStageMotors As Integer
-Global NumberOfFixedSpecs As Integer    ' obsolete (but keep for now)
 
 ' CRYSTALS.DAT globals
 Global AllCrystalNames(1 To MAXCRYSTYPE%) As String
@@ -2945,4 +2941,6 @@ Global AnalyticalTotalMaximum As Single
 
 Global UseLineDrawingModeFlag As Boolean
 Global UseRectangleDrawingModeFlag As Boolean
+
+Global LAB6FieldEmissionPresentFlag As Integer       ' 0 = not present, <> 0 present
 

@@ -270,9 +270,6 @@ Dim lpFileName As String
 Dim lpReturnString As String * 255
 Dim lpReturnString2 As String * 255
 
-' Check for pathological conditions
-If NumberOfStageMotors% < 1 Then Exit Sub
-
 ' Check for existing PROBEWIN.INI
 If Dir$(ProbeWinINIFile$) = vbNullString Then
 msg$ = "Unable to open file " & ProbeWinINIFile$
@@ -334,23 +331,6 @@ SampleExchangePositions!(ZMotor% - NumberOfTunableSpecs%) = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 End If
-
-' W axis
-'If NumberOfStageMotors% > 3 Then
-'lpAppName$ = "Hardware"
-'lpKeyName$ = "SampleExchangePositionW"
-'lpDefault$ = Str$(MotParkPositions!(WMotor%))
-'tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-'valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-'Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-'If Left$(lpReturnString$, valid&) <> vbNullString Then SampleExchangePositions!(WMotor% - NumberOfTunableSpecs%) = Val(Left$(lpReturnString$, valid&))
-'If SampleExchangePositions!(WMotor% - NumberOfTunableSpecs%) < MotLoLimits!(WMotor%) Or SampleExchangePositions!(WMotor% - NumberOfTunableSpecs%) > MotHiLimits!(WMotor%) Then
-'msg$ = "SampleExchangePositionW keyword value out of range in " & ProbeWinINIFile$
-'MsgBox msg$, vbOKOnly + vbExclamation, "InitINI3"
-'SampleExchangePositions!(WMotor% - NumberOfTunableSpecs%) = Val(lpDefault$)
-'End If
-'If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-'End If
 
 Exit Sub
 
@@ -1357,7 +1337,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Software"
 lpKeyName$ = "PrintAnalyzedAndSpecifiedOnSameLine"
-nDefault& = False
+nDefault& = True
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 If valid& <> 0 Then
@@ -2092,6 +2072,7 @@ Sub InitINIHardware()
 ierror = False
 On Error GoTo InitINIHardwareError
 
+Dim response As Integer
 Dim valid As Long, tValid As Long
 
 Dim lpAppName As String
@@ -2104,6 +2085,8 @@ Dim lpReturnString2 As String * 255
 Dim nSize As Long
 Dim nDefault As Long
 Dim tcomment As String
+
+Static initialized As Boolean
 
 ' Check for existing PROBEWIN.INI
 If Dir$(ProbeWinINIFile$) = vbNullString Then
@@ -2136,39 +2119,26 @@ End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 lpAppName$ = "Hardware"
-lpKeyName$ = "NumberOfFixedSpecs"   ' obsolete but keep for now
-nDefault& = 0
-'tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-NumberOfFixedSpecs% = valid&
-If NumberOfFixedSpecs% > 0 Then
-msg$ = "NumberOfFixedSpecs keyword is no longer supported in Probe for EPMA (must be set to zero) in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
-End
-End If
-'If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-lpAppName$ = "Hardware"
 lpKeyName$ = "NumberOfTunableSpecs"
 nDefault& = 0
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 NumberOfTunableSpecs% = valid&
-If NumberOfTunableSpecs% < 0 Or NumberOfTunableSpecs% > MAXSPEC% Then
+If NumberOfTunableSpecs% < 1 Or NumberOfTunableSpecs% > MAXSPEC% Then
 msg$ = "NumberOfTunableSpecs keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
-' Read number of stage motors (x, y and z but w is disabled)
+' Read number of stage motors
 lpAppName$ = "Hardware"
 lpKeyName$ = "NumberOfStageMotors"
 nDefault& = 0
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 NumberOfStageMotors% = valid&
-If NumberOfStageMotors% < 0 Or NumberOfStageMotors% > MAXAXES% - 1 Or NumberOfStageMotors% = 1 Then
+If NumberOfStageMotors% < 2 Or NumberOfStageMotors% > 3 Then        ' only allow x and y or x, y and z
 msg$ = "NumberOfStageMotors keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
@@ -2181,20 +2151,8 @@ YMotor% = NumberOfTunableSpecs% + 2
 ZMotor% = NumberOfTunableSpecs% + 3
 WMotor% = NumberOfTunableSpecs% + 4
 
-' Check for total number of spectrometers
-If NumberOfTunableSpecs% < 1 Then
-msg$ = "Warning- No WDS spectrometers defined in " & ProbeWinINIFile$
-Call IOWriteLog(msg$)
-End If
-
-' Check for total number of stage motors
-If NumberOfStageMotors% < 1 Then
-msg$ = "Warning- No stage motors defined in " & ProbeWinINIFile$
-Call IOWriteLog(msg$)
-End If
-
 If NumberOfTunableSpecs% > MAXSPEC% Then
-msg$ = "Too many total spectrometers defined in " & ProbeWinINIFile$
+msg$ = "Too many spectrometers defined in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
@@ -2473,6 +2431,20 @@ EDSSpectraNetIntensityInterfaceType% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+' Warn user if EDSSpectraInterfaceType <> EDSSpectraNetIntensityInterfaceType
+If Not initialized And (EDSSpectraInterfaceType% <> EDSSpectraNetIntensityInterfaceType%) Then
+msg$ = "Please note that the EDSSpectraInterfaceType keyword and the EDSSpectraNetIntensityInterfaceType keyword value are not the same in " & ProbeWinINIFile$ & ". "
+msg$ = msg$ & "This could could unanticipated problems for EDS spectrum acquisition and/or processing." & vbCrLf & vbCrLf
+msg$ = msg$ & "Are you sure that you want to continue with this EDS configuration?"
+response% = MsgBox(msg$, vbOKCancel + vbQuestion, "InitINIHardware")
+If response% = vbCancel Then
+msg$ = "Program will now end."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
+End
+End If
+initialized = True
+End If
+
 lpAppName$ = "Hardware"
 lpKeyName$ = "EDSThinWindowPresent"
 nDefault& = False
@@ -2697,7 +2669,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "BeamCurrentType"
-nDefault& = 0
+nDefault& = 0                       ' for JEOL instruments only: 0 = use software iteration, 1 = use firmware iteration (JEOL 8230/8530 only)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 BeamCurrentType% = valid&
@@ -2706,7 +2678,7 @@ msg$ = "BeamCurrentType keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 BeamCurrentType% = nDefault&
 End If
-If BeamCurrentType% = 1 And JeolEOSInterfaceType& <> 3 Then
+If BeamCurrentType% = 1 And (InterfaceType% = 5 Or JeolEOSInterfaceType& <> 3) Then
 msg$ = "BeamCurrentType keyword value is invalid for Cameca or JEOL 8900/8200/8500 in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End If
@@ -2721,7 +2693,7 @@ valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnStr
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then BeamCurrentTolerance! = Val(Left$(lpReturnString$, valid&))
 If BeamCurrentTolerance! < 0.00001 Or BeamCurrentTolerance! > 0.2 Then
-msg$ = "BeamCurrentTolerance keyword value out of range in " & ProbeWinINIFile$
+msg$ = "BeamCurrentTolerance keyword value out of range (will be reset to default value of 0.02) in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 BeamCurrentTolerance! = Val(lpDefault$)
 End If
@@ -2729,13 +2701,13 @@ If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivatePro
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "BeamCurrentToleranceSet"
-lpDefault$ = "0.01"    ' 1% (only for 8200 and 8900)
+lpDefault$ = "0.01"    ' 1% (only for 8200 and 8900 and 8500)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then BeamCurrentToleranceSet! = Val(Left$(lpReturnString$, valid&))
 If BeamCurrentToleranceSet! < 0.0001 Or BeamCurrentToleranceSet! > 0.1 Then
-msg$ = "BeamCurrentToleranceSet keyword value out of range in " & ProbeWinINIFile$
+msg$ = "BeamCurrentToleranceSet keyword value out of range (will be reset to default value of 0.01) in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 BeamCurrentToleranceSet! = Val(lpDefault$)
 If BeamCurrentToleranceSet! >= BeamCurrentTolerance! Then
@@ -3110,30 +3082,6 @@ End If
 ' Use Windows API function to read PROBEWIN.INI
 lpFileName$ = ProbeWinINIFile$
 nSize& = Len(lpReturnString$)
-
-lpAppName$ = "Hardware"
-lpKeyName$ = "ReadOnlySpecPositions"                           ' obsolete
-nDefault& = False
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-If valid& <> 0 Then
-ReadOnlySpecPositions% = True
-Else
-ReadOnlySpecPositions% = False
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-lpAppName$ = "Hardware"
-lpKeyName$ = "ReadOnlyStagePositions"                          ' obsolete
-nDefault& = False
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-If valid& <> 0 Then
-ReadOnlyStagePositions% = True
-Else
-ReadOnlyStagePositions% = False
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "ColumnConditionPresent"
@@ -4136,6 +4084,30 @@ Else
 InsertFaradayDuringStageJogFlag = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Hardware"
+lpKeyName$ = "LAB6FieldEmissionPresent"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+LAB6FieldEmissionPresentFlag% = True
+Else
+LAB6FieldEmissionPresentFlag% = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+If LAB6FieldEmissionPresentFlag% And ThermalFieldEmissionPresentFlag% Then
+msg$ = "Both the ThermalFieldEmissionPresent keyword and the LAB6FieldEmissionPresent keywords are both set in " & ProbeWinINIFile$ & vbCrLf & vbCrLf
+msg$ = msg$ & "The program will now end."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+End
+End If
+If InterfaceType% = 2 And LAB6FieldEmissionPresentFlag% Then
+msg$ = "The LaB6 electron gun is not currently supported on JEOL EPMA instruments (but you can set the ThermalFieldEmissionPresent keyword if you want to avoid changing the gun heat/emission parameters). Please change the LAB6FieldEmissionPresent keyword in " & ProbeWinINIFile$ & vbCrLf & vbCrLf
+msg$ = msg$ & "The program will now end."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+End
+End If
 
 Exit Sub
 

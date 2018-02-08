@@ -65,10 +65,18 @@ End Sub
 
 Private Sub Form_Load()
 If Not DebugMode Then On Error Resume Next
+Call MiscAlwaysOnTop(True, FormPICTURESELECT)
 Call InitWindow(Int(2), MDBUserName$, Me)
 Call MiscLoadIcon(FormPICTURESELECT)
 icancel = False
 FormPICTURESNAP.MousePointer = vbArrowQuestion
+End Sub
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+If Not DebugMode Then On Error Resume Next
+If WaitingForCalibrationClick Then
+FormPICTURESELECT.MousePointer = vbDefault
+End If
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)

@@ -123,7 +123,7 @@ kratios!(chan%) = kratios!(chan%) - sample(1).SecondaryFluorescenceBoundaryKrati
 End If
 Next chan%
 
-' Load data point coordinate to module level arrays
+' Load data point coordinate to module level arrays (for display)
 curpnt& = curpnt& + 1
 
 If curpnt& > apoints& Then

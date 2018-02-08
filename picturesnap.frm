@@ -435,7 +435,7 @@ Private Sub Picture2_Click()
 ' Transfer to PictureSnapSelect
 Call PictureSnapSelectUpdate(BitMapX!, BitMapY!)
 If ierror Then Exit Sub
-PictureSnapClicked = True
+WaitingForCalibrationClick = False
 DoEvents
 
 ' Digitize right clicked position to position database (if menu is checked)
@@ -464,6 +464,9 @@ Private Sub Picture2_MouseMove(Button As Integer, Shift As Integer, X As Single,
 If Not DebugMode Then On Error Resume Next
 Call PictureSnapUpdateCursor(Int(0), X!, Y!)
 If ierror Then Exit Sub
+If WaitingForCalibrationClick Then
+FormPICTURESNAP.Picture2.MousePointer = vbArrowQuestion
+End If
 End Sub
 
 Private Sub TimerPictureSnap_Timer()

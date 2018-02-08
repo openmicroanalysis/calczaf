@@ -2,7 +2,43 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-02/04/18	Fix error bar calculation display in log space for TDI intensities (Buse).
+02/07/18	Add warning to search for shared bgds if only PHA biases are different (Goemann).
+
+02/04/18	Display element concentrations during WDS Penepma simulation compositional loading.
+
+02/02/18	Fix display bug for manual peaking from clicking Start Peaking in the Peaking Options dialog (Carpenter).
+
+02/01/18	Change filament standby text based on FEG flag (Carpenter and Ross)
+v. 12.1.5
+
+01/31/18	Minor improvements to PictureSnap.
+
+01/27/18	Minor tweak to PictureSnap.
+
+01/26/18	Misc improvements to PictureSnap.
+
+01/24/18	Add new LAB6FieldEmissionPresent keyword to [hardware] section of Probewin.ini (Cameca only) (Jercinovic
+		Vos and Poeml).
+
+		Add trap to check for change in EDSSpectraInterfaceType for existing probe run databases (Botto).
+
+01/19/18	Remove readonly stage/spec INI flags (obsolete). Work on SF code.
+
+01/18/18	Fix bug in standard assignments where interf. orders were not being saved (Goemann).
+v. 12.1.4
+		Add new command for JEOL 8x30 ROM based stage jog (Goemann).
+
+01/14/18	Work on secondary fluorescence from boundary code in PFE.
+
+01/13/18	Tweak SiO2/TiO2 images for SF calculation boundary.  Trap issue where first selected wavescan sample to plot is "continued".
+
+01/10/18	Fix "garent" typos in CalcImage menus (Roberts).  Add check for too large pixel sizes in Stage mosaic feature.
+		
+		Disable error bar checkbox for scanning TDI images TDI points display.
+
+01/07/17	Make PrintAnalyzedAndSpecifiedOnSameLine default = True in Probewin.ini file.
+
+01/04/18	Fix error bar calculation display in log space for TDI intensities (Buse).
 
 		Add warning if current EDS configuration is different than stored EDFS configuration (Porier).
 
