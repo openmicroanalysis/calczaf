@@ -2,7 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/12/18	Remove EDS net intensity type flag (Spilde).
+v. 12.1.7
+
 02/07/18	Add warning to search for shared bgds if only PHA biases are different (Goemann).
+v. 12.1.6
 
 02/04/18	Display element concentrations during WDS Penepma simulation compositional loading.
 

@@ -232,7 +232,7 @@ Screen.MousePointer = vbDefault
 PictureSnapFilename$ = tfilename$
 
 ' Update form caption
-FormPICTURESNAP.Caption = "Picture Snap [" & tfilename$ & "]"
+FormPICTURESNAP.Caption = "PictureSnap [" & tfilename$ & "]"
 
 ' Check if a calibration file already exists and load if found
 Call PictureSnapLoadCalibration

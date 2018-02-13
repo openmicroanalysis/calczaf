@@ -332,7 +332,7 @@ On Error GoTo PictureSnapConvertError
 Dim csx As Single, csy As Single, cox As Single, coy As Single
 Dim smallamount As Single
 
-' Check for open picture snap file
+' Check for open PictureSnap file
 If Trim$(PictureSnapFilename$) = vbNullString Then Exit Sub
 
 ' Convert using two calibration points (no Z stage interpolation)
@@ -463,7 +463,7 @@ tfilename$ = MiscGetFileNameNoExtension$(pFileName$) & ".ACQ"
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "PictureSnap mode", CSng(PictureSnapMode%))
 If ierror Then Exit Sub
 
-' Save picture snap mode
+' Save PictureSnap mode
 If PictureSnapMode% = 0 Then
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Number of calibration points", CSng(2))       ' using two control points
 If ierror Then Exit Sub

@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form FormPICTURESNAP3 
-   Caption         =   "Picture Snap Full Window View (double-click to move stage)"
+   Caption         =   "PictureSnap Full Window View (double-click to move stage)"
    ClientHeight    =   5820
    ClientLeft      =   60
    ClientTop       =   345
@@ -81,6 +81,8 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y
 If Not DebugMode Then On Error Resume Next
 BitMapX! = X!
 BitMapY! = Y!   ' store for double-click
+Call PictureSnapUpdateCursor2(Int(0), X!, Y!)
+If ierror Then Exit Sub
 If WaitingForCalibrationClick Then
 FormPICTURESNAP3.MousePointer = vbHourglass
 End If

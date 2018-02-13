@@ -1521,9 +1521,8 @@ Global ROMPeakingPresent As Integer
 Global ROMPeakingString(0 To MAXROMPEAKTYPES%) As String
 Global DefaultROMPeakingType As Integer     ' 0=internal, 1=parabolic, 2=maxima, 3=gaussian, 4 = smart, 5 = smart, 6 = highest intensity
 
-Global EDSSpectraInterfacePresent As Integer            ' new EDS spectrum interface
-Global EDSSpectraInterfaceType As Integer               ' new EDS spectrum interface
-Global EDSSpectraNetIntensityInterfaceType As Integer   ' new for just EDS net intensity calculations
+Global EDSSpectraInterfacePresent As Integer            ' EDS spectrum interface
+Global EDSSpectraInterfaceType As Integer               ' EDS spectrum interface type, 0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo NSS, 6 = JEOL
 
 ' Faraday cup parameters
 Global FaradayWaitInTime As Single

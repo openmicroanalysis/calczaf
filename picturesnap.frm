@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form FormPICTURESNAP 
-   Caption         =   "Picture Snap"
+   Caption         =   "PictureSnap"
    ClientHeight    =   8370
    ClientLeft      =   225
    ClientTop       =   855

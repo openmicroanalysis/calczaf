@@ -2419,33 +2419,6 @@ End If
 End If
 
 lpAppName$ = "Hardware"
-lpKeyName$ = "EDSSpectraNetIntensityInterfaceType"
-nDefault& = EDSSpectraInterfaceType%   ' 0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-EDSSpectraNetIntensityInterfaceType% = valid&
-If EDSSpectraNetIntensityInterfaceType% < 0 Or EDSSpectraNetIntensityInterfaceType% > MAXINTERFACE_EDS% Then
-msg$ = "EDSSpectraNetIntensityInterfaceType keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
-EDSSpectraNetIntensityInterfaceType% = nDefault&
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-' Warn user if EDSSpectraInterfaceType <> EDSSpectraNetIntensityInterfaceType
-If Not initialized And (EDSSpectraInterfaceType% <> EDSSpectraNetIntensityInterfaceType%) Then
-msg$ = "Please note that the EDSSpectraInterfaceType keyword and the EDSSpectraNetIntensityInterfaceType keyword value are not the same in " & ProbeWinINIFile$ & ". "
-msg$ = msg$ & "This could could unanticipated problems for EDS spectrum acquisition and/or processing." & vbCrLf & vbCrLf
-msg$ = msg$ & "Are you sure that you want to continue with this EDS configuration?"
-response% = MsgBox(msg$, vbOKCancel + vbQuestion, "InitINIHardware")
-If response% = vbCancel Then
-msg$ = "Program will now end."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
-End
-End If
-initialized = True
-End If
-
-lpAppName$ = "Hardware"
 lpKeyName$ = "EDSThinWindowPresent"
 nDefault& = False
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
@@ -3957,9 +3930,10 @@ lpKeyName$ = "ThermoNSSVersionNumber"
 lpDefault$ = "3.0"
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
 If Left$(lpReturnString2$, tValid&) = vbNullString Then
-If EDSSpectraInterfaceType% = 5 Or EDSSpectraNetIntensityInterfaceType% = 5 Then
+If EDSSpectraInterfaceType% = 5 Then
 msg$ = "Thermo NSS Version Number keyword was not found in " & ProbeWinINIFile$ & ". Therefore, version 3.0 of the Thermo NSS application will be assumed." & vbCrLf & vbCrLf
-msg$ = msg$ & "If this is incorrect, please edit the Thermo NSS version number keyword in " & ProbeWinINIFile$ & ", for the correct version number of NSS."
+msg$ = msg$ & "If this is incorrect, please edit the Thermo NSS version number keyword in " & ProbeWinINIFile$ & ", for the correct version number of NSS. " & vbCrLf & vbCrLf
+msg$ = msg$ & "Note that for Thermo Pathfinder v. 1, specify ThermoNSSVersionNumber=5"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 End If
 End If

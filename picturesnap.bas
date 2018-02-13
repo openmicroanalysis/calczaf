@@ -47,9 +47,9 @@ Screen.MousePointer = vbDefault
 
 ' Update form caption
 If RealTimeMode And PictureSnapCalibrated Then
-FormPICTURESNAP.Caption = "Picture Snap [" & PictureSnapFilename$ & "] (double-click to move)"
+FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "] (double-click to move)"
 Else
-FormPICTURESNAP.Caption = "Picture Snap [" & PictureSnapFilename$ & "]"
+FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "]"
 End If
 
 Else
@@ -284,7 +284,7 @@ End If
 Call PictureSnapCalibrateSave(FormPICTURESNAP2)
 If ierror Then Exit Sub
 
-FormPICTURESNAP.Caption = "Picture Snap [" & PictureSnapFilename$ & "] (double-click to move)"
+FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "] (double-click to move)"
 PictureSnapCalibrated = True
 
 If PictureSnapCalibrated Then
@@ -486,7 +486,7 @@ If PictureSnapFilename$ = vbNullString Then Exit Sub
 If Not PictureSnapCalibrated Then
 xpix& = xpos! / Screen.TwipsPerPixelX
 ypix& = ypos! / Screen.TwipsPerPixelY
-FormPICTURESNAP.Caption = "Picture Snap [" & PictureSnapFilename$ & "], Pixel X=" & Format$(xpix&) & ", Y=" & Format$(ypix&)
+FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "], Pixel X=" & Format$(xpix&) & ", Y=" & Format$(ypix&)
 Exit Sub
 End If
 
@@ -503,12 +503,12 @@ End If
 
 ' Update form
 If Not RealTimeMode Then
-FormPICTURESNAP.Caption = "Picture Snap [" & PictureSnapFilename$ & "], Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!)
+FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "], Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!)
 Else
 If PictureSnapCalibrationNumberofZPoints% = 0 Then
-FormPICTURESNAP.Caption = "Picture Snap [" & PictureSnapFilename$ & "] (double-click to move), Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!)
+FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "] (double-click to move), Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!)
 Else
-FormPICTURESNAP.Caption = "Picture Snap [" & PictureSnapFilename$ & "] (double-click to move), Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!) & ", Z=" & MiscAutoFormat$(stagez!)
+FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "] (double-click to move), Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!) & ", Z=" & MiscAutoFormat$(stagez!)
 End If
 End If
 
@@ -517,6 +517,70 @@ Exit Sub
 ' Errors
 PictureSnapUpdateCursorError:
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapUpdateCursor"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub PictureSnapUpdateCursor2(mode As Integer, xpos As Single, ypos As Single)
+' Update the cursor display for FormPICTURESNAP2
+' mode = 0  passed position is mouse coordinates
+' mode = 1  passed position is stage coordinates
+
+ierror = False
+On Error GoTo PictureSnapUpdateCursor2Error
+
+Dim stagex As Single, stagey As Single, stagez As Single
+Dim fractionx As Single, fractiony As Single
+Dim xpix As Long, ypix As Long
+
+' If picture file is not loaded just exit
+If PictureSnapFilename$ = vbNullString Then Exit Sub
+
+' If not calibrated just calculate pixels and exit
+If Not PictureSnapCalibrated Then
+xpix& = xpos! / Screen.TwipsPerPixelX
+ypix& = ypos! / Screen.TwipsPerPixelY
+FormPICTURESNAP3.Caption = "PictureSnap Full View (double-click to move), Pixel X=" & Format$(xpix&) & ", Y=" & Format$(ypix&)
+Exit Sub
+End If
+
+' Convert FormPICTURESNAP3 form coordinates to FormPICTURESNAP.Picture2 coordinates
+xpos! = FormPICTURESNAP.Picture2.ScaleWidth * xpos! / FormPICTURESNAP3.ScaleWidth
+ypos! = FormPICTURESNAP.Picture2.ScaleHeight * ypos! / FormPICTURESNAP3.ScaleHeight
+
+' Convert to stage coordinates
+If mode% = 0 Then
+Call PictureSnapConvert(Int(1), xpos!, ypos!, CSng(0#), stagex!, stagey!, stagez!, fractionx!, fractiony!)
+If ierror Then Exit Sub
+
+' Already in stage coordinates
+Else
+stagex! = xpos!
+stagey! = ypos!
+End If
+
+' Update form
+If PictureSnapMode% = 0 Then
+If RealTimeMode Then
+FormPICTURESNAP3.Caption = "PictureSnap Full View, Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!) & " (double-click to move stage)"
+Else
+FormPICTURESNAP3.Caption = "PictureSnap Full View, Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!)
+End If
+
+Else
+If RealTimeMode Then
+FormPICTURESNAP3.Caption = "PictureSnap Full View, Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!) & ", Z=" & MiscAutoFormat$(stagez!) & " (double-click to move stage)"
+Else
+FormPICTURESNAP3.Caption = "PictureSnap Full View, Stage X=" & MiscAutoFormat$(stagex!) & ", Y=" & MiscAutoFormat$(stagey!) & ", Z=" & MiscAutoFormat$(stagez!)
+End If
+End If
+
+Exit Sub
+
+' Errors
+PictureSnapUpdateCursor2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapUpdateCursor2"
 ierror = True
 Exit Sub
 
@@ -551,9 +615,9 @@ If ierror Then Exit Sub
 
 ' Reload caption
 If Not RealTimeMode Then
-FormPICTURESNAP.Caption = "Picture Snap [" & PictureSnapFilename$ & "]"
+FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "]"
 Else
-FormPICTURESNAP.Caption = "Picture Snap [" & PictureSnapFilename$ & "] (double-click to move)"
+FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "] (double-click to move)"
 End If
 
 PictureSnapCalibrated = True
@@ -705,7 +769,7 @@ ierror = True
 Exit Sub
 
 PictureSnapLoadFullWindowNoPicture:
-msg$ = "No image file has been opened yet. Use the File | Open menu in the Picture Snap window to open a scanned image of your sample."
+msg$ = "No image file has been opened yet. Use the File | Open menu in the PictureSnap window to open a scanned image of your sample."
 MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapLoadFullWindow"
 ierror = True
 Exit Sub

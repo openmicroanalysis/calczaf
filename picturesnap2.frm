@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form FormPICTURESNAP2 
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Picture Snap Calibration"
+   Caption         =   "PictureSnap Calibration"
    ClientHeight    =   12075
    ClientLeft      =   45
    ClientTop       =   330
