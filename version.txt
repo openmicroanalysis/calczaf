@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/15/18	Fix raw intensity output bug in CalcImage when elements are disabled (Poeml).
+
+		Add call to DataCrystal for loading stored crystals for virtual std intensity calculations in CalcImage.
+
 02/14/18	Add better error handling when check file type of MDB files during Load File Setup (Neill).
 
 02/13/18	Add code to check for exisitng EDS spectra before warning user about mismatch EDS interfaces (Spilde).
