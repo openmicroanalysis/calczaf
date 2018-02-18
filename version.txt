@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/17/18	Replace Surfer page and template menus with dialog in CalcImage.
+
+		Add Virtual Standard menu to CalcImage (Poeml).
+		
 02/15/18	Fix raw intensity output bug in CalcImage when elements are disabled (Poeml).
 
 		Add call to DataCrystal for loading stored crystals for virtual std intensity calculations in CalcImage.
