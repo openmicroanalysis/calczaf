@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/19/18	Add new file conversion menus to CalcImage Log Window form (Buse, Deville).
+
 02/17/18	Replace Surfer page and template menus with dialog in CalcImage.
 
 		Add Virtual Standard menu to CalcImage (Poeml).
