@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/22/18	Move Help and Convert mernus from log window form to main CalcImage form.
+v. 12.1.8
+		Add gridxy_silent.bas to distribution (Buse and Hatton) for command line reprocessing.
+		
+		Update CalcImage help file.
+		
+02/21/18	Fix beam deflection and image calibration bug (Mushock and Adams).
+
 02/19/18	Add new file conversion menus to CalcImage Log Window form (Buse, Deville).
 
 02/17/18	Replace Surfer page and template menus with dialog in CalcImage.

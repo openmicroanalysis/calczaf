@@ -4332,6 +4332,7 @@ astring$ = Left$(lpReturnString$, valid&)
 Call InitParseStringToReal(astring$, ImageInterfaceCalNumberOfBeamCalibrations%, ImageInterfaceCalMagArray!())
 If ierror Then End
 For i% = 1 To ImageInterfaceCalNumberOfBeamCalibrations%
+ImageInterfaceCalMagArray!(i%) = CLng(ImageInterfaceCalMagArray!(i%))      ' only use integer magnifications for beam calibrations
 If ImageInterfaceCalMagArray!(i%) < 10# Or ImageInterfaceCalMagArray!(i%) > 100000! Then
 msg$ = "ImageInterfaceCalMag keyword value (" & Format$(ImageInterfaceCalMagArray!(i%)) & ", array index " & Format$(i%) & ") is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
