@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/23/18	Modify beam deflection and imaging beam mode code to be more efficient.
+v. 12.1.9	
+		Add batch file output for automated processing in CalcImage (when new project is created).
+
 02/22/18	Move Help and Convert mernus from log window form to main CalcImage form.
 v. 12.1.8
 		Add gridxy_silent.bas to distribution (Buse and Hatton) for command line reprocessing.

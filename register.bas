@@ -135,10 +135,6 @@ lpString$ = RegistrationInstitution$
 valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, lpString$, lpFileName$)
 End If
 
-' Load registration
-MDBUserName$ = RegistrationName$
-MDBFileTitle$ = RegistrationInstitution$
-
 Exit Sub
 
 ' Errors
