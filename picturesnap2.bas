@@ -134,8 +134,9 @@ Dim gStage_Units As String
 
 Dim m_Width As Long, m_Height As Long, m_Depth As Long, m_ImageType As Long
 
-' Unload the calibration form in case loaded
+' Unload the calibration ans full view forms in case loaded
 Unload FormPICTURESNAP2
+Unload FormPICTURESNAP3
 
 ' Get existing filename from user
 If mode% > 0 Then
@@ -1090,8 +1091,9 @@ Dim gfilename As String, bfilename$
 
 Static tfilename As String
 
-' Unload the calibration form in case loaded
+' Unload the calibration and full size forms in case loaded
 Unload FormPICTURESNAP2
+Unload FormPICTURESNAP3
 
 ' Get file from user
 If tfilename$ = vbNullString Then tfilename$ = UserImagesDirectory$ & "\*.PrbImg"

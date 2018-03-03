@@ -2,7 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-02/26/18	Add display of current calibration paarmeters for Imaging and StageMap calibration windows.
+03/02/18	Fix y index ordering of PrbImg output to text in CalcImage (Vos and DeVille).
+
+03/02/18	Re-arrange beam deflection beam mode code.  Add re-center beam to Imaging window (Allaz)>
+v. 12.2.0
+
+02/26/18	Add display of current calibration parameters for Imaging and StageMap calibration windows.
 
 		Add disable spectro flag check to RealTimeInitInterface (Poirier).
 

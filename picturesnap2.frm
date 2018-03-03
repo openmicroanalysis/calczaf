@@ -809,6 +809,7 @@ Call PictureSnapCalibrateUnLoad
 If ierror Then Exit Sub
 End If
 Unload FormPICTURESNAP2
+Unload FormPICTURESNAP3
 End Sub
 
 Private Sub CommandDisplayCalibrationPoints_Click()
