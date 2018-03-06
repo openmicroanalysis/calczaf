@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/05/18	Make beam position spot in Acquire! window more obvious. Fix 1,4,9 error in CI (Hatton).
+v. 12.2.1
+
 03/02/18	Fix y index ordering of PrbImg output to text in CalcImage (Vos and DeVille).
 
 03/02/18	Re-arrange beam deflection beam mode code.  Add re-center beam to Imaging window (Allaz)>
