@@ -866,7 +866,6 @@ End If
 tcolor& = RGB(255, 0, 0)    ' red
 FormPICTURESNAP.Picture2.DrawWidth = 2
 FormPICTURESNAP.Picture2.Circle (formx!, formy!), (radius!), tcolor&
-FormPICTURESNAP.Picture2.DrawWidth = 1
 
 ' Draw line numbers on picture control if indicated
 If ImageSData%(n&) > 0 Or ImageNData%(n&) > 0 Then
@@ -877,6 +876,7 @@ astring$ = Str$(ImageNData%(n&))
 Else
 astring$ = vbNullString
 End If
+FormPICTURESNAP.Picture2.DrawWidth = 1
 FormPICTURESNAP.Picture2.ForeColor = tcolor& ' set foreground color
 FormPICTURESNAP.Picture2.FontSize = 10       ' set font size
 FormPICTURESNAP.Picture2.FontName = LogWindowFontName$

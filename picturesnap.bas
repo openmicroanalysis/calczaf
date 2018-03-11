@@ -700,7 +700,6 @@ a1! = formy! + radius! * 2
 a2! = formy! - radius! * 2
 FormPICTURESNAP.Picture2.Line (formx!, a1!)-(formx!, formy! + radius! / 2), RGB(150, 0, 150)
 FormPICTURESNAP.Picture2.Line (formx!, a2!)-(formx!, formy! - radius! / 2), RGB(150, 0, 150)
-FormPICTURESNAP.Picture2.DrawWidth = 1
 
 ' Update full window
 If FormPICTURESNAP3.Visible Then
@@ -716,7 +715,6 @@ End If
 ' Draw current position on full view window
 FormPICTURESNAP3.DrawWidth = 2
 FormPICTURESNAP3.Circle (FormPICTURESNAP3.ScaleWidth * fractionx!, FormPICTURESNAP3.ScaleHeight * fractiony!), radius!, RGB(150, 0, 150)
-FormPICTURESNAP3.DrawWidth = 1
 End If
 End If
 
@@ -935,10 +933,11 @@ tcolor& = RGB(255, 255, 255)
 Else
 tcolor& = RGB(0, 0, 0)
 End If
-FormPICTURESNAP.Picture2.DrawWidth = 1
+FormPICTURESNAP.Picture2.DrawWidth = 1      ' for filled box
 FormPICTURESNAP.Picture2.Line (tuleftx!, tulefty!)-(tlrightx!, tlrighty!), tcolor&, BF
    
 ' Print text of microns
+FormPICTURESNAP.Picture2.DrawWidth = 1
 FormPICTURESNAP.Picture2.CurrentX = FormPICTURESNAP.Picture2.CurrentX - xrange! / 2#
 tcurrentx = FormPICTURESNAP.Picture2.CurrentX
 tcurrenty = FormPICTURESNAP.Picture2.CurrentY
@@ -1042,7 +1041,7 @@ ydata2! = RealTimeMotorPositions!(YMotor%) - yoffset! / MotUnitsToAngstromMicron
 Call PictureSnapConvert(Int(2), formx1!, formy1!, formz1!, xdata1!, ydata1!, zdata1!, fraction1x!, fraction1y!)
 If ierror Then Exit Sub
 
-Call PictureSnapConvert(Int(2), formx2!, formy2!, formz1!, xdata2!, ydata2!, zdata2!, fraction2x!, fraction2y!)
+Call PictureSnapConvert(Int(2), formx2!, formy2!, formz2!, xdata2!, ydata2!, zdata2!, fraction2x!, fraction2y!)
 If ierror Then Exit Sub
 End If
 
@@ -1052,7 +1051,7 @@ End If
 
 ' Update mag box if scan mode
 If tbeammode% = 1 Then
-FormPICTURESNAP.Picture2.DrawWidth = 1
+FormPICTURESNAP.Picture2.DrawWidth = 2
 FormPICTURESNAP.Picture2.Line (formx1!, formy1!)-(formx2!, formy1!), RGB(0, 0, 150)
 FormPICTURESNAP.Picture2.Line (formx1!, formy2!)-(formx2!, formy2!), RGB(0, 0, 150)
 

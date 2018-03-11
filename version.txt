@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/10/18	Improve PictureSnap text graphics (Seward).
+
 03/07/18	Fix display issue in standard assignments TDI plot when different numbers of points per 
 		data line (Lerner).
 

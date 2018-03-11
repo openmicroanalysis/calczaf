@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form FormPICTURESELECT 
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Picture Select Point"
+   Caption         =   "PictureSnap Select Calibration Point"
    ClientHeight    =   630
    ClientLeft      =   30
    ClientTop       =   315
