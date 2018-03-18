@@ -181,6 +181,7 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   2415
       End
       Begin VB.TextBox TextYPixel3 
+         BackColor       =   &H80000004&
          Height          =   285
          Left            =   2040
          Locked          =   -1  'True
@@ -190,6 +191,7 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   975
       End
       Begin VB.TextBox TextXPixel3 
+         BackColor       =   &H80000004&
          Height          =   285
          Left            =   2040
          Locked          =   -1  'True
@@ -398,6 +400,7 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   975
       End
       Begin VB.TextBox TextXPixel2 
+         BackColor       =   &H80000004&
          Height          =   285
          Left            =   2040
          Locked          =   -1  'True
@@ -407,6 +410,7 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   975
       End
       Begin VB.TextBox TextYPixel2 
+         BackColor       =   &H80000004&
          Height          =   285
          Left            =   2040
          Locked          =   -1  'True
@@ -647,6 +651,7 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   2415
       End
       Begin VB.TextBox TextYPixel1 
+         BackColor       =   &H80000004&
          Height          =   285
          Left            =   2040
          Locked          =   -1  'True
@@ -656,6 +661,7 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   975
       End
       Begin VB.TextBox TextXPixel1 
+         BackColor       =   &H80000004&
          Height          =   285
          Left            =   2040
          Locked          =   -1  'True

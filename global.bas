@@ -2943,3 +2943,4 @@ Global UseRectangleDrawingModeFlag As Boolean
 
 Global LAB6FieldEmissionPresentFlag As Integer       ' 0 = not present, <> 0 present
 
+Global SkipPeakingJustDoPHAFlag As Integer

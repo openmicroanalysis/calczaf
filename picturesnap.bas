@@ -933,11 +933,10 @@ tcolor& = RGB(255, 255, 255)
 Else
 tcolor& = RGB(0, 0, 0)
 End If
-FormPICTURESNAP.Picture2.DrawWidth = 1      ' for filled box
+FormPICTURESNAP.Picture2.DrawWidth = 1      ' use DrawWidth = 1 for filled box accuracy
 FormPICTURESNAP.Picture2.Line (tuleftx!, tulefty!)-(tlrightx!, tlrighty!), tcolor&, BF
    
 ' Print text of microns
-FormPICTURESNAP.Picture2.DrawWidth = 1
 FormPICTURESNAP.Picture2.CurrentX = FormPICTURESNAP.Picture2.CurrentX - xrange! / 2#
 tcurrentx = FormPICTURESNAP.Picture2.CurrentX
 tcurrenty = FormPICTURESNAP.Picture2.CurrentY

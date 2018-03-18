@@ -608,14 +608,14 @@ tcolor& = RGB(0, 255, 0)
 tForm.Picture2.DrawWidth = 2
 tForm.Picture2.Circle (cpoint1x!, cpoint1y!), radius!, tcolor&
 
-tForm.Picture2.DrawWidth = 1
 tForm.Picture2.ForeColor = tcolor& ' set foreground color
-tForm.Picture2.CurrentX = cpoint1x!
-tForm.Picture2.CurrentY = cpoint1y!
 tForm.Picture2.FontSize = 13       ' set font size
 tForm.Picture2.FontName = LogWindowFontName$
 tForm.Picture2.FontSize = 13       ' set font size    (necessary for Windows)
-tForm.Picture2.FontBold = True
+tForm.Picture2.FontBold = False
+
+tForm.Picture2.CurrentX = cpoint1x!
+tForm.Picture2.CurrentY = cpoint1y!
 tForm.Picture2.CurrentX = tForm.Picture2.CurrentX + 150     ' set X
 tForm.Picture2.CurrentY = tForm.Picture2.CurrentY + 150     ' set Y
 tForm.Picture2.Print "1"                           ' print text string to form
@@ -623,14 +623,8 @@ tForm.Picture2.Print "1"                           ' print text string to form
 tForm.Picture2.DrawWidth = 2
 tForm.Picture2.Circle (cpoint2x!, cpoint2y!), radius!, tcolor&
 
-tForm.Picture2.DrawWidth = 1
-tForm.Picture2.ForeColor = tcolor& ' set foreground color
 tForm.Picture2.CurrentX = cpoint2x!
 tForm.Picture2.CurrentY = cpoint2y!
-tForm.Picture2.FontSize = 13       ' set font size
-tForm.Picture2.FontName = LogWindowFontName$
-tForm.Picture2.FontSize = 13       ' set font size    (necessary for Windows)
-tForm.Picture2.FontBold = True
 tForm.Picture2.CurrentX = tForm.Picture2.CurrentX + 150     ' set X
 tForm.Picture2.CurrentY = tForm.Picture2.CurrentY + 150     ' set Y
 tForm.Picture2.Print "2"                           ' print text string to form
@@ -640,14 +634,8 @@ If PictureSnapMode% = 1 Then
 tForm.Picture2.DrawWidth = 2
 tForm.Picture2.Circle (cpoint3x!, cpoint3y!), radius!, tcolor&
 
-tForm.Picture2.DrawWidth = 1
-tForm.Picture2.ForeColor = tcolor& ' set foreground color
 tForm.Picture2.CurrentX = cpoint3x!
 tForm.Picture2.CurrentY = cpoint3y!
-tForm.Picture2.FontSize = 13       ' set font size
-tForm.Picture2.FontName = LogWindowFontName$
-tForm.Picture2.FontSize = 13       ' set font size    (necessary for Windows)
-tForm.Picture2.FontBold = True
 tForm.Picture2.CurrentX = tForm.Picture2.CurrentX + 150     ' set X
 tForm.Picture2.CurrentY = tForm.Picture2.CurrentY + 150     ' set Y
 tForm.Picture2.Print "3"                           ' print text string to form
@@ -664,34 +652,28 @@ Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint1x!, apoint1y!, ap
 tForm3.DrawWidth = 2
 tForm3.Circle (tForm3.ScaleWidth * fractionx!, tForm3.ScaleHeight * fractiony!), radius!, tcolor&
 
-tForm3.DrawWidth = 1
 tForm3.ForeColor = tcolor& ' set foreground color
-tForm3.CurrentX = tForm3.ScaleWidth * fractionx!
-tForm3.CurrentY = tForm3.ScaleHeight * fractiony!
 tForm3.FontSize = 13       ' set font size
 tForm3.FontName = LogWindowFontName$
 tForm3.FontSize = 13       ' set font size    (necessary for Windows)
-tForm3.FontBold = True
+tForm3.FontBold = False
+
+tForm3.CurrentX = tForm3.ScaleWidth * fractionx!
+tForm3.CurrentY = tForm3.ScaleHeight * fractiony!
 tForm3.CurrentX = tForm3.CurrentX + 150     ' set X
 tForm3.CurrentY = tForm3.CurrentY + 150     ' set Y
-tForm3.Print "1"                           ' print text string to form
+tForm3.Print "1"                            ' print text string to form
 
 ' Draw second calibration point for full view window (need to scale to full view form)
 Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint2x!, apoint2y!, apoint2z!, fractionx!, fractiony!)
 tForm3.DrawWidth = 2
 tForm3.Circle (tForm3.ScaleWidth * fractionx!, tForm3.ScaleHeight * fractiony!), radius!, tcolor&
 
-tForm3.DrawWidth = 1
-tForm3.ForeColor = tcolor& ' set foreground color
 tForm3.CurrentX = tForm3.ScaleWidth * fractionx!
 tForm3.CurrentY = tForm3.ScaleHeight * fractiony!
-tForm3.FontSize = 13       ' set font size
-tForm3.FontName = LogWindowFontName$
-tForm3.FontSize = 13       ' set font size    (necessary for Windows)
-tForm3.FontBold = True
 tForm3.CurrentX = tForm3.CurrentX + 150     ' set X
 tForm3.CurrentY = tForm3.CurrentY + 150     ' set Y
-tForm3.Print "2"                           ' print text string to form
+tForm3.Print "2"                            ' print text string to form
 
 ' Display third point if indicated
 If PictureSnapMode% = 1 Then
@@ -699,17 +681,11 @@ Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint3x!, apoint3y!, ap
 tForm3.DrawWidth = 2
 tForm3.Circle (tForm3.ScaleWidth * fractionx!, tForm3.ScaleHeight * fractiony!), radius!, tcolor&
 
-tForm3.DrawWidth = 1
-tForm3.ForeColor = tcolor& ' set foreground color
 tForm3.CurrentX = tForm3.ScaleWidth * fractionx!
 tForm3.CurrentY = tForm3.ScaleHeight * fractiony!
-tForm3.FontSize = 13       ' set font size
-tForm3.FontName = LogWindowFontName$
-tForm3.FontSize = 13       ' set font size    (necessary for Windows)
-tForm3.FontBold = True
 tForm3.CurrentX = tForm3.CurrentX + 150     ' set X
 tForm3.CurrentY = tForm3.CurrentY + 150     ' set Y
-tForm3.Print "3"                           ' print text string to form
+tForm3.Print "3"                            ' print text string to form
 End If
 End If
 End If

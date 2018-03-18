@@ -876,7 +876,6 @@ astring$ = Str$(ImageNData%(n&))
 Else
 astring$ = vbNullString
 End If
-FormPICTURESNAP.Picture2.DrawWidth = 1
 FormPICTURESNAP.Picture2.ForeColor = tcolor& ' set foreground color
 FormPICTURESNAP.Picture2.FontSize = 10       ' set font size
 FormPICTURESNAP.Picture2.FontName = LogWindowFontName$
