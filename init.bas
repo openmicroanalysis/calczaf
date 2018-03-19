@@ -3363,6 +3363,8 @@ End If
 'If InterfaceType% = 4 Then XtalFlipDuration! = 10#
 If InterfaceType% = 5 Then XtalFlipDuration! = 20#                 ' Cameca
 
+SkipPeakingJustDoPHAFlag% = 0
+
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
 If ierror Then Exit Sub
