@@ -1385,6 +1385,13 @@ End Sub
 
 Sub AnalyzeTypeSpecified(mode As Integer, analysis As TypeAnalysis, sample() As TypeSample)
 ' Type the specified elements
+' mode = 0 type out sample description and warnings only
+' mode = 1 type out "analysis.WtsData!" array (elemental weight percents)
+' mode = 2 type out "analysis.CalData!" array (oxide weight percents)
+' mode = 3 type out "analysis.CalData!" array (atomic percents)
+' mode = 4 type out "analysis.CalData!" array (formula atoms)
+' mode = 5 type out "analysis.CalData!" array (normalized elemental)
+' mode = 6 type out "analysis.CalData!" array (normalized oxide)
 
 ierror = False
 On Error GoTo AnalyzeTypeSpecifiedError

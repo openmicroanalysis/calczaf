@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/19/18	Fix bug when analyzed oxygen is disabled and calclated by stoichiometry (Roberts).
+
 03/18/18	Add option to skip peaking scans (and just do PHA scans) 
 		in PFE Peaking Options dialog (Buse and Goemann)
 v. 12.2.2

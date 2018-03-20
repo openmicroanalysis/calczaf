@@ -169,7 +169,8 @@ End If
 
 ' Now check for elements in the standard that are not in the sample, and add them if necesssary as specified elements
 For j% = 1 To stdsample(1).LastChan%
-ip% = IPOS1(UpdateStdSample(1).LastChan%, stdsample(1).Elsyms$(j%), UpdateStdSample(1).Elsyms$())         ' only check element
+'ip% = IPOS1(UpdateStdSample(1).LastChan%, stdsample(1).Elsyms$(j%), UpdateStdSample(1).Elsyms$())         ' only check element
+ip% = IPOS9(stdsample(1).Elsyms$(j%), UpdateStdSample())                                         ' only check first not disabled occurance of element to load concentration
 If ip% = 0 Then
 If UpdateStdSample(1).LastChan% + 1 > MAXCHAN% Then GoTo UpdateCalculate2TooManyElements
 
@@ -628,7 +629,8 @@ UpdateStdSample(1) = sample(1)
 
 ' Now check for elements in the standard that are not in the sample, and add them if necesssary as specified elements
 For j% = 1 To stdsample(1).LastChan%
-ip% = IPOS1(UpdateStdSample(1).LastChan%, stdsample(1).Elsyms$(j%), UpdateStdSample(1).Elsyms$())         ' only check element
+'ip% = IPOS1(UpdateStdSample(1).LastChan%, stdsample(1).Elsyms$(j%), UpdateStdSample(1).Elsyms$())         ' only check element
+ip% = IPOS9(stdsample(1).Elsyms$(j%), UpdateStdSample())                                         ' only check first not disabled occurance of element to load concentration
 If ip% = 0 Then
 If UpdateStdSample(1).LastChan% + 1 > MAXCHAN% Then GoTo UpdateCalculateUpdateStandard2TooManyElements
 
