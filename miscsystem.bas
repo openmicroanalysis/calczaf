@@ -477,7 +477,7 @@ Exit Sub
 
 ' Errors
 MiscGetFileVersionDataError:
-MsgBox Error$, vbOKOnly + vbCritical, "MiscGetFileVersionData"
+MsgBox Error$ & ", getting version info for " & tfilename$ & " (file must be in the application or system folder)", vbOKOnly + vbCritical, "MiscGetFileVersionData"
 ierror = True
 Exit Sub
 
