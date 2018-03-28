@@ -1231,6 +1231,7 @@ Global VbDquote As String * 1           ' double quote character
 Global VbSquote As String * 1           ' single quote character
 Global VbComma As String * 1            ' comma character
 Global VbForwardSlash As String * 1     ' forward slash character
+Global VbColon As String * 1            ' colon character
 
 Global Const MAC_FILE_RECORD_LENGTH% = 2400
 Global Const XRAY_FILE_RECORD_LENGTH% = 188

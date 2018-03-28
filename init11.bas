@@ -434,7 +434,7 @@ Exit Sub
 End Sub
 
 Sub InitParseStringToString(astring As String, icount As Integer, stringarray() As String)
-' Parse a string to a string array
+' Parse a comma delimited string to a string array
 
 ierror = False
 On Error GoTo InitParseStringToStringError
@@ -485,7 +485,7 @@ Exit Sub
 End Sub
 
 Sub InitParseStringToString2(astring As String, nn As Integer, icount As Integer, stringarray() As String)
-' Parse a string to a string array (two dimensional array)
+' Parse a comma delimited string to a string array (two dimensional array)
 
 ierror = False
 On Error GoTo InitParseStringToString2Error
@@ -536,7 +536,7 @@ Exit Sub
 End Sub
 
 Sub InitParseStringToStringCount(astring As String, icount As Integer, stringarray() As String)
-' Parse a string to a string array and determine number of sub-strings
+' Parse a comma delimited string to a string array and determine number of sub-strings
 
 ierror = False
 On Error GoTo InitParseStringToStringCountError
@@ -577,6 +577,53 @@ Exit Sub
 InitParseStringToStringCountEmpty:
 msg$ = "Empty string"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitParseStringToStringCount"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub InitParseStringToStringCount2(astring As String, icount As Integer, stringarray() As String)
+' Parse a tab delimited string to a string array and determine number of sub-strings
+
+ierror = False
+On Error GoTo InitParseStringToStringCount2Error
+
+Dim i As Integer, n As Integer
+Dim tstring As String
+
+' Check for empty string
+If astring$ = vbNullString Then GoTo InitParseStringToStringCount2Empty
+
+' Dimension for single string to begin with
+ReDim stringarray(1 To 1) As String
+
+' Parse out sub-strings based on comma placement
+n% = 1
+For i% = 1 To Len(astring$)
+If Mid$(astring, i%, 1) <> vbTab$ Then
+tstring$ = tstring$ & Mid$(astring, i%, 1)
+Else
+stringarray$(n%) = Trim$(tstring$)
+tstring$ = vbNullString
+n% = n% + 1
+If n% > 1 Then ReDim Preserve stringarray(1 To n%) As String
+End If
+Next i%
+
+' Load last sub-string
+stringarray$(n%) = Trim$(tstring$)
+icount% = n%
+Exit Sub
+
+' Errors
+InitParseStringToStringCount2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "InitParseStringToStringCount2"
+ierror = True
+Exit Sub
+
+InitParseStringToStringCount2Empty:
+msg$ = "Empty string"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitParseStringToStringCount2"
 ierror = True
 Exit Sub
 
