@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/02/18	Make peak and wavescan windows default size larger. Re-arrange Display PHA/Peak scan
+v. 12.2.4	dialog (Carpenter).
+
 03/27/18	Minor tweaks (comment out center beam call after image acquisition).
 		Suppress Sx100 ROM scan warnings if not DebugMode.
 

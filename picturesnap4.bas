@@ -266,7 +266,7 @@ Exit Sub
 End Sub
 
 Sub PictureSnapDrawLineRectangle()
-' Draws a rectangle based on the two last positions that were double clicked
+' Draws a line or rectangle based on the two last positions that were double clicked
 
 ierror = False
 On Error GoTo PictureSnapDrawLineRectangleError
