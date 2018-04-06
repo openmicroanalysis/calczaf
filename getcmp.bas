@@ -117,7 +117,7 @@ If Val(FormGETCMP.TextFormula.Text) > 0# Then
 i% = FormGETCMP.ComboFormula.ListIndex     ' zero index indicates sum all cations
 GetCmpTmpSample(1).FormulaRatio! = Val(FormGETCMP.TextFormula.Text)
 
-' If element is greater than zero then it is a specific cation (no element indicates sum all cations)
+' If element is not empty then it is a specific cation (no element indicates sum all cations)
 If i% > 0 And i% <= GetCmpTmpSample(1).LastChan% Then
 GetCmpTmpSample(1).FormulaElement$ = GetCmpTmpSample(1).Elsyms$(i%)
 End If
@@ -135,10 +135,13 @@ End If
 ' Check for no formula atoms
 If GetCmpTmpSample(1).FormulaElementFlag% And GetCmpTmpSample(1).FormulaRatio! = 0# Then GoTo GetCmpSaveNoFormulaAtoms
 
-' Warn user if formula option is checked but no atoms is specified
-'  (no element is ok since that indicates sum all cations)
+' Check if formula concentration is too low
+ip% = IPOS1(GetCmpTmpSample(1).LastChan%, GetCmpTmpSample(1).FormulaElement$, GetCmpTmpSample(1).Elsyms$())
+If GetCmpTmpSample(1).ElmPercents!(ip%) < MinSpecifiedValue! Then GoTo GetCmpSaveInsufficientBasis
+
+' Warn user if formula option is checked but no atoms is specified (blank element is ok since that indicates sum all cations)
 If FormGETCMP.CheckFormula.Value = vbChecked And GetCmpTmpSample(1).FormulaRatio! = 0# Then
-msg$ = "Formula option was selected, but no formula atoms were specified"
+msg$ = "Formula option was selected, but no formula atoms or cation sum were specified"
 MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSave"
 ierror = True
 Exit Sub
@@ -248,6 +251,12 @@ Exit Sub
 
 GetCmpSaveNoFormulaAtoms:
 msg$ = "No formula atoms were specified. Either uncheck the Formula Element checkbox or specify the formula atoms."
+MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSave"
+ierror = True
+Exit Sub
+
+GetCmpSaveInsufficientBasis:
+msg$ = GetCmpTmpSample(1).FormulaElement$ & " is not present in a sufficient concentration for the formula basis calculation."
 MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSave"
 ierror = True
 Exit Sub

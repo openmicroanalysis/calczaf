@@ -396,7 +396,7 @@ Next i%
 
 ' Make sure that elements by difference, stoichiometry or formula basis are ok for new sample setup
 ip% = IPOS1(sample(1).LastChan%, sample(1).FormulaElement$, sample(1).Elsyms$())
-If ip% = 0 And sample(1).FormulaElement$ <> vbNullString Then               ' allow blank element for sum of cations (new code 06-16-2017)
+If ip% = 0 And sample(1).FormulaElement$ <> vbNullString And sample(1).Type% <> 1 Then               ' allow blank element for sum of cations (new code 06-16-2017), also allow missing formula element if standard since it will get loaded automatically (new code 04-04-2018)
 sample(1).FormulaElementFlag% = False
 sample(1).FormulaElement$ = vbNullString
 sample(1).FormulaRatio! = 0#

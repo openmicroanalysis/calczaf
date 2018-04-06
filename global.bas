@@ -2268,7 +2268,7 @@ Global DisplayPHAParameterDialogAfterFlag As Integer
 Global DoNotDisplayStandardImagesDuringDigitizationFlag As Integer
 Global NumberOfScans As Long    ' number of scans in run
 
-Global DefaultBeamMode As Integer   ' 0 = analog spot (no mag), 1 = analog scan (use mag), 2 = digital spot (use beam deflection)
+Global DefaultBeamMode As Integer               ' 0 = analog spot, 1 = analog scan, 2 = digital spot
 Global BeamModeString(0 To 2) As String
 Global DefaultMagnification As Single           ' current magnification
 Global DefaultMagnificationDefault As Single    ' default magnification

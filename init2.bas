@@ -466,9 +466,9 @@ sample(1).ColumnConditionString$ = vbNullString
 sample(1).Magnification! = 0#
 sample(1).magnificationanalytical! = 0#
 sample(1).magnificationimaging! = 0#
-sample(1).ImageShiftX! = 0#                 ' change from integer for SX100 (10-29-2011)
-sample(1).ImageShiftY! = 0#                 ' change from integer for SX100 (10-29-2011)
-sample(1).beammode% = DefaultBeamMode%      ' can be zero
+sample(1).ImageShiftX! = 0#
+sample(1).ImageShiftY! = 0#
+sample(1).beammode% = DefaultBeamMode%      ' 0 = spot, 1 = scan, 2 = digital spot
 
 sample(1).OxideOrElemental% = 0#
 sample(1).Description$ = vbNullString
@@ -521,8 +521,8 @@ sample(1).IntegratedIntensitiesUseFlag% = False
 
 sample(1).FiducialSetNumber% = 0
 
-sample(1).ImageShiftX! = 0#    ' change from integer for SX100 (10-29-2011)
-sample(1).ImageShiftY! = 0#    ' change from integer for SX100 (10-29-2011)
+sample(1).ImageShiftX! = 0#
+sample(1).ImageShiftY! = 0#
 
 For j% = 1 To MAXROW%
 sample(1).Linenumber&(j%) = 0
