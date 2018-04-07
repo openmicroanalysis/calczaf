@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/06/18	Modify JEOL code so BUP is returned as a scan mode (Adams, Locock).
+v. 12.2.6	Add INI flags for loading standard formula and oxuygen by stoichiometry 
+		flags to PFE. Add INI flag for setting beam mode after manual acquisition.
+
 04/05/18	AcquireSetScanModeMagnification: only set mag if analytical scan mode
 v. 12.2.5	AcquireStop: add call to set scan mode after acquisition (Locock).
 

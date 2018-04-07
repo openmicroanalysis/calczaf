@@ -873,6 +873,20 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then InstrumentAcknowledgementString$ = Left$(lpReturnString$, valid&)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+' New set beam mode after acquisition
+lpAppName$ = "General"
+lpKeyName$ = "BeamModeAfterAcquisition"
+nDefault& = 0       ' analog spot
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+SetBeamModeAfterAcquisition% = valid&
+If SetBeamModeAfterAcquisition% < 0 Or SetBeamModeAfterAcquisition% > 1 Then
+msg$ = "SetBeamModeAfterAcquisition keyword value out of range in " & ProbeWinINIFile$ & ". Must be 0 for analog spot or 1 for analog scan."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIGeneral"
+SetBeamModeAfterAcquisition% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors
@@ -5613,6 +5627,31 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINIStandards"
 DefaultStandardCoatingThickness! = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
+' New flags for loading formula parameters and calculate oxygen flag from standard database (Carpenter)
+lpAppName$ = "Standards"
+lpKeyName$ = "LoadFormulasFromStandardDatabase"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+LoadFormulasFromStandardDatabaseFlag = True
+Else
+LoadFormulasFromStandardDatabaseFlag = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Standards"
+lpKeyName$ = "LoadCalculateOxygenFromStandardDatabase"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+LoadCalculateOxygenFromStandardDatabaseFlag = True
+Else
+LoadCalculateOxygenFromStandardDatabaseFlag = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 Exit Sub
 

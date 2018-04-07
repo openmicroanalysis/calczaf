@@ -120,6 +120,8 @@ GetCmpTmpSample(1).FormulaRatio! = Val(FormGETCMP.TextFormula.Text)
 ' If element is not empty then it is a specific cation (no element indicates sum all cations)
 If i% > 0 And i% <= GetCmpTmpSample(1).LastChan% Then
 GetCmpTmpSample(1).FormulaElement$ = GetCmpTmpSample(1).Elsyms$(i%)
+Else
+GetCmpTmpSample(1).FormulaElement$ = vbNullString
 End If
 
 End If
@@ -136,8 +138,10 @@ End If
 If GetCmpTmpSample(1).FormulaElementFlag% And GetCmpTmpSample(1).FormulaRatio! = 0# Then GoTo GetCmpSaveNoFormulaAtoms
 
 ' Check if formula concentration is too low
+If GetCmpTmpSample(1).FormulaElement$ <> vbNullString Then
 ip% = IPOS1(GetCmpTmpSample(1).LastChan%, GetCmpTmpSample(1).FormulaElement$, GetCmpTmpSample(1).Elsyms$())
 If GetCmpTmpSample(1).ElmPercents!(ip%) < MinSpecifiedValue! Then GoTo GetCmpSaveInsufficientBasis
+End If
 
 ' Warn user if formula option is checked but no atoms is specified (blank element is ok since that indicates sum all cations)
 If FormGETCMP.CheckFormula.Value = vbChecked And GetCmpTmpSample(1).FormulaRatio! = 0# Then

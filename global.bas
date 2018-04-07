@@ -2945,3 +2945,8 @@ Global UseRectangleDrawingModeFlag As Boolean
 Global LAB6FieldEmissionPresentFlag As Integer       ' 0 = not present, <> 0 present
 
 Global SkipPeakingJustDoPHAFlag As Integer
+
+Global LoadFormulasFromStandardDatabaseFlag As Boolean
+Global LoadCalculateOxygenFromStandardDatabaseFlag As Boolean
+
+Global SetBeamModeAfterAcquisition As Integer
