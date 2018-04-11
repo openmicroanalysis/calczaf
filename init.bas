@@ -1321,6 +1321,7 @@ On Error GoTo InitFilesError
 Dim amsg As String
 Dim sLanguage As String
 Dim sLocaleD As String, sLocaleT As String
+Dim CommonFilesPath As String
 
 ' Check language
 sLanguage$ = MiscSystemGetLanguage()
@@ -1372,15 +1373,17 @@ If ierror Then End
 
 ' Load special program path for Remote app
 If MiscStringsAreSame(app.EXEName, "Remote") Then
-If Dir$(SystemPath$ & "\Remote.ini") <> vbNullString Then
-ProgramPath$ = InitGetINIData(SystemPath$ & "\Remote.ini", "Software", "ProgramPath", ProgramPath$)
+CommonFilesPath$ = IOBrowseGetAppDataFolder$(SpecialFolder_Program_Files_CommonX86) & "\Probe Software"
+If Dir$(CommonFilesPath$ & "\Remote.ini") <> vbNullString Then
+ProgramPath$ = InitGetINIData(CommonFilesPath$ & "\Remote.ini", "Software", "ProgramPath", ProgramPath$)
 End If
 End If
 
 ' Load special program path for Matrix app
 If MiscStringsAreSame(app.EXEName, "Matrix") Then
-If Dir$(SystemPath$ & "\Matrix.ini") <> vbNullString Then
-ProgramPath$ = InitGetINIData(SystemPath$ & "\Matrix.ini", "Software", "ProgramPath", ProgramPath$)
+CommonFilesPath$ = IOBrowseGetAppDataFolder$(SpecialFolder_Program_Files_CommonX86) & "\Probe Software"
+If Dir$(CommonFilesPath$ & "\Matrix.ini") <> vbNullString Then
+ProgramPath$ = InitGetINIData(CommonFilesPath$ & "\Matrix.ini", "Software", "ProgramPath", ProgramPath$)
 End If
 End If
 
@@ -1480,8 +1483,8 @@ UserReferenceManual$ = ProgramPath$ & "probewin.pdf"
 ' Load help files
 ProbewinHelpFile$ = ProgramPath$ & "Probewin.chm"
 CalcImageHelpFile$ = ProgramPath$ & "CalcImage.chm"
-RemoteHelpFile$ = SystemPath$ & "\Remote.chm"
-MatrixHelpFile$ = SystemPath$ & "\Matrix.chm"
+RemoteHelpFile$ = CommonFilesPath$ & "\Remote.chm"
+MatrixHelpFile$ = CommonFilesPath$ & "\Matrix.chm"
 
 ' Set the Help Files depending on executable
 amsg$ = "Loading help files..."

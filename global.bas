@@ -37,6 +37,7 @@ Global Const SpecialFolder_CommonAppData = &H23  ' for all Windows users on this
 Global Const SpecialFolder_AppData = &H1A        ' for the current Windows user (roaming), on any computer on the network [Windows 98 or later]
 Global Const SpecialFolder_LocalAppData = &H1C   ' for the current Windows user (non roaming), on this computer only [Windows 2000 or later]
 Global Const SpecialFolder_Documents = &H5       ' the Documents folder for the current Windows user
+Global Const SpecialFolder_Program_Files_CommonX86 = &H2C   ' for the Program Files (x86)\Common Files folder
 
 ' VB trappable errors
 Global Const VB_OutOfMemory& = 7
