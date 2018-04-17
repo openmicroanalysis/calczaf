@@ -1506,9 +1506,9 @@ If Dir$(ProbewinHelpFile$) = vbNullString Then GoTo InitFilesHelpFileNotFoundPro
 app.HelpFile = ProbewinHelpFile$
 End If
 
-       
 amsg$ = "InitFiles completed"
 If DebugMode Then Call IOWriteLog(amsg$)
+
 Exit Sub
 
 ' Errors

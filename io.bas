@@ -1151,7 +1151,7 @@ Exit Sub
 ' Errors
 IODumpLogError:
 Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "IODumpLog"
+MsgBox Error$ & ", file handle= " & Format$(OutputDataFileNumber%), vbOKOnly + vbCritical, "IODumpLog"
 ierror = True
 SaveToDisk = False
 SaveToText = False

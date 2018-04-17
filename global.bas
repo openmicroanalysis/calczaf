@@ -1310,39 +1310,38 @@ Global CurrentMultiPointAcquireLastCountTimesHi() As Single   ' allocated in Ini
 Global CurrentMultiPointAcquireLastCountTimesLo() As Single   ' allocated in InitData: 1 To MAXCHAN%, 1 To MAXMULTI%
 
 ' File unit numbers used in Probe for EPMA
-Global Const Temp1FileNumber% = 201       ' #201 temporary file I/O
-Global Const Temp2FileNumber% = 202       ' #202 temporary file I/O
+Global Const ProbeImageFileNumber% = 100   ' ProbeImageFile$ (*.BIM)
+Global Const TipOfTheDayFileNumber% = 101  ' TipOfTheDayFile$ (TipOfTheDay.TXT)
+Global Const Position1FileNumber% = 102    ' *.POS position import or export
+Global Const Position2FileNumber% = 103    ' *.POS position import or export
 
-Global Const ProbeImageFileNumber% = 10   ' #10 ProbeImageFile$ (*.BIM)
-Global Const TipOfTheDayFileNumber% = 11  ' #11 TipOfTheDayFile$ (TipOfTheDay.TXT)
-Global Const Position1FileNumber% = 12    ' #12 *.POS position import or export
-Global Const Position2FileNumber% = 13    ' #13 *.POS position import or export
+Global Const MACFileNumber% = 106          ' MACFile$ (MAC binary data file)
 
-Global Const MACFileNumber% = 16          ' #16 MACFile$ (MAC binary data file)
+Global Const XEdgeFileNumber% = 107        ' XedgeFile$ (xray edge energy binary file)
+Global Const XLineFileNumber% = 108        ' XlineFile$ (xray line energy binary file)
+Global Const XFlurFileNumber% = 109        ' XflurFile$ (xray fluorescence yield binary file)
 
-Global Const XEdgeFileNumber% = 21        ' #21 XedgeFile$ (xray edge energy binary file)
-Global Const XLineFileNumber% = 22        ' #22 XlineFile$ (xray line energy binary file)
-Global Const XFlurFileNumber% = 23        ' #23 XflurFile$ (xray fluorescence yield binary file)
+Global Const EMPFileNumber% = 110          ' EmpMACFile$ or EmpAPFFile$ (empirical MAC/APF ASCII files)
+Global Const EMPFacFileNumber% = 111       ' EmpFacFile$ (empirical Alpha Factors ASCII file)
+Global Const EMPPHAFileNumber% = 112       ' EmpPHAFile$ (empirical PHA coefficient ASCII file)
 
-Global Const EMPFileNumber% = 24          ' #24 EmpMACFile$ or EmpAPFFile$ (empirical MAC/APF ASCII files)
-Global Const EMPFacFileNumber% = 25       ' #25 EmpFacFile$ (empirical Alpha Factors ASCII file)
-Global Const EMPPHAFileNumber% = 26       ' #26 EmpPHAFile$ (empirical PHA coefficient ASCII file)
+Global Const XLineFileNumber2% = 113       ' XlineFile2$ (xray line energy binary file for additional x-rays)
+Global Const XFlurFileNumber2% = 114       ' XflurFile2$ (xray fluorescence yield binary file for additional x-rays)
 
-Global Const XLineFileNumber2% = 27       ' #22 XlineFile2$ (xray line energy binary file for additional x-rays)
-Global Const XFlurFileNumber2% = 28       ' #23 XflurFile2$ (xray fluorescence yield binary file for additional x-rays)
+Global Const AbsorbFileNumber% = 115       ' AbsorbFile$ (coefficient data for ABSORB.BAS)
 
-Global Const AbsorbFileNumber% = 99       ' #99 AbsorbFile$ (coefficient data for ABSORB.BAS)
+Global Const AFactorDataFileNumber% = 117           ' AFactorDataFile$ (alpha-factor ASCII file)
+Global Const ProbeErrorLogFileNumber% = 118         ' ProbeErrorLogFile$ (PROBEWIN.ERR)
+Global Const OutputReportFileNumber% = 119          ' OutputReportFile$ (*.TXT) analyze report output
+Global Const RecalbELMFileNumber% = 120             ' .ELM file number
+Global Const RecalbPHAFileNumber% = 121             ' .PHA file number
+Global Const EMSASpectrumFileNumber% = 122          ' EMSA EDS file number
+Global Const ProbeTextLogFileNumber% = 123          ' ProbeTextLogFile$ (PROBEWIN.TXT)
+Global Const OutputDataFileNumber% = 124            ' OutputDataFile$ (*.OUT)
 
-Global Const AFactorDataFileNumber% = 100           ' #100 AFactorDataFile$ (alpha-factor ASCII file)
-Global Const OutputDataFileNumber% = 170            ' #170 OutputDataFile$ (*.OUT)
-Global Const ProbeErrorLogFileNumber% = 172         ' #172 ProbeErrorLogFile$ (PROBEWIN.ERR)
-Global Const OutputReportFileNumber% = 173          ' #173 OutputReportFile$ (*.TXT) analyze report output
-Global Const RecalbELMFileNumber% = 175             ' #175 .ELM file number
-Global Const RecalbPHAFileNumber% = 176             ' #176 .PHA file number
-Global Const EMSASpectrumFileNumber% = 182          ' #182 EMSA EDS file number
-Global Const ProbeTextLogFileNumber% = 184          ' #184 ProbeTextLogFile$ (PROBEWIN.TXT)
-
-Global Const CustomOutputFileNumber% = 205          ' #205-255 Custom format analysis output files
+Global Const Temp1FileNumber% = 125                 ' temporary file I/O
+Global Const Temp2FileNumber% = 126                 ' temporary file I/O
+Global Const CustomOutputFileNumber% = 200          ' #200-255 Custom format analysis output files
 
 ' Database access flags
 Global DatabaseExclusiveAccess As Integer        ' for generic exclusive access
