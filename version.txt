@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/18/18	Add output of GRD files with BMP files from PFE.
+
 04/16/18	Fix bad reference in TestMatrix project.
 
 04/15/18	Add instructions to TestRemote and TestMatrix.
