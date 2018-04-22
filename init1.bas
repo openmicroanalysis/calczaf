@@ -1325,19 +1325,6 @@ End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 lpAppName$ = "Software"
-lpKeyName$ = "CommandPacingInterval"
-nDefault& = 0
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-CommandPacingInterval% = valid&
-If CommandPacingInterval% < 0 Or CommandPacingInterval% > 100 Then
-msg$ = "CommandPacingInterval keyword value out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-CommandPacingInterval% = nDefault&
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-lpAppName$ = "Software"
 lpKeyName$ = "PeakOnAssignedStandards"
 nDefault& = False
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)

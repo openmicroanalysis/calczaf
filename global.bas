@@ -1500,7 +1500,6 @@ Global UseEmpiricalPHADefaults As Integer
 Global KilovoltChangeDelay As Single
 Global BeamCurrentChangeDelay As Single
 Global BeamSizeChangeDelay As Single
-Global CommandPacingInterval As Integer
 
 Global FilamentStandbyPresent As Integer
 Global FilamentStandbyType As Integer               ' 0 = reduce heat only, 1 = reduce heat and keV, 2 = reduce keV only, 3 = external script
@@ -2228,19 +2227,17 @@ Global ImageIys(1 To MAXIMAGES%) As Integer
 Global ImageMags(1 To MAXIMAGES%) As Single
 Global ImageTitles(1 To MAXIMAGES%) As String
 
+Global ImageXMins(1 To MAXIMAGES%) As Single
+Global ImageXMaxs(1 To MAXIMAGES%) As Single
+Global ImageYMins(1 To MAXIMAGES%) As Single
+Global ImageYMaxs(1 To MAXIMAGES%) As Single
+
 Global DefaultImageChannelNumber As Integer     ' image acquisition channel
 Global DefaultImagePaletteNumber As Integer     ' image acquisition palette
 Global DefaultImageAnalogAverages As Integer    ' image A/D conversions
 Global DefaultImageIx As Integer                ' image pixel sizes
 Global DefaultImageIy As Integer
 Global DefaultImageAnalogUnits As String
-
-'Global DefaultImageXmin As Single
-'Global DefaultImageXmax As Single
-'Global DefaultImageYmin As Single
-'Global DefaultImageYmax As Single
-'Global DefaultImageZmin As Long
-'Global DefaultImageZmax As Long
 
 Global ImageFlag As Integer                 ' 0 = called from Acquire, 1 = called from Digitize
 Global ImagePaletteNumber As Integer        ' 0 = gray, 1 = thermal, 2 = rainbow, 3 = blue-red, 4 = custom
