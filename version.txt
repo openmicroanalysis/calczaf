@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/25/18	Add display image FOVs to PictureSnap. Slight mod to GetElm update motor code for crystal index.
+
+		Add check for EDS init (in AutomaConfirm (Seward).
+
 04/22/18	Modify EDS flag code for allowing user to turn off net intensity output during acquisition.
 
 04/21/18	Remove obsolete CommandPacing parameter from code, INI and docs.
@@ -30,7 +34,7 @@ v. 12.2.6	Add INI flags for loading standard formula and oxuygen by stoichiometr
 v. 12.2.5	AcquireStop: add call to set scan mode after acquisition (Locock).
 
 04/04/18	Modify load formulas from standard database even if elements is not
-		presetn in sample because it will get loaded automatically as a specified 
+		present in sample because it will get loaded automatically as a specified 
 		element (Carpenter).
 
 04/02/18	Make peak and wavescan windows default size larger. Re-arrange Display PHA/Peak scan

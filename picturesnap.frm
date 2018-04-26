@@ -156,6 +156,12 @@ Begin VB.Form FormPICTURESNAP
       Begin VB.Menu menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly 
          Caption         =   "Display Digitized Positions For Selected Position Sample Only"
       End
+      Begin VB.Menu menuDisplaySeparator4 
+         Caption         =   "-"
+      End
+      Begin VB.Menu menuDisplayDisplayImageFOVs 
+         Caption         =   "Display Acquired Image FOVs"
+      End
    End
    Begin VB.Menu menuMisc 
       Caption         =   "&Misc"
@@ -193,6 +199,7 @@ Dim BitMapX As Single
 Dim BitMapY As Single
 
 Dim DisplayUseBlackScaleBar As Boolean
+Dim DisplayImageFOVs As Boolean
 
 Const NumberOfScrollIntervals% = 20
 
@@ -208,6 +215,7 @@ Call InitWindow(Int(2), MDBUserName$, Me)
 Call MiscLoadIcon(FormPICTURESNAP)
 HelpContextID = IOGetHelpContextID("FormPICTURESNAP")
 FormPICTURESNAP.menuDisplayUseBlackScaleBar.Checked = DisplayUseBlackScaleBar
+FormPICTURESNAP.menuDisplayDisplayImageFOVs.Checked = DisplayImageFOVs
 ' Move inside Pictuebox to upper left
 FormPICTURESNAP.Picture2.Left = 0
 FormPICTURESNAP.Picture2.Top = 0
@@ -257,6 +265,12 @@ FormPICTURESNAP.menuDisplayStandards.Checked = False
 FormPICTURESNAP.menuDisplayUnknowns.Checked = False
 Call PictureSnapLoadPositions(Int(0))
 If ierror Then Exit Sub
+End Sub
+
+Private Sub menuDisplayDisplayImageFOVs_Click()
+If Not DebugMode Then On Error Resume Next
+FormPICTURESNAP.menuDisplayDisplayImageFOVs.Checked = Not FormPICTURESNAP.menuDisplayDisplayImageFOVs.Checked
+DisplayImageFOVs = FormPICTURESNAP.menuDisplayDisplayImageFOVs.Checked
 End Sub
 
 Private Sub menuDisplayLongLabels_Click()
@@ -482,6 +496,11 @@ If ierror Then Exit Sub
 ' Display calibration points if indicated
 If PictureSnapDisplayCalibrationPointsFlag Then
 Call PictureSnapDisplayCalibrationPoints(FormPICTURESNAP, FormPICTURESNAP3)
+If ierror Then Exit Sub
+End If
+' Display image FOVs if indicated
+If DisplayImageFOVs Then
+Call PictureSnapDisplayImageFOVs(FormPICTURESNAP, FormPICTURESNAP3)
 If ierror Then Exit Sub
 End If
 End Sub

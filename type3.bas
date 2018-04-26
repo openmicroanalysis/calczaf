@@ -572,7 +572,11 @@ Call IOWriteLog(msg$)
 
 msg$ = "MODE: "
 For i% = ii% To jj%
-msg$ = msg$ & Format$(Format$(sample(1).InteDiffModes%(i%), i80$), a80$)
+If sample(1).InteDiffModes%(i%) = 0 Then
+msg$ = msg$ & Format$("INTE", a80$)
+Else
+msg$ = msg$ & Format$("DIFF", a80$)
+End If
 Next i%
 Call IOWriteLog(msg$)
 

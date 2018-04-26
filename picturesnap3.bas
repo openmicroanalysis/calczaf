@@ -608,17 +608,17 @@ tcolor& = RGB(0, 255, 0)
 tForm.Picture2.DrawWidth = 2
 tForm.Picture2.Circle (cpoint1x!, cpoint1y!), radius!, tcolor&
 
-tForm.Picture2.ForeColor = tcolor& ' set foreground color
-tForm.Picture2.FontSize = 13       ' set font size
+tForm.Picture2.ForeColor = tcolor&                          ' set foreground color
+tForm.Picture2.FontSize = 13                                ' set font size
 tForm.Picture2.FontName = LogWindowFontName$
-tForm.Picture2.FontSize = 13       ' set font size    (necessary for Windows)
+tForm.Picture2.FontSize = 13                                ' set font size    (necessary for Windows)
 tForm.Picture2.FontBold = False
 
 tForm.Picture2.CurrentX = cpoint1x!
 tForm.Picture2.CurrentY = cpoint1y!
 tForm.Picture2.CurrentX = tForm.Picture2.CurrentX + 150     ' set X
 tForm.Picture2.CurrentY = tForm.Picture2.CurrentY + 150     ' set Y
-tForm.Picture2.Print "1"                           ' print text string to form
+tForm.Picture2.Print "1"                                    ' print text string to form
 
 tForm.Picture2.DrawWidth = 2
 tForm.Picture2.Circle (cpoint2x!, cpoint2y!), radius!, tcolor&
@@ -627,7 +627,7 @@ tForm.Picture2.CurrentX = cpoint2x!
 tForm.Picture2.CurrentY = cpoint2y!
 tForm.Picture2.CurrentX = tForm.Picture2.CurrentX + 150     ' set X
 tForm.Picture2.CurrentY = tForm.Picture2.CurrentY + 150     ' set Y
-tForm.Picture2.Print "2"                           ' print text string to form
+tForm.Picture2.Print "2"                                    ' print text string to form
 
 ' Display third point if indicated
 If PictureSnapMode% = 1 Then
@@ -638,12 +638,12 @@ tForm.Picture2.CurrentX = cpoint3x!
 tForm.Picture2.CurrentY = cpoint3y!
 tForm.Picture2.CurrentX = tForm.Picture2.CurrentX + 150     ' set X
 tForm.Picture2.CurrentY = tForm.Picture2.CurrentY + 150     ' set Y
-tForm.Picture2.Print "3"                           ' print text string to form
+tForm.Picture2.Print "3"                                    ' print text string to form
 End If
 
 ' Update full window
 If tForm3.Visible Then
-tWidth! = tForm3.ScaleWidth   ' calculate a radius
+tWidth! = tForm3.ScaleWidth                                 ' calculate a radius
 If tWidth! <> 0# Then
 radius! = tWidth! / 150#
 
@@ -652,17 +652,17 @@ Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint1x!, apoint1y!, ap
 tForm3.DrawWidth = 2
 tForm3.Circle (tForm3.ScaleWidth * fractionx!, tForm3.ScaleHeight * fractiony!), radius!, tcolor&
 
-tForm3.ForeColor = tcolor& ' set foreground color
-tForm3.FontSize = 13       ' set font size
+tForm3.ForeColor = tcolor&                                  ' set foreground color
+tForm3.FontSize = 13                                        ' set font size
 tForm3.FontName = LogWindowFontName$
-tForm3.FontSize = 13       ' set font size    (necessary for Windows)
+tForm3.FontSize = 13                                        ' set font size    (necessary for Windows)
 tForm3.FontBold = False
 
 tForm3.CurrentX = tForm3.ScaleWidth * fractionx!
 tForm3.CurrentY = tForm3.ScaleHeight * fractiony!
-tForm3.CurrentX = tForm3.CurrentX + 150     ' set X
-tForm3.CurrentY = tForm3.CurrentY + 150     ' set Y
-tForm3.Print "1"                            ' print text string to form
+tForm3.CurrentX = tForm3.CurrentX + 150                     ' set X
+tForm3.CurrentY = tForm3.CurrentY + 150                     ' set Y
+tForm3.Print "1"                                            ' print text string to form
 
 ' Draw second calibration point for full view window (need to scale to full view form)
 Call PictureSnapConvert(Int(2), formx!, formy!, formz!, apoint2x!, apoint2y!, apoint2z!, fractionx!, fractiony!)
@@ -671,9 +671,9 @@ tForm3.Circle (tForm3.ScaleWidth * fractionx!, tForm3.ScaleHeight * fractiony!),
 
 tForm3.CurrentX = tForm3.ScaleWidth * fractionx!
 tForm3.CurrentY = tForm3.ScaleHeight * fractiony!
-tForm3.CurrentX = tForm3.CurrentX + 150     ' set X
-tForm3.CurrentY = tForm3.CurrentY + 150     ' set Y
-tForm3.Print "2"                            ' print text string to form
+tForm3.CurrentX = tForm3.CurrentX + 150                     ' set X
+tForm3.CurrentY = tForm3.CurrentY + 150                     ' set Y
+tForm3.Print "2"                                            ' print text string to form
 
 ' Display third point if indicated
 If PictureSnapMode% = 1 Then
@@ -683,9 +683,9 @@ tForm3.Circle (tForm3.ScaleWidth * fractionx!, tForm3.ScaleHeight * fractiony!),
 
 tForm3.CurrentX = tForm3.ScaleWidth * fractionx!
 tForm3.CurrentY = tForm3.ScaleHeight * fractiony!
-tForm3.CurrentX = tForm3.CurrentX + 150     ' set X
-tForm3.CurrentY = tForm3.CurrentY + 150     ' set Y
-tForm3.Print "3"                            ' print text string to form
+tForm3.CurrentX = tForm3.CurrentX + 150                     ' set X
+tForm3.CurrentY = tForm3.CurrentY + 150                     ' set Y
+tForm3.Print "3"                                            ' print text string to form
 End If
 End If
 End If
@@ -1099,3 +1099,98 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub PictureSnapDisplayImageFOVs(tForm As Form, tForm3 As Form)
+' Display the acquire image FOVs on the PictureSnap form and the full view window form.
+
+ierror = False
+On Error GoTo PictureSnapDisplayImageFOVsError
+
+Dim n As Integer
+
+Dim fractionx1 As Single, fractiony1 As Single
+Dim fractionx2 As Single, fractiony2 As Single
+Dim formx1 As Single, formy1 As Single, formz1 As Single
+Dim formx2 As Single, formy2 As Single, formz2 As Single
+Dim tcolor As Long
+
+' Check if image loaded
+If PictureSnapFilename$ = vbNullString Then Exit Sub
+
+' Check if calibrated
+If Not PictureSnapCalibrated Then Exit Sub
+
+If NumberOfImages% < 1 Then Exit Sub
+
+' Loop on all acquired images
+For n% = 1 To NumberOfImages%
+
+' Convert image stage extents to screen coordinates
+Call PictureSnapConvert(Int(2), formx1!, formy1!, formz1!, ImageXMins!(n%), ImageYMins!(n%), CSng(0#), fractionx1!, fractiony1!)
+If ierror Then Exit Sub
+
+Call PictureSnapConvert(Int(2), formx2!, formy2!, formz2!, ImageXMaxs!(n%), ImageYMaxs!(n%), CSng(0#), fractionx2!, fractiony2!)
+If ierror Then Exit Sub
+
+' Check screen extents
+If formx1! > 0 And formy1! > 0 And formx2! > 0 And formy1! > 0 Then
+If formx1! < tForm.Picture2.ScaleWidth And formy1! < tForm.Picture2.ScaleHeight And formx2! < tForm.Picture2.ScaleWidth And formy1! < tForm.Picture2.ScaleHeight Then
+
+' Calculate a radius
+If tForm.Width <> 0 Then
+tcolor& = RGB(255, 0, 255)
+
+' Draw image extents on FormPICTURESNAP
+tForm.Picture2.DrawWidth = 2
+tForm.Picture2.Line (formx1!, formy1!)-(formx2!, formy2!), tcolor&, B
+
+tForm.Picture2.ForeColor = tcolor&                          ' set foreground color
+tForm.Picture2.FontSize = 13                                ' set font size
+tForm.Picture2.FontName = LogWindowFontName$
+tForm.Picture2.FontSize = 13                                ' set font size    (necessary for Windows)
+tForm.Picture2.FontBold = False
+
+tForm.Picture2.CurrentX = formx2!
+tForm.Picture2.CurrentY = formy2!
+tForm.Picture2.CurrentX = tForm.Picture2.CurrentX + 150     ' set X
+tForm.Picture2.CurrentY = tForm.Picture2.CurrentY + 150     ' set Y
+tForm.Picture2.Print Format$(n%)                            ' print text string to form
+
+End If
+
+' Draw image extents on full view form
+If tForm3.Visible Then
+If tForm3.ScaleWidth <> 0 Then
+
+tForm3.DrawWidth = 2
+tForm3.Line (tForm3.ScaleWidth * fractionx1!, tForm3.ScaleHeight * fractiony1!)-(tForm3.ScaleWidth * fractionx2!, tForm3.ScaleHeight * fractiony2!), tcolor&, B
+
+tForm3.ForeColor = tcolor&                          ' set foreground color
+tForm3.FontSize = 13                                ' set font size
+tForm3.FontName = LogWindowFontName$
+tForm3.FontSize = 13                                ' set font size    (necessary for Windows)
+tForm3.FontBold = False
+
+tForm3.CurrentX = tForm3.ScaleWidth * fractionx2!
+tForm3.CurrentY = tForm3.ScaleHeight * fractiony2!
+tForm3.CurrentX = tForm3.CurrentX + 150             ' set X
+tForm3.CurrentY = tForm3.CurrentY + 150             ' set Y
+tForm3.Print Format$(n%)                            ' print text string to form
+End If
+End If
+
+End If
+End If
+
+Next n%
+
+Exit Sub
+
+' Errors
+PictureSnapDisplayImageFOVsError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDisplayImageFOVs"
+ierror = True
+Exit Sub
+
+End Sub
+
