@@ -508,9 +508,10 @@ On Error GoTo AddStdImportPOSError
 Dim tfilename As String
 
 Dim temp1 As Single, temp2 As Single, temp3 As Single, temp4 As Single
-Dim pxdata As Single, pydata As Single, pzdata As Single, pwdata As Single
+Dim pxdata As Single, pydata As Single, pzdata As Single
 Dim ptyp As Integer, pnum As Integer, pgnum As Integer, pauto As Integer, psetup As Integer
 Dim pnam As String, pfile As String
+Dim tpos As Single
 
 Dim lastpnum As Integer
 
@@ -533,11 +534,11 @@ Do Until EOF(Position1FileNumber%)
 
 ' Read data from file
 If PositionImportExportFileType% = 1 Then
-Input #Position1FileNumber%, ptyp%, pnum%, pnam$, pxdata!, pydata!, pzdata!, pwdata!, pgnum%
+Input #Position1FileNumber%, ptyp%, pnum%, pnam$, pxdata!, pydata!, pzdata!, tpos!, pgnum%
 
 ' With setup number, etc
 ElseIf PositionImportExportFileType% = 2 Then
-Input #Position1FileNumber%, ptyp%, pnum%, pnam$, pxdata!, pydata!, pzdata!, pwdata!, pgnum%, pauto%, psetup%, pfile$
+Input #Position1FileNumber%, ptyp%, pnum%, pnam$, pxdata!, pydata!, pzdata!, tpos!, pgnum%, pauto%, psetup%, pfile$
 End If
 
 ' See if standard is already in the run and add to "add to" list if not

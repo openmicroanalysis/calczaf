@@ -5,7 +5,7 @@ Begin VB.Form FormFIDUCONF
    ClientHeight    =   2370
    ClientLeft      =   2580
    ClientTop       =   3750
-   ClientWidth     =   7170
+   ClientWidth     =   8775
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -20,98 +20,74 @@ Begin VB.Form FormFIDUCONF
    LinkTopic       =   "Form1"
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   2370
-   ScaleWidth      =   7170
+   ScaleWidth      =   8775
    Begin VB.Frame Frame1 
       Caption         =   "Enter Approximate Fiducial Positions For Fiducial Set "
       ClipControls    =   0   'False
       Height          =   2175
       Left            =   120
-      TabIndex        =   15
+      TabIndex        =   12
       Top             =   120
-      Width           =   5775
+      Width           =   7095
       Begin VB.TextBox TextDescription 
          Height          =   285
          Left            =   2160
          TabIndex        =   0
          Top             =   480
-         Width           =   3495
-      End
-      Begin VB.TextBox TextW 
-         Height          =   285
-         Index           =   2
-         Left            =   4560
-         TabIndex        =   13
-         Top             =   1800
-         Width           =   1095
-      End
-      Begin VB.TextBox TextW 
-         Height          =   285
-         Index           =   1
-         Left            =   4560
-         TabIndex        =   8
-         Top             =   1440
-         Width           =   1095
+         Width           =   4695
       End
       Begin VB.TextBox TextZ 
          Height          =   285
          Index           =   2
-         Left            =   3360
-         TabIndex        =   12
-         Top             =   1800
-         Width           =   1095
-      End
-      Begin VB.TextBox TextZ 
-         Height          =   285
-         Index           =   1
-         Left            =   3360
-         TabIndex        =   7
-         Top             =   1440
-         Width           =   1095
-      End
-      Begin VB.TextBox TextY 
-         Height          =   285
-         Index           =   2
-         Left            =   2160
+         Left            =   4560
          TabIndex        =   10
          Top             =   1800
          Width           =   1095
       End
+      Begin VB.TextBox TextZ 
+         Height          =   285
+         Index           =   1
+         Left            =   4560
+         TabIndex        =   6
+         Top             =   1440
+         Width           =   1095
+      End
+      Begin VB.TextBox TextY 
+         Height          =   285
+         Index           =   2
+         Left            =   3360
+         TabIndex        =   8
+         Top             =   1800
+         Width           =   1095
+      End
       Begin VB.TextBox TextY 
          Height          =   285
          Index           =   1
-         Left            =   2160
-         TabIndex        =   6
+         Left            =   3360
+         TabIndex        =   5
          Top             =   1440
          Width           =   1095
       End
       Begin VB.TextBox TextX 
          Height          =   285
          Index           =   2
-         Left            =   960
-         TabIndex        =   9
+         Left            =   2160
+         TabIndex        =   7
          Top             =   1800
          Width           =   1095
       End
       Begin VB.TextBox TextX 
          Height          =   285
          Index           =   1
-         Left            =   960
-         TabIndex        =   5
-         Top             =   1440
-         Width           =   1095
-      End
-      Begin VB.TextBox TextW 
-         Height          =   285
-         Index           =   0
-         Left            =   4560
+         Left            =   2160
          TabIndex        =   4
-         Top             =   1080
+         Top             =   1440
          Width           =   1095
       End
       Begin VB.TextBox TextZ 
          Height          =   285
          Index           =   0
-         Left            =   3360
+         Left            =   4560
          TabIndex        =   3
          Top             =   1080
          Width           =   1095
@@ -119,7 +95,7 @@ Begin VB.Form FormFIDUCONF
       Begin VB.TextBox TextY 
          Height          =   285
          Index           =   0
-         Left            =   2160
+         Left            =   3360
          TabIndex        =   2
          Top             =   1080
          Width           =   1095
@@ -127,7 +103,7 @@ Begin VB.Form FormFIDUCONF
       Begin VB.TextBox TextX 
          Height          =   285
          Index           =   0
-         Left            =   960
+         Left            =   2160
          TabIndex        =   1
          Top             =   1080
          Width           =   1095
@@ -138,7 +114,7 @@ Begin VB.Form FormFIDUCONF
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   120
-         TabIndex        =   24
+         TabIndex        =   20
          Top             =   480
          Width           =   1935
       End
@@ -149,7 +125,7 @@ Begin VB.Form FormFIDUCONF
          Height          =   255
          Index           =   2
          Left            =   120
-         TabIndex        =   23
+         TabIndex        =   19
          Top             =   1800
          Width           =   735
       End
@@ -160,7 +136,7 @@ Begin VB.Form FormFIDUCONF
          Height          =   255
          Index           =   1
          Left            =   120
-         TabIndex        =   22
+         TabIndex        =   18
          Top             =   1440
          Width           =   735
       End
@@ -171,7 +147,7 @@ Begin VB.Form FormFIDUCONF
          Height          =   255
          Index           =   0
          Left            =   120
-         TabIndex        =   21
+         TabIndex        =   17
          Top             =   1080
          Width           =   735
       End
@@ -182,20 +158,9 @@ Begin VB.Form FormFIDUCONF
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   120
-         TabIndex        =   20
+         TabIndex        =   16
          Top             =   840
          Width           =   735
-      End
-      Begin VB.Label Label4 
-         Alignment       =   2  'Center
-         Appearance      =   0  'Flat
-         Caption         =   "W"
-         ForeColor       =   &H80000008&
-         Height          =   255
-         Left            =   4560
-         TabIndex        =   19
-         Top             =   840
-         Width           =   1095
       End
       Begin VB.Label Label3 
          Alignment       =   2  'Center
@@ -203,8 +168,8 @@ Begin VB.Form FormFIDUCONF
          Caption         =   "Z"
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   3360
-         TabIndex        =   18
+         Left            =   4560
+         TabIndex        =   15
          Top             =   840
          Width           =   1095
       End
@@ -214,8 +179,8 @@ Begin VB.Form FormFIDUCONF
          Caption         =   "Y"
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   2160
-         TabIndex        =   17
+         Left            =   3360
+         TabIndex        =   14
          Top             =   840
          Width           =   1095
       End
@@ -225,8 +190,8 @@ Begin VB.Form FormFIDUCONF
          Caption         =   "X"
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   960
-         TabIndex        =   16
+         Left            =   2160
+         TabIndex        =   13
          Top             =   840
          Width           =   1095
       End
@@ -235,8 +200,8 @@ Begin VB.Form FormFIDUCONF
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
-      Left            =   6000
-      TabIndex        =   14
+      Left            =   7440
+      TabIndex        =   11
       TabStop         =   0   'False
       Top             =   720
       Width           =   1095
@@ -246,9 +211,9 @@ Begin VB.Form FormFIDUCONF
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   6000
+      Left            =   7440
       Style           =   1  'Graphical
-      TabIndex        =   11
+      TabIndex        =   9
       TabStop         =   0   'False
       Top             =   120
       Width           =   1095
@@ -289,11 +254,6 @@ Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
 Private Sub TextDescription_GotFocus()
-If Not DebugMode Then On Error Resume Next
-Call MiscSelectText(Screen.ActiveForm.ActiveControl)
-End Sub
-
-Private Sub TextW_GotFocus(Index As Integer)
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

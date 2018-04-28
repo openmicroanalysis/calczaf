@@ -817,7 +817,6 @@ tScan.ScanCurrentPositionSample$ = vbNullString
 tScan.ScanCurrentStageX! = 0#
 tScan.ScanCurrentStageY! = 0#
 tScan.ScanCurrentStageZ! = 0#
-tScan.ScanCurrentStageW! = 0#
 tScan.ScanROMPeakingType% = 0
 tScan.ScanDateTime = Now
 tScan.ScanROMPeakingSet% = 0    ' 0 = final, 1 = coarse

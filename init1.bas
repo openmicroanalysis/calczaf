@@ -2150,7 +2150,6 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 XMotor% = NumberOfTunableSpecs% + 1
 YMotor% = NumberOfTunableSpecs% + 2
 ZMotor% = NumberOfTunableSpecs% + 3
-WMotor% = NumberOfTunableSpecs% + 4
 
 If NumberOfTunableSpecs% > MAXSPEC% Then
 msg$ = "Too many spectrometers defined in " & ProbeWinINIFile$
@@ -5052,15 +5051,6 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then FaradayStagePositions!(3) = Val(Left$(lpReturnString$, valid&))
-If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-
-lpAppName$ = "Faraday"
-lpKeyName$ = "FaradayStagePositionsW"
-lpDefault$ = "0.0"
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-If Left$(lpReturnString$, valid&) <> vbNullString Then FaradayStagePositions!(4) = Val(Left$(lpReturnString$, valid&))
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 Exit Sub

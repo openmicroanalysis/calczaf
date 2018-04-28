@@ -776,7 +776,6 @@ CalcZAFOldSample(1).Name$ = UCase$(MiscGetFileNameOnly$(ImportDataFile$)) & ", S
 CalcZAFOldSample(1).StagePositions!(1, 1) = 0#      ' X
 CalcZAFOldSample(1).StagePositions!(1, 2) = 0#      ' Y
 CalcZAFOldSample(1).StagePositions!(1, 3) = 0#      ' Z
-CalcZAFOldSample(1).StagePositions!(1, 4) = 0#      ' W
 
 ' Sample name string found
 Else
@@ -800,7 +799,6 @@ If Trim$(astring$) = vbNullString Then
 CalcZAFOldSample(1).StagePositions!(1, 1) = 0#      ' X
 CalcZAFOldSample(1).StagePositions!(1, 2) = 0#      ' Y
 CalcZAFOldSample(1).StagePositions!(1, 3) = 0#      ' Z
-CalcZAFOldSample(1).StagePositions!(1, 4) = 0#      ' W
 
 ' Sample coordinates string found
 Else
@@ -815,7 +813,6 @@ CalcZAFOldSample(1).StagePositions!(1, 2) = Val(bstring$)      ' Y
 Call MiscParseStringToStringA(astring$, ",", bstring$)
 If ierror Then Exit Sub
 CalcZAFOldSample(1).StagePositions!(1, 3) = Val(bstring$)      ' Z
-CalcZAFOldSample(1).StagePositions!(1, 4) = 0#                 ' W
 
 End If
 End If

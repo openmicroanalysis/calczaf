@@ -755,7 +755,6 @@ If i% = 2 Then fiducialold!(2, i%) = cpoint2y!
 If i% = 3 Then fiducialold!(1, i%) = cpoint3x!
 If i% = 3 Then fiducialold!(2, i%) = cpoint3y!
 fiducialold!(3, i%) = 0#
-fiducialold!(4, i%) = 0#      ' W motor position (not used)
 Next i%
 
 Else                    ' stage to screen
@@ -777,7 +776,6 @@ If i% = 1 Then fiducialold!(3, i%) = RealTimeMotorPositions!(ZMotor%)
 If i% = 2 Then fiducialold!(3, i%) = RealTimeMotorPositions!(ZMotor%)
 If i% = 3 Then fiducialold!(3, i%) = RealTimeMotorPositions!(ZMotor%)
 End If
-fiducialold!(4, i%) = RealTimeMotorPositions!(WMotor%)      ' W motor position (not used)
 Next i%
 End If
 
@@ -801,8 +799,6 @@ If i% = 1 Then fiducialnew!(3, i%) = RealTimeMotorPositions!(ZMotor%)
 If i% = 2 Then fiducialnew!(3, i%) = RealTimeMotorPositions!(ZMotor%)
 If i% = 3 Then fiducialnew!(3, i%) = RealTimeMotorPositions!(ZMotor%)
 End If
-
-fiducialnew!(4, i%) = RealTimeMotorPositions!(WMotor%)      ' W motor position (not used)
 Next i%
 
 Else                    ' stage to screen
@@ -814,7 +810,6 @@ If i% = 2 Then fiducialnew!(2, i%) = cpoint2y!
 If i% = 3 Then fiducialnew!(1, i%) = cpoint3x!
 If i% = 3 Then fiducialnew!(2, i%) = cpoint3y!
 fiducialnew!(3, i%) = 0
-fiducialnew!(4, i%) = 0      ' W motor position (not used)
 Next i%
 End If
 
@@ -859,21 +854,20 @@ Sub PictureSnapConvertFiducialsConvert(convx As Single, convy As Single, convz A
 ierror = False
 On Error GoTo PictureSnapConvertFiducialsConvertError
 
-ReDim xyzw(1 To MAXAXES%) As Single
+ReDim xyz(1 To MAXAXES%) As Single
 
 ' Load coordinate
-xyzw!(1) = convx!
-xyzw!(2) = convy!
-xyzw!(3) = convz!
-xyzw!(4) = RealTimeMotorPositions!(WMotor%)
+xyz!(1) = convx!
+xyz!(2) = convy!
+xyz!(3) = convz!
 
 ' Transform coordinate
-Call Trans3dTransformPositionVector(fiducialtranslation#(), fiducialmatrix#(), xyzw!())
+Call Trans3dTransformPositionVector(fiducialtranslation#(), fiducialmatrix#(), xyz!())
 If ierror Then GoTo PictureSnapConvertFiducialsConvertBadTransform
 
-convx! = xyzw!(1)
-convy! = xyzw!(2)
-convz! = xyzw!(3)
+convx! = xyz!(1)
+convy! = xyz!(2)
+convz! = xyz!(3)
 
 Exit Sub
 

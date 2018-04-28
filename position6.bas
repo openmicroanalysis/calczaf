@@ -11,7 +11,7 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Sub PositionGetXYZW(sampletype As Integer, npts As Long, xdata() As Single, ydata() As Single, zdata() As Single, wdata() As Single, idata() As Integer, ndata() As Integer, sdata() As Integer, sndata() As String)
+Sub PositionGetXYZ(sampletype As Integer, npts As Long, xdata() As Single, ydata() As Single, zdata() As Single, idata() As Integer, ndata() As Integer, sdata() As Integer, sndata() As String)
 ' Routine to load position data (x,y,z only) from the POSITION.MDB database based on sample type
 '   sampletype = 0 load all
 '   sampletype = 1 load standards
@@ -19,7 +19,7 @@ Sub PositionGetXYZW(sampletype As Integer, npts As Long, xdata() As Single, ydat
 '   sampletype = 3 load wavescans
 
 ierror = False
-On Error GoTo PositionGetXYZWError
+On Error GoTo PositionGetXYZError
 
 Dim i As Long
 Dim SQLQ As String
@@ -57,7 +57,6 @@ PoRs.MoveFirst
 ReDim xdata(1 To npts&) As Single
 ReDim ydata(1 To npts&) As Single
 ReDim zdata(1 To npts&) As Single
-ReDim wdata(1 To npts&) As Single
 ReDim idata(1 To npts&) As Integer  ' types
 ReDim ndata(1 To npts&) As Integer  ' line (row) numbers
 ReDim sdata(1 To npts&) As Integer  ' sample numbers
@@ -70,7 +69,6 @@ i& = i& + 1
 xdata!(i&) = PoRs("StageX")
 ydata!(i&) = PoRs("StageY")
 zdata!(i&) = PoRs("StageZ")
-wdata!(i&) = PoRs("StageW")
 idata%(i&) = PoRs("Types")
 ndata%(i&) = PoRs("PosOrder")
 sdata%(i&) = PoRs("Numbers")
@@ -84,15 +82,15 @@ PoDb.Close
 Exit Sub
 
 ' Errors
-PositionGetXYZWError:
-MsgBox Error$, vbOKOnly + vbCritical, "PositionGetXYZW"
+PositionGetXYZError:
+MsgBox Error$, vbOKOnly + vbCritical, "PositionGetXYZ"
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub PositionGetSampleDataOnly(samplerow As Integer, npts As Integer, xdata() As Single, ydata() As Single, zdata() As Single, wdata() As Single, idata() As Integer)
-' Routine to load position data (x,y,z only) from the POSITION.MDB database
+Sub PositionGetSampleDataOnly(samplerow As Integer, npts As Integer, xdata() As Single, ydata() As Single, zdata() As Single, idata() As Integer)
+' Routine to load position data (x, y, z only) from the POSITION.MDB database
 
 ierror = False
 On Error GoTo PositionGetSampleDataOnlyError
@@ -126,7 +124,6 @@ PoRs.MoveFirst
 ReDim xdata(1 To npts%) As Single
 ReDim ydata(1 To npts%) As Single
 ReDim zdata(1 To npts%) As Single
-ReDim wdata(1 To npts%) As Single
 ReDim idata(1 To npts%) As Integer
 
 ' Load position data
@@ -136,7 +133,6 @@ i% = i% + 1
 xdata!(i%) = PoRs("StageX")
 ydata!(i%) = PoRs("StageY")
 zdata!(i%) = PoRs("StageZ")
-wdata!(i%) = PoRs("StageW")
 idata%(i%) = PoRs("PosOrder")   ' row numbers (may not be consecutive)
 PoRs.MoveNext
 Loop

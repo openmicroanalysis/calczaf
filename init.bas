@@ -164,7 +164,7 @@ msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs% + NumberOfStageMotors%
 Input #Temp1FileNumber%, MotBacklashFactors!(i%)
 msg$ = msg$ & Format$(MotBacklashFactors!(i%), a80$)
-If i% <> WMotor% And Abs(MotBacklashFactors!(i%)) < 10# Then GoTo InitMotorsInvalidData
+If Abs(MotBacklashFactors!(i%)) < 10# Then GoTo InitMotorsInvalidData
 If InterfaceType% = 2 And MotBacklashFactors!(i%) > 0# Then GoTo InitMotorsJeolPositiveBacklash
 Next i%
 Input #Temp1FileNumber%, comment$
@@ -227,8 +227,8 @@ For i% = 1 To NumberOfTunableSpecs% + NumberOfStageMotors%
 Input #Temp1FileNumber%, MotBacklashTolerances!(i%)
 If MotBacklashTolerances!(i%) = 0# Then MotBacklashTolerances!(i%) = 0.002
 msg$ = msg$ & Format$(MotBacklashTolerances!(i%), a80$)
-If i% <> WMotor% And Abs(MotBacklashTolerances!(i%)) > 0.1 Then GoTo InitMotorsInvalidData
-If i% <> WMotor% And Abs(MotBacklashTolerances!(i%)) < 0.00001 Then GoTo InitMotorsInvalidData
+If Abs(MotBacklashTolerances!(i%)) > 0.1 Then GoTo InitMotorsInvalidData
+If Abs(MotBacklashTolerances!(i%)) < 0.00001 Then GoTo InitMotorsInvalidData
 Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
@@ -247,8 +247,8 @@ MotParkPositions!(i%) = MotLoLimits!(i%) + (MotHiLimits!(i%) - MotLoLimits!(i%))
 End If
 End If
 msg$ = msg$ & Format$(MotParkPositions!(i%), a80$)
-If i% <> WMotor% And MotParkPositions!(i%) > MotHiLimits!(i%) Then GoTo InitMotorsInvalidData
-If i% <> WMotor% And MotParkPositions!(i%) < MotLoLimits!(i%) Then GoTo InitMotorsInvalidData
+If MotParkPositions!(i%) > MotHiLimits!(i%) Then GoTo InitMotorsInvalidData
+If MotParkPositions!(i%) < MotLoLimits!(i%) Then GoTo InitMotorsInvalidData
 Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
@@ -261,10 +261,10 @@ Input #Temp1FileNumber%, JEOLVelocity&(i%)
 If JEOLVelocity&(i%) = 0 And i% <= NumberOfTunableSpecs% Then JEOLVelocity&(i%) = 500000
 If JEOLVelocity&(i%) = 0 And i% > NumberOfTunableSpecs% Then JEOLVelocity&(i%) = 400000
 msg$ = msg$ & Format$(JEOLVelocity&(i%), a80$)
-If i% <> WMotor% And JEOLVelocity&(i%) < 2000 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And JEOLVelocity&(i%) > 500000 Then GoTo InitMotorsInvalidSpeed
+If JEOLVelocity&(i%) < 2000 Then GoTo InitMotorsInvalidSpeed
+If JEOLVelocity&(i%) > 500000 Then GoTo InitMotorsInvalidSpeed
 If InterfaceType% = 2 And JeolEOSInterfaceType& = 2 Then        ' 8900 is limited to 4mm/sec
-If i% <> WMotor% And JEOLVelocity&(i%) > 400000 Then GoTo InitMotorsInvalidSpeed
+If JEOLVelocity&(i%) > 400000 Then GoTo InitMotorsInvalidSpeed
 End If
 Next i%
 Input #Temp1FileNumber%, comment$
@@ -284,12 +284,12 @@ If i% <= NumberOfTunableSpecs% And JEOLBacklash&(i%) < 0 Then GoTo InitMotorsInv
 If i% = XMotor% And JEOLBacklash&(i%) > 0 Then GoTo InitMotorsInvalidData
 If i% = YMotor% And JEOLBacklash&(i%) > 0 Then GoTo InitMotorsInvalidData
 If i% = ZMotor% And JEOLBacklash&(i%) < 0 Then GoTo InitMotorsInvalidData
-If i% <> WMotor% And Abs(JEOLBacklash&(i%)) > 100000 Then GoTo InitMotorsInvalidData
-If i% <> WMotor% And InterfaceType% = 2 And JEOLBacklash&(i%) <> 0 And Abs(JEOLBacklash&(i%)) < 100 Then
+If Abs(JEOLBacklash&(i%)) > 100000 Then GoTo InitMotorsInvalidData
+If InterfaceType% = 2 And JEOLBacklash&(i%) <> 0 And Abs(JEOLBacklash&(i%)) < 100 Then
 tmsg$ = "Warning: JEOL backlash value for motor " & Format$(i%) & " (line " & Format$(linecount%) & ") is too small in " & MotorsFile$
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int(FONT_REGULAR%), Int(0))
 End If
-If i% <> WMotor% And InterfaceType% = 2 And JEOLBacklash&(i%) = 0 Then
+If InterfaceType% = 2 And JEOLBacklash&(i%) = 0 Then
 tmsg$ = "Warning: JEOL backlash value for motor " & Format$(i%) & " (line " & Format$(linecount%) & ") is zero in " & MotorsFile$
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int(FONT_REGULAR%), Int(0))
 End If
@@ -307,14 +307,14 @@ If SX100Velocity&(i%) = 0 And i% = XMotor% Then SX100Velocity&(i%) = 10000     '
 If SX100Velocity&(i%) = 0 And i% = YMotor% Then SX100Velocity&(i%) = 10000     ' in steps/sec stage
 If SX100Velocity&(i%) = 0 And i% = ZMotor% Then SX100Velocity&(i%) = 50     ' in steps/sec stage
 msg$ = msg$ & Format$(SX100Velocity&(i%), a80$)
-If i% <> WMotor% And i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) < 1000 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) > 4000 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = XMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotorsInvalidSpeed    ' change to 500 on 07/04/2010
-If i% <> WMotor% And i% = XMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = YMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotorsInvalidSpeed    ' change to 1000 on 07/04/2010
-If i% <> WMotor% And i% = YMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = ZMotor% And SX100Velocity&(i%) < 1 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = ZMotor% And SX100Velocity&(i%) > 200 Then GoTo InitMotorsInvalidSpeed
+If i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) < 1000 Then GoTo InitMotorsInvalidSpeed
+If i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) > 4000 Then GoTo InitMotorsInvalidSpeed
+If i% = XMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotorsInvalidSpeed    ' change to 500 on 07/04/2010
+If i% = XMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotorsInvalidSpeed
+If i% = YMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotorsInvalidSpeed    ' change to 1000 on 07/04/2010
+If i% = YMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotorsInvalidSpeed
+If i% = ZMotor% And SX100Velocity&(i%) < 1 Then GoTo InitMotorsInvalidSpeed
+If i% = ZMotor% And SX100Velocity&(i%) > 200 Then GoTo InitMotorsInvalidSpeed
 Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
@@ -329,14 +329,14 @@ If SX100MinimumSpeeds&(i%) = 0 And i% = XMotor% Then SX100MinimumSpeeds&(i%) = 1
 If SX100MinimumSpeeds&(i%) = 0 And i% = YMotor% Then SX100MinimumSpeeds&(i%) = 100     ' in steps/sec stage
 If SX100MinimumSpeeds&(i%) = 0 And i% = ZMotor% Then SX100MinimumSpeeds&(i%) = 5       ' in steps/sec stage
 msg$ = msg$ & Format$(SX100MinimumSpeeds&(i%), a80$)
-If i% <> WMotor% And i% <= NumberOfTunableSpecs% And SX100MinimumSpeeds&(i%) < 2 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% <= NumberOfTunableSpecs% And SX100MinimumSpeeds&(i%) > 1000 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = XMotor% And SX100MinimumSpeeds&(i%) < 10 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = XMotor% And SX100MinimumSpeeds&(i%) > 1500 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = YMotor% And SX100MinimumSpeeds&(i%) < 10 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = YMotor% And SX100MinimumSpeeds&(i%) > 1500 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = ZMotor% And SX100MinimumSpeeds&(i%) < 2 Then GoTo InitMotorsInvalidSpeed
-If i% <> WMotor% And i% = ZMotor% And SX100MinimumSpeeds&(i%) > 100 Then GoTo InitMotorsInvalidSpeed
+If i% <= NumberOfTunableSpecs% And SX100MinimumSpeeds&(i%) < 2 Then GoTo InitMotorsInvalidSpeed
+If i% <= NumberOfTunableSpecs% And SX100MinimumSpeeds&(i%) > 1000 Then GoTo InitMotorsInvalidSpeed
+If i% = XMotor% And SX100MinimumSpeeds&(i%) < 10 Then GoTo InitMotorsInvalidSpeed
+If i% = XMotor% And SX100MinimumSpeeds&(i%) > 1500 Then GoTo InitMotorsInvalidSpeed
+If i% = YMotor% And SX100MinimumSpeeds&(i%) < 10 Then GoTo InitMotorsInvalidSpeed
+If i% = YMotor% And SX100MinimumSpeeds&(i%) > 1500 Then GoTo InitMotorsInvalidSpeed
+If i% = ZMotor% And SX100MinimumSpeeds&(i%) < 2 Then GoTo InitMotorsInvalidSpeed
+If i% = ZMotor% And SX100MinimumSpeeds&(i%) > 100 Then GoTo InitMotorsInvalidSpeed
 Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
@@ -513,8 +513,8 @@ For i% = 1 To NumberOfTunableSpecs% + NumberOfStageMotors%
 Input #Temp1FileNumber%, MotBacklashTolerances!(i%)
 If MotBacklashTolerances!(i%) = 0# Then MotBacklashTolerances!(i%) = 0.002
 msg$ = msg$ & Format$(MotBacklashTolerances!(i%), a80$)
-If i% <> WMotor% And Abs(MotBacklashTolerances!(i%)) > 0.1 Then GoTo InitMotors2InvalidData
-If i% <> WMotor% And Abs(MotBacklashTolerances!(i%)) < 0.00001 Then GoTo InitMotors2InvalidData
+If Abs(MotBacklashTolerances!(i%)) > 0.1 Then GoTo InitMotors2InvalidData
+If Abs(MotBacklashTolerances!(i%)) < 0.00001 Then GoTo InitMotors2InvalidData
 Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
@@ -534,8 +534,8 @@ MotParkPositions!(i%) = MotLoLimits!(i%) + (MotHiLimits!(i%) - MotLoLimits!(i%))
 End If
 End If
 msg$ = msg$ & Format$(MotParkPositions!(i%), a80$)
-If i% <> WMotor% And MotParkPositions!(i%) > MotHiLimits!(i%) Then GoTo InitMotors2InvalidData
-If i% <> WMotor% And MotParkPositions!(i%) < MotLoLimits!(i%) Then GoTo InitMotors2InvalidData
+If MotParkPositions!(i%) > MotHiLimits!(i%) Then GoTo InitMotors2InvalidData
+If MotParkPositions!(i%) < MotLoLimits!(i%) Then GoTo InitMotors2InvalidData
 Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
@@ -549,10 +549,10 @@ Input #Temp1FileNumber%, JEOLVelocity&(i%)
 If JEOLVelocity&(i%) = 0 And i% <= NumberOfTunableSpecs% Then JEOLVelocity&(i%) = 500000
 If JEOLVelocity&(i%) = 0 And i% > NumberOfTunableSpecs% Then JEOLVelocity&(i%) = 400000
 msg$ = msg$ & Format$(JEOLVelocity&(i%), a80$)
-If i% <> WMotor% And JEOLVelocity&(i%) < 2000 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And JEOLVelocity&(i%) > 500000 Then GoTo InitMotors2InvalidSpeed
+If JEOLVelocity&(i%) < 2000 Then GoTo InitMotors2InvalidSpeed
+If JEOLVelocity&(i%) > 500000 Then GoTo InitMotors2InvalidSpeed
 If InterfaceType% = 2 And JeolEOSInterfaceType& = 2 Then        ' 8900 is limited to 4mm/sec
-If i% <> WMotor% And JEOLVelocity&(i%) > 400000 Then GoTo InitMotors2InvalidSpeed
+If JEOLVelocity&(i%) > 400000 Then GoTo InitMotors2InvalidSpeed
 End If
 Next i%
 Input #Temp1FileNumber%, comment$
@@ -573,12 +573,12 @@ If i% <= NumberOfTunableSpecs% And JEOLBacklash&(i%) < 0 Then GoTo InitMotors2In
 If i% = XMotor% And JEOLBacklash&(i%) > 0 Then GoTo InitMotors2InvalidData
 If i% = YMotor% And JEOLBacklash&(i%) > 0 Then GoTo InitMotors2InvalidData
 If i% = ZMotor% And JEOLBacklash&(i%) < 0 Then GoTo InitMotors2InvalidData
-If i% <> WMotor% And Abs(JEOLBacklash&(i%)) > 100000 Then GoTo InitMotors2InvalidData
-If i% <> WMotor% And InterfaceType% = 2 And JEOLBacklash&(i%) <> 0 And Abs(JEOLBacklash&(i%)) < 100 Then
+If Abs(JEOLBacklash&(i%)) > 100000 Then GoTo InitMotors2InvalidData
+If InterfaceType% = 2 And JEOLBacklash&(i%) <> 0 And Abs(JEOLBacklash&(i%)) < 100 Then
 tmsg$ = "Warning: JEOL backlash value for motor " & Format$(i%) & " (line " & Format$(linecount%) & ") is too small in " & MotorsFile$
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int(FONT_REGULAR%), Int(0))
 End If
-If i% <> WMotor% And InterfaceType% = 2 And JEOLBacklash&(i%) = 0 Then
+If InterfaceType% = 2 And JEOLBacklash&(i%) = 0 Then
 tmsg$ = "Warning: JEOL backlash value for motor " & Format$(i%) & " (line " & Format$(linecount%) & ") is zero in " & MotorsFile$
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int(FONT_REGULAR%), Int(0))
 End If
@@ -597,14 +597,14 @@ If SX100Velocity&(i%) = 0 And i% = XMotor% Then SX100Velocity&(i%) = 10000     '
 If SX100Velocity&(i%) = 0 And i% = YMotor% Then SX100Velocity&(i%) = 10000     ' in steps/sec stage
 If SX100Velocity&(i%) = 0 And i% = ZMotor% Then SX100Velocity&(i%) = 50     ' in steps/sec stage
 msg$ = msg$ & Format$(SX100Velocity&(i%), a80$)
-If i% <> WMotor% And i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) < 1000 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) > 4000 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = XMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotors2InvalidSpeed    ' change to 500 on 07/04/2010
-If i% <> WMotor% And i% = XMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = YMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotors2InvalidSpeed    ' change to 1000 on 07/04/2010
-If i% <> WMotor% And i% = YMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = ZMotor% And SX100Velocity&(i%) < 1 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = ZMotor% And SX100Velocity&(i%) > 200 Then GoTo InitMotors2InvalidSpeed
+If i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) < 1000 Then GoTo InitMotors2InvalidSpeed
+If i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) > 4000 Then GoTo InitMotors2InvalidSpeed
+If i% = XMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotors2InvalidSpeed     ' change to 500 on 07/04/2010
+If i% = XMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotors2InvalidSpeed
+If i% = YMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotors2InvalidSpeed    ' change to 1000 on 07/04/2010
+If i% = YMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotors2InvalidSpeed
+If i% = ZMotor% And SX100Velocity&(i%) < 1 Then GoTo InitMotors2InvalidSpeed
+If i% = ZMotor% And SX100Velocity&(i%) > 200 Then GoTo InitMotors2InvalidSpeed
 Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
@@ -620,14 +620,14 @@ If SX100MinimumSpeeds&(i%) = 0 And i% = XMotor% Then SX100MinimumSpeeds&(i%) = 1
 If SX100MinimumSpeeds&(i%) = 0 And i% = YMotor% Then SX100MinimumSpeeds&(i%) = 100     ' in steps/sec stage
 If SX100MinimumSpeeds&(i%) = 0 And i% = ZMotor% Then SX100MinimumSpeeds&(i%) = 5       ' in steps/sec stage
 msg$ = msg$ & Format$(SX100MinimumSpeeds&(i%), a80$)
-If i% <> WMotor% And i% <= NumberOfTunableSpecs% And SX100MinimumSpeeds&(i%) < 2 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% <= NumberOfTunableSpecs% And SX100MinimumSpeeds&(i%) > 1000 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = XMotor% And SX100MinimumSpeeds&(i%) < 10 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = XMotor% And SX100MinimumSpeeds&(i%) > 1500 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = YMotor% And SX100MinimumSpeeds&(i%) < 10 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = YMotor% And SX100MinimumSpeeds&(i%) > 1500 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = ZMotor% And SX100MinimumSpeeds&(i%) < 2 Then GoTo InitMotors2InvalidSpeed
-If i% <> WMotor% And i% = ZMotor% And SX100MinimumSpeeds&(i%) > 100 Then GoTo InitMotors2InvalidSpeed
+If i% <= NumberOfTunableSpecs% And SX100MinimumSpeeds&(i%) < 2 Then GoTo InitMotors2InvalidSpeed
+If i% <= NumberOfTunableSpecs% And SX100MinimumSpeeds&(i%) > 1000 Then GoTo InitMotors2InvalidSpeed
+If i% = XMotor% And SX100MinimumSpeeds&(i%) < 10 Then GoTo InitMotors2InvalidSpeed
+If i% = XMotor% And SX100MinimumSpeeds&(i%) > 1500 Then GoTo InitMotors2InvalidSpeed
+If i% = YMotor% And SX100MinimumSpeeds&(i%) < 10 Then GoTo InitMotors2InvalidSpeed
+If i% = YMotor% And SX100MinimumSpeeds&(i%) > 1500 Then GoTo InitMotors2InvalidSpeed
+If i% = ZMotor% And SX100MinimumSpeeds&(i%) < 2 Then GoTo InitMotors2InvalidSpeed
+If i% = ZMotor% And SX100MinimumSpeeds&(i%) > 100 Then GoTo InitMotors2InvalidSpeed
 Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
@@ -2883,12 +2883,6 @@ Exit Sub
 End If
 If FaradayStagePositions!(3) < MotLoLimits!(ZMotor%) Or FaradayStagePositions!(3) > MotHiLimits!(ZMotor%) Then
 msg$ = "Faraday Cup Z Stage Position out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
-ierror = True
-Exit Sub
-End If
-If FaradayStagePositions!(4) < MotLoLimits!(WMotor%) Or FaradayStagePositions!(4) > MotHiLimits!(WMotor%) Then
-msg$ = "Faraday Cup W Stage Position out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitData"
 ierror = True
 Exit Sub
@@ -5313,7 +5307,6 @@ If tmotor% <= NumberOfTunableSpecs% Then Call IOWriteLog("Spectrometer " & Str$(
 If tmotor% = XMotor% Then Call IOWriteLog("Stage X low limits were updated in " & MotorsFile$)
 If tmotor% = YMotor% Then Call IOWriteLog("Stage Y low limits were updated in " & MotorsFile$)
 If tmotor% = ZMotor% Then Call IOWriteLog("Stage Z low limits were updated in " & MotorsFile$)
-If tmotor% = WMotor% Then Call IOWriteLog("Stage W low limits were updated in " & MotorsFile$)
 End If
 
 If tlinecount% = 3 Then
@@ -5321,7 +5314,6 @@ If tmotor% <= NumberOfTunableSpecs% Then Call IOWriteLog("Spectrometer " & Str$(
 If tmotor% = XMotor% Then Call IOWriteLog("Stage X high limits were updated in " & MotorsFile$)
 If tmotor% = YMotor% Then Call IOWriteLog("Stage Y high limits were updated in " & MotorsFile$)
 If tmotor% = ZMotor% Then Call IOWriteLog("Stage Z high limits were updated in " & MotorsFile$)
-If tmotor% = WMotor% Then Call IOWriteLog("Stage W high limits were updated in " & MotorsFile$)
 End If
 
 Exit Sub

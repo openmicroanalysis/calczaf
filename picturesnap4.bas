@@ -239,10 +239,9 @@ Call DigitizeUpdateAutomate(position)
 If ierror Then Exit Sub
 
 ' Save the x and y coordinates
-positiondata.xyzw!(1) = stagex!
-positiondata.xyzw!(2) = stagey!
-positiondata.xyzw!(3) = stagez!
-positiondata.xyzw!(4) = RealTimeMotorPositions!(WMotor%)
+positiondata.xyz!(1) = stagex!
+positiondata.xyz!(2) = stagey!
+positiondata.xyz!(3) = stagez!
 
 ' Add the position to the database
 Call DigitizeAddPosition(positiondata, FormAUTOMATE.ListDigitize, FormAUTOMATE.GridDigitize)

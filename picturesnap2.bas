@@ -20,8 +20,7 @@ Dim GridImageData(1 To 1) As TypeImageData
 Dim iarray() As Byte
 
 Dim ImagePoints As Long
-Dim ImageXdata() As Single, ImageYdata() As Single
-Dim ImageZdata() As Single, ImageWdata() As Single
+Dim ImageXdata() As Single, ImageYdata() As Single, ImageZdata() As Single
 Dim ImageIdata() As Integer, ImageNData() As Integer, ImageSData() As Integer    ' sample types, line (row) numbers, and sample numbers
 Dim ImageSNdata() As String     ' sample names
 
@@ -925,7 +924,7 @@ ImagePoints& = 0
 If FormPICTURESNAP.Visible And FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked Then
 If FormAUTOMATE.ListDigitize.ListIndex < 0 Then GoTo PictureSnapLoadPositionsNotSelected
 samplerow% = FormAUTOMATE.ListDigitize.ItemData(FormAUTOMATE.ListDigitize.ListIndex)
-Call PositionGetSampleDataOnly(samplerow%, npts%, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageWdata!(), ImageIdata%())
+Call PositionGetSampleDataOnly(samplerow%, npts%, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageIdata%())
 If ierror Then Exit Sub
 
 ' Dimension unused arrays
@@ -942,7 +941,7 @@ ElseIf FormPICTURESNAP.menuDisplayStandards.Checked Or FormPICTURESNAP.menuDispl
 ' Load sample types
 imode% = mode%
 If imode% = 0 Then imode% = lastmode%
-Call PositionGetXYZW(imode%, ImagePoints&, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageWdata!(), ImageIdata%(), ImageNData%(), ImageSData%(), ImageSNdata$())
+Call PositionGetXYZ(imode%, ImagePoints&, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageIdata%(), ImageNData%(), ImageSData%(), ImageSNdata$())
 If ierror Then Exit Sub
 If imode% > 0 Then lastmode% = imode%  ' save for next load label call (mode% = 0)
 End If
@@ -951,7 +950,7 @@ End If
 If DebugMode% Then
 Call IOWriteLog(vbCrLf & "Number of position database points to plot:" & Str$(ImagePoints&))
 For i& = 1 To ImagePoints&
-Call IOWriteLog(Str$(i&) & ", " & Str$(ImageXdata!(i&)) & ", " & Str$(ImageYdata!(i&)) & ", " & Str$(ImageZdata!(i&)) & ", " & Str$(ImageWdata!(i&)) & ", " & Str$(ImageIdata%(i&)) & ", " & Str$(ImageNData%(i&)) & ", " & Str$(ImageSData%(i&)))
+Call IOWriteLog(Str$(i&) & ", " & Str$(ImageXdata!(i&)) & ", " & Str$(ImageYdata!(i&)) & ", " & Str$(ImageZdata!(i&)) & ", " & Str$(ImageIdata%(i&)) & ", " & Str$(ImageNData%(i&)) & ", " & Str$(ImageSData%(i&)))
 Next i&
 End If
 

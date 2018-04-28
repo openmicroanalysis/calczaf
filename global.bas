@@ -96,7 +96,7 @@ Global Const MAXCRYS% = 6               ' maximum crystals per spectrometer
 Global Const MAXCOND% = 64              ' maximum number of analytical or column conditions per sample
 
 Global Const MAXSPEC% = 6                       ' maximum spectrometers per run (spectro 0 = EDS)
-Global Const MAXAXES% = 4                       ' maximum stage axes (x, y, z)
+Global Const MAXAXES% = 3                       ' maximum stage axes (x, y, z)
 Global Const MAXMOT% = MAXSPEC% + MAXAXES%      ' maximum motors (spectrometer + stage)
 
 Global Const MAXSPECTRA_CL% = 4096      ' maximum number of CL channels
@@ -581,7 +581,7 @@ Type TypePosition
     FileSetupNumber As Integer
     
     Magnification As Single
-    BeamCenterXYZW(1 To MAXAXES%) As Single     ' stage coordinate for center of image
+    BeamCenterXYZ(1 To MAXAXES%) As Single     ' stage coordinate for center of image
     
     MultipleSetupNumber As Integer
     MultipleSetupNumbers() As Integer
@@ -613,7 +613,7 @@ End Type
 
 ' Position data array
 Type TypePositionData
-    xyzw(1 To MAXAXES%) As Single
+    xyz(1 To MAXAXES%) As Single
     grainnumber As Integer
     autofocus As Integer
 End Type
@@ -988,7 +988,7 @@ Type TypeSample
     Magnification As Single
     magnificationanalytical As Single           ' new 10-28-2006
     magnificationimaging As Single              ' new 10-28-2006
-    BeamCenterXYZW(1 To MAXAXES%) As Single
+    BeamCenterXYZ(1 To MAXAXES%) As Single
     BeamXSize As Single
     BeamYSize As Single
     beammode As Integer     ' 0 = analog spot, 1 = analog scan, 2 = digital spot
@@ -1205,7 +1205,6 @@ Type TypeScan
     ScanCurrentStageX As Single
     ScanCurrentStageY As Single
     ScanCurrentStageZ As Single
-    ScanCurrentStageW As Single
     
     ScanROMPeakingType As Integer   ' 0 = internal, 1 = parabolic, 2 = maxima, 3 = gaussian, 4 = smart, 5 = smart, 6 = highest
     ScanDateTime As Variant         ' scan date and time
@@ -1756,8 +1755,7 @@ Global ScalScanBaselines(1 To MAXSPEC%) As Single
 Global ScalScanWindows(1 To MAXSPEC%) As Single
 
 ' MOTORS.DAT globals
-Global XMotor As Integer, YMotor As Integer
-Global ZMotor As Integer, WMotor As Integer
+Global XMotor As Integer, YMotor As Integer, ZMotor As Integer
 Global MotLabels(1 To MAXMOT%) As String
 Global MotLoLimits(1 To MAXMOT%) As Single
 Global MotHiLimits(1 To MAXMOT%) As Single
@@ -2066,7 +2064,7 @@ Global DefaultScanRotation As Single
 
 ' For specimen mounted faraday cups
 Global FaradayStagePresent As Integer
-Global FaradayStagePositions(1 To MAXAXES%) As Single   ' X, Y, Z, W
+Global FaradayStagePositions(1 To MAXAXES%) As Single   ' X, Y, Z
 
 ' Detector globals
 Global DetectorsFile As String
@@ -2272,8 +2270,8 @@ Global DefaultMagnificationDefault As Single    ' default magnification
 Global DefaultMagnificationAnalytical As Single ' analytical magnification
 Global DefaultMagnificationImaging As Single    ' imaging magnification
 
-Global DefaultBeamCenterXYZW(1 To MAXAXES%) As Single
-Global DefaultBeamDeflectionXYZW(1 To MAXAXES%) As Single
+Global DefaultBeamCenterXYZ(1 To MAXAXES%) As Single
+Global DefaultBeamDeflectionXYZ(1 To MAXAXES%) As Single
 
 Global BeamModePresent As Integer
 Global BeamModeType As Integer

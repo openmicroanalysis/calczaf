@@ -48,7 +48,6 @@ Call IOWriteLog(msg$)
 For i% = 1 To MAXDIM%   ' for each fiducial point
 msg$ = Str$(i%) & " " & MiscAutoFormat$(fiducialold!(1, i%)) & MiscAutoFormat$(fiducialold!(2, i%))
 If NumberOfStageMotors% > 2 Then msg$ = msg$ & MiscAutoFormat$(fiducialold!(3, i%))
-If NumberOfStageMotors% > 3 Then msg$ = msg$ & MiscAutoFormat$(fiducialold!(4, i%))
 Call IOWriteLog(msg$)
 Next i%
 
@@ -57,7 +56,6 @@ Call IOWriteLog(msg$)
 For i% = 1 To MAXDIM%
 msg$ = Str$(i%) & " " & MiscAutoFormat$(fiducialnew!(1, i%)) & MiscAutoFormat$(fiducialnew!(2, i%))
 If NumberOfStageMotors% > 2 Then msg$ = msg$ & MiscAutoFormat$(fiducialnew!(3, i%))
-If NumberOfStageMotors% > 3 Then msg$ = msg$ & MiscAutoFormat$(fiducialnew!(4, i%))
 Call IOWriteLog(msg$)
 Next i%
 End If

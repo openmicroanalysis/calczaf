@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/27/18	Remove all wmotor code (is obsolete).
+v. 12.2.9
+
+04/26/18	Skip call to ElementData to avoid low overvoltage warnings when calculating Z-bars in MANLoad (Carpenter).
+
 04/25/18	Add display image FOVs to PictureSnap. Slight mod to GetElm update motor code for crystal index.
 
 		Add check for EDS init (in AutomaConfirm (Seward).
