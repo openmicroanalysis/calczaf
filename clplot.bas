@@ -51,7 +51,7 @@ msg$ = msg$ & "numChan= " & Format$(sample(1).CLSpectraNumberofChannels%(datarow
 Call IOWriteLog(msg$)
 End If
 
-' Load y axis data (nb PE array starts 0)
+' Load y axis data (ProEssentials array starts 0)
 For i% = 1 To sample(1).CLSpectraNumberofChannels%(datarow%)
 
 ' Display CL spectra
@@ -82,10 +82,8 @@ tForm.Pesgo1.ydata(0, i% - 1) = sample(1).CLSpectraDarkIntensities(datarow%, i%)
 End If
 End If
 
-' Calculate and Load x data
-temp! = i% * TotalEnergyRange! / (sample(1).CLSpectraNumberofChannels%(datarow%) - 1)
-temp! = sample(1).CLSpectraStartEnergy!(datarow%) + temp!
-tForm.Pesgo1.xdata(0, i% - 1) = temp!
+' Load x data (see DataCLSpectraGetData for loading of .CLSpectraNanometers!())
+tForm.Pesgo1.xdata(0, i% - 1) = sample(1).CLSpectraNanometers!(datarow%, i%)                                                      ' nanometers
 
 If VerboseMode And DebugMode Then
 Call IOWriteLog("CL Point" & Str$(i%) & ", " & InterfaceStringCLUnitsX$(CLSpectraInterfaceTypeStored%) & Str$(temp!) & ", " & Format$(sample(1).CLSpectraIntensities&(datarow%, i%)) & " counts")      ' raw counts

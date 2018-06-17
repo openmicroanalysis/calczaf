@@ -2377,10 +2377,11 @@ FormMAIN.menuOutputSaveToDiskLog.Checked = False
 End If
 
 ' Standard database flags
-MinSpecifiedValue! = 0.05 ' minimum value (wt%) to force specified load for standard analysis
-StdMinimumValue! = 0.01  ' minimum value (wt%) for use as assigned standard
-MANMaximumValue! = 0.01  ' maximum value (wt%) for use as MAN background standard
-MinTotalValue! = 0.0001  ' minimum valid total
+MinSpecifiedValue! = 0.05   ' minimum value (wt%) to force specified load for standard analysis
+StdMinimumValue! = 0.01     ' minimum value (wt%) for use as assigned standard
+MANMaximumValue! = 0.01     ' maximum value (wt%) for use as MAN background standard
+MinTotalValue! = 0.0001     ' minimum valid total
+MaxInterfValue! = 0.05      ' maximum value for interfered element (or other interfering elements) in interference standard
 
 ' Standard arrays
 Call InitStandard
@@ -2423,7 +2424,7 @@ Next i%
 
 ' Special string formats (need to be variables)
 a08$ = String$(8, 64) & "!"
-a10$ = String$(10, 64) & "!"
+A10$ = String$(10, 64) & "!"
 a12$ = String$(12, 64) & "!"
 a14$ = String$(14, 64) & "!"
 a16$ = String$(16, 64) & "!"
@@ -2456,7 +2457,7 @@ zafstring$(5) = "Love-Scott II"
 zafstring$(6) = "Packwood Phi(pz) (EPQ-91)"
 zafstring$(7) = "Bastin (original) Phi(pz)"
 zafstring$(8) = "Bastin PROZA Phi(pz) (EPQ-91)"
-zafstring$(9) = "Pouchou and Pichoir-Full (Original)"
+zafstring$(9) = "Pouchou and Pichoir-Full (PAP)"
 zafstring$(10) = "Pouchou and Pichoir-Simplified (XPP)"
 
 zafstring2$(0) = "Individual"

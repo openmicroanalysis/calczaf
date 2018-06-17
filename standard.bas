@@ -780,6 +780,8 @@ Do Until StRs.EOF
 channel% = StRs("CLSpectraChannelOrder")  ' 1 to MAXSPECTRA_CL
 If channel% < 1 Or channel% > MAXSPECTRA_CL% Then GoTo StandardCLSpectraGetDataBadSpectra
 sample(1).CLSpectraIntensities&(1, channel%) = StRs("CLSpectraIntensity")
+sample(1).CLSpectraNanometers!(1, channel%) = StRs("CLSpectraNanometers")
+sample(1).CLSpectraDarkIntensities&(1, channel%) = StRs("CLSpectraIntensityDark")
 StRs.MoveNext
 Loop
 
@@ -856,13 +858,15 @@ Set StRs = StDb.OpenRecordset("CLSpectra", dbOpenTable)
 Call TransactionBegin("StandardCLSpectraSendData", StandardDataFile$)
 If ierror Then Exit Sub
 
-' Save into arrays (only save CL spectrum, not dark spectrum- yet anyway!)
+' Save into arrays
 For i% = 1 To sample(1).CLSpectraNumberofChannels%(1)
 StRs.AddNew
 StRs("CLSpectraToNumber") = stdnum%
 StRs("CLSpectraNumber") = specnum%              ' for more than one CL spectra per standard
 StRs("CLSpectraChannelOrder") = i%
 StRs("CLSpectraIntensity") = sample(1).CLSpectraIntensities&(1, i%)
+StRs("CLSpectraNanometers") = sample(1).CLSpectraNanometers!(1, i%)                 ' new array because wavelengths are non-linear (v. 12.3)
+StRs("CLSpectraIntensityDark") = sample(1).CLSpectraDarkIntensities&(1, i%)         ' save dark spectra to same table as light intensities
 StRs.Update
 Next i%
 
@@ -1216,6 +1220,7 @@ If ierror Then Exit Sub
 
 ReDim StandardTmpSample(1).CLSpectraIntensities(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Long
 ReDim StandardTmpSample(1).CLSpectraDarkIntensities(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Long
+ReDim StandardTmpSample(1).CLSpectraNanometers(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Single
 
 ' Read the EMSA file (check that it is a CL spectrum)
 Call EMSAReadSpectrum(Int(1), Int(1), StandardTmpSample(), tfilename$)

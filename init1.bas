@@ -5579,7 +5579,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Standards"
 lpKeyName$ = "StandardCoatingDensity"
-lpDefault$ = Format$(2.1)
+lpDefault$ = Format$(1.35)      ' "Characteristic Energy Losses of Electrons in Carbon", August 1960, Journal of Applied Physics, Vol 31, No 8 by Lewis Leder and J A Suddeth (table 3)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)

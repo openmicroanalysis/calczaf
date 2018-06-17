@@ -133,6 +133,7 @@ Global Const LIF2D! = 4.0267             ' 2d spacing of LIF crystal
 Global Const SCROLLBARWIDTH% = 325       ' scroll bar width for sizing grid column widths (twips)
 Global Const WINDOWBORDERWIDTH% = 175    ' window border width for sizing image width
 Global Const FRAMEBORDERWIDTH% = 120     ' window border width for sizing controls
+Global Const FRAMEBORDERWIDTH2% = 45     ' window border width for sizing controls
 Global Const GRIDCOLUMNWIDTH% = 1100     ' width of a single grid column
 
 Global Const PPMPERWTPERCENT# = 10000#   ' PPM per weight percent
@@ -177,6 +178,8 @@ Global Const HOURPERDAY# = 24#           ' hours per day
 
 Global Const CPSPERKCPS# = 1000#         ' cps per kcps
 
+Global Const MILLIGMPERGRAM# = 1000      ' milligrams per gram
+
 Global Const PASCALSPERTORR# = 131.578   ' Pascals per Torr conversion
 Global Const PASCALSPERMBAR# = 100#      ' Pascals per mBar conversion
 
@@ -213,7 +216,7 @@ Global Const MAXOFFBGDTYPES% = 8         ' maximum off-peak background correctio
 Global Const MAXMINTYPES% = 6            ' maximum mineral end-member types (including zero for none)
 Global Const MAXZAF% = 10                ' maximum number of ZAF correction options
 Global Const MAXZAFCOR% = 8              ' maximum number of stored ZAF corrections (analysis structure)
-Global Const MAXLIST% = 4999             ' maximum number of xray database listbox items
+Global Const MAXLISTBOXSIZE% = 3999      ' maximum number of listbox items
 Global Const MAXMACTYPE% = 7             ' maximum number of mass absorption files
 Global Const MAXRELDEV% = 9999           ' maxmimum size for printout of % relative standard deviations
 Global Const MAXGRIDROWS% = 4096         ' maximum number of rows allowed in grid control
@@ -382,6 +385,8 @@ Global Const a70$ = "@@@@@@@"
 Global Const a80$ = "@@@@@@@@"
 Global Const a90$ = "@@@@@@@@@"
 Global Const a100$ = "@@@@@@@@@@"
+Global Const a120$ = "@@@@@@@@@@@@"
+Global Const a140$ = "@@@@@@@@@@@@@@"
 
 Global Const a4x$ = "    "
 Global Const a6x$ = "      "
@@ -1112,6 +1117,7 @@ Type TypeSample
     CLSpectraFlag As Boolean                          ' CL spectrum data is stored in CL Spectra table
     CLSpectraIntensities() As Long                    ' allocated in InitSample (1 to MAXROW%, 1 to MAXSPECTRA_CL%)
     CLSpectraDarkIntensities() As Long                ' allocated in InitSample (1 to MAXROW%, 1 to MAXSPECTRA_CL%)
+    CLSpectraNanometers() As Single                   ' allocated in InitSample (1 to MAXROW%, 1 to MAXSPECTRA_CL%)
     
     CLSpectraNumberofChannels() As Integer            ' allocated in InitSample (1 to MAXROW%)
     CLAcquisitionCountTime() As Single                ' allocated in InitSample (1 to MAXROW%)
@@ -2495,7 +2501,7 @@ Global DefaultMultiPointNumberofPointsIterateHi As Integer
 Global DefaultMultiPointNumberofPointsIterateLo As Integer
 
 Global a08 As String
-Global a10 As String
+Global A10 As String
 Global a12 As String
 Global a14 As String
 Global a16 As String
@@ -2945,3 +2951,11 @@ Global LoadFormulasFromStandardDatabaseFlag As Boolean
 Global LoadCalculateOxygenFromStandardDatabaseFlag As Boolean
 
 Global SetBeamModeAfterAcquisition As Integer
+
+Global MaxInterfValue As Single
+
+Global PhiRhoZPlotPoints As Long
+Global PhiRhoZPlotSets As Long
+Global PhiRhoZPlotX() As Single         ' new globals for phi-rho-z plot values
+Global PhiRhoZPlotY1() As Single        ' generated intensities
+Global PhiRhoZPlotY2() As Single        ' emitted intensities

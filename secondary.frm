@@ -65,6 +65,8 @@ Begin VB.Form FormSECONDARY
       End
    End
    Begin VB.PictureBox Picture3 
+      AutoRedraw      =   -1  'True
+      AutoSize        =   -1  'True
       Height          =   735
       Left            =   7440
       ScaleHeight     =   675

@@ -163,11 +163,11 @@ FormPICTURESNAP2.TextXStage3.Text = RealTimeMotorPositions!(XMotor%)
 FormPICTURESNAP2.TextYStage3.Text = RealTimeMotorPositions!(YMotor%)
 
 ' Load current z stage positions
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 FormPICTURESNAP2.TextZStage1.Text = RealTimeMotorPositions!(ZMotor%)
 FormPICTURESNAP2.TextZStage2.Text = RealTimeMotorPositions!(ZMotor%)
 FormPICTURESNAP2.TextZStage3.Text = RealTimeMotorPositions!(ZMotor%)
-End If
+'End If
 
 ' Load default calibration conditions for new calibrations
 If Not PictureSnapCalibrated Then
@@ -256,6 +256,15 @@ ierror = False
 On Error GoTo PictureSnapCalibrateError
 
 Dim formx As Single, formy As Single, formz As Single
+Dim d As Double
+
+Dim tilt As Single
+Dim astring As String
+
+ReDim acoeff(1 To MAXCOEFF%) As Single
+ReDim dxdata(1 To MAXDIM%) As Single
+ReDim dydata(1 To MAXDIM%) As Single
+ReDim dzdata(1 To MAXDIM%) As Single
 
 ' Check for picture loaded
 If Trim$(PictureSnapFilename$) = vbNullString Then GoTo PictureSnapCalibrateNoPicture
@@ -268,20 +277,52 @@ If Not MiscMotorInBounds(YMotor%, Val(FormPICTURESNAP2.TextYStage1.Text)) Then G
 If Not MiscMotorInBounds(XMotor%, Val(FormPICTURESNAP2.TextXStage2.Text)) Then GoTo PictureSnapCalibrateOutofBoundsX
 If Not MiscMotorInBounds(YMotor%, Val(FormPICTURESNAP2.TextYStage2.Text)) Then GoTo PictureSnapCalibrateOutofBoundsY
 
-If PictureSnapMode% = 1 Then
+If FormPICTURESNAP2.OptionPictureSnapMode(1).value = True Then
 If Not MiscMotorInBounds(XMotor%, Val(FormPICTURESNAP2.TextXStage3.Text)) Then GoTo PictureSnapCalibrateOutofBoundsX
 If Not MiscMotorInBounds(YMotor%, Val(FormPICTURESNAP2.TextYStage3.Text)) Then GoTo PictureSnapCalibrateOutofBoundsY
 End If
 
-If PictureSnapMode% = 1 And NumberOfStageMotors% > 2 Then
+If FormPICTURESNAP2.OptionPictureSnapMode(1).value = True And NumberOfStageMotors% > 2 Then
 If Not MiscMotorInBounds(ZMotor%, Val(FormPICTURESNAP2.TextZStage1.Text)) Then GoTo PictureSnapCalibrateOutofBoundsZ
 If Not MiscMotorInBounds(ZMotor%, Val(FormPICTURESNAP2.TextZStage2.Text)) Then GoTo PictureSnapCalibrateOutofBoundsZ
 If Not MiscMotorInBounds(ZMotor%, Val(FormPICTURESNAP2.TextZStage3.Text)) Then GoTo PictureSnapCalibrateOutofBoundsZ
 End If
 End If
 
+' Check for excessive tilt if 3 point calibration
+If FormPICTURESNAP2.OptionPictureSnapMode(1).value = True Then
+dxdata!(1) = Val(FormPICTURESNAP2.TextXStage1.Text)
+dydata!(1) = Val(FormPICTURESNAP2.TextYStage1.Text)
+dzdata!(1) = Val(FormPICTURESNAP2.TextZStage1.Text)
+
+dxdata!(2) = Val(FormPICTURESNAP2.TextXStage2.Text)
+dydata!(2) = Val(FormPICTURESNAP2.TextYStage2.Text)
+dzdata!(2) = Val(FormPICTURESNAP2.TextZStage2.Text)
+
+dxdata!(3) = Val(FormPICTURESNAP2.TextXStage3.Text)
+dydata!(3) = Val(FormPICTURESNAP2.TextYStage3.Text)
+dzdata!(3) = Val(FormPICTURESNAP2.TextZStage3.Text)
+
+' Fit data
+Call Plan3dCalculate(Int(3), dxdata!(), dydata!(), dzdata!(), acoeff!(), d#)
+If ierror Then Exit Sub
+
+' Calculate sample tilt
+Call Plan3dCalculateTilt(acoeff!(), tilt!, astring$)
+If ierror Then Exit Sub
+
+' Inform user of sample tilt if greater than 0.5 degrees
+If tilt! > 0.5 Then
+MsgBox astring$, vbOKOnly + vbInformation, "PictureSnapCalibrate"
+End If
+End If
+
 ' Save the form variables
 Call PictureSnapCalibrateSave(FormPICTURESNAP2)
+If ierror Then Exit Sub
+
+' Check stage calibration is orthogonal
+Call PictureSnapCalibrateCheck
 If ierror Then Exit Sub
 
 FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "] (double-click to move)"
@@ -774,56 +815,6 @@ Exit Sub
 
 End Sub
 
-Sub PictureSnapSaveMode(Index As Integer)
-' Save the PictureSnap mode (0 = two points, 1 = three points)
-
-ierror = False
-On Error GoTo PictureSnapSaveModeError
-
-' If going from two points to three points and image was calibrated, re-set
-If FormPICTURESNAP2.Visible Then
-If PictureSnapCalibrated And Index% = 1 Then PictureSnapCalibrated = False
-End If
-
-' Save PictureSnapMode
-PictureSnapMode% = Index%
-
-' Resize calibration form
-If Index% = 0 Then
-FormPICTURESNAP2.Height = 8445
-FormPICTURESNAP2.LabelZStage1.Visible = False
-FormPICTURESNAP2.LabelZStage2.Visible = False
-FormPICTURESNAP2.LabelZStage3.Visible = False
-FormPICTURESNAP2.TextZStage1.Visible = False
-FormPICTURESNAP2.TextZStage2.Visible = False
-FormPICTURESNAP2.TextZStage3.Visible = False
-End If
-
-If Index% = 1 Then
-FormPICTURESNAP2.Height = 12495
-FormPICTURESNAP2.LabelZStage1.Visible = True
-FormPICTURESNAP2.LabelZStage2.Visible = True
-FormPICTURESNAP2.LabelZStage3.Visible = True
-FormPICTURESNAP2.TextZStage1.Visible = True
-FormPICTURESNAP2.TextZStage2.Visible = True
-FormPICTURESNAP2.TextZStage3.Visible = True
-End If
-
-If PictureSnapCalibrated Then
-FormPICTURESNAP2.LabelCalibration.Caption = "Image Is Calibrated"
-Else
-FormPICTURESNAP2.LabelCalibration.Caption = "Image Is NOT Calibrated"
-End If
-
-Exit Sub
-
-' Errors
-PictureSnapSaveModeError:
-MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapSaveMode"
-ierror = True
-Exit Sub
-
-End Sub
 Sub PictureSnapDrawScaleBar()
 ' Draw a scale bar for the PictureSnap window
 
@@ -1135,4 +1126,51 @@ Exit Sub
 
 End Sub
 
+Sub PictureSnapCalibrateCheck()
+' Check the new stage calibration and check that X and Y are orthogonal
+
+ierror = False
+On Error GoTo PictureSnapCalibrateCheckError
+
+Const tolerance! = 0.1        ' 10 %
+
+Dim tdist As Single, xdist As Single, ydist As Single
+
+Dim sx1 As Single, sy1 As Single, sz1 As Single
+Dim sx2 As Single, sy2 As Single, sz2 As Single
+
+Dim fractionx As Single, fractiony As Single
+Dim xmin As Single, ymin As Single, zmin As Single
+Dim xmax As Single, ymax As Single, zmax As Single
+
+' Take an arbitrary screen distance and check that X and Y are equal within a tolerance
+tdist! = 1000       ' try 1000 twips
+
+' Convert screen to stage coordinates
+Call PictureSnapConvert(Int(1), CSng(0#), CSng(0#), zmin!, sx1!, sy1!, sz1!, fractionx!, fractiony!)
+If ierror Then Exit Sub
+
+Call PictureSnapConvert(Int(1), tdist!, tdist!, zmax!, sx2!, sy2!, sz2!, fractionx!, fractiony!)
+If ierror Then Exit Sub
+
+' Calculate x and y distances for given screen distance
+xdist! = Abs(sx2! - sx1!)
+ydist! = Abs(sy2! - sy1!)
+
+' Warn user if not equal in X and Y within tolerance
+If Not MiscDifferenceIsSmall(xdist!, ydist!, tolerance!) Then
+msg$ = "The stage calibration will be saved, but the nominal X (" & Format$(xdist!) & ") and nominal Y (" & Format$(ydist!) & ") calibration distances are different by more than " & Format$(CInt(tolerance! * 100#)) & "%." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please check your stage calibration and image pixel positions and make sure that they are correctly located and specified!"
+MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapCalibrateCheck"
+End If
+
+Exit Sub
+
+' Errors
+PictureSnapCalibrateCheckError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapCalibrateCheck"
+ierror = True
+Exit Sub
+
+End Sub
 

@@ -766,8 +766,6 @@ On Error GoTo BMPConvertBitmapToLongArrayError
 
 Dim i As Integer, j As Integer, bytes_per_scanLine As Integer
 
-Dim pixels() As Byte
-
 Dim bitmap_info As BITMAPINFO
 
 ' Prepare the bitmap description
@@ -811,7 +809,6 @@ ierror = False
 On Error GoTo BMPMakeGrayError
 
 Dim bitmap_info As BITMAPINFO
-Dim pixels() As Byte
 Dim bytes_per_scanLine As Long
 Dim pad_per_scanLine As Long
 Dim X As Integer

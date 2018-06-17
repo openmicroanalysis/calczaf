@@ -339,7 +339,7 @@ coeff2! = MultiplePeakCoefficient2!(ip% - 1, ipp%, sample(1).MotorNumbers%(chan%
 coeff3! = MultiplePeakCoefficient3!(ip% - 1, ipp%, sample(1).MotorNumbers%(chan%))
 
 ' Calculate offset based on passed spectrometer position
-If mode% = 1 Then
+If mode% = 1 Or mode% = 8 Then      ' for spectrometer conversions using spectro on-peak offset parameter
 offset! = coeff1! + coeff2! * pos! + coeff3! * pos! ^ 2
 Else
 temp1! = pos! / temp!  ' convert angstrom to spectrometer position first

@@ -215,7 +215,7 @@ On Error GoTo EMSAWriteSpectrumError
 
 Dim n As Integer, i As Integer
 Dim astring As String
-Dim temp1 As Single, temp2 As Single
+Dim temp1 As Single, temp2 As Single, temp3 As Single
 
 ' Check some EDS parameters
 If mode% = 0 Then
@@ -230,7 +230,7 @@ End If
 ' Write the required parameters as defined by EMSA/MAS
 Open tfilename$ For Output As #EMSASpectrumFileNumber%
 
-Print #EMSASpectrumFileNumber%, "#FORMAT      : EMSA/MAS SPECTRAL DATA STANDARD"
+Print #EMSASpectrumFileNumber%, "#FORMAT      : EMSA/MAS Spectral Data File"
 Print #EMSASpectrumFileNumber%, "#VERSION     : 1.0"
 Print #EMSASpectrumFileNumber%, "#TITLE       : " & Left$(Trim$(sample(1).Name$ & "_" & Format$(sample(1).Linenumber&(datarow%))), 64)
 
@@ -267,7 +267,7 @@ End If
 
 ' CL spectra
 If mode% = 1 Then
-Print #EMSASpectrumFileNumber%, "#NCOLUMNS    : 2"
+Print #EMSASpectrumFileNumber%, "#NCOLUMNS    : 1"
 Print #EMSASpectrumFileNumber%, "#NPOINTS     : " & Format$(sample(1).CLSpectraNumberofChannels(datarow%))
 Print #EMSASpectrumFileNumber%, "#OFFSET      : " & Format$(sample(1).CLSpectraStartEnergy!(datarow%))
 Print #EMSASpectrumFileNumber%, "#XPERCHAN    : " & Format$((sample(1).CLSpectraEndEnergy!(datarow%) - sample(1).CLSpectraStartEnergy!(datarow%)) / (sample(1).CLSpectraNumberofChannels(datarow%) - 1))
@@ -315,9 +315,9 @@ End If
 ' CL INFORMATION
 If mode% = 1 Then
 If CLSpectraInterfaceTypeStored% > 0 Then
-Print #EMSASpectrumFileNumber%, "#EDSDET      : " & InterfaceStringCL$(CLSpectraInterfaceTypeStored%)
+Print #EMSASpectrumFileNumber%, "#EDSDET      : " & InterfaceStringCL$(CLSpectraInterfaceTypeStored%) & " (XY light, XY dark)"
 Else
-Print #EMSASpectrumFileNumber%, "#EDSDET      : " & InterfaceStringCL$(CLSpectraInterfaceType%)
+Print #EMSASpectrumFileNumber%, "#EDSDET      : " & InterfaceStringCL$(CLSpectraInterfaceType%) & " (XY light, XY dark)"
 End If
 End If
 
@@ -378,7 +378,8 @@ If mode% = 1 Then
 For n% = 1 To sample(1).CLSpectraNumberofChannels%(datarow%)
 temp1! = sample(1).CLSpectraIntensities&(datarow%, n%) / sample(1).CLAcquisitionCountTime!(datarow%)
 temp2! = sample(1).CLSpectraDarkIntensities(datarow%, n%) / (sample(1).CLAcquisitionCountTime!(datarow%) * sample(1).CLDarkSpectraCountTimeFraction!(datarow%))
-Print #EMSASpectrumFileNumber%, MiscAutoFormat$(temp1!) & VbComma$ & MiscAutoFormat$(temp2!) & VbComma$
+temp3! = sample(1).CLSpectraNanometers(datarow%, n%)        ' in nanometers
+Print #EMSASpectrumFileNumber%, MiscAutoFormat$(temp3!) & VbComma$ & MiscAutoFormat$(temp1! - temp2!)
 Next n%
 End If
 
@@ -406,8 +407,8 @@ End Sub
 
 Sub EMSAReadSpectrum(mode As Integer, datarow As Integer, sample() As TypeSample, tfilename As String)
 ' Routine to read EMSA format for EDS and CL spectra
-' mode = 0 = EDS spectra (single column of data)
-' mode = 1 = CL spectra (two columns of data: CL and dark)
+' mode = 0 = EDS spectra (single column of intensity data)
+' mode = 1 = CL spectra (two columns of X/Y data: CL and dark)
 ' datarow is the data row number containing the spectrum (1 to MAXROW%)
 ' sample() is a sample structure array (always dimensioned 1 to 1)
 ' tfilename is the string containing the file name to output
@@ -614,7 +615,7 @@ Dim n As Integer, nc As Integer
 Dim astring As String, bstring As String
 Dim ystring As String
 Dim temp As Single
-Dim temp1 As Single, temp2 As Single
+Dim temp1 As Single, temp2 As Single, temp3 As Single
 Dim tIntensityOption As Integer
 
 Close (EMSASpectrumFileNumber%)
@@ -647,7 +648,7 @@ End If
 If mode% = 0 Then
 If InStr(astring$, "#NCOLUMNS    :") > 0 Then
 nc% = Val(Mid$(astring$, Len("#NCOLUMNS    :") + 1))
-If nc% <> 1 Then GoTo EMSAReadSpectrumNotSingleColumn           ' EDS is one spectrum (raw)
+If nc% <> 1 Then GoTo EMSAReadSpectrumNotSingleColumn           ' EDS is one spectrum (raw) one column of Y values only
 End If
 
 ' Load number of points
@@ -686,7 +687,7 @@ End If
 If mode% = 1 Then
 If InStr(astring$, "#NCOLUMNS    :") > 0 Then
 nc% = Val(Mid$(astring$, Len("#NCOLUMNS    :") + 1))
-If nc% <> 2 Then GoTo EMSAReadSpectrumNotDoubleColumn           ' CL is two spectra (CL and dark)
+If nc% <> 1 Then GoTo EMSAReadSpectrumNotSingleColumn           ' CL is one spectrum (dark corrected CL), 2 columns of X/Y data
 End If
 
 If InStr(astring$, "#NPOINTS     :") > 0 Then
@@ -778,28 +779,29 @@ n% = n% + 1
 Line Input #EMSASpectrumFileNumber%, astring$
 If InStr(astring$, "#ENDOFDATA   : ") > 0 Then Exit Do
 
-' Read EDS spectrum data
+' Read EDS spectrum data (one column of Y data)
 If mode% = 0 Then
 temp! = Val(astring$)
-If tIntensityOption% > 0 Then temp! = temp! * sample(1).EDSSpectraLiveTime!(datarow%)
+If tIntensityOption% > 0 Then temp! = temp! * sample(1).EDSSpectraLiveTime!(datarow%)           ' de-normalize to actual counts
 sample(1).EDSSpectraIntensities&(datarow%, n%) = temp!
 End If
 
-' Read CL spectrum data (two columns, comma delimited)
+' Read CL spectrum data (one column of X/Y data, comma delimited)
 If mode% = 1 Then
 Call MiscParseStringToStringA(astring$, VbComma, bstring$)
 If ierror Then Exit Sub
-temp1! = Val(bstring$)
-If tIntensityOption% > 0 Then temp1! = temp1! * sample(1).CLAcquisitionCountTime!(datarow%)
+temp3! = Val(bstring$)                                          ' nanometers
 
 Call MiscParseStringToStringA(astring$, VbComma, bstring$)
 If ierror Then Exit Sub
-temp2! = Val(bstring$)
-If tIntensityOption% > 0 Then temp2! = temp2! * sample(1).CLAcquisitionCountTime!(datarow%)     ' assumes CL and dark spectra acquired with same acquisition time (fraction = 1.0)
+temp1! = Val(bstring$)                                          ' CL spectra intensities
+If tIntensityOption% > 0 Then temp1! = temp1! * sample(1).CLAcquisitionCountTime!(datarow%)     ' de-normalize to actual counts
 
 sample(1).CLSpectraIntensities&(datarow%, n%) = temp1!
-sample(1).CLSpectraDarkIntensities&(datarow%, n%) = temp2!
+sample(1).CLSpectraDarkIntensities&(datarow%, n%) = 0#      ' dark corrected
+sample(1).CLSpectraNanometers!(datarow%, n%) = temp3!
 End If
+
 Loop
 
 ' Check for correct number of data points
@@ -831,13 +833,6 @@ Exit Sub
 EMSAReadSpectrumNotSingleColumn:
 msg$ = "More than one data column found in " & tfilename$ & vbCrLf & vbCrLf
 msg$ = msg$ & "Multiple data columns are not supported in EMSA EDS files at this time."
-MsgBox msg$, vbOKOnly + vbExclamation, "EMSAReadSpectrum"
-ierror = True
-Exit Sub
-
-EMSAReadSpectrumNotDoubleColumn:
-msg$ = "Two data columns were not found in " & tfilename$ & vbCrLf & vbCrLf
-msg$ = msg$ & "Two data columns (CL and dark) are required in EMSA CL files at this time."
 MsgBox msg$, vbOKOnly + vbExclamation, "EMSAReadSpectrum"
 ierror = True
 Exit Sub

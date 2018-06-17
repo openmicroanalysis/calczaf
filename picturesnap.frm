@@ -42,14 +42,16 @@ Begin VB.Form FormPICTURESNAP
          AutoSize        =   -1  'True
          Height          =   1095
          Left            =   120
-         ScaleHeight     =   1035
-         ScaleWidth      =   1035
+         ScaleHeight     =   69
+         ScaleMode       =   3  'Pixel
+         ScaleWidth      =   69
          TabIndex        =   4
          Top             =   3840
          Visible         =   0   'False
          Width           =   1095
       End
       Begin VB.PictureBox Picture2 
+         AutoRedraw      =   -1  'True
          AutoSize        =   -1  'True
          Height          =   1575
          Left            =   3000
@@ -83,11 +85,11 @@ Begin VB.Form FormPICTURESNAP
          Enabled         =   0   'False
       End
       Begin VB.Menu menuFileSaveAsBMPOnly 
-         Caption         =   "Save As BMP (no coordinate calibration)"
+         Caption         =   "Save As BMP (burn-in annotations and save to BMP)"
          Enabled         =   0   'False
       End
       Begin VB.Menu menuFileSaveAsBMP 
-         Caption         =   "Save As BMP (with graphics objects)"
+         Caption         =   "Save As BMP (copy current image and calibration files)"
          Enabled         =   0   'False
       End
       Begin VB.Menu menuFileSeparator2 
@@ -271,6 +273,7 @@ Private Sub menuDisplayDisplayImageFOVs_Click()
 If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuDisplayDisplayImageFOVs.Checked = Not FormPICTURESNAP.menuDisplayDisplayImageFOVs.Checked
 DisplayImageFOVs = FormPICTURESNAP.menuDisplayDisplayImageFOVs.Checked
+FormPICTURESNAP.Picture2.Refresh
 End Sub
 
 Private Sub menuDisplayLongLabels_Click()
@@ -374,18 +377,14 @@ End Sub
 
 Private Sub menuFileSaveAsBMP_Click()
 If Not DebugMode Then On Error Resume Next
-Call PictureSnapPrintOrClipboard(Int(4), FormPICTURESNAP)
+Call PictureSnapSaveAsBMP
 If ierror Then Exit Sub
 End Sub
 
 Private Sub menuFileSaveAsBMPOnly_Click()
 If Not DebugMode Then On Error Resume Next
-' Will not be flipped properly if default polarity "config" is different than file polarity "config"
-Dim tfilename As String
-tfilename$ = MiscGetFileNameNoExtension$(ProbeDataFile$) & "_" & "PictureSnap" & ".bmp"
-Call IOGetFileName(Int(1), "BMP", tfilename$, FormPICTURESNAP)
+Call PictureSnapPrintOrClipboard(Int(4), FormPICTURESNAP)
 If ierror Then Exit Sub
-SavePicture FormPICTURESNAP.Picture2, tfilename$     ' does not save graphics methods
 End Sub
 
 Private Sub menuFileSaveAsGRD_Click()
@@ -485,6 +484,7 @@ End Sub
 
 Private Sub TimerPictureSnap_Timer()
 If Not DebugMode Then On Error Resume Next
+FormPICTURESNAP.Picture2.Cls
 Call PictureSnapDrawCurrentPosition
 If ierror Then Exit Sub
 Call PictureSnapDisplayPositions

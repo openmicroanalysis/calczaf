@@ -125,3 +125,21 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub PictureSnapMoveToCalibrationPoint(stagex As Single, stagey As Single, stagez As Single)
+' Dummy routine for CalcImage
+
+ierror = False
+On Error GoTo PictureSnapMoveToCalibrationPointError
+
+
+Exit Sub
+
+' Errors
+PictureSnapMoveToCalibrationPointError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapMoveToCalibrationPoint"
+ierror = True
+Exit Sub
+
+End Sub
+

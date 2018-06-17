@@ -443,6 +443,8 @@ End If
 ' Get last digit
 If Len(tstring$) > 1 Then
 cstring$ = Mid$(tstring$, 2)
+Else
+cstring$ = "0"      ' last digit is zero (missing)
 End If
 
 ' Make string

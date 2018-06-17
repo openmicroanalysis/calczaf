@@ -1,4 +1,4 @@
-Attribute VB_Name = "CodePictureSnap4"
+Attribute VB_Name = "CodePictureSnapStageMove"
 ' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 
@@ -180,9 +180,13 @@ If ierror Then Exit Sub
 
 ' Move scroll bars on main window to this position
 temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
+If fractionx! >= 0# And fractionx! <= 1# Then
 FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
+End If
 temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
+If fractiony! >= 0# And fractiony! <= 1# Then
 FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
+End If
 
 If stagez! = 0# Then stagez! = RealTimeMotorPositions!(ZMotor%)
 

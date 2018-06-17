@@ -127,52 +127,50 @@ Exit Function
 
 End Function
 
-Function Plan3dCalculateTilt(acoeff() As Single) As String
-' Routine to calculate the tilt of a specimen based on 3 or more
-' points. Called to warn user of excessive specimen tilt for
+Sub Plan3dCalculateTilt(acoeff() As Single, tilt As Single, astring As String)
+' Routine to calculate the tilt of a specimen based on 3 or more points. Called to warn user of excessive specimen tilt for
 ' polygon defined or fiducial referenced digitized samples.
 
 ierror = False
 On Error GoTo Plan3dCalculateTiltError
 
-Const dpr! = 0.017453292 ' degrees per radian (2*pi/360)
+Const dpr! = 0.017453292                    ' degrees per radian (2*pi/360)
 
 Dim thetax As Single, thetay As Single, theta As Single
-Dim tmsg As String
 
-' Set default message
-Plan3dCalculateTilt$ = vbNullString
+' Set defaults
+tilt! = 0#
+astring$ = vbNullString
 
-' Calculate the maximum tilt in degrees. For small angles, assume that:
-' theta = Sqr(thetax**2 + thetay**2)
+' Calculate the maximum tilt in degrees. For small angles, assume that: theta = Sqr(thetax**2 + thetay**2)
 If acoeff!(2) < -1# Or acoeff!(2) > 1# Or acoeff!(3) < -1# Or acoeff!(3) > 1# Then
 msg$ = "Warning: Zero or infinite tilt, cannot calculate specimen tilt for given equation"
 MsgBox msg$, vbOKOnly + vbExclamation, "Plan3dCalculateTilt"
-Exit Function
+Exit Sub
 End If
 
 thetax! = Sin(acoeff!(2))
 thetay! = Sin(acoeff!(3))
 theta! = Sqr(thetax! ^ 2 + thetay! ^ 2)
+tilt! = theta! / dpr!
 
-tmsg$ = "Specimen tilt in radians: " & vbCrLf
-tmsg$ = tmsg$ & "ThetaX = " & Str$(thetax!) & " ThetaY= " & Str$(thetay!) & " Theta= " & Str$(theta!) & vbCrLf
-tmsg$ = tmsg$ & "Specimen tilt in degrees: " & vbCrLf
-tmsg$ = tmsg$ & "ThetaX = " & Str$(thetax! / dpr!) & " ThetaY= " & Str$(thetay! / dpr!) & " Theta= " & Str$(theta! / dpr!)
-If Abs(theta! / dpr!) > 0.5 Then
-tmsg$ = tmsg$ & vbCrLf & "WARNING: Specimen tilt exceeds 0.5 degree"
+astring$ = "Specimen tilt in radians: " & vbCrLf
+astring$ = astring$ & "ThetaX = " & Str$(thetax!) & " ThetaY= " & Str$(thetay!) & " Theta= " & Str$(theta!) & vbCrLf & vbCrLf
+astring$ = astring$ & "Specimen tilt in degrees: " & vbCrLf
+astring$ = astring$ & "ThetaX = " & Str$(thetax! / dpr!) & " ThetaY= " & Str$(thetay! / dpr!) & " Theta= " & Str$(tilt!)
+If Abs(tilt!) > 0.5 Then
+astring$ = astring$ & vbCrLf & vbCrLf & "WARNING: Specimen tilt exceeds 0.5 degree"
 End If
-Plan3dCalculateTilt$ = tmsg$
 
-Exit Function
+Exit Sub
 
 ' Errors
 Plan3dCalculateTiltError:
 MsgBox Error$, vbOKOnly + vbCritical, "Plan3dCalculateTilt"
 ierror = True
-Exit Function
+Exit Sub
 
-End Function
+End Sub
 
 Function Plan3dCRS(x11 As Single, y11 As Single, x12 As Single, y12 As Single, x21 As Single, y21 As Single, x22 As Single, y22 As Single, xt As Single, yt As Single) As Integer
 ' This routine determines if two segments cross. It receives the four

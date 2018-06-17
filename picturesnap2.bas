@@ -1,4 +1,4 @@
-Attribute VB_Name = "CodePictureSnap2"
+Attribute VB_Name = "CodePictureSnapOpenClose"
 ' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
@@ -39,11 +39,8 @@ Dim tfilename As String
 
 ' Print to default printer
 If mode% = 1 Then
-FormPICTURESNAP.Picture2.AutoRedraw = True      ' necessary for printing complete image
-Call MiscDelay(CDbl(1#), Now)
 ixiy! = FormPICTURESNAP.Picture2.ScaleWidth / FormPICTURESNAP.Picture2.ScaleHeight
-Call BMPPrintDiagram(FormPICTURESNAP.Picture2, FormPICTURESNAP.Picture3, CSng(0.5), CSng(0.5), CSng(7 * ixiy!), CSng(7#))
-FormPICTURESNAP.Picture2.AutoRedraw = False
+Call BMPPrintDiagram(FormPICTURESNAP.Picture2, FormPICTURESNAP.Picture3, CSng(0.5), CSng(0.5), CSng(7 * ixiy!), CSng(7#))     '  Picture3 control is in Pixel ScaleMode
 If ierror Then Exit Sub
 
 Set FormPICTURESNAP.Picture2 = LoadPicture(PictureSnapFilename$)    ' to prevent trailing
@@ -59,10 +56,7 @@ End If
 
 ' Clipboard (use special function to save graphics methods)
 If mode% = 3 Then
-FormPICTURESNAP.Picture2.AutoRedraw = True      ' necessary for printing complete image
-Call MiscDelay(CDbl(1#), Now)                   ' necessary for re-draw
 Call BMPCopyEntirePicture(FormPICTURESNAP.Picture2)    ' does not work on "hidden" bitmaps
-FormPICTURESNAP.Picture2.AutoRedraw = False
 If ierror Then Exit Sub
 
 Set FormPICTURESNAP.Picture2 = LoadPicture(PictureSnapFilename$)    ' to prevent trailing
@@ -70,38 +64,29 @@ End If
 
 ' Save to BMP file via clipboard to save drawing objects
 If mode% = 4 Then
-FormPICTURESNAP.Picture2.AutoRedraw = True      ' necessary for printing complete image
-Call MiscDelay(CDbl(1#), Now)                   ' necessary for re-draw
 Call BMPCopyEntirePicture(FormPICTURESNAP.Picture2)    ' does not work on "hidden" bitmaps
-FormPICTURESNAP.Picture2.AutoRedraw = False
 If ierror Then Exit Sub
-
-Set FormPICTURESNAP.Picture2 = LoadPicture(PictureSnapFilename$)    ' to prevent trailing
 
 ' Check for a bitmap in the system clipboard
 If Clipboard.GetFormat(vbCFBitmap) Then
-FormPICTURESNAP.Picture3.Picture = Clipboard.GetData(vbCFBitmap)
+FormPICTURESNAP.Picture3.Picture = Clipboard.GetData(vbCFBitmap)     '  Picture3 control is in Pixel ScaleMode
 Else
-msg$ = "There is no bitmap available in the system clipboard to save. Check that there is enough video memory in the system for large bitmap compatible objects."
+msg$ = "There is no bitmap available in the system clipboard to save. Check that there is enough memory in the system for large bitmap compatible objects."
 MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapPrintOrClipboard"
 ierror = True
 Exit Sub
 End If
 
 ' Ask user for file
-tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & "_.BMP"
+tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & "_Annotations.BMP"
 Call IOGetFileName(Int(1), "BMP", tfilename$, tForm)
 If ierror Then Exit Sub
 
-' Save to BMP file from Picture3 control (will not be flipped properly if default polarity "config" is different than file polarity "config")
-SavePicture FormPICTURESNAP.Picture3, tfilename$
+' Save to BMP file from Picture3 control
+SavePicture FormPICTURESNAP.Picture3, tfilename$     '  Picture3 control is in Pixel ScaleMode
 msg$ = "Image with drawing objects saved to " & tfilename$
 MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapPrintOrClipboard"
 ierror = True
-
-' Save the ACQ file also
-Call PictureSnapSaveCalibration(Int(0), tfilename$, PictureSnapCalibrationSaved)
-If ierror Then Exit Sub
 End If
 
 Exit Sub
@@ -111,6 +96,55 @@ PictureSnapPrintOrClipboardError:
 msg$ = Error$
 If Err = VB_OutOfMemory& Then msg$ = msg$ & ". The system could not create a large enough bitmap compatible object. There is probably not enough video memory on the system video board. Try reducing the bit depth of the video display (Desktop | Properties | Settings) from 32 to 16 and try again."
 MsgBox msg$, vbOKOnly + vbCritical, "PictureSnapPrintOrClipboard"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub PictureSnapSaveAsBMP()
+' Save the current image and calibration as a new BMP image and ACQ file
+
+ierror = False
+On Error GoTo PictureSnapSaveAsBMPError
+
+Dim tfilename As String, tfilename2 As String
+Dim response As Integer
+
+' Save with ACQ file calibration and annotations
+tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".bmp"
+
+' Ask use for new BMP filename (allow for existing file to check for overwrite of both image and calibration file below)
+Call IOGetFileName(Int(0), "BMP", tfilename$, FormPICTURESNAP)
+If ierror Then Exit Sub
+
+' Load new calibration file name
+tfilename2$ = MiscGetFileNameNoExtension$(tfilename$) & ".acq"
+
+' Check if file exists
+If Dir$(tfilename$) <> vbNullString Or Dir$(tfilename2$) <> vbNullString Then
+msg$ = "The specified image and/or calibration file(s) already exists. Do you want to overwrite it?"
+response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "PictureSnapSaveAsBMP")
+If response% = vbCancel Then Exit Sub
+If Dir$(tfilename$) <> vbNullString Then Kill tfilename$
+If Dir$(tfilename2$) <> vbNullString Then Kill tfilename2$
+DoEvents
+End If
+
+' Save image to new file
+SavePicture FormPICTURESNAP.Picture2, tfilename$     ' does not save graphics methods
+
+' Save ACQ file
+FileCopy MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".ACQ", tfilename2$
+
+' Re-load new image file into PictureSnapApp
+Call PictureSnapFileOpen(Int(0), tfilename$, FormPICTURESNAP)
+If ierror Then Exit Sub
+
+Exit Sub
+
+' Errors
+PictureSnapSaveAsBMPError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapSaveAsBMP"
 ierror = True
 Exit Sub
 
@@ -133,9 +167,13 @@ Dim gStage_Units As String
 
 Dim m_Width As Long, m_Height As Long, m_Depth As Long, m_ImageType As Long
 
-' Unload the calibration ans full view forms in case loaded
+' Unload the calibration and full view forms in case loaded
 Unload FormPICTURESNAP2
 Unload FormPICTURESNAP3
+
+' Set FormPICTURESNAP scroll bars to upper left
+FormPICTURESNAP.HScroll1.value = 0
+FormPICTURESNAP.VScroll1.value = 0
 
 ' Get existing filename from user
 If mode% > 0 Then
@@ -252,6 +290,14 @@ End If
 If mode% <> 0 And FormPICTURESNAP3.Visible And Not PictureSnapWindowIsModeless Then
 Call PictureSnapLoadFullWindow
 If ierror Then Exit Sub
+End If
+
+' Move stage to move main PictureSnap window to current location
+If RealTimeMode And PictureSnapCalibrated Then
+If MiscMotorInBounds(XMotor%, RealTimeMotorPositions!(XMotor%)) And MiscMotorInBounds(YMotor%, RealTimeMotorPositions!(YMotor%)) And MiscMotorInBounds(ZMotor%, RealTimeMotorPositions!(ZMotor%)) Then
+Call PictureSnapMoveToCalibrationPoint(RealTimeMotorPositions!(XMotor%), RealTimeMotorPositions!(YMotor%), RealTimeMotorPositions!(ZMotor%))
+If ierror Then Exit Sub
+End If
 End If
 
 Exit Sub
@@ -571,29 +617,32 @@ If PictureSnapFilename$ = vbNullString Then GoTo PictureSnapSaveGridFileNoPictur
 If Not PictureSnapCalibrated Then GoTo PictureSnapSaveGridFileNotCalibrated
 tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".GRD"
 
+' Load current image into picture control
+FormPICTURESNAP.Picture3.Picture = FormPICTURESNAP.Picture2.Picture     '  Picture3 control is in Pixel ScaleMode
+
 ' Convert BMP to byte array
 Call IOStatusAuto("Loading BMP array...")
 DoEvents
 Screen.MousePointer = vbHourglass
-Call BMPGetBitmapInfo(FormPICTURESNAP.Picture2, nX&, nY&, bpp%, nSize#, tptr&)
+Call BMPGetBitmapInfo(FormPICTURESNAP.Picture3, nX&, nY&, bpp%, nSize#, tptr&)      '  Picture3 control is in Pixel ScaleMode
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 
-' Convert picture to gray if not too large (DEMO2.BMP 2048 x 1024 pixels is too large!)
+' Convert picture to gray if not too large
 Call IOStatusAuto("Converting picture to gray...")
 DoEvents
 Screen.MousePointer = vbHourglass
-Call BMPMakeGray(FormPICTURESNAP.Picture2)
+Call BMPMakeGray(FormPICTURESNAP.Picture3)     '  Picture3 control is in Pixel ScaleMode
 Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 
 ' Copy bitmap to long array
 Screen.MousePointer = vbHourglass
 ReDim larray(1 To nX&, 1 To nY&) As Long
-Call BMPConvertBitmapToLongArray(FormPICTURESNAP.Picture2, nX&, nY&, larray&())
+Call BMPConvertBitmapToLongArray(FormPICTURESNAP.Picture3, nX&, nY&, larray&())     '  Picture3 control is in Pixel ScaleMode
 Screen.MousePointer = vbDefault
 
-' Get stage extents
+' Get stage extents (use Picture2 control in Twips for stage coordinate calculations)
 ixmin! = 0
 iymin! = 0
 ixmax! = FormPICTURESNAP.Picture2.ScaleX(FormPICTURESNAP.Picture2.Picture.Width, vbHimetric, vbTwips)

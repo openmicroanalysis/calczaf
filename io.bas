@@ -1595,7 +1595,7 @@ Else
 If sDVD$ = vbNullString Then
 
 ' Ask user for DVD drive location
-sDVD$ = IOBrowseForFolderByPath(False, sDVD$ & "\", "Please browse for the DVD drive containing the Probe Software Web Site disk", FormMAIN)
+sDVD$ = IOBrowseForFolderByPath(False, sDVD$ & "\", "Please browse to the DVD drive containing the Probe Software Web Site disk", FormMAIN)
 If ierror Then Exit Sub
 
 ' Double check that DVD path is valid

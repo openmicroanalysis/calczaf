@@ -1,4 +1,4 @@
-Attribute VB_Name = "CodePictureSnap3"
+Attribute VB_Name = "CodePictureSnapCalibration"
 ' (c) Copyright 1995-2018 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,13 @@ Global PictureSnapWindowIsModeless As Boolean
 
 ' Form variables for keV and mag (and scan rotation)
 Global PictureSnap_keV As Single, PictureSnap_mag As Single, PictureSnap_scanrota As Single
+
+' Form variables for signal type, min and max
+Global PictureSnap_signal_type As String, PictureSnap_signal_min As Single, PictureSnap_signal_max As Single
+
+' New ACQ file version number
+Const ACQ_FILE_VERSION! = 1
+Dim ACQFileVersionNumber As Single
 
 ' New .ACQ calibration parameters,  where 1.0 = 100% (the default Windows setting), 1.25 = 125% and 2.0 = 200% DPI scaling
 Dim ACQScreenDPI_Current As Single
@@ -54,10 +61,28 @@ Dim pmode As Single
 Dim points As Single
 Dim zpoints As Single
 Dim DPI_Ratio As Single
+Dim tcomment As String
 
 ' Dimension coordinates (assume using three points and XYZ)
 Dim cpoint1(1 To 3) As Single, cpoint2(1 To 3) As Single, cpoint3(1 To 3) As Single
 Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Single
+
+' Read ACQ file version number
+ACQFileVersionNumber! = 0                                                                               ' assume version zero of ACQ file (no entry)
+Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "ACQFileVersion", ACQFileVersionNumber!)       ' 1 = read, 2 = write
+If ierror Then Exit Sub
+
+' Read signal type and signal min/max
+PictureSnap_signal_type$ = vbNullString         ' default to empty string
+Call InitINIReadWriteString(Int(0), tfilename$, "Signal", "SignalType", PictureSnap_signal_type$, tcomment$)         ' 0 = read, 1 = write
+If ierror Then Exit Sub
+
+PictureSnap_signal_min! = 0#                    ' default to 0
+Call InitINIReadWriteScaler(Int(1), tfilename$, "Signal", "SignalMin", PictureSnap_signal_min!)                      ' 1 = read, 2 = write
+If ierror Then Exit Sub
+PictureSnap_signal_max! = 255#                  ' default to 255
+Call InitINIReadWriteScaler(Int(1), tfilename$, "Signal", "SignalMax", PictureSnap_signal_max!)                      ' 1 = read, 2 = write
+If ierror Then Exit Sub
 
 ' Load current screen DPI
 ACQScreenDPI_Current! = MiscGetWindowsDPI#()
@@ -84,12 +109,12 @@ If ierror Then Exit Sub
 Call InitINIReadWriteArray(Int(1), tfilename$, "stage", "Screen reference point2 (twips)", Int(2), cpoint2!())
 If ierror Then Exit Sub
 
-If zpoints! > 0 Then
-Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Screen Z reference point1 (dummy)", cpoint1!(3))
+'If zpoints! > 0 Then
+Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Screen Z reference point1 (dummy)", cpoint1!(MAXAXES%))
 If ierror Then Exit Sub
-Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Screen Z reference point2 (dummy)", cpoint2!(3))
+Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Screen Z reference point2 (dummy)", cpoint2!(MAXAXES%))
 If ierror Then Exit Sub
-End If
+'End If
 
 ' Read stage calibration points
 Call InitINIReadWriteArray(Int(1), tfilename$, "stage", "Stage reference point1", Int(2), apoint1!())
@@ -97,27 +122,30 @@ If ierror Then Exit Sub
 Call InitINIReadWriteArray(Int(1), tfilename$, "stage", "Stage reference point2", Int(2), apoint2!())
 If ierror Then Exit Sub
 
-If zpoints! > 0 Then
-Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Stage Z reference point1", apoint1!(3))
+'If zpoints! > 0 Then
+apoint1!(MAXAXES%) = RealTimeMotorPositions!(ZMotor%)        ' load current position as default for z (in case using two point calibration)
+Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Stage Z reference point1", apoint1!(MAXAXES%))
 If ierror Then Exit Sub
-Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Stage Z reference point2", apoint2!(3))
+apoint2!(MAXAXES%) = RealTimeMotorPositions!(ZMotor%)        ' load current position as default for z (in case using two point calibration)
+Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Stage Z reference point2", apoint2!(MAXAXES%))
 If ierror Then Exit Sub
-End If
+'End If
 
 ' Read 3rd point if indicated
-If pmode! = 1 Then
+'If pmode! = 1 Then
 Call InitINIReadWriteArray(Int(1), tfilename$, "stage", "Screen reference point3 (twips)", Int(2), cpoint3!())
 If ierror Then Exit Sub
 Call InitINIReadWriteArray(Int(1), tfilename$, "stage", "Stage reference point3", Int(2), apoint3!())
 If ierror Then Exit Sub
 
-If zpoints! > 0 Then
+'If zpoints! > 0 Then
 Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Screen Z reference point3 (dummy)", cpoint3!(3))
 If ierror Then Exit Sub
-Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Stage Z reference point3", apoint3!(3))
+apoint3!(MAXAXES%) = RealTimeMotorPositions!(ZMotor%)        ' load current position as default for z (in case using two point calibration)
+Call InitINIReadWriteScaler(Int(1), tfilename$, "stage", "Stage Z reference point3", apoint3!(MAXAXES%))
 If ierror Then Exit Sub
-End If
-End If
+'End If
+'End If
 
 ' Load globals
 PictureSnapMode% = pmode!
@@ -129,10 +157,10 @@ cpoint1y! = cpoint1!(2)  ' y reference screen coordinates
 cpoint2x! = cpoint2!(1)  ' x reference screen coordinates
 cpoint2y! = cpoint2!(2)  ' y reference screen coordinates
 
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 cpoint1z! = cpoint1!(3)  ' Z reference screen coordinates
 cpoint2z! = cpoint2!(3)  ' Z reference screen coordinates
-End If
+'End If
 
 ' Load stage coordinates to module level variables
 apoint1x! = apoint1!(1)  ' x reference stage coordinates
@@ -141,13 +169,13 @@ apoint2x! = apoint2!(1)  ' x reference stage coordinates
 apoint1y! = apoint1!(2)  ' y reference stage coordinates
 apoint2y! = apoint2!(2)  ' y reference stage coordinates
 
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 apoint1z! = apoint1!(3)  ' Z reference stage coordinates
 apoint2z! = apoint2!(3)  ' Z reference stage coordinates
-End If
+'End If
 
 ' Load third point screen and stage coordinates to module level variables
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 cpoint3x! = cpoint3!(1)  ' x reference screen coordinates
 cpoint3y! = cpoint3!(2)  ' y reference screen coordinates
 cpoint3z! = cpoint3!(3)  ' Z reference screen coordinates
@@ -155,7 +183,7 @@ cpoint3z! = cpoint3!(3)  ' Z reference screen coordinates
 apoint3x! = apoint3!(1)  ' x reference stage coordinates
 apoint3y! = apoint3!(2)  ' y reference stage coordinates
 apoint3z! = apoint3!(3)  ' Z reference stage coordinates
-End If
+'End If
 
 ' Load keV and mag from .ACQ file
 PictureSnap_keV! = DefaultKiloVolts!    ' load default in case parameter is missing
@@ -181,11 +209,11 @@ cpoint1z! = cpoint1z! * DPI_Ratio!   ' Z reference screen coordinates
 cpoint2z! = cpoint2z! * DPI_Ratio!   ' Z reference screen coordinates
 
 ' Load third point
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 cpoint3x! = cpoint3x! * DPI_Ratio!   ' x reference screen coordinates
 cpoint3y! = cpoint3y! * DPI_Ratio!   ' y reference screen coordinates
 cpoint3z! = cpoint3z! * DPI_Ratio!   ' Z reference screen coordinates
-End If
+'End If
 End If
 
 Exit Sub
@@ -210,27 +238,27 @@ tForm.TextYStage1.Text = apoint1y!
 tForm.TextXStage2.Text = apoint2x!
 tForm.TextYStage2.Text = apoint2y!
 
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 tForm.TextXStage3.Text = apoint3x!
 tForm.TextYStage3.Text = apoint3y!
-End If
+'End If
 
-' Load existing z calibrations (if not zero)
-If PictureSnapMode% = 1 And PictureSnapCalibrationNumberofZPoints% > 0 Then
+' Load existing z calibrations
+'If PictureSnapMode% = 1 And PictureSnapCalibrationNumberofZPoints% > 0 Then
 tForm.TextZStage1.Text = apoint1z!
 tForm.TextZStage2.Text = apoint2z!
 tForm.TextZStage3.Text = apoint3z!
-End If
+'End If
 
 tForm.TextXPixel1.Text = cpoint1x!
 tForm.TextYPixel1.Text = cpoint1y!
 tForm.TextXPixel2.Text = cpoint2x!
 tForm.TextYPixel2.Text = cpoint2y!
 
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 tForm.TextXPixel3.Text = cpoint3x!
 tForm.TextYPixel3.Text = cpoint3y!
-End If
+'End If
 
 Exit Sub
 
@@ -255,17 +283,17 @@ apoint1y! = Val(tForm.TextYStage1.Text)
 apoint2x! = Val(tForm.TextXStage2.Text)
 apoint2y! = Val(tForm.TextYStage2.Text)
 
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 apoint3x! = Val(tForm.TextXStage3.Text)
 apoint3y! = Val(tForm.TextYStage3.Text)
-End If
+'End If
 
 ' Load z stage coordinates
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 apoint1z! = Val(tForm.TextZStage1.Text)
 apoint2z! = Val(tForm.TextZStage2.Text)
 apoint3z! = Val(tForm.TextZStage3.Text)
-End If
+'End If
 
 ' Load pixel coordinates
 cpoint1x! = Val(tForm.TextXPixel1.Text)
@@ -274,13 +302,13 @@ cpoint1y! = Val(tForm.TextYPixel1.Text)
 cpoint2x! = Val(tForm.TextXPixel2.Text)
 cpoint2y! = Val(tForm.TextYPixel2.Text)
 
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 cpoint3x! = Val(tForm.TextXPixel3.Text)
 cpoint3y! = Val(tForm.TextYPixel3.Text)
 cpoint1z! = 0#
 cpoint2z! = 0#
 cpoint3z! = 0#
-End If
+'End If
 
 ' Check that stage coordinates are not the same
 If apoint1x! = apoint2x! Then GoTo PictureSnapCalibrateSaveStageCoordinatesSame
@@ -416,7 +444,7 @@ Sub PictureSnapSaveCalibration(mode As Integer, pFileName As String, pcalibratio
 ierror = False
 On Error GoTo PictureSnapSaveCalibrationError
 
-Dim tfilename As String
+Dim tfilename As String, tcomment As String
 
 ' Dimension coordinates (assume using three points and XYZ)
 Dim cpoint1(1 To 3) As Single, cpoint2(1 To 3) As Single, cpoint3(1 To 3) As Single
@@ -435,13 +463,13 @@ cpoint1!(2) = cpoint1y!  ' reference screen coordinates
 cpoint2!(1) = cpoint2x!  ' reference screen coordinates
 cpoint2!(2) = cpoint2y!  ' reference screen coordinates
 
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 cpoint3!(1) = cpoint3x!  ' reference screen coordinates
 cpoint3!(2) = cpoint3y!  ' reference screen coordinates
 cpoint1!(3) = cpoint1z!  ' dummy z reference
 cpoint2!(3) = cpoint2z!  ' dummy z reference
 cpoint3!(3) = cpoint3z!  ' dummy z reference
-End If
+'End If
 
 ' Stage coodinates
 apoint1!(1) = apoint1x!  ' reference stage coordinates
@@ -450,13 +478,13 @@ apoint1!(2) = apoint1y!  ' reference stage coordinates
 apoint2!(1) = apoint2x!  ' reference stage coordinates
 apoint2!(2) = apoint2y!  ' reference stage coordinates
 
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 apoint3!(1) = apoint3x!  ' reference stage coordinates
 apoint3!(2) = apoint3y!  ' reference stage coordinates
 apoint1!(3) = apoint1z!  ' actual z reference
 apoint2!(3) = apoint2z!  ' actual z reference
 apoint3!(3) = apoint3z!  ' actual z reference
-End If
+'End If
 
 ' Write calibration points to INI style ACQ file
 tfilename$ = MiscGetFileNameNoExtension$(pFileName$) & ".ACQ"
@@ -490,12 +518,12 @@ If ierror Then Exit Sub
 Call InitINIReadWriteArray(Int(2), tfilename$, "stage", "Screen reference point2 (twips)", Int(2), cpoint2!())
 If ierror Then Exit Sub
 
-If PictureSnapCalibrationNumberofZPoints% > 0 Then
+'If PictureSnapCalibrationNumberofZPoints% > 0 Then
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Screen Z reference point1 (dummy)", cpoint1!(3))
 If ierror Then Exit Sub
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Screen Z reference point2 (dummy)", cpoint2!(3))
 If ierror Then Exit Sub
-End If
+'End If
 
 ' Write stage calibration points
 Call InitINIReadWriteArray(Int(2), tfilename$, "stage", "Stage reference point1", Int(2), apoint1!())
@@ -503,27 +531,27 @@ If ierror Then Exit Sub
 Call InitINIReadWriteArray(Int(2), tfilename$, "stage", "Stage reference point2", Int(2), apoint2!())
 If ierror Then Exit Sub
 
-If PictureSnapCalibrationNumberofZPoints% > 0 Then
+'If PictureSnapCalibrationNumberofZPoints% > 0 Then
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Stage Z reference point1", apoint1!(3))
 If ierror Then Exit Sub
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Stage Z reference point2", apoint2!(3))
 If ierror Then Exit Sub
-End If
+'End If
 
 ' Save 3rd point if indicated
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 Call InitINIReadWriteArray(Int(2), tfilename$, "stage", "Screen reference point3 (twips)", Int(2), cpoint3!())
 If ierror Then Exit Sub
 Call InitINIReadWriteArray(Int(2), tfilename$, "stage", "Stage reference point3", Int(2), apoint3!())
 If ierror Then Exit Sub
 
-If PictureSnapCalibrationNumberofZPoints% > 0 Then
+'If PictureSnapCalibrationNumberofZPoints% > 0 Then
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Screen Z reference point3 (dummy)", cpoint3!(3))
 If ierror Then Exit Sub
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "Stage Z reference point3", apoint3!(3))
 If ierror Then Exit Sub
-End If
-End If
+'End If
+'End If
 
 ' Now save coordinate system of stage orientation and units
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "X_Polarity", CSng(Default_X_Polarity%))              ' 1 = read, 2 = write
@@ -549,6 +577,20 @@ If ierror Then Exit Sub
 
 ' Write screen resolution DPI
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "ACQScreenDPI", ACQScreenDPI_Current!)                      ' 1 = read, 2 = write
+If ierror Then Exit Sub
+
+' Write signal type and signal min/max
+tcomment$ = "signal type"
+Call InitINIReadWriteString(Int(1), tfilename$, "Signal", "SignalType", PictureSnap_signal_type$, tcomment$)         ' 0 = read, 1 = write
+If ierror Then Exit Sub
+
+Call InitINIReadWriteScaler(Int(2), tfilename$, "Signal", "SignalMin", PictureSnap_signal_min!)                      ' 1 = read, 2 = write
+If ierror Then Exit Sub
+Call InitINIReadWriteScaler(Int(2), tfilename$, "Signal", "SignalMax", PictureSnap_signal_max!)                      ' 1 = read, 2 = write
+If ierror Then Exit Sub
+
+' Write ACQ file version number
+Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "ACQFileVersion", ACQ_FILE_VERSION!)                          ' 1 = read, 2 = write
 If ierror Then Exit Sub
 
 pcalibrationsaved = True
@@ -724,6 +766,11 @@ PictureSnap_mag! = tImage.ImageMag!
 PictureSnap_scanrota! = tImage.ImageScanRotation!
 
 ACQScreenDPI_Stored! = tImage.ImageDisplayDPI!          ' export of BMP image will utilize the current screen DPI value, not the stored screen DPI value
+
+' Store image signal info
+PictureSnap_signal_type$ = tImage.ImageChannelName$
+PictureSnap_signal_min! = tImage.ImageZmin&
+PictureSnap_signal_max! = tImage.ImageZmax&
 
 Exit Sub
 
@@ -927,22 +974,22 @@ cpoint1x! = cpoint1!(1)  ' reference screen coordinates
 cpoint1y! = cpoint1!(2)  ' reference screen coordinates
 cpoint2x! = cpoint2!(1)  ' reference screen coordinates
 cpoint2y! = cpoint2!(2)  ' reference screen coordinates
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 cpoint1z! = cpoint1!(3)  ' reference screen coordinates
 cpoint2z! = cpoint2!(3)  ' reference screen coordinates
-End If
+'End If
 
 apoint1x! = apoint1!(1)  ' reference stage coordinates
 apoint1y! = apoint1!(2)  ' reference stage coordinates
 apoint2x! = apoint2!(1)  ' reference stage coordinates
 apoint2y! = apoint2!(2)  ' reference stage coordinates
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 apoint1z! = apoint1!(3)  ' reference stage coordinates
 apoint2z! = apoint2!(3)  ' reference stage coordinates
-End If
+'End If
 
 ' Load third point
-If PictureSnapMode% = 1 Then
+'If PictureSnapMode% = 1 Then
 cpoint3x! = cpoint3!(1)  ' reference screen coordinates
 cpoint3y! = cpoint3!(2)  ' reference screen coordinates
 cpoint3z! = cpoint3!(3)  ' reference screen coordinates
@@ -950,7 +997,7 @@ cpoint3z! = cpoint3!(3)  ' reference screen coordinates
 apoint3x! = apoint3!(1)  ' reference stage coordinates
 apoint3y! = apoint3!(2)  ' reference stage coordinates
 apoint3z! = apoint3!(3)  ' reference stage coordinates
-End If
+'End If
 
 ' Load conditions to form variables
 PictureSnap_keV! = keV!
@@ -1183,6 +1230,75 @@ Exit Sub
 ' Errors
 PictureSnapDisplayImageFOVsError:
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDisplayImageFOVs"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub PictureSnapSaveMode(Index As Integer)
+' Save the PictureSnap mode (0 = two points, 1 = three points)
+
+ierror = False
+On Error GoTo PictureSnapSaveModeError
+
+' If going from two points to three points and image was calibrated, re-set
+If FormPICTURESNAP2.Visible Then
+If PictureSnapCalibrated And Index% = 1 Then PictureSnapCalibrated = False
+End If
+
+' Save PictureSnapMode
+PictureSnapMode% = Index%
+
+' Resize calibration form
+If Index% = 0 Then
+FormPICTURESNAP2.Height = 8445
+FormPICTURESNAP2.LabelZStage1.Visible = False
+FormPICTURESNAP2.LabelZStage2.Visible = False
+FormPICTURESNAP2.LabelZStage3.Visible = False
+FormPICTURESNAP2.TextZStage1.Visible = False
+FormPICTURESNAP2.TextZStage2.Visible = False
+FormPICTURESNAP2.TextZStage3.Visible = False
+End If
+
+If Index% = 1 Then
+FormPICTURESNAP2.Height = 12495
+FormPICTURESNAP2.LabelZStage1.Visible = True
+FormPICTURESNAP2.LabelZStage2.Visible = True
+FormPICTURESNAP2.LabelZStage3.Visible = True
+FormPICTURESNAP2.TextZStage1.Visible = True
+FormPICTURESNAP2.TextZStage2.Visible = True
+FormPICTURESNAP2.TextZStage3.Visible = True
+End If
+
+If PictureSnapCalibrated Then
+FormPICTURESNAP2.LabelCalibration.Caption = "Image Is Calibrated"
+Else
+FormPICTURESNAP2.LabelCalibration.Caption = "Image Is NOT Calibrated"
+End If
+
+' If the calibration mode changed from two to three points, (re)load default values from ACQ file
+If Index% = 1 Then
+
+' Load stage X and Y values for third point
+FormPICTURESNAP2.TextXStage3.Text = apoint3x!
+FormPICTURESNAP2.TextYStage3.Text = apoint3y!
+
+' Load screen X and Y values for third point
+FormPICTURESNAP2.TextXPixel3.Text = cpoint3x!
+FormPICTURESNAP2.TextYPixel3.Text = cpoint3y!
+
+' Load stage values for Z for all three points (in case already in ACQ file)
+FormPICTURESNAP2.TextZStage1.Text = apoint1z!
+FormPICTURESNAP2.TextZStage2.Text = apoint2z!
+FormPICTURESNAP2.TextZStage3.Text = apoint3z!
+
+End If
+
+Exit Sub
+
+' Errors
+PictureSnapSaveModeError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapSaveMode"
 ierror = True
 Exit Sub
 

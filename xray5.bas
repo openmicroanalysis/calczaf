@@ -154,9 +154,9 @@ Screen.MousePointer = vbHourglass
 Set PrDb = OpenDatabase(XrayDataFile$, XrayDatabaseNonExclusiveAccess%, dbReadOnly)
 
 ' All element x-ray lines in range (limit number of lines loaded)
-maxrec& = MAXLIST% + 1
+maxrec& = MAXLISTBOXSIZE% + 1
 factor% = 1
-Do While maxrec& > MAXLIST%
+Do While maxrec& > MAXLISTBOXSIZE%
 
 ' Load just x-ray lines
 If GraphWavescanType < 3 Then

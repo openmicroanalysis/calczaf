@@ -792,6 +792,9 @@ If MtDs.RecordCount > 0 Then
 MtDs.MoveLast
 End If
 
+Call TransactionBegin("Penepma12MatrixUpdateMDB", MatrixMDBFile$)
+If ierror Then Exit Sub
+
 ' If not found then add new records. If records found, delete existing k-ratios and then add new records
 For n& = 1 To MtDs.RecordCount
 nrec& = MtDs("MatrixNumber")
@@ -854,6 +857,9 @@ End If
 MtDt.Update
 Next i%
 
+Call TransactionCommit("Penepma12MatrixUpdateMDB", MatrixMDBFile$)
+If ierror Then Exit Sub
+
 MtDt.Close
 MtDb.Close
 
@@ -870,6 +876,7 @@ Penepma12MatrixUpdateMDBError:
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "Penepma12MatrixUpdateMDB"
 Call IOStatusAuto(vbNullString)
+Call TransactionRollback("Penepma12MatrixUpdateMDB", MatrixMDBFile$)
 ierror = True
 Exit Sub
 

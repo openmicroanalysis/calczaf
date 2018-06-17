@@ -1188,7 +1188,6 @@ Boundary_X_Pos2! = XX2StageCoordinate!
 Boundary_Y_Pos2! = YY2StageCoordinate!
 Else
 FormSECONDARY.LabelCursorPosition.Caption = vbNullString
-FormSECONDARY.Refresh
 End If
 End If
 

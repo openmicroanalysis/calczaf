@@ -24,7 +24,7 @@ Begin VB.Form FormZAF
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   6015
    ScaleWidth      =   9570
-   Begin VB.Frame Frame1 
+   Begin VB.Frame FrameElementList 
       Caption         =   "Element List (click element row to edit)"
       ForeColor       =   &H00FF0000&
       Height          =   5775
@@ -32,6 +32,23 @@ Begin VB.Form FormZAF
       TabIndex        =   0
       Top             =   120
       Width           =   9375
+      Begin VB.CheckBox CheckPlotPhiRhoZCurves 
+         Caption         =   "Plot Phi-Rho-Z Curves"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   6240
+         TabIndex        =   19
+         Top             =   4200
+         Width           =   2775
+      End
       Begin MSFlexGridLib.MSFlexGrid GridElementList 
          Height          =   2895
          Left            =   120
@@ -149,13 +166,13 @@ Begin VB.Form FormZAF
          BackColor       =   &H0080FFFF&
          Caption         =   "Load Next Dataset From Input File"
          Enabled         =   0   'False
-         Height          =   735
+         Height          =   615
          Left            =   5880
          Style           =   1  'Graphical
          TabIndex        =   9
          TabStop         =   0   'False
          ToolTipText     =   "Load the next data set from the CalcZAF input file"
-         Top             =   4320
+         Top             =   4440
          Width           =   3255
       End
       Begin VB.CommandButton CommandCopyToClipboard 

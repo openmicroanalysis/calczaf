@@ -2,6 +2,56 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/16/18	Modify GetOpt code to treat Nth point and On-Peak Fraction at sample level. Modify
+v. 12.3.8	New.bas code to update MPB and Nth point based on last sample of that type.
+
+06/03/18	Add check for z tilt in PFE PictureSnap. Add output of analog signal type to ACQ file.
+
+06/01/18	Add output of analog signal min/max to ACQ files (for future BMP mosaic feature in PSA).
+v. 12.3.7
+
+05/23/18	Modify code in GetElmAll, GetCondAll, GetCond2All, GetTimeAll, GetSpecAll, etc. to
+		to save changes *before* unloading forms (MacDonald).
+
+05/22/18	Add fault tolerant database open calls for DataStandard and DataScan procedures (Poirier).
+v. 12.3.6
+
+05/20/18	Add prz and abs models to prz curve table output to CalcZAF.
+v. 12.3.5
+		Fix problem in CalcImage when exporting Surfer script and folder contains a "." (Roberts).
+
+05/18/18	Make all Picture controls .AutoRedraw = True for less flickering.
+
+05/16/18	Improve PictureSnap code for BMP export.
+
+05/15/18	Add % area prz curve table output (Carpenter). Make Imaging window 
+v. 12.3.4	resizable (Park).
+
+05/10/18	Lower max listbox control size from 4999 to 3999 (Carpenter). 
+v. 12.3.3
+		Add code for PAP and XPP prz curve calculations with help from Brian Joy.
+
+05/09/18	Modify plot prz curve code to skip PAP and XPP until new code from Brian Joy is ready.
+v. 12.3.2
+		Add matrix correction parameters to output of prz curves.
+
+05/08/18	Modify CL EMSA output to be compatible with xCLent (Torpy).
+v. 12.3.1
+		Add phi-rho-z code and plot form to CalcZAF (Buse, Carpenter and Joy).
+
+05/05/18	Add wavelength (nm) arrays for CL spectra (Bullock) since they are non-linear values.
+v. 12.3.0
+
+05/04/18	Modify PictureSnap.Picture3 control to use Pixels for ScaleMode (Park).  This is to better handle very large images.
+
+05/02/18	Add keV (or Ang) display for mouse cursor in Plot! graph window (Matthews).
+
+05/01/18	Improve standard assignments dialog and std assignments check code.
+
+		Fix increment step size output in strip scripts.  Turn off hill shading in modal output script.
+
+04/30/18	Fix Plot! ASCII output, interference assign check (Neill and Park).
+
 04/27/18	Remove all wmotor code (is obsolete).
 v. 12.2.9
 
@@ -9,7 +59,7 @@ v. 12.2.9
 
 04/25/18	Add display image FOVs to PictureSnap. Slight mod to GetElm update motor code for crystal index.
 
-		Add check for EDS init (in AutomaConfirm (Seward).
+		Add check for EDS init (in AutomateConfirm (Seward).
 
 04/22/18	Modify EDS flag code for allowing user to turn off net intensity output during acquisition.
 

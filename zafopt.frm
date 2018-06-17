@@ -233,7 +233,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   40
          TabStop         =   0   'False
-         ToolTipText     =   $"Zafopt.frx":0000
+         ToolTipText     =   $"ZAFOPT.frx":0000
          Top             =   3120
          Width           =   4095
       End
@@ -536,7 +536,7 @@ Begin VB.Form FormZAFOPT
          Name            =   "MS Sans Serif"
          Size            =   8.25
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
@@ -558,7 +558,7 @@ Option Explicit
 
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub
@@ -599,6 +599,11 @@ Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
 Private Sub TextCoatingThickness_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub TextDensity_GotFocus()
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

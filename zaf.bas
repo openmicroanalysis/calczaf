@@ -194,7 +194,7 @@ xi! = zaf.mup!(i%, i%) * zaf.m1!(i%)
 sumatom! = zaf.Z%(i%) / zaf.atwts!(i%)
 
 ' Calculate PAP absorption
-Call ZAFPap(Int(1), i%)
+Call ZAFPap(zafinit, Int(1), i%, xi!)
 If ierror Then Exit Sub
 
 zaf.genstd!(i%) = 1# / FP!
@@ -215,7 +215,7 @@ xi! = zaf.mup!(i%, i%) * zaf.m1!(i%)
 sumatom! = 1#
         
 ' Calculate PAP absorption
-Call ZAFPap(Int(2), i%)
+Call ZAFPap(zafinit, Int(2), i%, xi!)
 If ierror Then Exit Sub
         
 zaf.genstd!(i%) = 1# / FP!
@@ -385,7 +385,7 @@ m7! = ZAFMACCal(i%, zaf)
 xi! = m7! * zaf.m1!(i%)
         
 ' Calculate PAP absorption for sample
-Call ZAFPap(Int(1), i%)
+Call ZAFPap(zafinit, Int(1), i%, xi!)
 If ierror Then Exit Sub
 
 zaf.gensmp!(i%) = 1# / FP!
@@ -416,7 +416,7 @@ m7! = ZAFMACCal(i%, zaf)
 xi! = m7! * zaf.m1!(i%)
 
 ' Calculate PAP absorption for sample
-Call ZAFPap(Int(2), i%)
+Call ZAFPap(zafinit, Int(2), i%, xi!)
 If ierror Then Exit Sub
         
 zaf.gensmp!(i%) = 1# / FP!
@@ -1070,11 +1070,11 @@ Dim y1 As Single, Y2 As Single, beta0 As Single, beta1 As Single    ' variables 
 ' Calculate square root of pi (used to be  Sqr(3.14159) / 2, fixed 7/14/2011, Carpenter)
 spi! = Sqr(3.14159)
 
-' Calculate for each absorber
+' Calculate for each emitter
 For i% = 1 To zaf.in1%
 v0! = zaf.eO!(i%)
 
-If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 10610
+If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 10610    ' skip absorber only elements
 If zafinit% = 1 Then GoTo 10200
 
 ' PHI-STD
@@ -1095,6 +1095,7 @@ pp! = 0#
 
 hh! = eta!(i%)
 
+' For each absorber
 For i1% = 1 To zaf.in0%
 zz! = zz! + zaf.conc!(i1%) * zaf.Z%(i1%) / zaf.atwts!(i1%)
 aa! = aa! + zaf.conc!(i1%)
@@ -1116,7 +1117,7 @@ v1! = zaf.eC!(i%)
 xx! = m7!   ' loaded by ZAFMACCal above
 uu! = zaf.eO!(i%) / zaf.eC!(i%)
 
-' x2! = Gamma(0), x3! = Beta, x4! = Alpha, R! = Phi(0)
+' x2! = Gamma(0), x3! = Beta, x4! = Alpha, rr! = Phi(0)
 X2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * (1# / uu! ^ 0.2))
 ' was x2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * uu! ^ (-.2))
 
@@ -1217,7 +1218,7 @@ End If
 Call ZAFPhi(i%, uu!, hh!, zz!, v1!, rr!)
 If ierror Then Exit Sub
 
-x5! = X2! - rr!
+x5! = X2! - rr!         ' calculate q?
 
 ' PTC modification
 If UseParticleCorrectionFlag And iptc% = 1 Then
@@ -1309,7 +1310,13 @@ phi!(i%) = a1!
 If zafinit% = 0 And a2! <> 0# Then zaf.genstd!(i%) = a1! / a2!
 If zafinit% = 1 And a2! <> 0# Then zaf.gensmp!(i%) = a1! / a2!
 
-10610:  Next i%
+' Calculate phi-rho-z curves for plotting
+If zafinit% = 1 And UCase$(app.EXEName) = UCase$("CalcZAF") Then
+Call ZAFCalculatePhiRhoZCurves(i%, x4!, x3!, X2!, chi!, rr!, zaf)
+If ierror Then Exit Sub
+End If
+
+10610:  Next i%     ' next emitter
 Exit Sub
 
 ' Errors
@@ -3263,7 +3270,6 @@ Next i%
 zaf.in1% = zaf.in0%
 If sample(1).OxideOrElemental% = 1 Then
 zaf.in0% = zaf.in0% + 1                     ' array index for all matrix elements (including oxygen by stoichiometry)
-zaf.in1% = zaf.in0%
 zaf.in1% = zaf.in0% - 1                     ' array index for all emitting elements (not including oxygen by stoichiometry)
 
 zaf.eO!(zaf.in0%) = sample(1).kilovolts!
@@ -3882,8 +3888,10 @@ Exit Sub
 
 End Sub
 
-Sub ZAFPap(mode As Integer, ii As Integer)
+Sub ZAFPap(zafinit As Integer, mode As Integer, ii As Integer, xi As Single)
 ' PAP absorption correction
+' zafinit = 0 standard
+' zafinit = 1 = sample
 ' mode = 1 full PAP
 ' mode = 2 simplified PAP
 
@@ -3903,8 +3911,8 @@ Dim delta As Double, rc As Double, zip As Double
 Dim a1 As Double, a2 As Double, b1 As Double
 Dim ff As Double, gamma As Double, exx As Double
 Dim rbar As Double, gg As Double, pee As Double
-Dim a10 As Double, b10 As Double, etas As Double
-Dim a11 As Double, b11 As Double
+Dim A10 As Double, B10 As Double, etas As Double
+Dim A11 As Double, B11 As Double
 
 Dim fp1 As Double, fp2 As Double, fp3 As Double
 Dim fff As Double
@@ -3971,6 +3979,11 @@ FP! = (fp1# + fp2# + fp3#) / fff#
 'FFFF=(FP4+FP5)/FFF
 'Call ZAFPap2   ' numerical integration of PAP phi(pz)
 'If ierror Then Exit Sub
+
+' Calculate phi-rho-z curves for plotting
+If zafinit% = 1 And UCase$(app.EXEName) = UCase$("CalcZAF") Then
+Call ZAFCalculatePhiRhoZCurvesPAP(ii%, rm#, rc#, rx#, a1#, a2#, b1#, xi!, zaf)
+End If
 End If
 
 ' Simplified PAP
@@ -3981,7 +3994,7 @@ ff# = xp! / qeO#
 
 phi0# = 1# + 3.3 * (1# - Exp((2.3 * hh! - 2#) * Log(u0#))) * Exp(1.2 * Log(hh!))    ' phi(0)
 gamma# = 0.2 + meanz! / 200#
-exx = 1# + 1.3 * Log(meanz!)
+exx# = 1# + 1.3 * Log(meanz!)
 rbar# = ff# / (1 + (exx# * Log(1# + gamma# * (1# - Exp(-0.42 * Log(u0#))))) / Log(1# + gamma#))
 
 If ff# / rbar# < phi0# Then rbar# = ff# / phi0#     ' average ionization depth
@@ -3989,15 +4002,20 @@ gg# = 0.22 * Log(4# * meanz!) * (1# - 2# * Exp(-meanz! * (u0# - 1#) / 15#))
 hh! = 1# - 10# * (1# - 1# / (1# + u0# / 10#)) / (meanz! * meanz!)
 pee# = gg# * hh! * hh! * hh! * hh! * ff# / (rbar# * rbar#)
 
-b10# = Sqr(2#) * (1# + Sqr(1# - rbar# * phi0# / ff#)) / rbar#
-a10# = (pee# + b10# * (2# * phi0# - b10# * ff#)) / (b10# * ff# * (2# - b10# * rbar#) - phi0#)
-etas# = (a10# - b10#) / b10#
-If etas# < 0.000001 Then a10# = b10# * (1# + etas#)
+B10# = Sqr(2#) * (1# + Sqr(1# - rbar# * phi0# / ff#)) / rbar#
+A10# = (pee# + B10# * (2# * phi0# - B10# * ff#)) / (B10# * ff# * (2# - B10# * rbar#) - phi0#)
+etas# = (A10# - B10#) / B10#
+If etas# < 0.000001 Then A10# = B10# * (1# + etas#)
 
-b11# = (b10# * b10# * ff# * (1# + etas#) - pee# - phi0# * b10# * (2# + etas#)) / etas#
-a11# = (b11# / b10# + phi0# - b10# * ff#) * (1# + etas#) / etas#
-FP! = (phi0# + b11# / (b10# + xi!) - a11# * b10# * etas# / (b10# * (1# + etas#) + xi!)) / (b10# + xi!)
+B11# = (B10# * B10# * ff# * (1# + etas#) - pee# - phi0# * B10# * (2# + etas#)) / etas#
+A11# = (B11# / B10# + phi0# - B10# * ff#) * (1# + etas#) / etas#
+FP! = (phi0# + B11# / (B10# + xi!) - A11# * B10# * etas# / (B10# * (1# + etas#) + xi!)) / (B10# + xi!)
 FP! = FP! / ff#
+
+' Calculate phi-rho-z curves for plotting
+If zafinit% = 1 And UCase$(app.EXEName) = UCase$("CalcZAF") Then
+Call ZAFCalculatePhiRhoZCurvesXPP(ii%, A11#, B11#, A10#, B10#, phi0#, ff#, xi!, zaf)
+End If
 End If
 
 Exit Sub

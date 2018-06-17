@@ -507,8 +507,8 @@ Dim i As Integer, n As Integer
 ' Save original selected sample
 n% = tList.ListIndex
 
-tList.Enabled = False
-DoEvents
+'tList.Enabled = False      ' commented out to avoid problem in FormPLOT_WAVE loading X and Y lists
+'DoEvents
 
 ' Select all sample after selected sample
 For i% = n% + 1 To tList.ListCount - 1
@@ -531,8 +531,8 @@ Next i%
 tList.Selected(i%) = True
 End If
 
-tList.Enabled = True
-DoEvents
+'tList.Enabled = True      ' commented out to avoid problem in FormPLOT_WAVE loading X and Y lists
+'DoEvents
 
 Exit Sub
 

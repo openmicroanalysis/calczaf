@@ -623,331 +623,6 @@ Exit Function
 
 End Function
 
-Sub StandardUpdateMDBFile(tfilename As String)
-' Routine to update the current standard MDB file automatically for new fields
-
-ierror = False
-On Error GoTo StandardUpdateMDBFileError
-
-Dim StDb As Database
-Dim StRs As Recordset
-
-Dim versionnumber As Single
-Dim updated As Integer
-
-Dim StdDensities As New Field
-
-Dim EDSSpectra As TableDef              ' EDS spectra
-Dim EDSSpectraIndex As New Index        ' EDS spectra index (to sample row numbers)
-Dim EDSParameters As TableDef           ' EDS parameters
-Dim EDSParametersIndex As New Index     ' EDS parameters index (to sample row numbers)
-
-Dim CLSpectra As TableDef               ' CL spectra
-Dim CLSpectraIndex As New Index         ' CL spectra index (to sample row numbers)
-Dim CLParameters As TableDef            ' CL parameters
-Dim CLParametersIndex As New Index      ' CL parameters index (to sample row numbers)
-
-Dim EDSFileNames As New Field
-Dim CLFileNames As New Field
-Dim CLKilovolts As New Field
-
-Dim StdKratios As TableDef              ' measured k-ratios
-
-Dim StdKRatiosTakeoffs As New Field
-Dim StdKRatiosKilovolts As New Field
-Dim StdKRatiosElements As New Field
-Dim StdKRatiosXrays As New Field
-Dim StdKRatiosKRatios As New Field
-Dim StdKRatiosStdAssigns As New Field
-Dim StdKRatiosFileName As New Field
-
-Dim StdMaterialTypes As New Field
-
-Dim StdFormulaFlags As New Field
-Dim StdFormulaRatios As New Field
-Dim StdFormulaElements As New Field
-
-' Check for valid file name
-If Trim$(tfilename$) = vbNullString Then
-msg$ = "Standard data file name is blank"
-MsgBox msg$, vbOKOnly + vbExclamation, "StandardUpdateMDBFile"
-ierror = True
-Exit Sub
-End If
-
-' Check for standard database file
-If Dir$(tfilename$) = vbNullString Then
-msg$ = "Standard database " & tfilename$ & " was not found. Please re-start the program to re-create a new Standard database"
-MsgBox msg$, vbOKOnly + vbExclamation, "StandardUpdateMDBFile"
-ierror = True
-Exit Sub
-End If
-
-' Get version number
-versionnumber! = FileInfoGetVersion!(tfilename$, "STANDARD")
-If ierror Then Exit Sub
-
-' If standard database version number is the same or higher than program version then just exit (no update needed)
-If versionnumber! >= ProgramVersionNumber! Then Exit Sub
-
-' Open the database
-Screen.MousePointer = vbHourglass
-Set StDb = OpenDatabase(tfilename$, StandardDatabaseExclusiveAccess%, False)
-
-Call TransactionBegin("StandardUpdateMDBFile", tfilename$)
-If ierror Then Exit Sub
-
-' Flag file as not updated
-updated = False
-
-' Add standard density fields and records
-If versionnumber! < 8.63 Then
-
-' Add density field to Standard table
-StdDensities.Name = "Densities"
-StdDensities.Type = dbSingle
-StDb.TableDefs("Standard").Fields.Append StdDensities
-
-' Open standard table in standard database
-Set StRs = StDb.OpenRecordset("Standard", dbOpenTable)
-
-' Add default density fields to all records
-Do Until StRs.EOF
-StRs.Edit
-StRs("Densities") = 5#      ' use this for now as default
-StRs.Update
-StRs.MoveNext
-Loop
-
-StRs.Close
-updated = True
-End If
-
-' Add EDS and CL spectra fields and records
-If versionnumber! < 10.93 Then
-
-' Specify the standard database table "EDSSpectra" EDS spectra table
-Set EDSSpectra = StDb.CreateTableDef("NewTableDef")
-EDSSpectra.Name = "EDSSpectra"
-
-With EDSSpectra
-.Fields.Append .CreateField("EDSSpectraToNumber", dbInteger) ' points back to Standard table/Numbers field
-.Fields.Append .CreateField("EDSSpectraNumber", dbInteger) ' for multiple spectra per standard
-.Fields.Append .CreateField("EDSSpectraChannelOrder", dbInteger) ' channel load order
-.Fields.Append .CreateField("EDSSpectraIntensity", dbLong)         ' count data
-End With
-
-EDSSpectraIndex.Name = "EDS Spectra Numbers"
-EDSSpectraIndex.Fields = "EDSSpectraToNumber" ' index to pointer to standard numbers
-EDSSpectraIndex.Primary = False
-EDSSpectra.Indexes.Append EDSSpectraIndex
-
-StDb.TableDefs.Append EDSSpectra
-
-' Create EDS parameters table for each data line
-Set EDSParameters = StDb.CreateTableDef("NewTableDef")
-EDSParameters.Name = "EDSParameters"
-
-With EDSParameters
-.Fields.Append .CreateField("EDSParametersToNumber", dbInteger) ' points back to Standard table/Numbers field
-.Fields.Append .CreateField("EDSParametersNumber", dbInteger) ' for multiple spectral parameters per standard
-.Fields.Append .CreateField("EDSParametersNumberofChannels", dbInteger)
-
-.Fields.Append .CreateField("EDSParametersElapsedTime", dbSingle)
-.Fields.Append .CreateField("EDSParametersDeadTime", dbSingle)
-.Fields.Append .CreateField("EDSParametersLiveTime", dbSingle)
-
-.Fields.Append .CreateField("EDSParametersEVPerChannel", dbSingle)
-.Fields.Append .CreateField("EDSParametersStartEnergy", dbSingle)
-.Fields.Append .CreateField("EDSParametersEndEnergy", dbSingle)
-.Fields.Append .CreateField("EDSParametersTakeOff", dbSingle)
-.Fields.Append .CreateField("EDSParametersAcceleratingVoltage", dbSingle)           ' in keV
-End With
-
-EDSParametersIndex.Name = "EDS Parameters Numbers"
-EDSParametersIndex.Fields = "EDSParametersToNumber" ' index to pointer to sample rows
-EDSParametersIndex.Primary = False
-EDSParameters.Indexes.Append EDSParametersIndex
-
-StDb.TableDefs.Append EDSParameters
-
-' Specify the probe database table "CLSpectra" CL spectra table
-Set CLSpectra = StDb.CreateTableDef("NewTableDef")
-CLSpectra.Name = "CLSpectra"
-
-With CLSpectra
-.Fields.Append .CreateField("CLSpectraToNumber", dbInteger) ' points back to Standard table/Numbers field
-.Fields.Append .CreateField("CLSpectraNumber", dbInteger) ' for multiple CL spectra per standard
-.Fields.Append .CreateField("CLSpectraChannelOrder", dbInteger) ' CL spectra channel load order
-.Fields.Append .CreateField("CLSpectraIntensity", dbLong)         ' CL intensity count data
-End With
-
-CLSpectraIndex.Name = "CL Spectra Numbers"
-CLSpectraIndex.Fields = "CLSpectraToNumber" ' index to pointer to standard number
-CLSpectraIndex.Primary = False
-CLSpectra.Indexes.Append CLSpectraIndex
-
-StDb.TableDefs.Append CLSpectra
-
-' Create CL parameters table for each data line
-Set CLParameters = StDb.CreateTableDef("NewTableDef")
-CLParameters.Name = "CLParameters"
-
-With CLParameters
-.Fields.Append .CreateField("CLParametersToNumber", dbInteger) ' points back to Standard table/Numbers field
-.Fields.Append .CreateField("CLParametersNumber", dbInteger) ' for multiple CL spectral parameters per standard
-.Fields.Append .CreateField("CLParametersCountTime", dbSingle)
-.Fields.Append .CreateField("CLParametersNumberofChannels", dbInteger)
-.Fields.Append .CreateField("CLParametersStartEnergy", dbSingle)
-.Fields.Append .CreateField("CLParametersEndEnergy", dbSingle)
-End With
-
-CLParametersIndex.Name = "CL Parameters Numbers"
-CLParametersIndex.Fields = "CLParametersToNumber" ' index to pointer to sample rows
-CLParametersIndex.Primary = False
-CLParameters.Indexes.Append CLParametersIndex
-
-StDb.TableDefs.Append CLParameters
-
-updated = True
-End If
-
-' Add additional EDS and CL spectra fields and records
-If versionnumber! < 10.94 Then
-
-' Create EDS parameters table
-EDSFileNames.Name = "EDSParametersFileName"
-EDSFileNames.Type = dbText
-EDSFileNames.Size = DbTextFilenameLength%
-EDSFileNames.AllowZeroLength = False
-
-StDb.TableDefs("EDSParameters").Fields.Append EDSFileNames
-
-' Add new fields to CL parameters table
-CLFileNames.Name = "CLParametersFileName"
-CLFileNames.Type = dbText
-CLFileNames.Size = DbTextFilenameLength%
-CLFileNames.AllowZeroLength = False
-
-StDb.TableDefs("CLParameters").Fields.Append CLFileNames
-
-CLKilovolts.Name = "CLParametersKilovolts"
-CLKilovolts.Type = dbSingle
-
-StDb.TableDefs("CLParameters").Fields.Append CLKilovolts
-
-updated = True
-End If
-
-' Create StdKratios table
-If versionnumber! < 11.06 Then
-
-Set StdKratios = StDb.CreateTableDef("NewTableDef")
-StdKratios.Name = "StdKratios"
-
-With StdKratios
-.Fields.Append .CreateField("StdKRatiosToNumber", dbInteger)        ' points back to Standard table/Numbers field
-.Fields.Append .CreateField("StdKRatiosNumber", dbLong)             ' for k-ratio import set number (see StdKRatiosFileName field)
-
-.Fields.Append .CreateField("StdKRatiosTakeOffs", dbSingle)
-.Fields.Append .CreateField("StdKRatiosKilovolts", dbSingle)
-.Fields.Append .CreateField("StdKRatiosElements", dbText, DbTextElementStringLength%)
-.Fields.Append .CreateField("StdKRatiosXrays", dbText, DbTextXrayStringLength%)
-.Fields.Append .CreateField("StdKRatiosKRatios", dbSingle)
-.Fields.Append .CreateField("StdKRatiosStdAssigns", dbInteger)
-End With
-
-StDb.TableDefs.Append StdKratios
-
-updated = True
-End If
-
-' Add k-ratio file name to Kratio table
-If versionnumber! < 11.07 Then
-StdKRatiosFileName.Name = "StdKRatiosFileName"
-StdKRatiosFileName.Type = dbText
-StdKRatiosFileName.Size = DbTextFilenameLengthNew%
-StDb.TableDefs("StdKratios").Fields.Append StdKRatiosFileName
-
-updated = True
-End If
-
-' Add material type to standard table
-If versionnumber! < 11.89 Then
-StdMaterialTypes.Name = "MaterialTypes"
-StdMaterialTypes.Type = dbText
-StdMaterialTypes.Size = DbTextNameLength%
-StdMaterialTypes.AllowZeroLength = True
-StDb.TableDefs("Standard").Fields.Append StdMaterialTypes
-
-updated = True
-End If
-
-' Add formula parameters to standard table
-If versionnumber! < 11.92 Then
-StdFormulaFlags.Name = "FormulaFlags"
-StdFormulaFlags.Type = dbBoolean
-StDb.TableDefs("Standard").Fields.Append StdFormulaFlags
-
-StdFormulaRatios.Name = "FormulaRatios"
-StdFormulaRatios.Type = dbSingle
-StDb.TableDefs("Standard").Fields.Append StdFormulaRatios
-
-StdFormulaElements.Name = "FormulaElements"
-StdFormulaElements.Type = dbText
-StdFormulaElements.Size = DbTextElementStringLength%
-StdFormulaElements.AllowZeroLength = True
-StDb.TableDefs("Standard").Fields.Append StdFormulaElements
-
-' Open standard table in standard database
-Set StRs = StDb.OpenRecordset("Standard", dbOpenTable)
-
-' Add default formula ratio fields to all records
-Do Until StRs.EOF
-StRs.Edit
-StRs("FormulaRatios") = 0#      ' use this for now as default
-StRs.Update
-StRs.MoveNext
-Loop
-
-updated = True
-End If
-
-' Add new fields and records based on "versionnumber"
-
-
-
-
-' Open "File" table and update data file version number
-If updated Then
-
-Set StRs = StDb.OpenRecordset("File", dbOpenTable)
-StRs.Edit
-StRs("Version") = ProgramVersionNumber!
-StRs.Update
-StRs.Close
-
-Call IOWriteLog(tfilename$ & " was automatically updated for new database fields")
-End If
-
-StDb.Close
-
-Call TransactionCommit("StandardUpdateMDBFile", tfilename$)
-If ierror Then Exit Sub
-
-Screen.MousePointer = vbDefault
-Exit Sub
-
-' Errors
-StandardUpdateMDBFileError:
-Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "StandardUpdateMDBFile"
-Call TransactionRollback("StandardUpdateMDBFile", tfilename$)
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub StandardTypeStandard2(stdnum As Integer)
 ' Simple type standard, no calculations
 
@@ -1336,4 +1011,355 @@ Exit Sub
 
 End Sub
 
+Sub StandardUpdateMDBFile(tfilename As String)
+' Routine to update the current standard MDB file automatically for new fields
+
+ierror = False
+On Error GoTo StandardUpdateMDBFileError
+
+Dim StDb As Database
+Dim StRs As Recordset
+
+Dim versionnumber As Single
+Dim updated As Integer
+Dim SQLQ As String
+
+Dim StdDensities As New Field
+
+Dim EDSSpectra As TableDef              ' EDS spectra
+Dim EDSSpectraIndex As New Index        ' EDS spectra index (to sample row numbers)
+Dim EDSParameters As TableDef           ' EDS parameters
+Dim EDSParametersIndex As New Index     ' EDS parameters index (to sample row numbers)
+
+Dim CLSpectra As TableDef               ' CL spectra
+Dim CLSpectraIndex As New Index         ' CL spectra index (to sample row numbers)
+Dim CLParameters As TableDef            ' CL parameters
+Dim CLParametersIndex As New Index      ' CL parameters index (to sample row numbers)
+
+Dim EDSFileNames As New Field
+Dim CLFileNames As New Field
+Dim CLKilovolts As New Field
+
+Dim StdKratios As TableDef              ' measured k-ratios
+
+Dim StdKRatiosTakeoffs As New Field
+Dim StdKRatiosKilovolts As New Field
+Dim StdKRatiosElements As New Field
+Dim StdKRatiosXrays As New Field
+Dim StdKRatiosKRatios As New Field
+Dim StdKRatiosStdAssigns As New Field
+Dim StdKRatiosFileName As New Field
+
+Dim StdMaterialTypes As New Field
+
+Dim StdFormulaFlags As New Field
+Dim StdFormulaRatios As New Field
+Dim StdFormulaElements As New Field
+
+Dim CLSpectraWavelengths As New Field
+
+' Check for valid file name
+If Trim$(tfilename$) = vbNullString Then
+msg$ = "Standard data file name is blank"
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardUpdateMDBFile"
+ierror = True
+Exit Sub
+End If
+
+' Check for standard database file
+If Dir$(tfilename$) = vbNullString Then
+msg$ = "Standard database " & tfilename$ & " was not found. Please re-start the program to re-create a new Standard database"
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardUpdateMDBFile"
+ierror = True
+Exit Sub
+End If
+
+' Get version number
+versionnumber! = FileInfoGetVersion!(tfilename$, "STANDARD")
+If ierror Then Exit Sub
+
+' If standard database version number is the same or higher than program version then just exit (no update needed)
+If versionnumber! >= ProgramVersionNumber! Then Exit Sub
+
+' Open the database
+Screen.MousePointer = vbHourglass
+Set StDb = OpenDatabase(tfilename$, StandardDatabaseExclusiveAccess%, False)
+
+Call TransactionBegin("StandardUpdateMDBFile", tfilename$)
+If ierror Then Exit Sub
+
+' Flag file as not updated
+updated = False
+
+' Add standard density fields and records
+If versionnumber! < 8.63 Then
+
+' Add density field to Standard table
+StdDensities.Name = "Densities"
+StdDensities.Type = dbSingle
+StDb.TableDefs("Standard").Fields.Append StdDensities
+
+' Open standard table in standard database
+Set StRs = StDb.OpenRecordset("Standard", dbOpenTable)
+
+' Add default density fields to all records
+Do Until StRs.EOF
+StRs.Edit
+StRs("Densities") = 5#      ' use this for now as default
+StRs.Update
+StRs.MoveNext
+Loop
+
+StRs.Close
+updated = True
+End If
+
+' Add EDS and CL spectra fields and records
+If versionnumber! < 10.93 Then
+
+' Specify the standard database table "EDSSpectra" EDS spectra table
+Set EDSSpectra = StDb.CreateTableDef("NewTableDef")
+EDSSpectra.Name = "EDSSpectra"
+
+With EDSSpectra
+.Fields.Append .CreateField("EDSSpectraToNumber", dbInteger)            ' points back to Standard table/Numbers field
+.Fields.Append .CreateField("EDSSpectraNumber", dbInteger)              ' for multiple spectra per standard
+.Fields.Append .CreateField("EDSSpectraChannelOrder", dbInteger)        ' channel load order
+.Fields.Append .CreateField("EDSSpectraIntensity", dbLong)              ' count data
+End With
+
+EDSSpectraIndex.Name = "EDS Spectra Numbers"
+EDSSpectraIndex.Fields = "EDSSpectraToNumber"                           ' index to pointer to standard numbers
+EDSSpectraIndex.Primary = False
+EDSSpectra.Indexes.Append EDSSpectraIndex
+
+StDb.TableDefs.Append EDSSpectra
+
+' Create EDS parameters table for each data line
+Set EDSParameters = StDb.CreateTableDef("NewTableDef")
+EDSParameters.Name = "EDSParameters"
+
+With EDSParameters
+.Fields.Append .CreateField("EDSParametersToNumber", dbInteger)         ' points back to Standard table/Numbers field
+.Fields.Append .CreateField("EDSParametersNumber", dbInteger)           ' for multiple spectral parameters per standard
+.Fields.Append .CreateField("EDSParametersNumberofChannels", dbInteger)
+
+.Fields.Append .CreateField("EDSParametersElapsedTime", dbSingle)
+.Fields.Append .CreateField("EDSParametersDeadTime", dbSingle)
+.Fields.Append .CreateField("EDSParametersLiveTime", dbSingle)
+
+.Fields.Append .CreateField("EDSParametersEVPerChannel", dbSingle)
+.Fields.Append .CreateField("EDSParametersStartEnergy", dbSingle)
+.Fields.Append .CreateField("EDSParametersEndEnergy", dbSingle)
+.Fields.Append .CreateField("EDSParametersTakeOff", dbSingle)
+.Fields.Append .CreateField("EDSParametersAcceleratingVoltage", dbSingle)           ' in keV
+End With
+
+EDSParametersIndex.Name = "EDS Parameters Numbers"
+EDSParametersIndex.Fields = "EDSParametersToNumber"                     ' index to pointer to sample rows
+EDSParametersIndex.Primary = False
+EDSParameters.Indexes.Append EDSParametersIndex
+
+StDb.TableDefs.Append EDSParameters
+
+' Specify the probe database table "CLSpectra" CL spectra table
+Set CLSpectra = StDb.CreateTableDef("NewTableDef")
+CLSpectra.Name = "CLSpectra"
+
+With CLSpectra
+.Fields.Append .CreateField("CLSpectraToNumber", dbInteger)         ' points back to Standard table/Numbers field
+.Fields.Append .CreateField("CLSpectraNumber", dbInteger)           ' for multiple CL spectra per standard
+.Fields.Append .CreateField("CLSpectraChannelOrder", dbInteger)     ' CL spectra channel load order
+.Fields.Append .CreateField("CLSpectraIntensity", dbLong)           ' CL intensity count data
+End With
+
+CLSpectraIndex.Name = "CL Spectra Numbers"
+CLSpectraIndex.Fields = "CLSpectraToNumber"                         ' index to pointer to standard number
+CLSpectraIndex.Primary = False
+CLSpectra.Indexes.Append CLSpectraIndex
+
+StDb.TableDefs.Append CLSpectra
+
+' Create CL parameters table for each data line
+Set CLParameters = StDb.CreateTableDef("NewTableDef")
+CLParameters.Name = "CLParameters"
+
+With CLParameters
+.Fields.Append .CreateField("CLParametersToNumber", dbInteger)      ' points back to Standard table/Numbers field
+.Fields.Append .CreateField("CLParametersNumber", dbInteger)        ' for multiple CL spectral parameters per standard
+.Fields.Append .CreateField("CLParametersCountTime", dbSingle)
+.Fields.Append .CreateField("CLParametersNumberofChannels", dbInteger)
+.Fields.Append .CreateField("CLParametersStartEnergy", dbSingle)
+.Fields.Append .CreateField("CLParametersEndEnergy", dbSingle)
+End With
+
+CLParametersIndex.Name = "CL Parameters Numbers"
+CLParametersIndex.Fields = "CLParametersToNumber" ' index to pointer to sample rows
+CLParametersIndex.Primary = False
+CLParameters.Indexes.Append CLParametersIndex
+
+StDb.TableDefs.Append CLParameters
+
+updated = True
+End If
+
+' Add additional EDS and CL spectra fields and records
+If versionnumber! < 10.94 Then
+
+' Create EDS parameters table
+EDSFileNames.Name = "EDSParametersFileName"
+EDSFileNames.Type = dbText
+EDSFileNames.Size = DbTextFilenameLength%
+EDSFileNames.AllowZeroLength = False
+
+StDb.TableDefs("EDSParameters").Fields.Append EDSFileNames
+
+' Add new fields to CL parameters table
+CLFileNames.Name = "CLParametersFileName"
+CLFileNames.Type = dbText
+CLFileNames.Size = DbTextFilenameLength%
+CLFileNames.AllowZeroLength = False
+
+StDb.TableDefs("CLParameters").Fields.Append CLFileNames
+
+CLKilovolts.Name = "CLParametersKilovolts"
+CLKilovolts.Type = dbSingle
+
+StDb.TableDefs("CLParameters").Fields.Append CLKilovolts
+
+updated = True
+End If
+
+' Create StdKratios table
+If versionnumber! < 11.06 Then
+
+Set StdKratios = StDb.CreateTableDef("NewTableDef")
+StdKratios.Name = "StdKratios"
+
+With StdKratios
+.Fields.Append .CreateField("StdKRatiosToNumber", dbInteger)        ' points back to Standard table/Numbers field
+.Fields.Append .CreateField("StdKRatiosNumber", dbLong)             ' for k-ratio import set number (see StdKRatiosFileName field)
+
+.Fields.Append .CreateField("StdKRatiosTakeOffs", dbSingle)
+.Fields.Append .CreateField("StdKRatiosKilovolts", dbSingle)
+.Fields.Append .CreateField("StdKRatiosElements", dbText, DbTextElementStringLength%)
+.Fields.Append .CreateField("StdKRatiosXrays", dbText, DbTextXrayStringLength%)
+.Fields.Append .CreateField("StdKRatiosKRatios", dbSingle)
+.Fields.Append .CreateField("StdKRatiosStdAssigns", dbInteger)
+End With
+
+StDb.TableDefs.Append StdKratios
+
+updated = True
+End If
+
+' Add k-ratio file name to Kratio table
+If versionnumber! < 11.07 Then
+StdKRatiosFileName.Name = "StdKRatiosFileName"
+StdKRatiosFileName.Type = dbText
+StdKRatiosFileName.Size = DbTextFilenameLengthNew%
+StDb.TableDefs("StdKratios").Fields.Append StdKRatiosFileName
+
+updated = True
+End If
+
+' Add material type to standard table
+If versionnumber! < 11.89 Then
+StdMaterialTypes.Name = "MaterialTypes"
+StdMaterialTypes.Type = dbText
+StdMaterialTypes.Size = DbTextNameLength%
+StdMaterialTypes.AllowZeroLength = True
+StDb.TableDefs("Standard").Fields.Append StdMaterialTypes
+
+updated = True
+End If
+
+' Add formula parameters to standard table
+If versionnumber! < 11.92 Then
+StdFormulaFlags.Name = "FormulaFlags"
+StdFormulaFlags.Type = dbBoolean
+StDb.TableDefs("Standard").Fields.Append StdFormulaFlags
+
+StdFormulaRatios.Name = "FormulaRatios"
+StdFormulaRatios.Type = dbSingle
+StDb.TableDefs("Standard").Fields.Append StdFormulaRatios
+
+StdFormulaElements.Name = "FormulaElements"
+StdFormulaElements.Type = dbText
+StdFormulaElements.Size = DbTextElementStringLength%
+StdFormulaElements.AllowZeroLength = True
+StDb.TableDefs("Standard").Fields.Append StdFormulaElements
+
+' Open standard table in standard database
+Set StRs = StDb.OpenRecordset("Standard", dbOpenTable)
+
+' Add default formula ratio fields to all records
+Do Until StRs.EOF
+StRs.Edit
+StRs("FormulaRatios") = 0#      ' use this for now as default
+StRs.Update
+StRs.MoveNext
+Loop
+StRs.Close
+
+updated = True
+End If
+
+' Add CL spectra wavelength (nanometers) field to CL Spectra table
+If versionnumber! < 12.3 Then
+CLSpectraWavelengths.Name = "CLSpectraNanometers"
+CLSpectraWavelengths.Type = dbSingle
+StDb.TableDefs("CLSpectra").Fields.Append CLSpectraWavelengths
+
+' Open standard table in standard database and check if any CL spectra are present and delete them (sorry!)
+Set StRs = StDb.OpenRecordset("CLSpectra", dbOpenTable)
+If Not StRs.EOF Then
+StRs.Close
+
+SQLQ$ = "DELETE from CLSpectra WHERE CLSpectra.CLSpectraToNumber > 0"
+StDb.Execute SQLQ$
+SQLQ$ = "DELETE from CLParameters WHERE CLParameters.CLParametersToNumber > 0"
+StDb.Execute SQLQ$
+
+Else
+StRs.Close
+End If
+
+updated = True
+End If
+
+' Add new fields and records based on "versionnumber"
+
+
+
+
+' Open "File" table and update data file version number
+If updated Then
+
+Set StRs = StDb.OpenRecordset("File", dbOpenTable)
+StRs.Edit
+StRs("Version") = ProgramVersionNumber!
+StRs.Update
+StRs.Close
+
+Call IOWriteLog(tfilename$ & " was automatically updated for new database fields")
+End If
+
+StDb.Close
+
+Call TransactionCommit("StandardUpdateMDBFile", tfilename$)
+If ierror Then Exit Sub
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+StandardUpdateMDBFileError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "StandardUpdateMDBFile"
+Call TransactionRollback("StandardUpdateMDBFile", tfilename$)
+ierror = True
+Exit Sub
+
+End Sub
 

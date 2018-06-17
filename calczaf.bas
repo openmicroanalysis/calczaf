@@ -330,6 +330,20 @@ Call ZAFCalculateRange(CalcZAFAnalysis, CalcZAFOldSample)
 If ierror Then Exit Sub
 End If
 
+' Plot phi-rho-z curves if specified
+If FormZAF.CheckPlotPhiRhoZCurves.Value Then
+If CorrectionFlag% = 0 And iabs% >= 7 Then
+FormPlotPhiRhoZ.Show vbModeless
+Call PlotPhiRhoZCurves(CalcZAFOldSample())
+If ierror Then Exit Sub
+
+Else
+Unload FormPlotPhiRhoZ
+Call MiscPlotInit(FormPlotPhiRhoZ.Pesgo1, True)
+If ierror Then Exit Sub
+End If
+End If
+
 Exit Sub
 
 ' Errors
@@ -1118,9 +1132,11 @@ Dim tmsg As String
 ' Load the frame caption
 tmsg$ = "Element List (click element row to edit),"
 tmsg$ = tmsg$ & " calculations based on "
-tmsg$ = tmsg$ & Str$(CalcZAFOldSample(1).takeoff!) & " degrees and "
-tmsg$ = tmsg$ & Str$(CalcZAFOldSample(1).kilovolts!) & " KeV"
-FormZAF.Frame1.Caption = tmsg$
+tmsg$ = tmsg$ & Str$(CalcZAFOldSample(1).takeoff!) & " degrees (TO)"
+If Not CalcZAFOldSample(1).CombinedConditionsFlag Then
+tmsg$ = tmsg$ & " and " & Str$(CalcZAFOldSample(1).kilovolts!) & " KeV"
+End If
+FormZAF.FrameElementList.Caption = tmsg$
 
 ' Blank the element grid
 FormZAF.GridElementList.Clear
@@ -4357,7 +4373,7 @@ CalcZAFOldSample(1).Name$ = SampleGetString2$(CalcZAFOldSample())
 Else
 CalcZAFOldSample(1).Type% = 2       ' unknown
 If CalcZAFSampleCount% = 0 Then CalcZAFSampleCount% = 1
-CalcZAFOldSample(1).Name$ = "Sample" & Str$(CalcZAFSampleCount%)
+CalcZAFOldSample(1).Name$ = CalcZAFOldSample(1).Name$ & ", sample" & Str$(CalcZAFSampleCount%)
 End If
 
 ' Add standard to run

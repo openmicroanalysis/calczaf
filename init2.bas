@@ -420,6 +420,7 @@ amsg$ = "Dimensioning CL sample arrays..."
 ' Allocated in DataCLSpectraGetData to avoid 64K limit
 'ReDim sample(1).CLSpectraIntensities(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Long
 'ReDim sample(1).CLSpectraDarkIntensities(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Long
+'ReDim sample(1).CLSpectraNanometers(1 To MAXROW%, 1 To MAXSPECTRA_CL%) As Long
 
 ReDim sample(1).CLSpectraNumberofChannels(1 To MAXROW%) As Integer
 ReDim sample(1).CLSpectraStartEnergy(1 To MAXROW%) As Single

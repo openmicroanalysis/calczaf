@@ -38,13 +38,11 @@ With pic2
    .Height = pic1.Height
 End With
 
-pic2.AutoRedraw = True
 rv& = BMPSendMessage(pic1.hWnd, WM_PAINT, pic2.hdc, 0)
 rv& = BMPSendMessage(pic1.hWnd, WM_PRINT, pic2.hdc, PRF_CHILDREN + PRF_CLIENT + PRF_OWNED)
 
 ' Make pic2's image permanent
 pic2.Picture = pic2.Image
-pic2.AutoRedraw = False
 Printer.Orientation = vbPRORLandscape
 Printer.PaintPicture pic2.Picture, xp! * TwipFactor&, yp! * TwipFactor&, pcWidth! * TwipFactor, pcHeight * TwipFactor&
 Printer.EndDoc

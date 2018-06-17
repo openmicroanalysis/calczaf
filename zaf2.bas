@@ -463,4 +463,372 @@ Exit Function
 
 End Function
 
+Sub ZAFCalculatePhiRhoZCurves(i As Integer, Alpha As Single, beta As Single, gamma0 As Single, chi As Single, phi_0_mix As Single, zaf As TypeZAF)
+' Generate phi(rho*z) curves for the passed element (both generated and emitted) for plot display (Bastin, Armstrong, Proza, etc)
+' Calculation code provided by Brian Joy (2018)
+'   i = element array index
+
+ierror = False
+On Error GoTo ZAFCalculatePhiRhoZCurvesError
+
+Const eps! = 0.00001          ' tolerance for Simpson's rule
+
+Dim n_rhoz As Integer
+Dim nemax As Long, n As Long, it As Long, k As Long
+Dim phi As Single, ost As Single, os As Single, rhoz As Single
+Dim a As Single, b As Single, phi1 As Single, phi2 As Single
+Dim sum As Single, tnm As Single, st As Single, ss As Single
+Dim step As Single, r_limit As Single, del As Single, i_g_mix As Single
+
+' Specify number of steps to calculate intensities
+n_rhoz% = 200
+
+' Dimension global arrays if first element
+If i% = 1 Then
+
+' Determine how many emitting elements there actually are
+n& = 0
+For k& = 1 To zaf.in1%
+If zaf.il%(k&) <= 12 Then n& = n& + 1
+Next k&
+If n& = 0 Then GoTo ZAFCalculatePhiRhoZCurvesNoElements
+
+ReDim PhiRhoZPlotX(1 To n&, 1 To n_rhoz% + 1) As Single       ' z depth
+ReDim PhiRhoZPlotY1(1 To n&, 1 To n_rhoz% + 1) As Single      ' generated intensities
+ReDim PhiRhoZPlotY2(1 To n&, 1 To n_rhoz% + 1) As Single      ' emitted intensities
+
+PhiRhoZPlotSets& = n&
+PhiRhoZPlotPoints& = n_rhoz% + 1
+End If
+
+' Calculate i_g_mix
+i_g_mix = (Sqr(PI!) / (2# * Alpha)) * (gamma0 - (gamma0 - phi_0_mix) * ZAFErrorFunction(beta / (2# * Alpha)))
+    
+If VerboseMode Then
+Call IOWriteLog(vbNullString)
+Call IOWriteLog("ZAFCalculatePhiRhoZCurves: Emitter = " & Symlo$(zaf.Z(i)) & " " & Xraylo$(zaf.il(i)))
+Call IOWriteLog("Armstrong/Love-Scott mixture parameters:")
+Call IOWriteLog("Alpha = " & Format$(Alpha!))
+Call IOWriteLog("Beta = " & Format$(beta!))
+Call IOWriteLog("Gamma0 = " & Format$(gamma0!))
+Call IOWriteLog("Alpha = " & Format$(Alpha!))
+Call IOWriteLog("Chi = " & Format$(chi!))
+Call IOWriteLog("phi_0_mix = " & Format$(phi_0_mix!))
+Call IOWriteLog("i_g_mix = " & Format$(i_g_mix!))
+Call IOWriteLog(vbNullString)
+End If
+
+    rhoz = 0#
+    
+    ' Find rho*z at which phi(rho*z) decreases to a small value and then set the rho*z limit according to this
+'    Do
+'    phi = gamma0 * Exp(-1# * Alpha ^ 2# * rhoz ^ 2#) * (1# - ((gamma0 - phi_0_mix) / gamma0) * Exp(-1# * beta * rhoz))
+'    If (phi < 0.01) Then Exit Do
+'    rhoz = rhoz + 0.00001                              ' [g/cm**2]
+'    Loop
+
+    ' Use Simpson's rule to find rhoz based on .999 of area under the curve
+    nemax = 20
+    
+    Do
+    a = 0#
+    b = rhoz
+    ost = -1E+30
+    os = -1E+30
+        For n = 1 To nemax
+            If n = 1 Then
+               phi1 = gamma0 * Exp(-1# * Alpha ^ 2 * a ^ 2) * (1# - ((gamma0 - phi_0_mix) / gamma0) * Exp(-1# * beta * a))
+               phi2 = gamma0 * Exp(-1# * Alpha ^ 2 * b ^ 2) * (1# - ((gamma0 - phi_0_mix) / gamma0) * Exp(-1# * beta * b))
+               st = 0.5 * (b - a) * (phi1 + phi2)
+            Else
+               it = 2 ^ (n - 2)
+               tnm = it
+               del = (b - a) / tnm
+               rhoz = a + 0.5 * del
+               sum = 0#
+               For k = 1 To it
+                  sum = sum + gamma0 * Exp(-1# * Alpha ^ 2 * rhoz ^ 2) * (1# - ((gamma0 - phi_0_mix) / gamma0) * Exp(-1# * beta * rhoz))
+                  rhoz = rhoz + del
+               Next k
+               st = (st + (b - a) * sum / tnm) / 2#
+            End If
+            
+            ss = (4# * st - ost) / 3#
+            'If VerboseMode Then Call IOWriteLog("n = " & Format$(n) & ", rhoz = " & Format$(rhoz) & ", ss = " & Format$(ss))
+            'If VerboseMode Then Call IOWriteLog("sum = " & Format$(sum))
+            If (Abs(ss - os) < eps * Abs(os)) Then Exit For
+            os = ss
+            ost = st
+         Next n
+         
+         If ss / i_g_mix > 0.999 Then Exit Do
+         rhoz = rhoz + 0.00001                        ' [g/cm**2]
+    Loop
+      
+    r_limit = rhoz
+    step = r_limit / n_rhoz                             ' n_rhoz is number of intensities to calculate
+    rhoz = 0#
+      
+    If VerboseMode Then
+    Call IOWriteLog("R_limit[mg/cm**2] = " & Format$(r_limit * 1000#))
+    Call IOWriteLog(vbNullString)
+    Call IOWriteLog("rho*z[mg/cm**2], phi(rho*z), phi(rho*z)*EXP(-chi*rhoz):")
+    End If
+      
+    For k = 1 To n_rhoz + 1
+        phi = gamma0 * Exp(-1# * Alpha ^ 2 * rhoz ^ 2) * (1# - ((gamma0 - phi_0_mix) / gamma0) * Exp(-1# * beta * rhoz))
+        If VerboseMode Then Call IOWriteLog("rhoz = " & MiscAutoFormat$(CSng(rhoz * 1000#)) & ", phi = " & MiscAutoFormat$(CSng(phi)) & ", phi' = " & MiscAutoFormat$(CSng(phi * Exp(-1 * chi * rhoz))))
+        rhoz = rhoz + step
+        
+        ' Load into global arrays for plotting
+        PhiRhoZPlotX(i%, k) = rhoz * 1000#
+        PhiRhoZPlotY1(i%, k) = phi
+        PhiRhoZPlotY2(i%, k) = phi * Exp(-1 * chi * rhoz)
+        
+    Next k
+    Call IOWriteLog(vbNullString)
+
+Exit Sub
+
+' Errors
+ZAFCalculatePhiRhoZCurvesError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFCalculatePhiRhoZCurves"
+ierror = True
+Exit Sub
+
+ZAFCalculatePhiRhoZCurvesNoElements:
+msg$ = "No analyzed elements for this sample"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFCalculatePhiRhoZCurves"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub ZAFCalculatePhiRhoZCurvesPAP(i As Integer, rm_mix As Double, rc_mix As Double, rx_mix As Double, a1 As Double, a2 As Double, b1 As Double, chi As Single, zaf As TypeZAF)
+' Generate phi(rho*z) curves for the passed element (both generated and emitted) for plot display (PAP only)
+' Calculation code provided by Brian Joy (2018)
+'   i = element array index
+
+ierror = False
+On Error GoTo ZAFCalculatePhiRhoZCurvesPAPError
+
+Dim n_rhoz As Integer
+Dim n As Long, k As Long
+Dim phi As Double, rhoz As Double
+Dim step As Double
+
+' Specify number of steps to calculate intensities
+n_rhoz% = 200
+
+' Dimension global arrays if first element
+If i% = 1 Then
+
+' Determine how many emitting elements there actually are
+n& = 0
+For k& = 1 To zaf.in1%
+If zaf.il%(k&) <= 12 Then n& = n& + 1
+Next k&
+If n& = 0 Then GoTo ZAFCalculatePhiRhoZCurvesPAPNoElements
+
+ReDim PhiRhoZPlotX(1 To n&, 1 To n_rhoz% + 1) As Single       ' z depth
+ReDim PhiRhoZPlotY1(1 To n&, 1 To n_rhoz% + 1) As Single      ' generated intensities
+ReDim PhiRhoZPlotY2(1 To n&, 1 To n_rhoz% + 1) As Single      ' emitted intensities
+
+PhiRhoZPlotSets& = n&
+PhiRhoZPlotPoints& = n_rhoz% + 1
+End If
+    
+If VerboseMode Then
+Call IOWriteLog(vbNullString)
+Call IOWriteLog("ZAFCalculatePhiRhoZCurvesPAP: Emitter = " & Symlo$(zaf.Z(i)) & " " & Xraylo$(zaf.il(i)))
+Call IOWriteLog("PAP mixture parameters:")
+Call IOWriteLog("Rm[mg/cm**2] = " & Format$(CSng(rm_mix# * 1000#)))
+Call IOWriteLog("Rc[mg/cm**2] = " & Format$(CSng(rc_mix# * 1000#)))
+Call IOWriteLog("Rx[mg/cm**2] = " & Format$(CSng(rx_mix# * 1000#)))
+Call IOWriteLog("A1 = " & Format$(CSng(a1#)))
+Call IOWriteLog("A2 = " & Format$(CSng(a2#)))
+Call IOWriteLog("phi(Rm) = " & Format$(CSng(b1#)))
+Call IOWriteLog("Chi = " & Format$(chi!))
+End If
+        
+If VerboseMode Then
+    Call IOWriteLog(vbNullString)
+    Call IOWriteLog("rho*z[mg/cm**2], phi(rho*z), phi(rho*z)*EXP(-chi*rhoz):")
+End If
+      
+    ' Generate phi(rho*z) curve
+    step = rx_mix / n_rhoz
+    rhoz = 0#
+      
+    For k = 1 To n_rhoz + 1
+         If (rhoz < rc_mix) Then
+            phi = a1 * (rhoz - rm_mix) ^ 2 + b1
+         Else
+            phi = a2 * (rhoz - rx_mix) ^ 2
+         End If
+        
+        If VerboseMode Then Call IOWriteLog("rhoz = " & MiscAutoFormat$(CSng(rhoz * 1000#)) & ", phi = " & MiscAutoFormat$(CSng(phi)) & ", phi' = " & MiscAutoFormat$(CSng(phi * Exp(-1 * chi * rhoz))))
+        rhoz = rhoz + step
+      
+        ' Load into global arrays for plotting
+        PhiRhoZPlotX(i%, k) = rhoz * 1000#
+        PhiRhoZPlotY1(i%, k) = phi
+        PhiRhoZPlotY2(i%, k) = phi * Exp(-1 * chi * rhoz)
+        
+    Next k
+    Call IOWriteLog(vbNullString)
+
+Exit Sub
+
+' Errors
+ZAFCalculatePhiRhoZCurvesPAPError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFCalculatePhiRhoZCurvesPAP"
+ierror = True
+Exit Sub
+
+ZAFCalculatePhiRhoZCurvesPAPNoElements:
+msg$ = "No analyzed elements for this sample"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFCalculatePhiRhoZCurvesPAP"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub ZAFCalculatePhiRhoZCurvesXPP(i As Integer, a As Double, b As Double, aa As Double, bb As Double, phi_0_mix As Double, FZ_mix As Double, chi As Single, zaf As TypeZAF)
+' Generate phi(rho*z) curves for the passed element (both generated and emitted) for plot display (XPP only)
+' Calculation code provided by Brian Joy (2018)
+'   i = element array index
+
+ierror = False
+On Error GoTo ZAFCalculatePhiRhoZCurvesXPPError
+
+Const eps! = 0.00001          ' tolerance for Simpson's rule
+
+Dim n_rhoz As Integer
+Dim n As Long, k As Long, nemax As Long, it As Long
+Dim aaa As Single, bbb As Single, ost As Single, os As Single, st As Single
+Dim phi As Single, phi1 As Single, phi2 As Single, rhoz As Double, tnm As Single
+Dim step As Single, del As Single, ssum As Single, ss As Single, r_limit As Single
+
+' Specify number of steps to calculate intensities
+n_rhoz% = 200
+
+' Dimension global arrays if first element
+If i% = 1 Then
+
+' Determine how many emitting elements there actually are
+n& = 0
+For k& = 1 To zaf.in1%
+If zaf.il%(k&) <= 12 Then n& = n& + 1
+Next k&
+If n& = 0 Then GoTo ZAFCalculatePhiRhoZCurvesXPPNoElements
+
+ReDim PhiRhoZPlotX(1 To n&, 1 To n_rhoz% + 1) As Single       ' z depth
+ReDim PhiRhoZPlotY1(1 To n&, 1 To n_rhoz% + 1) As Single      ' generated intensities
+ReDim PhiRhoZPlotY2(1 To n&, 1 To n_rhoz% + 1) As Single      ' emitted intensities
+
+PhiRhoZPlotSets& = n&
+PhiRhoZPlotPoints& = n_rhoz% + 1
+End If
+    
+If VerboseMode Then
+Call IOWriteLog(vbNullString)
+Call IOWriteLog("ZAFCalculatePhiRhoZCurvesXPP: Emitter = " & Symlo$(zaf.Z(i)) & " " & Xraylo$(zaf.il(i)))
+Call IOWriteLog("XPP mixture parameters:")
+Call IOWriteLog("A = " & Format$(CSng(a#)))
+Call IOWriteLog("B = " & Format$(CSng(b#)))
+Call IOWriteLog("AA = " & Format$(CSng(aa#)))
+Call IOWriteLog("BB = " & Format$(CSng(bb#)))
+Call IOWriteLog("Phi_0_mix = " & Format$(CSng(phi_0_mix#)))
+Call IOWriteLog("FZ_mix = " & Format$(CSng(FZ_mix#)))
+Call IOWriteLog("Chi = " & Format$(chi!))
+Call IOWriteLog(vbNullString)
+End If
+             
+      ' Find rho*z at which phi(rho*z) decreases to a small value and then set the rho*z limit according to this
+'      rhoz = 0#
+'      Do
+'      phi = a * Exp(-1# * aa * rhoz) + (b * rhoz + phi_0_mix - a) * Exp(-1# * bb * rhoz)
+'      If (phi < 0.01) Then Exit Do
+'      rhoz = rhoz + 0.00001                              ' [g/cm**2]
+'      Loop
+             
+      ' Use Simpson's rule to find rhoz based on .999 of area under the curve
+      rhoz = 0#
+      nemax = 20
+      Do
+         aaa = 0#
+         bbb = rhoz
+         ost = -1E+30
+         os = -1E+30
+         For n = 1 To nemax
+            If n = 1 Then
+               phi1 = a * Exp(-1# * aa * aaa) + (b * aaa + phi_0_mix - a) * Exp(-1# * bb * aaa)
+               phi2 = a * Exp(-1# * aa * bbb) + (b * bbb + phi_0_mix - a) * Exp(-1# * bb * bbb)
+               st = 0.5 * (bbb - aaa) * (phi1 + phi2)
+            Else
+               it = 2 ^ (n - 2)
+               tnm = it
+               del = (bbb - aaa) / tnm
+               rhoz = aaa + 0.5 * del
+               ssum = 0#
+               For k = 1 To it
+                  ssum = ssum + a * Exp(-1# * aa * rhoz) + (b * rhoz + phi_0_mix - a) * Exp(-1# * bb * rhoz)
+                  rhoz = rhoz + del
+               Next k&
+               st = (st + (bbb - aaa) * ssum / tnm) / 2#
+            End If
+            
+            ss = (4# * st - ost) / 3#
+            'If VerboseMode Then Call IOWriteLog("n = " & Format$(n) & ", rhoz = " & Format$(rhoz) & ", ss = " & Format$(ss))
+            'If VerboseMode Then Call IOWriteLog("ssum = " & Format$(ssum))
+            If (Abs(ss - os) < eps * Abs(os)) Then Exit For
+            os = ss
+            ost = st
+         Next n&
+         If (ss / FZ_mix > 0.999) Then Exit Do
+         rhoz = rhoz + 0.00001                        ' [g/cm**2]
+      Loop
+      
+    r_limit = rhoz
+
+    If VerboseMode Then
+    Call IOWriteLog("R_limit[mg/cm**2] = " & Format$(r_limit * 1000#))
+    Call IOWriteLog(vbNullString)
+    Call IOWriteLog("rho*z[mg/cm**2], phi(rho*z), phi(rho*z)*EXP(-chi*rhoz):")
+    End If
+
+    ' Generate phi(rho*z) curve
+    step = r_limit / n_rhoz
+    rhoz = 0#
+      
+    For k = 1 To n_rhoz + 1
+        phi = a * Exp(-1# * aa * rhoz) + (b * rhoz + phi_0_mix - a) * Exp(-1# * bb * rhoz)
+        If VerboseMode Then Call IOWriteLog("rhoz = " & MiscAutoFormat$(CSng(rhoz * 1000#)) & ", phi = " & MiscAutoFormat$(CSng(phi)) & ", phi' = " & MiscAutoFormat$(CSng(phi * Exp(-1 * chi * rhoz))))
+        rhoz = rhoz + step
+      
+        ' Load into global arrays for plotting
+        PhiRhoZPlotX(i%, k) = rhoz * 1000#
+        PhiRhoZPlotY1(i%, k) = phi
+        PhiRhoZPlotY2(i%, k) = phi * Exp(-1 * chi * rhoz)
+        
+    Next k
+    Call IOWriteLog(vbNullString)
+
+Exit Sub
+
+' Errors
+ZAFCalculatePhiRhoZCurvesXPPError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFCalculatePhiRhoZCurvesXPP"
+ierror = True
+Exit Sub
+
+ZAFCalculatePhiRhoZCurvesXPPNoElements:
+msg$ = "No analyzed elements for this sample"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFCalculatePhiRhoZCurvesXPP"
+ierror = True
+Exit Sub
+
+End Sub
+
 

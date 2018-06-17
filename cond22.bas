@@ -32,9 +32,14 @@ FormCOND2.ComboElementXraySpectrometerCrystal.AddItem msg$
 FormCOND2.ComboElementXraySpectrometerCrystal.ItemData(FormCOND2.ComboElementXraySpectrometerCrystal.NewIndex) = i%
 Next i%
 
+' Load element list for channel order operations
+Call Cond2LoadChannels
+If ierror Then Exit Sub
+
 ' Select first element
 If FormCOND2.ComboElementXraySpectrometerCrystal.ListCount > 0 Then
 FormCOND2.ComboElementXraySpectrometerCrystal.ListIndex = 0
+FormCOND2.ListElements.Selected(0) = True
 End If
 
 ' Realtime modifications
@@ -43,10 +48,6 @@ FormCOND2.TextKiloVolts.Enabled = True
 Else
 FormCOND2.TextKiloVolts.Enabled = False
 End If
-
-' Load element list for channel order operations
-Call Cond2LoadChannels
-If ierror Then Exit Sub
 
 Exit Sub
 
