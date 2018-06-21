@@ -726,7 +726,7 @@ If tWidth! = 0# Then Exit Sub
 radius! = tWidth! / 100#
 
 ' Erase the old circle
-If oldx! <> formx! Or oldy! <> formy! Then
+If CLng(oldx!) <> CLng(formx!) Or CLng(oldy!) <> CLng(formy!) Then
 FormPICTURESNAP.Picture2.Refresh
 End If
 
@@ -749,7 +749,7 @@ If tWidth! <> 0# Then
 radius! = (tWidth! / 50#) ^ 0.8
 
 ' Erase the old circle
-If oldx! <> formx! Or oldy! <> formy! Then
+If CLng(oldx!) <> CLng(formx!) Or CLng(oldy!) <> CLng(formy!) Then
 FormPICTURESNAP3.Image1.Refresh
 End If
 
@@ -853,7 +853,7 @@ If Not PictureSnapCalibrated Then Exit Sub
 If FormPICTURESNAP.Picture2.Picture.Type <> 1 Then Exit Sub     ' not bitmap
 
 ' Erase the old scale bar
-If oldx! <> FormPICTURESNAP.ScaleWidth Or oldy! <> FormPICTURESNAP.ScaleHeight Then
+If CLng(oldx!) <> CLng(FormPICTURESNAP.ScaleWidth) Or CLng(oldy!) <> CLng(FormPICTURESNAP.ScaleHeight) Then
 FormPICTURESNAP.Picture2.Refresh
 oldx! = FormPICTURESNAP.ScaleWidth
 oldy! = FormPICTURESNAP.ScaleHeight
@@ -1035,7 +1035,7 @@ Call PictureSnapConvert(Int(2), formx2!, formy2!, formz2!, xdata2!, ydata2!, zda
 If ierror Then Exit Sub
 End If
 
-If oldx! <> formx1! Or oldy! <> formy1! Then
+If CLng(oldx!) <> CLng(formx1!) Or CLng(oldy!) <> CLng(formy1!) Then
 FormPICTURESNAP.Picture2.Refresh
 End If
 
@@ -1134,6 +1134,7 @@ On Error GoTo PictureSnapCalibrateCheckError
 
 Const tolerance! = 0.1        ' 10 %
 
+Dim tmsg As String
 Dim tdist As Single, xdist As Single, ydist As Single
 
 Dim sx1 As Single, sy1 As Single, sz1 As Single
@@ -1156,6 +1157,10 @@ If ierror Then Exit Sub
 ' Calculate x and y distances for given screen distance
 xdist! = Abs(sx2! - sx1!)
 ydist! = Abs(sy2! - sy1!)
+
+' Update calibration window for accuracy
+tmsg$ = "X=" & Format$(xdist!) & vbCrLf & "Y=" & Format$(ydist!) & vbCrLf & "(X-Y)/X=" & MiscAutoFormat4$(Abs((xdist! - ydist!) / xdist!) * 100#) & "%"
+FormPICTURESNAP2.LabelCalibrationAccuracy.Caption = tmsg$
 
 ' Warn user if not equal in X and Y within tolerance
 If Not MiscDifferenceIsSmall(xdist!, ydist!, tolerance!) Then

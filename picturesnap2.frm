@@ -756,15 +756,42 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   1815
       End
    End
+   Begin VB.Label LabelCalibrationAccuracy 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000000FF&
+      Height          =   855
+      Left            =   3360
+      TabIndex        =   56
+      Top             =   6360
+      Width           =   1935
+   End
    Begin VB.Label LabelCalibration 
       Alignment       =   2  'Center
       Caption         =   "Image Is Calibrated!"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       ForeColor       =   &H000000FF&
       Height          =   255
-      Left            =   3480
+      Left            =   3360
       TabIndex        =   52
       Top             =   4320
-      Width           =   1815
+      Width           =   2055
    End
    Begin VB.Label Label15 
       Alignment       =   2  'Center
@@ -777,11 +804,11 @@ Begin VB.Form FormPICTURESNAP2
    End
    Begin VB.Label Label10 
       Alignment       =   2  'Center
-      Caption         =   "X and Y Pixel Coordinates are actually given in ""Twip"" units! (1440 twips per logical inch)"
-      Height          =   855
+      Caption         =   "X and Y pixel coordinates given in ""twip"" units!"
+      Height          =   615
       Left            =   3360
       TabIndex        =   29
-      Top             =   6480
+      Top             =   7320
       Width           =   1935
    End
    Begin VB.Label Label9 

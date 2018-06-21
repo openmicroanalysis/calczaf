@@ -5,13 +5,13 @@ Begin VB.Form FormPICTURESNAP2
    ClientHeight    =   11790
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   5415
+   ClientWidth     =   5655
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   11790
-   ScaleWidth      =   5415
+   ScaleWidth      =   5655
    StartUpPosition =   3  'Windows Default
    Begin VB.Frame Frame4 
       Caption         =   "Light Mode"
@@ -26,9 +26,9 @@ Begin VB.Form FormPICTURESNAP2
       EndProperty
       ForeColor       =   &H00FF0000&
       Height          =   855
-      Left            =   3360
+      Left            =   3480
       TabIndex        =   54
-      Top             =   5400
+      Top             =   5280
       Width           =   1935
       Begin VB.CommandButton CommandLightModeReflected 
          Caption         =   "Refl"
@@ -111,11 +111,11 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3360
+      Left            =   3480
       Style           =   1  'Graphical
       TabIndex        =   36
       ToolTipText     =   "Click this button to have the program display the location of the calibration points on the calibrated image"
-      Top             =   4680
+      Top             =   4560
       Width           =   1935
    End
    Begin VB.Frame Frame3 
@@ -316,7 +316,7 @@ Begin VB.Form FormPICTURESNAP2
       EndProperty
       Height          =   255
       Index           =   1
-      Left            =   3480
+      Left            =   3600
       TabIndex        =   29
       ToolTipText     =   $"PictureSnap2a.frx":0000
       Top             =   1080
@@ -335,7 +335,7 @@ Begin VB.Form FormPICTURESNAP2
       EndProperty
       Height          =   255
       Index           =   0
-      Left            =   3480
+      Left            =   3600
       TabIndex        =   28
       ToolTipText     =   "Use this option for calibrating rectangular samples (e.g., petrographic thin sections) that are orthogonal to the stage"
       Top             =   840
@@ -354,12 +354,12 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   615
-      Left            =   3360
+      Left            =   3480
       Style           =   1  'Graphical
       TabIndex        =   25
       TabStop         =   0   'False
       ToolTipText     =   "Click this button when both calibration coordinates in pixel and stage coordinates have been entered to calibrate the picture"
-      Top             =   3600
+      Top             =   3480
       Width           =   1935
    End
    Begin VB.Frame Frame2 
@@ -560,7 +560,7 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3360
+      Left            =   3480
       Style           =   1  'Graphical
       TabIndex        =   13
       TabStop         =   0   'False
@@ -752,6 +752,24 @@ Begin VB.Form FormPICTURESNAP2
          Width           =   1815
       End
    End
+   Begin VB.Label LabelCalibrationAccuracy 
+      Alignment       =   2  'Center
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000000FF&
+      Height          =   855
+      Left            =   3480
+      TabIndex        =   59
+      Top             =   6240
+      Width           =   1935
+   End
    Begin VB.Label LabelCalibration 
       Alignment       =   2  'Center
       Caption         =   "Image Is Calibrated!"
@@ -768,35 +786,35 @@ Begin VB.Form FormPICTURESNAP2
       Height          =   255
       Left            =   3360
       TabIndex        =   41
-      Top             =   4320
-      Width           =   1935
+      Top             =   4200
+      Width           =   2175
    End
    Begin VB.Label Label15 
       Alignment       =   2  'Center
       Caption         =   "When using a three point calibration, the program automatically includes a Z correction for stage sample tilt!"
-      Height          =   1095
+      Height          =   975
       Left            =   3360
       TabIndex        =   37
       Top             =   8160
-      Width           =   1935
+      Width           =   2175
    End
    Begin VB.Label Label10 
       Alignment       =   2  'Center
-      Caption         =   "X and Y Pixel Coordinates are actually given in ""Twip"" units! (1440 twips per logical inch)"
-      Height          =   855
+      Caption         =   "X and Y pixel coordinates given in ""twip"" units! (1440 twips per logical inch)"
+      Height          =   735
       Left            =   3360
       TabIndex        =   27
-      Top             =   6480
-      Width           =   1935
+      Top             =   7080
+      Width           =   2175
    End
    Begin VB.Label Label9 
       Alignment       =   2  'Center
       Caption         =   $"PictureSnap2a.frx":008C
-      Height          =   2055
+      Height          =   1935
       Left            =   3360
       TabIndex        =   26
       Top             =   1440
-      Width           =   1935
+      Width           =   2175
    End
 End
 Attribute VB_Name = "FormPICTURESNAP2"
