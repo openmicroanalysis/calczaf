@@ -199,6 +199,7 @@ If PictureSnapCalibrated Then
 FormPICTURESNAP2.LabelCalibration.Caption = "Image Is Calibrated"
 Else
 FormPICTURESNAP2.LabelCalibration.Caption = "Image Is NOT Calibrated"
+FormPICTURESNAP2.LabelCalibrationAccuracy.Caption = vbNullString
 End If
 
 ' Disable stage buttons if not realtime mode
@@ -332,6 +333,7 @@ If PictureSnapCalibrated Then
 FormPICTURESNAP2.LabelCalibration.Caption = "Image Is Calibrated"
 Else
 FormPICTURESNAP2.LabelCalibration.Caption = "Image Is NOT Calibrated"
+FormPICTURESNAP2.LabelCalibrationAccuracy.Caption = vbNullString
 End If
 
 ' Save calibration
@@ -1165,7 +1167,8 @@ FormPICTURESNAP2.LabelCalibrationAccuracy.Caption = tmsg$
 ' Warn user if not equal in X and Y within tolerance
 If Not MiscDifferenceIsSmall(xdist!, ydist!, tolerance!) Then
 msg$ = "The stage calibration will be saved, but the nominal X (" & Format$(xdist!) & ") and nominal Y (" & Format$(ydist!) & ") calibration distances are different by more than " & Format$(CInt(tolerance! * 100#)) & "%." & vbCrLf & vbCrLf
-msg$ = msg$ & "Please check your stage calibration and image pixel positions and make sure that they are correctly located and specified!"
+msg$ = msg$ & "Please check your stage calibration and image pixel positions and make sure that they are correctly located and specified! "
+msg$ = msg$ & "Please note that this accuracy error can also occur if the sample itself is significantly rotated with respect to the loaded image."
 MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapCalibrateCheck"
 End If
 

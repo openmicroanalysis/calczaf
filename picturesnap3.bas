@@ -1274,6 +1274,7 @@ If PictureSnapCalibrated Then
 FormPICTURESNAP2.LabelCalibration.Caption = "Image Is Calibrated"
 Else
 FormPICTURESNAP2.LabelCalibration.Caption = "Image Is NOT Calibrated"
+FormPICTURESNAP2.LabelCalibrationAccuracy.Caption = vbNullString
 End If
 
 ' If the calibration mode changed from two to three points, (re)load default values from ACQ file

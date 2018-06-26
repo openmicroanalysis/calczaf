@@ -5,14 +5,43 @@ Begin VB.Form FormPICTURESNAP2
    ClientHeight    =   12075
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   5415
+   ClientWidth     =   6120
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   12075
-   ScaleWidth      =   5415
+   ScaleWidth      =   6120
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton CommandDisplayCalibrationPoints 
+      BackColor       =   &H00C0FFFF&
+      Caption         =   "Display Calibration Points"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   3480
+      Style           =   1  'Graphical
+      TabIndex        =   39
+      ToolTipText     =   "Click this button to have the program display the location of the calibration points on the calibrated image"
+      Top             =   5880
+      Width           =   2415
+   End
+   Begin VB.CommandButton CommandLoadACQCalibration 
+      Caption         =   "Load ACQ File for Calibration"
+      Height          =   495
+      Left            =   3480
+      TabIndex        =   57
+      ToolTipText     =   "Select an existing ACQ file to calibrate the currently loaded image"
+      Top             =   5400
+      Width           =   2415
+   End
    Begin VB.Frame Frame4 
       Caption         =   "Light Mode"
       BeginProperty Font 
@@ -26,14 +55,14 @@ Begin VB.Form FormPICTURESNAP2
       EndProperty
       ForeColor       =   &H00FF0000&
       Height          =   855
-      Left            =   3360
+      Left            =   3600
       TabIndex        =   47
-      Top             =   5400
-      Width           =   1935
+      Top             =   7080
+      Width           =   2175
       Begin VB.CommandButton CommandLightModeOff 
          Caption         =   "Off"
          Height          =   255
-         Left            =   960
+         Left            =   1200
          Style           =   1  'Graphical
          TabIndex        =   48
          ToolTipText     =   "Turn optical light off (reflected or transmitted)"
@@ -53,7 +82,7 @@ Begin VB.Form FormPICTURESNAP2
       Begin VB.CommandButton CommandLightModeTransmitted 
          Caption         =   "Tran"
          Height          =   255
-         Left            =   960
+         Left            =   1200
          Style           =   1  'Graphical
          TabIndex        =   50
          ToolTipText     =   "Select to switch optical mode to transmitted light"
@@ -70,26 +99,6 @@ Begin VB.Form FormPICTURESNAP2
          Top             =   240
          Width           =   735
       End
-   End
-   Begin VB.CommandButton CommandDisplayCalibrationPoints 
-      BackColor       =   &H00C0FFFF&
-      Caption         =   "Display Calibration Points"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   3480
-      Style           =   1  'Graphical
-      TabIndex        =   39
-      ToolTipText     =   "Click this button to have the program display the location of the calibration points on the calibrated image"
-      Top             =   4680
-      Width           =   1815
    End
    Begin VB.Frame Frame3 
       Caption         =   "Point #3 Calibration"
@@ -299,7 +308,7 @@ Begin VB.Form FormPICTURESNAP2
       EndProperty
       Height          =   255
       Index           =   1
-      Left            =   3480
+      Left            =   3960
       TabIndex        =   31
       ToolTipText     =   $"PictureSnap2.frx":0000
       Top             =   1080
@@ -318,7 +327,7 @@ Begin VB.Form FormPICTURESNAP2
       EndProperty
       Height          =   255
       Index           =   0
-      Left            =   3480
+      Left            =   3960
       TabIndex        =   30
       ToolTipText     =   "Use this option for calibrating rectangular samples (e.g., petrographic thin sections) that are orthogonal to the stage"
       Top             =   840
@@ -342,8 +351,8 @@ Begin VB.Form FormPICTURESNAP2
       TabIndex        =   27
       TabStop         =   0   'False
       ToolTipText     =   "Click this button when both calibration coordinates in pixel and stage coordinates have been entered to calibrate the picture"
-      Top             =   3600
-      Width           =   1815
+      Top             =   3120
+      Width           =   2415
    End
    Begin VB.Frame Frame2 
       Caption         =   "Point #2 Calibration"
@@ -554,7 +563,7 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3480
+      Left            =   3840
       Style           =   1  'Graphical
       TabIndex        =   13
       TabStop         =   0   'False
@@ -768,11 +777,11 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H000000FF&
-      Height          =   855
+      Height          =   735
       Left            =   3360
       TabIndex        =   56
-      Top             =   6360
-      Width           =   1935
+      Top             =   4560
+      Width           =   2655
    End
    Begin VB.Label LabelCalibration 
       Alignment       =   2  'Center
@@ -787,38 +796,38 @@ Begin VB.Form FormPICTURESNAP2
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H000000FF&
-      Height          =   255
-      Left            =   3360
+      Height          =   495
+      Left            =   3720
       TabIndex        =   52
-      Top             =   4320
+      Top             =   3960
       Width           =   2055
    End
    Begin VB.Label Label15 
       Alignment       =   2  'Center
       Caption         =   "When using a three point calibration, the program automatically includes a Z correction for stage sample tilt!"
-      Height          =   1095
+      Height          =   855
       Left            =   3360
       TabIndex        =   40
       Top             =   8400
-      Width           =   1935
+      Width           =   2655
    End
    Begin VB.Label Label10 
       Alignment       =   2  'Center
-      Caption         =   "X and Y pixel coordinates given in ""twip"" units!"
-      Height          =   615
+      Caption         =   "X and Y pixel coordinates given in ""twip"" units! (15 twips per pixel)"
+      Height          =   495
       Left            =   3360
       TabIndex        =   29
-      Top             =   7320
-      Width           =   1935
+      Top             =   6480
+      Width           =   2655
    End
    Begin VB.Label Label9 
       Alignment       =   2  'Center
       Caption         =   $"PictureSnap2.frx":008C
-      Height          =   2055
+      Height          =   1575
       Left            =   3360
       TabIndex        =   28
       Top             =   1440
-      Width           =   1935
+      Width           =   2655
    End
 End
 Attribute VB_Name = "FormPICTURESNAP2"
@@ -885,6 +894,12 @@ If Not DebugMode Then On Error Resume Next
 Call RealTimeSetLightMode(Int(1))
 FormPICTURESNAP2.CommandLightModeReflected.BackColor = vbButtonFace
 FormPICTURESNAP2.CommandLightModeTransmitted.BackColor = vbWhite
+End Sub
+
+Private Sub CommandLoadACQCalibration_Click()
+If Not DebugMode Then On Error Resume Next
+Call PictureSnapLoadACQ
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandMoveTo1_Click()

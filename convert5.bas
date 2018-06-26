@@ -344,8 +344,8 @@ For j% = 1 To MAXAMPHI%
 Next j%
 If CATF!(6) = 0# Then CATF!(6) = 0.0001
 
-' Compute mole fractions, molar ratios and pressure of crystallazation using
-'  Schmidt (1992) calibration of the Hammarstrom and Zen (1986) barometer
+' Compute mole fractions, molar ratios and pressure of crystallization using
+'  Mutch et al. (2016) calibration of the Hammarstrom and Zen (1986) barometer
 
 ' TETRAHEDRAL AL
       If CATF!(1) < 8 Then
@@ -445,8 +445,8 @@ If CATF!(6) = 0# Then CATF!(6) = 0.0001
       MGTOFE = CATF(6) / (CATF(6) + CATF(4) + CATF(5))
 
 ' Compute pressure, both with total Al (all Fe2+) and total Al (Fe2+ - Fe3+)
-PRESS2! = 5.03 * ANSFO!(3) - 3.92
-PRESS23! = 5.03 * CATF!(3) - 3.92
+PRESS2! = 0.5 + 0.331 * ANSFO!(3) + 0.995 * ANSFO!(3) ^ 2       ' changed to Mutch et al. (2016)
+PRESS23! = 0.5 + 0.331 * CATF!(3) + 0.995 * CATF!(3) ^ 2        ' changed to Mutch et al. (2016)
 If PRESS2! < 0# Or IFE = 1 Then PRESS2! = 0#
 If PRESS23! < 0# Then PRESS23! = 0#
 
@@ -484,7 +484,7 @@ Call IOWriteLog(a6x$ & "A-SITE=                   " & Format$(Format$(ASITE!, f8
 Call IOWriteLog(a6x$ & "ALVI+2TI+A-SITE+FE3+=     " & Format$(Format$(OC1!, f83$), a80$) & a4x$ & "ALVI+2TI+FE3+=     " & Format$(Format$(OC2!, f83$), a80$))
       
 Call IOWriteLog(vbNullString)
-Call IOWriteLog(a6x$ & "Schmidt (1992) Pressure (All FE2+): " & Format$(Format$(PRESS2!, f42$), a80$) & " KBar, " & a4x$ & "(FE2+ -FE3+): " & Format$(Format$(PRESS23!, f42$), a80$) & " KBar")
+Call IOWriteLog(a6x$ & "Mutch et al. (2016) Pressure (All FE2+): " & Format$(Format$(PRESS2!, f42$), a80$) & " KBar, " & a4x$ & "(FE2+ -FE3+): " & Format$(Format$(PRESS23!, f42$), a80$) & " KBar")
       
 ' Output to file (AMPHI.OUT)
 astring$ = vbCrLf & "Sample " & VbDquote$ & sample(1).number% & VbDquote$ & vbTab & VbDquote$ & sample(1).Name$ & VbDquote$

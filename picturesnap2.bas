@@ -1197,3 +1197,57 @@ Exit Sub
 
 End Sub
 
+Sub PictureSnapLoadACQ()
+' Load a calibration from another ACQ file
+
+ierror = False
+On Error GoTo PictureSnapLoadACQError
+
+Dim response As Integer
+Dim tfilename As String, tfilename2 As String
+
+' Ask user to confirm
+If PictureSnapCalibrated Then
+msg$ = "This currently loaded image is already calibrated.  Are you sure you want to load another ACQ file for the calibration of the currently loaded image?"
+response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton1, "PictureSnapLoadACQ")
+If response% = vbCancel Then Exit Sub
+
+Else
+msg$ = "Are you sure you want to load an ACQ file for the calibration of the currently loaded (uncalibrated) image?"
+response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton1, "PictureSnapLoadACQ")
+If response% = vbCancel Then Exit Sub
+End If
+
+' Browse for existing ACQ
+Call IOGetFileName(Int(2), "ACQ", tfilename$, FormPICTURESNAP2)
+If ierror Then Exit Sub
+
+' Now copy the file to the current image name
+tfilename2$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".acq"
+If tfilename$ = tfilename2$ Then GoTo PictureSnapLoadACQSameACQ
+FileCopy tfilename$, tfilename2$
+
+' Now load the calibration (new or again)
+Call PictureSnapLoadCalibration
+If ierror Then Exit Sub
+
+' Check for bad stage calibration
+Call PictureSnapCalibrateCheck
+If ierror Then Exit Sub
+
+Exit Sub
+
+' Errors
+PictureSnapLoadACQError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapFileLoadACQ"
+ierror = True
+Exit Sub
+
+PictureSnapLoadACQSameACQ:
+msg$ = "The specified ACQ file " & tfilename$ & " is the same as the current ACQ file. Please try again with a different ACQ file."
+MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapFileLoadACQ"
+ierror = True
+Exit Sub
+
+End Sub
+

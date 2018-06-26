@@ -534,6 +534,19 @@ Else
 FormMAIN.CMDialog1.DialogTitle = "Open File To Input Cameca Mapping Data From"
 End If
 
+' ACQ calibration files
+ElseIf UCase$(ioextension$) = UCase$("ACQ") Then
+FormMAIN.CMDialog1.Filter = "ACQ Calibration Files (*.ACQ)|*.ACQ|All Files (*.*)|*.*|"
+If mode% < 2 Then
+If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.acq"
+End If
+
+If mode% < 2 Then
+FormMAIN.CMDialog1.DialogTitle = "Open File To Output ACQ Calibration To"
+Else
+FormMAIN.CMDialog1.DialogTitle = "Open File To Input ACQ Calibration From"
+End If
+
 End If
 
 ' Specify default filter
@@ -571,6 +584,7 @@ If UCase$(ioextension$) = UCase$("PrbAcq") Then FormMAIN.CMDialog1.InitDir = Use
 If UCase$(ioextension$) = UCase$("CSV") Then FormMAIN.CMDialog1.InitDir = UserDataDirectory$
 If UCase$(ioextension$) = UCase$("CND") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
 If UCase$(ioextension$) = UCase$("ImpDAT") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
+If UCase$(ioextension$) = UCase$("ACQ") Then FormMAIN.CMDialog1.InitDir = UserDataDirectory$
 
 ' Specify default extension
 FormMAIN.CMDialog1.DefaultExt = ioextension$

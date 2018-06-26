@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/25/18	Add Load ACQ file for calibration button to PS (Carpenter).  Fix CL image acquisition channel number
+		(should be channel 21). Modify ConvertAmp[hibole code for Mutch et al. (2016) pressure 
+		calculation (Ague).
+
 06/20/18	Round form oldx/oldy PictureSnap parameters for triggering redraw to make them less sensitive
 		to changes in stage position.
 
