@@ -1206,6 +1206,11 @@ On Error GoTo PictureSnapLoadACQError
 Dim response As Integer
 Dim tfilename As String, tfilename2 As String
 
+Dim astring As String
+
+Dim gX_Polarity As Integer, gY_Polarity As Integer
+Dim gStage_Units As String
+
 ' Ask user to confirm
 If PictureSnapCalibrated Then
 msg$ = "This currently loaded image is already calibrated.  Are you sure you want to load another ACQ file for the calibration of the currently loaded image?"
@@ -1222,6 +1227,41 @@ End If
 Call IOGetFileName(Int(2), "ACQ", tfilename$, FormPICTURESNAP2)
 If ierror Then Exit Sub
 
+' Check for existing GRD or ACQ info
+Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
+If ierror Then Exit Sub
+
+' Check if stage orientation is different than current configuration
+If Default_X_Polarity% = 0 And Default_Y_Polarity% = 0 Then
+astring$ = "Cameca"
+Else
+astring$ = "JEOL"
+End If
+
+If Default_X_Polarity% <> gX_Polarity% Or Default_Y_Polarity% <> gY_Polarity% Then
+msg$ = "The image file " & tfilename$ & " has a different stage orientation than the current stage configuration (" & astring$ & ")." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please load an image file with the correct stage orientation or change the current stage configuration from the File menu and try again."
+MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapLoadACQ"
+Screen.MousePointer = vbDefault
+ierror = True
+Exit Sub
+End If
+
+' Check if stage units is different than current configuration
+If Default_Stage_Units$ = "mm" Then
+astring$ = "mm"
+Else
+astring$ = "um"
+End If
+
+If Default_Stage_Units$ <> gStage_Units$ Then
+msg$ = "The image file " & tfilename$ & " has a different stage units than the current stage configuration (" & astring$ & ")." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please load an image file with the correct stage units or change the stage configuration from the File menu and try again."
+MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapLoadACQ"
+Screen.MousePointer = vbDefault
+Exit Sub
+End If
+
 ' Now copy the file to the current image name
 tfilename2$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".acq"
 If tfilename$ = tfilename2$ Then GoTo PictureSnapLoadACQSameACQ
@@ -1234,6 +1274,10 @@ If ierror Then Exit Sub
 ' Check for bad stage calibration
 Call PictureSnapCalibrateCheck
 If ierror Then Exit Sub
+
+' Confirm to user
+msg$ = "Calibration file " & tfilename$ & " was loaded to the current image. You may want to confirm the accuracy of the calibration by using the Move To buttons."
+MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapLoadACQ"
 
 Exit Sub
 

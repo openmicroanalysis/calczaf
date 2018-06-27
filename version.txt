@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/26/18	Modify Automate! | Plot code to plot position samples with equant axes. Tweak PS.
+
 06/25/18	Add Load ACQ file for calibration button to PS (Carpenter).  Fix CL image acquisition channel number
 		(should be channel 21). Modify ConvertAmp[hibole code for Mutch et al. (2016) pressure 
 		calculation (Ague).
