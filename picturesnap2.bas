@@ -276,6 +276,10 @@ FormPICTURESNAP.Caption = "PictureSnap [" & tfilename$ & "]"
 Call PictureSnapLoadCalibration
 If ierror Then Exit Sub
 
+' Calculate the image rotation relative to the stage
+Call PictureSnapCalculateRotation
+If ierror Then Exit Sub
+
 ' Enable output menus if modeless mode
 Call PictureSnapEnableDisable
 If ierror Then Exit Sub
@@ -1269,6 +1273,10 @@ FileCopy tfilename$, tfilename2$
 
 ' Now load the calibration (new or again)
 Call PictureSnapLoadCalibration
+If ierror Then Exit Sub
+
+' Calculate the image rotation relative to the stage
+Call PictureSnapCalculateRotation
 If ierror Then Exit Sub
 
 ' Check for bad stage calibration

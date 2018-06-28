@@ -19,6 +19,8 @@ Global PictureSnapCalibrationSaved As Boolean
 Global PictureSnapCalibrated As Boolean
 Global PictureSnapCalibratedPreviously As Boolean
 
+Global PictureSnapRotation As Single                        ' image rotation relative to the stage calibration
+
 Global PictureSnapWindowIsModeless As Boolean
 
 ' Form variables for keV and mag (and scan rotation)
@@ -1304,4 +1306,110 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub PictureSnapCalculateRotation()
+' Calculate the image rotation (relative to the stage) based on the current calibration
+
+ierror = False
+On Error GoTo PictureSnapCalculateRotationError
+
+Dim aslope1 As Single, aslope2 As Single, aslope3 As Single                 ' stage coordinate slopes
+Dim cslope1 As Single, cslope2 As Single, cslope3 As Single                 ' screen coordinate slopes
+
+Dim arotation1 As Single, arotation2 As Single, arotation3 As Single
+Dim crotation1 As Single, crotation2 As Single, crotation3 As Single
+
+Dim trotation As Single, trotation1 As Single, trotation2 As Single, trotation3 As Single
+Dim tradians As Single
+
+' Check for current image
+If PictureSnapFilename$ = vbNullString Then Exit Sub
+
+' Check if calibrated
+If Not PictureSnapCalibrated Then Exit Sub
+
+' Calculate slopes for two or three screen calibration points (cartesian stage)
+If Default_X_Polarity% = 0 And Default_Y_Polarity% = 0 Then
+cslope1! = (cpoint2y! - cpoint1y!) / (cpoint1x! - cpoint2x!)
+
+If PictureSnapMode% = 1 Then
+cslope2! = (cpoint3y! - cpoint2y!) / (cpoint2x! - cpoint3x!)
+cslope3! = (cpoint1y! - cpoint3y!) / (cpoint3x! - cpoint1x!)
+End If
+
+' Calculate slopes for two or three screen calibration points (anti-cartesian stage)
+ElseIf Default_X_Polarity% = -1 And Default_Y_Polarity% = -1 Then
+cslope1! = (cpoint1y! - cpoint2y!) / (cpoint2x! - cpoint1x!)
+
+If PictureSnapMode% = 1 Then
+cslope2! = (cpoint2y! - cpoint3y!) / (cpoint3x! - cpoint2x!)
+cslope3! = (cpoint3y! - cpoint1y!) / (cpoint1x! - cpoint3x!)
+End If
+
+' Calculate slopes for two or three screen calibration points (half-cartesian stage)
+ElseIf Default_X_Polarity% = 0 And Default_Y_Polarity% = -1 Then
+cslope1! = (cpoint1y! - cpoint2y!) / (cpoint1x! - cpoint2x!)
+
+If PictureSnapMode% = 1 Then
+cslope2! = (cpoint2y! - cpoint3y!) / (cpoint2x! - cpoint3x!)
+cslope3! = (cpoint3y! - cpoint1y!) / (cpoint3x! - cpoint1x!)
+End If
+
+End If
+
+' Now calculate angles for each set of screen calibration points
+tradians! = Atn(cslope1!)
+crotation1! = tradians! * 180 / PI!
+
+If PictureSnapMode% = 1 Then
+tradians! = Atn(cslope2!)
+crotation2! = tradians! * 180 / PI!
+tradians! = Atn(cslope3!)
+crotation3! = tradians! * 180 / PI!
+End If
+
+' Calculate slopes for two or three stage calibration points
+aslope1! = (apoint1y! - apoint2y!) / (apoint1x! - apoint2x!)
+
+If PictureSnapMode% = 1 Then
+aslope2! = (apoint2y! - apoint3y!) / (apoint2x! - apoint3x!)
+aslope3! = (apoint3y! - apoint1y!) / (apoint3x! - apoint1x!)
+End If
+
+' Now calculate angles for each set of stage calibration points
+tradians! = Atn(aslope1!)
+arotation1! = tradians! * 180 / PI!
+
+If PictureSnapMode% = 1 Then
+tradians! = Atn(aslope2!)
+arotation2! = tradians! * 180 / PI!
+tradians! = Atn(aslope3!)
+arotation3! = tradians! * 180 / PI!
+End If
+
+' Calculate the change in rotation between screen and stage calibrations
+trotation1! = arotation1! - crotation1!
+trotation! = trotation1!
+
+If PictureSnapMode% = 1 Then
+trotation2! = arotation2! - crotation2!
+trotation3! = arotation3! - crotation3!
+
+' Average the rotations if three calibration points
+trotation! = (trotation1! + trotation2! + trotation3!) / 3#
+End If
+
+' Load the rotation to a global
+PictureSnapRotation! = trotation!
+
+Exit Sub
+
+' Errors
+PictureSnapCalculateRotationError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapCalculateRotation"
+ierror = True
+Exit Sub
+
+End Sub
+
 

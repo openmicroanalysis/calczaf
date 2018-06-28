@@ -322,6 +322,10 @@ End If
 Call PictureSnapCalibrateSave(FormPICTURESNAP2)
 If ierror Then Exit Sub
 
+' Calculate the image rotation relative to the stage
+Call PictureSnapCalculateRotation
+If ierror Then Exit Sub
+
 ' Check stage calibration is orthogonal
 Call PictureSnapCalibrateCheck
 If ierror Then Exit Sub
@@ -1161,7 +1165,8 @@ xdist! = Abs(sx2! - sx1!)
 ydist! = Abs(sy2! - sy1!)
 
 ' Update calibration window for accuracy
-tmsg$ = "X=" & Format$(xdist!) & vbCrLf & "Y=" & Format$(ydist!) & vbCrLf & "(X-Y)/X=" & MiscAutoFormat4$(Abs((xdist! - ydist!) / xdist!) * 100#) & "%"
+tmsg$ = "X=" & Format$(xdist!) & ", Y=" & Format$(ydist!) & vbCrLf & "(X-Y)/X=" & MiscAutoFormat4$(Abs((xdist! - ydist!) / xdist!) * 100#) & "%" & vbCrLf
+tmsg$ = tmsg$ & "Rotation=" & MiscAutoFormat4$(PictureSnapRotation!) & " degrees"
 FormPICTURESNAP2.LabelCalibrationAccuracy.Caption = tmsg$
 
 ' Warn user if not equal in X and Y within tolerance
