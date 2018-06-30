@@ -163,11 +163,9 @@ FormPICTURESNAP2.TextXStage3.Text = RealTimeMotorPositions!(XMotor%)
 FormPICTURESNAP2.TextYStage3.Text = RealTimeMotorPositions!(YMotor%)
 
 ' Load current z stage positions
-'If PictureSnapMode% = 1 Then
 FormPICTURESNAP2.TextZStage1.Text = RealTimeMotorPositions!(ZMotor%)
 FormPICTURESNAP2.TextZStage2.Text = RealTimeMotorPositions!(ZMotor%)
 FormPICTURESNAP2.TextZStage3.Text = RealTimeMotorPositions!(ZMotor%)
-'End If
 
 ' Load default calibration conditions for new calibrations
 If Not PictureSnapCalibrated Then
@@ -1166,7 +1164,7 @@ ydist! = Abs(sy2! - sy1!)
 
 ' Update calibration window for accuracy
 tmsg$ = "X=" & Format$(xdist!) & ", Y=" & Format$(ydist!) & vbCrLf & "(X-Y)/X=" & MiscAutoFormat4$(Abs((xdist! - ydist!) / xdist!) * 100#) & "%" & vbCrLf
-tmsg$ = tmsg$ & "Rotation=" & MiscAutoFormat4$(PictureSnapRotation!) & " degrees"
+tmsg$ = tmsg$ & "Rotation=" & Format$(PictureSnapRotation!, "0.00") & " degrees"
 FormPICTURESNAP2.LabelCalibrationAccuracy.Caption = tmsg$
 
 ' Warn user if not equal in X and Y within tolerance

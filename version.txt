@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/29/18	Format PS rotation for leading zero. Remove commented out lines in PS code. Fix problem
+v. 12.4.0	with loading/saving screen/stage coordinates when switching from 2 to 3 points and back again.
+
 06/27/18	Add image rotation relative to stage feature in PictureSnap Calibrate Image window.
 v. 12.3.9
 

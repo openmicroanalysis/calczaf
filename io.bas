@@ -605,10 +605,8 @@ Call IOGetFileName2(mode%, tForm.hWnd, FormMAIN.CMDialog1.DialogTitle, iofilenam
 If ierror Then Exit Sub
 End If
 
-' Check for extension (unless "emsa" or "xlsx" or "prbimg" type because it always returns different extension flag)
-'If Not MiscStringsAreSame(ioextension$, "emsa") And Not MiscStringsAreSame(ioextension$, "xlsx") And Not MiscStringsAreSame(ioextension$, "prbimg") Then
+' Check for different extension
 If FormMAIN.CMDialog1.flags And cdlOFNExtensionDifferent Then GoTo IOGetFileNameBadExtension    ' works with IOGetFileName2
-'End If
 
 ' Check for illegal filename
 If mode% < 2 Then
