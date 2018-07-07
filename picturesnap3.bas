@@ -1199,9 +1199,9 @@ Sub PictureSnapSaveMode(Index As Integer)
 ierror = False
 On Error GoTo PictureSnapSaveModeError
 
-' If going from two points to three points and image was calibrated, re-set
+' If changing mode and image was calibrated, re-set
 If FormPICTURESNAP2.Visible Then
-If PictureSnapCalibrated And Index% = 1 Then PictureSnapCalibrated = False
+If PictureSnapCalibrated Then PictureSnapCalibrated = False
 End If
 
 ' Save PictureSnapMode
@@ -1235,24 +1235,6 @@ FormPICTURESNAP2.LabelCalibration.Caption = "Image Is NOT Calibrated"
 FormPICTURESNAP2.LabelCalibrationAccuracy.Caption = vbNullString
 End If
 
-' If the calibration mode changed from two to three points, (re)load default values from ACQ file
-If Index% = 1 Then
-
-' Load stage X and Y values for third point
-FormPICTURESNAP2.TextXStage3.Text = apoint3x!
-FormPICTURESNAP2.TextYStage3.Text = apoint3y!
-
-' Load screen X and Y values for third point
-FormPICTURESNAP2.TextXPixel3.Text = cpoint3x!
-FormPICTURESNAP2.TextYPixel3.Text = cpoint3y!
-
-' Load stage values for Z for all three points (in case already in ACQ file)
-FormPICTURESNAP2.TextZStage1.Text = apoint1z!
-FormPICTURESNAP2.TextZStage2.Text = apoint2z!
-FormPICTURESNAP2.TextZStage3.Text = apoint3z!
-
-End If
-
 Exit Sub
 
 ' Errors
@@ -1269,6 +1251,8 @@ Sub PictureSnapCalculateRotation()
 ierror = False
 On Error GoTo PictureSnapCalculateRotationError
 
+Dim n As Long
+
 Dim aslope1 As Single, aslope2 As Single, aslope3 As Single                 ' stage coordinate slopes
 Dim cslope1 As Single, cslope2 As Single, cslope3 As Single                 ' screen coordinate slopes
 
@@ -1278,35 +1262,49 @@ Dim crotation1 As Single, crotation2 As Single, crotation3 As Single
 Dim trotation As Single, trotation1 As Single, trotation2 As Single, trotation3 As Single
 Dim tradians As Single
 
+Const MAX_SLOPE! = 80#
+
 ' Check for current image
 If PictureSnapFilename$ = vbNullString Then Exit Sub
 
 ' Check if calibrated
 If Not PictureSnapCalibrated Then Exit Sub
 
+' Assume zero rotation
+PictureSnapRotation! = 0#
+
 ' Calculate slopes for two or three screen calibration points (cartesian stage)
 If Default_X_Polarity% = 0 And Default_Y_Polarity% = 0 Then
+If cpoint1x! - cpoint2x! = 0 Then Exit Sub
 cslope1! = (cpoint2y! - cpoint1y!) / (cpoint1x! - cpoint2x!)
 
 If PictureSnapMode% = 1 Then
+If cpoint2x! - cpoint3x! = 0 Then Exit Sub
+If cpoint3x! - cpoint1x! = 0 Then Exit Sub
 cslope2! = (cpoint3y! - cpoint2y!) / (cpoint2x! - cpoint3x!)
 cslope3! = (cpoint1y! - cpoint3y!) / (cpoint3x! - cpoint1x!)
 End If
 
 ' Calculate slopes for two or three screen calibration points (anti-cartesian stage)
 ElseIf Default_X_Polarity% = -1 And Default_Y_Polarity% = -1 Then
+If cpoint2x! - cpoint1x! = 0 Then Exit Sub
 cslope1! = (cpoint1y! - cpoint2y!) / (cpoint2x! - cpoint1x!)
 
 If PictureSnapMode% = 1 Then
+If cpoint3x! - cpoint2x! = 0 Then Exit Sub
+If cpoint1x! - cpoint3x! = 0 Then Exit Sub
 cslope2! = (cpoint2y! - cpoint3y!) / (cpoint3x! - cpoint2x!)
 cslope3! = (cpoint3y! - cpoint1y!) / (cpoint1x! - cpoint3x!)
 End If
 
 ' Calculate slopes for two or three screen calibration points (half-cartesian stage)
 ElseIf Default_X_Polarity% = 0 And Default_Y_Polarity% = -1 Then
+If cpoint1x! - cpoint2x! = 0 Then Exit Sub
 cslope1! = (cpoint1y! - cpoint2y!) / (cpoint1x! - cpoint2x!)
 
 If PictureSnapMode% = 1 Then
+If cpoint2x! - cpoint3x! = 0 Then Exit Sub
+If cpoint3x! - cpoint1x! = 0 Then Exit Sub
 cslope2! = (cpoint2y! - cpoint3y!) / (cpoint2x! - cpoint3x!)
 cslope3! = (cpoint3y! - cpoint1y!) / (cpoint3x! - cpoint1x!)
 End If
@@ -1325,9 +1323,12 @@ crotation3! = tradians! * 180 / PI!
 End If
 
 ' Calculate slopes for two or three stage calibration points
+If apoint1x! - apoint2x! = 0 Then Exit Sub
 aslope1! = (apoint1y! - apoint2y!) / (apoint1x! - apoint2x!)
 
 If PictureSnapMode% = 1 Then
+If apoint2x! - apoint3x! = 0 Then Exit Sub
+If apoint3x! - apoint1x! = 0 Then Exit Sub
 aslope2! = (apoint2y! - apoint3y!) / (apoint2x! - apoint3x!)
 aslope3! = (apoint3y! - apoint1y!) / (apoint3x! - apoint1x!)
 End If
@@ -1343,6 +1344,9 @@ tradians! = Atn(aslope3!)
 arotation3! = tradians! * 180 / PI!
 End If
 
+' Now check for bad rotations if two point mode
+If PictureSnapMode% = 0 And (Abs(crotation1!) > MAX_SLOPE! Or Abs(arotation1!) > MAX_SLOPE!) Then GoTo PictureSnapCalculateRotationBadSlope
+
 ' Calculate the change in rotation between screen and stage calibrations
 trotation1! = arotation1! - crotation1!
 trotation! = trotation1!
@@ -1351,12 +1355,47 @@ If PictureSnapMode% = 1 Then
 trotation2! = arotation2! - crotation2!
 trotation3! = arotation3! - crotation3!
 
-' Average the rotations if three calibration points
-trotation! = (trotation1! + trotation2! + trotation3!) / 3#
+' Average the rotations of the calibration points
+n& = 0
+trotation! = 0
+If Abs(crotation1!) < MAX_SLOPE! And Abs(arotation1!) < MAX_SLOPE! Then
+trotation! = trotation! + trotation1!
+n& = n& + 1
+End If
+If Abs(crotation2!) < MAX_SLOPE! And Abs(arotation2!) < MAX_SLOPE! Then
+trotation! = trotation! + trotation2!
+n& = n& + 1
+End If
+If Abs(crotation3!) < MAX_SLOPE! And Abs(arotation3!) < MAX_SLOPE! Then
+trotation! = trotation! + trotation3!
+n& = n& + 1
+End If
+
+' Calculate average rotation
+If n& = 0 Then Exit Sub
+trotation! = trotation! / n&
 End If
 
 ' Load the rotation to a global
 PictureSnapRotation! = trotation!
+
+' Output calculations
+If DebugMode Then
+Call IOWriteLog(vbNullString$)
+msg$ = "Stage to Image rotation #1: " & Format$(arotation1!) & " - " & Format$(crotation1!) & " = " & Format$(trotation1!)
+Call IOWriteLog(msg$)
+
+If PictureSnapMode% = 1 Then
+msg$ = "Stage to Image rotation #2: " & Format$(arotation2!) & " - " & Format$(crotation2!) & " = " & Format$(trotation2!)
+Call IOWriteLog(msg$)
+msg$ = "Stage to Image rotation #3: " & Format$(arotation3!) & " - " & Format$(crotation3!) & " = " & Format$(trotation3!)
+Call IOWriteLog(msg$)
+
+Call IOWriteLog(vbNullString$)
+msg$ = "Stage to Image rotation average: " & Format$(trotation!)
+Call IOWriteLog(msg$)
+End If
+End If
 
 Exit Sub
 
@@ -1366,6 +1405,11 @@ MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapCalculateRotation"
 ierror = True
 Exit Sub
 
-End Sub
+PictureSnapCalculateRotationBadSlope:
+msg$ = "The angle between the two calibration points is insufficiently diagonal. Please pick calibration points with slopes closer to 45 degrees for best results."
+MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapCalculateRotation"
+ierror = True
+Exit Sub
 
+End Sub
 

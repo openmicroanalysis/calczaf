@@ -1054,7 +1054,7 @@ On Error GoTo ZAFPhiCalError
 
 Dim i As Integer, i1 As Integer
 
-Dim X2 As Single, x3 As Single, x4 As Single, x5 As Single
+Dim x2 As Single, x3 As Single, x4 As Single, x5 As Single
 Dim zz As Single, za As Single, spi As Single, tx4 As Single
 
 Dim a1 As Single, a2 As Single, uu As Single, v0 As Single, aa As Single
@@ -1065,7 +1065,7 @@ Dim ww As Single, rr As Single, hh As Single, v1 As Single
 Dim qeO As Single, ff As Single, rbas As Single
 
 Dim beta_iter As Integer
-Dim y1 As Single, Y2 As Single, beta0 As Single, beta1 As Single    ' variables for beta refinement by Brian Joy
+Dim Y1 As Single, y2 As Single, beta0 As Single, beta1 As Single    ' variables for beta refinement by Brian Joy
 
 ' Calculate square root of pi (used to be  Sqr(3.14159) / 2, fixed 7/14/2011, Carpenter)
 spi! = Sqr(3.14159)
@@ -1118,7 +1118,7 @@ xx! = m7!   ' loaded by ZAFMACCal above
 uu! = zaf.eO!(i%) / zaf.eC!(i%)
 
 ' x2! = Gamma(0), x3! = Beta, x4! = Alpha, rr! = Phi(0)
-X2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * (1# / uu! ^ 0.2))
+x2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * (1# / uu! ^ 0.2))
 ' was x2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * uu! ^ (-.2))
 
 ' PACKWOOD-BROWN 1982 XRS PHI(PZ) ALPHA EXPRESSION
@@ -1133,7 +1133,7 @@ ElseIf iabs% = 8 Then
 tx4! = Log(1.166 * v0! / ww!) / v1!
 If tx4! < 0# Then GoTo ZAFPhiCalBadX4
 x4! = 175000# / (v0! ^ 1.25 * (uu! - 1#) ^ 0.55) * (tx4!) ^ 0.5
-X2! = 0.98 * X2! * Exp(0.001 * zz!)
+x2! = 0.98 * x2! * Exp(0.001 * zz!)
 x3! = 0.4 * x4! * (zz! ^ 1.7 / aa!) * (uu! - 1#) ^ 0.3
 
 ' BROWN 1981 JTA PHI(PZ) ALPHA EXPRESSION
@@ -1141,15 +1141,15 @@ ElseIf iabs% = 9 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
 If tx4! < 0# Then GoTo ZAFPhiCalBadX4
 x4! = 297000# * zz! ^ 1.05 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
-x3! = 850000# * zz! * zz! / (aa! * v0! * v0! * (X2! - 1#))
+x3! = 850000# * zz! * zz! / (aa! * v0! * v0! * (x2! - 1#))
 
 ' BASTIN 1986/SCANNING
 ElseIf iabs% = 10 Then
 tx4! = Log(1.166 * v0! / ww!) / v1!
 If tx4! < 0# Then GoTo ZAFPhiCalBadX4
 x4! = 175000# / (v0! ^ 1.25 * (uu! - 1#) ^ 0.55) * (tx4!) ^ 0.5
-X2! = 5# * 3.14159 * (uu! + 1#) / (Log(uu! + 1#) * uu!) * (Log(uu! + 1#) - 5# + 5# * (uu! + 1#) ^ (-0.2))
-If uu! < 3# Then X2! = 1# + (uu! - 1#) / (0.3384 + 0.4742 * (uu! - 1#))
+x2! = 5# * 3.14159 * (uu! + 1#) / (Log(uu! + 1#) * uu!) * (Log(uu! + 1#) - 5# + 5# * (uu! + 1#) ^ (-0.2))
+If uu! < 3# Then x2! = 1# + (uu! - 1#) / (0.3384 + 0.4742 * (uu! - 1#))
 x3! = zz! / (0.4765 + 0.5473 * zz!)
 x3! = x4! * (zz! ^ x3!) / aa!
        
@@ -1158,12 +1158,12 @@ ElseIf iabs% = 11 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
 If tx4! < 0# Then GoTo ZAFPhiCalBadX4
 x4! = 214000# * zz! ^ 1.16 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
-X2! = (1# + hh!) * uu! * Log(uu!) / (uu! - 1#)
+x2! = (1# + hh!) * uu! * Log(uu!) / (uu! - 1#)
 x3! = 10900# * zz! ^ 1.5 / (aa! * (v0! - v1!))
         
 ' PACKWOOD EPQ-1991
 ElseIf iabs% = 14 Then
-X2! = 10# * 3.14159 * (uu! / (uu! - 1#)) * (1# + (10# / Log(uu!)) * ((uu! ^ -0.1) - 1))
+x2! = 10# * 3.14159 * (uu! / (uu! - 1#)) * (1# + (10# / Log(uu!)) * ((uu! ^ -0.1) - 1))
 
 If zafinit% = 0 Then
 x4! = 450000# * ((zz! - 1.3) / zz!) * (zz! / aa!) ^ 0.5 * v0! ^ -0.75
@@ -1206,23 +1206,23 @@ x4! = 1# / x4!
 End If
 
 If uu! > 6# Then
-X2! = 2.814333 * uu! ^ (0.262702 * zz! ^ -0.1614454)
+x2! = 2.814333 * uu! ^ (0.262702 * zz! ^ -0.1614454)
 Else
 'x2! = 3.98352 * uu! ^ -0.0516861 * (1.2276233 - uu! ^ (-1.225558 * zz! ^ -0.1424549))  ' original typo
-X2! = 3.98352 * uu! ^ -0.0516861 * (1.276233 - uu! ^ (-1.25558 * zz! ^ -0.1424549))     ' fixed from "green book", 7-14-2011, Carpenter
+x2! = 3.98352 * uu! ^ -0.0516861 * (1.276233 - uu! ^ (-1.25558 * zz! ^ -0.1424549))     ' fixed from "green book", 7-14-2011, Carpenter
 End If
-If v1! < 0.7 Then X2! = X2! * v1! / (-0.041878 + 1.05975 * v1!)
+If v1! < 0.7 Then x2! = x2! * v1! / (-0.041878 + 1.05975 * v1!)
 End If
 
 ' End of all procedures, now calculate phi expression ("rr")
 Call ZAFPhi(i%, uu!, hh!, zz!, v1!, rr!)
 If ierror Then Exit Sub
 
-x5! = X2! - rr!         ' calculate q?
+x5! = x2! - rr!         ' calculate q?
 
 ' PTC modification
 If UseParticleCorrectionFlag And iptc% = 1 Then
-x5! = x5! / X2!
+x5! = x5! / x2!
 End If
 
 ' Special code for Bastin PROZA
@@ -1231,13 +1231,13 @@ qeO! = Log(zaf.v!(i%)) / (zaf.eC!(i%) * zaf.eC!(i%) * Exp(em!(i%) * Log(zaf.v!(i
 xp! = xp! / (zipi!(i%) * 66892#) * zaf.atwts!(i%)
 ff! = xp! / qeO!
 If Not UseBrianJoyModifications Then
-rbas! = (X2! - x4! * ff! / spi!) / x5!              ' original code from CITZAF
+rbas! = (x2! - x4! * ff! / spi!) / x5!              ' original code from CITZAF
 Else
-rbas! = (X2! - 2 * x4! * ff! / spi!) / x5!          ' corrected by Brian Joy, 01-2016
+rbas! = (x2! - 2 * x4! * ff! / spi!) / x5!          ' corrected by Brian Joy, 01-2016
 End If
 
 If rbas! <= 0# Or rbas! >= 1# Then
-x4! = (rr! + X2!) * spi! / (4# * ff!)   ' used to be (2# * ff!), fixed 7/14/2011, Carpenter
+x4! = (rr! + x2!) * spi! / (4# * ff!)   ' used to be (2# * ff!), fixed 7/14/2011, Carpenter
 rbas! = 0.5
 End If
 
@@ -1268,17 +1268,17 @@ If rbas! > 0# And rbas! <= 0.03165 Then x3! = ((1 - 4.894396 * rbas!) / (1.34131
 ' Refinement of beta(i,j), adapted from GMRFILM by R. Waldo, by Brian Joy, 02-2016
 beta_iter% = 0
 beta0! = x3!
-y1! = x3! / (2# * x4!)
+Y1! = x3! / (2# * x4!)
 Do
     beta1! = beta0!
-    Y2! = ZAFErrorFunction!(y1!) / rbas! * y1!
-    beta0! = Y2! * (2# * x4!)
+    y2! = ZAFErrorFunction!(Y1!) / rbas! * Y1!
+    beta0! = y2! * (2# * x4!)
     If (Abs((beta1! - beta0!) / beta1!) < 0.0001) Then Exit Do
-    y1! = Y2!
+    Y1! = y2!
 beta_iter% = beta_iter% + 1
 If beta_iter% > 100 Then Exit Do
 Loop
-x3! = y1! * (2# * x4!)
+x3! = Y1! * (2# * x4!)
 End If
 End If
 
@@ -1287,7 +1287,7 @@ chi! = xx! * zaf.m1!(i%)
 
 ' New call to ZAFPtc for particles and thin films
 If UseParticleCorrectionFlag And iptc% = 1 Then
-Call ZAFPtc(i%, aa!, v0!, zz!, er1!, er2!, er3!, a1!, a2!, xx!, X2!, x3!, x4!, x5!)
+Call ZAFPtc(i%, aa!, v0!, zz!, er1!, er2!, er3!, a1!, a2!, xx!, x2!, x3!, x4!, x5!)
 If ierror Then Exit Sub
 
 ' Normal bulk sample calculation
@@ -1301,8 +1301,8 @@ er2! = ZAFErrorFunction(erfx!)
 erfx! = (x3! + chi!) / (2# * x4!)
 er3! = ZAFErrorFunction(erfx!)
 
-a1! = spi! * (X2! - x5! * er1!) / x4!
-a2! = spi! * (X2! * er2! - x5! * er3!) / x4!
+a1! = spi! * (x2! - x5! * er1!) / x4!
+a2! = spi! * (x2! * er2! - x5! * er3!) / x4!
 End If
 
 ' Calculate intensities
@@ -1312,7 +1312,7 @@ If zafinit% = 1 And a2! <> 0# Then zaf.gensmp!(i%) = a1! / a2!
 
 ' Calculate phi-rho-z curves for plotting
 If zafinit% = 1 And UCase$(app.EXEName) = UCase$("CalcZAF") Then
-Call ZAFCalculatePhiRhoZCurves(i%, x4!, x3!, X2!, chi!, rr!, zaf)
+Call ZAFCalculatePhiRhoZCurves(i%, x4!, x3!, x2!, chi!, rr!, zaf)
 If ierror Then Exit Sub
 End If
 
@@ -1772,17 +1772,12 @@ temp! = 1# - zaf.ksum!
 If temp! < 0# Then temp! = 1#
 
 ' Add in formula by difference elements (search from 1 to LastChan in FormulaTmpSample())
-For i% = 1 To zaf.in0%
+For i% = 1 To zaf.in0%                  ' need to include oxygen by stoichiometry for summation!
 If zaf.il%(i%) = 19 Then
 If zaf.ksum! < 1# Then
 ip% = IPOS1B(Int(1), FormulaTmpSample(1).LastChan%, sample(1).Elsyms$(i%), FormulaTmpSample(1).Elsyms$())
 If ip% > 0 Then
 zaf.krat!(i%) = FormulaTmpSample(1).ElmPercents!(ip%) / 100# * temp!
-
-'If zaf.il%(zaf.in0%) = 0 And zaf.Z%(i%) Then        ' if calculating oxygen by stoichiometry
-'zaf.krat!(i%) = zaf.krat!(i%) / (1# + zaf.p1!(i%))
-'zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) + zaf.krat!(i%) * zaf.p1!(i%)
-'End If
 
 End If
 End If
@@ -1916,7 +1911,7 @@ zaf.ksum! = zaf.ksum! + r1!(i%)
 End If
 Next i%
 
-' Calculate element relative to stoichiometric element based on previous iteration calculation of oxygen
+' Calculate element relative to stoichiometric oxygen based on previous iteration calculation of oxygen
 If zaf.il%(zaf.in0%) = 0 Then    ' if calculating oxygen by stoichiometry
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) = 15 Then
@@ -1926,7 +1921,7 @@ zaf.krat!(i%) = r1!(i%)
 End If
 Next i%
 
-' Calculate amount of stoichiometric element and add to total
+' Calculate amount of stoichiometric oxygen and add to total
 r1!(zaf.in0%) = 0#
 For i% = 1 To zaf.in1%
 r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
@@ -1982,7 +1977,7 @@ If sample(1).DifferenceFormulaFlag Then
 
 ' Calculate sum of composition skipping formula by difference elements
 zaf.ksum! = 0#
-For i% = 1 To zaf.in1%
+For i% = 1 To zaf.in0%              ' need to include oxygen by stoichiometry for summation!
 If zaf.il%(i%) <> 19 Then
 zaf.ksum! = zaf.ksum! + r1!(i%)
 End If
@@ -1998,11 +1993,6 @@ If zaf.ksum! < 1# Or (zaf.ksum! >= 1# And Not ForceNegativeKratiosToZeroFlag) Th
 ip% = IPOS1B(Int(1), FormulaTmpSample(1).LastChan%, sample(1).Elsyms$(i%), FormulaTmpSample(1).Elsyms$())
 If ip% > 0 Then
 r1!(i%) = FormulaTmpSample(1).ElmPercents!(ip%) / 100# * temp!
-
-'If zaf.il%(zaf.in0%) = 0 Then         ' if calculating oxygen by stoichiometry
-'r1!(i%) = r1!(i%) / (1# + zaf.p1!(i%))
-'r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
-'End If
 
 zaf.krat!(i%) = r1!(i%)
 End If
@@ -3482,7 +3472,7 @@ Next i%
 zaf.d! = 0#     ' diameter in cm
 zaf.rho! = 0#   ' density in g/cm^3
 zaf.j9! = 0#    ' particle thicknes factor
-zaf.x1! = 0#    ' integration step length in g/cm^2
+zaf.X1! = 0#    ' integration step length in g/cm^2
 
 zaf.TotalCations! = 0#
 zaf.totalatoms! = 0#
@@ -4099,7 +4089,7 @@ Exit Function
 
 End Function
 
-Sub ZAFPtc(ii As Integer, aa As Single, v0 As Single, zz As Single, er1 As Single, er2 As Single, er3 As Single, a1 As Single, a2 As Single, xx As Single, X2 As Single, x3 As Single, x4 As Single, x5 As Single)
+Sub ZAFPtc(ii As Integer, aa As Single, v0 As Single, zz As Single, er1 As Single, er2 As Single, er3 As Single, a1 As Single, a2 As Single, xx As Single, x2 As Single, x3 As Single, x4 As Single, x5 As Single)
 ' Subroutine for calculation of numerical integration of thin film and
 ' particle path lengths.
 
@@ -4138,7 +4128,7 @@ p4! = xx! * zaf.t1! * er1!
 p5! = Exp(-p4!)
 p6! = Exp(-xx! * zaf.g! * er1!)
 r4! = er1! * 10000!
-b9! = X2! * (1# - x5! * Exp(-x3! * er1!)) * Exp(-x4! * x4! * er1! * er1!)
+b9! = x2! * (1# - x5! * Exp(-x3! * er1!)) * Exp(-x4! * x4! * er1! * er1!)
 If b9! < 0.000001 Then
 zaf.erange!(ii%) = er1!
 Exit Sub
@@ -4222,7 +4212,7 @@ q2! = s1!
 r5! = r4!
 If er1! >= er3! Then GoTo 11250
 
-er1! = er1! + zaf.x1!
+er1! = er1! + zaf.X1!
 If er1! > er3! Then er1! = er3!
 GoTo 11150
 

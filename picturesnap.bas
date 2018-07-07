@@ -17,6 +17,11 @@ Global PictureSnapDisplayCalibrationPointsFlag As Boolean
 Dim CurrentPointX As Single
 Dim CurrentPointY As Single
 
+Private Type VertexType
+    x As Single
+    y As Single
+End Type
+
 ' Scale bar variables for scroll event
 Dim oldx As Single, oldy As Single
 
@@ -320,14 +325,6 @@ End If
 Call PictureSnapCalibrateSave(FormPICTURESNAP2)
 If ierror Then Exit Sub
 
-' Calculate the image rotation relative to the stage
-Call PictureSnapCalculateRotation
-If ierror Then Exit Sub
-
-' Check stage calibration is orthogonal
-Call PictureSnapCalibrateCheck
-If ierror Then Exit Sub
-
 FormPICTURESNAP.Caption = "PictureSnap [" & PictureSnapFilename$ & "] (double-click to move)"
 PictureSnapCalibrated = True
 
@@ -340,6 +337,14 @@ End If
 
 ' Save calibration
 Call PictureSnapSaveCalibration(mode%, PictureSnapFilename$, PictureSnapCalibrationSaved)
+If ierror Then Exit Sub
+
+' Calculate the image rotation relative to the stage
+Call PictureSnapCalculateRotation
+If ierror Then Exit Sub
+
+' Check stage calibration is orthogonal
+Call PictureSnapCalibrateCheck
 If ierror Then Exit Sub
 
 ' If 3 point mode, then call a calibration just to print out the transformation matrix
@@ -693,6 +698,16 @@ Dim radius As Single, tWidth As Single
 Dim a1 As Single, a2 As Single
 Dim fractionx As Single, fractiony As Single
 
+Dim i As Integer
+Dim lineColor As Long
+Dim lineWidth As Single
+Dim cX As Single, cY As Single, cRadius As Single
+Dim twipsToPixelX As Single, twipsToPixelY As Single
+    
+Dim lineVertices() As VertexType
+    
+ReDim lineVertices(0 To 7) As VertexType
+
 Static oldx As Single, oldy As Single
 
 ' Skip if not in real time mode (or not CalcImage)
@@ -735,16 +750,55 @@ FormPICTURESNAP.Picture2.Refresh
 End If
 
 ' Draw current position of normal PictureSnap image
-FormPICTURESNAP.Picture2.DrawWidth = 2
-FormPICTURESNAP.Picture2.Circle (formx!, formy!), radius!, RGB(150, 0, 150)
-a1! = formx! + radius! * 2
-a2! = formx! - radius! * 2
-FormPICTURESNAP.Picture2.Line (a1!, formy!)-(formx! + radius! / 2, formy!), RGB(150, 0, 150)
-FormPICTURESNAP.Picture2.Line (a2!, formy!)-(formx! - radius! / 2, formy!), RGB(150, 0, 150)
-a1! = formy! + radius! * 2
-a2! = formy! - radius! * 2
-FormPICTURESNAP.Picture2.Line (formx!, a1!)-(formx!, formy! + radius! / 2), RGB(150, 0, 150)
-FormPICTURESNAP.Picture2.Line (formx!, a2!)-(formx!, formy! - radius! / 2), RGB(150, 0, 150)
+    twipsToPixelX = Screen.TwipsPerPixelX               ' all twip measurements must be converted to pixels; calculate the conversion now
+    If (twipsToPixelX = 0!) Then twipsToPixelX = 15!
+    twipsToPixelY = Screen.TwipsPerPixelY               ' all twip measurements must be converted to pixels; calculate the conversion now
+    If (twipsToPixelY = 0!) Then twipsToPixelY = 15!
+    
+    lineColor = RGB(150, 0, 150)
+    lineWidth = 2
+    
+    ' Convert the circle coords into pixels
+    cX = formx! / twipsToPixelX
+    cY = formy! / twipsToPixelY
+    cRadius = radius! / twipsToPixelX
+    
+    GDIPlus_Interface.GDIPlus_DrawCircle FormPICTURESNAP.Picture2.hDC, cX, cY, cRadius, lineColor, lineWidth
+    
+    ' Because we have to convert all line coordinates into twips, it's easier to stuff all points into an array
+    a1! = formx! + radius! * 2
+    a2! = formx! - radius! * 2
+    
+    lineVertices(0).x = a1!
+    lineVertices(0).y = formy!
+    lineVertices(1).x = formx! + radius! / 2
+    lineVertices(1).y = formy!
+    lineVertices(2).x = a2!
+    lineVertices(2).y = formy!
+    lineVertices(3).x = formx! - radius! / 2
+    lineVertices(3).y = formy!
+    
+    a1! = formy! + radius! * 2
+    a2! = formy! - radius! * 2
+    
+    lineVertices(4).x = formx!
+    lineVertices(4).y = a1!
+    lineVertices(5).x = formx!
+    lineVertices(5).y = formy! + radius! / 2
+    lineVertices(6).x = formx!
+    lineVertices(6).y = a2!
+    lineVertices(7).x = formx!
+    lineVertices(7).y = formy! - radius! / 2
+    
+    For i% = 0 To 7
+        lineVertices(i%).x = lineVertices(i).x / twipsToPixelX
+        lineVertices(i%).y = lineVertices(i).y / twipsToPixelY
+    Next i%
+    
+    ' Render all lines in turn
+    For i% = 0 To 3
+        GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, lineVertices(i% * 2).x, lineVertices(i% * 2).y, lineVertices(i% * 2 + 1).x, lineVertices(i% * 2 + 1).y, lineColor, lineWidth
+    Next i%
 
 ' Update full window
 If FormPICTURESNAP3.Visible Then
@@ -835,7 +889,7 @@ Dim sx1 As Single, sy1 As Single, sz1 As Single
 Dim sx2 As Single, sy2 As Single, sz2 As Single
 
 Dim fractionx As Single, fractiony As Single
-Dim x1 As Single, y1 As Single
+Dim X1 As Single, Y1 As Single
 Dim xmin As Single, ymin As Single, zmin As Single
 Dim xmax As Single, ymax As Single, zmax As Single
 
@@ -909,14 +963,14 @@ tulefty! = FormPICTURESNAP.Picture1.ScaleHeight * 0.9 - 500     ' (the 500 offse
 
 ' Add scroll offset to keep scale bar in view
 If FormPICTURESNAP.HScroll1.Max > 0 Then
-x1! = FormPICTURESNAP.HScroll1.value / FormPICTURESNAP.HScroll1.Max
+X1! = FormPICTURESNAP.HScroll1.value / FormPICTURESNAP.HScroll1.Max
 End If
 If FormPICTURESNAP.VScroll1.Max > 0 Then
-y1! = FormPICTURESNAP.VScroll1.value / FormPICTURESNAP.VScroll1.Max
+Y1! = FormPICTURESNAP.VScroll1.value / FormPICTURESNAP.VScroll1.Max
 End If
 
-tuleftx! = tuleftx! + x1! * (FormPICTURESNAP.Picture2.ScaleWidth - FormPICTURESNAP.Picture1.ScaleWidth)
-tulefty! = tulefty! + y1! * (FormPICTURESNAP.Picture2.ScaleHeight - FormPICTURESNAP.Picture1.ScaleHeight)
+tuleftx! = tuleftx! + X1! * (FormPICTURESNAP.Picture2.ScaleWidth - FormPICTURESNAP.Picture1.ScaleWidth)
+tulefty! = tulefty! + Y1! * (FormPICTURESNAP.Picture2.ScaleHeight - FormPICTURESNAP.Picture1.ScaleHeight)
 
 ' Make scale bar rectangle
 tlrightx! = tuleftx! + xrange!
@@ -971,96 +1025,6 @@ Exit Sub
 ' Errors
 PictureSnapResetScaleBarError:
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapResetScaleBar"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub PictureSnapDisplayCurrentMagBox()
-' Draw the current magnification scan box
-
-ierror = False
-On Error GoTo PictureSnapDisplayCurrentMagBoxError
-
-Dim tWidth As Single
-
-Dim formx1 As Single, formy1 As Single, formz1 As Single
-Dim formx2 As Single, formy2 As Single, formz2 As Single
-Dim xdata1 As Single, ydata1 As Single, zdata1 As Single
-Dim xdata2 As Single, ydata2 As Single, zdata2 As Single
-Dim fraction1x As Single, fraction1y As Single
-Dim fraction2x As Single, fraction2y As Single
-Dim xoffset As Single, yoffset As Single
-
-Dim tmagnification As Single
-Dim tbeammode As Integer
-
-Static oldx As Single, oldy As Single
-
-' Check for pathological conditions
-If NumberOfStageMotors% < 1 Then Exit Sub
-
-' Get beam mode
-If Not UseSharedMonitorDataFlag% Then
-Call RealTimeGetBeamMode(tbeammode%)
-If ierror Then Exit Sub
-Else
-tbeammode% = MonitorStateBeamMode%  ' 0 = spot, 1  = scan, 2 = digital
-End If
-
-' Read magnification (only read magnification if scan mode)
-If tbeammode% = 1 Then
-If Not UseSharedMonitorDataFlag% Then
-Call RealTimeGetMagnification(tmagnification!)
-If ierror Then Exit Sub
-Else
-tmagnification! = MonitorStateMagnification!
-End If
-End If
-
-' Calculate mag box corners in +/- microns
-If tmagnification! <> 0# Then
-xoffset! = (RealTimeGetBeamScanCalibration!(XMotor%, DefaultKiloVolts!, tmagnification!, DefaultScanRotation!)) / 2#
-'yoffset! = (RealTimeGetBeamScanCalibration!(YMotor%, DefaultKiloVolts!, tmagnification!, DefaultScanRotation!)) / 2#
-yoffset! = xoffset! / ImageInterfaceImageIxIy!          ' use this instead for aspect ratio?
-
-' Calculate absolute stage positions of mag box
-xdata1! = RealTimeMotorPositions!(XMotor%) - xoffset! / MotUnitsToAngstromMicrons!(XMotor%)
-ydata1! = RealTimeMotorPositions!(YMotor%) + yoffset! / MotUnitsToAngstromMicrons!(YMotor%)
-
-xdata2! = RealTimeMotorPositions!(XMotor%) + xoffset! / MotUnitsToAngstromMicrons!(XMotor%)
-ydata2! = RealTimeMotorPositions!(YMotor%) - yoffset! / MotUnitsToAngstromMicrons!(YMotor%)
-
-' Convert to form coordinates
-Call PictureSnapConvert(Int(2), formx1!, formy1!, formz1!, xdata1!, ydata1!, zdata1!, fraction1x!, fraction1y!)
-If ierror Then Exit Sub
-
-Call PictureSnapConvert(Int(2), formx2!, formy2!, formz2!, xdata2!, ydata2!, zdata2!, fraction2x!, fraction2y!)
-If ierror Then Exit Sub
-End If
-
-If CLng(oldx!) <> CLng(formx1!) Or CLng(oldy!) <> CLng(formy1!) Then
-FormPICTURESNAP.Picture2.Refresh
-End If
-
-' Update mag box if scan mode
-If tbeammode% = 1 Then
-FormPICTURESNAP.Picture2.DrawWidth = 2
-FormPICTURESNAP.Picture2.Line (formx1!, formy1!)-(formx2!, formy1!), RGB(0, 0, 150)
-FormPICTURESNAP.Picture2.Line (formx1!, formy2!)-(formx2!, formy2!), RGB(0, 0, 150)
-
-FormPICTURESNAP.Picture2.Line (formx1!, formy1!)-(formx1!, formy2!), RGB(0, 0, 150)
-FormPICTURESNAP.Picture2.Line (formx2!, formy1!)-(formx2!, formy2!), RGB(0, 0, 150)
-End If
-
-' Save this position
-oldx! = formx1!
-oldy! = formy1!
-Exit Sub
-
-' Errors
-PictureSnapDisplayCurrentMagBoxError:
-MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDisplayCurrentMagBox"
 ierror = True
 Exit Sub
 
@@ -1139,7 +1103,8 @@ On Error GoTo PictureSnapCalibrateCheckError
 Const tolerance! = 0.1        ' 10 %
 
 Dim tmsg As String
-Dim tdist As Single, xdist As Single, ydist As Single
+Dim tdistx As Single, tdisty As Single
+Dim xdist As Single, ydist As Single
 
 Dim sx1 As Single, sy1 As Single, sz1 As Single
 Dim sx2 As Single, sy2 As Single, sz2 As Single
@@ -1148,14 +1113,34 @@ Dim fractionx As Single, fractiony As Single
 Dim xmin As Single, ymin As Single, zmin As Single
 Dim xmax As Single, ymax As Single, zmax As Single
 
+Dim vCorner(1 To 1) As VertexType
+Dim vOrigin As VertexType
+
+Dim rotatedx As Single, rotatedy As Single
+
 ' Take an arbitrary screen distance and check that X and Y are equal within a tolerance
-tdist! = 1000       ' try 1000 twips
+tdistx! = 1000       ' try 1000 twips
+tdisty! = 1000       ' try 1000 twips
+
+' Use rotate vertex code to calculate stage orthogonal distances
+vOrigin.x! = 0#
+vOrigin.y! = 0#
+
+vCorner(1).x! = tdistx!
+vCorner(1).y! = tdisty!
+
+' Rotate the screen distance by the current rotation angle before converting to stage units
+vCorner(1) = PictureSnapRotateVertex(vCorner(1), vOrigin, PictureSnapRotation!)
+
+' Load the rotated corners
+rotatedx! = vCorner(1).x
+rotatedy! = vCorner(1).y
 
 ' Convert screen to stage coordinates
 Call PictureSnapConvert(Int(1), CSng(0#), CSng(0#), zmin!, sx1!, sy1!, sz1!, fractionx!, fractiony!)
 If ierror Then Exit Sub
 
-Call PictureSnapConvert(Int(1), tdist!, tdist!, zmax!, sx2!, sy2!, sz2!, fractionx!, fractiony!)
+Call PictureSnapConvert(Int(1), rotatedx!, rotatedy!, zmax!, sx2!, sy2!, sz2!, fractionx!, fractiony!)
 If ierror Then Exit Sub
 
 ' Calculate x and y distances for given screen distance
@@ -1184,4 +1169,352 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub PictureSnapDisplayCurrentMagBox()
+' Draw the current magnification scan box
+
+ierror = False
+On Error GoTo PictureSnapDisplayCurrentMagBoxError
+
+Dim tcolor As Long
+Dim tWidth As Integer
+
+Dim formx As Single, formy As Single, formz As Single
+Dim fractionx As Single, fractiony As Single
+
+Dim xmicrons As Single, ymicrons As Single           ' x and y FOV in microns
+Dim xdistance As Single, ydistance As Single         ' x and y FOV in stage units
+Dim xwidth As Single, ywidth As Single               ' x and y FOV in form units
+
+Dim tmagnification As Single
+Dim tbeammode As Integer
+
+Static oldx As Single, oldy As Single
+
+' Check for pathological conditions
+If NumberOfStageMotors% < 1 Then Exit Sub
+
+' Get beam mode
+If Not UseSharedMonitorDataFlag% Then
+Call RealTimeGetBeamMode(tbeammode%)
+If ierror Then Exit Sub
+Else
+tbeammode% = MonitorStateBeamMode%  ' 0 = spot, 1  = scan, 2 = digital
+End If
+
+' Read magnification (only read magnification if scan mode)
+If tbeammode% = 1 Then
+If Not UseSharedMonitorDataFlag% Then
+Call RealTimeGetMagnification(tmagnification!)
+If ierror Then Exit Sub
+Else
+tmagnification! = MonitorStateMagnification!
+End If
+End If
+
+' Calculate mag box corners in +/- microns
+If tmagnification! <> 0# Then
+xmicrons! = RealTimeGetBeamScanCalibration!(XMotor%, DefaultKiloVolts!, tmagnification!, DefaultScanRotation!)
+If ierror Then Exit Sub
+ymicrons! = xmicrons! / ImageInterfaceImageIxIy!
+
+' Convert micron FOV to stage units
+xdistance! = xmicrons! / MotUnitsToAngstromMicrons!(XMotor%)
+ydistance! = xdistance! / ImageInterfaceImageIxIy!
+
+' Convert FOV distance from stage units to form units (using image rotation)
+xwidth! = PictureSnapConvertStageDistancetoImageDistance(Int(0), xdistance!, PictureSnapRotation!)
+If ierror Then Exit Sub
+ywidth! = PictureSnapConvertStageDistancetoImageDistance(Int(1), ydistance!, PictureSnapRotation!)
+If ierror Then Exit Sub
+ywidth! = xwidth! / ImageInterfaceImageIxIy!                              ' use actual aspect ratio for best accuracy
+
+' Convert current stage position to form coordinates
+Call PictureSnapConvert(Int(2), formx!, formy!, formz!, RealTimeMotorPositions!(XMotor%), RealTimeMotorPositions!(YMotor%), RealTimeMotorPositions!(ZMotor%), fractionx!, fractiony!)
+If ierror Then Exit Sub
+
+' Refresh image if current position changed from last time
+If CLng(oldx!) <> CLng(formx!) Or CLng(oldy!) <> CLng(formy!) Then
+FormPICTURESNAP.Picture2.Refresh
+End If
+
+' Update mag box if scan mode
+If tbeammode% = 1 Then
+
+' Set line color and width
+tcolor& = RGB(0, 0, 150)
+tWidth% = 2
+
+' New code to draw magbox corners using rectangle rotation
+Call PictureSnapDrawRectangle(formx!, formy!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, tWidth%)
+If ierror Then Exit Sub
+
+End If
+
+' Save this position
+oldx! = formx!
+oldy! = formy!
+End If
+
+Exit Sub
+
+' Errors
+PictureSnapDisplayCurrentMagBoxError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDisplayCurrentMagBox"
+ierror = True
+Exit Sub
+
+End Sub
+
+Function PictureSnapRotateVertex(vCorner As VertexType, vOrigin As VertexType, AngleDegrees As Single) As VertexType
+' Calculate the rotated corners of a rectangle
+
+ierror = False
+On Error GoTo PictureSnapRotateVertexError
+
+Dim arad As Single
+    
+arad! = AngleDegrees! * PI! / 180
+    
+PictureSnapRotateVertex.x = ((vCorner.x - vOrigin.x) * Cos(arad!) - (vCorner.y - vOrigin.y) * Sin(arad)) + vOrigin.x
+PictureSnapRotateVertex.y = ((vCorner.y - vOrigin.y) * Cos(arad!) + (vCorner.x - vOrigin.x) * Sin(arad)) + vOrigin.y
+
+Exit Function
+
+' Errors
+PictureSnapRotateVertexError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapRotateVertex"
+ierror = True
+Exit Function
+
+End Function
+
+Function PictureSnapConvertStageDistancetoImageDistance(mode As Integer, sdistance As Single, rotation As Single) As Single
+' Convert the passed stage distance to form (image) units
+'  mode = 0 calculate x distance
+'  mode = 1 calculate y distance
+
+ierror = False
+On Error GoTo PictureSnapConvertStageDistancetoImageDistanceError
+
+Dim temp As Single
+Dim arad As Single
+
+Dim formx1 As Single, formy1 As Single, formz1 As Single
+Dim formx2 As Single, formy2 As Single, formz2 As Single
+
+Dim fractionx1 As Single, fractiony1 As Single
+Dim fractionx2 As Single, fractiony2 As Single
+
+' Utilize image to stage rotation value for rigorous form distance calculation
+arad! = rotation! * PI! / 180
+temp! = sdistance! / Cos(arad!)
+
+' Convert the stage distance to form units
+If mode% = 0 Then
+Call PictureSnapConvert(Int(2), formx1!, formy1!, formz1!, CSng(0#), CSng(0#), CSng(0#), fractionx1!, fractiony1!)
+If ierror Then Exit Function
+
+Call PictureSnapConvert(Int(2), formx2!, formy2!, formz2!, temp!, CSng(0#), CSng(0#), fractionx2!, fractiony2!)
+If ierror Then Exit Function
+
+temp! = Abs(formx2! - formx1!)
+
+Else
+Call PictureSnapConvert(Int(2), formx1!, formy1!, formz1!, CSng(0#), CSng(0#), CSng(0#), fractionx1!, fractiony1!)
+If ierror Then Exit Function
+
+Call PictureSnapConvert(Int(2), formx2!, formy2!, formz2!, CSng(0#), temp!, CSng(0#), fractionx2!, fractiony2!)
+If ierror Then Exit Function
+
+temp! = Abs(formy2! - formy1!)
+End If
+
+PictureSnapConvertStageDistancetoImageDistance! = temp!
+
+Exit Function
+
+' Errors
+PictureSnapConvertStageDistancetoImageDistanceError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapConvertStageDistancetoImageDistance"
+ierror = True
+Exit Function
+
+End Function
+
+Function PictureSnapConvertImageDistancetoStageDistance(mode As Integer, fdistance As Single, rotation As Single) As Single
+' Convert the passed form (image) distance to stage units
+'  mode = 0 calculate x distance
+'  mode = 1 calculate y distance
+
+ierror = False
+On Error GoTo PictureSnapConvertImageDistancetoStageDistanceError
+
+Dim temp As Single
+Dim arad As Single
+
+Dim stagex1 As Single, stagey1 As Single, stagez1 As Single
+Dim stagex2 As Single, stagey2 As Single, stagez2 As Single
+
+Dim fractionx1 As Single, fractiony1 As Single
+Dim fractionx2 As Single, fractiony2 As Single
+
+' Utilize image to stage rotation value for rigorous stage distance calculation
+arad! = rotation! * PI! / 180
+temp! = fdistance! / Cos(arad!)
+
+' Calculate the form distance to stage units
+If mode% = 0 Then
+Call PictureSnapConvert(Int(1), CSng(0#), CSng(0#), CSng(0#), stagex1!, stagey1!, stagez1!, fractionx1!, fractiony1!)
+If ierror Then Exit Function
+
+Call PictureSnapConvert(Int(1), temp!, CSng(0#), CSng(0#), stagex2!, stagey2!, stagez2!, fractionx2!, fractiony2!)
+If ierror Then Exit Function
+
+temp! = Abs(stagex2! - stagex1!)
+
+Else
+Call PictureSnapConvert(Int(1), CSng(0#), CSng(0#), CSng(0#), stagex1!, stagey1!, stagez1!, fractionx1!, fractiony1!)
+If ierror Then Exit Function
+
+Call PictureSnapConvert(Int(1), CSng(0#), temp!, CSng(0#), stagex2!, stagey2!, stagez2!, fractionx2!, fractiony2!)
+If ierror Then Exit Function
+
+temp! = Abs(stagey2! - stagey1!)
+End If
+
+PictureSnapConvertImageDistancetoStageDistance! = temp!
+
+Exit Function
+
+' Errors
+PictureSnapConvertImageDistancetoStageDistanceError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapConvertImageDistancetoStageDistance"
+ierror = True
+Exit Function
+
+End Function
+
+Sub PictureSnapDrawRectangle(xcenter As Single, ycenter As Single, xwidth As Single, ywidth As Single, rotation As Single, tcolor As Long, tWidth As Integer)
+' Draws a rectangle of the specified width and height at the specified screen location (all values in screen units)
+'  xcenter = rectangle center x form position
+'  ycenter = rectangle center y form position
+'  xwidth = rectangle width in form units
+'  ywidth = rectangle height in form units
+'  tcolor = line color
+'  twidth = line width
+
+ierror = False
+On Error GoTo PictureSnapDrawRectangleError
+
+Dim formx1 As Single, formy1 As Single
+Dim formx2 As Single, formy2 As Single
+
+Dim formx3 As Single, formy3 As Single
+Dim formx4 As Single, formy4 As Single
+
+Dim vCorner(1 To 4) As VertexType
+Dim vOrigin As VertexType
+
+Dim listOfPoints() As VertexType
+    
+Dim twipsToPixelX As Single, twipsToPixelY As Single
+Dim i As Integer
+    
+' Calculate the vertices of the rectangle
+formx1! = xcenter! - xwidth! / 2#
+formy1! = ycenter! - ywidth! / 2#
+
+formx2! = xcenter! + xwidth! / 2#
+formy2! = ycenter! - ywidth! / 2#
+
+formx3! = xcenter! + xwidth! / 2#
+formy3! = ycenter! + ywidth! / 2#
+
+formx4! = xcenter! - xwidth! / 2#
+formy4! = ycenter! + ywidth! / 2#
+
+' Rotate the rectangle based on stage to image rotation
+vCorner(1).x! = formx1!
+vCorner(1).y! = formy1!
+
+vCorner(2).x! = formx2!
+vCorner(2).y! = formy2!
+
+vCorner(3).x! = formx3!
+vCorner(3).y! = formy3!
+
+vCorner(4).x! = formx4!
+vCorner(4).y! = formy4!
+
+vOrigin.x! = xcenter!
+vOrigin.y! = ycenter!
+
+' Rotate the rectangle for each corner
+vCorner(1) = PictureSnapRotateVertex(vCorner(1), vOrigin, rotation!)
+vCorner(2) = PictureSnapRotateVertex(vCorner(2), vOrigin, rotation!)
+vCorner(3) = PictureSnapRotateVertex(vCorner(3), vOrigin, rotation!)
+vCorner(4) = PictureSnapRotateVertex(vCorner(4), vOrigin, rotation!)
+
+' Load the rotated corners
+formx1! = vCorner(1).x
+formy1! = vCorner(1).y
+
+formx2! = vCorner(2).x
+formy2! = vCorner(2).y
+
+formx3! = vCorner(3).x
+formy3! = vCorner(3).y
+
+formx4! = vCorner(4).x
+formy4! = vCorner(4).y
+
+' Draw the rectangle lines (old native VB6 code)
+'FormPICTURESNAP.Picture2.DrawWidth = twidth%
+'FormPICTURESNAP.Picture2.Line (formx1!, formy1!)-(formx2!, formy2!), tcolor&
+'FormPICTURESNAP.Picture2.Line (formx2!, formy2!)-(formx3!, formy3!), tcolor&
+'
+'FormPICTURESNAP.Picture2.Line (formx3!, formy3!)-(formx4!, formy4!), tcolor&
+'FormPICTURESNAP.Picture2.Line (formx4!, formy4!)-(formx1!, formy1!), tcolor&
+    
+    ' GDI+, like most graphics libraries, operates in pixel measurements.  Convert all twips measurements to pixels.
+    ReDim listOfPoints(0 To 3) As VertexType
+    listOfPoints(0).x = formx1!
+    listOfPoints(0).y = formy1!
+    listOfPoints(1).x = formx2!
+    listOfPoints(1).y = formy2!
+    listOfPoints(2).x = formx3!
+    listOfPoints(2).y = formy3!
+    listOfPoints(3).x = formx4!
+    listOfPoints(3).y = formy4!
+    
+    twipsToPixelX = Screen.TwipsPerPixelX
+    If (twipsToPixelX = 0!) Then twipsToPixelX = 15!
+    twipsToPixelY = Screen.TwipsPerPixelY
+    If (twipsToPixelY = 0!) Then twipsToPixelY = 15!
+    
+    For i% = 0 To 3
+        listOfPoints(i%).x = listOfPoints(i%).x / twipsToPixelX
+        listOfPoints(i%).y = listOfPoints(i%).y / twipsToPixelY
+    Next i%
+    
+    ' Render each line in turn
+    For i% = 0 To 3
+        If (i% < 3) Then
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(i% + 1).x, listOfPoints(i% + 1).y, tcolor&, tWidth%
+        Else
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(0).x, listOfPoints(0).y, tcolor&, tWidth%
+        End If
+    Next i%
+    
+Exit Sub
+
+' Errors
+PictureSnapDrawRectangleError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapDrawRectangle"
+ierror = True
+Exit Sub
+
+End Sub
+
 

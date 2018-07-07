@@ -274,7 +274,19 @@ Sub PictureSnapDrawLineRectangle()
 ierror = False
 On Error GoTo PictureSnapDrawLineRectangleError
 
+Dim tWidth As Integer
 Dim tcolor As Long
+
+Dim centerX As Single, centerY As Single
+Dim xwidth As Single, ywidth As Single
+
+Dim widthx As Single, widthy As Single
+
+Dim stagex1 As Single, stagey1 As Single, stagez1 As Single
+Dim stagex2 As Single, stagey2 As Single, stagez2 As Single
+
+Dim fractionx1 As Single, fractiony1 As Single
+Dim fractionx2 As Single, fractiony2 As Single
 
 If Not UseLineDrawingModeFlag And Not UseRectangleDrawingModeFlag Then Exit Sub
 
@@ -282,17 +294,43 @@ If Not UseLineDrawingModeFlag And Not UseRectangleDrawingModeFlag Then Exit Sub
 If DrawLineRectanglePositions1!(1) = 0# And DrawLineRectanglePositions1!(2) = 0# Then Exit Sub
 
 ' Load color and thickness
-tcolor& = RGB(255, 255, 255)
+tcolor& = RGB(255, 0, 0)
 FormPICTURESNAP.Picture2.DrawWidth = 2
 
-' Draw line
+' Draw line (need to convert to GDI+ code)
 If UseLineDrawingModeFlag Then
 FormPICTURESNAP.Picture2.Line (DrawLineRectanglePositions1!(1), DrawLineRectanglePositions1!(2))-(DrawLineRectanglePositions2!(1), DrawLineRectanglePositions2!(2)), tcolor&
 End If
 
 ' Draw rectangle
 If UseRectangleDrawingModeFlag Then
-FormPICTURESNAP.Picture2.Line (DrawLineRectanglePositions1!(1), DrawLineRectanglePositions1!(2))-(DrawLineRectanglePositions2!(1), DrawLineRectanglePositions2!(2)), tcolor&, B
+'FormPICTURESNAP.Picture2.Line (DrawLineRectanglePositions1!(1), DrawLineRectanglePositions1!(2))-(DrawLineRectanglePositions2!(1), DrawLineRectanglePositions2!(2)), tcolor&, B
+
+' Calculate screen center position
+centerX! = DrawLineRectanglePositions1!(1) + (DrawLineRectanglePositions2!(1) - DrawLineRectanglePositions1!(1)) / 2#
+centerY! = DrawLineRectanglePositions1!(2) + (DrawLineRectanglePositions2!(2) - DrawLineRectanglePositions1!(2)) / 2#
+
+' Convert screen corners to stage corners
+Call PictureSnapConvert(Int(1), DrawLineRectanglePositions1!(1), DrawLineRectanglePositions1!(2), CSng(0#), stagex1!, stagey1!, stagez1!, fractionx1!, fractiony1!)
+If ierror Then Exit Sub
+
+Call PictureSnapConvert(Int(1), DrawLineRectanglePositions2!(1), DrawLineRectanglePositions2!(2), CSng(0#), stagex2!, stagey2!, stagez2!, fractionx2!, fractiony2!)
+If ierror Then Exit Sub
+
+' Calculate stage widths
+widthx! = Abs(stagex2! - stagex1!)
+widthy! = Abs(stagey2! - stagey1!)
+
+' Convert stage distance to screen distance (to correct for rotation)
+xwidth! = PictureSnapConvertStageDistancetoImageDistance(Int(0), widthx!, PictureSnapRotation!)
+If ierror Then Exit Sub
+ywidth! = PictureSnapConvertStageDistancetoImageDistance(Int(1), widthy!, PictureSnapRotation!)
+If ierror Then Exit Sub
+
+' New code to draw magbox corners using rectangle rotation
+tWidth% = 2
+Call PictureSnapDrawRectangle(centerX!, centerY!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, tWidth%)
+If ierror Then Exit Sub
 End If
 
 Exit Sub
@@ -303,3 +341,4 @@ ierror = True
 Exit Sub
 
 End Sub
+

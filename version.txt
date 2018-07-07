@@ -2,6 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/6/18		Fix formula by difference calculation when oxygen is calculated by stoichiometry (Seward).
+		Modify rectangle drawing mode code in PictureSnap for image to stage rotation.
+		
+		Update help file for display standard image (index entry).
+
+07/3/18		Add GDI+ graphics, fix rotation calculations.
+v. 12.4.1
+
+06/20/18	Modify PictureSnap display current FOV to show image to stage rotation.
+
 06/29/18	Format PS rotation for leading zero. Remove commented out lines in PS code. Fix problem
 v. 12.4.0	with loading/saving screen/stage coordinates when switching from 2 to 3 points and back again.
 
