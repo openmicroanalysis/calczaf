@@ -723,6 +723,15 @@ apoint2x! = tImage.ImageXmin!  ' reference stage coordinates
 apoint1y! = tImage.ImageYmin!  ' reference stage coordinates (flipped for BMP)
 apoint2y! = tImage.ImageYmax!  ' reference stage coordinates (flipped for BMP)
 
+' Zero out the third point since it is not used for simple images
+cpoint3x! = 0#
+cpoint3y! = 0#
+cpoint3z! = 0#
+
+apoint3x! = 0#
+apoint3y! = 0#
+apoint3z! = 0#
+
 PictureSnap_keV! = tImage.ImageKilovolts!
 PictureSnap_mag! = tImage.ImageMag!
 PictureSnap_scanrota! = tImage.ImageScanRotation!
