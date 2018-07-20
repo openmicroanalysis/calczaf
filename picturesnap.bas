@@ -688,7 +688,7 @@ Exit Sub
 End Sub
 
 Sub PictureSnapDrawCurrentPosition()
-' Draw current position on pic2 if real time mode
+' Draw current position on Picturesnap.frm and PictureSnap3.frm.
 
 ierror = False
 On Error GoTo PictureSnapDrawCurrentPositionError
@@ -730,10 +730,6 @@ If Not PictureSnapCalibrated Then Exit Sub
 
 ' If not realtime and no coordinates, just exit
 If Not RealTimeMode And RealTimeMotorPositions!(XMotor%) = 0# And RealTimeMotorPositions!(YMotor%) = 0# Then Exit Sub
-
-' Update caption position (causes mouse move cursor coordinates to be overwritten)
-'Call PictureSnapUpdateCursor(Int(1), RealTimeMotorPositions!(XMotor%), RealTimeMotorPositions!(YMotor%))
-'If ierror Then Exit Sub
 
 ' Convert to form coordinates
 Call PictureSnapConvert(Int(2), formx!, formy!, formz!, RealTimeMotorPositions!(XMotor%), RealTimeMotorPositions!(YMotor%), RealTimeMotorPositions!(ZMotor%), fractionx!, fractiony!)
@@ -817,13 +813,10 @@ FormPICTURESNAP3.Circle (FormPICTURESNAP3.ScaleWidth * fractionx!, FormPICTURESN
 End If
 End If
 
-' Display current mag box
-Call PictureSnapDisplayCurrentMagBox
-If ierror Then Exit Sub
-
 ' Save this position
 oldx! = formx!
 oldy! = formy!
+
 Exit Sub
 
 ' Errors
@@ -1240,15 +1233,12 @@ End If
 
 ' Update mag box if scan mode
 If tbeammode% = 1 Then
-
-' Set line color and width
 tcolor& = RGB(0, 0, 150)
 tWidth% = 2
 
 ' New code to draw magbox corners using rectangle rotation
 Call PictureSnapDrawRectangle(formx!, formy!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, tWidth%)
 If ierror Then Exit Sub
-
 End If
 
 ' Save this position

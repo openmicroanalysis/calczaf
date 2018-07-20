@@ -221,6 +221,8 @@ FormPICTURESNAP.menuDisplayDisplayImageFOVs.Checked = DisplayImageFOVs
 ' Move inside Pictuebox to upper left
 FormPICTURESNAP.Picture2.Left = 0
 FormPICTURESNAP.Picture2.Top = 0
+' Start GDI+
+GDIPlus_Interface.StartGDIPlus
 End Sub
 
 Private Sub Form_Resize()
@@ -257,6 +259,8 @@ Call InitWindow(Int(1), MDBUserName$, Me)
 Unload FormPICTURESNAP2    ' unload calibration form in case it is loaded
 Unload FormPICTURESNAP3    ' unload full window view in case it is loaded
 FormPICTURESNAP.TimerPictureSnap.Enabled = False
+' Before exiting, Stop GDI+
+GDIPlus_Interface.StopGDIPlus
 End Sub
 
 Private Sub menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly_Click()
@@ -466,16 +470,16 @@ If ierror Then Exit Sub
 End If
 End Sub
 
-Private Sub Picture2_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Picture2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 BitMapButton% = Button%
-BitMapX! = X!
-BitMapY! = Y!   ' store for double-click and map calibrate
+BitMapX! = x!
+BitMapY! = y!   ' store for double-click and map calibrate
 End Sub
 
-Private Sub Picture2_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Picture2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
-Call PictureSnapUpdateCursor(Int(0), X!, Y!)
+Call PictureSnapUpdateCursor(Int(0), x!, y!)
 If ierror Then Exit Sub
 If WaitingForCalibrationClick Then
 FormPICTURESNAP.Picture2.MousePointer = vbArrowQuestion
@@ -486,6 +490,8 @@ Private Sub TimerPictureSnap_Timer()
 If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.Picture2.Cls
 Call PictureSnapDrawCurrentPosition
+If ierror Then Exit Sub
+Call PictureSnapDisplayCurrentMagBox
 If ierror Then Exit Sub
 Call PictureSnapDisplayPositions
 If ierror Then Exit Sub

@@ -236,11 +236,11 @@ Call IOWriteLog(vbNullString)
 
 For k% = 1 To PhiRhoZPlotSets&
 Call IOWriteLog(Format$(MiscAutoUcase$(sample(1).Elsyms$(k%)) & " " & sample(1).Xrsyms$(k%), a80$) & Format$("Mass Depth", a140$) & Format$("Micron Depth", a140$) & ", TO = " & Format$(sample(1).TakeoffArray!(k%)) & ", keV = " & Format$(sample(1).KilovoltsArray!(k%)) & ", d = " & Format$(sample(1).SampleDensity!))
-Call IOWriteLog(Format$("  60%", a80$) & Format$(phirhozareas60!(k%), a140$) & Format$(CSng(phirhozareas60!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#)), a140$))
-Call IOWriteLog(Format$("  80%", a80$) & Format$(phirhozareas80!(k%), a140$) & Format$(CSng(phirhozareas80!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#)), a140$))
-Call IOWriteLog(Format$("  90%", a80$) & Format$(phirhozareas90!(k%), a140$) & Format$(CSng(phirhozareas90!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#)), a140$))
-Call IOWriteLog(Format$("  95%", a80$) & Format$(phirhozareas95!(k%), a140$) & Format$(CSng(phirhozareas95!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#)), a140$))
-Call IOWriteLog(Format$("  99%", a80$) & Format$(phirhozareas99!(k%), a140$) & Format$(CSng(phirhozareas99!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#)), a140$))
+Call IOWriteLog(Format$("  60%", a80$) & Space(6) & MiscAutoFormat$(phirhozareas60!(k%)) & Space(6) & MiscAutoFormat$(CSng(phirhozareas60!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#))))
+Call IOWriteLog(Format$("  80%", a80$) & Space(6) & MiscAutoFormat$(phirhozareas80!(k%)) & Space(6) & MiscAutoFormat$(CSng(phirhozareas80!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#))))
+Call IOWriteLog(Format$("  90%", a80$) & Space(6) & MiscAutoFormat$(phirhozareas90!(k%)) & Space(6) & MiscAutoFormat$(CSng(phirhozareas90!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#))))
+Call IOWriteLog(Format$("  95%", a80$) & Space(6) & MiscAutoFormat$(phirhozareas95!(k%)) & Space(6) & MiscAutoFormat$(CSng(phirhozareas95!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#))))
+Call IOWriteLog(Format$("  99%", a80$) & Space(6) & MiscAutoFormat$(phirhozareas99!(k%)) & Space(6) & MiscAutoFormat$(CSng(phirhozareas99!(k%) / (sample(1).SampleDensity! / MICRONSPERCM& * MILLIGMPERGRAM#))))
 Call IOWriteLog(vbNullString)
 Next k%
 
