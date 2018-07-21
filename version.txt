@@ -2,7 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/21/18	Force polygon plots to be equant.
+
 07/19/18	Modify GDI+ code to open on form load and close on unload.
+v. 12.4.2
 
 07/16/18	Deal with check interference error if automation running
 

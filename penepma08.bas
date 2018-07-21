@@ -576,7 +576,7 @@ bstring$ = astring$
 
 If InStr(astring$, "TITLE") > 0 Then bstring$ = Left$(astring, COL7%) & Left$(BeamTitle$, 120)
 
-cstring$ = Format$(Format$(BeamEnergy#, "Scientific"), a10$)
+cstring$ = Format$(Format$(BeamEnergy#, "Scientific"), A10$)
 If InStr(astring$, "SENERG") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
@@ -3010,6 +3010,10 @@ msg$ = msg$ & "Penepma Simulation Title:  " & BeamTitle$ & vbCrLf
 msg$ = msg$ & "Batch Save To Folder:    " & PENEPMA_BATCH_FOLDER$ & vbCrLf & vbCrLf
 msg$ = msg$ & Space(4) & "Takeoff (degrees) :         " & Format$(BeamTakeOff#) & " degrees" & vbCrLf
 msg$ = msg$ & Space(4) & "Beam Energy (eV) :         " & Format$(BeamEnergy#, e71$) & " (" & Format$(BeamEnergy# / EVPERKEV#) & " keV)" & vbCrLf
+
+msg$ = msg$ & Space(4) & "Min Electron Eng. eV   :  " & Format$(InputEABS1#(1)) & vbCrLf        ' applies to all 11 binaries (and end member pure elements)
+msg$ = msg$ & Space(4) & "Min Photon Eng. eV    :   " & Format$(InputEABS2#(1)) & vbCrLf        ' applies to all 11 binaries (and end member pure elements)
+
 msg$ = msg$ & Space(4) & "Number of Showers:      " & Format$(BeamNumberSimulatedShowers#, e71$) & vbCrLf
 msg$ = msg$ & Space(4) & "Simulation Time (sec):   " & Format$(BeamSimulationTimePeriod#, e71$) & " (" & Format$(BeamSimulationTimePeriod# / SECPERHOUR#, f82$) & " hours per binary) or " & vbCrLf
 msg$ = msg$ & Space(4) & "Simulation Time (days):  " & Format$((MAXBINARY% + 2) * BeamSimulationTimePeriod# / SECPERDAY#, f82$) & " days for 11 binaries plus 2 end members" & vbCrLf & vbCrLf
