@@ -1141,7 +1141,7 @@ xdist! = Abs(sx2! - sx1!)
 ydist! = Abs(sy2! - sy1!)
 
 ' Update calibration window for accuracy
-tmsg$ = "X=" & Format$(xdist!) & ", Y=" & Format$(ydist!) & vbCrLf & "(X-Y)/X=" & MiscAutoFormat4$(Abs((xdist! - ydist!) / xdist!) * 100#) & "%" & vbCrLf
+tmsg$ = "X=" & MiscAutoFormat6$(xdist!) & ", Y=" & MiscAutoFormat6$(ydist!) & vbCrLf & "(X-Y)/X=" & MiscAutoFormat4$(Abs((xdist! - ydist!) / xdist!) * 100#) & "%" & vbCrLf
 tmsg$ = tmsg$ & "Rotation=" & Format$(PictureSnapRotation!, "0.00") & " degrees"
 FormPICTURESNAP2.LabelCalibrationAccuracy.Caption = tmsg$
 
@@ -1183,6 +1183,24 @@ Dim tmagnification As Single
 Dim tbeammode As Integer
 
 Static oldx As Single, oldy As Single
+
+' Skip if interface is busy
+If RealTimeInterfaceBusy Then Exit Sub
+
+' Skip if pausing automation
+If RealTimePauseAutomation Then Exit Sub
+
+' If form not visible just exit
+If Not FormPICTURESNAP.Visible Then Exit Sub
+
+' If no picture just exit
+If PictureSnapFilename$ = vbNullString Then Exit Sub
+
+' If not calibrated, just exit
+If Not PictureSnapCalibrated Then Exit Sub
+
+' If not realtime and no coordinates, just exit
+If Not RealTimeMode And RealTimeMotorPositions!(XMotor%) = 0# And RealTimeMotorPositions!(YMotor%) = 0# Then Exit Sub
 
 ' Check for pathological conditions
 If NumberOfStageMotors% < 1 Then Exit Sub

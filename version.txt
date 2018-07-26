@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/26/18	Modify orthogonality numerical format for small values in PS feature.
+
+07/25/18	Fix small bug in PS when call to display current magbox was moved to timer event.
+
 07/21/18	Force polygon plots to be equant.
 
 07/19/18	Modify GDI+ code to open on form load and close on unload.
