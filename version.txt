@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/28/18	Improve assigned TDI and blank correction code in GetElmSetStdLoad for better speed.
+
+		Fix bug in acquire assigned TDI code.
+
 07/26/18	Modify orthogonality numerical format for small values in PS feature.
 
 07/25/18	Fix small bug in PS when call to display current magbox was moved to timer event.
