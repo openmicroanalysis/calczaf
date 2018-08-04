@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/03/18	Add warning to load/save column conditions if automation is paused.
+
 07/28/18	Improve assigned TDI and blank correction code in GetElmSetStdLoad for better speed.
 
 		Fix bug in acquire assigned TDI code.

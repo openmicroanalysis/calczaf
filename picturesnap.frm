@@ -256,8 +256,8 @@ If Not DebugMode Then On Error Resume Next
 Call PictureSnapSave
 If ierror Then Exit Sub
 Call InitWindow(Int(1), MDBUserName$, Me)
-Unload FormPICTURESNAP2    ' unload calibration form in case it is loaded
-Unload FormPICTURESNAP3    ' unload full window view in case it is loaded
+If FormPICTURESNAP2.Visible Then Unload FormPICTURESNAP2    ' unload calibration form in case it is loaded
+If FormPICTURESNAP3.Visible Then Unload FormPICTURESNAP3    ' unload full window view in case it is loaded
 FormPICTURESNAP.TimerPictureSnap.Enabled = False
 ' Before exiting, Stop GDI+
 GDIPlus_Interface.StopGDIPlus

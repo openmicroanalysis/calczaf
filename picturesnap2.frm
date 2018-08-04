@@ -851,7 +851,7 @@ Call PictureSnapCalibrateUnLoad
 If ierror Then Exit Sub
 End If
 Unload FormPICTURESNAP2
-Unload FormPICTURESNAP3
+If FormPICTURESNAP3.Visible Then Unload FormPICTURESNAP3
 End Sub
 
 Private Sub CommandDisplayCalibrationPoints_Click()
@@ -995,7 +995,7 @@ HelpContextID = IOGetHelpContextID("FormPICTURESNAP2")
 PictureSnapCalibratedPreviously = PictureSnapCalibrated
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 If WaitingForCalibrationClick Then
 FormPICTURESNAP2.MousePointer = vbDefault

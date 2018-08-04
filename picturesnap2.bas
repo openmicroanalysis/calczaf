@@ -167,14 +167,6 @@ Dim gStage_Units As String
 
 Dim m_Width As Long, m_Height As Long, m_Depth As Long, m_ImageType As Long
 
-' Unload the calibration and full view forms in case loaded
-Unload FormPICTURESNAP2
-Unload FormPICTURESNAP3
-
-' Set FormPICTURESNAP scroll bars to upper left
-FormPICTURESNAP.HScroll1.value = 0
-FormPICTURESNAP.VScroll1.value = 0
-
 ' Get existing filename from user
 If mode% > 0 Then
 
@@ -185,9 +177,6 @@ If Trim$(PictureSnapFilename$) <> vbNullString Then tfilename$ = PictureSnapFile
 Call IOGetFileName(Int(2), "IMG", tfilename$, tForm)
 If ierror Then Exit Sub
 If UCase$(MiscGetFileNameExtensionOnly$(tfilename$)) <> ".BMP" And UCase$(MiscGetFileNameExtensionOnly$(tfilename$)) <> ".GIF" And UCase$(MiscGetFileNameExtensionOnly$(tfilename$)) <> ".JPG" Then GoTo PictureSnapfileOpenWrongExtension
-
-' Set global while image is loading to prevent mouse cursor convert coordinate errors
-PictureSnapCalibrated = False
 End If
 
 ' Load GRD file
@@ -196,13 +185,9 @@ tfilename$ = vbNullString
 If Trim$(PictureSnapFilename$) <> vbNullString Then tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".grd"
 Call IOGetFileName(Int(2), "GRD", tfilename$, tForm)
 If ierror Then Exit Sub
-
-' Open and convert grid file
 If Not MiscStringsAreSame(MiscGetFileNameExtensionOnly$(tfilename$), ".GRD") Then GoTo PictureSnapFileOpenNotGRD
 
-' Set global while image is loading to prevent mouse cursor convert coordinate errors
-PictureSnapCalibrated = False
-
+' Open and convert grid file
 Call PictureSnapFileOpenGrid(tfilename)
 If ierror Then Exit Sub
 End If
@@ -213,11 +198,8 @@ If Dir$(tfilename$) = vbNullString Then GoTo PictureSnapFileOpenNotFound
 End If
 
 ' Reset globals
-PictureSnapFilename$ = vbNullString
-PictureSnapCalibrated = False           ' reset not calibrated
-PictureSnapCalibrationSaved = False     ' reset calibration not saved
-Set FormPICTURESNAP.Picture2 = LoadPicture(vbNullString)
-FormPICTURESNAP.Caption = "PictureSnapApp [" & PictureSnapFilename$ & "]"
+Call PictureSnapFileClose
+If ierror Then Exit Sub
 
 ' Check for existing GRD or ACQ info
 Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
@@ -649,8 +631,8 @@ Screen.MousePointer = vbDefault
 ' Get stage extents (use Picture2 control in Twips for stage coordinate calculations)
 ixmin! = 0
 iymin! = 0
-ixmax! = FormPICTURESNAP.Picture2.ScaleX(FormPICTURESNAP.Picture2.Picture.Width, vbHimetric, vbTwips)
-iymax! = FormPICTURESNAP.Picture2.ScaleY(FormPICTURESNAP.Picture2.Picture.Height, vbHimetric, vbTwips)
+ixmax! = FormPICTURESNAP.Picture2.scaleX(FormPICTURESNAP.Picture2.Picture.Width, vbHimetric, vbTwips)
+iymax! = FormPICTURESNAP.Picture2.scaleY(FormPICTURESNAP.Picture2.Picture.Height, vbHimetric, vbTwips)
 
 ' Convert to stage coordinates
 Call PictureSnapConvert(Int(1), ixmin!, iymin!, izmin!, xmin!, ymin!, zmin!, fractionx!, fractiony!)
@@ -830,8 +812,8 @@ If Not PictureSnapCalibrated Then Exit Sub
 
 ' Determine image extents
 If FormPICTURESNAP.Picture2.Picture.Type <> 1 Then Exit Sub     ' not bitmap
-ixmax! = FormPICTURESNAP.Picture2.ScaleX(FormPICTURESNAP.Picture2.Picture.Width, vbHimetric, vbTwips)
-iymax! = FormPICTURESNAP.Picture2.ScaleY(FormPICTURESNAP.Picture2.Picture.Height, vbHimetric, vbTwips)
+ixmax! = FormPICTURESNAP.Picture2.scaleX(FormPICTURESNAP.Picture2.Picture.Width, vbHimetric, vbTwips)
+iymax! = FormPICTURESNAP.Picture2.scaleY(FormPICTURESNAP.Picture2.Picture.Height, vbHimetric, vbTwips)
 
 ' Convert to stage coordinates (z coordinates are not used)
 'Call PictureSnapConvert(Int(1), ixmin!, iymin!, CSng(0#), xmin!, ymin!, zmin!, fractionx!, fractiony!)
@@ -1142,13 +1124,13 @@ Dim gfilename As String, bfilename$
 
 Static tfilename As String
 
-' Unload the calibration and full size forms in case loaded
-Unload FormPICTURESNAP2
-Unload FormPICTURESNAP3
-
 ' Get file from user
 If tfilename$ = vbNullString Then tfilename$ = UserImagesDirectory$ & "\*.PrbImg"
 Call IOGetFileName(Int(2), "PrbImg", tfilename$, FormPICTURESNAP)
+If ierror Then Exit Sub
+
+' Reset globals
+Call PictureSnapFileClose
 If ierror Then Exit Sub
 
 UserImagesDirectory$ = MiscGetPathOnly2$(tfilename$)
@@ -1298,6 +1280,48 @@ Exit Sub
 PictureSnapLoadACQSameACQ:
 msg$ = "The specified ACQ file " & tfilename$ & " is the same as the current ACQ file. Please try again with a different ACQ file."
 MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapFileLoadACQ"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub PictureSnapFileClose()
+' Close the current image and re-set globals
+
+ierror = False
+On Error GoTo PictureSnapFileCloseError
+
+' Unload other windows
+If FormPICTURESNAP2.Visible Then Unload FormPICTURESNAP2
+If FormPICTURESNAP3.Visible Then Unload FormPICTURESNAP3
+
+' Set globals
+PictureSnapFilename$ = vbNullString
+PictureSnapMode% = 0                          ' 0 = normal two control point conversion, 1 = three control point transformation
+PictureSnapCalibrationSaved = False
+
+PictureSnapCalibrated = False
+PictureSnapCalibratedPreviously = False
+
+' Clear images
+FormPICTURESNAP.Picture1.Picture = LoadPicture(vbNullString)
+FormPICTURESNAP.Picture2.Picture = LoadPicture(vbNullString)
+FormPICTURESNAP.Picture3.Picture = LoadPicture(vbNullString)     '  Picture3 control is in Pixel ScaleMode
+
+FormPICTURESNAP3.Image1.Picture = LoadPicture(vbNullString)
+
+' Reset scroll bars
+FormPICTURESNAP.HScroll1.value = 0
+FormPICTURESNAP.VScroll1.value = 0
+
+' Update form caption
+FormPICTURESNAP.Caption = "PictureSnapApp [" & PictureSnapFilename$ & "]"
+
+Exit Sub
+
+' Errors
+PictureSnapFileCloseError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapFileClose"
 ierror = True
 Exit Sub
 
