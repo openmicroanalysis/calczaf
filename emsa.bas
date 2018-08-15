@@ -276,7 +276,7 @@ Print #EMSASpectrumFileNumber%, "#XUNITS      : nm"
 Print #EMSASpectrumFileNumber%, "#YUNITS      : cps"
 Print #EMSASpectrumFileNumber%, "#DATATYPE    : XY"
 
-Print #EMSASpectrumFileNumber%, "#SIGNALTYPE  : CL"
+Print #EMSASpectrumFileNumber%, "#SIGNALTYPE  : CLS"
 Print #EMSASpectrumFileNumber%, "#XLABEL      : Wavelength (nm)"
 Print #EMSASpectrumFileNumber%, "#YLABEL      : Cps"
 End If
@@ -722,7 +722,7 @@ End If
 
 ' Check for proper spectral type
 If InStr(astring$, "#SIGNALTYPE  :") > 0 Then
-If Trim$(Mid$(astring$, Len("#SIGNALTYPE  :") + 1)) <> "CL" Then GoTo EMSAReadSpectrumNotCL
+If Trim$(Mid$(astring$, Len("#SIGNALTYPE  :") + 1)) <> "CL" And Trim$(Mid$(astring$, Len("#SIGNALTYPE  :") + 1)) <> "CLS" Then GoTo EMSAReadSpectrumNotCL   ' use "CL" for backward compatibility
 End If
 
 If InStr(astring$, "#XLABEL      :") > 0 Then

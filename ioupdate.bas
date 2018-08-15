@@ -437,21 +437,21 @@ Dim nError As Long
 ' Download CalcZAF
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
 If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
-tURL$ = "http://epmalab.uoregon.edu/Calczaf/V11/CalcZAF.msi"
+tURL$ = "https://epmalab.uoregon.edu/Calczaf/V11/CalcZAF.msi"
 
 ' Download penepma12.zip
 Else
-tURL$ = "http://epmalab.uoregon.edu/Calczaf/PENEPMA12.ZIP"
+tURL$ = "https://epmalab.uoregon.edu/Calczaf/PENEPMA12.ZIP"
 End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
 If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
-tURL$ = "http://epmalab.uoregon.edu/updates/V11/ProbeForEPMA.msi"
+tURL$ = "https://epmalab.uoregon.edu/updates/V11/ProbeForEPMA.msi"
 
 ' Download penepma12.zip
 Else
-tURL$ = "http://epmalab.uoregon.edu/Calczaf/PENEPMA12.ZIP"
+tURL$ = "https://epmalab.uoregon.edu/Calczaf/PENEPMA12.ZIP"
 End If
 End If
 
