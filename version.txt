@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/16/18	Fix minor bug when plotting multiple wavescans with different keVs (Poirier).
+
 08/14/18	Modify http download to https for update.
 v. 12.4.3
 
