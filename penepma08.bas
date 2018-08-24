@@ -615,6 +615,9 @@ If ierror Then Exit Sub
 End If
 
 If InStr(astring$, "MSIMPA") > 0 Then
+InputEABS3#(k%) = InputEABS1#(k%)       ' use same minimum energy for positrons as for electrons!
+InputWCC#(k%) = InputEABS1#(k%)         ' use same minimum energy for WCC (inelastic) as electrons
+InputWCR#(k%) = InputEABS2#(k%)         ' use same minimum energy for WCR (continuum) as electrons
 cstring$ = Format$(InputEABS1#(k%), "0.0E+0") & " " & Format$(InputEABS2#(k%), "0.0E+0") & " " & Format$(InputEABS3#(k%), "0E+0") & " "
 If InputC1#(k%) = 0# And InputC2#(k%) = 0# Then
 cstring$ = cstring$ & Format$(InputC1#(k%), "0") & " " & Format$(InputC2#(k%), "0") & " "
@@ -3352,7 +3355,7 @@ Next l%
 Next n%
 
 ' Now read one (the last) pure element input file for the takeoff and beam energy
-tfilename$ = PENEPMA_BATCH_FOLDER$ & "\" & pfilename$ & "\" & Symup$(BinaryElement2%) & "_100.in"
+tfilename$ = PENEPMA_BATCH_FOLDER$ & "\" & pfilename$ & "\" & Trim$(Symup$(BinaryElement2%)) & "_100.in"
 If Dir$(tfilename$) = vbNullString Then GoTo Penepma08BatchBinaryExtractFileNotFound2
 
 ' Get beam energy
@@ -3463,7 +3466,7 @@ ierror = True
 Exit Sub
 
 Penepma08BatchBinaryExtractSame:
-msg$ = "The binary elements (" & Symup$(BinaryElement1%) & " and " & Symup$(BinaryElement2%) & ") are the same, but must be different for calculating a compositional range"
+msg$ = "The binary elements (" & Trim$(Symup$(BinaryElement1%)) & " and " & Trim$(Symup$(BinaryElement2%)) & ") are the same, but must be different for calculating a compositional range"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchBinaryExtract"
 ierror = True
 Exit Sub

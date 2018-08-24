@@ -34,7 +34,7 @@ response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton2, "IOUpdateClose
 If response% = vbYes Then
 FormUPDATE.FtpClient1.Cancel
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 FormUPDATE.Caption = "Update CalcZAF [Please wait for termination...]"
 Else
 FormUPDATE.Caption = "Update Penepma [Please wait for termination...]"
@@ -42,7 +42,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 FormUPDATE.Caption = "Update Probe for EPMA [Please wait for termination...]"
 Else
 FormUPDATE.Caption = "Update Penepma [Please wait for termination...]"
@@ -125,7 +125,7 @@ End If
 
 ' Load filenames for CalcZAF update
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "CALCZAF.MSI"
 tBackupFile$ = ApplicationCommonAppData$ & "CALCZAF_Backup.MSI"
 
@@ -138,7 +138,7 @@ End If
 
 ' Load filenames for Probewin update
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "ProbeForEPMA.MSI"
 tBackupFile$ = ApplicationCommonAppData$ & "ProbeForEPMA_Backup.MSI"
 
@@ -158,7 +158,7 @@ End If
 
 ' Get date/time using FTP
 If mode% = 1 Or mode% = 3 Then
-If mode% = 3 And UCase$(app.EXEName) = UCase$("CalcZAF") Then GoTo IOUpdateGetUpdateNotAvailable    ' mode = 3 is not secure
+If mode% = 3 And UCase$(app.EXEName) = UCase$("CalcZAF") Then GoTo IOUpdateGetUpdateNotAvailable    ' mode = 3 currently uses SFTP not SSH, so only use normal FTP for PFE updates
 Call IOUpdateGetUpdateFTP(Int(0))
 If ierror Then Exit Sub
 End If
@@ -173,7 +173,7 @@ End If
 Call IOWriteLog(vbCrLf & "IOUpdateGetUpdate: date/time of last update (" & tLocalFileDate & "), date/time of current update (" & tRemoteFileDate & ")...")
 DoEvents
 If CDate(tLocalFileDate) > CDate(tRemoteFileDate) Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 msg$ = "The current version of this program (" & ProgramVersionString$ & ") is already up to date. To force an update download, please use the Delete Update button first and try again."
 Else
 msg$ = "The current PENEPMA12.ZIP file is already up to date. To force an update download, please use the Delete Update button first and try again."
@@ -210,10 +210,10 @@ Screen.MousePointer = vbDefault
 If ierror Then Exit Sub
 End If
 
-' Get using HTTP
+' Get using HTTPS
 If mode% = 2 Then
 Screen.MousePointer = vbHourglass
-Call IOWriteLog("IOUpdateGetUpdate: Downloading update using secure HTTP (" & tLocalFile$ & ")...")
+Call IOWriteLog("IOUpdateGetUpdate: Downloading update using secure HTTPS (" & tLocalFile$ & ")...")
 DoEvents
 If RealTimeMode% Then Call IOAutomationPause(Int(1))
 Call IOUpdateGetUpdateHTTP(Int(1))
@@ -225,7 +225,7 @@ Call IOWriteLog("IOUpdateGetUpdate: Download of file (" & tLocalFile$ & ") is co
 
 ' Notify user
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 FormUPDATE.Caption = "Update CalcZAF [download complete]"
 Else
 FormUPDATE.Caption = "Update Penepma [download complete]"
@@ -233,7 +233,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 FormUPDATE.Caption = "Update Probe for EPMA [download complete]"
 Else
 FormUPDATE.Caption = "Update Penepma [download complete]"
@@ -261,7 +261,7 @@ ierror = True
 Exit Sub
 
 IOUpdateGetUpdateNotAvailable:
-msg$ = "This download site is not currently available for CalcZAF, please try a different download option or download using your browser at http://probesoftware.com/Technical.htm."
+msg$ = "This download site is not currently available for CalcZAF, please try a different download option or download using your browser at https://probesoftware.com/Technical.htm."
 MsgBox msg$, vbOKOnly + vbExclamation, "IOUpdateGetUpdate"
 ierror = True
 Exit Sub
@@ -287,7 +287,7 @@ tpassword$ = "analysis"
 
 ' Download CalcZAF
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tRemoteFile$ = "Probe for EPMA\V11\CALCZAF.MSI"
 
 ' Download penepma12.zip
@@ -298,7 +298,7 @@ End If
 
 ' Download Probewin
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tRemoteFile$ = "Probe for EPMA\V11\ProbeForEPMA.MSI"
 
 ' Download penepma12.zip
@@ -307,18 +307,18 @@ tRemoteFile$ = "Probe for EPMA\Penepma12\PENEPMA12.ZIP"
 End If
 End If
 
-' Download from probe software
+' Download from probe software ftp sub folder
 ElseIf DownloadMode% = 3 Then
 tHostname$ = "205.178.145.65"
 tusername$ = "micro%003a750"
 tpassword$ = "4rfvVGY&"
 
-' Download CalcZAF
+' Download CalcZAF (disabled for now from IOGetUpdate)
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
-tRemoteFile$ = "CalcZAF.msi"
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+tRemoteFile$ = "V11/CalcZAF.msi"
 
-' Download penepma12.zip
+' Download penepma12.zip (disabled for now from IOGetUpdate)
 Else
 tRemoteFile$ = "PENEPMA12.ZIP"
 End If
@@ -326,7 +326,7 @@ End If
 
 ' Download Probewin
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tRemoteFile$ = "V11/ProbeForEPMA.msi"
 
 ' Download penepma12.zip
@@ -340,15 +340,15 @@ End If
 FormUPDATE.FtpClient1.UserName = tusername$
 FormUPDATE.FtpClient1.password = tpassword$
 
-' Use secure connection (Network Solutions only supports SSH, which is not supported by v. 4.5 of Catalyst- need to update Catalyst for SSH)
+' Use secure connection (Network Solutions only supports SSH, which is not supported by v. 4.5 of Catalyst- need to update Catalyst OCX component to v. 8 for SSH support)
 FormUPDATE.FtpClient1.AutoResolve = False
 FormUPDATE.FtpClient1.Blocking = True
 FormUPDATE.FtpClient1.Secure = True
-If DownloadMode% = 3 Then FormUPDATE.FtpClient1.Secure = False       ' DownloadMode% = 3 is not secure FTP
+If DownloadMode% = 3 Then FormUPDATE.FtpClient1.Secure = False       ' DownloadMode% = 3 is not secure FTP (use for PFE only)
 
 ' Set the local file path
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "CalcZAF.msi"
 
 ' Download penepma12.zip
@@ -358,7 +358,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "ProbeForEPMA.msi"
 
 ' Download penepma12.zip
@@ -436,7 +436,7 @@ Dim nError As Long
 
 ' Download CalcZAF
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tURL$ = "https://epmalab.uoregon.edu/Calczaf/V11/CalcZAF.msi"
 
 ' Download penepma12.zip
@@ -446,7 +446,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tURL$ = "https://epmalab.uoregon.edu/updates/V11/ProbeForEPMA.msi"
 
 ' Download penepma12.zip
@@ -461,7 +461,7 @@ tpassword$ = "analysis"
 
 ' Set the local file path for CalcZAF
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "CALCZAF.MSI"
 
 ' Set local path for penepma12.zip
@@ -472,7 +472,7 @@ End If
 
 ' Set local path for PFE
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "ProbeForEPMA.MSI"
 
 ' Set local path for penepma12.zip
@@ -531,14 +531,14 @@ Exit Sub
 
 IOUpdateGetUpdateHTTPBadConnection:
 Screen.MousePointer = vbDefault
-msg$ = "HTTP connection error: " & FormUPDATE.HttpClient1.LastErrorString
+msg$ = "HTTPS connection error: " & FormUPDATE.HttpClient1.LastErrorString
 MsgBox msg$, vbOKOnly + vbExclamation, "IOUpdateGetUpdateHTTP"
 ierror = True
 Exit Sub
 
 IOUpdateGetUpdateHTTPBadGetFileTime:
 Screen.MousePointer = vbDefault
-msg$ = "HTTP get file time error: " & FormUPDATE.HttpClient1.LastErrorString
+msg$ = "HTTPS get file time error: " & FormUPDATE.HttpClient1.LastErrorString
 MsgBox msg$, vbOKOnly + vbExclamation, "IOUpdateGetUpdateHTTP"
 ierror = True
 FormUPDATE.HttpClient1.Disconnect
@@ -546,7 +546,7 @@ Exit Sub
 
 IOUpdateGetUpdateHTTPBadGetFile:
 Screen.MousePointer = vbDefault
-msg$ = "HTTP get file error: " & FormUPDATE.HttpClient1.LastErrorString
+msg$ = "HTTPS get file error: " & FormUPDATE.HttpClient1.LastErrorString
 MsgBox msg$, vbOKOnly + vbExclamation, "IOUpdateGetUpdateHTTP"
 ierror = True
 FormUPDATE.HttpClient1.Disconnect
@@ -574,7 +574,7 @@ If ierror Then Exit Sub
 
 ' Run the batch file to extract the CalcZAF update
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 taskID& = Shell("msiexec /i calczaf.msi", vbNormalFocus)
 'taskID& = Shell("msiexec /i calczaf.msi /l*v install.log", vbNormalFocus)   ' creates installer log
 'Call IORunShellExecute("open", "calczaf.msi", "/i", ApplicationCommonAppData$, SW_SHOWNORMAL&)
@@ -587,7 +587,7 @@ End If
 
 ' Run the batch file to extract the Probewin update
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 taskID& = Shell("msiexec /i ProbeForEPMA.msi", vbNormalFocus)
 'taskID& = Shell("msiexec /i ProbeForEPMA.msi /l*v install.log", vbNormalFocus)   ' creates installer log
 'Call IORunShellExecute("open", "ProbeForEPMA.msi", "/i", ApplicationCommonAppData$, SW_SHOWNORMAL&)
@@ -621,7 +621,7 @@ ierror = False
 On Error GoTo IOUpdateDeleteUpdateError
 
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "CALCZAF.MSI"
 
 ' Delete existing Penepma12.zip
@@ -631,7 +631,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "ProbeForEPMA.MSI"
 
 ' Delete existing Penepma12.zip

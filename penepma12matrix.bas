@@ -792,9 +792,6 @@ If MtDs.RecordCount > 0 Then
 MtDs.MoveLast
 End If
 
-Call TransactionBegin("Penepma12MatrixUpdateMDB", MatrixMDBFile$)
-If ierror Then Exit Sub
-
 ' If not found then add new records. If records found, delete existing k-ratios and then add new records
 For n& = 1 To MtDs.RecordCount
 nrec& = MtDs("MatrixNumber")
@@ -821,6 +818,9 @@ Else
 nrec& = MtDs("MatrixNumber") + 1
 End If
 MtDs.Close
+
+Call TransactionBegin("Penepma12MatrixUpdateMDB", MatrixMDBFile$)
+If ierror Then Exit Sub
 
 ' Add new records to "Matrix" table
 Set MtDt = MtDb.OpenRecordset("Matrix", dbOpenTable)
