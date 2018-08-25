@@ -443,7 +443,6 @@ Begin VB.Form FormRANGE
    End
    Begin VB.OLE OLE4 
       BackStyle       =   0  'Transparent
-      Class           =   "Equation.3"
       Enabled         =   0   'False
       Height          =   1125
       Left            =   5880
@@ -473,7 +472,6 @@ Begin VB.Form FormRANGE
    End
    Begin VB.OLE OLE3 
       BackStyle       =   0  'Transparent
-      Class           =   "Equation.3"
       Enabled         =   0   'False
       Height          =   1335
       Left            =   6960
@@ -485,7 +483,6 @@ Begin VB.Form FormRANGE
    End
    Begin VB.OLE OLE1 
       BackStyle       =   0  'Transparent
-      Class           =   "Equation.3"
       Enabled         =   0   'False
       Height          =   975
       Left            =   6000
@@ -496,7 +493,6 @@ Begin VB.Form FormRANGE
    End
    Begin VB.OLE OLE2 
       BackStyle       =   0  'Transparent
-      Class           =   "Equation.3"
       Enabled         =   0   'False
       Height          =   975
       Left            =   6360
@@ -579,7 +575,7 @@ End Sub
 
 Private Sub CommandHelpRange_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=86.0")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=86.0")
 If ierror Then Exit Sub
 End Sub
 

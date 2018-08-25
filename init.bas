@@ -5098,7 +5098,7 @@ End If
 Else
 msg$ = "In order to utilize the newest features for secondary fluorescence calculations you should update your Penepma12 files as soon as possible. "
 msg$ = msg$ & "The Penepma, Material, Penfluor, Fitall and Fanal executables will not be updated until the new data files have been downloaded properly." & vbCrLf & vbCrLf
-msg$ = msg$ & "You may download the latest Penepma12 files at this location: http://probesoftware.com/download/PENEPMA12.ZIP. "
+msg$ = msg$ & "You may download the latest Penepma12 files at this location: https://probesoftware.com/download/PENEPMA12.ZIP. "
 msg$ = msg$ & "Be sure to extract the files to your Penepma12 folder, usually " & UserDataDirectory$ & "\Penepma12."
 MsgBox msg$, vbOKOnly + vbInformation, "InitFilesUserData"
 End If
@@ -5107,7 +5107,7 @@ End If
 Else
 msg$ = "In order to utilize the newest features for secondary fluorescence calculations you should update your Penepma12 files as soon as possible. "
 msg$ = msg$ & "The Penepma, Material, Penfluor, Fitall and Fanal executables will not be updated until the new data files have been downloaded properly. " & vbCrLf & vbCrLf
-msg$ = msg$ & "You may download the latest Penepma12 files at this location: http://probesoftware.com/download/PENEPMA12.ZIP. "
+msg$ = msg$ & "You may download the latest Penepma12 files at this location: https://probesoftware.com/download/PENEPMA12.ZIP. "
 msg$ = msg$ & "Be sure to extract the files to your Penepma12 folder, usually " & UserDataDirectory$ & "\Penepma12."
 MsgBox msg$, vbOKOnly + vbInformation, "InitFilesUserData"
 End If

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
 Begin VB.Form FormZAF 
    Appearance      =   0  'Flat
    BorderStyle     =   1  'Fixed Single
@@ -351,7 +351,7 @@ End Sub
 
 Private Sub CommandHelpCalcZAF_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=81.0")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=81.0")
 If ierror Then Exit Sub
 End Sub
 

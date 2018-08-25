@@ -186,7 +186,6 @@ Begin VB.Form FormCALCSPEC
    End
    Begin VB.OLE OLE3 
       BackStyle       =   0  'Transparent
-      Class           =   "Equation.3"
       Enabled         =   0   'False
       Height          =   600
       Left            =   6810
@@ -198,7 +197,6 @@ Begin VB.Form FormCALCSPEC
    End
    Begin VB.OLE OLE1 
       BackStyle       =   0  'Transparent
-      Class           =   "Equation.3"
       Enabled         =   0   'False
       Height          =   855
       Left            =   8610
@@ -210,7 +208,6 @@ Begin VB.Form FormCALCSPEC
    End
    Begin VB.OLE OLE2 
       BackStyle       =   0  'Transparent
-      Class           =   "Equation.3"
       Enabled         =   0   'False
       Height          =   1095
       Left            =   8640
@@ -354,7 +351,7 @@ End Sub
 
 Private Sub CommandHelp_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=375.0")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=375.0")
 If ierror Then Exit Sub
 End Sub
 

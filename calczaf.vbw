@@ -1,4 +1,4 @@
-FormMAIN = 110, 110, 750, 648, C, 44, 44, 684, 582, C
+FormMAIN = 110, 110, 750, 648, C, 44, 44, 684, 582, CZ
 CodeINIT = 427, 26, 1149, 564, C
 CodeIMAGE4 = 100, 100, 976, 633, C
 CodeGLOBAL = 154, 154, 876, 692, C
@@ -162,4 +162,4 @@ CodePlotPhiRhoZ = 125, 125, 1328, 755, C
 CodePLAN3D = 75, 75, 1191, 705, C
 CodePLAN3Da = 0, 0, 0, 0, C
 GDIPlus_Interface = 175, 175, 1317, 805, C
-pdDIB = 0, 0, 0, 0, C
+pdDIB = 100, 100, 1242, 730, C

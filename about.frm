@@ -236,11 +236,11 @@ End Sub
 
 Private Sub Label1_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/index.html")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/index.html")
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Label1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Label1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 ' When the label is clicked, change the color to indicate it is hot
 If FormABOUT.Label1.ForeColor = clrLinkActive& Then
@@ -249,7 +249,7 @@ FormABOUT.Label1.Refresh
 End If
 End Sub
 
-Private Sub Label1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Label1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 ' Mouse released, so restore the label to clrLinkActive&
 If FormABOUT.Label1.ForeColor = clrLinkHot& Then

@@ -406,13 +406,13 @@ End Sub
 
 Private Sub CommandHelpOnParticles_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=281.0")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=281.0")
 If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandHelpOnThinFilms_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=111.0")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=111.0")
 If ierror Then Exit Sub
 End Sub
 

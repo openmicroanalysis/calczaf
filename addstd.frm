@@ -657,7 +657,7 @@ End Sub
 
 Private Sub CommandHelpAddStd_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=15.0")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=15.0")
 If ierror Then Exit Sub
 End Sub
 

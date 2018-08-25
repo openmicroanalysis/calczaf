@@ -871,7 +871,7 @@ End Sub
 
 Private Sub CommandHelp_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "http://probesoftware.com/smf/index.php?topic=58.msg223#msg223")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=58.msg223#msg223")
 If ierror Then Exit Sub
 End Sub
 
@@ -894,25 +894,25 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
-ImageX1! = X!    ' store for boundary draw
-ImageY1! = Y!    ' store for boundary draw
+ImageX1! = x!    ' store for boundary draw
+ImageY1! = y!    ' store for boundary draw
 Call SecondaryGetBoundary(Int(1), ImageX1!, ImageY1!, ImageX2!, ImageY2!, FormSECONDARY)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 ' Update the stage cursor
-Call SecondaryUpdateCursor(X!, Y!, FormSECONDARY)
+Call SecondaryUpdateCursor(x!, y!, FormSECONDARY)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
-ImageX2! = X!
-ImageY2! = Y!
+ImageX2! = x!
+ImageY2! = y!
 Call SecondaryGetBoundary(Int(2), ImageX1!, ImageY1!, ImageX2!, ImageY2!, FormSECONDARY)
 If ierror Then Exit Sub
 End Sub

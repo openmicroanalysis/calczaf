@@ -941,7 +941,7 @@ FormMAIN.CMDialog1.ShowPrinter
 ' Print text
 Screen.MousePointer = vbHourglass
 'Printer.Print vbNullString
-FormMAIN.TextLog.SelPrint FormMAIN.CMDialog1.hdc
+FormMAIN.TextLog.SelPrint FormMAIN.CMDialog1.hDC
 'FormMAIN.TextLog.SelPrint FormMAIN.CMDialog1.hDC, SelPrintStartDocFlag% ' VB6 only
 Printer.EndDoc
 Screen.MousePointer = vbDefault
@@ -1624,8 +1624,8 @@ sDVD$ = Left$(sDVD$, 3)
 If Dir$(sDVD$ & "Probe Software Web Site", vbDirectory) = vbNullString Then GoTo IOBrowseHTTPFolderNotFound
 End If
 
-' Remove http"/
-astring$ = Replace$(sURL$, "http:/", vbNullString)
+' Remove https"/
+astring$ = Replace$(sURL$, "https:/", vbNullString)
 
 ' Load specific DVD path
 aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site" & astring$

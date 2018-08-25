@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/24/18	Fix http:// links in code to https://.  Bump ConvertToPrbImg.exe version. Work now for
+		JEOL 8230/8530.map conversions.
+
 08/23/18	Modify Penepma output code to set WCC and WCF to same minimum energy as photons (Pinard).
 v. 12.4.4
 		Add label field in Calculation Options mentioning Analytical | Analysis Options menu dialog 
