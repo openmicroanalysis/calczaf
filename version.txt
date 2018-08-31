@@ -2,8 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/31/18	Modify ROM wavescan code to not utilize mode parameter. Only check data points per 
+v. 12.4.6	transfer for JEOL 8900/8200/8500 (Feig).
+
 08/24/18	Fix http:// links in code to https://.  Bump ConvertToPrbImg.exe version. Work now for
-		JEOL 8230/8530.map conversions.
+v. 12.4.5	JEOL 8230/8530.map conversions.
 
 08/23/18	Modify Penepma output code to set WCC and WCF to same minimum energy as photons (Pinard).
 v. 12.4.4
