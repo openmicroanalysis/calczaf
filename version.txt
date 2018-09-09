@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/09/18	Modify CalcImage code to not output totals image if outputting atomic percents or element
+		by difference flag is set (since the totals image will always be 100%).
+
+09/08/18	Fix atomic (and oxide) percent element by difference output in CalcImage (Mott).
+
 08/31/18	Modify ROM wavescan code to not utilize mode parameter. Only check data points per 
 v. 12.4.6	transfer for JEOL 8900/8200/8500 (Feig).
 
