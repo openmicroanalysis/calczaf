@@ -2,6 +2,24 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/20/18	Fix zero count time error in MPB dialog when using error bars (Goemann). Fix unselect wavescan 
+		(overlay) display in MPB (Goemann).
+
+09/15/18	Add "disable Z move" menu in PictureSnap feature (Neill).
+
+09/12/18	Add error trap for PFE user specified output if no output types are selected.
+v. 12.4.8
+		Remove alpha binaries from matrix.mdb that are gaseous elements. Currently re-calculating 
+		all gaseous binary pairs because too low density results in low intensity using bulk.geo geometry
+		which is only 0.1 cm thick.
+		
+		Automatically select correct sample type when outputting results from Analyze! window using user 
+		specified output (to allow published results to be output for standards).
+
+09/10/18	In Penepma and Penfluor binary calulation codes force material density to 1.0 in case a gaseous
+v. 12.4.7	element is present.  Otherwise low emission intensities are calculated, probably due to detector 
+		geometry issues.
+
 09/09/18	Modify CalcImage code to not output totals image if outputting atomic percents or element
 		by difference flag is set (since the totals image will always be 100%).
 

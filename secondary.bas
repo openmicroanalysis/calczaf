@@ -345,7 +345,7 @@ ierror = True
 Exit Sub
 
 SecondarySaveBadGraphicalBoundary:
-msg$ = "One or more graphical boundary coordinates are out of range! Be sure that you have properly specified a boundary by clicking and dragging the mouse on the loaded image."
+msg$ = "One or more graphical boundary coordinates are out of stage X or Y limits! Be sure that you have properly specified a boundary by clicking and dragging the mouse on the loaded image."
 MsgBox msg$, vbOKOnly + vbExclamation, "SecondarySave"
 ierror = True
 Exit Sub
@@ -833,7 +833,7 @@ Exit Sub
 
 End Sub
 
-Sub SecondaryGetBoundary(mode As Integer, x1 As Single, y1 As Single, X2 As Single, Y2 As Single, tForm As Form)
+Sub SecondaryGetBoundary(mode As Integer, X1 As Single, Y1 As Single, x2 As Single, y2 As Single, tForm As Form)
 ' Get the boundary coordinates from the user's click and drag amd convert to stage positions and store
 ' mode = 0 first boundary points (mouse down)
 ' mode = 1 second boundary points (mouse up)
@@ -866,13 +866,13 @@ If dmode% <> 3 Or Trim$(BoundaryImageFileName$) = vbNullString Then Exit Sub
 
 ' Store
 If mode% = 1 Then
-scx1! = x1!
-scy1! = y1!
+scx1! = X1!
+scy1! = Y1!
 Exit Sub
 End If
 
-scx2! = X2!
-scy2! = Y2!
+scx2! = x2!
+scy2! = y2!
 
 ' Check if zero distance (double click)
 If scx1! = scx2! And scy1! = scy2! Then GoTo SecondaryGetBoundaryPointsSame
@@ -1221,13 +1221,13 @@ Dim fractionx As Single, fractiony As Single
 Dim radius As Single
 
 Dim n As Long
-Dim X() As Single, Y() As Single, Z() As Single
+Dim x() As Single, y() As Single, Z() As Single
 
 ' Check if a calibration is loaded
 If Not PictureSnapCalibrated Then Exit Sub
 
 ' Get coordinate points
-Call SecondaryGetCoordinates(n&, X!(), Y!(), Z!())
+Call SecondaryGetCoordinates(n&, x!(), y!(), Z!())
 If ierror Then Exit Sub
 
 ' Check for valid points to plot
@@ -1235,8 +1235,8 @@ If n& < 1 Then Exit Sub
 
 ' Loop on all points
 For i& = 1 To n&
-stx! = X!(i&)
-sty! = Y!(i&)
+stx! = x!(i&)
+sty! = y!(i&)
 stz! = Z!(i&)
 
 ' Convert stage to image (form) coordinates and obtain fractional position

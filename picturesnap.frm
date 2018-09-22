@@ -186,6 +186,12 @@ Begin VB.Form FormPICTURESNAP
       Begin VB.Menu menuMiscUseRectangleDrawingMode 
          Caption         =   "Use Rectangle Drawing Mode"
       End
+      Begin VB.Menu menuMiscSeparator2 
+         Caption         =   "-"
+      End
+      Begin VB.Menu menuMiscDisableZStageMove 
+         Caption         =   "Disable Z Stage Control (only use X and Y axes)"
+      End
    End
 End
 Attribute VB_Name = "FormPICTURESNAP"
@@ -395,6 +401,11 @@ Private Sub menuFileSaveAsGRD_Click()
 If Not DebugMode Then On Error Resume Next
 Call PictureSnapSaveGridFile
 If ierror Then Exit Sub
+End Sub
+
+Private Sub menuMiscDisableZStageMove_Click()
+If Not DebugMode Then On Error Resume Next
+FormPICTURESNAP.menuMiscDisableZStageMove.Checked = Not FormPICTURESNAP.menuMiscDisableZStageMove.Checked
 End Sub
 
 Private Sub menuMiscMaintainAspectRatioOfFullViewWindow_Click()

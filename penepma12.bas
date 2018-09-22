@@ -3935,6 +3935,7 @@ PENEPMA_Sample(1).Name$ = binarynames$(k%)
 MaterialFileA$ = PENEPMA_Sample(1).Name$ & ".mat"
 MaterialSelectedA% = MAXINTEGER%     ' any non-zero number
 MaterialDensityA# = PENEPMA_Sample(1).SampleDensity!
+If MaterialDensityA# < 1# Then MaterialDensityA# = 1#             ' force density to 1.0 in case the binary contains a gaseous element (to avoid detector geometry issues)
 
 ' Check for existing .PAR file
 pfilename$ = PENEPMA_Root$ & "\Penfluor\" & binarynames$(k%) & ".par"
@@ -4135,6 +4136,7 @@ PENEPMA_Sample(1).Name$ = Trim$(Symup$(n%))
 MaterialFileA$ = PENEPMA_Sample(1).Name$ & ".mat"
 MaterialSelectedA% = MAXINTEGER%     ' any non-zero number
 MaterialDensityA# = PENEPMA_Sample(1).SampleDensity!
+If MaterialDensityA# < 1# Then MaterialDensityA# = 1#             ' force density to 1.0 in case the pure element is a gas (to avoid detector geometry issues)
 
 ' Check for existing .PAR file
 pfilename$ = PENEPMA_Root$ & "\Penfluor\" & Trim$(Symup$(n%)) & ".par"

@@ -81,6 +81,11 @@ If Not PictureSnapCalibrated Then Exit Sub
 Call PictureSnapConvert(Int(1), BitMapX!, BitMapY!, CSng(0#), stagex!, stagey!, stagez!, fractionx!, fractiony!)
 If ierror Then Exit Sub
 
+' Check if Z stage axis disabled
+If FormPICTURESNAP.menuMiscDisableZStageMove.Checked Then
+stagez! = RealTimeMotorPositions!(ZMotor%)
+End If
+
 ' Move to position clicked by user
 blankbeam = FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Checked
 Call MoveStageMoveXYZ(blankbeam, stagex!, stagey!, stagez!)
@@ -134,6 +139,11 @@ If ierror Then Exit Sub
 ' Convert back to form coordinates and get fraction parameters
 Call PictureSnapConvert(Int(2), BitMapX!, BitMapY!, CSng(0#), stagex!, stagey!, stagez!, fractionx!, fractiony!)
 If ierror Then Exit Sub
+
+' Check if Z stage axis disabled
+If FormPICTURESNAP.menuMiscDisableZStageMove.Checked Then
+stagez! = RealTimeMotorPositions!(ZMotor%)
+End If
 
 ' Move scroll bars on main window to this position
 temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
@@ -277,7 +287,7 @@ On Error GoTo PictureSnapDrawLineRectangleError
 Dim tWidth As Integer
 Dim tcolor As Long
 
-Dim centerX As Single, centerY As Single
+Dim centerx As Single, centery As Single
 Dim xwidth As Single, ywidth As Single
 
 Dim widthx As Single, widthy As Single
@@ -307,8 +317,8 @@ If UseRectangleDrawingModeFlag Then
 'FormPICTURESNAP.Picture2.Line (DrawLineRectanglePositions1!(1), DrawLineRectanglePositions1!(2))-(DrawLineRectanglePositions2!(1), DrawLineRectanglePositions2!(2)), tcolor&, B
 
 ' Calculate screen center position
-centerX! = DrawLineRectanglePositions1!(1) + (DrawLineRectanglePositions2!(1) - DrawLineRectanglePositions1!(1)) / 2#
-centerY! = DrawLineRectanglePositions1!(2) + (DrawLineRectanglePositions2!(2) - DrawLineRectanglePositions1!(2)) / 2#
+centerx! = DrawLineRectanglePositions1!(1) + (DrawLineRectanglePositions2!(1) - DrawLineRectanglePositions1!(1)) / 2#
+centery! = DrawLineRectanglePositions1!(2) + (DrawLineRectanglePositions2!(2) - DrawLineRectanglePositions1!(2)) / 2#
 
 ' Convert screen corners to stage corners
 Call PictureSnapConvert(Int(1), DrawLineRectanglePositions1!(1), DrawLineRectanglePositions1!(2), CSng(0#), stagex1!, stagey1!, stagez1!, fractionx1!, fractiony1!)
@@ -329,7 +339,7 @@ If ierror Then Exit Sub
 
 ' New code to draw magbox corners using rectangle rotation
 tWidth% = 2
-Call PictureSnapDrawRectangle(centerX!, centerY!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, tWidth%)
+Call PictureSnapDrawRectangle(centerx!, centery!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, tWidth%)
 If ierror Then Exit Sub
 End If
 

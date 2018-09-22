@@ -3077,6 +3077,7 @@ PENEPMASample(1).Name$ = pfilename$
 MaterialFiles$(1) = PENEPMASample(1).Name$ & ".MAT"
 MaterialsSelected%(1) = MAXINTEGER%     ' any non-zero number
 MaterialDensity# = PENEPMASample(1).SampleDensity!
+If MaterialDensity# < 1# Then MaterialDensity# = 1#                 ' force density to 1.0 in case the pure element is a gas (to avoid detector geometry issues)
 
 msg$ = "Creating material input file based on " & PENEPMASample(1).Name$ & "..."
 Call IOWriteLog(msg$)
@@ -3145,6 +3146,7 @@ PENEPMASample(1).Name$ = binarynames$(k%)
 MaterialFiles$(1) = PENEPMASample(1).Name$ & ".MAT"
 MaterialsSelected%(1) = MAXINTEGER%     ' any non-zero number
 MaterialDensity# = PENEPMASample(1).SampleDensity!
+If MaterialDensity# < 1# Then MaterialDensity# = 1#              ' force density to 1.0 in case the binary contains a gaseous element (to avoid detector geometry issues)
 
 msg$ = "Creating material input file based on binary " & PENEPMASample(1).Name$ & "..."
 Call IOWriteLog(msg$)
@@ -4417,6 +4419,7 @@ MaterialFiles$(1) = PENEPMASample(1).Name$ & ".MAT"
 If Dir$(PENEPMA_Path$ & "\" & MaterialFiles$(1)) = vbNullString Or (Dir$(PENEPMA_Path$ & "\" & MaterialFiles$(1)) <> vbNullString And FormPENEPMA08Batch.CheckDoNotOverwriteExisting.Value = vbUnchecked) Then
 MaterialsSelected%(1) = MAXINTEGER%     ' any non-zero number
 MaterialDensity# = PENEPMASample(1).SampleDensity!
+If MaterialDensity# < 1# Then MaterialDensity# = 1#               ' force density to 1.0 in case the pure element is a gas (to avoid detector geometry issues)
 
 msg$ = "Creating material input file based on " & PENEPMASample(1).Name$ & "..."
 Call IOWriteLog(msg$)

@@ -255,7 +255,7 @@ Loop
 MtRs.Close
 
 ' Search for density records (material A and material B) (no need to dimension variables)
-SQLQ$ = "SELECT BoundaryMaterialDensity.* FROM BoundaryMaterialdensity WHERE BoundaryMaterialDensityNumber = " & Format$(nrec&)
+SQLQ$ = "SELECT BoundaryMaterialDensity.* FROM BoundaryMaterialDensity WHERE BoundaryMaterialDensityNumber = " & Format$(nrec&)
 Set MtRs = MtDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
 If MtRs.BOF And MtRs.EOF Then GoTo Penepma12BoundaryReadMDBNoMaterialDensities
 
