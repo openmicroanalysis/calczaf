@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/26/18	Fix bug in CalcImage when blanked pixels are present and atomic percent output is not selected (Gormann).
+v. 12.4.9
+
 09/22/18	Minor tweak to MPB display wavescan overlay code.
 
 09/20/18	Fix zero count time error in MPB dialog when using error bars (Goemann). Fix unselect wavescan 
