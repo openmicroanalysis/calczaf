@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/28/18	Increase maximum plot points from 6000 to 10000 (Adams).
+
+		Add send EDS and CL data to new combined sample (Seward).
+
 09/26/18	Fix bug in CalcImage when blanked pixels are present and atomic percent output is not selected (Gormann).
 v. 12.4.9
 
