@@ -1610,7 +1610,13 @@ msg$ = "Insufficient standard counts on standard " & Format$(sample(1).StdAssign
 msg$ = msg$ & sample(1).Elsyms$(i%) & " " & sample(1).Xrsyms$(i%) & " on spectrometer "
 msg$ = msg$ & Format$(sample(1).MotorNumbers%(i%)) & " using crystal " & sample(1).CrystalNames$(i%) & ". "
 msg$ = msg$ & "Make sure that valid data for the indicated standard has been acquired at "
-msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " kilovolts and " & Format$(sample(1).takeoff!) & " takeoff angle."
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " kilovolts and " & Format$(sample(1).takeoff!) & " takeoff angle." & vbCrLf & vbCrLf
+
+If sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ And Not sample(1).EDSSpectraUseFlag Then
+msg$ = msg$ & "Also please note that the Use EDS Element Data option needs to be selected from the Analyze! window, Calculation Options dialog, "
+msg$ = msg$ & "for obtaining EDS intensities for unknown samples and any assigned standard samples."
+End If
+
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateCalculateDrift"
 Call AnalyzeStatusAnal(vbNullString)
 ierror = True

@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/20/18	Modify EDS missing data warnings to be more explicit (Bullock).
+
 10/13/18	Fix peaking display issue for interval and parabolic peaking methods.
 
 10/03/18	Teak EDS and CL code to only save spectra if present.
