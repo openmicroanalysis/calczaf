@@ -2,6 +2,30 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/2/18		Tweak EDS interface code to skip EDS interface init if turned off in Analytical |
+		Analysis Options dialog.
+
+11/1/18		Improve EDs flag code so the UseEDSSpectraFlag disables or enables the EDS quant elements. Also
+v. 12.5.1	replace option controls with checkboxes in Calculation Options and Analysis Options for 
+		EDS parameters. Add global option to disable EDS net intensity interface.
+		
+		Work more on integrated EDS WDS in CalcImage.
+
+10/31/18	If EDS element is added, automatically turn on Use EDS Element Data and also force re-load of 
+		analysis arrays. Also modify code to turn TDI off for EDS elements.
+
+10/28/18	Add check for formula flag in ZAFCalZbar before checking formula basis (problem was in demo
+		acquisition mode when unknown had 24 oxygen as the formula basis specified even though the 
+		formula flag was not checked, and sample was not calculating oxygen by stoichiometry).
+
+10/27/18	Revert back to fixed MPB arrays. Problem was calling DataReplaceAddSample in a loop when 
+		searching/removing shared backgrounds. Much faster now.
+		
+		Start work on new polygon extraction and pixel filtering code (Seward).
+
+10/25/18	Modify MPB arrays to dynamically allocate to try and improve loading speed in DataGetMDBSample.
+v. 12.5.0	A lot of work, but not much improvement in speed.
+
 10/20/18	Modify EDS missing data warnings to be more explicit (Bullock).
 
 10/13/18	Fix peaking display issue for interval and parabolic peaking methods.

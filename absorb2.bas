@@ -347,7 +347,7 @@ Exit Sub
 End If
 
 ' Check for low energy
-If energy! < 1# Then
+If energy! < 0.1 Then
 If DebugMode Then
 msg$ = "WARNING in AbsorbGetMACJTA- energy " & Format$(Format$(energy!, f83$), a80$) & " is too low."
 Call IOWriteLog(msg$)

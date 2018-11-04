@@ -83,8 +83,8 @@ analysis.AtomicWeights!(chan%) = sample(1).AtomicWts!(chan%)
 End If
 Next chan%
 
-' Determine formula element basis
-If sum_atoms! >= 0.01 Then
+' Determine formula element basis if specified
+If sum_atoms! >= 0.01 And sample(1).FormulaElementFlag Then
 
 ' Element formula basis
 If Trim$(sample(1).FormulaElement$) <> vbNullString And sample(1).FormulaRatio! <> 0# Then
@@ -185,7 +185,7 @@ ierror = True
 Exit Sub
 
 ZAFCalZbarInvalidFormulaElement:
-msg$ = "The formula basis element for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " is invalid"
+msg$ = "The formula basis element " & sample(1).Elsyms$(chan%) & " is not present in the sample"
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFCalZbar"
 ierror = True
 Exit Sub
@@ -478,7 +478,7 @@ Dim nemax As Long, n As Long, it As Long, k As Long
 Dim phi As Single, ost As Single, os As Single, rhoz As Single
 Dim a As Single, b As Single, phi1 As Single, phi2 As Single
 Dim sum As Single, tnm As Single, st As Single, ss As Single
-Dim step As Single, r_limit As Single, del As Single, i_g_mix As Single
+Dim Step As Single, r_limit As Single, del As Single, i_g_mix As Single
 
 ' Specify number of steps to calculate intensities
 n_rhoz% = 200
@@ -566,7 +566,7 @@ End If
     Loop
       
     r_limit = rhoz
-    step = r_limit / n_rhoz                             ' n_rhoz is number of intensities to calculate
+    Step = r_limit / n_rhoz                             ' n_rhoz is number of intensities to calculate
     rhoz = 0#
       
     If VerboseMode Then
@@ -578,7 +578,7 @@ End If
     For k = 1 To n_rhoz + 1
         phi = gamma0 * Exp(-1# * Alpha ^ 2 * rhoz ^ 2) * (1# - ((gamma0 - phi_0_mix) / gamma0) * Exp(-1# * beta * rhoz))
         If VerboseMode Then Call IOWriteLog("rhoz = " & MiscAutoFormat$(CSng(rhoz * 1000#)) & ", phi = " & MiscAutoFormat$(CSng(phi)) & ", phi' = " & MiscAutoFormat$(CSng(phi * Exp(-1 * chi * rhoz))))
-        rhoz = rhoz + step
+        rhoz = rhoz + Step
         
         ' Load into global arrays for plotting
         PhiRhoZPlotX(i%, k) = rhoz * 1000#
@@ -615,7 +615,7 @@ On Error GoTo ZAFCalculatePhiRhoZCurvesPAPError
 Dim n_rhoz As Integer
 Dim n As Long, k As Long
 Dim phi As Double, rhoz As Double
-Dim step As Double
+Dim Step As Double
 
 ' Specify number of steps to calculate intensities
 n_rhoz% = 200
@@ -657,7 +657,7 @@ If VerboseMode Then
 End If
       
     ' Generate phi(rho*z) curve
-    step = rx_mix / n_rhoz
+    Step = rx_mix / n_rhoz
     rhoz = 0#
       
     For k = 1 To n_rhoz + 1
@@ -668,7 +668,7 @@ End If
          End If
         
         If VerboseMode Then Call IOWriteLog("rhoz = " & MiscAutoFormat$(CSng(rhoz * 1000#)) & ", phi = " & MiscAutoFormat$(CSng(phi)) & ", phi' = " & MiscAutoFormat$(CSng(phi * Exp(-1 * chi * rhoz))))
-        rhoz = rhoz + step
+        rhoz = rhoz + Step
       
         ' Load into global arrays for plotting
         PhiRhoZPlotX(i%, k) = rhoz * 1000#
@@ -708,7 +708,7 @@ Dim n_rhoz As Integer
 Dim n As Long, k As Long, nemax As Long, it As Long
 Dim aaa As Single, bbb As Single, ost As Single, os As Single, st As Single
 Dim phi As Single, phi1 As Single, phi2 As Single, rhoz As Double, tnm As Single
-Dim step As Single, del As Single, ssum As Single, ss As Single, r_limit As Single
+Dim Step As Single, del As Single, ssum As Single, ss As Single, r_limit As Single
 
 ' Specify number of steps to calculate intensities
 n_rhoz% = 200
@@ -799,13 +799,13 @@ End If
     End If
 
     ' Generate phi(rho*z) curve
-    step = r_limit / n_rhoz
+    Step = r_limit / n_rhoz
     rhoz = 0#
       
     For k = 1 To n_rhoz + 1
         phi = a * Exp(-1# * aa * rhoz) + (b * rhoz + phi_0_mix - a) * Exp(-1# * bb * rhoz)
         If VerboseMode Then Call IOWriteLog("rhoz = " & MiscAutoFormat$(CSng(rhoz * 1000#)) & ", phi = " & MiscAutoFormat$(CSng(phi)) & ", phi' = " & MiscAutoFormat$(CSng(phi * Exp(-1 * chi * rhoz))))
-        rhoz = rhoz + step
+        rhoz = rhoz + Step
       
         ' Load into global arrays for plotting
         PhiRhoZPlotX(i%, k) = rhoz * 1000#

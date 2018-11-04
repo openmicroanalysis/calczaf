@@ -670,7 +670,7 @@ End If
 End If
 Next i%
 
-' Check for large same side off-peak extrapolation (only check if linear, exponential or polynomial)
+' Check for large same side off-peak extrapolation (only check if linear, exponential or polynomial) (0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point)
 For i% = 1 To sample(1).LastElm%
 If sample(1).BackgroundTypes%(i%) <> 1 Then  ' 0=off-peak, 1=MAN, 2=multipoint
 If sample(1).MotorNumbers%(i%) > 0 Then

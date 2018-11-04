@@ -2261,7 +2261,7 @@ InterfaceStringEDS$(1) = "Unused"
 InterfaceStringEDS$(2) = "Bruker Quantax"
 InterfaceStringEDS$(3) = "Oxford INCA"
 InterfaceStringEDS$(4) = "Unused"
-InterfaceStringEDS$(5) = "Thermo NSS/Pathfinder"
+InterfaceStringEDS$(5) = "Thermo NSS or PF"
 InterfaceStringEDS$(6) = "JEOL OEM"
 
 ' Set defaults

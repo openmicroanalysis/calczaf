@@ -212,7 +212,7 @@ Global Const MAXSINGLE! = 3.402823E+38   ' maximum single precision
 Global Const MINDOUBLE# = -1.79769E+308  ' minimum double precision
 Global Const MAXDOUBLE# = 1.79769E+308   ' maximum double precision
 
-Global Const MAXOFFBGDTYPES% = 8         ' maximum off-peak background correction types (0 to 8, 0 = default linear)
+Global Const MAXOFFBGDTYPES% = 8         ' maximum off-peak background correction types (0 to 8, 0 = default linear) (***do not change this value***)
 Global Const MAXMINTYPES% = 6            ' maximum mineral end-member types (including zero for none)
 Global Const MAXZAF% = 10                ' maximum number of ZAF correction options
 Global Const MAXZAFCOR% = 8              ' maximum number of stored ZAF corrections (analysis structure)
@@ -879,7 +879,7 @@ Type TypeSample
     numcat(1 To MAXCHAN%) As Integer
     numoxd(1 To MAXCHAN%) As Integer
     ElmPercents(1 To MAXCHAN%) As Single
-    OffPeakCorrectionTypes(1 To MAXCHAN%) As Integer
+    OffPeakCorrectionTypes(1 To MAXCHAN%) As Integer    ' 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point
 
     MotorNumbers(1 To MAXCHAN%) As Integer
     OrderNumbers(1 To MAXCHAN%) As Integer          ' spectrometer order number (acquisition order)
@@ -2865,9 +2865,6 @@ Global ImageData_TDI_Stop As Double      ' for CalcImage TDI pixel arrays (TDI s
 Global ImageData_TDI() As Single         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to nTDI)
 Global ImageTime_TDI() As Double         ' for CalcImage TDI pixel arrays (dimensioned in CalcImage) (1 to ImageData_TDI_Ix, 1 to ImageData_TDI_Iy, 1 to LastElm, 1 to nTDI)
 
-Global IntegrateEDSSpectrumImagingFlag As Integer       ' for synchronized WDS and ED SI mapping (leave as integer for CIP file input)
-Global IntegrateEDSSpectrumImagingFilename As String    ' for synchronized WDS and ED SI mapping
-
 Global CLSpectrumAcquisitionOverhead As Single          ' overhead factor for light CL spectra
 
 Global MDB_Template As String
@@ -2959,3 +2956,5 @@ Global PhiRhoZPlotSets As Long
 Global PhiRhoZPlotX() As Single         ' new globals for phi-rho-z plot values
 Global PhiRhoZPlotY1() As Single        ' generated intensities
 Global PhiRhoZPlotY2() As Single        ' emitted intensities
+
+Global DoNotUseEDSInterfaceForNetIntensitiesFlag As Integer         ' new flag to turn off EDS interface for obtaing net intensities

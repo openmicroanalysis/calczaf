@@ -650,7 +650,7 @@ msg$ = msg$ & Format$("INT", a80$)
 Else
 If sample(1).BackgroundTypes%(i%) <> 1 Then  ' 0=off-peak, 1=MAN, 2=multipoint
 If sample(1).CrystalNames$(i%) <> EDS_CRYSTAL$ Then
-msg$ = msg$ & Format$(bgstrings$(sample(1).OffPeakCorrectionTypes%(i%)), a80$)
+msg$ = msg$ & Format$(bgstrings$(sample(1).OffPeakCorrectionTypes%(i%)), a80$)  ' 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point
 Else
 msg$ = msg$ & Format$(EDS_CRYSTAL$, a80$)
 End If
