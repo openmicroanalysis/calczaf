@@ -10,7 +10,7 @@ On Error GoTo TypeNewCountsError
 
 Dim i As Integer, row As Integer
 Dim ii As Integer, jj As Integer, n As Integer
-Dim temp As Single
+Dim temp As Single, counttime As Single
 
 Dim average As TypeAverage
 
@@ -27,9 +27,11 @@ If ierror Then Exit Sub
 Call IOWriteLog(vbCrLf & msg$)
 
 ' Print EDS acquisition time (if no data yet)
-If UseDetailedFlag And sample(1).EDSSpectraFlag Then
+If UseDetailedFlag And sample(1).EDSSpectraFlag And sample(1).Datarows% = 0 Then
 If UseEDSSampleCountTimeFlag Then
-msg$ = "EDS Acquisition (sample count) Time: " & Space$(25) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
+Call RealTimeEDSSpectraGetSampleOrSpecifiedTime(Int(1), counttime!, sample())
+If ierror Then Exit Sub
+msg$ = "EDS Acquisition (sample count) Time: " & Space$(25) & Format$(Format$(counttime!, f82$), a80$)
 Else
 msg$ = "EDS Acquisition (user specified) Time: " & Space$(23) & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
 End If
@@ -293,7 +295,7 @@ On Error GoTo TypeSampleSetupError
 Dim n As Integer, i As Integer
 Dim k As Integer, m As Integer
 Dim ii As Integer, jj As Integer
-Dim temp As Single, count_time As Single
+Dim temp As Single, count_time As Single, counttime As Single
 
 ' Only output peak and PHA if not all EDS
 If Not MiscAreAllElementsEDS(sample()) Then
@@ -711,11 +713,27 @@ Call IOWriteLog(msg$)
 If sample(1).Type% <> 3 Or DebugMode Then
 msg$ = "ONTIM:"
 For i% = ii% To jj%
-If sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then
-msg$ = msg$ & Format$(Format$(sample(1).LastEDSSpecifiedCountTime!, f82$), a80$)
-Else
+
+' WDS count times
+If sample(1).CrystalNames$(i%) <> EDS_CRYSTAL$ Then
 msg$ = msg$ & Format$(Format$(sample(1).LastOnCountTimes!(i%), f82$), a80$)
+
+' EDS count times
+Else
+If sample(1).Datarows% = 0 Then
+If UseEDSSampleCountTimeFlag Then
+Call RealTimeEDSSpectraGetSampleOrSpecifiedTime(Int(1), counttime!, sample())
+If ierror Then Exit Sub
+Else
+counttime! = sample(1).LastEDSSpecifiedCountTime!
 End If
+msg$ = msg$ & Format$(Format$(counttime!, f82$), a80$)
+Else
+msg$ = msg$ & Format$(Format$(sample(1).EDSSpectraLiveTime!(sample(1).Datarows%), f82$), a80$)  ' all EDS spectra datarows use same count time
+End If
+
+End If
+
 Next i%
 Call IOWriteLog(msg$)
 

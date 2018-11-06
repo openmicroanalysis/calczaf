@@ -823,7 +823,7 @@ Type TypeSample
     AlternatingOnAndOffPeakAcquisitionFlag As Integer
     
     EDSSpectraFlag As Integer                ' EDS spectrum data is stored in EDS Spectra table
-    EDSSpectraUseFlag As Integer             ' use EDS spectrum data in calculations
+    EDSSpectraUseFlag As Integer             ' use EDS spectrum data in quant calculations
     
     EDSUnknownCountFactors() As Single       ' real time, allocated in InitSample (1 to MAXROW%)
     LastEDSUnknownCountFactor As Single

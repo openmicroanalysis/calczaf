@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form FormZAFOPT 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Calculation Options"
-   ClientHeight    =   6345
+   ClientHeight    =   4815
    ClientLeft      =   1440
    ClientTop       =   3480
-   ClientWidth     =   9120
+   ClientWidth     =   12510
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -21,24 +21,70 @@ Begin VB.Form FormZAFOPT
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   6345
-   ScaleWidth      =   9120
+   ScaleHeight     =   4815
+   ScaleWidth      =   12510
    ShowInTaskbar   =   0   'False
-   Begin VB.TextBox TextDensity 
-      Height          =   285
-      Left            =   8040
-      TabIndex        =   35
-      Top             =   1800
-      Width           =   975
+   Begin VB.Frame Frame3 
+      Caption         =   "EDS Spectral Data And Quant Calculations"
+      ForeColor       =   &H00FF0000&
+      Height          =   1575
+      Left            =   8160
+      TabIndex        =   40
+      Top             =   960
+      Width           =   4215
+      Begin VB.CommandButton CommandHelpOnEDSWDS 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Help"
+         Height          =   255
+         Left            =   3120
+         Style           =   1  'Graphical
+         TabIndex        =   43
+         ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
+         Top             =   600
+         Width           =   855
+      End
+      Begin VB.CommandButton CommandSelectQuantMethodOrProject 
+         Caption         =   "EDS Quant Method"
+         Height          =   255
+         Left            =   360
+         TabIndex        =   42
+         Top             =   840
+         Width           =   2415
+      End
+      Begin VB.CheckBox CheckUseEDSSpectra 
+         Caption         =   "Use EDS Spectra For Quant"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   41
+         Top             =   360
+         Width           =   2775
+      End
+      Begin VB.Label LabelQuantMethodOrProject 
+         BorderStyle     =   1  'Fixed Single
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   120
+         TabIndex        =   44
+         Top             =   1200
+         Width           =   3975
+      End
    End
    Begin VB.Frame Frame6 
-      Caption         =   "Sample Conductive Coating (need to explicitly turn on in Analytical menu)"
+      Caption         =   "Sample Conductive Coating"
       ForeColor       =   &H00FF0000&
-      Height          =   1095
-      Left            =   120
+      Height          =   1935
+      Left            =   8160
       TabIndex        =   26
-      Top             =   5160
-      Width           =   7815
+      Top             =   2760
+      Width           =   4215
       Begin VB.TextBox TextCoatingThickness 
          Height          =   285
          Left            =   2640
@@ -67,12 +113,30 @@ Begin VB.Form FormZAFOPT
       Begin VB.CheckBox CheckCoatingFlag 
          Caption         =   "Use Conductive Coating"
          Height          =   255
-         Left            =   4320
+         Left            =   840
          TabIndex        =   27
          TabStop         =   0   'False
          ToolTipText     =   "Uncheck this box for no conductive coating on the selected sample(s)"
-         Top             =   600
+         Top             =   960
          Width           =   2655
+      End
+      Begin VB.Label Label7 
+         Alignment       =   2  'Center
+         Caption         =   "See standard coating options under Analytical menu and global coating correction options in Analysis Options dialog"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   615
+         Left            =   240
+         TabIndex        =   45
+         Top             =   1200
+         Width           =   3735
       End
       Begin VB.Label Label10 
          Alignment       =   2  'Center
@@ -135,12 +199,12 @@ Begin VB.Form FormZAFOPT
       Height          =   855
       Left            =   120
       TabIndex        =   20
-      Top             =   3960
+      Top             =   3840
       Width           =   7815
       Begin VB.ComboBox ComboFormula 
          Appearance      =   0  'Flat
          Height          =   315
-         Left            =   5640
+         Left            =   5400
          Style           =   2  'Dropdown List
          TabIndex        =   23
          TabStop         =   0   'False
@@ -150,12 +214,12 @@ Begin VB.Form FormZAFOPT
       End
       Begin VB.TextBox TextFormula 
          Height          =   285
-         Left            =   3720
+         Left            =   3480
          TabIndex        =   22
          TabStop         =   0   'False
          ToolTipText     =   "Number of atoms for the formula basis"
          Top             =   360
-         Width           =   735
+         Width           =   855
       End
       Begin VB.CheckBox CheckFormula 
          Caption         =   "Calculate Formula Based On"
@@ -182,7 +246,7 @@ Begin VB.Form FormZAFOPT
          EndProperty
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   4440
+         Left            =   4320
          TabIndex        =   24
          Top             =   480
          Width           =   1095
@@ -192,10 +256,10 @@ Begin VB.Form FormZAFOPT
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
-      Left            =   8040
+      Left            =   10440
       TabIndex        =   7
       TabStop         =   0   'False
-      Top             =   720
+      Top             =   240
       Width           =   975
    End
    Begin VB.CommandButton CommandOK 
@@ -203,7 +267,7 @@ Begin VB.Form FormZAFOPT
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   8040
+      Left            =   8880
       Style           =   1  'Graphical
       TabIndex        =   6
       TabStop         =   0   'False
@@ -218,6 +282,13 @@ Begin VB.Form FormZAFOPT
       TabIndex        =   0
       Top             =   120
       Width           =   7815
+      Begin VB.TextBox TextDensity 
+         Height          =   285
+         Left            =   6720
+         TabIndex        =   46
+         Top             =   1200
+         Width           =   975
+      End
       Begin VB.CheckBox CheckHydrogenStoichiometry 
          Caption         =   "Hydrogen Stoichiometry To Excess Oxygen"
          BeginProperty Font 
@@ -231,16 +302,16 @@ Begin VB.Form FormZAFOPT
          EndProperty
          Height          =   255
          Left            =   120
-         TabIndex        =   40
+         TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"ZAFOPT.frx":0000
+         ToolTipText     =   $"Zafopt.frx":0000
          Top             =   3120
          Width           =   4095
       End
       Begin VB.TextBox TextHydrogenStoichiometry 
          Height          =   285
          Left            =   5400
-         TabIndex        =   39
+         TabIndex        =   37
          TabStop         =   0   'False
          ToolTipText     =   "Ratio of hydrogen to oxygen atoms (1 = OH and 2 = H2O)"
          Top             =   3120
@@ -249,7 +320,7 @@ Begin VB.Form FormZAFOPT
       Begin VB.TextBox TextDifferenceFormula 
          Height          =   285
          Left            =   3480
-         TabIndex        =   37
+         TabIndex        =   35
          ToolTipText     =   "Enter the formula by difference (not saved for export/import)"
          Top             =   1800
          Width           =   1815
@@ -267,7 +338,7 @@ Begin VB.Form FormZAFOPT
          EndProperty
          Height          =   255
          Left            =   120
-         TabIndex        =   38
+         TabIndex        =   36
          TabStop         =   0   'False
          ToolTipText     =   "Specify a formula by difference in the sample analysis"
          Top             =   1800
@@ -277,7 +348,7 @@ Begin VB.Form FormZAFOPT
          Caption         =   "Calculate Atomic Percents"
          Height          =   255
          Left            =   120
-         TabIndex        =   36
+         TabIndex        =   34
          TabStop         =   0   'False
          ToolTipText     =   "Also calculate the atomic percent composition"
          Top             =   600
@@ -431,6 +502,15 @@ Begin VB.Form FormZAFOPT
          Top             =   360
          Width           =   3615
       End
+      Begin VB.Label Label6 
+         Alignment       =   2  'Center
+         Caption         =   "Density"
+         Height          =   255
+         Left            =   6720
+         TabIndex        =   47
+         Top             =   960
+         Width           =   975
+      End
       Begin VB.Label Label9 
          Caption         =   "(OH = 1, H2O = 2)"
          BeginProperty Font 
@@ -444,7 +524,7 @@ Begin VB.Form FormZAFOPT
          EndProperty
          Height          =   255
          Left            =   6360
-         TabIndex        =   41
+         TabIndex        =   39
          Top             =   3120
          Width           =   1335
       End
@@ -529,24 +609,6 @@ Begin VB.Form FormZAFOPT
          Width           =   495
       End
    End
-   Begin VB.Label Label6 
-      Alignment       =   2  'Center
-      Caption         =   "Density"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   255
-      Left            =   8040
-      TabIndex        =   34
-      Top             =   1560
-      Width           =   975
-   End
 End
 Attribute VB_Name = "FormZAFOPT"
 Attribute VB_GlobalNameSpace = False
@@ -558,7 +620,7 @@ Option Explicit
 
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub

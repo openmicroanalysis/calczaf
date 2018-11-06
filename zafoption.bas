@@ -11,6 +11,8 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+Dim tEDSSpectraUseFlag As Integer           ' flag from passed sample
+
 Dim ZAFOptionSample(1 To 1) As TypeSample
 Dim FormulaTmpSample(1 To 1) As TypeSample
 
@@ -24,6 +26,28 @@ Dim i As Integer, ip As Integer, ipp As Integer
 
 ' Load the sample
 ZAFOptionSample(1) = sample(1)
+
+' Save current use EDS flag for OptionSave procedure
+tEDSSpectraUseFlag = ZAFOptionSample(1).EDSSpectraUseFlag
+
+' Enable EDS controls if EDS spectra is available (only utilized by CalcImage)
+If ZAFOptionSample(1).EDSSpectraFlag Then
+FormZAFOPT.CheckUseEDSSpectra.Enabled = True
+Else
+FormZAFOPT.CheckUseEDSSpectra.Enabled = False
+End If
+
+' Load use EDS flag option (only utilized by CalcImage)
+If ZAFOptionSample(1).EDSSpectraUseFlag Then
+FormZAFOPT.CheckUseEDSSpectra.value = vbChecked
+FormZAFOPT.CommandSelectQuantMethodOrProject.Enabled = True
+Else
+FormZAFOPT.CheckUseEDSSpectra.value = vbUnchecked
+FormZAFOPT.CommandSelectQuantMethodOrProject.Enabled = False
+End If
+
+' Load quant method or project (only utilized by CalcImage)
+FormZAFOPT.LabelQuantMethodOrProject.Caption = ZAFOptionSample(1).EDSSpectraQuantMethodOrProject$
 
 ' Load form with calculation options
 If ZAFOptionSample(1).OxideOrElemental% = 1 Then
@@ -178,7 +202,7 @@ Exit Sub
 End Sub
 
 Sub ZAFOptionSave()
-' Saves the option form
+' Saves the CalcZAF/CalcImage calculation options form
 
 ierror = False
 On Error GoTo ZAFOptionSaveError
@@ -186,6 +210,31 @@ On Error GoTo ZAFOptionSaveError
 Dim i As Integer, j As Integer, ip As Integer
 Dim chan As Integer, ipp As Integer
 Dim sym As String
+
+' Save use EDS flag option (only utilized by CalcImage)
+ZAFOptionSample(1).EDSSpectraUseFlag = False
+If FormZAFOPT.CheckUseEDSSpectra.value = vbChecked Then
+ZAFOptionSample(1).EDSSpectraUseFlag = True
+End If
+
+' Save quant method or project (only utilized by CalcImage)
+ZAFOptionSample(1).EDSSpectraQuantMethodOrProject$ = Trim$(FormZAFOPT.LabelQuantMethodOrProject.Caption)
+
+' Check if use EDS flag changed by user (only utilized by CalcImage)
+If ZAFOptionSample(1).EDSSpectraUseFlag <> tEDSSpectraUseFlag Then
+For i% = 1 To ZAFOptionSample(1).LastElm%
+If ZAFOptionSample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then
+If ZAFOptionSample(1).EDSSpectraUseFlag Then
+ZAFOptionSample(1).DisableQuantFlag(i%) = 0                     ' change disable quant flag in sample to be saved below
+Else
+ZAFOptionSample(1).DisableQuantFlag(i%) = 1                     ' change disable quant flag in sample to be saved below
+End If
+End If
+Next i%
+
+AllAnalysisUpdateNeeded = True                                   ' force analysis update if EDS element quant flag changed
+AllAFactorUpdateNeeded = True
+End If
 
 ' Check for proper oxygen flags
 If FormZAFOPT.CheckDisplayAsOxide.value = vbChecked Then
