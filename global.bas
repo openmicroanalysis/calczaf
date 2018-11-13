@@ -2409,8 +2409,10 @@ Global AutomationReStandardizationInterval As Double    ' in days
 Global ZAFEquationMode As Integer       ' (only used in CalcZAF)
 Global CalcZAFMode As Integer           ' (only used in CalcZAF (ZAFPrintStd))
 
-' 0 = beam deflection, 1 = random point, 2 = traverse start, 3 = traverse stop, 4 = traverse digitize
-' 5 = grid start, 6 = grid stop, 7 = grid digitize, 8 = move stage
+' 0 = beam deflection, 1 = random point
+' 2 = traverse start, 3 = traverse stop, 4 = traverse digitize
+' 5 = grid start, 6 = grid stop, 7 = grid digitize
+' 8 = move stage
 Global DigitizeMode As Integer
 Global DigitizeImageSkipBeamModes As Boolean
 

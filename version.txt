@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/12/18	First release of new polygon/pixel filtering extraction feature in CalcImage.
+
+11/11/18	Replace msg$ globals with module level tmsg$ variables in low level code (Demo, JEOL, SX100).
+v. 12.5.2	Additional work on polygon pixel filtering extraction code in CalcImage.
+
 11/5/18		Improve displayed output of EDS count times.
 
 11/2/18		Tweak EDS interface code to skip EDS interface init if turned off in Analytical |
