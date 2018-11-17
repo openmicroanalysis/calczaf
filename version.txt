@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/16/18	More work on CalcImage polygon extraction code.
+
+11/14/18	Re-arrange controls on polygon extraction form (Seward).
+
 11/12/18	First release of new polygon/pixel filtering extraction feature in CalcImage.
 
 11/11/18	Replace msg$ globals with module level tmsg$ variables in low level code (Demo, JEOL, SX100).
