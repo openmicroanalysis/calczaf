@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/21/18	Fix formula basis save bug if using sum of cations (Locock)
+
 11/16/18	More work on CalcImage polygon extraction code.
 
 11/14/18	Re-arrange controls on polygon extraction form (Seward).
