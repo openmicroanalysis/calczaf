@@ -2469,10 +2469,6 @@ Global UserSpecifiedOutputNetPeakCountsFlag As Boolean
 Global UserSpecifiedOutputKrawFlag As Boolean
 Global UserSpecifiedOutputDateTimeFlag As Boolean
 
-Global NthPointAcquisitionFlag As Boolean   ' for actual acquisition of Nth point data
-Global NthPointCalculationFlag As Boolean   ' for test calculation of Nth Point data
-Global DefaultNthPointAcquisitionInterval As Integer
-
 Global FilamentWarmUpInterval As Single     ' filament warmup interval delay in seconds
 
 Global SampleSyms(1 To MAXSAMPLETYPES%) As String
@@ -2960,3 +2956,13 @@ Global PhiRhoZPlotY1() As Single        ' generated intensities
 Global PhiRhoZPlotY2() As Single        ' emitted intensities
 
 Global DoNotUseEDSInterfaceForNetIntensitiesFlag As Integer         ' new flag to turn off EDS interface for obtaing net intensities
+
+Global NthPointAcquisitionFlag As Boolean   ' for actual acquisition of Nth point data
+Global NthPointCalculationFlag As Boolean   ' for test calculation of Nth Point data
+Global DefaultNthPointAcquisitionInterval As Integer
+
+' New flags for sample based Nth point acquisition
+Global NthPointAcquisitionDefaultFlag As Boolean   ' for storing default Nth point acquisition flag
+Global NthPointAcquisitionTypeFlag As Integer   ' 0 = acquire Nth points on both stds and unks, 1 = acquire Nth points on stds only, 2 = acquire Nth points on unks only
+
+

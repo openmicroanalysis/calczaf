@@ -2,7 +2,21 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-11/26/18	Add Z frac to 0.7.  Add check for blanking values in CalcImage pixel extraction code.
+11/30/18	Add sigma errors to TDI output (Buse).
+v. 12.5.3
+		Fix alpha factor log window output in CalcZAF.  Fix Penepma Kratio Limits flag behavior.
+		
+		Fix situation when user designates too many replicates in Automate! (Seward).
+		
+		Fix error when insufficient sum for calculation of mineral basis during automation (Carpenter).
+		
+		Add display of filtered pixel image in CalcImage (Seward).
+		
+		Add code to support sample type based Nth point acquisitions (Buse)
+		
+		Modify Surfer slice scripts to use zeros for values outside area or blanked (Goemann).
+
+11/26/18	Add Z frac to 0.7 output to Standard.  Add check for blanking values in CalcImage pixel extraction code.
 
 11/21/18	Fix formula basis save bug if using sum of cations (Locock)
 

@@ -89,6 +89,9 @@ On Error GoTo ConvertMineralsError
 
 Dim j As Integer
 
+' Check for sufficient basis of mineral end members basis elements
+If ConvertMineralsLineCheck(analysis, sample()) Then
+
 ' Calculate all rows
 For j% = 1 To sample(1).Datarows%
 If sample(1).LineStatus(j%) Then
@@ -99,6 +102,11 @@ If ierror Then Exit Sub
 
 End If
 Next j%
+
+Else
+msg$ = "Insufficient number of the basis atoms for the specified mineral end-member calculation for sample " & SampleGetString2$(sample())
+Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
+End If
 
 Exit Sub
 

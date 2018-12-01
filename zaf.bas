@@ -475,9 +475,9 @@ Next i%
 ' Check that zaf.in0% = 2 (binary sample)
 If zaf.in0% <> 2 Then GoTo ZAFAFactorBadBinary
 
-' Calculate for each binary composition
+' Calculate for each binary composition (UsePenepmaKratiosFlag% = 1 do not use, UsePenepmaKratiosFlag% = 2 use)
 For n% = 1 To MAXBINARY%
-If Not UsePenepmaKratiosLimitFlag Or (UsePenepmaKratiosLimitFlag And amount!(n%) < PenepmaKratiosLimitValue! / 100#) Then
+If UsePenepmaKratiosFlag% = 1 Or (UsePenepmaKratiosFlag% = 2 And Not UsePenepmaKratiosLimitFlag) Or (UsePenepmaKratiosFlag% = 2 And UsePenepmaKratiosLimitFlag And amount!(n%) < PenepmaKratiosLimitValue! / 100#) Then
 zaf.n8& = n%
 
 zaf.ksum! = 1#     ' must sum to 1.000

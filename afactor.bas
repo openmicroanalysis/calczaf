@@ -562,7 +562,7 @@ Next n%
 Next ibin%
 
 ' If use Penepma k-ratios flag then load values for this binary (if found) (1 = do not use, 2 = use)
-If UsePenepmaKratiosFlag = 2 Then
+If UsePenepmaKratiosFlag% = 2 Then
 notfoundA = True
 notfoundB = True
 Call AFactorPenepmaReadMatrix(wout!(), rout!(), eout$(), xout$(), zout%(), notfoundA, notfoundB, AFactorTmpSample())
@@ -572,7 +572,7 @@ If Not notfoundB And sample(1).Xrsyms$(l%) <> vbNullString Then PenepmaKratiosFl
 End If
 
 ' If Penepma k-ratios were not found, initialize calculations for ZAF or phi-rho-z calculations (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
-If UsePenepmaKratiosFlag = 1 Or (UsePenepmaKratiosFlag = 2 And (notfoundA And sample(1).Xrsyms$(k%) <> vbNullString) Or (notfoundB And sample(1).Xrsyms$(l%) <> vbNullString)) Then
+If UsePenepmaKratiosFlag% = 1 Or (UsePenepmaKratiosFlag% = 2 And (notfoundA And sample(1).Xrsyms$(k%) <> vbNullString) Or (notfoundB And sample(1).Xrsyms$(l%) <> vbNullString)) Then
 
 If CorrectionFlag% <> MAXCORRECTION% Then
 Call ZAFSetZAF(AFactorTmpSample())
@@ -2031,8 +2031,8 @@ End If
 For n% = 1 To MAXBINARY%
 m% = (n% - 1) * 2 + ibin%
 
-' Check for UsePenepmaKratiosLimitFlag
-If Not UsePenepmaKratiosLimitFlag Or (UsePenepmaKratiosLimitFlag And BinaryRanges!(n%) <= PenepmaKratiosLimitValue!) Then
+' Check for UsePenepmaKratiosFlag% (1 = do not use, 2 = use) and UsePenepmaKratiosLimitFlag
+If UsePenepmaKratiosFlag% = 1 Or (UsePenepmaKratiosFlag% = 2 And Not UsePenepmaKratiosLimitFlag) Or (UsePenepmaKratiosFlag% = 2 And UsePenepmaKratiosLimitFlag And BinaryRanges!(n%) <= PenepmaKratiosLimitValue!) Then
 wout!(m%) = BinaryRanges!(n%)
 
 If ibin% = 1 Then
