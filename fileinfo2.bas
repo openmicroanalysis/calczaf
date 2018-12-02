@@ -107,7 +107,7 @@ Exit Function
 FileInfoGetVersion16BitVersion:
 Screen.MousePointer = vbDefault
 msg$ = "The database file version number (v. " & Str$(FiDt("Version")) & ") indicates that " & tfilename$ & " is a 16 bit database." & vbCrLf & vbCrLf
-msg$ = msg$ = "Please convert the database file to the new 32 bit database format by using the appropriate Export/Import feature."
+msg$ = msg$ & "Please convert the database file to the new 32 bit database format by using the appropriate Export/Import feature."
 MsgBox msg$, vbOKOnly + vbExclamation, "FileInfoGetVersion"
 ierror = True
 Exit Function
@@ -444,7 +444,7 @@ Exit Sub
 
 End Sub
 
-Sub FileInfoSaveData(filename As String)
+Sub FileInfoSaveData(Filename As String)
 ' Save data to MDB "File" table
 
 ierror = False
@@ -455,7 +455,7 @@ Dim FiDt As Recordset
 
 ' Open the specified database file
 Screen.MousePointer = vbHourglass
-Set FiDb = OpenDatabase(filename$, DatabaseExclusiveAccess%, False)
+Set FiDb = OpenDatabase(Filename$, DatabaseExclusiveAccess%, False)
 
 ' Open file table
 Set FiDt = FiDb.OpenRecordset("File", dbOpenTable)
