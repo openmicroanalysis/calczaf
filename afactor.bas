@@ -1432,9 +1432,17 @@ For chan% = 1 To sample(1).LastChan%
 If sample(1).DisableQuantFlag%(chan%) = 0 Or (sample(1).DisableQuantFlag%(chan%) = 1 And sample(1).OxideOrElemental% = 1 And sample(1).OxygenChannel% = chan%) Then
 diff! = Abs(unkwts!(chan%) - analysis.WtPercents!(chan%))
 If diff! > maxdiff! Then maxdiff! = diff!
-analysis.UnkKrats!(chan%) = kratios2!(chan%)
-analysis.WtPercents!(chan%) = unkwts!(chan%)
+
 analysis.Elsyms$(chan%) = sample(1).Elsyms$(chan%)
+analysis.UnkKrats!(chan%) = kratios2!(chan%)
+
+' Skip disabled quant elements
+If sample(1).DisableQuantFlag%(chan%) = 0 Then
+analysis.WtPercents!(chan%) = unkwts!(chan%)
+Else
+analysis.WtPercents!(chan%) = NOT_ANALYZED_VALUE_SINGLE!
+End If
+
 End If
 Next chan%
 

@@ -2130,7 +2130,13 @@ analysis.Elsyms$(i%) = sample(1).Elsyms$(i%)
 analysis.Xrsyms$(i%) = sample(1).Xrsyms$(i%)
 analysis.MotorNumbers%(i%) = sample(1).MotorNumbers%(i%)
 analysis.CrystalNames$(i%) = sample(1).CrystalNames$(i%)
+
+' Skip disabled quant elements
+If sample(1).DisableQuantFlag%(i%) = 0 Then
 analysis.WtPercents!(i%) = zaf.conc!(i%) * 100#
+Else
+analysis.WtPercents!(i%) = NOT_ANALYZED_VALUE_SINGLE!
+End If
 
 ' Load if not disabled
 analysis.UnkKrats!(i%) = zaf.krat!(i%)
@@ -2153,6 +2159,7 @@ analysis.ActualKilovolts!(i%) = zaf.coating_actual_kilovolts!(i%)               
 analysis.EdgeEnergies(i%) = zaf.eC!(i%)
 analysis.ActualOvervoltages(i%) = zaf.coating_actual_kilovolts!(i%) / zaf.eC!(i%)   ' includes beam energy loss from coating if specified
 End If
+
 Next i%
 
 ' Load element by difference
