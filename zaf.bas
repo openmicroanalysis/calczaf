@@ -1310,8 +1310,8 @@ phi!(i%) = a1!
 If zafinit% = 0 And a2! <> 0# Then zaf.genstd!(i%) = a1! / a2!
 If zafinit% = 1 And a2! <> 0# Then zaf.gensmp!(i%) = a1! / a2!
 
-' Calculate phi-rho-z curves for plotting
-If zafinit% = 1 And UCase$(app.EXEName) = UCase$("CalcZAF") Then
+' Calculate phi-rho-z curves for plotting if specified (CalcZAF only)
+If zafinit% = 1 And CalculatePhiRhoZPlotCurves Then
 Call ZAFCalculatePhiRhoZCurves(i%, x4!, x3!, x2!, chi!, rr!, zaf)
 If ierror Then Exit Sub
 End If
@@ -3977,8 +3977,8 @@ FP! = (fp1# + fp2# + fp3#) / fff#
 'Call ZAFPap2   ' numerical integration of PAP phi(pz)
 'If ierror Then Exit Sub
 
-' Calculate phi-rho-z curves for plotting
-If zafinit% = 1 And UCase$(app.EXEName) = UCase$("CalcZAF") Then
+' Calculate phi-rho-z curves for plotting (CalcZAF only)
+If zafinit% = 1 And CalculatePhiRhoZPlotCurves Then
 Call ZAFCalculatePhiRhoZCurvesPAP(ii%, rm#, rc#, rx#, a1#, a2#, b1#, xi!, zaf)
 End If
 End If
@@ -4009,8 +4009,8 @@ A11# = (B11# / B10# + phi0# - B10# * ff#) * (1# + etas#) / etas#
 FP! = (phi0# + B11# / (B10# + xi!) - A11# * B10# * etas# / (B10# * (1# + etas#) + xi!)) / (B10# + xi!)
 FP! = FP! / ff#
 
-' Calculate phi-rho-z curves for plotting
-If zafinit% = 1 And UCase$(app.EXEName) = UCase$("CalcZAF") Then
+' Calculate phi-rho-z curves for plotting (CalcZAF only)
+If zafinit% = 1 And CalculatePhiRhoZPlotCurves Then
 Call ZAFCalculatePhiRhoZCurvesXPP(ii%, A11#, B11#, A10#, B10#, phi0#, ff#, xi!, zaf)
 End If
 End If

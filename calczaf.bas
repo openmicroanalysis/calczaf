@@ -331,7 +331,7 @@ If ierror Then Exit Sub
 End If
 
 ' Plot phi-rho-z curves if specified
-If FormZAF.CheckPlotPhiRhoZCurves.Value Then
+If CalculatePhiRhoZPlotCurves Then
 If CorrectionFlag% = 0 And iabs% >= 7 Then
 FormPlotPhiRhoZ.Show vbModeless
 Call PlotPhiRhoZCurves(CalcZAFOldSample())

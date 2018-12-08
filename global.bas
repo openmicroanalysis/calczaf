@@ -2965,4 +2965,5 @@ Global DefaultNthPointAcquisitionInterval As Integer
 Global NthPointAcquisitionDefaultFlag As Boolean   ' for storing default Nth point acquisition flag
 Global NthPointAcquisitionTypeFlag As Integer   ' 0 = acquire Nth points on both stds and unks, 1 = acquire Nth points on stds only, 2 = acquire Nth points on unks only
 
+Global CalculatePhiRhoZPlotCurves As Boolean        ' used in CalcZAF
 

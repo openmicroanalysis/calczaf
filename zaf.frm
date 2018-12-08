@@ -288,6 +288,11 @@ Option Explicit
 Private Sub CommandCalculate_Click()
 ' Calculate weight or intensity
 If Not DebugMode Then On Error Resume Next
+If FormZAF.CheckPlotPhiRhoZCurves.Value = vbChecked Then
+CalculatePhiRhoZPlotCurves = True
+Else
+CalculatePhiRhoZPlotCurves = False
+End If
 If FormZAF.CheckUseAllMatrixCorrections.Value = vbChecked Then
 CalculateAllMatrixCorrections = True
 Call CalcZAFCalculateAll(FormZAF)
