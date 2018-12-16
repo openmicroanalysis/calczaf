@@ -586,7 +586,7 @@ End If
         PhiRhoZPlotY2(i%, k) = phi * Exp(-1 * chi * rhoz)
         
     Next k
-    Call IOWriteLog(vbNullString)
+    If VerboseMode Then Call IOWriteLog(vbNullString)
 
 Exit Sub
 

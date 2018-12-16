@@ -160,24 +160,17 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub OptionBenceAlbee_Click(Index As Integer)
-If Not DebugMode Then On Error Resume Next
-CorrectionFlag% = Index% + 1
-Call CalcZAFPlotAlphaFactors_PE
-If ierror Then Exit Sub
-End Sub
-
 Private Sub OptionDepthMassOrMicrons_Click(Index As Integer)
 Call CalcZAFCalculate
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 Dim fX As Double, fY As Double      ' mouse position in graph coordinates
 
 ' Get mouse position in data units
-Call MiscPlotTrack(Int(1), X!, Y!, fX#, fY#, FormPlotPhiRhoZ.Pesgo1)
+Call MiscPlotTrack(Int(1), x!, y!, fX#, fY#, FormPlotPhiRhoZ.Pesgo1)
 If ierror Then Exit Sub
    
 ' Format graph mouse position

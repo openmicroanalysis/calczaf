@@ -347,18 +347,18 @@ offset! = coeff1! + coeff2! * temp1! + coeff3! * temp1! ^ 2
 End If
 End If
 
-If DebugMode And VerboseMode Then
-msg$ = vbCrLf & "XrayConvert (variable) Calculations for: " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & ", on spec " & Str$(sample(1).MotorNumbers%(chan%)) & " " & sample(1).CrystalNames$(chan%)
-Call IOWriteLog(msg$)
-msg$ = "Position (on-peak): " & Str$(sample(1).OnPeaks!(chan%)) & ", position (theoritical): " & Str$(onpos!) & ", position (predicted): " & Str$(pos1!)
-Call IOWriteLog(msg$)
-msg$ = "Offset (constant): " & Str$(sample(1).Offsets!(chan%)) & ", offset (variable): " & Str$(voffset!)
-Call IOWriteLog(msg$)
-msg$ = "Intercept coefficient (original): " & Str$(MultiplePeakCoefficient1!(ip% - 1, ipp%, sample(1).MotorNumbers%(chan%))) & ", intercept (modified): " & Str$(coeff1!)
-Call IOWriteLog(msg$)
-msg$ = "Passed position: " & Str$(pos!) & ", calculated variable offset at passed position: " & Str$(offset!)
-Call IOWriteLog(msg$)
-End If
+'If DebugMode And VerboseMode Then
+'msg$ = vbCrLf & "XrayConvertSpecAng: calculations for: " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & ", on spec " & Str$(sample(1).MotorNumbers%(chan%)) & " " & sample(1).CrystalNames$(chan%)
+'Call IOWriteLog(msg$)
+'msg$ = "XrayConvertSpecAng: Position (on-peak): " & Str$(sample(1).OnPeaks!(chan%)) & ", position (theoritical): " & Str$(onpos!) & ", position (predicted): " & Str$(pos1!)
+'Call IOWriteLog(msg$)
+'msg$ = "XrayConvertSpecAng: Offset (constant): " & Str$(sample(1).Offsets!(chan%)) & ", offset (variable): " & Str$(voffset!)
+'Call IOWriteLog(msg$)
+'msg$ = "XrayConvertSpecAng: Intercept coefficient (original): " & Str$(MultiplePeakCoefficient1!(ip% - 1, ipp%, sample(1).MotorNumbers%(chan%))) & ", intercept (modified): " & Str$(coeff1!)
+'Call IOWriteLog(msg$)
+'msg$ = "XrayConvertSpecAng: Passed position: " & Str$(pos!) & ", calculated variable offset at passed position: " & Str$(offset!)
+'Call IOWriteLog(msg$)
+'End If
 End If
 
 ' Spectrometer to angstroms
@@ -368,10 +368,10 @@ temp! = (pos! + offset!) * temp!
 Else
 temp! = (pos! + sample(1).Offsets!(chan%)) * temp!
 End If
-If DebugMode And VerboseMode Then
-msg$ = "Passed position (spectrometer): " & Str$(pos!) & ", returned position (angstroms): " & Str$(temp!)
-Call IOWriteLog(msg$)
-End If
+'If DebugMode And VerboseMode Then
+'msg$ = "XrayConvertSpecAng: Passed position (spectrometer): " & Str$(pos!) & ", returned position (angstroms): " & Str$(temp!)
+'Call IOWriteLog(msg$)
+'End If
 End If
 
 ' Angstroms to spectrometer
@@ -381,10 +381,10 @@ temp! = pos! / temp! - offset!
 Else
 temp! = pos! / temp! - sample(1).Offsets!(chan%)
 End If
-If DebugMode And VerboseMode Then
-msg$ = "Passed position (angstrom): " & Str$(pos!) & ", returned position (spectrometer): " & Str$(temp!)
-Call IOWriteLog(msg$)
-End If
+'If DebugMode And VerboseMode Then
+'msg$ = "XrayConvertSpecAng: Passed position (angstrom): " & Str$(pos!) & ", returned position (spectrometer): " & Str$(temp!)
+'Call IOWriteLog(msg$)
+'End If
 End If
 
 ' Spectrometer to angstroms (w/o offset)
@@ -401,10 +401,10 @@ End If
 If mode% = 5 Then
 temp2! = 1# - (k - (k! / order% ^ 2))
 temp! = pos! * temp2!
-If DebugMode And VerboseMode Then
-msg$ = "Passed position (angstroms): " & Str$(pos!) & ", returned position (angstroms): " & Str$(temp!)
-Call IOWriteLog(msg$)
-End If
+'If DebugMode And VerboseMode Then
+'msg$ = "XrayConvertSpecAng: Passed position (angstroms): " & Str$(pos!) & ", returned position (angstroms): " & Str$(temp!)
+'Call IOWriteLog(msg$)
+'End If
 End If
 
 ' Angstroms to kilovolts (with refractive order correction)
@@ -412,19 +412,19 @@ If mode% = 6 Then
 temp2! = 1# - (k - (k! / order% ^ 2))
 temp! = pos! * temp2!
 temp! = order% * ANGKEV! / temp!        ' convert to keV
-If DebugMode And VerboseMode Then
-msg$ = "Passed position (angstroms): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (keV): " & Str$(temp!)
-Call IOWriteLog(msg$)
-End If
+'If DebugMode And VerboseMode Then
+'msg$ = "XrayConvertSpecAng: Passed position (angstroms): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (keV): " & Str$(temp!)
+'Call IOWriteLog(msg$)
+'End If
 End If
 
 ' Kilovolts to angstroms (with refractive order correction)
 If mode% = 7 Then
 temp! = ANGKEV! / pos!                                         ' convert to angstroms
-If DebugMode And VerboseMode Then
-msg$ = "Passed position (keV): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (angstroms): " & Str$(temp!)
-Call IOWriteLog(msg$)
-End If
+'If DebugMode And VerboseMode Then
+'msg$ = "XrayConvertSpecAng: Passed position (keV): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (angstroms): " & Str$(temp!)
+'Call IOWriteLog(msg$)
+'End If
 End If
 
 ' Spectrometer to kilovolts
@@ -436,10 +436,10 @@ temp! = (pos! + sample(1).Offsets!(chan%)) * temp!
 End If
 
 temp! = order% * ANGKEV! / temp!                                ' next convert angstroms to keV
-If DebugMode And VerboseMode Then
-msg$ = "Passed position (spectro): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (angstroms): " & Str$(temp!)
-Call IOWriteLog(msg$)
-End If
+'If DebugMode And VerboseMode Then
+'msg$ = "XrayConvertSpecAng: Passed position (spectro): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (angstroms): " & Str$(temp!)
+'Call IOWriteLog(msg$)
+'End If
 End If
 
 ' Kilovolts to spectrometer
@@ -452,10 +452,10 @@ Else
 temp! = temp2! / temp! - sample(1).Offsets!(chan%)
 End If
 
-If DebugMode And VerboseMode Then
-msg$ = "Passed position (keV): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (spectro): " & Str$(temp!)
-Call IOWriteLog(msg$)
-End If
+'If DebugMode And VerboseMode Then
+'msg$ = "XrayConvertSpecAng: Passed position (keV): " & Str$(pos!) & ", order: " & Str$(order%) & ", returned position (spectro): " & Str$(temp!)
+'Call IOWriteLog(msg$)
+'End If
 End If
 
 XrayConvertSpecAng! = temp!

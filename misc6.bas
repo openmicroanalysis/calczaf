@@ -51,6 +51,11 @@ End Sub
 
 Sub MiscSaveDataSets_PE(tbasename As String, gstring As String, xstring As String, ystring As String, sString() As String, tGraph As Pesgo, tForm As Form)
 ' Open file to save graph data (multiple sets) to disk (Pro Essentials code)
+'  tbasename is the file base name
+'  gstring is the base name qualifier
+'  xstring is the x-axis label
+'  ystring is the y axis label
+'  sString() are the Y data (subset) column labels
 
 ierror = False
 On Error GoTo MiscSaveDataSets_PEError
