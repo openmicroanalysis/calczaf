@@ -4452,7 +4452,8 @@ userstring$ = app.EXEName
 If UCase$(app.EXEName$) = UCase$("Probewin") Then userstring$ = "Probe for EPMA"
 End If
 
-' Check for blank INI file name
+' Check for blank INI file name (also load ApplicationCommonAppData here for loading FormMAIN log window positions)
+ApplicationCommonAppData$ = IOBrowseGetAppDataFolder$(SpecialFolder_CommonAppData) & "\Probe Software\Probe for EPMA\"      ' all users
 If Trim$(WindowINIFile$) = vbNullString Then WindowINIFile$ = ApplicationCommonAppData$ & "WINDOW.INI"
 
 ' Load comma character for non Probewin.exe applications

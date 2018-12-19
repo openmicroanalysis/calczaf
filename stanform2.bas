@@ -23,6 +23,7 @@ Dim salzbar As Single    ' Saldick and Allen
 Dim joyzbar As Single    ' Joyet et al., Hohn and Niedrig, Buchner
 Dim evezbar As Single    ' Everhart, Danguy and Quivy
 Dim donozbar As Single   ' Donovan (for continuum)
+Dim donob65zbar As Single  ' Donovan (for backscatter)
 Dim donob70zbar As Single  ' Donovan (for backscatter)
 Dim donob80zbar As Single  ' Donovan (for backscatter)
 Dim donob85zbar As Single  ' Donovan (for backscatter)
@@ -130,6 +131,8 @@ Call StanFormCalculateZbarFrac(Int(0), sample(1).LastChan%, atmfrac!(), sample(1
 If ierror Then Exit Sub
 
 ' Calculate Donovan z-bar (for backscatter)
+Call StanFormCalculateZbarFrac(Int(0), sample(1).LastChan%, atmfrac!(), sample(1).AtomicNums%(), sample(1).AtomicNums%(), atemp2!(), 0.65!, masfrac!(), donob65zbar!)
+If ierror Then Exit Sub
 Call StanFormCalculateZbarFrac(Int(0), sample(1).LastChan%, atmfrac!(), sample(1).AtomicNums%(), sample(1).AtomicNums%(), atemp2!(), 0.7!, masfrac!(), donob70zbar!)
 If ierror Then Exit Sub
 Call StanFormCalculateZbarFrac(Int(0), sample(1).LastChan%, atmfrac!(), sample(1).AtomicNums%(), sample(1).AtomicNums%(), atemp2!(), 0.8!, masfrac!(), donob80zbar!)
@@ -220,6 +223,7 @@ Call IOWriteLog("Zbar (Joyet et al.) = " & MiscAutoFormat$(joyzbar!))
 Call IOWriteLog("Zbar (Everhart) = " & MiscAutoFormat$(evezbar!))
 Call IOWriteLog(vbNullString)
 Call IOWriteLog("Zbar (Donovan Z^0.5 for continuum) = " & MiscAutoFormat$(donozbar!))
+Call IOWriteLog("Zbar (Donovan Z^0.65 for backscatter) = " & MiscAutoFormat$(donob65zbar!))
 Call IOWriteLog("Zbar (Donovan Z^0.70 for backscatter) = " & MiscAutoFormat$(donob70zbar!))
 Call IOWriteLog("Zbar (Donovan Z^0.80 for backscatter) = " & MiscAutoFormat$(donob80zbar!))
 Call IOWriteLog("Zbar (Donovan Z^0.85 for backscatter) = " & MiscAutoFormat$(donob85zbar!))
