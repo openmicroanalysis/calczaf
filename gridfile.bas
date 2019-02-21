@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGridFile"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -59,7 +59,7 @@ Dim gStage_Units As String
 
 Dim sarray() As Single
 
-Sub GridFileReadWrite(mode As Integer, findex As Integer, idata() As TypeImageData, tfilename As String)
+Sub GridFileReadWrite(mode As Integer, findex As Integer, iData() As TypeImageData, tfilename As String)
 ' Read or write grid data from or to  disk (Surfer v. 6 and earlier)
 ' mode = 1 read
 ' mode = 2 write
@@ -79,23 +79,23 @@ If ierror Then Exit Sub
 If mode% = 1 Then
 Screen.MousePointer = vbHourglass
 Open tfilename$ For Binary Access Read As #Temp1FileNumber%
-Get #Temp1FileNumber%, , idata(findex%).id$
+Get #Temp1FileNumber%, , iData(findex%).id$
 
 ' Check for binary vs. ASCII
-If idata(findex%).id$ <> "DSBB" Then GoTo GridFileReadWriteNotBinary
+If iData(findex%).id$ <> "DSBB" Then GoTo GridFileReadWriteNotBinary
 
-Get #Temp1FileNumber%, , idata(findex%).ix%
-Get #Temp1FileNumber%, , idata(findex%).iy%
-Get #Temp1FileNumber%, , idata(findex%).xmin#
-Get #Temp1FileNumber%, , idata(findex%).xmax#
-Get #Temp1FileNumber%, , idata(findex%).ymin#
-Get #Temp1FileNumber%, , idata(findex%).ymax#
-Get #Temp1FileNumber%, , idata(findex%).zmin#
-Get #Temp1FileNumber%, , idata(findex%).zmax#
+Get #Temp1FileNumber%, , iData(findex%).ix%
+Get #Temp1FileNumber%, , iData(findex%).iy%
+Get #Temp1FileNumber%, , iData(findex%).xmin#
+Get #Temp1FileNumber%, , iData(findex%).xmax#
+Get #Temp1FileNumber%, , iData(findex%).ymin#
+Get #Temp1FileNumber%, , iData(findex%).ymax#
+Get #Temp1FileNumber%, , iData(findex%).zmin#
+Get #Temp1FileNumber%, , iData(findex%).zmax#
 
 ' Dimension data array
-ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Single
-Get #Temp1FileNumber%, , idata(findex%).gData!
+ReDim iData(findex%).gData(1 To iData(findex%).ix%, 1 To iData(findex%).iy%) As Single
+Get #Temp1FileNumber%, , iData(findex%).gData!
 Close #Temp1FileNumber%
 
 ' Profile the code below
@@ -104,10 +104,10 @@ Close #Temp1FileNumber%
 'Tanner_SupportCode.GetHighResTime startTime
 
 ' Set out of range values to min and max
-For j% = 1 To idata(findex%).iy%
-For i% = 1 To idata(findex%).ix%
-If idata(findex%).gData(i%, j%) < idata(findex%).zmin# Then idata(findex%).gData(i%, j%) = idata(findex%).zmin#
-If idata(findex%).gData(i%, j%) > idata(findex%).zmax# Then idata(findex%).gData(i%, j%) = idata(findex%).zmax#
+For j% = 1 To iData(findex%).iy%
+For i% = 1 To iData(findex%).ix%
+If iData(findex%).gData(i%, j%) < iData(findex%).zmin# Then iData(findex%).gData(i%, j%) = iData(findex%).zmin#
+If iData(findex%).gData(i%, j%) > iData(findex%).zmax# Then iData(findex%).gData(i%, j%) = iData(findex%).zmax#
 Next i%
 Next j%
 
@@ -115,7 +115,7 @@ Next j%
 'Tanner_SupportCode.PrintTimeTakenInMs startTime
 
 ' Check for appropriate stage polarity and units conversion of image data and min/max
-Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, idata())
+Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, iData())
 If ierror Then Exit Sub
 
 Screen.MousePointer = vbDefault
@@ -125,21 +125,21 @@ Else
 Screen.MousePointer = vbHourglass
 
 ' Check for appropriate stage polarity and units conversion of image data and min/max
-Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, idata())
+Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, iData())
 If ierror Then Exit Sub
 
 ' Write image data
 Open tfilename$ For Binary Access Write As #Temp1FileNumber%
-Put #Temp1FileNumber%, , idata(findex%).id$
-Put #Temp1FileNumber%, , idata(findex%).ix%
-Put #Temp1FileNumber%, , idata(findex%).iy%
-Put #Temp1FileNumber%, , idata(findex%).xmin#
-Put #Temp1FileNumber%, , idata(findex%).xmax#
-Put #Temp1FileNumber%, , idata(findex%).ymin#
-Put #Temp1FileNumber%, , idata(findex%).ymax#
-Put #Temp1FileNumber%, , idata(findex%).zmin#
-Put #Temp1FileNumber%, , idata(findex%).zmax#
-Put #Temp1FileNumber%, , idata(findex%).gData!
+Put #Temp1FileNumber%, , iData(findex%).id$
+Put #Temp1FileNumber%, , iData(findex%).ix%
+Put #Temp1FileNumber%, , iData(findex%).iy%
+Put #Temp1FileNumber%, , iData(findex%).xmin#
+Put #Temp1FileNumber%, , iData(findex%).xmax#
+Put #Temp1FileNumber%, , iData(findex%).ymin#
+Put #Temp1FileNumber%, , iData(findex%).ymax#
+Put #Temp1FileNumber%, , iData(findex%).zmin#
+Put #Temp1FileNumber%, , iData(findex%).zmax#
+Put #Temp1FileNumber%, , iData(findex%).gData!
 Close #Temp1FileNumber%
 Screen.MousePointer = vbDefault
 End If
@@ -164,7 +164,7 @@ Exit Sub
 
 End Sub
 
-Sub GridFileReadWrite2(mode As Integer, findex As Integer, idata() As TypeImageData, tfilename As String)
+Sub GridFileReadWrite2(mode As Integer, findex As Integer, iData() As TypeImageData, tfilename As String)
 ' Read or write grid data from or to  disk (Surfer version 7 or higher)
 ' mode = 1 read
 ' mode = 2 write
@@ -200,7 +200,7 @@ Get #Temp1FileNumber%, , theader.Size&
 Get #Temp1FileNumber%, , theader.Version&
 
 ' Load into image array
-idata(findex%).id$ = "DSBB"
+iData(findex%).id$ = "DSBB"
 
 ' Load grid section
 Get #Temp1FileNumber%, , tGrid.tag&
@@ -225,19 +225,19 @@ If tGrid.nCol& > MAXINTEGER% Then GoTo GridFileReadWrite2TooLarge
 If tGrid.nRow& > MAXINTEGER% Then GoTo GridFileReadWrite2TooLarge
 
 ' Load into image array
-idata(findex%).ix% = tGrid.nCol&    ' number of horizontal columns
-idata(findex%).iy% = tGrid.nRow&    ' number of vertical rows
+iData(findex%).ix% = tGrid.nCol&    ' number of horizontal columns
+iData(findex%).iy% = tGrid.nRow&    ' number of vertical rows
 
 ' Calculate X dimensions
-idata(findex%).xmin# = tGrid.xLL#
-idata(findex%).xmax# = tGrid.xLL# + (tGrid.nCol& * tGrid.xSize#)
+iData(findex%).xmin# = tGrid.xLL#
+iData(findex%).xmax# = tGrid.xLL# + (tGrid.nCol& * tGrid.xSize#)
 
 ' Calculate Y dimensions
-idata(findex%).ymin# = tGrid.yLL#
-idata(findex%).ymax# = tGrid.yLL# + (tGrid.nRow& * tGrid.ySize#)
+iData(findex%).ymin# = tGrid.yLL#
+iData(findex%).ymax# = tGrid.yLL# + (tGrid.nRow& * tGrid.ySize#)
 
-idata(findex%).zmin# = tGrid.zmin#
-idata(findex%).zmax# = tGrid.zmax#
+iData(findex%).zmin# = tGrid.zmin#
+iData(findex%).zmax# = tGrid.zmax#
 
 ' Dimension data array
 ReDim tData.hdata(1 To tGrid.nCol&, 1 To tGrid.nRow&) As Double
@@ -252,7 +252,7 @@ Get #Temp1FileNumber%, , tData.Size&
 Get #Temp1FileNumber%, , tData.hdata#
 Close #Temp1FileNumber%
 
-ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Single
+ReDim iData(findex%).gData(1 To iData(findex%).ix%, 1 To iData(findex%).iy%) As Single
 
 ' Profile the code below
 'Dim startTime As Currency
@@ -264,12 +264,12 @@ ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As 
     
     ' Cache relevant array properties inside local variables for speed
     Dim iBound As Long, jBound As Long
-    iBound& = idata(findex%).ix%
-    jBound& = idata(findex%).iy%
+    iBound& = iData(findex%).ix%
+    jBound& = iData(findex%).iy%
     
     Dim zMinVal As Single, zMaxVal As Single
-    zMinVal! = idata(findex%).zmin#
-    zMaxVal! = idata(findex%).zmax#
+    zMinVal! = iData(findex%).zmin#
+    zMaxVal! = iData(findex%).zmax#
     
     For jj& = 1 To jBound&
     For ii& = 1 To iBound&
@@ -279,9 +279,9 @@ ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As 
         If (tmpFloat! <> BLANKINGVALUE!) Then
             If (tmpFloat! < zMinVal!) Then tmpFloat! = zMinVal!
             If (tmpFloat! > zMaxVal!) Then tmpFloat! = zMaxVal!
-            idata(findex%).gData!(ii&, jj&) = tmpFloat!
+            iData(findex%).gData!(ii&, jj&) = tmpFloat!
         Else
-            idata(findex%).gData!(ii&, jj&) = tmpFloat!
+            iData(findex%).gData!(ii&, jj&) = tmpFloat!
         End If
         
     Next ii&
@@ -291,7 +291,7 @@ ReDim idata(findex%).gData(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As 
 'Tanner_SupportCode.PrintTimeTakenInMs startTime
 
 ' Check for appropriate stage polarity and units conversion of image data and min/max
-Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, idata())
+Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, iData())
 If ierror Then Exit Sub
 
 Screen.MousePointer = vbDefault
@@ -301,7 +301,7 @@ Else
 Screen.MousePointer = vbHourglass
 
 ' Check for appropriate stage polarity and units conversion of image data and min/max
-Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, idata())
+Call GridCheckGRDConvert(mode%, tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, iData())
 If ierror Then Exit Sub
 
 ' Version 7 header section (hex 0x42525344)
@@ -314,29 +314,29 @@ tGrid.tag& = 1145655879
 tGrid.Size& = 72
 
 ' Save to array
-tGrid.nCol& = idata(findex%).ix%    ' number of horizontal columns!
-tGrid.nRow& = idata(findex%).iy%    ' number of vertical rows!
-tGrid.xLL# = idata(findex%).xmin#
-tGrid.yLL# = idata(findex%).ymin#
-tGrid.xSize# = (idata(findex%).xmax# - idata(findex%).xmin#) / (idata(findex%).ix%)
-tGrid.ySize# = (idata(findex%).ymax# - idata(findex%).ymin#) / (idata(findex%).iy%)
+tGrid.nCol& = iData(findex%).ix%    ' number of horizontal columns!
+tGrid.nRow& = iData(findex%).iy%    ' number of vertical rows!
+tGrid.xLL# = iData(findex%).xmin#
+tGrid.yLL# = iData(findex%).ymin#
+tGrid.xSize# = (iData(findex%).xmax# - iData(findex%).xmin#) / (iData(findex%).ix%)
+tGrid.ySize# = (iData(findex%).ymax# - iData(findex%).ymin#) / (iData(findex%).iy%)
 
-tGrid.zmin# = idata(findex%).zmin#
-tGrid.zmax# = idata(findex%).zmax#
+tGrid.zmin# = iData(findex%).zmin#
+tGrid.zmax# = iData(findex%).zmax#
 tGrid.rotation# = 0#
 tGrid.BlankValue# = BLANKINGVALUE!
 
 ' Dimension output data array
-ReDim tData.hdata(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Double
+ReDim tData.hdata(1 To iData(findex%).ix%, 1 To iData(findex%).iy%) As Double
 
 ' Version 7 data section (hex  0x41544144) (note typo in old versions of Surfer help file)
 tData.tag& = 1096040772
 tData.Size& = tGrid.nRow& * tGrid.nCol& * 8
 
 ' Load data for writing
-For jj& = 1 To idata(findex%).iy%
-For ii& = 1 To idata(findex%).ix%
-tData.hdata#(ii&, jj&) = idata(findex%).gData!(ii&, jj&)
+For jj& = 1 To iData(findex%).iy%
+For ii& = 1 To iData(findex%).ix%
+tData.hdata#(ii&, jj&) = iData(findex%).gData!(ii&, jj&)
 Next ii&
 Next jj&
 
@@ -578,7 +578,7 @@ Exit Sub
 
 End Sub
 
-Private Sub GridCheckGRDConvert(method As Integer, tfilename As String, gX_Polarity As Integer, gY_Polarity As Integer, gStage_Units As String, findex As Integer, idata() As TypeImageData)
+Private Sub GridCheckGRDConvert(method As Integer, tfilename As String, gX_Polarity As Integer, gY_Polarity As Integer, gStage_Units As String, findex As Integer, iData() As TypeImageData)
 ' Check for GRDinfo.ini file to convert GRD data appropriately (check stage polarity and units)
 '  method = 1 read GRD from disk
 '  method = 2 write GRD to disk
@@ -616,51 +616,51 @@ tX_Polarity = False
 If Default_X_Polarity% = 0 And gX_Polarity% = 0 Then           ' Cameca reading or writing Cameca
 
 ' Should be nothing to do, but check anyway for reading and writing (force cartesian)
-If idata(findex%).xmin# > idata(findex%).xmax# Then
-temp# = idata(findex%).xmin#
-idata(findex%).xmin# = idata(findex%).xmax#
-idata(findex%).xmax# = temp#
+If iData(findex%).xmin# > iData(findex%).xmax# Then
+temp# = iData(findex%).xmin#
+iData(findex%).xmin# = iData(findex%).xmax#
+iData(findex%).xmax# = temp#
 tX_Polarity = True
 End If
 
 ElseIf Default_X_Polarity% <> 0 And gX_Polarity% = 0 Then      ' JEOL reading or writing Cameca
 If method% = 1 Then ' reading (force anti-cartesian)
-If idata(findex%).xmax# > idata(findex%).xmin# Then
-temp# = idata(findex%).xmin#
-idata(findex%).xmin# = idata(findex%).xmax#
-idata(findex%).xmax# = temp#
+If iData(findex%).xmax# > iData(findex%).xmin# Then
+temp# = iData(findex%).xmin#
+iData(findex%).xmin# = iData(findex%).xmax#
+iData(findex%).xmax# = temp#
 tX_Polarity = True
 End If
 Else                ' writing (force cartesian)
-If idata(findex%).xmin# > idata(findex%).xmax# Then
-temp# = idata(findex%).xmin#
-idata(findex%).xmin# = idata(findex%).xmax#
-idata(findex%).xmax# = temp#
+If iData(findex%).xmin# > iData(findex%).xmax# Then
+temp# = iData(findex%).xmin#
+iData(findex%).xmin# = iData(findex%).xmax#
+iData(findex%).xmax# = temp#
 tX_Polarity = True
 End If
 End If
 
 ElseIf Default_X_Polarity% = 0 And gX_Polarity% <> 0 Then      ' Cameca reading or writing JEOL
-If idata(findex%).xmax# < idata(findex%).xmin# Then            ' force cartesian reading or writing
-temp# = idata(findex%).xmin#
-idata(findex%).xmin# = idata(findex%).xmax#
-idata(findex%).xmax# = temp#
+If iData(findex%).xmax# < iData(findex%).xmin# Then            ' force cartesian reading or writing
+temp# = iData(findex%).xmin#
+iData(findex%).xmin# = iData(findex%).xmax#
+iData(findex%).xmax# = temp#
 tX_Polarity = True
 End If
 
 ElseIf Default_X_Polarity% <> 0 And gX_Polarity% <> 0 Then     ' JEOL reading or writing JEOL
 If method% = 1 Then ' reading (force anti-cartesian)
-If idata(findex%).xmax# > idata(findex%).xmin# Then
-temp# = idata(findex%).xmin#
-idata(findex%).xmin# = idata(findex%).xmax#
-idata(findex%).xmax# = temp#
+If iData(findex%).xmax# > iData(findex%).xmin# Then
+temp# = iData(findex%).xmin#
+iData(findex%).xmin# = iData(findex%).xmax#
+iData(findex%).xmax# = temp#
 tX_Polarity = True
 End If
 Else                ' writing (force cartesian)
-If idata(findex%).xmin# > idata(findex%).xmax# Then
-temp# = idata(findex%).xmin#
-idata(findex%).xmin# = idata(findex%).xmax#
-idata(findex%).xmax# = temp#
+If iData(findex%).xmin# > iData(findex%).xmax# Then
+temp# = iData(findex%).xmin#
+iData(findex%).xmin# = iData(findex%).xmax#
+iData(findex%).xmax# = temp#
 tX_Polarity = True
 End If
 End If
@@ -671,65 +671,65 @@ tY_Polarity = False
 If Default_Y_Polarity% = 0 And gY_Polarity% = 0 Then           ' Cameca reading or writing Cameca
 
 ' Should be nothing to do, but check anyway for reading and writing  (force cartesian)
-If idata(findex%).ymin# > idata(findex%).ymax# Then
-temp# = idata(findex%).ymin#
-idata(findex%).ymin# = idata(findex%).ymax#
-idata(findex%).ymax# = temp#
+If iData(findex%).ymin# > iData(findex%).ymax# Then
+temp# = iData(findex%).ymin#
+iData(findex%).ymin# = iData(findex%).ymax#
+iData(findex%).ymax# = temp#
 tY_Polarity = True
 End If
 
 ElseIf Default_Y_Polarity% <> 0 And gY_Polarity% = 0 Then      ' JEOL reading or writing Cameca
 If method% = 1 Then ' reading (force anti-cartesian)
-If idata(findex%).ymax# > idata(findex%).ymin# Then
-temp# = idata(findex%).ymin#
-idata(findex%).ymin# = idata(findex%).ymax#
-idata(findex%).ymax# = temp#
+If iData(findex%).ymax# > iData(findex%).ymin# Then
+temp# = iData(findex%).ymin#
+iData(findex%).ymin# = iData(findex%).ymax#
+iData(findex%).ymax# = temp#
 tY_Polarity = True
 End If
 Else                ' writing (force cartesian)
-If idata(findex%).ymin# > idata(findex%).ymax# Then
-temp# = idata(findex%).ymin#
-idata(findex%).ymin# = idata(findex%).ymax#
-idata(findex%).ymax# = temp#
+If iData(findex%).ymin# > iData(findex%).ymax# Then
+temp# = iData(findex%).ymin#
+iData(findex%).ymin# = iData(findex%).ymax#
+iData(findex%).ymax# = temp#
 tY_Polarity = True
 End If
 End If
 
 ElseIf Default_Y_Polarity% = 0 And gY_Polarity% <> 0 Then      ' Cameca reading or writing JEOL
-If idata(findex%).ymax# < idata(findex%).ymin# Then            ' force cartesian reading or writing
-temp# = idata(findex%).ymin#
-idata(findex%).ymin# = idata(findex%).ymax#
-idata(findex%).ymax# = temp#
+If iData(findex%).ymax# < iData(findex%).ymin# Then            ' force cartesian reading or writing
+temp# = iData(findex%).ymin#
+iData(findex%).ymin# = iData(findex%).ymax#
+iData(findex%).ymax# = temp#
 tY_Polarity = True
 End If
 
 ElseIf Default_Y_Polarity% <> 0 And gY_Polarity% <> 0 Then     ' JEOL reading or writing JEOL
 If method% = 1 Then ' reading (force anti-cartesian)
-If idata(findex%).ymax# > idata(findex%).ymin# Then
-temp# = idata(findex%).ymin#
-idata(findex%).ymin# = idata(findex%).ymax#
-idata(findex%).ymax# = temp#
+If iData(findex%).ymax# > iData(findex%).ymin# Then
+temp# = iData(findex%).ymin#
+iData(findex%).ymin# = iData(findex%).ymax#
+iData(findex%).ymax# = temp#
 tY_Polarity = True
 End If
 Else                ' writing (force cartesian)
-If idata(findex%).ymin# > idata(findex%).ymax# Then
-temp# = idata(findex%).ymin#
-idata(findex%).ymin# = idata(findex%).ymax#
-idata(findex%).ymax# = temp#
+If iData(findex%).ymin# > iData(findex%).ymax# Then
+temp# = iData(findex%).ymin#
+iData(findex%).ymin# = iData(findex%).ymax#
+iData(findex%).ymax# = temp#
 tY_Polarity = True
 End If
 End If
 End If
 
 ' Dimension temp array
-ReDim sarray(1 To idata(findex%).ix%, 1 To idata(findex%).iy%) As Single
+ReDim sarray(1 To iData(findex%).ix%, 1 To iData(findex%).iy%) As Single
 
 ' Load temp array
-sarray = idata(findex%).gData
+sarray = iData(findex%).gData
 
 ' Check for flipping data
-iy% = idata(findex%).iy%
-ix% = idata(findex%).ix%
+iy% = iData(findex%).iy%
+ix% = iData(findex%).ix%
 If ix% = 0 Then GoTo GridCheckGRDConvertBadIx
 If iy% = 0 Then GoTo GridCheckGRDConvertBadIy
 
@@ -744,13 +744,13 @@ If iy% = 0 Then GoTo GridCheckGRDConvertBadIy
         
     If (tX_Polarity% = 0) And (tY_Polarity% = 0) Then
         
-        idata(findex%).gData = sarray
+        iData(findex%).gData = sarray
         
     ' Invert X
     ElseIf (tX_Polarity% <> 0) And (tY_Polarity% = 0) Then
         For jj& = 1 To jBound&
             For ii& = 1 To iBound&
-                idata(findex%).gData!(ii&, jj&) = sarray!(iBound& - (ii& - 1), jj&)
+                iData(findex%).gData!(ii&, jj&) = sarray!(iBound& - (ii& - 1), jj&)
             Next ii&
         Next jj&
     
@@ -758,7 +758,7 @@ If iy% = 0 Then GoTo GridCheckGRDConvertBadIy
     ElseIf (tX_Polarity% = 0) And (tY_Polarity% <> 0) Then
         For jj& = 1 To jBound&
             For ii& = 1 To iBound&
-                idata(findex).gData!(ii&, jj&) = sarray!(ii&, jBound& - (jj& - 1))
+                iData(findex).gData!(ii&, jj&) = sarray!(ii&, jBound& - (jj& - 1))
             Next ii&
         Next jj&
     
@@ -766,7 +766,7 @@ If iy% = 0 Then GoTo GridCheckGRDConvertBadIy
     ElseIf (tX_Polarity% <> 0) And (tY_Polarity% <> 0) Then
         For jj& = 1 To jBound&
             For ii& = 1 To iBound&
-                idata(findex).gData!(ii&, jj&) = sarray!(iBound& - (ii& - 1), jBound& - (jj& - 1))
+                iData(findex).gData!(ii&, jj&) = sarray!(iBound& - (ii& - 1), jBound& - (jj& - 1))
             Next ii&
         Next jj&
     
@@ -779,62 +779,62 @@ If iy% = 0 Then GoTo GridCheckGRDConvertBadIy
 If Default_Stage_Units$ <> gStage_Units$ Then
 If method% = 1 Then         ' reading GRD
 If Default_Stage_Units$ = "um" And gStage_Units$ = "mm" Then
-idata(findex%).xmin# = idata(findex%).xmin# * MICRONSPERMM&
-idata(findex%).xmax# = idata(findex%).xmax# * MICRONSPERMM&
-idata(findex%).ymin# = idata(findex%).ymin# * MICRONSPERMM&
-idata(findex%).ymax# = idata(findex%).ymax# * MICRONSPERMM&
+iData(findex%).xmin# = iData(findex%).xmin# * MICRONSPERMM&
+iData(findex%).xmax# = iData(findex%).xmax# * MICRONSPERMM&
+iData(findex%).ymin# = iData(findex%).ymin# * MICRONSPERMM&
+iData(findex%).ymax# = iData(findex%).ymax# * MICRONSPERMM&
 End If
 
 If Default_Stage_Units$ = "mm" And gStage_Units$ = "um" Then
-idata(findex%).xmin# = idata(findex%).xmin# / MICRONSPERMM&
-idata(findex%).xmax# = idata(findex%).xmax# / MICRONSPERMM&
-idata(findex%).ymin# = idata(findex%).ymin# / MICRONSPERMM&
-idata(findex%).ymax# = idata(findex%).ymax# / MICRONSPERMM&
+iData(findex%).xmin# = iData(findex%).xmin# / MICRONSPERMM&
+iData(findex%).xmax# = iData(findex%).xmax# / MICRONSPERMM&
+iData(findex%).ymin# = iData(findex%).ymin# / MICRONSPERMM&
+iData(findex%).ymax# = iData(findex%).ymax# / MICRONSPERMM&
 End If
 
 ' Writing GRD
 Else
 If Default_Stage_Units$ = "um" And gStage_Units$ = "mm" Then
-idata(findex%).xmin# = idata(findex%).xmin# / MICRONSPERMM&
-idata(findex%).xmax# = idata(findex%).xmax# / MICRONSPERMM&
-idata(findex%).ymin# = idata(findex%).ymin# / MICRONSPERMM&
-idata(findex%).ymax# = idata(findex%).ymax# / MICRONSPERMM&
+iData(findex%).xmin# = iData(findex%).xmin# / MICRONSPERMM&
+iData(findex%).xmax# = iData(findex%).xmax# / MICRONSPERMM&
+iData(findex%).ymin# = iData(findex%).ymin# / MICRONSPERMM&
+iData(findex%).ymax# = iData(findex%).ymax# / MICRONSPERMM&
 End If
 
 If Default_Stage_Units$ = "mm" And gStage_Units$ = "um" Then
-idata(findex%).xmin# = idata(findex%).xmin# * MICRONSPERMM&
-idata(findex%).xmax# = idata(findex%).xmax# * MICRONSPERMM&
-idata(findex%).ymin# = idata(findex%).ymin# * MICRONSPERMM&
-idata(findex%).ymax# = idata(findex%).ymax# * MICRONSPERMM&
+iData(findex%).xmin# = iData(findex%).xmin# * MICRONSPERMM&
+iData(findex%).xmax# = iData(findex%).xmax# * MICRONSPERMM&
+iData(findex%).ymin# = iData(findex%).ymin# * MICRONSPERMM&
+iData(findex%).ymax# = iData(findex%).ymax# * MICRONSPERMM&
 End If
 End If
 End If
 
 ' If reading GRD file, perform sanity check
 If method% = 1 Then
-If idata(findex%).xmin# = idata(findex%).xmax# Then GoTo GridCheckGRDConvertNoXExtents
-If idata(findex%).ymin# = idata(findex%).ymax# Then GoTo GridCheckGRDConvertNoYExtents
+If iData(findex%).xmin# = iData(findex%).xmax# Then GoTo GridCheckGRDConvertNoXExtents
+If iData(findex%).ymin# = iData(findex%).ymax# Then GoTo GridCheckGRDConvertNoYExtents
 
 If Default_X_Polarity% = 0 Then
-If idata(findex%).xmin# > idata(findex%).xmax# Then GoTo GridCheckGRDConvertBadXMinMax
+If iData(findex%).xmin# > iData(findex%).xmax# Then GoTo GridCheckGRDConvertBadXMinMax
 Else
-If idata(findex%).xmin# < idata(findex%).xmax# Then GoTo GridCheckGRDConvertBadXMinMax
+If iData(findex%).xmin# < iData(findex%).xmax# Then GoTo GridCheckGRDConvertBadXMinMax
 End If
 
 If Default_Y_Polarity% = 0 Then
-If idata(findex%).ymin# > idata(findex%).ymax# Then GoTo GridCheckGRDConvertBadYMinMax
+If iData(findex%).ymin# > iData(findex%).ymax# Then GoTo GridCheckGRDConvertBadYMinMax
 Else
-If idata(findex%).ymin# < idata(findex%).ymax# Then GoTo GridCheckGRDConvertBadYMinMax
+If iData(findex%).ymin# < iData(findex%).ymax# Then GoTo GridCheckGRDConvertBadYMinMax
 End If
 End If
 
 ' If writing GRD file, perform sanity check (GRD files are always cartesian)
 If method% = 2 Then
-If idata(findex%).xmin# = idata(findex%).xmax# Then GoTo GridCheckGRDConvertNoXExtents2
-If idata(findex%).ymin# = idata(findex%).ymax# Then GoTo GridCheckGRDConvertNoYExtents2
+If iData(findex%).xmin# = iData(findex%).xmax# Then GoTo GridCheckGRDConvertNoXExtents2
+If iData(findex%).ymin# = iData(findex%).ymax# Then GoTo GridCheckGRDConvertNoYExtents2
 
-If idata(findex%).xmin# > idata(findex%).xmax# Then GoTo GridCheckGRDConvertBadXMinMax2
-If idata(findex%).ymin# > idata(findex%).ymax# Then GoTo GridCheckGRDConvertBadYMinMax2
+If iData(findex%).xmin# > iData(findex%).xmax# Then GoTo GridCheckGRDConvertBadXMinMax2
+If iData(findex%).ymin# > iData(findex%).ymax# Then GoTo GridCheckGRDConvertBadYMinMax2
 End If
 
 Exit Sub

@@ -199,7 +199,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Dim BitMapButton As Integer
@@ -509,6 +509,8 @@ If ierror Then Exit Sub
 Call PictureSnapDrawScaleBar
 If ierror Then Exit Sub
 Call PictureSnapDrawLineRectangle
+If ierror Then Exit Sub
+Call PictureSnapDrawStageLimits2
 If ierror Then Exit Sub
 ' Display calibration points if indicated
 If PictureSnapDisplayCalibrationPointsFlag Then

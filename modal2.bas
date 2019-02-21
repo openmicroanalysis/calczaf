@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMODAL2"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Sub ModalFitModal(numelms As Integer, numstds As Integer, upercents() As Double, spercents() As Double, fitcoeff As Double, weightflag As Integer)
@@ -104,7 +104,7 @@ Exit Sub
 
 End Sub
 
-Sub ModalLINREG(X() As Double, Y() As Double, n As Integer, p As Integer, mp As Integer, np As Integer, sig() As Double, determinate As Double, chisq As Double, avsumsq As Double, predicted() As Double, residual() As Double, fitparam() As Double, cvm() As Double, se() As Double)
+Sub ModalLINREG(x() As Double, y() As Double, n As Integer, p As Integer, mp As Integer, np As Integer, sig() As Double, determinate As Double, chisq As Double, avsumsq As Double, predicted() As Double, residual() As Double, fitparam() As Double, cvm() As Double, se() As Double)
 ' This routine accepts a user supplied design matrix and dependent variable matrix and performs centered and scaled SVD regresssion.
 '
 ' Passed variables:
@@ -148,10 +148,10 @@ ReDim mean(1 To np%) As Double
 ReDim indx(1 To np%) As Integer
 ReDim indxf(1 To np%) As Integer
 
-ReDim x1(1 To mp%, 1 To np%) As Double
+ReDim X1(1 To mp%, 1 To np%) As Double
 ReDim xt(1 To np%, 1 To mp%) As Double
 ReDim x2t(1 To np%, 1 To mp%) As Double
-ReDim y1(1 To mp%) As Double
+ReDim Y1(1 To mp%) As Double
 ReDim stddev(1 To np%) As Double
 
 ReDim temp(1 To p%) As Double
@@ -186,30 +186,30 @@ Next i%
 If p% > 2 Then
 For j% = 2 To p%
 For i% = 1 To n%
-dummy#(i) = X#(i%, j%)
+dummy#(i) = x#(i%, j%)
 Next i%
 
 Call ModalGetStats(dummy#(), n%, mean#(j - 1), stddev#(j% - 1))
 If ierror Then Exit Sub
 Next j%
 
-Call ModalGetStats(Y#(), n%, meany#, stdy#)
+Call ModalGetStats(y#(), n%, meany#, stdy#)
 If ierror Then Exit Sub
 
 For i% = 1 To n%
 For j% = 1 To p% - 1
-x1#(i%, j%) = (X#(i%, j% + 1) - mean#(j%)) / stddev#(j%)
+X1#(i%, j%) = (x#(i%, j% + 1) - mean#(j%)) / stddev#(j%)
 Next j%
-y1#(i) = (Y#(i) - meany#) / stdy#
+Y1#(i) = (y#(i) - meany#) / stdy#
 Next i%
 newp% = p% - 1
 
 Else
 For i% = 1 To n%
 For j% = 1 To p%
-x1#(i%, j%) = X#(i%, j%)
+X1#(i%, j%) = x#(i%, j%)
 Next j%
-y1#(i) = Y#(i%)
+Y1#(i) = y#(i%)
 Next i%
 newp% = p%
 End If
@@ -217,7 +217,7 @@ End If
 ' Compute the transpose of the design matrix
 For i% = 1 To n%
 For j% = 1 To newp%
-xt#(j%, i%) = x1#(i%, j%)
+xt#(j%, i%) = X1#(i%, j%)
 Next j%
 Next i%
 
@@ -226,7 +226,7 @@ For i% = 1 To newp%
 For j% = 1 To newp%
 f#(i%, j%) = 0#
 For k% = 1 To n%
-f#(i%, j%) = f#(i%, j%) + xt#(i%, k%) * x1#(k%, j%)
+f#(i%, j%) = f#(i%, j%) + xt#(i%, k%) * X1#(k%, j%)
 Next k%
 Next j%
 Next i%
@@ -242,9 +242,9 @@ Next j%
 ' Perform regression using SVD (Press, et al., 1986)
 For i% = 1 To n%
 For j% = 1 To newp%
-u#(i%, j%) = x1#(i%, j%) / sig#(i%)
+u#(i%, j%) = X1#(i%, j%) / sig#(i%)
 Next j%
-b#(i%) = y1#(i%) / sig#(i%)
+b#(i%) = Y1#(i%) / sig#(i%)
 Next i%
 
 Call ModalSVDCMP(u#(), n%, newp%, mp%, np%, w#(), v#())
@@ -287,9 +287,9 @@ sum# = 0#
 sumsq# = 0#
 For i% = 1 To n%
 For j% = 1 To p%
-predicted#(i%) = predicted#(i%) + X#(i%, j%) * fitparam#(j%)
+predicted#(i%) = predicted#(i%) + x#(i%, j%) * fitparam#(j%)
 Next j%
-residual#(i%) = Y#(i%) - predicted#(i%)
+residual#(i%) = y#(i%) - predicted#(i%)
 sum# = sum# + residual#(i%)
 sumsq# = sumsq# + residual#(i%) * residual#(i%)
 Next i%
@@ -298,14 +298,14 @@ avsumsq# = sumsq# / (n% - p%)
 ' Calculate standard errors of fit parameters, se(j)
 For i% = 1 To n%
 For j% = 1 To p%
-x2t#(j%, i%) = X#(i%, j%)
+x2t#(j%, i%) = x#(i%, j%)
 Next j%
 Next i%
 For i% = 1 To p%
 For j% = 1 To p%
 f1#(i%, j%) = 0#
 For k% = 1 To n%
-f1#(i%, j%) = f1#(i%, j%) + x2t#(i%, k%) * X#(k%, j%)
+f1#(i%, j%) = f1#(i%, j%) + x2t#(i%, k%) * x#(k%, j%)
 Next k%
 Next j%
 Next i%
@@ -342,9 +342,9 @@ chisq# = 0#
 For i% = 1 To n%
 sum# = 0#
 For j% = 1 To p%
-sum# = sum# + fitparam#(j%) * X#(i%, j%)
+sum# = sum# + fitparam#(j%) * x#(i%, j%)
 Next j%
-chisq# = chisq# + ((Y#(i%) - sum#) / sig#(i%)) ^ 2
+chisq# = chisq# + ((y#(i%) - sum#) / sig#(i%)) ^ 2
 Next i%
 
 Exit Sub
@@ -426,7 +426,7 @@ Exit Function
 
 End Function
 
-Sub ModalSVBKSB(u() As Double, w() As Double, v() As Double, m As Integer, n As Integer, b() As Double, X() As Double)
+Sub ModalSVBKSB(u() As Double, w() As Double, v() As Double, m As Integer, n As Integer, b() As Double, x() As Double)
 ' Back substitution
 ' Passed/returned:
 ' u#(1 to mp%, 1 to np%)
@@ -461,7 +461,7 @@ s# = 0#
 For jj% = 1 To n%
 s# = s# + v#(j%, jj%) * tmp#(jj%)
 Next jj%
-X#(j%) = s#
+x#(j%) = s#
 Next j%
 
 Exit Sub
@@ -493,8 +493,8 @@ Dim j As Integer, nm As Integer
 Dim iter As Integer, maxiter As Integer
 
 Dim g As Double, rscale As Double, anorm As Double
-Dim s As Double, f As Double, c As Double, Y As Double
-Dim Z As Double, X As Double, h As Double
+Dim s As Double, f As Double, c As Double, y As Double
+Dim Z As Double, x As Double, h As Double
 
 ReDim rv1(1 To n%) As Double
 
@@ -668,10 +668,10 @@ c# = (g# * h#)
 s# = -(f# * h#)
 
 For j% = 1 To m%
-Y# = a#(j%, nm%)
+y# = a#(j%, nm%)
 Z# = a#(j%, i%)
-a#(j%, nm%) = (Y# * c#) + (Z# * s#)
-a#(j%, i%) = -(Y# * s#) + (Z# * c#)
+a#(j%, nm%) = (y# * c#) + (Z# * s#)
+a#(j%, i%) = -(y# * s#) + (Z# * c#)
 Next j%
 End If
 
@@ -691,36 +691,36 @@ End If
 
 If iter% = maxiter% Then GoTo ModalSVDCMPNotConverged
 
-X# = w#(l%)
+x# = w#(l%)
 nm% = k% - 1
-Y# = w#(nm%)
+y# = w#(nm%)
 g# = rv1#(nm%)
 h# = rv1#(k%)
-f# = ((Y# - Z#) * (Y# + Z#) + (g# - h#) * (g# + h#)) / (2# * h# * Y#)
+f# = ((y# - Z#) * (y# + Z#) + (g# - h#) * (g# + h#)) / (2# * h# * y#)
 g# = Sqr(f# * f# + 1#)
-f# = ((X# - Z#) * (X# + Z#) + h# * ((Y# / (f# + ModalSIGN(g#, f#))) - h#)) / X#
+f# = ((x# - Z#) * (x# + Z#) + h# * ((y# / (f# + ModalSIGN(g#, f#))) - h#)) / x#
 c# = 1#
 s# = 1#
 
 For j% = l To nm%
 i% = j% + 1
 g# = rv1#(i%)
-Y# = w#(i%)
+y# = w#(i%)
 h# = s# * g#
 g# = c# * g#
 Z# = Sqr(f# * f# + h# * h#)
 rv1#(j%) = Z#
 c# = f# / Z#
 s# = h# / Z#
-f# = (X# * c#) + (g# * s#)
-g# = -(X# * s#) + (g# * c#)
-h# = Y# * s#
-Y# = Y# * c#
+f# = (x# * c#) + (g# * s#)
+g# = -(x# * s#) + (g# * c#)
+h# = y# * s#
+y# = y# * c#
 For nm% = 1 To n%
-X# = v#(nm%, j%)
+x# = v#(nm%, j%)
 Z# = v#(nm%, i%)
-v#(nm%, j%) = (X# * c#) + (Z# * s#)
-v#(nm%, i%) = -(X# * s#) + (Z# * c#)
+v#(nm%, j%) = (x# * c#) + (Z# * s#)
+v#(nm%, i%) = -(x# * s#) + (Z# * c#)
 Next nm%
 Z = Sqr(f# * f# + h# * h#)
 w#(j%) = Z#
@@ -729,19 +729,19 @@ Z# = 1# / Z#
 c# = f# * Z#
 s# = h# * Z#
 End If
-f# = (c# * g#) + (s# * Y#)
-X# = -(s# * g#) + (c# * Y#)
+f# = (c# * g#) + (s# * y#)
+x# = -(s# * g#) + (c# * y#)
 For nm% = 1 To m%
-Y# = a#(nm%, j%)
+y# = a#(nm%, j%)
 Z# = a#(nm%, i%)
-a#(nm%, j%) = (Y# * c#) + (Z# * s#)
-a#(nm%, i%) = -(Y# * s#) + (Z# * c#)
+a#(nm%, j%) = (y# * c#) + (Z# * s#)
+a#(nm%, i%) = -(y# * s#) + (Z# * c#)
 Next nm%
 Next j%
 
 rv1#(l%) = 0#
 rv1#(k%) = f#
-w#(k%) = X#
+w#(k%) = x#
 Next iter%
 3:
 Next k%

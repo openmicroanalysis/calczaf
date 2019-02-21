@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeEDS2"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Dim EDSKLMCounter As Long

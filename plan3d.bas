@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePLAN3D"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -24,22 +24,22 @@ Dim i As Integer, j As Integer, k As Integer
 
 ReDim f(1 To MAXDIM%, 1 To MAXDIM%) As Double
 ReDim FInv(1 To MAXDIM%, 1 To MAXDIM%) As Double
-ReDim X(1 To nPoints%, 1 To MAXDIM%) As Double
+ReDim x(1 To nPoints%, 1 To MAXDIM%) As Double
 ReDim xt(1 To MAXDIM%, 1 To nPoints%) As Double
 ReDim temp(1 To MAXDIM%, 1 To nPoints%) As Double
 
 ' Load dxdata and dydata into design matrix
 If nPoints% < 3 Then GoTo Plan3dcalculateTooFewPoints
 For i% = 1 To nPoints%
-X#(i%, 1) = 1#
-X#(i%, 2) = dxdata!(i%)
-X#(i%, 3) = dydata!(i%)
+x#(i%, 1) = 1#
+x#(i%, 2) = dxdata!(i%)
+x#(i%, 3) = dydata!(i%)
 Next i%
 
 ' Transpose design matrix
 For i% = 1 To nPoints%
 For j% = 1 To MAXDIM%
-xt#(j%, i%) = X#(i%, j%)
+xt#(j%, i%) = x#(i%, j%)
 Next j%
 Next i%
 
@@ -48,7 +48,7 @@ For i% = 1 To MAXDIM%
 For j% = 1 To MAXDIM%
 f#(i%, j%) = 0#
 For k% = 1 To nPoints%
-f#(i%, j%) = f#(i%, j%) + xt#(i%, k%) * X#(k%, j%)
+f#(i%, j%) = f#(i%, j%) + xt#(i%, k%) * x#(k%, j%)
 Next k%
 Next j%
 Next i%
@@ -191,7 +191,7 @@ ierror = False
 On Error GoTo Plan3dCRSError
 
 Dim a1 As Single, b1 As Single, a2 As Single, b2 As Single
-Dim X As Single, Y As Single
+Dim x As Single, y As Single
 Dim f1 As Single, f2 As Single
 
 a1! = 0#
@@ -199,8 +199,8 @@ b1! = 0#
 a2! = 0#
 b2! = 0#
 
-X! = 0#
-Y! = 0#
+x! = 0#
+y! = 0#
 
 f1! = 0#
 f2! = 0#
@@ -224,10 +224,10 @@ a2! = (y21! - y22!) / (x21! - x22!)
 b2! = y21! - a2! * x21!
 
 If a1! - a2! = 0# Then GoTo 50
-X! = (b2! - b1!) / (a1! - a2!)
+x! = (b2! - b1!) / (a1! - a2!)
 
-f1! = (X! - x11!) / (x12! - x11!)
-f2! = (X! - x21!) / (x22! - x21!)
+f1! = (x! - x11!) / (x12! - x11!)
+f2! = (x! - x21!) / (x22! - x21!)
 
 Plan3dCRS = ((f1! < 1#) And (f1! >= 0#) And (f2! < 1#) And (f2! >= 0#))
 
@@ -244,16 +244,16 @@ Exit Function
 
 ' Slope of first segment is infinite
 100:
-X! = x11!
+x! = x11!
 If x21! - x22! = 0# Then GoTo 50
 a2! = (y21! - y22!) / (x21! - x22!)
 b2! = y21! - a2! * x21!
-Y! = a2! * X! + b2!
+y! = a2! * x! + b2!
 
 If y12! - y11! = 0# Then GoTo 50
-f1! = (Y! - y11!) / (y12! - y11!)
+f1! = (y! - y11!) / (y12! - y11!)
 If x22! - x21! = 0# Then GoTo 50
-f2! = (X! - x21!) / (x22! - x21!)
+f2! = (x! - x21!) / (x22! - x21!)
 
 Plan3dCRS = (f1! < 1#) And (f1! >= 0#) And (f2! < 1#) And (f2! >= 0#)
 
@@ -264,16 +264,16 @@ Exit Function
 
 ' Slope of second segment is infinite
 110:
-X! = x21!
+x! = x21!
 If x11! - x12! = 0# Then GoTo 50
 a1! = (y11! - y12!) / (x11! - x12!)
 b1! = y11! - a1! * x11!
 
-Y! = a1! * X! + b1!
+y! = a1! * x! + b1!
 If x12! - x11! = 0# Then GoTo 50
-f1! = (X! - x11!) / (x12! - x11!)
+f1! = (x! - x11!) / (x12! - x11!)
 If y22! - y21! = 0# Then GoTo 50
-f2! = (Y! - y21!) / (y22! - y21!)
+f2! = (y! - y21!) / (y22! - y21!)
 
 Plan3dCRS = (f1! < 1#) And (f1! >= 0#) And (f2! < 1#) And (f2! >= 0#)
 
@@ -400,7 +400,7 @@ Dim i As Integer, j As Integer, k As Integer
 
 ReDim f(1 To MAXCOEFF9%, 1 To MAXCOEFF9%) As Double
 ReDim FInv(1 To MAXCOEFF9%, 1 To MAXCOEFF9%) As Double
-ReDim X(1 To nPoints%, 1 To MAXCOEFF9%) As Double
+ReDim x(1 To nPoints%, 1 To MAXCOEFF9%) As Double
 ReDim xt(1 To MAXCOEFF9%, 1 To nPoints%) As Double
 ReDim temp(1 To MAXCOEFF9%, 1 To nPoints%) As Double
 
@@ -409,21 +409,21 @@ If nPoints% < MAXCOEFF9% Then GoTo Plan3dCalculateHyperTooFewPoints
 
 ' Use hyperbolic fit method
 For i% = 1 To nPoints%
-X#(i%, 1) = 1#
-X#(i%, 2) = dxdata!(i%)
-X#(i%, 3) = dydata!(i%)
-X#(i%, 4) = dxdata!(i%) ^ 2
-X#(i%, 5) = dydata!(i%) ^ 2
-X#(i%, 6) = dxdata!(i%) ^ 3
-X#(i%, 7) = dydata!(i%) ^ 3
-X#(i%, 8) = (dxdata!(i%) * dydata!(i%)) ^ 2
-X#(i%, 9) = (dxdata!(i%) * dydata!(i%)) ^ 3
+x#(i%, 1) = 1#
+x#(i%, 2) = dxdata!(i%)
+x#(i%, 3) = dydata!(i%)
+x#(i%, 4) = dxdata!(i%) ^ 2
+x#(i%, 5) = dydata!(i%) ^ 2
+x#(i%, 6) = dxdata!(i%) ^ 3
+x#(i%, 7) = dydata!(i%) ^ 3
+x#(i%, 8) = (dxdata!(i%) * dydata!(i%)) ^ 2
+x#(i%, 9) = (dxdata!(i%) * dydata!(i%)) ^ 3
 Next i%
 
 ' Transpose design matrix
 For i% = 1 To nPoints%
 For j% = 1 To MAXCOEFF9%
-xt#(j%, i%) = X#(i%, j%)
+xt#(j%, i%) = x#(i%, j%)
 Next j%
 Next i%
 
@@ -432,7 +432,7 @@ For i% = 1 To MAXCOEFF9%
 For j% = 1 To MAXCOEFF9%
 f#(i%, j%) = 0#
 For k% = 1 To nPoints%
-f#(i%, j%) = f#(i%, j%) + xt#(i%, k%) * X#(k%, j%)
+f#(i%, j%) = f#(i%, j%) + xt#(i%, k%) * x#(k%, j%)
 Next k%
 Next j%
 Next i%

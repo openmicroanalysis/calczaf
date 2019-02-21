@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeINTERF2"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Dim Interf2Sample(1 To 1) As TypeSample
@@ -18,6 +18,7 @@ Function Interf2Calculate(method As Integer, mode As Integer, chan As Integer, r
 ierror = False
 On Error GoTo Interf2CalculateError
 
+Dim posoutput As Boolean
 Dim i As Integer, n As Integer
 Dim ip As Integer, ipp As Integer
 Dim pos As Single, temp As Single, factor As Single
@@ -25,6 +26,7 @@ Dim interferedline As Single, interferingline As Single
 Dim interferedintensity As Single, interferingintensity As Single
 Dim xstart As Single, xstop As Single
 Dim klm As Single, keV As Single
+
 Dim order As Integer
 Dim overlapfraction As Single, sigma As Single, overlappercent As Single
 Dim xlabel As String, xedge As String, tmsg As String, astring As String
@@ -61,6 +63,7 @@ For i% = 1 To sample(1).LastElm%
 If sample(1).Xrsyms$(i%) = vbNullString Then GoTo 3000
 
 ' Check if doing a single element in sample
+posoutput = False
 If chan% > 0 And chan% <> i% Then GoTo 3000
 
 ' Load specified position and convert to angstroms
@@ -142,6 +145,32 @@ interferingintensity! = interferingintensity! / discrimination! * (order% - 1)
 End If
 End If
 
+' Calculate interfering line spectro position
+pos! = XrayConvertSpecAng(Int(2), i%, interferingline!, sample(1).BraggOrders%(i%), sample())   ' don't use actual order to be self consistant
+
+' Print line for actual on or off-peak position
+If Not posoutput Then
+If mode% = 0 Then
+If pos! > sample(1).OnPeaks!(i%) Then
+tmsg$ = tmsg$ & "  On Peak Position   " & "-------------  at " & MiscAutoFormat$(interferedline!) & " (" & MiscAutoFormat$(sample(1).OnPeaks!(i%)) & ")" & vbCrLf
+posoutput = True
+End If
+
+ElseIf mode% = 1 Then
+If pos! > sample(1).HiPeaks!(i%) Then
+tmsg$ = tmsg$ & "  Hi Off Position    " & "-------------  at " & MiscAutoFormat$(interferedline!) & " (" & MiscAutoFormat$(sample(1).HiPeaks!(i%)) & ")" & vbCrLf
+posoutput = True
+End If
+
+ElseIf mode% = 2 Then
+If pos! > sample(1).LoPeaks!(i%) Then
+tmsg$ = tmsg$ & "  Lo Off Position    " & "-------------  at " & MiscAutoFormat$(interferedline!) & " (" & MiscAutoFormat$(sample(1).LoPeaks!(i%)) & ")" & vbCrLf
+posoutput = True
+End If
+End If
+
+End If
+
 ' Calculate actual overlap
 overlappercent! = 100# * interferingintensity! / interferedintensity!
 
@@ -150,7 +179,6 @@ If overlappercent! > minimumoverlap! Then
 tmsg$ = tmsg$ & "  Interference by"
 tmsg$ = tmsg$ & Format$(xlabel$) & " "
 tmsg$ = tmsg$ & "at " & MiscAutoFormat$(interferingline!) & " "
-pos! = XrayConvertSpecAng(Int(2), i%, interferingline!, sample(1).BraggOrders%(i%), sample())   ' don't use actual order to be self consistant
 tmsg$ = tmsg$ & "(" & MiscAutoFormat$(pos!) & ") "
 If mode% = 0 Then
 tmsg$ = tmsg$ & "(" & MiscAutoFormat$(pos! - sample(1).OnPeaks!(i%)) & ") "
@@ -160,6 +188,21 @@ tmsg$ = tmsg$ & vbCrLf
 End If
 
 2000:  Next n%
+
+' Output on/off peak position if not output already
+If Not posoutput Then
+If mode% = 0 Then
+tmsg$ = tmsg$ & "  On Peak Position   " & "-------------  at " & MiscAutoFormat$(interferedline!) & " (" & MiscAutoFormat$(sample(1).OnPeaks!(i%)) & ")" & vbCrLf
+
+ElseIf mode% = 1 Then
+tmsg$ = tmsg$ & "  Hi Off Position    " & "-------------  at " & MiscAutoFormat$(interferedline!) & " (" & MiscAutoFormat$(sample(1).HiPeaks!(i%)) & ")" & vbCrLf
+
+ElseIf mode% = 2 Then
+tmsg$ = tmsg$ & "  Lo Off Position    " & "-------------  at " & MiscAutoFormat$(interferedline!) & " (" & MiscAutoFormat$(sample(1).LoPeaks!(i%)) & ")" & vbCrLf
+End If
+
+End If
+
 3000:  Next i%
 
 ' Return string

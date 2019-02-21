@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeCONVERT6"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Sub ConvertHalog(tfilenumber As Integer, percents() As Single, sample() As TypeSample)
@@ -257,38 +257,38 @@ Call IOWriteLog(vbCrLf & "SUMMARY OF BIOTITE GEOCHEMISTRY:")
       
 ' PRINT OUT BRIMHALL CALCULATIONS
 astring$ = vbCrLf
-astring$ = astring$ & Format$("LOG(XF/XCL) = ", a18$) & Format$(Format$(HALOG1!, f84$), a10$)
-astring$ = astring$ & Format$("LOG(X-F/X-OH) = ", a18$) & Format$(Format$(XFOXOH!, f84$), a10$)
-astring$ = astring$ & Format$("LOG(X-MG/X-FE) = ", a18$) & Format$(Format$(RAMGFE!, f84$), a10$)
+astring$ = astring$ & Format$("LOG(XF/XCL) = ", a18$) & Format$(Format$(HALOG1!, f84$), A10$)
+astring$ = astring$ & Format$("LOG(X-F/X-OH) = ", a18$) & Format$(Format$(XFOXOH!, f84$), A10$)
+astring$ = astring$ & Format$("LOG(X-MG/X-FE) = ", a18$) & Format$(Format$(RAMGFE!, f84$), A10$)
 Call IOWriteLog(astring$)
 
 astring$ = vbNullString
-astring$ = astring$ & Format$("X-MG = ", a18$) & Format$(Format$(MGMFT!, f84$), a10$)
-astring$ = astring$ & Format$("X-FE = ", a18$) & Format$(Format$(FEX!, f84$), a10$)
-astring$ = astring$ & Format$("X-TI = ", a18$) & Format$(Format$(tix!, f84$), a10$)
+astring$ = astring$ & Format$("X-MG = ", a18$) & Format$(Format$(MGMFT!, f84$), A10$)
+astring$ = astring$ & Format$("X-FE = ", a18$) & Format$(Format$(FEX!, f84$), A10$)
+astring$ = astring$ & Format$("X-TI = ", a18$) & Format$(Format$(tix!, f84$), A10$)
 Call IOWriteLog(astring$)
 
 astring$ = vbNullString
-astring$ = astring$ & Format$("X-MN = ", a18$) & Format$(Format$(MNX!, f84$), a10$)
-astring$ = astring$ & Format$("X-AL VI = ", a18$) & Format$(Format$(XALVI!, f84$), a10$)
-astring$ = astring$ & Format$("MG/(MG+FE) = ", a18$) & Format$(Format$(MGB!, f84$), a10$)
+astring$ = astring$ & Format$("X-MN = ", a18$) & Format$(Format$(MNX!, f84$), A10$)
+astring$ = astring$ & Format$("X-AL VI = ", a18$) & Format$(Format$(XALVI!, f84$), A10$)
+astring$ = astring$ & Format$("MG/(MG+FE) = ", a18$) & Format$(Format$(MGB!, f84$), A10$)
 Call IOWriteLog(astring$)
             
 astring$ = vbCrLf
-astring$ = astring$ & Format$("X-OH = ", a18$) & Format$(Format$(HALMO!, f84$), a10$)
-astring$ = astring$ & Format$("X-F = ", a18$) & Format$(Format$(HALMF!, f84$), a10$)
-astring$ = astring$ & Format$("X-CL = ", a18$) & Format$(Format$(HALMC!, f84$), a10$)
-astring$ = astring$ & Format$("LOG (X-F/X-OH) = ", a18$) & Format$(Format$(XFOXOH!, f84$), a10$)
+astring$ = astring$ & Format$("X-OH = ", a18$) & Format$(Format$(HALMO!, f84$), A10$)
+astring$ = astring$ & Format$("X-F = ", a18$) & Format$(Format$(HALMF!, f84$), A10$)
+astring$ = astring$ & Format$("X-CL = ", a18$) & Format$(Format$(HALMC!, f84$), A10$)
+astring$ = astring$ & Format$("LOG (X-F/X-OH) = ", a18$) & Format$(Format$(XFOXOH!, f84$), A10$)
 Call IOWriteLog(astring$)
             
 astring$ = vbCrLf
-astring$ = astring$ & Format$("TRIANGULAR PLOT        LOG X-F/X-OH  -1.5 * LOG X-MG/X-FE = ") & Format$(Format$(YM32X!, f84$), a10$)
+astring$ = astring$ & Format$("TRIANGULAR PLOT        LOG X-F/X-OH  -1.5 * LOG X-MG/X-FE = ") & Format$(Format$(YM32X!, f84$), A10$)
 Call IOWriteLog(astring$)
       
 astring$ = vbCrLf
-astring$ = astring$ & Format$("X-SID: = ", a18$) & Format$(Format$(SIDER!, f84$), a10$)
-astring$ = astring$ & Format$("X-ANN: = ", a18$) & Format$(Format$(ANNIT!, f84$), a10$)
-astring$ = astring$ & Format$("X-PHLOG: = ", a18$) & Format$(Format$(PHLOG!, f84$), a10$)
+astring$ = astring$ & Format$("X-SID: = ", a18$) & Format$(Format$(SIDER!, f84$), A10$)
+astring$ = astring$ & Format$("X-ANN: = ", a18$) & Format$(Format$(ANNIT!, f84$), A10$)
+astring$ = astring$ & Format$("X-PHLOG: = ", a18$) & Format$(Format$(PHLOG!, f84$), A10$)
 Call IOWriteLog(astring$)
 
 astring$ = vbCrLf

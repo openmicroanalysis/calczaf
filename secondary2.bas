@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSecondary2"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 ' Analyzed point coordinates
@@ -404,7 +404,7 @@ On Error GoTo SecondaryCalculateDistanceError
 
 Dim linear_dist As Single
 Dim kmax As Integer, nmax As Integer
-Dim x1 As Single, y1 As Single  ' stage coordinate of data point
+Dim X1 As Single, Y1 As Single  ' stage coordinate of data point
 Dim m As Single, b As Single    ' m is slope and b is intercept of boundary
 
 ReDim xdata(1 To 2) As Single
@@ -412,28 +412,28 @@ ReDim ydata(1 To 2) As Single
 ReDim acoeff(1 To MAXCOEFF%) As Single
 
 ' Load the stage coordinate of the point
-x1! = sample(1).StagePositions!(sampleline%, 1)
-y1! = sample(1).StagePositions!(sampleline%, 2)
+X1! = sample(1).StagePositions!(sampleline%, 1)
+Y1! = sample(1).StagePositions!(sampleline%, 2)
 
 If VerboseMode Then
-Call IOWriteLog(vbCrLf & vbCrLf & "SecondaryCalculateDistance: Stage Coordinates, X= " & MiscAutoFormat$(x1!) & ", Y= " & MiscAutoFormat$(y1!))
+Call IOWriteLog(vbCrLf & vbCrLf & "SecondaryCalculateDistance: Stage Coordinates, X= " & MiscAutoFormat$(X1!) & ", Y= " & MiscAutoFormat$(Y1!))
 End If
 
 ' Check if boundary is vertical (X_Pos1 = X_Pos2) or horizonal (Y_Pos1 = Y_Pos2)
 If X_Pos1! = X_Pos2! Or Y_Pos1! = Y_Pos2! Then
 
 ' Check for pathological conditions (point is on boundary line)
-If X_Pos1! = X_Pos2! And X_Pos1! = x1! Then GoTo SecondaryCalculateDistanceX_PosOnBoundary
-If Y_Pos1! = Y_Pos2! And Y_Pos1! = y1! Then GoTo SecondaryCalculateDistanceY_PosOnBoundary
+If X_Pos1! = X_Pos2! And X_Pos1! = X1! Then GoTo SecondaryCalculateDistanceX_PosOnBoundary
+If Y_Pos1! = Y_Pos2! And Y_Pos1! = Y1! Then GoTo SecondaryCalculateDistanceY_PosOnBoundary
 
 ' Vertical boundary
 If X_Pos1! = X_Pos2! Then
-linear_dist! = Abs(x1! - X_Pos1!)
+linear_dist! = Abs(X1! - X_Pos1!)
 End If
 
 ' Horizontal boundary
 If Y_Pos1! = Y_Pos2! Then
-linear_dist! = Abs(y1! - Y_Pos1!)
+linear_dist! = Abs(Y1! - Y_Pos1!)
 End If
 
 ' Check for zero distance
@@ -465,7 +465,7 @@ b! = acoeff!(1)
 
 ' Calculate from specified boundary (specified using several methods but stored as X,Y pair)
 ' Given that y = mx + b and point (x1, y1)... see http://math.ucsd.edu/~wgarner/math4c/derivations/distance/pdf/distptline.pdf
-linear_dist! = Abs(y1! - m! * x1! - b!) / Sqr(m! ^ 2 + 1)
+linear_dist! = Abs(Y1! - m! * X1! - b!) / Sqr(m! ^ 2 + 1)
 
 ' Check for zero distance
 If linear_dist! = 0# Then GoTo SecondaryCalculateDistanceZeroDistance
@@ -485,13 +485,13 @@ ierror = True
 Exit Sub
 
 SecondaryCalculateDistanceX_PosOnBoundary:
-msg$ = "The passed stage coordinate (" & Format$(x1!) & "," & Format$(y1!) & ") is on the specified boundary line. Distance will be zero. Try using a different specified boundary."
+msg$ = "The passed stage coordinate (" & Format$(X1!) & "," & Format$(Y1!) & ") is on the specified boundary line. Distance will be zero. Try using a different specified boundary."
 MsgBox msg$, vbOKOnly + vbExclamation, "SecondaryCalculateDistance"
 ierror = True
 Exit Sub
 
 SecondaryCalculateDistanceY_PosOnBoundary:
-msg$ = "The passed stage coordinate (" & Format$(x1!) & "," & Format$(y1!) & ") is on the specified boundary line. Distance will be zero. Try using a different specified boundary."
+msg$ = "The passed stage coordinate (" & Format$(X1!) & "," & Format$(Y1!) & ") is on the specified boundary line. Distance will be zero. Try using a different specified boundary."
 MsgBox msg$, vbOKOnly + vbExclamation, "SecondaryCalculateDistance"
 ierror = True
 Exit Sub
@@ -623,7 +623,7 @@ Exit Sub
 
 End Sub
 
-Sub SecondaryGetCoordinates(n As Long, X() As Single, Y() As Single, Z() As Single)
+Sub SecondaryGetCoordinates(n As Long, x() As Single, y() As Single, Z() As Single)
 ' Get the currently analyzed data point coordinates
 
 ierror = False
@@ -635,13 +635,13 @@ Dim i As Long
 If apoints& < 1 Then Exit Sub
 
 ' Dimension
-ReDim X(1 To apoints&) As Single
-ReDim Y(1 To apoints&) As Single
+ReDim x(1 To apoints&) As Single
+ReDim y(1 To apoints&) As Single
 ReDim Z(1 To apoints&) As Single
 
 For i& = 1 To apoints&
-X!(i&) = xcoord!(i&)
-Y!(i&) = ycoord!(i&)
+x!(i&) = xcoord!(i&)
+y!(i&) = ycoord!(i&)
 Z!(i&) = zcoord!(i&)
 Next i&
 n& = apoints&

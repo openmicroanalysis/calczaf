@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeINIT"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -297,7 +297,7 @@ Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
 
-' Load SX100 motor velocities (SX100 Z speed range is between 10 and 200, SXFive Z speed range is between 1 and 10).
+' Load SX100/SXFive motor velocities (SX100 Z speed range is between 10 and 200, SXFive Z speed range is between 1 and 10).
 linecount% = linecount% + 1
 msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs% + NumberOfStageMotors%
@@ -319,7 +319,7 @@ Next i%
 Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
 
-' Load SX100 minimum speeds (only used by ROM spectro scanning)
+' Load SX100/SXFive minimum speeds (only used by ROM spectro scanning)
 linecount% = linecount% + 1
 msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs% + NumberOfStageMotors%
@@ -587,7 +587,7 @@ Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
 If mode% = 21 Then Exit Sub
 
-' Load SX100 motor velocities (SX100 Z speed range is between 10 and 200, SXFive Z speed range is between 1 and 10).
+' Load SX100/SXFive motor velocities (SX100 Z speed range is between 10 and 200, SXFive Z speed range is between 1 and 10).
 linecount% = linecount% + 1
 msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs% + NumberOfStageMotors%
@@ -610,7 +610,7 @@ Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
 If mode% = 22 Then Exit Sub
 
-' Load SX100 minimum speeds (only used by ROM spectro scanning)
+' Load SX100/SXFive minimum speeds (only used by ROM spectro scanning)
 linecount% = linecount% + 1
 msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs% + NumberOfStageMotors%
@@ -2253,7 +2253,7 @@ End If
 InterfaceString$(3) = "Unused"
 InterfaceString$(4) = "Unused"
 
-InterfaceString$(5) = "Cameca SX100 (TCP/IP Socket)"
+InterfaceString$(5) = "Cameca SX100/SXFive (TCP/IP Socket)"
 
 ' EDS interface type, 0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM
 InterfaceStringEDS$(0) = "EDS Demonstration"
@@ -2345,8 +2345,8 @@ InterfaceStringImage(1) = "Unused"
 InterfaceStringImage(2) = "Unused"
 InterfaceStringImage(3) = "Unused"
 InterfaceStringImage(4) = "JEOL 8900/8200/8500"
-InterfaceStringImage(5) = "Cameca SX100 Mapping"
-InterfaceStringImage(6) = "Cameca SX100 Video"
+InterfaceStringImage(5) = "Cameca SX100/SXFive Mapping"
+InterfaceStringImage(6) = "Cameca SX100/SXFive Video"
 InterfaceStringImage(7) = "Unused"
 InterfaceStringImage(8) = "Unused"
 InterfaceStringImage(9) = "Bruker RTIfcCLIENT"
@@ -2698,8 +2698,8 @@ Else
 ImageAnalogUnitsShortStrings$(4) = "A/D Averages/Pixel"      ' JEOL 8900/8200/8500
 End If
 
-ImageAnalogUnitsShortStrings$(5) = "Millisecs/Pixel"         ' SX100 mapping
-ImageAnalogUnitsShortStrings$(6) = "Scan Rate"               ' SX100 video
+ImageAnalogUnitsShortStrings$(5) = "Millisecs/Pixel"         ' SX100/SXFive mapping
+ImageAnalogUnitsShortStrings$(6) = "Scan Rate"               ' SX100/SXFive video
 ImageAnalogUnitsShortStrings$(7) = "Micro-sec per pixel"     ' JEOL EDS OEM video
 ImageAnalogUnitsShortStrings$(8) = "Not Implemented"         ' Unused
 ImageAnalogUnitsShortStrings$(9) = "A/D Averages/Pixel"      ' Bruker RTIfcClient
@@ -2717,8 +2717,8 @@ Else
 ImageAnalogUnitsLongStrings(4) = "A/D Averages/Pixel (1-1000)"      ' JEOL 8900/8200/8500
 End If
 
-ImageAnalogUnitsLongStrings(5) = "Millisecs/Pixel (1-1000)"         ' SX100 mapping
-ImageAnalogUnitsLongStrings(6) = "Scan Rate (1-7)"                  ' SX100 video
+ImageAnalogUnitsLongStrings(5) = "Millisecs/Pixel (1-1000)"         ' SX100/SXFive mapping
+ImageAnalogUnitsLongStrings(6) = "Scan Rate (1-7)"                  ' SX100/SXFive video
 ImageAnalogUnitsLongStrings(7) = "Micro-sec per pixel"              ' JEOL EDS OEM video
 ImageAnalogUnitsLongStrings(8) = "Not Implemented"                  ' Unused
 ImageAnalogUnitsLongStrings(9) = "A/D Averages/Pixel (2 to 1000)"   ' Bruker RTIfcClient
@@ -2736,8 +2736,8 @@ Else
 ImageAnalogUnitsToolTipStrings(4) = "Specify the number of A-D conversions to average per pixel (range 1 - 1000)"       ' JEOL 8900/8200/8500
 End If
 
-ImageAnalogUnitsToolTipStrings(5) = "Specify the image dwell time in milli-seconds per pixel (range 1 - 1000)"          ' SX100 mapping
-ImageAnalogUnitsToolTipStrings(6) = "Specify the image scan speed (range = 1 - 7)"                                      ' SX100 Video
+ImageAnalogUnitsToolTipStrings(5) = "Specify the image dwell time in milli-seconds per pixel (range 1 - 1000)"          ' SX100/SXFive mapping
+ImageAnalogUnitsToolTipStrings(6) = "Specify the image scan speed (range = 1 - 7)"                                      ' SX100/SXFive Video
 ImageAnalogUnitsToolTipStrings(7) = "Video frame time is specified by imaging resolution"                               ' JEOL EDS OEM
 ImageAnalogUnitsToolTipStrings(8) = "Not implemented"                                                                   ' Unused
 ImageAnalogUnitsToolTipStrings(9) = "Specify the number of A-D conversions to average per pixel (range 2 - 1000)"       ' Bruker RTIfcClient
@@ -3100,11 +3100,11 @@ ElseIf ImageInterfaceType% = 4 Then     ' JEOL
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
     End If
 
-ElseIf ImageInterfaceType% = 5 Then     ' SX100 mapping rate in msec/pixel (range 1 - 1000)
+ElseIf ImageInterfaceType% = 5 Then     ' SX100/SXFive mapping rate in msec/pixel (range 1 - 1000)
     DefaultImageAnalogAverages% = 2
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
-ElseIf ImageInterfaceType% = 6 Then     ' SX100 video scan speed (range 1 - 7)
+ElseIf ImageInterfaceType% = 6 Then     ' SX100/SXFive video scan speed (range 1 - 7)
     DefaultImageAnalogAverages% = 5
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
@@ -3203,7 +3203,7 @@ If InterfaceType% = 1 Then LimitToLimit! = 20   ' Unused
 If InterfaceType% = 2 Then LimitToLimit! = 36   ' JEOL spectrometers are slower (use JEOLVelocity&(1) in 1/100th um/sec?)
 If InterfaceType% = 3 Then LimitToLimit! = 50   ' Unused
 If InterfaceType% = 4 Then LimitToLimit! = 50   ' Unused
-If InterfaceType% = 5 Then LimitToLimit! = 20   ' SX100 (use SX100Velocity&(1) in steps/sec?, assume 60000 steps full range)
+If InterfaceType% = 5 Then LimitToLimit! = 20   ' SX100/SXFive (use SX100Velocity&(1) in steps/sec?, assume 60000 steps full range)
 
 ' Set limit to limit time for stage travel
 If InterfaceType% = 0 Then LimitToLimit2! = 10   ' Demo
@@ -3211,7 +3211,7 @@ If InterfaceType% = 1 Then LimitToLimit2! = 20   ' Unused
 If InterfaceType% = 2 Then LimitToLimit2! = 6    ' JEOL  (use JEOLVelocity&(XMotor%) in 1/100th um/sec?)
 If InterfaceType% = 3 Then LimitToLimit2! = 50   ' Unused
 If InterfaceType% = 4 Then LimitToLimit2! = 50   ' Unused
-If InterfaceType% = 5 Then LimitToLimit2! = 10   ' SX100 (use SX100Velocity&(XMotor%) in steps/sec?, assume 48000 steps full range in X)
+If InterfaceType% = 5 Then LimitToLimit2! = 10   ' SX100/SXFive (use SX100Velocity&(XMotor%) in steps/sec?, assume 48000 steps full range in X)
 
 'AutomationReStandardizationInterval = 0.0020833     ' in days (3 minutes for testing)
 AutomationReStandardizationInterval = 0.25     ' in days (6 hours)
@@ -3382,7 +3382,7 @@ Else
 tmsg$ = "Welcome to " & app.EXEName & ", Probe for EPMA (Xtreme Edition) v. " & ProgramVersionString$
 End If
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD% Or FONT_UNDERLINE%), Int(0))
-tmsg$ = "Copyright (c) 1995-2018 John J. Donovan"
+tmsg$ = "Copyright (c) 1995-2019 by John J. Donovan"
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD%), Int(0))
 tmsg$ = vbCrLf & "This software is registered to :"
 Call IOWriteLog(tmsg$)
@@ -4683,12 +4683,12 @@ On Error GoTo InitMinMaxError
 If InterfaceType% = 0 Then      ' demo
 MinPHABaselineWindow! = 0.05
 MaxPHABaselineWindow! = 10#
-If MiscIsInstrumentStage("CAMECA") Then MaxPHABaselineWindow! = 5.8               ' SX100 demo
+If MiscIsInstrumentStage("CAMECA") Then MaxPHABaselineWindow! = 5.8               ' SX100/SXFive demo
 MinScalerCountTime! = 0.01
 MaxScalerCountTime! = 1000000#
 MinPHAGainWindow! = 4#
 MaxPHAGainWindow! = 128#                ' JEOL demo
-If MiscIsInstrumentStage("CAMECA") Then MaxPHAGainWindow! = 4095#               ' SX100 demo
+If MiscIsInstrumentStage("CAMECA") Then MaxPHAGainWindow! = 4095#               ' SX100/SXFive demo
 MaxPHABiasWindow! = 2000#
 
 ElseIf InterfaceType% = 1 Then  ' Unused

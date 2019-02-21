@@ -2,6 +2,68 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/20/19	Modify EDS Quant Method button in Calculation Options, add additional Help button (Neill).
+
+		Disable Peaking Ranges if using ROM peaking methods in peak/Scan Options dialog. Make
+		warning about interference standard containing the interfering element an in-line warning
+		to allow remaining checks to proceed.
+
+02/14/19	Add rotated stage limits GRI drawing to PictureSnap in PFE (from PSA).
+
+02/11/19	Modify Startwin deadtime acquisition code to handle spectro latencies better (McAleer). 
+		Also modify Excel deadtime macro examples and update Remote docs.
+
+02/03/19	Add microprobe age output to user specified (Allaz).
+v. 12.5.8
+		Modify code to force linear off-peak when switching acquired background to MAN (Allaz).
+		
+		Modify Nth point "on-peak time fraction" to allow zero value to skip on-peak 
+		measurement completely (Allaz). Also force line status to "B".
+
+02/01/19	Replace "chemical" age with "microprobe" age in forms and output (Allaz).
+
+		Modify ConvertToPrbImg code to handle missing sample name in 8900/8200/8500 code.
+
+01/31/19	Add faraday insert to FormCond read conditions button (Collins).
+
+01/29/19	Fix align and crop feature for missing files in subsequent acquisitions (Canfield).
+
+01/27/19	Modify TypeCounts code to print beam currents even if no analyzed elements (just EDS spectra).
+
+01/26/19	Modify Surfer scripts to handle Surfer 16 missing color scales in CalcImage. Modify Grapher scripts to
+		use thicker lines for travere plot output in Probe for EPMA.
+		
+		Add spectro position in nominal interference output (PFE and Standard)
+
+01/25/19	Add variation plotting for quant pixels in CalcImage.
+
+01/24/19	Remove variation plotting from Evaluate and add to PFE output menu.
+
+		Fix form re-sizing issue in Evaluate (finally!).
+
+01/20/19	Add option for output of avg and std deviations or avg and standard errors in CalcImage Extract Pixels.
+
+01/19/19	Add check for EIKS v4 or earlier in JEOLInitInterface if 8x30.
+v. 12.5.7
+		Add confirm to user if updating selected elements in PHA settings dialog.		
+		
+		Modify CalcImage sample parameter warnings to skip some warnings if element does not have any images assigned.
+		
+		Modify PlotWaveGetData to pass last sample of last wavescan selected for plotting KLM markers. This
+		way the analyzed and specified elements will get KLM markers displayed.
+
+12/28/18	Modify SX100 strings to SX100/SXFive strings. Remove unused code for non demo/JEOL/Cameca interfaces.
+
+12/24/18	Add input for count time in StartWin for dead time calibration acquisition (Neill)>
+v. 12.5.6
+		Allow JEOL instruments to poll faraday cup based on Probewin.ini entry (AlwaysPollFaradayCupState).
+
+12/21/18	Fix equant x/y axis plotting for multiple position samples with different numbers of points per sample.
+
+		Start work on concentration histogram for CalcImage shape and polygon extraction.
+
+12/20/18	Add averages only line profile plot and data export (Buse).
+
 12/18/28	Fix element by difference in CalcImage for oxide output (Buse).
 
 12/16/18	Fix demo mode set beam current for JEOL simulation mode.

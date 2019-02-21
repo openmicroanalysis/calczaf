@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMonitors"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -18,7 +18,7 @@ Private Type TypeRECT
     Bottom As Long
 End Type
 
-Private Declare Function EnumDisplayMonitors Lib "user32" (ByVal hdc As Long, lprcClip As Any, ByVal lpfnEnum As Long, dwdata As Any) As Long
+Private Declare Function EnumDisplayMonitors Lib "user32" (ByVal hDC As Long, lprcClip As Any, ByVal lpfnEnum As Long, dwdata As Any) As Long
 Private Declare Function UnionRect Lib "user32" (lprcDst As TypeRECT, lprcSrc1 As TypeRECT, lprcSrc2 As TypeRECT) As Long
 
 Dim rcMonitors() As TypeRECT    ' coordinate array for all monitors

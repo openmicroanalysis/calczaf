@@ -84,7 +84,6 @@ Begin VB.Form FormDETECTION
       End
       Begin VB.OLE OLE3 
          BackStyle       =   0  'Transparent
-         Class           =   "Equation.3"
          Enabled         =   0   'False
          Height          =   495
          Index           =   6
@@ -96,7 +95,6 @@ Begin VB.Form FormDETECTION
       End
       Begin VB.OLE OLE3 
          BackStyle       =   0  'Transparent
-         Class           =   "Equation.3"
          Enabled         =   0   'False
          Height          =   495
          Index           =   3
@@ -108,7 +106,6 @@ Begin VB.Form FormDETECTION
       End
       Begin VB.OLE OLE3 
          BackStyle       =   0  'Transparent
-         Class           =   "Equation.3"
          Enabled         =   0   'False
          Height          =   495
          Index           =   2
@@ -120,7 +117,6 @@ Begin VB.Form FormDETECTION
       End
       Begin VB.OLE OLE3 
          BackStyle       =   0  'Transparent
-         Class           =   "Equation.3"
          Enabled         =   0   'False
          Height          =   495
          Index           =   0
@@ -292,7 +288,6 @@ Begin VB.Form FormDETECTION
       End
       Begin VB.OLE OLE3 
          BackStyle       =   0  'Transparent
-         Class           =   "Equation.3"
          Enabled         =   0   'False
          Height          =   495
          Index           =   8
@@ -304,7 +299,6 @@ Begin VB.Form FormDETECTION
       End
       Begin VB.OLE OLE3 
          BackStyle       =   0  'Transparent
-         Class           =   "Equation.3"
          Enabled         =   0   'False
          Height          =   495
          Index           =   7
@@ -332,7 +326,6 @@ Begin VB.Form FormDETECTION
       End
       Begin VB.OLE OLE2 
          BackStyle       =   0  'Transparent
-         Class           =   "Equation.3"
          Enabled         =   0   'False
          Height          =   1095
          Left            =   5760
@@ -343,7 +336,6 @@ Begin VB.Form FormDETECTION
       End
       Begin VB.OLE OLE1 
          BackStyle       =   0  'Transparent
-         Class           =   "Equation.3"
          Enabled         =   0   'False
          Height          =   975
          Left            =   5760
@@ -436,7 +428,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Private Sub CommandClose_Click()

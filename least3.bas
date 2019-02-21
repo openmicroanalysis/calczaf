@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeLeast3"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Sub LeastSmoothSavitzkyGolay(k As Integer, npts As Integer, aydata() As Single, tydata() As Single)

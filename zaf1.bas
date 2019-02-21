@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeZAF1"
-' (c) Copyright 1995-2018 by John J. Donovan (credit to John Armstrong for original code)
+' (c) Copyright 1995-2019 by John J. Donovan (credit to John Armstrong for original code)
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -66,7 +66,7 @@ Type TypeZAF
     d As Single                         ' diameter (in cm, divide microns by MICRONSPERCM&)
     rho As Single                       ' density (in g/cm^3)
     j9 As Single                        ' particle thickness factor
-    x1 As Single                        ' integration step length (in g/cm^2)
+    X1 As Single                        ' integration step length (in g/cm^2)
     
     ' Particle calculations
     intnum(1 To MAXCHAN1%) As Long

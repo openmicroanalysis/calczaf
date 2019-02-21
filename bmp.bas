@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeBMP"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -12,9 +12,9 @@ Option Explicit
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ' Win32 Function Declarations
-Private Declare Function GetObjectAPI Lib "gdi32.dll" Alias "GetObjectA" (ByVal hObject As Long, ByVal ncount As Long, lpObject As Any) As Long
+Private Declare Function GetObjectAPI Lib "gdi32.dll" Alias "GetObjectA" (ByVal hObject As Long, ByVal nCount As Long, lpObject As Any) As Long
 Private Declare Function GetDIBits Lib "gdi32.dll" (ByVal aHDC As Long, ByVal hBitmap As Long, ByVal nStartScan As Long, ByVal nNumScans As Long, lpBits As Any, lpBI As BITMAPINFO, ByVal wUsage As Long) As Long
-Private Declare Function SetDIBits Lib "gdi32.dll" (ByVal hdc As Long, ByVal hBitmap As Long, ByVal nStartScan As Long, ByVal nNumScans As Long, ByRef lpBits As Any, ByRef lpBI As BITMAPINFO, ByVal wUsage As Long) As Long
+Private Declare Function SetDIBits Lib "gdi32.dll" (ByVal hDC As Long, ByVal hBitmap As Long, ByVal nStartScan As Long, ByVal nNumScans As Long, ByRef lpBits As Any, ByRef lpBI As BITMAPINFO, ByVal wUsage As Long) As Long
 'Private Declare Sub CopyMemory Lib "kernel32.dll" Alias "RtlMoveMemory" (lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Const MAXLEVELS& = BIT8&
@@ -782,7 +782,7 @@ With bitmap_info.bmiHeader
 
 ' Load the bitmap's data (by referring to the Image property, a persistent handle)
 ReDim pixels(1 To 4, 1 To nX&, 1 To nY&)
-GetDIBits tPicture.hdc, tPicture.Image, CLng(0), nY&, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
+GetDIBits tPicture.hDC, tPicture.Image, CLng(0), nY&, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
 
 ' Load the long array
 For j% = 1 To nY&
@@ -811,8 +811,8 @@ On Error GoTo BMPMakeGrayError
 Dim bitmap_info As BITMAPINFO
 Dim bytes_per_scanLine As Long
 Dim pad_per_scanLine As Long
-Dim X As Integer
-Dim Y As Integer
+Dim x As Integer
+Dim y As Integer
 Dim ave_color As Byte
 Dim nBytes As Long
 
@@ -840,20 +840,20 @@ If CSng(picColor.ScaleWidth) * CSng(picColor.ScaleHeight) * 4# > MAXLONG& Then E
     ' Load the bitmap's data
     nBytes& = 4
     ReDim pixels(1 To nBytes&, 1 To picColor.ScaleWidth, 1 To picColor.ScaleHeight)
-    GetDIBits picColor.hdc, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
+    GetDIBits picColor.hDC, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
 
     ' Modify the pixels
-    For Y = 1 To picColor.ScaleHeight
-        For X = 1 To picColor.ScaleWidth
-            ave_color = CByte((CInt(pixels(pixR, X, Y)) + pixels(pixG, X, Y) + pixels(pixB, X, Y)) \ 3)
-            pixels(pixR, X, Y) = ave_color
-            pixels(pixG, X, Y) = ave_color
-            pixels(pixB, X, Y) = ave_color
-        Next X
-    Next Y
+    For y = 1 To picColor.ScaleHeight
+        For x = 1 To picColor.ScaleWidth
+            ave_color = CByte((CInt(pixels(pixR, x, y)) + pixels(pixG, x, y) + pixels(pixB, x, y)) \ 3)
+            pixels(pixR, x, y) = ave_color
+            pixels(pixG, x, y) = ave_color
+            pixels(pixB, x, y) = ave_color
+        Next x
+    Next y
 
     ' Display the result
-    SetDIBits picColor.hdc, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
+    SetDIBits picColor.hDC, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
     picColor.Picture = picColor.Image
     
 Exit Sub
@@ -875,8 +875,8 @@ On Error GoTo BMPMakeColoredError
 Dim bitmap_info As BITMAPINFO
 Dim bytes_per_scanLine As Long
 Dim pad_per_scanLine As Long
-Dim X As Integer
-Dim Y As Integer
+Dim x As Integer
+Dim y As Integer
 Dim tR As Long
 Dim tG As Long
 Dim tB As Long
@@ -901,22 +901,22 @@ Const pixB& = 3
 
     ' Load the bitmap's data
     ReDim pixels(1 To 4, 1 To picColor.ScaleWidth, 1 To picColor.ScaleHeight)
-    GetDIBits picColor.hdc, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
+    GetDIBits picColor.hDC, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
 
     ' Modify the non black pixels
-    For Y% = 1 To picColor.ScaleHeight
-        For X% = 1 To picColor.ScaleWidth
-        If pixels(pixR, X, Y) <> 0 And pixels(pixG, X, Y) <> 0 And pixels(pixB, X, Y) <> 0 Then
+    For y% = 1 To picColor.ScaleHeight
+        For x% = 1 To picColor.ScaleWidth
+        If pixels(pixR, x, y) <> 0 And pixels(pixG, x, y) <> 0 And pixels(pixB, x, y) <> 0 Then
             Call BMPUnRGB(tRGB&, tR&, tG&, tB&)
-            pixels(pixR, X, Y) = CByte(tR)
-            pixels(pixG, X, Y) = CByte(tG)
-            pixels(pixB, X, Y) = CByte(tB)
+            pixels(pixR, x, y) = CByte(tR)
+            pixels(pixG, x, y) = CByte(tG)
+            pixels(pixB, x, y) = CByte(tB)
         End If
-        Next X%
-    Next Y%
+        Next x%
+    Next y%
 
     ' Display the result
-    SetDIBits picColor.hdc, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
+    SetDIBits picColor.hDC, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
     picColor.Picture = picColor.Image
     
 Exit Sub

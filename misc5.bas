@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMISC5"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -280,6 +280,8 @@ End Function
 
 Sub MiscGetArrayMinMax(n As Long, sarray() As Single, imin As Long, imax As Long, tmin As Single, tmax As Single)
 ' Return the min and max array indices found in a one dimensional single precision array
+'  imin/imax are the array indices of the largest and smallest values
+'  tmin/tmax are the values of the largest and smallest values
 
 ierror = False
 On Error GoTo MiscGetArrayMinMaxError
@@ -309,6 +311,41 @@ Exit Sub
 ' Errors
 MiscGetArrayMinMaxError:
 MsgBox Error$, vbOKOnly + vbCritical, "MiscGetArrayMinMax"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub MiscGetArrayMinMax2(mode As Integer, col As Integer, rows As Long, sarray() As Single, tmin As Single, tmax As Single)
+' Return the min and max array indices found in a two dimensional single precision array (1 to cols, 1 to rows)
+'  mode = 0 include all values, 1 = do not include zero or blanking values
+'  col = columns to search
+'  rows = number of rows in 2 dimensional array
+'  tmin/tmax are the values of the largest and smallest array values
+
+ierror = False
+On Error GoTo MiscGetArrayMinMax2Error
+
+Dim i As Long
+
+tmin! = MAXMINIMUM!
+tmax! = MAXMAXIMUM!
+
+For i& = 1 To rows&
+If (sarray!(col%, i&) < tmin! And mode% = 0) Or (sarray!(col%, i&) < tmin! And mode% = 1 And sarray!(col%, i&) <> 0# And sarray!(col%, i&) <> BLANKINGVALUE!) Then
+tmin! = sarray!(col%, i&)
+End If
+
+If (sarray!(col%, i&) > tmax! And mode% = 0) Or (sarray!(col%, i&) > tmax! And mode% = 1 And sarray!(col%, i&) <> 0# And sarray!(col%, i&) <> BLANKINGVALUE!) Then
+tmax! = sarray!(col%, i&)
+End If
+Next i&
+
+Exit Sub
+
+' Errors
+MiscGetArrayMinMax2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscGetArrayMinMax2"
 ierror = True
 Exit Sub
 

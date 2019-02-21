@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeIOUpdate"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -34,7 +34,7 @@ response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton2, "IOUpdateClose
 If response% = vbYes Then
 FormUPDATE.FtpClient1.Cancel
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 FormUPDATE.Caption = "Update CalcZAF [Please wait for termination...]"
 Else
 FormUPDATE.Caption = "Update Penepma [Please wait for termination...]"
@@ -42,7 +42,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 FormUPDATE.Caption = "Update Probe for EPMA [Please wait for termination...]"
 Else
 FormUPDATE.Caption = "Update Penepma [Please wait for termination...]"
@@ -125,7 +125,7 @@ End If
 
 ' Load filenames for CalcZAF update
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "CALCZAF.MSI"
 tBackupFile$ = ApplicationCommonAppData$ & "CALCZAF_Backup.MSI"
 
@@ -138,7 +138,7 @@ End If
 
 ' Load filenames for Probewin update
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "ProbeForEPMA.MSI"
 tBackupFile$ = ApplicationCommonAppData$ & "ProbeForEPMA_Backup.MSI"
 
@@ -173,7 +173,7 @@ End If
 Call IOWriteLog(vbCrLf & "IOUpdateGetUpdate: date/time of last update (" & tLocalFileDate & "), date/time of current update (" & tRemoteFileDate & ")...")
 DoEvents
 If CDate(tLocalFileDate) > CDate(tRemoteFileDate) Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 msg$ = "The current version of this program (" & ProgramVersionString$ & ") is already up to date. To force an update download, please use the Delete Update button first and try again."
 Else
 msg$ = "The current PENEPMA12.ZIP file is already up to date. To force an update download, please use the Delete Update button first and try again."
@@ -225,7 +225,7 @@ Call IOWriteLog("IOUpdateGetUpdate: Download of file (" & tLocalFile$ & ") is co
 
 ' Notify user
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 FormUPDATE.Caption = "Update CalcZAF [download complete]"
 Else
 FormUPDATE.Caption = "Update Penepma [download complete]"
@@ -233,7 +233,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 FormUPDATE.Caption = "Update Probe for EPMA [download complete]"
 Else
 FormUPDATE.Caption = "Update Penepma [download complete]"
@@ -287,7 +287,7 @@ tpassword$ = "analysis"
 
 ' Download CalcZAF
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tRemoteFile$ = "Probe for EPMA\V11\CALCZAF.MSI"
 
 ' Download penepma12.zip
@@ -298,7 +298,7 @@ End If
 
 ' Download Probewin
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tRemoteFile$ = "Probe for EPMA\V11\ProbeForEPMA.MSI"
 
 ' Download penepma12.zip
@@ -315,7 +315,7 @@ tpassword$ = "4rfvVGY&"
 
 ' Download CalcZAF (disabled for now from IOGetUpdate)
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tRemoteFile$ = "V11/CalcZAF.msi"
 
 ' Download penepma12.zip (disabled for now from IOGetUpdate)
@@ -326,7 +326,7 @@ End If
 
 ' Download Probewin
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tRemoteFile$ = "V11/ProbeForEPMA.msi"
 
 ' Download penepma12.zip
@@ -348,7 +348,7 @@ If DownloadMode% = 3 Then FormUPDATE.FtpClient1.Secure = False       ' DownloadM
 
 ' Set the local file path
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "CalcZAF.msi"
 
 ' Download penepma12.zip
@@ -358,7 +358,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "ProbeForEPMA.msi"
 
 ' Download penepma12.zip
@@ -436,7 +436,7 @@ Dim nError As Long
 
 ' Download CalcZAF
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tURL$ = "https://epmalab.uoregon.edu/Calczaf/V11/CalcZAF.msi"
 
 ' Download penepma12.zip
@@ -446,7 +446,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tURL$ = "https://epmalab.uoregon.edu/updates/V11/ProbeForEPMA.msi"
 
 ' Download penepma12.zip
@@ -461,7 +461,7 @@ tpassword$ = "analysis"
 
 ' Set the local file path for CalcZAF
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "CALCZAF.MSI"
 
 ' Set local path for penepma12.zip
@@ -472,7 +472,7 @@ End If
 
 ' Set local path for PFE
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "ProbeForEPMA.MSI"
 
 ' Set local path for penepma12.zip
@@ -574,7 +574,7 @@ If ierror Then Exit Sub
 
 ' Run the batch file to extract the CalcZAF update
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 taskID& = Shell("msiexec /i calczaf.msi", vbNormalFocus)
 'taskID& = Shell("msiexec /i calczaf.msi /l*v install.log", vbNormalFocus)   ' creates installer log
 'Call IORunShellExecute("open", "calczaf.msi", "/i", ApplicationCommonAppData$, SW_SHOWNORMAL&)
@@ -587,7 +587,7 @@ End If
 
 ' Run the batch file to extract the Probewin update
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 taskID& = Shell("msiexec /i ProbeForEPMA.msi", vbNormalFocus)
 'taskID& = Shell("msiexec /i ProbeForEPMA.msi /l*v install.log", vbNormalFocus)   ' creates installer log
 'Call IORunShellExecute("open", "ProbeForEPMA.msi", "/i", ApplicationCommonAppData$, SW_SHOWNORMAL&)
@@ -621,7 +621,7 @@ ierror = False
 On Error GoTo IOUpdateDeleteUpdateError
 
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "CALCZAF.MSI"
 
 ' Delete existing Penepma12.zip
@@ -631,7 +631,7 @@ End If
 End If
 
 If UCase$(app.EXEName) = UCase$("Probewin") Then
-If FormUPDATE.CheckUpdatePenepmaOnly.Value = vbUnchecked Then
+If FormUPDATE.CheckUpdatePenepmaOnly.value = vbUnchecked Then
 tLocalFile$ = ApplicationCommonAppData$ & "ProbeForEPMA.MSI"
 
 ' Delete existing Penepma12.zip

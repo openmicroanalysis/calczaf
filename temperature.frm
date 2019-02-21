@@ -225,7 +225,6 @@ Begin VB.Form FormTEMPERATURE
    End
    Begin VB.OLE OLE2 
       BackStyle       =   0  'Transparent
-      Class           =   "Equation.3"
       Enabled         =   0   'False
       Height          =   1455
       Left            =   6360
@@ -241,7 +240,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Private Sub ComboThermalConductivity_Click()

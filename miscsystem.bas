@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscSystem"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -220,7 +220,7 @@ Private Declare Function IsWow64Process Lib "kernel32" (ByVal hProc As Long, ByR
 Global Const FWP_STARTSWITH As Long = 0
 Global Const FWP_CONTAINS As Long = 1
 
-Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal X As Long, ByVal Y As Long, ByVal cX As Long, ByVal cY As Long, ByVal wFlags As Long) As Long
+Declare Function OSSetWindowPos Lib "user32" Alias "SetWindowPos" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cX As Long, ByVal cY As Long, ByVal wFlags As Long) As Long
 Declare Function OSFindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
 Declare Function OSGetWindow Lib "user32" Alias "GetWindow" (ByVal hWnd As Long, ByVal wCmd As Long) As Long
 'Declare Function OSSetActiveWindow Lib "user32" Alias "SetForegroundWindow" (ByVal hWnd As Long) As Long
@@ -291,11 +291,11 @@ Public Declare Sub CloseHandle Lib "kernel32" (ByVal hPass As Long)
 Public Declare Function CreateMutex Lib "kernel32.dll" Alias "CreateMutexA" (ByVal lpMutexAttributes As Any, ByVal bInitialOwner As Boolean, ByVal lpName As String) As Long
 Public Declare Function GetLastError Lib "kernel32.dll" () As Long
 
-Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hdc As Long, ByVal nindex As Long) As Long
+Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nindex As Long) As Long
 Private Const GDC_LOGPIXELSX As Long = 88
 
 Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
-Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hdc As Long) As Long
+Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hDC As Long) As Long
 
 Public Function MiscGetWindowsDPI() As Double
 ' Returns the current screen DPI, *as set in Windows display settings.*  This obviously has no relationship to physical screen DPI,
@@ -1100,10 +1100,10 @@ Const conSwpNoActivate& = &H10
 Dim pleft As Long, ptop As Long
 Dim pwidth As Long, pheight As Long
 
-pleft& = tForm.ScaleX(tForm.Left, vbTwips, vbPixels)
-ptop& = tForm.ScaleX(tForm.Top, vbTwips, vbPixels)
-pwidth& = tForm.ScaleX(tForm.Width, vbTwips, vbPixels)
-pheight& = tForm.ScaleX(tForm.Height, vbTwips, vbPixels)
+pleft& = tForm.scaleX(tForm.Left, vbTwips, vbPixels)
+ptop& = tForm.scaleX(tForm.Top, vbTwips, vbPixels)
+pwidth& = tForm.scaleX(tForm.Width, vbTwips, vbPixels)
+pheight& = tForm.scaleX(tForm.Height, vbTwips, vbPixels)
 
 ' Turn off the TopMost attribute
 If mode% = 0 Then

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeINIT1"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -437,6 +437,8 @@ If tKeyword$ = "UserSpecifiedOutputStandardPercentVariancesFlag" Then tDefault& 
 If tKeyword$ = "UserSpecifiedOutputStandardAlgebraicDifferencesFlag" Then tDefault& = 0
 
 If tKeyword$ = "UserSpecifiedOutputDetectionLimitsOxide" Then tDefault& = 0
+
+If tKeyword$ = "UserSpecifiedOutputChemAgeFlag" Then tDefault& = 0
 End If
 
 ' Load passed boolean keyword
@@ -1701,6 +1703,8 @@ Call InitINI4(UserSpecifiedOutputAbsorbedCurrent2Flag, "UserSpecifiedOutputAbsor
 
 Call InitINI4(UserSpecifiedOutputDetectionLimitsOxideFlag, "UserSpecifiedOutputDetectionLimitsOxide", "Software")
 
+Call InitINI4(UserSpecifiedOutputChemAgeFlag, "UserSpecifiedOutputChemAgeFlag", "Software")
+
 ' Load DefaultNthPointAcquisitionInterval
 lpAppName$ = "Software"
 lpKeyName$ = "DefaultNthPointAcquisitionInterval"
@@ -1793,7 +1797,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Software"
 lpKeyName$ = "ShowAllPeakingOptions"
-nDefault& = 0       ' default is to not show all peaking options (if JEOL 8900/8200/8500 or SX100 interface)
+nDefault& = 0       ' default is to not show all peaking options (if JEOL 8900/8200/8500 or SX100/SXFive interface)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 If valid& <> 0 Then
@@ -2508,7 +2512,7 @@ End If
 lpDefault$ = Trim$(WDS_IPAddress$)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
-If InterfaceType% = 2 Then      ' JEOL 8900/8200/8500/8230/8530 only (SX100 uses single port)
+If InterfaceType% = 2 Then      ' JEOL 8900/8200/8500/8230/8530 only (SX100/SXFive uses single port)
 lpAppName$ = "Hardware"
 lpKeyName$ = "WDS_IPAddress2"   ' for EOS/Notify JEOL instruments (not used by Cameca SX100)
 lpDefault$ = vbNullString
@@ -2548,7 +2552,7 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
 If InterfaceType% = 5 And WDS_ServicePort% <> 4000 Then ' SX100
-msg$ = "WDS_ServicePort keyword value (TCP/IP interface) for SX100 is not equal to 4000 in " & ProbeWinINIFile$
+msg$ = "WDS_ServicePort keyword value (TCP/IP interface) for SX100/SXFive is not equal to 4000 in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
@@ -3253,9 +3257,9 @@ nDefault& = 0
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 If valid& <> 0 Then
-AlwaysPollFaradayCupStateFlag% = True
+AlwaysPollFaradayCupStateFlag = True
 Else
-AlwaysPollFaradayCupStateFlag% = False
+AlwaysPollFaradayCupStateFlag = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -3529,7 +3533,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 lpAppName$ = "Hardware"
 lpKeyName$ = "ReflectedLightIntensity"
 If InterfaceType% = 5 Then
-nDefault& = 32      ' SX100 (0-64)
+nDefault& = 32      ' SX100/SXFive (0-64)
 Else
 nDefault& = 110      ' JEOL (0-127)
 End If
@@ -3546,7 +3550,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 lpAppName$ = "Hardware"
 lpKeyName$ = "TransmittedLightIntensity"
 If InterfaceType% = 5 Then
-nDefault& = 32      ' SX100 (0-64)
+nDefault& = 32      ' SX100/SXFive (0-64)
 Else
 nDefault& = 110      ' JEOL (0-127)
 End If
@@ -3579,7 +3583,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "SpectrometerROMScanMode"
-nDefault& = 0           ' SX100 only, 0 = use absolute scan, 1 = use relative scan
+nDefault& = 0           ' SX100/SXFive only, 0 = use absolute scan, 1 = use relative scan
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 SpectrometerROMScanMode% = valid&
@@ -3684,7 +3688,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "SX100MoveSpectroMilliSecDelayBefore"
-nDefault& = 100           ' SX100 only (seems to be required when using software backlash!)
+nDefault& = 100           ' SX100/SXFive only (seems to be required when using software backlash!)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 SX100MoveSpectroMilliSecDelayBefore& = valid&
@@ -3697,7 +3701,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "SX100MoveSpectroMilliSecDelayAfter"
-nDefault& = 10           ' SX100 only (seems to be required when using software backlash!)
+nDefault& = 10           ' SX100/SXFive only (seems to be required when using software backlash!)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 SX100MoveSpectroMilliSecDelayAfter& = valid&
@@ -3710,7 +3714,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "SX100MoveStageMilliSecDelayBefore"
-nDefault& = 100           ' SX100 only (seems to be required when using software backlash!)
+nDefault& = 100           ' SX100/SXFive only (seems to be required when using software backlash!)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 SX100MoveStageMilliSecDelayBefore& = valid&
@@ -3723,7 +3727,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "SX100MoveStageMilliSecDelayAfter"
-nDefault& = 10           ' SX100 only (seems to be required when using software backlash!)
+nDefault& = 10           ' SX100/SXFive only (seems to be required when using software backlash!)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 SX100MoveStageMilliSecDelayAfter& = valid&

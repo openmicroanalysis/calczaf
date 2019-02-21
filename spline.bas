@@ -1,8 +1,8 @@
 Attribute VB_Name = "CodeSpline"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
-Sub SplineFit(X() As Single, Y() As Single, n As Long, yp1 As Double, ypn As Double, Y2() As Double)
+Sub SplineFit(x() As Single, y() As Single, n As Long, yp1 As Double, ypn As Double, y2() As Double)
 ' Calculate coefficients for a cubic spline fit (call SplineInterpolate to get interpolated values)
 ' Modified From Numerical Recipes
 ' x() and y() = tabulated x and y input array
@@ -19,16 +19,16 @@ ReDim xdata(1 To n&) As Single, ydata(1 To n&) As Single
 ReDim ty2(1 To n&) As Double
 
 ' Check that data is in proper order
-If X!(1) < X!(n&) Then
+If x!(1) < x!(n&) Then
 For i& = 1 To n&
-xdata!(i&) = X!(i&)
-ydata!(i&) = Y!(i&)
+xdata!(i&) = x!(i&)
+ydata!(i&) = y!(i&)
 Next i&
 
 Else
 For i& = 1 To n&
-xdata!(i&) = X!(n& - (i& - 1))
-ydata!(i&) = Y!(n& - (i& - 1))
+xdata!(i&) = x!(n& - (i& - 1))
+ydata!(i&) = y!(n& - (i& - 1))
 Next i&
 End If
 
@@ -38,7 +38,7 @@ If ierror Then Exit Sub
 
 ' Store derivatives in fit order
 For i& = 1 To n&
-Y2#(i&) = ty2#(i&)
+y2#(i&) = ty2#(i&)
 Next i&
 
 Exit Sub
@@ -51,7 +51,7 @@ Exit Sub
 
 End Sub
 
-Sub SplineFit2(X() As Single, Y() As Single, n As Long, yp1 As Double, ypn As Double, Y2() As Double)
+Sub SplineFit2(x() As Single, y() As Single, n As Long, yp1 As Double, ypn As Double, y2() As Double)
 ' Calculate coefficients for a cubic spline fit (call SplineInterpolate to get interpolated values)
 ' Modified From Numerical Recipes
 ' x() and y() = tabulated x and y input array
@@ -69,19 +69,19 @@ Dim p As Double, qn As Double, un As Double
 ReDim u(1 To n&) As Double
 
 If yp1# > 9.9E+29 Then
-  Y2#(1) = 0!
+  y2#(1) = 0!
   u#(1) = 0!
 Else
-  Y2#(1) = -0.5
-  u#(1) = (3! / (X!(2) - X!(1))) * ((Y!(2) - Y!(1)) / (X!(2) - X!(1)) - yp1#)
+  y2#(1) = -0.5
+  u#(1) = (3! / (x!(2) - x!(1))) * ((y!(2) - y!(1)) / (x!(2) - x!(1)) - yp1#)
 End If
 For i& = 2 To n& - 1
-  sig# = (X!(i&) - X!(i& - 1)) / (X!(i& + 1) - X!(i& - 1))
-  p# = sig# * Y2#(i& - 1) + 2!
-  Y2#(i) = (sig# - 1!) / p#
-  dum1# = (Y!(i& + 1) - Y!(i&)) / (X!(i& + 1) - X!(i&))
-  dum2# = (Y!(i&) - Y!(i& - 1)) / (X!(i&) - X!(i& - 1))
-  u#(i&) = (6! * (dum1# - dum2#) / (X!(i& + 1) - X!(i& - 1)) - sig# * u#(i& - 1)) / p#
+  sig# = (x!(i&) - x!(i& - 1)) / (x!(i& + 1) - x!(i& - 1))
+  p# = sig# * y2#(i& - 1) + 2!
+  y2#(i) = (sig# - 1!) / p#
+  dum1# = (y!(i& + 1) - y!(i&)) / (x!(i& + 1) - x!(i&))
+  dum2# = (y!(i&) - y!(i& - 1)) / (x!(i&) - x!(i& - 1))
+  u#(i&) = (6! * (dum1# - dum2#) / (x!(i& + 1) - x!(i& - 1)) - sig# * u#(i& - 1)) / p#
 Next i&
 
 If ypn# > 9.9E+29 Then
@@ -89,11 +89,11 @@ If ypn# > 9.9E+29 Then
   un# = 0!
 Else
   qn# = 0.5
-  un# = (3! / (X!(n&) - X!(n& - 1))) * (ypn# - (Y!(n&) - Y!(n& - 1)) / (X!(n&) - X!(n& - 1)))
+  un# = (3! / (x!(n&) - x!(n& - 1))) * (ypn# - (y!(n&) - y!(n& - 1)) / (x!(n&) - x!(n& - 1)))
 End If
-Y2#(n&) = (un# - qn# * u#(n& - 1)) / (qn# * Y2#(n& - 1) + 1!)
+y2#(n&) = (un# - qn# * u#(n& - 1)) / (qn# * y2#(n& - 1) + 1!)
 For k& = n& - 1 To 1 Step -1
-  Y2#(k&) = Y2#(k&) * Y2#(k& + 1) + u#(k&)
+  y2#(k&) = y2#(k&) * y2#(k& + 1) + u#(k&)
 Next k&
 
 Exit Sub
@@ -106,7 +106,7 @@ Exit Sub
 
 End Sub
 
-Sub SplineInterpolate(xa() As Single, ya() As Single, y2a() As Double, n As Long, X As Single, Y As Single)
+Sub SplineInterpolate(xa() As Single, ya() As Single, y2a() As Double, n As Long, x As Single, y As Single)
 ' Calculate interpolated values based on passed coefficients from SplineFit
 ' Modified From Numerical Recipes
 ' xa() and ya() = tabulated x and y input array (original data)
@@ -137,12 +137,12 @@ Next i&
 End If
 
 ' Call actual routine (2nd derivatives are always in proper order)
-Call SplineInterpolate2(xdata!(), ydata!(), y2a#(), n&, X!, Y!)
+Call SplineInterpolate2(xdata!(), ydata!(), y2a#(), n&, x!, y!)
 If ierror Then Exit Sub
 
 ' If x value is below or above, then set y to last value
-If X! < xdata!(1) Then Y! = ydata(1)
-If X! > xdata!(n&) Then Y! = ydata(n&)
+If x! < xdata!(1) Then y! = ydata(1)
+If x! > xdata!(n&) Then y! = ydata(n&)
 
 Exit Sub
 
@@ -154,7 +154,7 @@ Exit Sub
 
 End Sub
 
-Sub SplineInterpolate2(xa() As Single, ya() As Single, y2a() As Double, n As Long, X As Single, Y As Single)
+Sub SplineInterpolate2(xa() As Single, ya() As Single, y2a() As Double, n As Long, x As Single, y As Single)
 ' Calculate interpolated values based on passed coefficients from SplineFit
 ' Modified From Numerical Recipes
 ' xa() and ya() = tabulated x and y input array (original data)
@@ -174,7 +174,7 @@ klo& = 1
 khi& = n&
 While khi& - klo& > 1
   k& = (khi& + klo&) / 2
-  If xa!(k&) > X! Then
+  If xa!(k&) > x! Then
     khi = k&
   Else
     klo& = k&
@@ -183,10 +183,10 @@ Wend
 h# = xa!(khi&) - xa!(klo&)
 If h# = 0! Then GoTo SplineInterpolate2BadInput
 
-a# = (xa!(khi&) - X!) / h#
-b# = (X! - xa!(klo&)) / h#
-Y! = a# * ya!(klo&) + b# * ya!(khi&)
-Y! = Y! + ((a# ^ 3 - a#) * y2a#(klo&) + (b# ^ 3 - b#) * y2a#(khi&)) * (h# ^ 2) / 6#
+a# = (xa!(khi&) - x!) / h#
+b# = (x! - xa!(klo&)) / h#
+y! = a# * ya!(klo&) + b# * ya!(khi&)
+y! = y! + ((a# ^ 3 - a#) * y2a#(klo&) + (b# ^ 3 - b#) * y2a#(khi&)) * (h# ^ 2) / 6#
 
 Exit Sub
 

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMISC6"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -14,16 +14,15 @@ Option Explicit
 Dim tfilenumber As Integer
 
 Sub MiscSaveData_PE(gstring As String, xstring As String, ystring As String, tGraph As Pesgo, tForm As Form)
-' Open file to save graph data to disk (Pro Esentials code)
+' Open file to save graph data to disk (Pro Esentials code) (single data set)
 
 ierror = False
 On Error GoTo MiscSaveData_PEError
 
-Dim tfilename As String, tmsg As String
+Dim tfilename As String
 
 ' Get filename to save data
-tmsg$ = gstring$
-tfilename$ = MiscGetFileNameNoExtension(ProbeDataFile$) & "_" & tmsg$ & ".dat"
+tfilename$ = MiscGetFileNameNoExtension(ProbeDataFile$) & "_" & gstring$ & ".dat"
 Call IOGetFileName(Int(1), "DAT", tfilename$, tForm)
 If ierror Then Exit Sub
 
@@ -60,11 +59,10 @@ Sub MiscSaveDataSets_PE(tbasename As String, gstring As String, xstring As Strin
 ierror = False
 On Error GoTo MiscSaveDataSets_PEError
 
-Dim tfilename As String, tmsg As String
+Dim tfilename As String
 
 ' Get filename to save data
-tmsg$ = gstring$
-tfilename$ = MiscGetFileNameNoExtension(tbasename$) & "_" & tmsg$ & ".dat"
+tfilename$ = MiscGetFileNameNoExtension(tbasename$) & "_" & gstring$ & ".dat"
 Call IOGetFileName(Int(1), "DAT", tfilename$, tForm)
 If ierror Then Exit Sub
 
@@ -92,29 +90,30 @@ Exit Sub
 End Sub
 
 Sub MiscWriteData_PE(xstring As String, ystring As String, tGraph As Pesgo)
-' Write graph data to disk (Pro Essentials code)
+' Write graph data to disk (Pro Essentials code) (single data set)
 
 ierror = False
 On Error GoTo MiscWriteData_PEError
 
 Dim i As Integer
 Dim xdata As Single, ydata As Single
+Dim tmsg As String
 
 If tGraph.points = 0 Or tGraph.Subsets = 0 Then GoTo MiscWriteData_PENoData
 
 ' Write column labels
 Screen.MousePointer = vbHourglass
-msg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$
-Print #tfilenumber%, msg$
+tmsg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$
+Print #tfilenumber%, tmsg$
 
 ' Loop on graphs
 For i% = 1 To tGraph.points
 ydata! = tGraph.ydata(0, i% - 1)
 xdata! = tGraph.xdata(0, i% - 1)
-msg$ = MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!)
+tmsg$ = MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!)
 
 ' Write to disk
-Print #tfilenumber%, msg$
+Print #tfilenumber%, tmsg$
 Next i%
 
 Screen.MousePointer = vbDefault
@@ -145,42 +144,43 @@ On Error GoTo MiscWriteDataSets_PEError
 
 Dim i As Integer, j As Integer
 Dim xdata As Single, ydata As Single
+Dim tmsg As String
 
 If tGraph.points = 0 Or tGraph.Subsets = 0 Then GoTo MiscWriteDataSets_PENoData
 
 ' Write y-data title if multiple data sets
 Screen.MousePointer = vbHourglass
 If tGraph.Subsets > 1 Then
-msg$ = VbDquote$ & Format$(ystring$, a80$) & VbDquote$
-Print #tfilenumber%, msg$
+tmsg$ = VbDquote$ & Format$(ystring$, a80$) & VbDquote$
+Print #tfilenumber%, tmsg$
 
 ' Write column labels
-msg$ = vbNullString
+tmsg$ = vbNullString
 For j% = 1 To tGraph.Subsets
-msg$ = msg$ & VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(sString$(j%), a80$) & VbDquote$ & vbTab
+tmsg$ = tmsg$ & VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(sString$(j%), a80$) & VbDquote$ & vbTab
 Next j%
-Print #tfilenumber%, msg$
+Print #tfilenumber%, tmsg$
 
 ' Single data set
 Else
-msg$ = VbDquote$ & gstring$ & VbDquote$
-Print #tfilenumber%, msg$
-msg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$ & vbTab
-Print #tfilenumber%, msg$
+tmsg$ = VbDquote$ & gstring$ & VbDquote$
+Print #tfilenumber%, tmsg$
+tmsg$ = VbDquote$ & Format$(xstring$, a80$) & VbDquote$ & vbTab & VbDquote$ & Format$(ystring$, a80$) & VbDquote$ & vbTab
+Print #tfilenumber%, tmsg$
 End If
 
 ' Loop on graphs
 For i% = 1 To tGraph.points
-msg$ = vbNullString
+tmsg$ = vbNullString
 
 For j% = 1 To tGraph.Subsets
 ydata! = tGraph.ydata(j% - 1, i% - 1)
 xdata! = tGraph.xdata(j% - 1, i% - 1)
-msg$ = msg$ & MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!) & vbTab
+tmsg$ = tmsg$ & MiscAutoFormat$(xdata!) & vbTab & MiscAutoFormat$(ydata!) & vbTab
 Next j%
 
 ' Write to disk
-Print #tfilenumber%, msg$
+Print #tfilenumber%, tmsg$
 Next i%
 
 Screen.MousePointer = vbDefault

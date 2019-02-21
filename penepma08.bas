@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePENEPMA08"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Global Const MAXMATOUTPUT% = 2      ' up to 2 materials (1 for bulk, 2 for couple, bilayer or thin film)

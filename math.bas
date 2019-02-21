@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMATH"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -937,7 +937,7 @@ Exit Function
 
 End Function
 
-Sub MathCorrelationPearson(x() As Double, y() As Double, n As Long, r As Double, prob As Double, Z As Double)
+Sub MathCorrelationPearson(X() As Double, Y() As Double, n As Long, r As Double, prob As Double, Z As Double)
 ' Calculate Pearson's linear correlation coefficient
 '  Given two arrays "x()" and "y()", this routine computes their correlation coefficient "r", the significance
 '  level at which the null hypothesis of zero correlation is disproved ("prob" whose small value indicates
@@ -958,8 +958,8 @@ Dim t As Double, xt As Double, yt As Double
 ax# = 0#
 ay# = 0#
 For j& = 1 To n&
-ax# = ax# + x#(j&)
-        ay# = ay# + y#(j&)
+ax# = ax# + X#(j&)
+        ay# = ay# + Y#(j&)
 Next j&
 
 ax# = ax# / n&
@@ -969,8 +969,8 @@ syy# = 0#
 sxy# = 0#
       
 For j& = 1 To n&
-xt# = x#(j&) - ax#
-        yt# = y#(j&) - ay#
+xt# = X#(j&) - ax#
+        yt# = Y#(j&) - ay#
         sxx# = sxx# + xt# ^ 2
         syy# = syy# + yt# ^ 2
         sxy# = sxy# + xt# * yt#
@@ -980,10 +980,12 @@ r# = sxy# / (Sqr(sxx# * syy#) + TINY1#)
 Z# = 0.5 * Log(((1# + r#) + TINY1#) / ((1# - r#) + TINY1#))
 df# = n& - 2
 t# = r# * Sqr(df# / (((1# - r#) + TINY1#) * ((1# + r#) + TINY1#)))
+
+' Calculate correlation coefficient
 prob# = StudentBetai(0.5 * df#, 0.5, df# / (df# + t# ^ 2))
       
 ' Alternative calculation for very large data sets
-'prob# = MathERFCC(Abs(z# * Sqr(n& - 1#)) / 1.4142136)
+'prob# = MathERFCC(Abs(Z# * Sqr(n& - 1#)) / 1.4142136)
 
 Exit Sub
 
@@ -995,22 +997,24 @@ Exit Sub
 
 End Sub
 
-Function MathERFCC(x As Double) As Double
-' Calculates error function
+Function MathERFCC(X As Double) As Double
+' Calculates error function (produces "expression too complex" error)
 
 ierror = False
 On Error GoTo MathERFCCError
 
 Dim t As Double, Z As Double
+Dim temp As Double
 
-Z# = Abs(x#)
+Z# = Abs(X#)
 t# = 1# / (1# + 0.5 * Z#)
 
 MathERFCC# = t# * Exp(-Z# * Z# - 1.26551223 + t# * (1.00002368 + t# * (0.37409196 + t# * _
      (0.09678418 + t# * (-0.18628806 + t# * (0.27886807 + t# * (-1.13520398 + t# * _
      (1.48851587 + t# * (-0.82215223 + t# * 0.17087277)))))))))
       
-If x# < 0# Then MathERFCC# = 2# - MathERFCC#
+If X# < 0# Then MathERFCC# = 2# - MathERFCC#
+
 Exit Function
     
 MathERFCCError:
@@ -1105,7 +1109,7 @@ Exit Sub
 
 End Sub
 
-Function MathRootN(x As Single, n As Integer) As Single
+Function MathRootN(X As Single, n As Integer) As Single
 ' Function to find the nth root of a number x
 
 ierror = False
@@ -1115,7 +1119,7 @@ Dim temp As Single
 
 ' Find the nth root of x
 If n% < 1 Then GoTo MathRootNBadRoot
-temp! = x! ^ (1# / n%)
+temp! = X! ^ (1# / n%)
 MathRootN! = temp!
 Exit Function
 

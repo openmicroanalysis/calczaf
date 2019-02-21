@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGLOBAL"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -18,7 +18,7 @@ Global Const MAX_INTEGRATED_BGD_FIT% = 50
 Global Const MAX_ENERGY_ARRAY_SIZE% = 10
 Global Const MAX_THROUGHPUT_ARRAY_SIZE% = 20
 
-' Based on Cameca SX100 set times
+' Based on Cameca SX100/SXFive set times
 Global Const KILOVOLT_SET_TIME! = 6#
 Global Const BEAMCURRENT_SET_TIME_CAMECA! = 10#
 Global Const BEAMCURRENT_SET_TIME_JEOL! = 12#
@@ -282,8 +282,8 @@ Global Const MAXSTDIMAGE% = 5            ' maximum number of standard images dis
 Global Const MAXAUTOFOCUSPOINTS& = 1010  ' maximum autofocus data points (1010 + 14 = 1024 longs)
 Global Const MAXAUTOFOCUSSCANS% = 3      ' maximum autofocus scans (fine, coarse, 2nd fine)
 Global Const MAXIMAGES% = 2000           ' maximum number of sample images in run
-Global Const MAXIMAGEIX% = 2048          ' maximum number of x pixels (SX100 = 2048, all others 1024)
-Global Const MAXIMAGEIY% = 2048          ' maximum number of y pixles (SX100 = 2048, all others 1024)
+Global Const MAXIMAGEIX% = 2048          ' maximum number of x pixels (SX100/SXFive = 2048, all others 1024)
+Global Const MAXIMAGEIY% = 2048          ' maximum number of y pixles (SX100/SXFive = 2048, all others 1024)
 Global Const MAXROMSCAN% = 1000          ' maximum points per ROM scan
 Global Const MAXIMAGESIZES& = 4          ' dimensioned 0 to MAXIMAGESIZES&
 Global Const MAXPALETTE% = 4             ' maximum number of color palettes
@@ -599,8 +599,8 @@ Type TypePosition
     magnificationanalytical As Single       ' new 10-28-2006
     magnificationimaging As Single          ' new 10-28-2006
     
-    ImageShiftX As Single    ' change from integer for SX100 (10-29-2011)
-    ImageShiftY As Single    ' change from integer for SX100 (10-29-2011)
+    ImageShiftX As Single    ' change from integer for SX100/SXFive (10-29-2011)
+    ImageShiftY As Single    ' change from integer for SX100/SXFive (10-29-2011)
     
     DriftCorrectionImageNumber As Integer   ' stored image number for drift correction (ImageNumber in Image table)
 End Type
@@ -1026,8 +1026,8 @@ Type TypeSample
     BlankCorrectionUnks(1 To MAXCHAN%) As Integer   ' blank correction unknown row number
     BlankCorrectionLevels(1 To MAXCHAN%) As Single  ' blank correction level (usually zero)
 
-    ImageShiftX As Single    ' change from integer for SX100 (10-29-2011)
-    ImageShiftY As Single    ' change from integer for SX100 (10-29-2011)
+    ImageShiftX As Single    ' change from integer for SX100/SXFive (10-29-2011)
+    ImageShiftY As Single    ' change from integer for SX100/SXFive (10-29-2011)
     
     WDSWaveScanHiPeaks(1 To MAXCHAN%) As Single
     WDSWaveScanLoPeaks(1 To MAXCHAN%) As Single
@@ -2170,7 +2170,7 @@ Global ScanComboNumberOf(1 To MAXMONITOR%) As Integer
 Global ScanComboNames(1 To MAXMONITOR%, 1 To MAXMONITORLIST%) As String
 Global ScanComboParameters(1 To MAXMONITOR%, 1 To MAXMONITORLIST%) As String
 
-Global AlwaysPollFaradayCupStateFlag As Integer         ' new 06-23-2005
+Global AlwaysPollFaradayCupStateFlag As Boolean         ' change to boolean 12-20-2018
 Global DriverLoggingLevel As Long                       ' 0 - disabled, 1 - basic logging, 2 - detailed
 Global ThermalFieldEmissionPresentFlag As Integer       ' 0 = not present, <> 0 present
 
@@ -2399,7 +2399,7 @@ Global TotalAcquisitionTime As Variant
 Global CurrentAcquisitionStartTime As Variant
 Global CurrentAcquisitionStopTime As Variant
 
-Global SpectrometerROMScanMode As Integer   ' SX100 only, 0 = absolute scan, 1 = relative scan
+Global SpectrometerROMScanMode As Integer   ' SX100/SXFive only, 0 = absolute scan, 1 = relative scan
 
 Global UseAutomationReStandardization As Boolean
 Global AutomationReStandardizationOn As Boolean
@@ -2424,8 +2424,8 @@ Global DigitizeAutoDigitizeFlag As Integer
 
 Global JeolCoarseCondenserCalibrationDelay As Single
 
-Global DefaultImageShiftX As Single    ' change from integer for SX100 (10-29-2011)
-Global DefaultImageShiftY As Single    ' change from integer for SX100 (10-29-2011)
+Global DefaultImageShiftX As Single    ' change from integer for SX100/SXFive (10-29-2011)
+Global DefaultImageShiftY As Single    ' change from integer for SX100/SXFive (10-29-2011)
 
 Global PHAFirstTimeDelay As Single      ' in seconds when PHA is first set (for large bias change issues)
 
@@ -2967,3 +2967,4 @@ Global NthPointAcquisitionTypeFlag As Integer   ' 0 = acquire Nth points on both
 
 Global CalculatePhiRhoZPlotCurves As Boolean        ' used in CalcZAF
 
+Global UserSpecifiedOutputChemAgeFlag As Boolean

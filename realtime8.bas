@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeRealTime8"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Function RealTimeGetBeamScanCalibration(XorYMotor As Integer, keV As Single, mag As Single, srota As Single) As Single

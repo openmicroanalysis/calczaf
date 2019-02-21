@@ -45,7 +45,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
 Dim BitMapX As Single
@@ -77,11 +77,11 @@ Call PictureSnapStageMove2(BitMapX!, BitMapY!)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
-BitMapX! = X!
-BitMapY! = Y!   ' store for double-click
-Call PictureSnapUpdateCursor2(Int(0), X!, Y!)
+BitMapX! = x!
+BitMapY! = y!   ' store for double-click
+Call PictureSnapUpdateCursor2(Int(0), x!, y!)
 If ierror Then Exit Sub
 If WaitingForCalibrationClick Then
 FormPICTURESNAP3.MousePointer = vbHourglass

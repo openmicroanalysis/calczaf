@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePOSITION6"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -11,7 +11,7 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Sub PositionGetXYZ(sampletype As Integer, npts As Long, xdata() As Single, ydata() As Single, zdata() As Single, idata() As Integer, ndata() As Integer, sdata() As Integer, sndata() As String)
+Sub PositionGetXYZ(sampletype As Integer, npts As Long, xdata() As Single, ydata() As Single, zdata() As Single, iData() As Integer, ndata() As Integer, sdata() As Integer, sndata() As String)
 ' Routine to load position data (x,y,z only) from the POSITION.MDB database based on sample type
 '   sampletype = 0 load all
 '   sampletype = 1 load standards
@@ -57,7 +57,7 @@ PoRs.MoveFirst
 ReDim xdata(1 To npts&) As Single
 ReDim ydata(1 To npts&) As Single
 ReDim zdata(1 To npts&) As Single
-ReDim idata(1 To npts&) As Integer  ' types
+ReDim iData(1 To npts&) As Integer  ' types
 ReDim ndata(1 To npts&) As Integer  ' line (row) numbers
 ReDim sdata(1 To npts&) As Integer  ' sample numbers
 ReDim sndata(1 To npts&) As String  ' sample names
@@ -69,7 +69,7 @@ i& = i& + 1
 xdata!(i&) = PoRs("StageX")
 ydata!(i&) = PoRs("StageY")
 zdata!(i&) = PoRs("StageZ")
-idata%(i&) = PoRs("Types")
+iData%(i&) = PoRs("Types")
 ndata%(i&) = PoRs("PosOrder")
 sdata%(i&) = PoRs("Numbers")
 sndata$(i&) = Trim$(vbNullString & PoRs("Names"))
@@ -89,7 +89,7 @@ Exit Sub
 
 End Sub
 
-Sub PositionGetSampleDataOnly(samplerow As Integer, npts As Integer, xdata() As Single, ydata() As Single, zdata() As Single, idata() As Integer)
+Sub PositionGetSampleDataOnly(samplerow As Integer, npts As Integer, xdata() As Single, ydata() As Single, zdata() As Single, iData() As Integer)
 ' Routine to load position data (x, y, z only) from the POSITION.MDB database
 
 ierror = False
@@ -124,7 +124,7 @@ PoRs.MoveFirst
 ReDim xdata(1 To npts%) As Single
 ReDim ydata(1 To npts%) As Single
 ReDim zdata(1 To npts%) As Single
-ReDim idata(1 To npts%) As Integer
+ReDim iData(1 To npts%) As Integer
 
 ' Load position data
 i% = 0
@@ -133,7 +133,7 @@ i% = i% + 1
 xdata!(i%) = PoRs("StageX")
 ydata!(i%) = PoRs("StageY")
 zdata!(i%) = PoRs("StageZ")
-idata%(i%) = PoRs("PosOrder")   ' row numbers (may not be consecutive)
+iData%(i%) = PoRs("PosOrder")   ' row numbers (may not be consecutive)
 PoRs.MoveNext
 Loop
 

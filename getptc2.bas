@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGETPTC2"
-' (c) Copyright 1995-2018 by John J. Donovan
+' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -30,7 +30,7 @@ zaf.diam! = 10000#  ' diameter in microns
 zaf.d! = 1#         ' diameter in cm (thick pure element)
 zaf.rho! = 1#       ' density in g/cm^3
 zaf.j9! = 1#        ' thickness factor
-zaf.x1! = 0.00001   ' numerical integration step in g/cm^2
+zaf.X1! = 0.00001   ' numerical integration step in g/cm^2
 Exit Sub
 End If
 
@@ -54,7 +54,7 @@ zaf.j9! = PTCThicknessFactor!
 
 ' Load numerical integration (in g/cm^2)
 If PTCNumericalIntegrationStep! = 0# Then PTCNumericalIntegrationStep! = 0.00001
-zaf.x1! = PTCNumericalIntegrationStep!
+zaf.X1! = PTCNumericalIntegrationStep!
 
 Exit Sub
 
