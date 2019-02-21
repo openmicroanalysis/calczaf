@@ -324,7 +324,7 @@ def main():
     if no_push:
         logger.info('Push disabled')
 
-    work_dir = args.work_dir
+    work_dir = args.workdir
     work_dir, user_work_dir = setup(work_dir)
 
     # Pull repository
