@@ -295,7 +295,8 @@ def main():
 
     parser.add_argument('-v', '--verbose', action='store_true', default=False,
                         help='Verbose mode')
-    parser.add_argument('-w', '--work_dir', help='Working directory')
+    # noinspection SpellCheckingInspection
+    parser.add_argument('-w', '--workdir', help='Working directory')
     parser.add_argument('-u', '--url',
                         default='http://probesoftware.com/download/CALCZAF_SOURCE-E2.ZIP',
                         help='Url to CalcZAF source zip file')
