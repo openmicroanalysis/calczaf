@@ -2,9 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/23/19	First test of integrated WDS and EDS mapping quantification in CalcImage- "it werks"!
+
+		https://vimeo.com/64522190
+
 02/20/19	Modify EDS Quant Method button in Calculation Options, add additional Help button (Neill).
 
-		Disable Peaking Ranges if using ROM peaking methods in peak/Scan Options dialog. Make
+		Disable Peaking Ranges if using ROM peaking methods in Peak/Scan Options dialog. Make
 		warning about interference standard containing the interfering element an in-line warning
 		to allow remaining checks to proceed.
 

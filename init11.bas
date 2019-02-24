@@ -433,6 +433,57 @@ Exit Sub
 
 End Sub
 
+Sub InitParseStringToLong(astring As String, ncount As Long, longarray() As Long)
+' Parse a string to a 4 byte long array
+
+ierror = False
+On Error GoTo InitParseStringToLongError
+
+Dim i As Long, n As Long
+Dim tstring As String
+
+' Check for empty string
+If astring$ = vbNullString Then GoTo InitParseStringToLongEmpty
+If ncount& < 1 Then GoTo InitParseStringToLongNoCount
+
+' Parse out sub-strings based on comma placement
+n& = 1
+For i& = 1 To Len(astring$)
+If Mid$(astring, i&, 1) <> VbComma$ Then
+tstring$ = tstring$ & Mid$(astring, i&, 1)
+Else
+longarray&(n&) = Val(tstring$)
+tstring$ = vbNullString
+n& = n& + 1
+If n& > ncount& Then Exit Sub
+End If
+Next i&
+
+' Load last sub-string
+longarray&(n&) = Val(tstring$)
+
+Exit Sub
+
+' Errors
+InitParseStringToLongError:
+MsgBox Error$, vbOKOnly + vbCritical, "InitParseStringToLong"
+ierror = True
+Exit Sub
+
+InitParseStringToLongEmpty:
+msg$ = "Empty string"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitParseStringToLong"
+ierror = True
+Exit Sub
+
+InitParseStringToLongNoCount:
+msg$ = "Array count is less than one"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitParseStringToLong"
+ierror = True
+Exit Sub
+
+End Sub
+
 Sub InitParseStringToString(astring As String, icount As Integer, stringarray() As String)
 ' Parse a comma delimited string to a string array
 
