@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/01/19	Modify TDI code in VolatileCorrectionAll to skip EDS elements (Neill). Also modify code
+		in DataVolatileGetData and DataVolatileGetData2 routnes to add sample number, sample
+		name in error message for missing TDI data.
+
 02/23/19	First test of integrated WDS and EDS mapping quantification in CalcImage- "it werks"!
 
 		https://vimeo.com/64522190
