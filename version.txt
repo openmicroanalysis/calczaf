@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/06/19	Add extra code to Thermo CSV code to check for CSV files. Add code to trap task creation errors
+v. 12.5.9	on SX100 instrument with hardware problems. See SX100SetPHAParameters and SX100StopAllCounters (Neill).
+
 03/01/19	Modify TDI code in VolatileCorrectionAll to skip EDS elements (Neill). Also modify code
 		in DataVolatileGetData and DataVolatileGetData2 routnes to add sample number, sample
 		name in error message for missing TDI data.
@@ -16,7 +19,7 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 		warning about interference standard containing the interfering element an in-line warning
 		to allow remaining checks to proceed.
 
-02/14/19	Add rotated stage limits GRI drawing to PictureSnap in PFE (from PSA).
+02/14/19	Add rotated stage limits GDI drawing to PictureSnap in PFE (from PSA).
 
 02/11/19	Modify Startwin deadtime acquisition code to handle spectro latencies better (McAleer). 
 		Also modify Excel deadtime macro examples and update Remote docs.
