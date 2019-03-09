@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/08/19	Add additional output for "task creation" errors for Owen Neil's SX100 hardware issues.  Fix the damn thing already! ;)
+
+		Tweak EDS spectrum image code handling in CalcImage.
+
 03/06/19	Add extra code to Thermo CSV code to check for CSV files. Add code to trap task creation errors
 v. 12.5.9	on SX100 instrument with hardware problems. See SX100SetPHAParameters and SX100StopAllCounters (Neill).
 
