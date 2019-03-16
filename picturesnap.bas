@@ -840,6 +840,11 @@ If PictureSnapFilename$ = vbNullString Then GoTo PictureSnapLoadFullWindowNoPict
 Screen.MousePointer = vbHourglass
 Set FormPICTURESNAP3.Image1.Picture = LoadPicture(PictureSnapFilename$)
 
+' Minimize and restore to re-size
+FormPICTURESNAP3.WindowState = vbMinimized
+DoEvents
+FormPICTURESNAP3.WindowState = vbNormal
+
 ' Rescale form to image aspect
 If FormPICTURESNAP3.Image1.Picture.Type > 0 Then   ' bitmap
 If FormPICTURESNAP3.Image1.Picture.Height <> 0# Then

@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/15/19	Fix minimize/maximize bug in PictureSnap full view window (Neill).
+
 03/09/19	Modify CalcImageKMeans code to prevent overflow when compiled to native code (Neill).
 
 03/08/19	Add additional output for "task creation" errors for Owen Neil's SX100 hardware issues.  Fix the damn thing already! ;)
