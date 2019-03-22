@@ -422,6 +422,64 @@ Begin VB.Form FormPENEPMA08_PE
       TabIndex        =   1
       Top             =   120
       Width           =   7215
+      Begin VB.TextBox TextEABS2 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Index           =   2
+         Left            =   4680
+         TabIndex        =   106
+         ToolTipText     =   "Minimum photon absorption energy for this material"
+         Top             =   4680
+         Visible         =   0   'False
+         Width           =   855
+      End
+      Begin VB.TextBox TextEABS1 
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Index           =   2
+         Left            =   3840
+         TabIndex        =   105
+         ToolTipText     =   "Minimum electron interaction energy for this material"
+         Top             =   4680
+         Visible         =   0   'False
+         Width           =   855
+      End
+      Begin VB.TextBox TextMaterialFiles 
+         Enabled         =   0   'False
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   285
+         Index           =   2
+         Left            =   3000
+         TabIndex        =   104
+         ToolTipText     =   $"PENEPMA08_PE.frx":6114
+         Top             =   4680
+         Visible         =   0   'False
+         Width           =   2775
+      End
       Begin VB.TextBox TextEnergyRangeMinMaxNumber 
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -676,7 +734,7 @@ Begin VB.Form FormPENEPMA08_PE
          Height          =   375
          Index           =   1
          Left            =   6480
-         Picture         =   "PENEPMA08_PE.frx":6114
+         Picture         =   "PENEPMA08_PE.frx":61A7
          Style           =   1  'Graphical
          TabIndex        =   60
          TabStop         =   0   'False
@@ -700,7 +758,7 @@ Begin VB.Form FormPENEPMA08_PE
          Left            =   5880
          TabIndex        =   57
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA08_PE.frx":6818
+         ToolTipText     =   $"PENEPMA08_PE.frx":68AB
          Top             =   4320
          Width           =   615
       End
@@ -717,7 +775,7 @@ Begin VB.Form FormPENEPMA08_PE
          Height          =   375
          Index           =   0
          Left            =   6480
-         Picture         =   "PENEPMA08_PE.frx":68B3
+         Picture         =   "PENEPMA08_PE.frx":6946
          Style           =   1  'Graphical
          TabIndex        =   59
          TabStop         =   0   'False
@@ -741,7 +799,7 @@ Begin VB.Form FormPENEPMA08_PE
          Left            =   5880
          TabIndex        =   58
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA08_PE.frx":6FB7
+         ToolTipText     =   $"PENEPMA08_PE.frx":704A
          Top             =   5040
          Width           =   615
       End
@@ -832,7 +890,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   1
          Left            =   120
          TabIndex        =   50
-         ToolTipText     =   $"PENEPMA08_PE.frx":7052
+         ToolTipText     =   $"PENEPMA08_PE.frx":70E5
          Top             =   5040
          Width           =   2775
       End
@@ -1062,7 +1120,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   0
          Left            =   120
          TabIndex        =   23
-         ToolTipText     =   $"PENEPMA08_PE.frx":70E5
+         ToolTipText     =   $"PENEPMA08_PE.frx":7178
          Top             =   4320
          Width           =   2775
       End
@@ -1609,7 +1667,7 @@ Begin VB.Form FormPENEPMA08_PE
    End
    Begin VB.Label Label17 
       Alignment       =   2  'Center
-      Caption         =   $"PENEPMA08_PE.frx":7171
+      Caption         =   $"PENEPMA08_PE.frx":7204
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -1627,7 +1685,7 @@ Begin VB.Form FormPENEPMA08_PE
    End
    Begin VB.Label Label15 
       Alignment       =   2  'Center
-      Caption         =   $"PENEPMA08_PE.frx":72C3
+      Caption         =   $"PENEPMA08_PE.frx":7356
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25

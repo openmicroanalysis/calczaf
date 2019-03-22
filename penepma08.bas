@@ -2,7 +2,8 @@ Attribute VB_Name = "CodePENEPMA08"
 ' (c) Copyright 1995-2019 by John J. Donovan
 Option Explicit
 
-Global Const MAXMATOUTPUT% = 2      ' up to 2 materials (1 for bulk, 2 for couple, bilayer or thin film)
+' Changed to 3 materials 03/21/2019 to allow three materials to be read without errors, but not saved (controls for third material are not visible)
+Global Const MAXMATOUTPUT% = 3      ' up to 2 materials (1 for bulk, 2 for couple, bilayer or thin film)
 Const MAXDENSITY# = 50#
 Const PENEPMA_DISPLAY_SEC# = 20     ' 20 seconds refresh display time
 Const MAXTRIES% = 10
@@ -1696,7 +1697,7 @@ bstring$ = Mid$(astring$, COL7% + 1, InStr(astring$, "[") - (COL7% + 1))
 
 If InStr(astring$, "MFNAME") > 0 Then
 tForm.TextMaterialFiles(k% - 1).Text = Trim$(Left$(bstring$, 20))
-MaterialFiles$(k%) = Trim$(cstring$)
+MaterialFiles$(k%) = Trim$(bstring$)
 End If
 
 If InStr(astring$, "MSIMPA") > 0 Then
