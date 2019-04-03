@@ -310,6 +310,7 @@ If Trim$(GeometryFile$) = vbNullString Then GoTo Penepma08GeometryFileBlank
 
 ' If geo file is not in Penepma folder, copy it there
 If Dir$(PENEPMA_Path$ & "\" & GeometryFile$) = vbNullString Then
+If Dir$(PENEPMA_Root$ & "\" & GeometryFile$) = vbNullString Then GoTo Penepma08GeometryFileNotFound2
 FileCopy PENEPMA_Root$ & "\" & GeometryFile$, PENEPMA_Path$ & "\" & GeometryFile$
 End If
 If Dir$(PENEPMA_Path$ & "\" & GeometryFile$) = vbNullString Then GoTo Penepma08GeometryFileNotFound
@@ -329,7 +330,8 @@ Next i%
 ' Check that secondary fluorescence production file is specified if additional material files are specified
 If MaterialFiles$(2) <> vbNullString And BeamProductionIndex& < 3 Then
 msg$ = "Note that additional material files are specified but the Optimize Secondary Fluorescence Production or Thin Film On Substrate Production option was not selected"
-MsgBox msg$, vbOKOnly + vbInformation, "Penepma08SaveInput"
+'MsgBox msg$, vbOKOnly + vbInformation, "Penepma08SaveInput"
+MiscMsgBoxTim FormMSGBOXTIME, "Penepma08SaveInput", msg$, 5#
 End If
 
 If MaterialFiles$(1) = vbNullString Or MaterialFiles$(2) = vbNullString And BeamProductionIndex& >= 3 Then
@@ -379,6 +381,12 @@ Exit Sub
 
 Penepma08GeometryFileNotFound:
 msg$ = "Geometry file " & GeometryFile$ & " was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08SaveInput"
+ierror = True
+Exit Sub
+
+Penepma08GeometryFileNotFound2:
+msg$ = "Geometry file " & PENEPMA_Root$ & "\" & GeometryFile$ & " was not found"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08SaveInput"
 ierror = True
 Exit Sub
@@ -1197,11 +1205,11 @@ FormPENEPMA08Batch.ComboElm.AddItem Symup$(i% + 1)
 Next i%
 FormPENEPMA08Batch.ComboElm.ListIndex = ExtractElement% - 1
 
-FormPENEPMA08Batch.ComboXray.Clear
+FormPENEPMA08Batch.ComboXRay.Clear
 For i% = 0 To MAXRAY% - 2
-FormPENEPMA08Batch.ComboXray.AddItem Xraylo$(i% + 1)
+FormPENEPMA08Batch.ComboXRay.AddItem Xraylo$(i% + 1)
 Next i%
-FormPENEPMA08Batch.ComboXray.ListIndex = ExtractXray% - 1
+FormPENEPMA08Batch.ComboXRay.ListIndex = ExtractXray% - 1
 
 ' Select last file
 If FormPENEPMA08Batch.ListInputFiles.ListCount > 0 Then
@@ -1695,11 +1703,13 @@ If InStr(astring$, "[") = 0 Then GoTo Penepma08LoadProduction4MissingBracket
 ' Load the parameter text
 bstring$ = Mid$(astring$, COL7% + 1, InStr(astring$, "[") - (COL7% + 1))
 
+' Load material file name
 If InStr(astring$, "MFNAME") > 0 Then
 tForm.TextMaterialFiles(k% - 1).Text = Trim$(Left$(bstring$, 20))
-MaterialFiles$(k%) = Trim$(bstring$)
+MaterialFiles$(k%) = Trim$(Left$(bstring$, 20))
 End If
 
+' Load minimum electron/photon energies, etc.
 If InStr(astring$, "MSIMPA") > 0 Then
 Call MiscParseStringToString(bstring$, cstring$)
 tForm.TextEABS1(k% - 1).Text = Trim$(cstring$)
@@ -4179,7 +4189,7 @@ ip% = IPOS1(MAXELM%, esym$, Symlo$())
 If ip% = 0 Then GoTo Penepma08BatchExtractKratiosBadElement
 ExtractElement% = ip%
 
-xsym$ = FormPENEPMA08Batch.ComboXray.Text
+xsym$ = FormPENEPMA08Batch.ComboXRay.Text
 ip% = IPOS1(MAXRAY% - 1, xsym$, Xraylo$())
 If ip% = 0 Then GoTo Penepma08BatchExtractKratiosBadXray
 ExtractXray% = ip%

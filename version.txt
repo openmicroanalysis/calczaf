@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/02/19	Fix CalcImage bug in atomic percent totals output (and elements by stoichiometry).
+
 03/21/19	Modify number of material files in Standard for Penepma GUI, to 3, to avoid errors in three material input files. 
 v. 12.6.0	Third material controls are invisible, so they are not saved. But this allows manually edited input files with
 		three materials,to run without errors in batch mode.
