@@ -531,29 +531,56 @@ Else
 If irayedg% < 1 Or irayedg% > MAXEDG% Then Exit Sub
 End If
 
+' Read x-ray line file
+nrec% = ielm% + 2
+
 ' Open x-ray line file
 If XrayType% = 1 Then
+
+' Original x-ray lines
+If irayedg% <= MAXRAY_OLD% Then
 Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
-nrec% = ielm% + 2
 Get #XLineFileNumber%, nrec%, engrow
-temp! = engrow.energy!(irayedg%)
 Close #XLineFileNumber%
+temp! = engrow.energy!(irayedg%)
+
+' Additional x-ray lines
+Else
+If Dir$(XLineFile2$) = vbNullString Then GoTo EditGetXrayDataNotFoundXLINE2DAT
+If FileLen(XLineFile2$) = 0 Then GoTo EditGetXrayDataZeroSizeXLINE2DAT
+Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+Get #XLineFileNumber2%, nrec%, engrow
+Close #XLineFileNumber2%
+temp! = engrow.energy!(irayedg% - MAXRAY_OLD%)
+End If
 
 ' Open x-ray edge file
 ElseIf XrayType% = 2 Then
 Open XEdgeFile$ For Random Access Read As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
-nrec% = ielm% + 2
 Get #XEdgeFileNumber%, nrec%, edgrow
 temp! = edgrow.energy!(irayedg%)
 Close #XEdgeFileNumber%
 
 ' Open x-ray flur file
 Else
+
+' Load original x-ray lines
+If irayedg% <= MAXRAY_OLD% Then
 Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
-nrec% = ielm% + 2
 Get #XFlurFileNumber%, nrec%, flurow
 temp! = flurow.fraction!(irayedg%)
 Close #XFlurFileNumber%
+
+' Load additional x-ray lines
+Else
+If Dir$(XFlurFile2$) = vbNullString Then GoTo EditGetXrayDataNotFoundXFLUR2DAT
+If FileLen(XFlurFile2$) = 0 Then GoTo EditGetXrayDataZeroSizeXFLUR2DAT
+Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+Get #XFlurFileNumber2%, nrec%, flurow
+temp! = flurow.fraction!(irayedg% - MAXRAY_OLD%)
+Close #XFlurFileNumber2%
+End If
+
 End If
 
 Exit Sub
@@ -564,6 +591,44 @@ MsgBox Error$, vbOKOnly + vbCritical, "EditGetXrayData"
 Close #XLineFileNumber%
 Close #XEdgeFileNumber%
 Close #XFlurFileNumber%
+ierror = True
+Exit Sub
+
+EditGetXrayDataNotFoundXLINE2DAT:
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditGetXrayData"
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+EditGetXrayDataZeroSizeXLINE2DAT:
+Kill XLineFile2$
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditGetXrayData"
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+EditGetXrayDataNotFoundXFLUR2DAT:
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditGetXrayData"
+Close #XFlurFileNumber%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+EditGetXrayDataZeroSizeXFLUR2DAT:
+Kill XFlurFile2$
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditGetXrayData"
+Close #XFlurFileNumber%
+Close #XFlurFileNumber2%
 ierror = True
 Exit Sub
 
@@ -785,19 +850,34 @@ Else
 If irayedg% < 1 Or irayedg% > MAXEDG% Then Exit Sub
 End If
 
+' Set element record number
+nrec% = ielm% + 2
+
 ' Open x-ray line file
 If XrayType% = 1 Then
+
+' Original x-ray lines
+If irayedg% <= MAXRAY_OLD% Then
 Open XLineFile$ For Random Access Read Write As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
-nrec% = ielm% + 2
 Get #XLineFileNumber%, nrec%, engrow
 engrow.energy!(irayedg%) = temp!
 Put #XLineFileNumber%, nrec%, engrow
 Close #XLineFileNumber%
 
-' Open x-ray edge file
+' Additional x-ray lines
+Else
+If Dir$(XLineFile2$) = vbNullString Then GoTo EditSetXrayDataNotFoundXLINE2DAT
+If FileLen(XLineFile2$) = 0 Then GoTo EditSetXrayDataZeroSizeXLINE2DAT
+Open XLineFile2$ For Random Access Read Write As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+Get #XLineFileNumber2%, nrec%, engrow
+engrow.energy!(irayedg% - MAXRAY_OLD%) = temp!
+Put #XLineFileNumber2%, nrec%, engrow
+Close #XLineFileNumber2%
+End If
+
+' Open x-ray edge file (only one file for all edges)
 ElseIf XrayType% = 2 Then
 Open XEdgeFile$ For Random Access Read Write As #XEdgeFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
-nrec% = ielm% + 2
 Get #XEdgeFileNumber%, nrec%, edgrow
 edgrow.energy!(irayedg%) = temp!
 Put #XEdgeFileNumber%, nrec%, edgrow
@@ -805,12 +885,26 @@ Close #XEdgeFileNumber%
 
 ' Open x-ray flur file
 Else
+
+' Original x-ray lines
+If irayedg% <= MAXRAY_OLD% Then
 Open XFlurFile$ For Random Access Read Write As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
-nrec% = ielm% + 2
 Get #XFlurFileNumber%, nrec%, flurow
 flurow.fraction!(irayedg%) = temp!
 Put #XFlurFileNumber%, nrec%, flurow
 Close #XFlurFileNumber%
+
+' Additional x-ray lines
+Else
+If Dir$(XFlurFile2$) = vbNullString Then GoTo EditSetXrayDataNotFoundXFLUR2DAT
+If FileLen(XFlurFile2$) = 0 Then GoTo EditSetXrayDataZeroSizeXFLUR2DAT
+Open XFlurFile2$ For Random Access Read Write As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
+Get #XFlurFileNumber2%, nrec%, flurow
+flurow.fraction!(irayedg% - MAXRAY_OLD%) = temp!
+Put #XFlurFileNumber2%, nrec%, flurow
+Close #XFlurFileNumber2%
+End If
+
 End If
 
 Exit Sub
@@ -819,8 +913,48 @@ Exit Sub
 EditSetXrayDataError:
 MsgBox Error$, vbOKOnly + vbCritical, "EditSetXrayData"
 Close #XLineFileNumber%
+Close #XLineFileNumber2%
 Close #XEdgeFileNumber%
 Close #XFlurFileNumber%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+EditSetXrayDataNotFoundXLINE2DAT:
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditSetXrayData"
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+EditSetXrayDataZeroSizeXLINE2DAT:
+Kill XLineFile2$
+msg$ = "The " & XLineFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditSetXrayData"
+Close #XLineFileNumber%
+Close #XLineFileNumber2%
+ierror = True
+Exit Sub
+
+EditSetXrayDataNotFoundXFLUR2DAT:
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditSetXrayData"
+Close #XFlurFileNumber%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Sub
+
+EditSetXrayDataZeroSizeXFLUR2DAT:
+Kill XFlurFile2$
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "EditSetXrayData"
+Close #XFlurFileNumber%
+Close #XFlurFileNumber2%
 ierror = True
 Exit Sub
 

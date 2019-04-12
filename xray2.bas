@@ -130,7 +130,7 @@ tmsg$ = tmsg$ & vbCrLf
 ' All elements
 For ielm% = 1 To MAXELM%
 
-' Read x-ray line file
+' Load element row record
 nrec% = ielm% + 2
 
 ' Original x-ray lines
@@ -222,7 +222,7 @@ Dim ielm As Integer, iray As Integer
 Dim nrec As Integer
 Dim tmsg As String
 
-Dim engrow As TypeEnergy
+Dim flurow As TypeFlur
 
 ' Check for new MAXRAY constant
 If mode% = 2 And MAXRAY% - 1 = MAXRAY_OLD% Then Exit Function
@@ -236,7 +236,7 @@ tmsg$ = tmsg$ & Format$("Element", a80$) & " "
 ' Load column labels
 For iray% = 1 To MAXRAY_OLD%
 
-' original x-rays
+' Original x-rays
 If mode% = 1 Then
 tmsg$ = tmsg$ & Format$(Xraylo$(iray%), a80$) & " "
 
@@ -249,19 +249,21 @@ tmsg$ = tmsg$ & vbCrLf
 
 For ielm% = 1 To MAXELM%
 
-' Read x-ray line file
+' Set element record number
 nrec% = ielm% + 2
 
 ' Load original x-ray lines
 If mode% = 1 Then
 Open XFlurFile$ For Random Access Read As #XFlurFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
-Get #XFlurFileNumber%, nrec%, engrow
+Get #XFlurFileNumber%, nrec%, flurow
 Close #XFlurFileNumber%
 
-' KLoad additional x-ray lines
+' Load additional x-ray lines
 Else
+If Dir$(XFlurFile2$) = vbNullString Then GoTo XrayGetFluorescentTableNotFoundXFLUR2DAT
+If FileLen(XFlurFile2$) = 0 Then GoTo XrayGetFluorescentTableZeroSizeXFLUR2DAT
 Open XFlurFile2$ For Random Access Read As #XFlurFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
-Get #XFlurFileNumber2%, nrec%, engrow
+Get #XFlurFileNumber2%, nrec%, flurow
 Close #XFlurFileNumber2%
 End If
 
@@ -271,8 +273,8 @@ tmsg$ = tmsg$ & Format$(Symup$(ielm%), a80$) & " "
 For iray% = 1 To MAXRAY_OLD%
 
 ' Check for non-zero entry
-If engrow.energy!(iray%) <> 0# Then
-tmsg$ = tmsg$ & Format$(Format$(engrow.energy!(iray%), f84$), a80$) & " "
+If flurow.fraction!(iray%) <> 0# Then
+tmsg$ = tmsg$ & Format$(Format$(flurow.fraction!(iray%), f84$), a80$) & " "
 
 ' Load space if zero
 Else
@@ -291,6 +293,25 @@ Exit Function
 XrayGetFluorescentYieldTableError:
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "XrayGetFluorescentYieldTable"
+Close #XFlurFileNumber%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Function
+
+XrayGetFluorescentTableNotFoundXFLUR2DAT:
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetFluorescentTable"
+Close #XFlurFileNumber%
+Close #XFlurFileNumber2%
+ierror = True
+Exit Function
+
+XrayGetFluorescentTableZeroSizeXFLUR2DAT:
+Kill XFlurFile2$
+msg$ = "The " & XFlurFile2$ & " was not found." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please run the latest CalcZAF.msi installer to obtain this additional x-ray line file."
+MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetFluorescentTable"
 Close #XFlurFileNumber%
 Close #XFlurFileNumber2%
 ierror = True
