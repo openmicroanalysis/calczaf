@@ -21,9 +21,11 @@ On Error GoTo ZAFCalZbarError
 Dim chan As Integer, ip As Integer
 Dim temp As Single, sum_atoms As Single, sum_cations As Single
 Dim total_atoms As Single, total_cations As Single
+Dim zbar As Single
 
 ReDim atoms(1 To MAXCHAN1%) As Single
 ReDim basis(1 To MAXCHAN1%) As Single
+ReDim atomfrac(1 To MAXCHAN1%) As Single
 
 If VerboseMode Then
 Call IOWriteLog(vbCrLf & "Entering ZAFCalZBar...")
@@ -36,7 +38,7 @@ analysis.TotalCations! = 0#
 analysis.totalatoms! = 0#
 analysis.ExcessOxygen! = 0#
 analysis.CalculatedOxygen! = 0#
-analysis.Zbar! = 0#
+analysis.zbar! = 0#
 analysis.AtomicWeight! = 0#
 analysis.OxygenFromHalogens! = 0#
 analysis.HalogenCorrectedOxygen! = 0#
@@ -124,10 +126,17 @@ analysis.totalatoms! = total_atoms!
 If analysis.TotalPercent! <> 0# And sum_atoms! <> 0# Then
 For chan% = 1 To sample(1).LastChan%
 If sample(1).DisableQuantFlag%(chan%) = 0 Or (sample(1).DisableQuantFlag%(chan%) = 1 And sample(1).OxideOrElemental% = 1 And sample(1).OxygenChannel% = chan%) Then
-analysis.Zbar! = analysis.Zbar! + sample(1).AtomicNums%(chan%) * analysis.WtPercents!(chan%) / analysis.TotalPercent!
+analysis.zbar! = analysis.zbar! + sample(1).AtomicNums%(chan%) * analysis.WtPercents!(chan%) / analysis.TotalPercent!
 analysis.AtomicWeight! = analysis.AtomicWeight! + sample(1).AtomicWts!(chan%) * atoms!(chan%) / sum_atoms!
 End If
 Next chan%
+
+' New code for MAN Zbar???
+'Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWeights!(), analysis.WtPercents!(), atomfrac!())
+'If ierror Then Exit Sub
+'Call ZAFCalculateZbarFrac(sample(1).LastChan%, atomfrac!(), sample(1).AtomicNums%(), CSng(1#), zbar!)
+'If ierror Then Exit Sub
+'analysis.zbar = zbar!
 End If
 
 ' Calculate Excess Oxygen
@@ -201,7 +210,7 @@ On Error GoTo ZAFCalZbarLoadTextError
 ' Load the text fields
 tForm.LabelTotal.Caption = Format$(Format$(analysis.TotalPercent!, f83), a80$)
 tForm.LabelAtomic.Caption = Format$(Format$(analysis.AtomicWeight!, f83), a80$)
-tForm.LabelZbar.Caption = Format$(Format$(analysis.Zbar!, f83), a80$)
+tForm.LabelZbar.Caption = Format$(Format$(analysis.zbar!, f83), a80$)
 
 ' Special for Oxide standards
 tForm.LabelCalculated.Caption = Format$(Format$(analysis.CalculatedOxygen!, f83), a80$)
@@ -831,4 +840,55 @@ Exit Sub
 
 End Sub
 
+Sub ZAFCalculateZbarFrac(lchan As Integer, atomfrac() As Single, atomnums() As Integer, exponent As Single, zbar As Single)
+' Calculate a Z bar based on passed data
+'  lchan = number of elements in arrays
+'  atomfrac = atomic fractions
+'  atomnums = atomic numbers
+'  exponent = exponent for fraction calculation
+'  zbar = returned zbar based on fraction
+
+ierror = False
+On Error GoTo ZAFCalculateZbarFracError
+
+Dim i As Integer
+Dim sum As Single
+
+ReDim fracdata(1 To lchan%) As Single
+
+' Calculate sum for fraction
+sum! = 0#
+For i% = 1 To lchan%
+sum! = sum! + atomfrac!(i%) * atomnums%(i%) ^ exponent!
+Next i%
+If sum! = 0# Then GoTo ZAFCalculateZbarFracBadSum
+
+' Calculate Z fractions (also known as electron fraction)
+For i% = 1 To lchan%
+fracdata!(i%) = (atomfrac!(i%) * atomnums%(i%) ^ exponent!) / sum!
+Next i%
+
+' Calculate Z bar
+zbar! = 0
+For i% = 1 To lchan%
+zbar! = zbar! + fracdata!(i%) * atomnums%(i%)
+Next i%
+
+Exit Sub
+
+' Errors
+ZAFCalculateZbarFracError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFCalculateZbarFrac"
+ierror = True
+Exit Sub
+
+ZAFCalculateZbarFracBadSum:
+Screen.MousePointer = vbDefault
+msg$ = "Bad sum in fraction calculation"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFCalculateZbarFrac"
+ierror = True
+Exit Sub
+
+End Sub
 

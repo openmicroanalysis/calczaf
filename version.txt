@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/16/19	Modify Classify palette code to better handle Cameca/JEOL orientations.
+
 04/11/19	Fix code for editing additional x-ray lines (Ln, Ll, etc.) in CalcZAF (Poeml).
 v. 12.6.1
 

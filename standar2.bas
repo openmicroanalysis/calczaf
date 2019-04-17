@@ -188,6 +188,7 @@ For i% = 1 To sample(1).LastChan%
 ip% = IPOS1(MAXELM%, sample(1).Elsyms$(i%), Symlo$())
 If ip% > 0 Then sample(1).AtomicCharges!(i%) = AllAtomicCharges!(ip%)
 If ip% > 0 Then sample(1).AtomicNums%(i%) = AllAtomicNums%(ip%)
+If ip% > 0 Then sample(1).AtomicWts!(i%) = AllAtomicWts!(ip%)
 Next i%
 
 ' Load kilovolts array
