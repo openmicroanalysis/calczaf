@@ -50,9 +50,8 @@ End If
 factor! = (x2d! / LIF2D!) ^ 0.3333 ' cube root
 If x2d! > MAXCRYSTAL2D_NOT_LDE! Then factor! = factor! * 3#  ' double for LDE analyzers (changed to triple 9-28-2006)
 If x2d! > MAXCRYSTAL2D_LARGE_LDE! Then factor! = factor! * 2#  ' increase again for large 2d LDEs
-temp! = MotLoLimits!(motor%) + Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%))
-If temp! / onpos! < 0# Then GoTo XrayCalculatePositionsNegative
-factor! = factor! * Sqr(temp! / onpos!)
+If MotHiLimits!(motor%) / onpos! < 0# Then GoTo XrayCalculatePositionsNegative
+factor! = factor! * Sqr(MotHiLimits!(motor%) / onpos!)
 
 ' Make sure range checking is enabled
 NoMotorPositionBoundsChecking(motor%) = False
