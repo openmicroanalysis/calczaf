@@ -356,6 +356,7 @@ Begin VB.Form FormZAFOPT
       End
       Begin VB.CheckBox CheckDisplayAsOxide 
          Caption         =   "Display Results As Oxide Formulas"
+         Enabled         =   0   'False
          Height          =   255
          Left            =   120
          TabIndex        =   25

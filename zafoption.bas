@@ -247,16 +247,7 @@ ZAFOptionSample(1).DifferenceElementFlag% = False
 ZAFOptionSample(1).StoichiometryElementFlag% = False
 ZAFOptionSample(1).RelativeElementFlag% = False
 
-' Check if oxygen is analyzed for, if changing to oxide calculation
-ip% = IPOS1(ZAFOptionSample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), ZAFOptionSample(1).Elsyms$())
-If ip% > 0 And ip% <= ZAFOptionSample(1).LastElm% And FormZAFOPT.OptionOxide.value Then
-msg$ = "You cannot calculate oxygen by stoichiometry because Oxygen is already an Analyzed Element. "
-msg$ = msg$ & "If you want to display the results as oxides, select Display As Oxides. "
-MsgBox msg$
-FormZAFOPT.OptionElemental.value = True
-End If
-
-' Save oxide or elemental mode flag
+' Save oxide (stoichiometric oxygen) or elemental mode flag
 If FormZAFOPT.OptionOxide.value Then
 ZAFOptionSample(1).OxideOrElemental% = 1
 Else
@@ -268,6 +259,15 @@ If FormZAFOPT.CheckDisplayAsOxide.value = vbChecked Then
 ZAFOptionSample(1).DisplayAsOxideFlag = True
 Else
 ZAFOptionSample(1).DisplayAsOxideFlag = False
+End If
+
+' Check if oxygen is analyzed for, if changing to oxide calculation
+ip% = IPOS1(ZAFOptionSample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), ZAFOptionSample(1).Elsyms$())
+If ip% > 0 And ip% <= ZAFOptionSample(1).LastElm% And ZAFOptionSample(1).OxideOrElemental% = 1 And ZAFOptionSample(1).DisableQuantFlag%(ip%) = 0 Then
+msg$ = "You cannot calculate oxygen by stoichiometry because Oxygen is already an Analyzed Element. "
+msg$ = msg$ & "If you want to display the results as oxides, select Display As Oxides. "
+MsgBox msg$
+FormZAFOPT.OptionElemental.value = True
 End If
 
 If FormZAFOPT.CheckAtomicPercents.value = vbChecked Then

@@ -1205,11 +1205,11 @@ FormPENEPMA08Batch.ComboElm.AddItem Symup$(i% + 1)
 Next i%
 FormPENEPMA08Batch.ComboElm.ListIndex = ExtractElement% - 1
 
-FormPENEPMA08Batch.ComboXRay.Clear
+FormPENEPMA08Batch.ComboXray.Clear
 For i% = 0 To MAXRAY% - 2
-FormPENEPMA08Batch.ComboXRay.AddItem Xraylo$(i% + 1)
+FormPENEPMA08Batch.ComboXray.AddItem Xraylo$(i% + 1)
 Next i%
-FormPENEPMA08Batch.ComboXRay.ListIndex = ExtractXray% - 1
+FormPENEPMA08Batch.ComboXray.ListIndex = ExtractXray% - 1
 
 ' Select last file
 If FormPENEPMA08Batch.ListInputFiles.ListCount > 0 Then
@@ -4189,7 +4189,7 @@ ip% = IPOS1(MAXELM%, esym$, Symlo$())
 If ip% = 0 Then GoTo Penepma08BatchExtractKratiosBadElement
 ExtractElement% = ip%
 
-xsym$ = FormPENEPMA08Batch.ComboXRay.Text
+xsym$ = FormPENEPMA08Batch.ComboXray.Text
 ip% = IPOS1(MAXRAY% - 1, xsym$, Xraylo$())
 If ip% = 0 Then GoTo Penepma08BatchExtractKratiosBadXray
 ExtractXray% = ip%
@@ -4400,6 +4400,9 @@ ip% = IPOS1(MAXELM%, esym$, Symlo$())
 If ip% = 0 Then GoTo Penepma08BatchBulkPureElementCreateBadElement
 PureElement2% = ip%
 
+' Check that element 1 is less than element2
+If PureElement1% > PureElement2% Then GoTo Penepma08BatchBulkPureElementCreateBadElementOrder
+
 ' Check that geometry file is bulk.geo
 If Not MiscStringsAreSame(MiscGetFileNameOnly$(GeometryFile$), "bulk.geo") Then GoTo Penepma08BatchBulkPureElementsCreateBadGeometryFile
 
@@ -4415,11 +4418,11 @@ Call ElementGetData(PENEPMASample())
 If ierror Then Exit Sub
 
 ' Overload with Penepma08/12 atomic weights for self consistency in calculations
-PENEPMASample(1).AtomicWts!(1) = pAllAtomicWts!(PureElement1%)
+PENEPMASample(1).AtomicWts!(1) = pAllAtomicWts!(n%)
 
 ' Load element composition based on binary number
 PENEPMASample(1).ElmPercents!(1) = 100#
-PENEPMASample(1).SampleDensity! = AllAtomicDensities!(PureElement1%)
+PENEPMASample(1).SampleDensity! = AllAtomicDensities!(n%)
 
 ' Load name and number for this binary
 pfilename$ = Trim$(Symup$(n%)) & "_" & Format$(PENEPMASample(1).ElmPercents!(1)) & "_" & Format$(BeamEnergy# / EVPERKEV#) & "keV"
@@ -4514,6 +4517,12 @@ Exit Sub
 
 Penepma08BatchBulkPureElementCreateBadElement:
 msg$ = "Bulk pure calculation element " & esym$ & " is not a valid element symbol"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchBulkPureElementCreate"
+ierror = True
+Exit Sub
+
+Penepma08BatchBulkPureElementCreateBadElementOrder:
+msg$ = "Atomic number of pure element 1 is less than atomic number of pure element 2. Please swap the order of pure elements."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchBulkPureElementCreate"
 ierror = True
 Exit Sub

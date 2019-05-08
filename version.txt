@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/07/19	Tweak code in Penepma pure element output to utilize elemntal densities. Modify OxideOrElemental and MAN
+		code in CalcImage to respect disable quant flag for measured oxygen.
+
 04/27/19	Update PFE Reference manual for correct equations for calculating peaking start size (Seward).
 
 04/18/19	Fix bug in ConvertToPrbImg for JEOL beam scan files for 8230/8530 (Goemann).
