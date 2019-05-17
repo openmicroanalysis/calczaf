@@ -2692,10 +2692,14 @@ ImageAnalogUnitsShortStrings$(1) = "Not Implemented"         ' Unused
 ImageAnalogUnitsShortStrings$(2) = "Not Implemented"         ' Unused
 ImageAnalogUnitsShortStrings$(3) = "Not Implemented"         ' Unused
 
+If ImageInterfaceType% = 7 Then
+ImageAnalogUnitsShortStrings$(4) = "Preset Values"           ' JEOL EDS API video imaging
+Else
 If JeolEOSInterfaceType& = 3 Then
 ImageAnalogUnitsShortStrings$(4) = "Microsecs/Pixel"         ' JEOL 8230/8530
 Else
 ImageAnalogUnitsShortStrings$(4) = "A/D Averages/Pixel"      ' JEOL 8900/8200/8500
+End If
 End If
 
 ImageAnalogUnitsShortStrings$(5) = "Millisecs/Pixel"         ' SX100/SXFive mapping
@@ -2711,10 +2715,14 @@ ImageAnalogUnitsLongStrings(1) = "Not Implemented"                  ' Unused
 ImageAnalogUnitsLongStrings(2) = "Not Implemented"                  ' Unused
 ImageAnalogUnitsLongStrings(3) = "Not Implemented"                  ' Unused
 
+If ImageInterfaceType% = 7 Then
+ImageAnalogUnitsLongStrings$(4) = "Not applicable for JEOL EDS"         ' JEOL EDS API video imaging
+Else
 If JeolEOSInterfaceType& = 3 Then
 ImageAnalogUnitsLongStrings(4) = "Microsecs/Pixel (100-100000000)"  ' JEOL 8230/8530
 Else
 ImageAnalogUnitsLongStrings(4) = "A/D Averages/Pixel (1-1000)"      ' JEOL 8900/8200/8500
+End If
 End If
 
 ImageAnalogUnitsLongStrings(5) = "Millisecs/Pixel (1-1000)"         ' SX100/SXFive mapping
@@ -4444,7 +4452,7 @@ Dim astring As String, tcomment As String
 
 Dim nMonitors As Long
 Dim vWidth As Long, vHeight As Long
-Dim tWidth() As Long, tHeight() As Long
+Dim twidth() As Long, tHeight() As Long
 
 ' Check for blank username (not Probewin.exe)
 If Trim$(userstring$) = vbNullString Then
@@ -4499,7 +4507,7 @@ If tForm.WindowState = vbMaximized Then Exit Sub
 If tForm.WindowState = vbMinimized Then Exit Sub
 
 ' Check if saved window position is outside visible area (different monitor) (Screen object in VB6 does not handle dual monitors)
-Call MonitorsGetVirtualExtents(nMonitors&, tWidth&(), tHeight&(), vWidth&, vHeight&)
+Call MonitorsGetVirtualExtents(nMonitors&, twidth&(), tHeight&(), vWidth&, vHeight&)
 If ierror Then Exit Sub
 If (twindow!(1) < 0 Or twindow!(1) > vWidth& * Screen.TwipsPerPixelX) Or (twindow!(2) < 0 Or twindow!(2) > vHeight& * Screen.TwipsPerPixelY) Then
 Call MiscCenterForm(tForm)

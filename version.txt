@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/16/19	Modify image acquisition interface so TextAverages control enable/disable works correctly.
+
 05/11/19	Bump vesion so CalcZAF/Standard are updated.
 v. 12.6.2
 
