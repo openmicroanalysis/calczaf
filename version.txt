@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/22/19	Move delay to after JEOL init function so all calls benefit.
+
 05/21/19	Add delay after JEOL EDS init (Goemann).
 
 05/20/19	Add additional debug statements for JEOL EDS interface.
