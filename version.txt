@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/05/19	Fix beam current and standard intensity drfit corrections for Cameca and JEOL
+v. 12.6.3	x-ray maps in CalcImage (Mott). Code is now correct for both drift corrections.
+
+		Fix mis-naming of color scale object in strip and slice scripts.
+
 05/23/19	Improve JEOL EDS time constants code (Goemann). Update Remote and Matrix readme files.
 
 05/22/19	Move delay to after JEOL init function so all calls benefit.
