@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/07/19	Add call to insert faraday cup in AcquireStop in not already inserted (e.g., after 
+		manual peaking) (Carpenter).
+
+06/06/19	New matrix.mdb with 383950 k-ratios from Penfluor/Fanal MC.
+
 06/05/19	Fix beam current and standard intensity drfit corrections for Cameca and JEOL
 v. 12.6.3	x-ray maps in CalcImage (Mott). Code is now correct for both drift corrections.
 
