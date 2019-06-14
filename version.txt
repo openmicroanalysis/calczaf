@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/13/19	Re-set model background peaking fit flag when starting new run.
+
+		Improve Report code to handle EDS elements better.Improve text Report output for EDS elements also.
+		
+		Improve log window output for aggrgate mode for analysis.
+
 06/07/19	Add call to insert faraday cup in AcquireStop in not already inserted (e.g., after 
 		manual peaking) (Carpenter).
 

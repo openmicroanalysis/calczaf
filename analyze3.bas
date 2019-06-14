@@ -352,7 +352,7 @@ Next chan%
 ' Iterate on the MAN, interference, volatile and APF corrections
 MaxMANIter% = 100
 analysis.MANIter! = 1#
-analysis.Zbar! = 10.8    ' assume quartz z-bar for first MAN iteration
+analysis.zbar! = 10.8    ' assume quartz z-bar for first MAN iteration
 alldone = False
 
 ' Iterate on matrix and other compositionally dependent corrections
@@ -460,7 +460,7 @@ RowUnkTotalCations!(linerow%) = analysis.TotalCations!
 RowUnkTotalAtoms!(linerow%) = analysis.totalatoms!
 RowUnkCalculatedOxygens!(linerow%) = analysis.CalculatedOxygen!
 RowUnkExcessOxygens!(linerow%) = analysis.ExcessOxygen!
-RowUnkZbars!(linerow%) = analysis.Zbar!
+RowUnkZbars!(linerow%) = analysis.zbar!
 RowUnkAtomicWeights!(linerow%) = analysis.AtomicWeight!
 RowUnkOxygenFromHalogens!(linerow%) = analysis.OxygenFromHalogens!
 RowUnkHalogenCorrectedOxygen!(linerow%) = analysis.HalogenCorrectedOxygen!
@@ -572,8 +572,8 @@ End If
 
 ' Do MAN background correction if MAN channel data based on unknown zbar (background type is set to MAN in DataCorrectData if UseMANForOffPeakElementsFlag is true)
 If sample(1).BackgroundTypes%(chan%) = 1 Then  ' 0=off-peak, 1=MAN, 2=multipoint
-If analysis.Zbar! <= 0# Then GoTo AnalyzeWeightCorrectBadZbar
-bgdcts!(chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFitCoefficients!(2, chan%) * analysis.Zbar! + analysis.MANFitCoefficients!(3, chan%) * analysis.Zbar! ^ 2
+If analysis.zbar! <= 0# Then GoTo AnalyzeWeightCorrectBadZbar
+bgdcts!(chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFitCoefficients!(2, chan%) * analysis.zbar! + analysis.MANFitCoefficients!(3, chan%) * analysis.zbar! ^ 2
 
 ' Uncorrect the calculated MAN counts for absorption of the continuum if "MANAbsCorFlags()" is true
 If UseMANAbsFlag And sample(1).MANAbsCorFlags(chan%) Then
@@ -793,7 +793,7 @@ End If
 Next chan%
 Call IOWriteLog(msg$)
 
-msg$ = "MAN Background Counts on Unknown (based on unknown Z-bar: " & Str$(analysis.Zbar!) & ")" & vbCrLf
+msg$ = "MAN Background Counts on Unknown (based on unknown Z-bar: " & Str$(analysis.zbar!) & ")" & vbCrLf
 For chan% = 1 To sample(1).LastElm%
 If NominalBeam! > 1# Then
 msg$ = msg$ & Format$(Format$(bgdcts!(chan%), f81$), a80$)
@@ -905,7 +905,7 @@ ierror = True
 Exit Sub
 
 AnalyzeWeightCorrectBadZbar:
-msg$ = "MAN Z-bar (" & Format$(analysis.Zbar!) & ") is bad on line " & Str$(sample(1).Linenumber&(linerow%)) & ", probably from a very low analytical total, e.g., hitting epoxy."
+msg$ = "MAN Z-bar (" & Format$(analysis.zbar!) & ") is bad on line " & Str$(sample(1).Linenumber&(linerow%)) & ", probably from a very low analytical total, e.g., hitting epoxy."
 If Not CalcImageQuantFlag Then
 MiscMsgBoxTim FormMSGBOXTIME, "AnalyzeWeightCorrect", msg$, 20#
 Call IOWriteLog(msg$)
@@ -1197,7 +1197,7 @@ RowUnkTotalOxygens!(linerow%) = analysis.totaloxygen!
 RowUnkTotalCations!(linerow%) = analysis.totaloxygen!
 RowUnkCalculatedOxygens!(linerow%) = analysis.CalculatedOxygen!
 RowUnkExcessOxygens!(linerow%) = analysis.ExcessOxygen!
-RowUnkZbars!(linerow%) = analysis.Zbar!
+RowUnkZbars!(linerow%) = analysis.zbar!
 RowUnkAtomicWeights!(linerow%) = analysis.AtomicWeight!
 RowUnkOxygenFromHalogens!(linerow%) = analysis.OxygenFromHalogens!
 RowUnkHalogenCorrectedOxygen!(linerow%) = analysis.HalogenCorrectedOxygen!
@@ -1293,7 +1293,7 @@ Next i%
     
 analysis.TotalPercent! = 0#
 analysis.AtomicWeight! = 0#
-analysis.Zbar! = 0#
+analysis.zbar! = 0#
 
 analysis.CalculatedOxygen! = 0#
 analysis.totaloxygen! = 0#
@@ -1351,7 +1351,7 @@ analysis.MANIter! = average.averags!(1)
 
 Call MathAverage(average, RowUnkZbars!(), sample(1).Datarows%, sample())
 If ierror Then Exit Sub
-analysis.Zbar! = average.averags!(1)
+analysis.zbar! = average.averags!(1)
 
 Call MathAverage(average, RowUnkAtomicWeights!(), sample(1).Datarows%, sample())
 If ierror Then Exit Sub
@@ -2237,10 +2237,15 @@ msg$ = "KRAW: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
 
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then       ' check for duplicate element
 If Not UseAutomaticFormatForResultsFlag Then
 msg$ = msg$ & Format$(Format$(average.averags!(i%), f84$), a80$)
 Else
 msg$ = msg$ & AnalyzeFormatAnalysisResult$(Int(0), Int(0), average.averags!(i%), analysis, sample())
+End If
+Else
+msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
 End If
 
 Else
@@ -2348,10 +2353,12 @@ msg$ = vbCrLf & "TDI%: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
 
-If sample(1).VolatileCorrectionUnks%(i%) <> 0 Then      ' -1 = self, 0 = none, >0 = assigned)
+' Check for volatile elements (-1 = self, 0 = none, >0 = assigned)
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If sample(1).VolatileCorrectionUnks%(i%) <> 0 And (Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0)) Then       ' check for duplicate element
 msg$ = msg$ & Format$(Format$(average.averags!(i%), f83$), a80$)
 Else
-msg$ = msg$ & Format$(DASHED4$, a80$)
+msg$ = msg$ & Format$(Format$(0#, f83$), a80$)
 End If
 
 Else
@@ -2366,10 +2373,11 @@ msg$ = "DEV%: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
 
-If sample(1).VolatileCorrectionUnks%(i%) <> 0 Then
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If sample(1).VolatileCorrectionUnks%(i%) <> 0 And (Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0)) Then       ' check for duplicate element
 msg$ = msg$ & Format$(Format$(average.averags!(i%), f81$), a80$)
 Else
-msg$ = msg$ & Format$(DASHED4$, a80$)
+msg$ = msg$ & Format$(Format$(0#, f81$), a80$)
 End If
 
 Else
@@ -2384,10 +2392,11 @@ msg$ = "TDI#: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
 
-If sample(1).VolatileCorrectionUnks%(i%) <> 0 Then
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If sample(1).VolatileCorrectionUnks%(i%) <> 0 And (Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0)) Then       ' check for duplicate element
 msg$ = msg$ & Format$(sample(1).VolatileCorrectionUnks%(i%), a80$)
 Else
-msg$ = msg$ & Format$(DASHED4$, a80$)
+msg$ = msg$ & Format$(Format$(0), a80$)
 End If
 
 Else
@@ -2436,7 +2445,7 @@ Call VolatileCalculateFitAssigned(sample(1).VolatileCorrectionUnks%(i%), txdata!
 If ierror Then Exit Sub
 msg$ = msg$ & Format$(Format$(sample(1).VolatileFitAvgTime!(i%), f82$), a80$)
 Else
-msg$ = msg$ & Format$(DASHED4$, a80$)
+msg$ = msg$ & Format$(Format$(0#, f82$), a80$)
 End If
 
 Else

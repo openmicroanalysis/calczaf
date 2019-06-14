@@ -3372,6 +3372,8 @@ If InterfaceType% = 5 Then XtalFlipDuration! = 20#                 ' Cameca
 
 SkipPeakingJustDoPHAFlag% = 0
 
+ModelPeakingFitType% = 0                                           ' model bgds centroid fit default is none
+
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
 If ierror Then Exit Sub
