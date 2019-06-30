@@ -118,7 +118,7 @@ im4% = zaf.il%(i%)
 
 ' Check for additional lines. If found, check that FFAST2.DAT files exists.
 If im4% > MAXRAY_OLD% Then
-If MACTypeFlag% <> 6 Then GoTo ZAFReadMuFFASTNotSpecified
+If MACTypeFlag% < 6 Then GoTo ZAFReadMuNewMACFileNotSpecified
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo ZAFReadMuFFAST2DATNotFound
 End If
@@ -181,8 +181,8 @@ MsgBox Error$, vbOKOnly + vbCritical, "ZAFReadMu"
 ierror = True
 Exit Sub
 
-ZAFReadMuFFASTNotSpecified:
-msg$ = "For quantification of additional x-ray lines, you must specify the FFAST MAC database." & vbCrLf & vbCrLf
+ZAFReadMuNewMACFileNotSpecified:
+msg$ = "For quantification of additional x-ray lines, you must specify the FFAST, USERMAC, PENEPMAMAC or POUCHOUMAC MAC databases." & vbCrLf & vbCrLf
 msg$ = msg$ & "See the Analytical | ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections menu and select the MACs button."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFReadMu"
 ierror = True

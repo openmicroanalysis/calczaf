@@ -1271,7 +1271,7 @@ If mode% = 4 Then
 msg$ = "Are you sure you want to create a new FFAST.DAT MAC table?"
 End If
 If mode% = 5 Then
-msg$ = "Are you sure you want to create a new USERMAC.DAT MAC table based on an existing MAC table?"
+msg$ = "Are you sure you want to create new USERMAC.DAT table (and USERMAC2.DAT MAC table if the FFAST.DAT file is selected), based an existing MAC table?"
 End If
 
 response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditMakeNewMACTable")
@@ -1280,11 +1280,11 @@ ierror = True
 Exit Sub
 End If
 
-' If creating user defined MAC table double check if it already exists
+' If creating user defined MAC table double check if it already exists and confirm again with user
 If mode% = 5 Then
 MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & ".DAT"
 If Dir$(MACFile$) <> vbNullString Then
-msg$ = "A user defined MAC table (" & MACFile$ & ") already exists. Are you sure you want to create a new USERMAC.DAT MAC table and overwrite any changes that you may have manually made to that MAC table?"
+msg$ = "A user defined MAC table (" & MACFile$ & ") already exists. Are you sure you want to create new USERMAC.DAT table (and a USERMAC2.DAT MAC table if the FFAST.DAT file is selected), and overwrite any changes that you may have manually made to the MAC table(s)?"
 response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditMakeNewMACTable")
 If response% = vbCancel Then
 Exit Sub
@@ -1324,8 +1324,22 @@ tfilename$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & ".DAT"     
 MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & ".DAT"       ' user defined MAC file
 FileCopy tfilename$, MACFile$       ' copy the selected file to the new user defined table
 
-msg$ = MACFile$ & " has been successfully created (based on the existing " & tfilename$ & " file). You may now edit it to add your own user defined MAC values or update it using a user defined update text file with the proper format."
+' Create a USERMAC2.DAT file if user selected FFAST.DAT
+If MACTypeFlag% = 6 Then
+tfilename$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"      ' user selected basis for new user defined MAC table
+MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & "2.DAT"       ' user defined MAC file
+FileCopy tfilename$, MACFile$       ' copy the selected file to the new user defined table
+End If
+
+' Confirm new User MAC table(s)
+If MACTypeFlag% = 6 Then
+msg$ = "New USERMAC.DAT and USERMAC2.DAT files have been successfully created (based on the existing FFAST.DAT and FFAST2.DAT files). You may now edit it to add your own user defined MAC values or update them using a user defined update text file with the proper format."
 MsgBox msg$, vbOKOnly + vbInformation, "EditMakeNewMACTable"
+Else
+msg$ = "A new " & MACFile$ & " file has been successfully created (based on the existing " & tfilename$ & " file). You may now edit it to add your own user defined MAC values or update it using a user defined update text file with the proper format."
+MsgBox msg$, vbOKOnly + vbInformation, "EditMakeNewMACTable"
+End If
+
 Exit Sub
 End If
 
@@ -1799,7 +1813,7 @@ Exit Sub
 End Sub
 
 Sub EditOutputUserMACFile(tForm As Form)
-' Output an existing USERMAC.DAT table to a USERMAC.TXT file for editing and subsequent updating of the current USERMAC.DAT MAC table
+' Output an existing USERMAC.DAT and USERMAC2.DAT tables to USERMAC.TXT and USERMAC2.TXT files for editing and subsequent updating of the current USERMAC.DAT and USERMAC2.DAT MAC tables
 
 ierror = False
 On Error GoTo EditOutputUserMACFileError
@@ -1810,17 +1824,17 @@ Dim response As Integer
 
 Dim macrow As TypeMu
 
-msg$ = "Do you want to output your current USERMAC.DAT user defined MAC file to a USERMAC.TXT text file, for editing using a text editor, and subsequently updating your current USERMAC.DAT MAC table?"
+msg$ = "Do you want to output your current USERMAC.DAT and USERMAC2.DAT user defined MAC files to USERMAC.TXT and USERMAC2.TXT text files, for editing using a text editor, and subsequently updating your current USERMAC.DAT and USERMAC2.DAT MAC tables?"
 response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditOutputUserMACFile")
 If response% = vbCancel Then
 ierror = True
 Exit Sub
 End If
 
-' If updating user defined MAC table check that it already exists
+' Load input and output filenames for USERMAC.DAT
 MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & ".DAT"
 tfilename$ = ApplicationCommonAppData$ & macstring2$(7) & ".TXT"
-              
+                            
 ' Open the input DAT file
 Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 
@@ -1861,14 +1875,59 @@ Call IOStatusAuto(vbNullString)
 Close #Temp1FileNumber%
 Close #MACFileNumber%
 
+
+' Load input and output filenames for USERMAC2.DAT
+MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & "2.DAT"
+tfilename$ = ApplicationCommonAppData$ & macstring2$(7) & "2.TXT"
+                            
+' Open the input DAT file
+Open MACFile$ For Random Access Read As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
+
+' Open the output text file
+Open tfilename$ For Output As #Temp1FileNumber%
+
+' Loop on entries
+Call IOStatusAuto(vbNullString)
+
+' Create header
+astring$ = Format$("zMeas") & vbTab & Format$("zAbsorb")
+For ix% = 1 To MAXRAY_OLD%
+astring$ = astring$ & vbTab & Format$(Xraylo$(ix% + MAXRAY_OLD%))
+Next ix%
+
+Print #Temp1FileNumber%, astring$
+
+' Loop on absorbers
+For ia% = 1 To MAXELM%
+
+' Loop on emitters
+For nrec% = 1 To MAXELM%
+Get #MACFileNumber%, nrec%, macrow
+
+' Create output string
+astring$ = Format$(nrec%) & vbTab & Format$(ia%)
+For ix% = 1 To MAXRAY_OLD%
+num% = ix% + (ia% - 1) * MAXRAY_OLD%
+astring$ = astring$ & vbTab & Format$(macrow.mac(num%))
+Next ix%
+
+Print #Temp1FileNumber%, astring$
+
+Next nrec%
+Next ia%
+
+Call IOStatusAuto(vbNullString)
+Close #Temp1FileNumber%
+Close #MACFileNumber%
+
 ' Inform user
-msg$ = "The user defined MAC table (" & MACFile$ & ") was output to a text file (" & tfilename$ & "), for editing using a text editor and subsequent updating using the Update Existing User Defined MAC table menu."
+msg$ = "The user defined MAC tables (USERMAC.DAT and USERMAC2.DAT) were output to text files (USERMAC.TXT and USERMAC2.TXT) in the " & ApplicationCommonAppData$ & " folder, for editing using a text editor and subsequent updating using the Update Existing User Defined MAC table menu."
 MsgBox msg$, vbOKOnly + vbInformation, "EditOutputUserMACFile"
 Exit Sub
 
 ' Errors
 EditOutputUserMACFileError:
-msg$ = Error$
+msg$ = Error$ & ", occured outputing file " & tfilename$
 MsgBox msg$, vbOKOnly + vbCritical, "EditOutputUserMACFile"
 Call IOStatusAuto(vbNullString)
 ierror = True
@@ -1879,7 +1938,7 @@ Exit Sub
 End Sub
 
 Sub EditUpdateUserMACFile(tForm As Form)
-' Update an existing USERMAC table with values from a USERMAC.TXT file (only write non-zero values)
+' Update an existing USERMAC and USERMAC2.DAT tables with values from USERMAC.TXT and USERMAC2.TXT files (only update non-zero values)
 
 ierror = False
 On Error GoTo EditUpdateUserMACFileError
@@ -1895,9 +1954,9 @@ ReDim mac_values(1 To MAXRAY_OLD%) As Single
 Dim macrow As TypeMu
 
 ' Ask user for update file (default = UserMAC.TXT)
-tfilename$ = ApplicationCommonAppData$ & "USERMAC.TXT"
-Call IOGetFileName(Int(2), "TXT", tfilename$, tForm)
-If ierror Then Exit Sub
+'tfilename$ = ApplicationCommonAppData$ & "USERMAC.TXT"
+'Call IOGetFileName(Int(2), "TXT", tfilename$, tForm)
+'If ierror Then Exit Sub
 
 ' If updating user defined MAC table check that it already exists
 MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & ".DAT"
@@ -1908,15 +1967,25 @@ ierror = True
 Exit Sub
 End If
        
-msg$ = "Are you sure you want to update the existing user defined MAC table (" & MACFile$ & ") using MAC values read from the user defined update text file (" & tfilename$ & ")?"
+MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & "2.DAT"
+If Dir$(MACFile$) = vbNullString Then
+msg$ = "A user defined MAC table (" & MACFile$ & ") does not yet exist. Please first create the file by using the Create New User Defined MAC Table menu."
+MsgBox msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditUpdateUserMACFile"
+ierror = True
+Exit Sub
+End If
+       
+msg$ = "Are you sure you want to update the existing user defined MAC tables USERMAC.DAT and USERMAC2.DAT using MAC values read from the user defined update text files (USERMAC.TXT and USERMAC2.TXT)?"
 response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditUpdateUserMACFile")
 If response% = vbCancel Then
 ierror = True
 Exit Sub
 End If
        
-' Open the input (comma, tab or space delimited) and output files
+' Open the input (comma, tab or space delimited) and output files for USERMAC.DAT
+tfilename$ = ApplicationCommonAppData$ & macstring2$(7) & ".TXT"
 Open tfilename$ For Input As #Temp1FileNumber%
+MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & ".DAT"
 Open MACFile$ For Random Access Read Write As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
 
 ' Read first line of column headings
@@ -1968,14 +2037,70 @@ Call IOStatusAuto(vbNullString)
 Close #Temp1FileNumber%
 Close #MACFileNumber%
 
+
+' Open the input (comma, tab or space delimited) and output files for USERMAC2.DAT
+tfilename$ = ApplicationCommonAppData$ & macstring2$(7) & "2.TXT"
+Open tfilename$ For Input As #Temp1FileNumber%
+MACFile$ = ApplicationCommonAppData$ & macstring2$(7) & "2.DAT"
+Open MACFile$ For Random Access Read Write As #MACFileNumber% Len = MAC_FILE_RECORD_LENGTH%
+
+' Read first line of column headings
+Input #Temp1FileNumber%, astring
+Call IOWriteLog(astring$)
+
+' Loop on entries (ie = emitting Z, ia = absorbing Z)
+Call IOStatusAuto(vbNullString)
+icancelauto = False
+line_number& = 0
+Do Until EOF(Temp1FileNumber%)
+Input #Temp1FileNumber%, ie%, ia%, mac_values!(1), mac_values!(2), mac_values!(3), mac_values!(4), mac_values!(5), mac_values!(6)
+astring$ = "IE=" & Format$(ie%) & ", IA= " & Format$(ia%) & ", MACs (Ln, Lg, Lv, Ll, Mg, Mz) = " & MiscAutoFormat$(mac_values!(1)) & MiscAutoFormat$(mac_values!(2)) & MiscAutoFormat$(mac_values!(3)) & MiscAutoFormat$(mac_values!(4)) & MiscAutoFormat$(mac_values!(5)) & MiscAutoFormat$(mac_values!(6))
+Call IOWriteLog(astring$)
+line_number& = line_number& + 1
+
+' Check for valid values
+If ie% < 1 Or ie% > MAXELM% Then GoTo EditUpdateUserMACFileBadEmitter
+If ia% < 1 Or ia% > MAXELM% Then GoTo EditUpdateUserMACFileBadAbsorber
+
+' Determine emitter record number
+nrec% = ie%
+        
+' Calculate record offset
+For ix% = 1 To MAXRAY_OLD%
+If mac_values!(ix%) > 0# Then
+
+' Calculate position in emitting record for this absorber and x-ray
+num% = ix% + (ia% - 1) * MAXRAY_OLD%
+Get #MACFileNumber%, nrec%, macrow
+macrow.mac!(num%) = mac_values!(ix%)
+Put #MACFileNumber%, nrec%, macrow
+
+End If
+Next ix%
+
+Call IOStatusAuto("Processing line " & Format$(line_number&) & " of file " & tfilename$ & "...")
+DoEvents
+If icancelauto Then
+Call IOStatusAuto(vbNullString)
+Close #Temp1FileNumber%
+Close #MACFileNumber%
+ierror = True
+Exit Sub
+End If
+Loop
+
+Call IOStatusAuto(vbNullString)
+Close #Temp1FileNumber%
+Close #MACFileNumber%
+
 ' Inform user
-msg$ = "User defined MAC table (" & MACFile$ & ") was updated using MAC values from the user defined update text file(" & tfilename$ & ")"
+msg$ = "User defined MAC tables (USERMAC.DAT and USERMAC2.DAT) were updated using MAC values from the user defined update text files (USERMAC.TXT and USERMAC2.TXT) and saved to the " & ApplicationCommonAppData$ & "folder."
 MsgBox msg$, vbOKOnly + vbInformation, "EditUpdateUserMACFile"
 Exit Sub
 
 ' Errors
 EditUpdateUserMACFileError:
-msg$ = Error$ & ". Please consult the documentation for the format of an example UserMAC.TXT update file and create one using a text editor or exported from Excel as a tab delimited file."
+msg$ = Error$ & ", processing file " & tfilename$ & ". Please consult the documentation for the format of an example UserMAC.TXT/UserMAC2.TXT update files and create them using a text editor or exported from Excel as a tab delimited file."
 MsgBox msg$, vbOKOnly + vbCritical, "EditUpdateUserMACFile"
 Call IOStatusAuto(vbNullString)
 ierror = True
@@ -1984,7 +2109,7 @@ Close #MACFileNumber%
 Exit Sub
 
 EditUpdateUserMACFileBadEmitter:
-msg$ = "Invalid emitting atomic number. Please consult the documentation for the format of an example UserMAC.TXT update file and create one using a text editor or exported from Excel as a tab delimited file."
+msg$ = "Invalid emitting atomic number in " & tfilename$ & ". Please consult the documentation for the format of an example UserMAC.TXT/UserMAC2.TXT update files and create then using a text editor or exported from Excel as a tab delimited file."
 MsgBox msg$, vbOKOnly + vbExclamation, "EditUpdateUserMACFile"
 Call IOStatusAuto(vbNullString)
 ierror = True

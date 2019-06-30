@@ -2538,6 +2538,8 @@ macstring$(4) = "MAC30    Heinrich (Fit to Goldstein tables, 1987)"
 macstring$(5) = "MACJTA   Armstrong (FRAME equations, 1992)"
 macstring$(6) = "FFAST    Chantler (NIST v 2.1, 2005)"
 macstring$(7) = "USERMAC  User Defined MAC Table"
+'macstring$(8) = "PENEPMAMAC  Penepma (Penelope) MAC Table"
+'macstring$(9) = "POUCHOUMAC  Pouchou and Pichoir MAC Table"
 
 macstring2$(1) = "LINEMU"
 macstring2$(2) = "CITZMU"
@@ -2546,6 +2548,8 @@ macstring2$(4) = "MAC30"
 macstring2$(5) = "MACJTA"
 macstring2$(6) = "FFAST"
 macstring2$(7) = "USERMAC"
+'macstring2$(8) = "PENEPMAMAC"       ' from Philipp Poeml
+'macstring2$(9) = "POUCHOUMAC"       ' from Philipp Poeml
 
 flustring$(1) = "Reed/JTA w/ M-Line Correction and JTA Intensity Mod."
 flustring$(2) = "Reed/JTA (CITZAF.BAS- original with no M-Line Correction)"
@@ -3239,6 +3243,7 @@ SMTPUserPassword$ = vbNullString
 
 WavescanXIncrementFlag = False
 PeakingXIncrementFlag = False
+UnknownXIncrementFlag = False
 WaveScanMeasureFaradayNthPoint% = 1
 
 DefaultMultiPointNumberofPointsAcquireHi% = 4
@@ -3373,6 +3378,8 @@ If InterfaceType% = 5 Then XtalFlipDuration! = 20#                 ' Cameca
 SkipPeakingJustDoPHAFlag% = 0
 
 ModelPeakingFitType% = 0                                           ' model bgds centroid fit default is none
+
+SkipOutputEDSIntensitiesDuringAutomation = False                   ' allow output of EDS net intensities during automated acquisition
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

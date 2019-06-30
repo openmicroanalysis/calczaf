@@ -671,7 +671,7 @@ Type TypeAnalysis
     totalatoms As Single         ' variable loaded from routine ZAFCalZbar
     CalculatedOxygen As Single   ' variable loaded from routine ZAFCalZbar
     ExcessOxygen As Single       ' variable loaded from routine ZAFCalZbar
-    Zbar As Single               ' variable loaded from routine ZAFCalZbar
+    zbar As Single               ' variable loaded from routine ZAFCalZbar
     AtomicWeight As Single             ' variable loaded from routine ZAFCalZbar
     OxygenFromHalogens As Single       ' variable loaded from routine ZAFCalZbar
     HalogenCorrectedOxygen As Single   ' variable loaded from routine ZAFCalZbar
@@ -1596,6 +1596,8 @@ Global WavePeakSuccessFlags(1 To MAXCHAN%) As Boolean
 
 Global WavescanXIncrementFlag As Integer
 Global PeakingXIncrementFlag As Integer
+Global UnknownXIncrementFlag As Integer
+
 Global WavescanXIncrement As Single
 Global WavescanXIncrementInterval As Single
 Global WavescanYIncrement As Single
@@ -2968,3 +2970,5 @@ Global NthPointAcquisitionTypeFlag As Integer   ' 0 = acquire Nth points on both
 Global CalculatePhiRhoZPlotCurves As Boolean        ' used in CalcZAF
 
 Global UserSpecifiedOutputChemAgeFlag As Boolean
+
+Global SkipOutputEDSIntensitiesDuringAutomation As Boolean

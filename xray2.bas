@@ -336,9 +336,9 @@ Dim macrow As TypeMu
 ' Check for new MAXRAY constant
 If mode% = 2 And MAXRAY% - 1 = MAXRAY_OLD% Then Exit Function
 
-' Check for additional lines. If found, check that FFAST2.DAT files exists.
+' Check for additional lines. If found, check that FFAST2.DAT, PENEPMAMAC or POUCHOUMAC files exist.
 If mode% = 2 Then
-If MACTypeFlag% <> 6 Then GoTo XrayGetMACTableFFASTNotSpecified
+If MACTypeFlag% < 6 Then GoTo XrayGetMACTableNewMACFileNotSpecified
 MACFile$ = ApplicationCommonAppData$ & macstring2$(MACTypeFlag%) & "2.DAT"
 If Dir$(MACFile$) = vbNullString Then GoTo XrayGetMACTableFFAST2DATNotFound
 End If
@@ -420,8 +420,8 @@ Close #MACFileNumber%
 ierror = True
 Exit Function
 
-XrayGetMACTableFFASTNotSpecified:
-msg$ = "For quantification of additional x-ray lines, you must specify the FFAST MAC database. See the Analytical | ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections menu and select the MACs button."
+XrayGetMACTableNewMACFileNotSpecified:
+msg$ = "For quantification of additional x-ray lines, you must specify the FFAST, PENEPMAMAC or POUCHOUMAC MAC databases. See the Analytical | ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections menu and select the MACs button."
 MsgBox msg$, vbOKOnly + vbExclamation, "XrayGetMACTable"
 ierror = True
 Exit Function

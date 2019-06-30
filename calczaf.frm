@@ -25,14 +25,14 @@ Begin VB.Form FormMAIN
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   4920
    ScaleWidth      =   10605
-   Begin SmtpClientCtl.SmtpClient SmtpClient1 
-      Left            =   1680
+   Begin MailMessageCtl.MailMessage MailMessage1 
+      Left            =   2280
       Top             =   0
       _cx             =   741
       _cy             =   741
    End
-   Begin MailMessageCtl.MailMessage MailMessage1 
-      Left            =   2280
+   Begin SmtpClientCtl.SmtpClient SmtpClient1 
+      Left            =   1680
       Top             =   0
       _cx             =   741
       _cy             =   741
@@ -104,6 +104,7 @@ Begin VB.Form FormMAIN
       _ExtentX        =   7858
       _ExtentY        =   7646
       _Version        =   393217
+      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"CALCZAF.frx":59D8A
    End
@@ -417,10 +418,10 @@ Begin VB.Form FormMAIN
          HelpContextID   =   825
       End
       Begin VB.Menu menuXrayOutputExistingUSERMACTable 
-         Caption         =   "Output Exisiting User Defined MAC Table (Create New USERMAC.TXT)"
+         Caption         =   "Output Exisiting User Defined MAC Table (Create New USERMAC.TXT and USERMAC2.TXT)"
       End
       Begin VB.Menu menuXrayUpdateUSERMACTable 
-         Caption         =   "Update Existing User Defined MAC Table (Update USERMAC.DAT)"
+         Caption         =   "Update Existing User Defined MAC Table (Update USERMAC.DAT and USERMAC2.DAT)"
          HelpContextID   =   826
       End
       Begin VB.Menu menuXraySeparator7 

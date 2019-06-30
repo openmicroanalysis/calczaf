@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormMAC 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Mass Absorption Coefficients"
-   ClientHeight    =   2520
+   ClientHeight    =   3090
    ClientLeft      =   1575
    ClientTop       =   1800
    ClientWidth     =   7215
@@ -21,7 +21,7 @@ Begin VB.Form FormMAC
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   2520
+   ScaleHeight     =   3090
    ScaleWidth      =   7215
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
@@ -49,11 +49,31 @@ Begin VB.Form FormMAC
       Caption         =   "Mass Absorption Coefficients File Source"
       ClipControls    =   0   'False
       ForeColor       =   &H00FF0000&
-      Height          =   2295
+      Height          =   2895
       Left            =   120
       TabIndex        =   2
       Top             =   120
       Width           =   5655
+      Begin VB.OptionButton Option6 
+         Enabled         =   0   'False
+         Height          =   255
+         Index           =   8
+         Left            =   120
+         TabIndex        =   11
+         TabStop         =   0   'False
+         Top             =   2520
+         Width           =   5415
+      End
+      Begin VB.OptionButton Option6 
+         Enabled         =   0   'False
+         Height          =   255
+         Index           =   7
+         Left            =   120
+         TabIndex        =   10
+         TabStop         =   0   'False
+         Top             =   2280
+         Width           =   5415
+      End
       Begin VB.OptionButton Option6 
          Caption         =   "Option6"
          Height          =   255

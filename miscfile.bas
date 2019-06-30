@@ -89,6 +89,9 @@ If InStr(astring$, "MACJTA.DAT") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "FFAST.DAT") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "USERMAC.DAT") > 0 Then GoTo MiscCheckNameReserved
 
+If InStr(astring$, "PENEPMAMAC.DAT") > 0 Then GoTo MiscCheckNameReserved
+If InStr(astring$, "POUCHOUMAC.DAT") > 0 Then GoTo MiscCheckNameReserved
+
 If InStr(astring$, "CITZMU2.DAT") > 0 Then GoTo MiscCheckNameReserved     ' additional x-ray lines
 If InStr(astring$, "LINEMU2.DAT") > 0 Then GoTo MiscCheckNameReserved     ' additional x-ray lines
 If InStr(astring$, "MACMASTER2.DAT") > 0 Then GoTo MiscCheckNameReserved  ' additional x-ray lines
@@ -96,6 +99,9 @@ If InStr(astring$, "MAC302.DAT") > 0 Then GoTo MiscCheckNameReserved      ' addi
 If InStr(astring$, "MACJTA2.DAT") > 0 Then GoTo MiscCheckNameReserved     ' additional x-ray lines
 If InStr(astring$, "FFAST2.DAT") > 0 Then GoTo MiscCheckNameReserved      ' additional x-ray lines
 If InStr(astring$, "USERMAC2.DAT") > 0 Then GoTo MiscCheckNameReserved    ' additional x-ray lines
+
+If InStr(astring$, "PENEPMAMAC2.DAT") > 0 Then GoTo MiscCheckNameReserved    ' additional x-ray lines
+If InStr(astring$, "POUCHOUMAC2.DAT") > 0 Then GoTo MiscCheckNameReserved    ' additional x-ray lines
 
 If InStr(astring$, "XLINE.DAT") > 0 Then GoTo MiscCheckNameReserved
 If InStr(astring$, "XEDGE.DAT") > 0 Then GoTo MiscCheckNameReserved
