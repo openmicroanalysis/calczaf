@@ -121,7 +121,7 @@ Do Until False
 n% = n% + 1
 Call TypeGetRange(Int(1), n%, ii%, jj%, sample())
 If ierror Then Exit Sub
-If ii% > sample(1).LastElm% Then Exit Do
+If sample(1).LastElm% > 0 And ii% > sample(1).LastElm% Then Exit Do         ' this line is modified (also see end of the loop below), so the beam currents will be printed out even if there are no analyzed elements
 
 ' Type out symbols for count time data lines for analyzed elements
 msg$ = "ELEM: "
@@ -257,7 +257,7 @@ Call IOWriteLog(msg$)
 End If
 
 If Not ExtendedFormat Then Call IOWriteLog(vbNullString)
-
+If ii% > sample(1).LastElm% Then Exit Do         ' this line is so the beam currents will be printed out even if there are no analyzed elements
 Loop
 
 ' Do a quick check of the sigma ratio and warn user if element is assigned as primary standard and is excessive

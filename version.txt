@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/04/19	Modify plot wavescan code to handle wavescans that have EDS elements when selecting first elements to plot
+
 06/29/19	Allow USERMAC MAC table for additional x-ray lines (Haifler). Modify code to handle usermac2.dat 
 v. 12.6.4	and txt files for additional x-ray lines.
 
