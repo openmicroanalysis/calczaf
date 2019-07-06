@@ -739,7 +739,7 @@ On Error GoTo ZAFBscError
 
 Dim i As Integer, i1 As Integer
 Dim yy As Single, h1 As Single, h2 As Single
-Dim Zbar As Single
+Dim zbar As Single
         
 If zafinit% = 1 Then GoTo 6900
 
@@ -816,14 +816,14 @@ Next i%
 
 ' BSC3 / SAMPLE CALCULATION OF POUCHOU and PICHOIR BACKSCATTER
 ElseIf ibsc% = 3 Then
-Zbar! = 0#
+zbar! = 0#
 For i1% = 1 To zaf.in0%
-Zbar! = Zbar! + zaf.conc!(i1%) * Sqr(zaf.Z%(i1%))
+zbar! = zbar! + zaf.conc!(i1%) * Sqr(zaf.Z%(i1%))
 Next i1%
-Zbar! = Zbar! * Zbar!
+zbar! = zbar! * zbar!
 
 For i% = 1 To zaf.in0%
-eta!(i%) = 0.00175 * Zbar! + 0.37 * (1 - Exp(-0.015 * Exp(1.3 * Log(Zbar!))))
+eta!(i%) = 0.00175 * zbar! + 0.37 * (1 - Exp(-0.015 * Exp(1.3 * Log(zbar!))))
 Next i%
 End If
 
@@ -1408,6 +1408,8 @@ ReDim ZAFDiff(1 To MAXCHAN1%) As Single
 
 ReDim unkcnts(1 To MAXCHAN1%) As Single
 ReDim stdcnts(1 To MAXCHAN1%) As Single
+
+ReDim continuum_correction(1 To MAXCHAN1%) As Single    ' for MAN continuum corrections
 
 MaxZAFIter% = 100
 ZAFMinTotal! = 0.001 ' in weight fraction
@@ -2269,7 +2271,7 @@ msg$ = msg$ & Format$(Format$(analysis.UnkKrats!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = vbCrLf & "UNKZBAR " & Format$(Format$(analysis.Zbar!, f84), a80$)
+msg$ = vbCrLf & "UNKZBAR " & Format$(Format$(analysis.zbar!, f84), a80$)
 Call IOWriteLog(msg$)
 
 msg$ = "ZAFITER " & Format$(Format$(analysis.ZAFIter!, f82$), a80$)
@@ -2339,6 +2341,14 @@ End If
 
 Next i8% ' loop for particle models
 Next i7% ' loop for particle diameters
+
+' Load continuum absorption corrections for this sample (not currently utilized)
+Call ZAFGetContinuumAbsorption(continuum_correction!(), zaf)
+If ierror Then Exit Sub
+
+For i% = 1 To sample(1).LastElm%
+analysis.UnkContinuumCorrections!(i%) = continuum_correction!(i%)
+Next i%
 
 Exit Sub
 
@@ -2445,7 +2455,7 @@ Dim tt As Single
 Dim astring As String
 
 ReDim p2(1 To MAXCHAN1%) As Single
-ReDim continuum(1 To MAXCHAN1%) As Single
+ReDim continuum_correction(1 To MAXCHAN1%) As Single
 
 ' Initialize arrays
 For i% = 1 To MAXCHAN1%
@@ -2799,7 +2809,7 @@ analysis.StdAssignsZAFCors!(6, i%) = zaf.bks!(ip%)
 analysis.StdAssignsZAFCors!(7, i%) = 1# / zaf.genstd!(ip%)
 analysis.StdAssignsZAFCors!(8, i%) = 1# / zaf.gensmp!(ip%)
 
-analysis.StdAssignsZbars!(i%) = analysis.Zbar!
+analysis.StdAssignsZbars!(i%) = analysis.zbar!
 analysis.StdAssignsEdgeEnergies!(i%) = zaf.eC!(ip%)
 
 If UseConductiveCoatingCorrectionForElectronAbsorption Then
@@ -2819,7 +2829,7 @@ If ip% = 0 Then GoTo 8500
 
 ' Load the standard percents
 analysis.StdPercents!(row%, i%) = stdsample(1).ElmPercents!(ip%)
-analysis.StdZbars!(row%) = analysis.Zbar!
+analysis.StdZbars!(row%) = analysis.zbar!
 
 ' If ZAF corrections are zero don't load values
 If zaf.genstd!(ip%) = 0# Then GoTo 8500
@@ -2845,12 +2855,12 @@ End If
 8500:
 Next i%
 
-' Load continuum absorption corrections for this standard
-Call ZAFGetContinuumAbsorption(continuum!(), zaf)
+' Load continuum absorption corrections for this standard (not currently utilized)
+Call ZAFGetContinuumAbsorption(continuum_correction!(), zaf)
 If ierror Then Exit Sub
 
 For i% = 1 To sample(1).LastElm%
-analysis.StdContinuums!(row%, i%) = continuum!(i%)
+analysis.StdContinuumCorrections!(row%, i%) = continuum_correction!(i%)
 Next i%
 
 ' Print out the standard k-ratio calculation for this standard if Standard.exe Debugmode or CalcZAFMode = 0

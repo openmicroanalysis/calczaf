@@ -501,7 +501,7 @@ Dim tfactor As Single, tstandard As String
 ReDim bgdcts(1 To MAXCHAN%) As Single
 ReDim unkintfcts(1 To MAXINTF%, 1 To MAXCHAN%) As Single
 
-ReDim continuum_absorbtion(1 To MAXCHAN%) As Single
+ReDim continuum_correction(1 To MAXCHAN%) As Single ' for MAN continuum corrections
 ReDim blankcts(1 To MAXCHAN%) As Single
 
 ' Reset ZAF error flag
@@ -528,12 +528,21 @@ sample(1).BgdData!(linerow%, chan%) = 0#
 End If
 Next chan%
 
-' Load fresh unknown count data and weight fractions for MAN continuum calculations
+' Load fresh unknown count data
 For chan% = 1 To sample(1).LastElm%
 uncts!(chan%) = sample(1).CorData!(linerow%, chan%)
-If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then continuum_absorbtion!(chan%) = analysis.UnkZAFCors!(1, chan%)   ' use characteristic absorption for continuum absorption correction (MAN)
-'If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then continuum_absorbtion!(chan%) = 1# / analysis.UnkZAFCors!(8, chan%)   ' use generated sample intensity f(chi) for continuum absorption correction(MAN)
-If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then continuum_absorbtion!(chan%) = analysis.UnkBetas!(chan%)  ' use alpha factor correction for continuum absorption (MAN)
+
+' Load matrix corrections for MAN continuum corrections
+If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then
+continuum_correction!(chan%) = analysis.UnkZAFCors!(1, chan%)   ' use absorption correction only
+'continuum_correction!(chan%) = analysis.UnkZAFCors!(1, chan%) * analysis.UnkZAFCors!(2, chan%)   ' use absorption and fluorescence correction only
+'continuum_correction!(chan%) = analysis.UnkZAFCors!(4, chan%)   ' use full matrix correction
+End If
+If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
+continuum_correction!(chan%) = analysis.UnkBetas!(chan%)    ' use full matrix correction for alpha factors
+End If
+'continuum_correction!(chan%) = analysis.UnkContinuumCorrections!(chan%)   ' continuum absorption correction from Heinrich modified by Myklebust
+
 Next chan%
 
 ' Calculate maximum number of interference assignments in sample
@@ -578,10 +587,10 @@ bgdcts!(chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFitCoeffic
 ' Uncorrect the calculated MAN counts for absorption of the continuum if "MANAbsCorFlags()" is true
 If UseMANAbsFlag And sample(1).MANAbsCorFlags(chan%) Then
 
-' De-correct MAN counts for absorption correction for unknown composition (see MANFitData for standard composition correction)
-If continuum_absorbtion!(chan%) > 0# Then
+' De-correct MAN counts for unknown composition (see MANFitData for standard composition correction for MAN standards)
+If continuum_correction!(chan%) > 0# Then
 RowUnkMANAbsCors!(linerow%, chan%) = bgdcts!(chan%) ' store uncorrected counts
-bgdcts!(chan%) = bgdcts!(chan%) / continuum_absorbtion!(chan%) ' de-correct for sample absorption
+bgdcts!(chan%) = bgdcts!(chan%) / continuum_correction!(chan%) ' de-correct for unknown sample matrix correction
 If RowUnkMANAbsCors!(linerow%, chan%) > 0# Then
 RowUnkMANAbsCors!(linerow%, chan%) = 100# * (bgdcts!(chan%) - RowUnkMANAbsCors!(linerow%, chan%)) / RowUnkMANAbsCors!(linerow%, chan%)
 End If
@@ -816,9 +825,9 @@ Next chan%
 Call IOWriteLog(msg$)
 Next j%
         
-msg$ = vbCrLf & "Continuum Absorption Correction Factors on Unknown:" & vbCrLf
+msg$ = vbCrLf & "Continuum Correction Factors on Unknown:" & vbCrLf
 For chan% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(continuum_absorbtion!(chan%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(continuum_correction!(chan%), f84$), a80$)
 Next chan%
 Call IOWriteLog(msg$)
         

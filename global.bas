@@ -711,7 +711,7 @@ Type TypeAnalysis
         
     StdPercents() As Single     ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
     StdZbars(1 To MAXSTD%) As Single
-    StdContinuums() As Single   ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
+    StdContinuumCorrections() As Single   ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
     StdMACs() As Single         ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
     
     StdAssignsCounts(1 To MAXCHAN%) As Single
@@ -745,6 +745,8 @@ Type TypeAnalysis
 
     MANAssignsCountTimes() As Single     ' allocated in InitStandards (1 To MAXMAN%, 1 To MAXCHAN%)
     MANAssignsBeamCurrents() As Single   ' allocated in InitStandards (1 To MAXMAN%, 1 To MAXCHAN%)
+
+    UnkContinuumCorrections(1 To MAXCHAN%) As Single      ' continuum correction for unknown
 
     SampleIsAnalyzed As Boolean
 End Type

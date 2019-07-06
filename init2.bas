@@ -235,7 +235,7 @@ analysis.TotalCations! = 0#
 analysis.totalatoms! = 0#
 analysis.CalculatedOxygen! = 0#
 analysis.ExcessOxygen! = 0#
-analysis.Zbar! = 0#
+analysis.zbar! = 0#
 analysis.AtomicWeight! = 0#
 analysis.OxygenFromHalogens! = 0#
 analysis.HalogenCorrectedOxygen! = 0#
@@ -325,7 +325,7 @@ ReDim sample(1).UnknownMaxCounts(1 To MAXROW%, 1 To MAXCHAN%) As Long
 amsg$ = "Dimensioning MAN sample arrays..."
 ReDim sample(1).MANStdAssigns(1 To MAXMAN%, 1 To MAXCHAN%) As Integer
 ReDim sample(1).MANLinearFitOrders(1 To MAXCHAN%) As Integer
-ReDim sample(1).MANAbsCorFlags(1 To MAXCHAN%) As Integer
+ReDim sample(1).MANAbsCorFlags(1 To MAXCHAN%) As Integer                               ' MAN matrix correction flag
 
 amsg$ = "Dimensioning interference sample arrays..."
 ReDim sample(1).StdAssignsIntfElements(1 To MAXINTF%, 1 To MAXCHAN%) As String         ' interfering element
@@ -670,7 +670,7 @@ ReDim analysis.CalData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
 ReDim analysis.StdZAFCors(1 To MAXZAFCOR%, 1 To MAXSTD%, 1 To MAXCHAN%) As Single
 
 ReDim analysis.StdBetas(1 To MAXSTD%, 1 To MAXCHAN%) As Single
-ReDim analysis.StdContinuums(1 To MAXSTD%, 1 To MAXCHAN%) As Single
+ReDim analysis.StdContinuumCorrections(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdMACs(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdPercents(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 
@@ -697,9 +697,11 @@ analysis.StdAssignsActualKilovolts(i%) = 0#
 analysis.StdAssignsEdgeEnergies(i%) = 0#
 analysis.StdAssignsActualOvervoltages(i%) = 0#
 
+analysis.UnkContinuumCorrections!(i%) = 0#
+
 For j% = 1 To MAXSTD%
 analysis.StdPercents!(j%, i%) = 0#
-analysis.StdContinuums!(j%, i%) = 0#
+analysis.StdContinuumCorrections!(j%, i%) = 0#
 analysis.StdMACs!(j%, i%) = 0#
 
 For k% = 1 To MAXZAFCOR%

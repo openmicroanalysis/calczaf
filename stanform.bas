@@ -267,7 +267,7 @@ Call StanFormCalculate(stdnum%, Int(1))     ' suppress output
 If ierror Then Exit Sub
 
 ' Calculated values are in StanFormOldSample() and StanFormAnalysis
-astring$ = vbTab & "Zbar = " & vbTab & Format$(StanFormAnalysis.Zbar!)
+astring$ = vbTab & "Zbar = " & vbTab & Format$(StanFormAnalysis.zbar!)
 End If
 
 ' All
@@ -748,7 +748,7 @@ Call IOWriteLog(msg$)
 If CalculateContinuumAbsorptionFlag Then
 msg$ = "ABSC: "
 For i% = ii% To jj%
-msg$ = msg$ & Format$(Format$(analysis.StdContinuums!(stdrow%, i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.StdContinuumCorrections!(stdrow%, i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 End If

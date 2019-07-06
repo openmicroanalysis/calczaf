@@ -1088,7 +1088,7 @@ stdbac(i%, chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFitCoef
 ' If correcting for continuum absorption, uncorrect calculated MAN counts for absorption in this
 ' standard. See "UpdateFitMAN" for absorption correction to fitted background counts.
 If UseMANAbsFlag Then
-If CorrectionFlag% = 0 Then temp! = analysis.StdZAFCors!(1, ip%, chan%)
+If CorrectionFlag% = 0 Then temp! = analysis.StdZAFCors!(4, ip%, chan%)     ' use full matrix correction
 If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then temp! = analysis.StdBetas!(ip%, chan%)
 If sample(1).MANAbsCorFlags%(chan%) And temp! > 0# Then
 stdbac!(i%, chan%) = stdbac!(i%, chan%) / temp!
@@ -1213,7 +1213,7 @@ intbac(i%, j%, chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFit
 ' If correcting for continuum absorption, uncorrect calculated MAN counts for absorption in this
 ' standard. See "UpdateFitMAN" for absorption correction to fitted background counts.
 If UseMANAbsFlag Then
-If CorrectionFlag% = 0 Then temp! = analysis.StdZAFCors!(1, intfstd%, chan%)
+If CorrectionFlag% = 0 Then temp! = analysis.StdZAFCors!(4, intfstd%, chan%)    ' use full matrix correction
 If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then temp! = analysis.StdBetas!(intfstd%, chan%)
 If sample(1).MANAbsCorFlags%(chan%) And temp! > 0# Then
 intbac!(i%, j%, chan%) = intbac!(i%, j%, chan%) / temp!
@@ -2024,12 +2024,12 @@ On Error GoTo UpdateFitMANError
 Dim npts As Integer, i As Integer
 Dim ip As Integer, row As Integer
 Dim norder As Integer
-Dim temp As Single
+
+Dim continuum_correction(1 To MAXMAN%) As Single   ' continuum correction for MAN standards for a single channel
 
 ReDim acoeff(1 To MAXCOEFF%) As Single
 ReDim txdata(1 To MAXMAN%) As Single
 ReDim tydata(1 To MAXMAN%) As Single
-ReDim abscor(1 To MAXMAN%) As Single
 
 ' Load the sample counts loaded by UPDATE
 npts% = 0
@@ -2045,11 +2045,16 @@ npts% = npts% + 1
 txdata!(npts%) = analysis.StdZbars!(ip%)
 tydata!(npts%) = analysis.MANAssignsCounts!(i%, chan%)
 
-' Load correction for continuum absorption (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
-If CorrectionFlag% = 0 Then temp! = analysis.StdZAFCors!(1, ip%, chan%) ' use characteristic for continuum (MAN)
-If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then temp! = analysis.StdBetas!(ip%, chan%) ' use characteristic for continuum (MAN)
-'temp! = analysis.StdContinuums!(ip%, chan%)
-abscor!(npts%) = temp!
+' Load matrix correction from standards (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
+If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then
+continuum_correction!(npts%) = analysis.StdZAFCors!(1, ip%, chan%)     ' use absorption only correction
+'continuum_correction!(npts%) = analysis.StdZAFCors!(1, ip%, chan%) * analysis.StdZAFCors!(2, ip%, chan%)     ' use absorption and fluorescence correction only
+'continuum_correction!(npts%) = analysis.StdZAFCors!(4, ip%, chan%)     ' use full matrix correction
+End If
+If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
+continuum_correction!(npts%) = analysis.StdBetas!(ip%, chan%)      ' use full matrix correction for alpha factors
+End If
+'continuum_correction!(npts%) = analysis.StdContinuumCorrections!(ip%, chan%)    ' continuum absorption correction from Heinrich modified by Myklebust
 
 End If
 Next i%
@@ -2081,17 +2086,17 @@ Call IOWriteLog(msg$)
 
 msg$ = "AbsCor: "
 For i% = 1 To npts%
-msg$ = msg$ & MiscAutoFormat$(abscor!(i%))
+msg$ = msg$ & MiscAutoFormat$(continuum_correction!(i%))
 Next i%
 Call IOWriteLog(msg$)
 
 End If
 
-' Correct MAN count data for absorption of the continuum
+' Correct MAN count data for matrix correction of each standard
 If UseMANAbsFlag Then
 For i% = 1 To npts%
-If sample(1).MANAbsCorFlags%(chan%) And abscor!(i%) <> 0# Then
-tydata!(i%) = tydata!(i%) * abscor!(i%)
+If sample(1).MANAbsCorFlags%(chan%) And continuum_correction!(i%) <> 0# Then
+tydata!(i%) = tydata!(i%) * continuum_correction!(i%)
 End If
 Next i%
 End If

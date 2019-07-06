@@ -855,8 +855,8 @@ Exit Sub
 
 End Sub
 
-Sub ZAFGetContinuumAbsorption(continuum_absorbtion() As Single, zaf As TypeZAF)
-' Calculate continuum absorption (modified Heinrich from Myklebust) for all emitters
+Sub ZAFGetContinuumAbsorption(continuum_absorption() As Single, zaf As TypeZAF)
+' Calculate continuum absorption correction (modified Heinrich from Myklebust) for all emitters
 
 ierror = False
 On Error GoTo ZAFGetContinuumAbsorptionError
@@ -879,7 +879,7 @@ gstd!(i%) = gstd!(i%) * 1.15 - 0.15 * 1# / gstd!(i%)
 End If
 Next i%
 
-' Calculate sample (actual standard composition) absorption
+' Calculate sample absorption
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 m7!(i%) = ZAFMACCal(i%, zaf)
@@ -893,7 +893,7 @@ Next i%
 ' Create continuum absorption correction factors
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-continuum_absorbtion!(i%) = gsmp!(i%) / gstd!(i%)
+continuum_absorption!(i%) = gsmp!(i%) / gstd!(i%)
 End If
 Next i%
 
