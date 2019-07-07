@@ -504,6 +504,8 @@ ReDim unkintfcts(1 To MAXINTF%, 1 To MAXCHAN%) As Single
 ReDim continuum_correction(1 To MAXCHAN%) As Single ' for MAN continuum corrections
 ReDim blankcts(1 To MAXCHAN%) As Single
 
+ReDim atomfrac(1 To MAXCHAN1%) As Single
+
 ' Reset ZAF error flag
 zerror = False
 
@@ -534,14 +536,29 @@ uncts!(chan%) = sample(1).CorData!(linerow%, chan%)
 
 ' Load matrix corrections for MAN continuum corrections
 If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then
-continuum_correction!(chan%) = analysis.UnkZAFCors!(1, chan%)   ' use absorption correction only
-'continuum_correction!(chan%) = analysis.UnkZAFCors!(1, chan%) * analysis.UnkZAFCors!(2, chan%)   ' use absorption and fluorescence correction only
-'continuum_correction!(chan%) = analysis.UnkZAFCors!(4, chan%)   ' use full matrix correction
+    If UseMANAbsFlag And Not UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.UnkZAFCors!(1, chan%)   ' use matrix absorption correction only
+        Else
+        continuum_correction!(chan%) = analysis.UnkContinuumCorrections!(1, chan%)   ' use continuum absorption correction only
+        End If
+    ElseIf Not UseMANAbsFlag And UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.UnkZAFCors!(2, chan%)   ' use matrix fluorescence correction only
+        Else
+        continuum_correction!(chan%) = analysis.UnkContinuumCorrections!(2, chan%)   ' use continuum fluorescence correction only
+        End If
+    ElseIf UseMANAbsFlag And UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.UnkZAFCors!(1, chan%) * analysis.UnkZAFCors!(2, chan%)   ' use matrix absorption and fluorescence corrections
+        Else
+        continuum_correction!(chan%) = analysis.UnkContinuumCorrections!(1, chan%) * analysis.UnkContinuumCorrections!(2, chan%)  ' use continuum absorption and fluorescence corrections
+        End If
+    End If
 End If
 If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
-continuum_correction!(chan%) = analysis.UnkBetas!(chan%)    ' use full matrix correction for alpha factors
+continuum_correction!(chan%) = analysis.UnkBetas!(chan%)    ' use full matrix correction for alpha factors (no other choice!)
 End If
-'continuum_correction!(chan%) = analysis.UnkContinuumCorrections!(chan%)   ' continuum absorption correction from Heinrich modified by Myklebust
 
 Next chan%
 
@@ -585,7 +602,7 @@ If analysis.zbar! <= 0# Then GoTo AnalyzeWeightCorrectBadZbar
 bgdcts!(chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFitCoefficients!(2, chan%) * analysis.zbar! + analysis.MANFitCoefficients!(3, chan%) * analysis.zbar! ^ 2
 
 ' Uncorrect the calculated MAN counts for absorption of the continuum if "MANAbsCorFlags()" is true
-If UseMANAbsFlag And sample(1).MANAbsCorFlags(chan%) Then
+If sample(1).MANAbsCorFlags(chan%) Then
 
 ' De-correct MAN counts for unknown composition (see MANFitData for standard composition correction for MAN standards)
 If continuum_correction!(chan%) > 0# Then
@@ -899,7 +916,7 @@ msg$ = msg$ & Format$(Format$(RowUnkVolElDevs!(linerow%, chan%), f81$), a80$)
 Next chan%
 Call IOWriteLog(msg$)
 
-msg$ = "MAN Absorption Correction Percents:" & vbCrLf
+msg$ = "MAN Absorption/Fluorescence Correction Percents:" & vbCrLf
 For chan% = 1 To sample(1).LastElm%
 msg$ = msg$ & Format$(Format$(RowUnkMANAbsCors!(linerow%, chan%), f82$), a80$)
 Next chan%
@@ -1742,7 +1759,7 @@ Next i%
 Call IOWriteLog(msg$)
 Next j%
 
-If UseMANAbsFlag Then
+If UseMANAbsFlag Or UseMANFluFlag Then
 Call MathArrayAverage(average, RowUnkMANAbsCors!(), sample(1).Datarows%, sample(1).LastElm%, sample())
 If ierror Then Exit Sub
 msg$ = "ABS%: "
@@ -1755,6 +1772,7 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 End If
+
 End If
 End If
 

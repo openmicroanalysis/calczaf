@@ -1030,6 +1030,8 @@ Dim ip As Integer, ipp As Integer
 Dim temp As Single
 Dim tmsg As String
 
+ReDim continuum_correction(1 To MAXCHAN%) As Single
+
 ReDim stdbac(1 To MAXSET%, 1 To MAXCHAN%) As Single
 ReDim intbac(1 To MAXSET%, 1 To MAXINTF%, 1 To MAXCHAN%) As Single
 
@@ -1087,12 +1089,34 @@ stdbac(i%, chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFitCoef
 
 ' If correcting for continuum absorption, uncorrect calculated MAN counts for absorption in this
 ' standard. See "UpdateFitMAN" for absorption correction to fitted background counts.
-If UseMANAbsFlag Then
-If CorrectionFlag% = 0 Then temp! = analysis.StdZAFCors!(4, ip%, chan%)     ' use full matrix correction
-If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then temp! = analysis.StdBetas!(ip%, chan%)
-If sample(1).MANAbsCorFlags%(chan%) And temp! > 0# Then
-stdbac!(i%, chan%) = stdbac!(i%, chan%) / temp!
+If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then
+    If UseMANAbsFlag And Not UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.StdZAFCors!(1, ip%, chan%)     ' use matrix absorption correction only
+        Else
+        continuum_correction!(chan%) = analysis.StdContinuumCorrections!(1, ip%, chan%)     ' use continuum absorption correction only
+        End If
+    ElseIf Not UseMANAbsFlag And UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.StdZAFCors!(2, ip%, chan%)     ' use matrix fluorescence correction only
+        Else
+        continuum_correction!(chan%) = analysis.StdContinuumCorrections!(2, ip%, chan%)     ' use continuum fluorescence correction only
+        End If
+    ElseIf UseMANAbsFlag And UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.StdZAFCors!(1, ip%, chan%) * analysis.StdZAFCors!(2, ip%, chan%)     ' use matrix absorption and fluorescence corrections
+        Else
+        continuum_correction!(chan%) = analysis.StdContinuumCorrections!(1, ip%, chan%) * analysis.StdContinuumCorrections!(2, ip%, chan%)     ' use continuum absorption and fluorescence corrections
+        End If
+    End If
 End If
+If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
+continuum_correction!(chan%) = analysis.StdBetas!(ip%, chan%)       ' use full matrix correction for alpha factors (no other choice!)
+End If
+
+' Correct MAN continuum intensities on primary standard
+If sample(1).MANAbsCorFlags%(chan%) And continuum_correction!(chan%) > 0# Then
+stdbac!(i%, chan%) = stdbac!(i%, chan%) / continuum_correction!(chan%)
 End If
 
 ' Perform the MAN background correction to the standard drift arrays
@@ -1211,13 +1235,35 @@ If ierror Then Exit Sub
 intbac(i%, j%, chan%) = analysis.MANFitCoefficients!(1, chan%) + analysis.MANFitCoefficients!(2, chan%) * analysis.StdZbars!(intfstd%) + analysis.MANFitCoefficients!(3, chan%) * analysis.StdZbars!(intfstd%) ^ 2
 
 ' If correcting for continuum absorption, uncorrect calculated MAN counts for absorption in this
-' standard. See "UpdateFitMAN" for absorption correction to fitted background counts.
-If UseMANAbsFlag Then
-If CorrectionFlag% = 0 Then temp! = analysis.StdZAFCors!(4, intfstd%, chan%)    ' use full matrix correction
-If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then temp! = analysis.StdBetas!(intfstd%, chan%)
-If sample(1).MANAbsCorFlags%(chan%) And temp! > 0# Then
-intbac!(i%, j%, chan%) = intbac!(i%, j%, chan%) / temp!
+' interference standard. See "UpdateFitMAN" for absorption correction to fitted background counts.
+If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then
+    If UseMANAbsFlag And Not UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.StdZAFCors!(1, intfstd%, chan%)     ' use matrix absorption correction only
+        Else
+        continuum_correction!(chan%) = analysis.StdContinuumCorrections!(1, intfstd%, chan%)     ' use continuum absorption correction only
+        End If
+    ElseIf Not UseMANAbsFlag And UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.StdZAFCors!(2, intfstd%, chan%)     ' use matrix fluorescence correction only
+        Else
+        continuum_correction!(chan%) = analysis.StdContinuumCorrections!(2, intfstd%, chan%)     ' use continuum fluorescence correction only
+        End If
+    ElseIf UseMANAbsFlag And UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.StdZAFCors!(1, intfstd%, chan%) * analysis.StdZAFCors!(2, intfstd%, chan%)     ' use matrix absorption and fluorescence corrections
+        Else
+        continuum_correction!(chan%) = analysis.StdContinuumCorrections!(1, intfstd%, chan%) * analysis.StdContinuumCorrections!(2, intfstd%, chan%)     ' use continuum absorption and fluorescence corrections
+        End If
+    End If
 End If
+If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
+continuum_correction!(chan%) = analysis.StdBetas!(intfstd%, chan%)       ' use full matrix correction for alpha factors (no other choice!)
+End If
+
+' Correct interference standard for MAN background intensity
+If sample(1).MANAbsCorFlags%(chan%) And continuum_correction!(chan%) > 0# Then
+intbac!(i%, j%, chan%) = intbac!(i%, j%, chan%) / continuum_correction!(chan%)
 End If
 
 ' Perform the MAN background correction to the interference standard drift arrays
@@ -2036,7 +2082,7 @@ npts% = 0
 For i% = 1 To MAXMAN%
 If sample(1).MANStdAssigns%(i%, chan%) > 0 Then
 
-' Find MAN in standard list
+' Find MAN standard in standard list
 ip% = IPOS2(NumberofStandards%, sample(1).MANStdAssigns%(i%, chan%), StandardNumbers%())
 If ip% = 0 Then GoTo UpdateFitMANBadStandard
 
@@ -2047,14 +2093,29 @@ tydata!(npts%) = analysis.MANAssignsCounts!(i%, chan%)
 
 ' Load matrix correction from standards (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
 If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then
-continuum_correction!(npts%) = analysis.StdZAFCors!(1, ip%, chan%)     ' use absorption only correction
-'continuum_correction!(npts%) = analysis.StdZAFCors!(1, ip%, chan%) * analysis.StdZAFCors!(2, ip%, chan%)     ' use absorption and fluorescence correction only
-'continuum_correction!(npts%) = analysis.StdZAFCors!(4, ip%, chan%)     ' use full matrix correction
+    If UseMANAbsFlag And Not UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(npts%) = analysis.StdZAFCors!(1, ip%, chan%)     ' use matrix absorption correction only
+        Else
+        continuum_correction!(npts%) = analysis.StdContinuumCorrections!(1, ip%, chan%)    ' use continuum absorption correction only
+        End If
+    ElseIf Not UseMANAbsFlag And UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(npts%) = analysis.StdZAFCors!(2, ip%, chan%)     ' use matrix fluorescence correction only
+        Else
+        continuum_correction!(npts%) = analysis.StdContinuumCorrections!(2, ip%, chan%)    ' use continuum fluorescence correction only
+        End If
+    ElseIf UseMANAbsFlag And UseMANFluFlag Then
+        If Not UseContinuumAbsFluCalculationsFlag Then
+        continuum_correction!(npts%) = analysis.StdZAFCors!(1, ip%, chan%) * analysis.StdZAFCors!(2, ip%, chan%)     ' use matrix absorption and fluorescence corrections
+        Else
+        continuum_correction!(npts%) = analysis.StdContinuumCorrections!(1, ip%, chan%) * analysis.StdContinuumCorrections!(2, ip%, chan%)     ' use continuum absorption and fluorescence corrections
+        End If
+    End If
 End If
 If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
-continuum_correction!(npts%) = analysis.StdBetas!(ip%, chan%)      ' use full matrix correction for alpha factors
+continuum_correction!(npts%) = analysis.StdBetas!(ip%, chan%)      ' use full matrix correction for alpha factors (no other choice!)
 End If
-'continuum_correction!(npts%) = analysis.StdContinuumCorrections!(ip%, chan%)    ' continuum absorption correction from Heinrich modified by Myklebust
 
 End If
 Next i%
@@ -2093,13 +2154,11 @@ Call IOWriteLog(msg$)
 End If
 
 ' Correct MAN count data for matrix correction of each standard
-If UseMANAbsFlag Then
 For i% = 1 To npts%
 If sample(1).MANAbsCorFlags%(chan%) And continuum_correction!(i%) <> 0# Then
 tydata!(i%) = tydata!(i%) * continuum_correction!(i%)
 End If
 Next i%
-End If
 
 ' Debug
 If DebugMode Then

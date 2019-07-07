@@ -131,12 +131,16 @@ analysis.AtomicWeight! = analysis.AtomicWeight! + sample(1).AtomicWts!(chan%) * 
 End If
 Next chan%
 
-' New code for MAN Zbar???
-'Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWeights!(), analysis.WtPercents!(), atomfrac!())
-'If ierror Then Exit Sub
+' New code for Z fraction MAN Zbar??? (see also subroutine MANLoad for MAN plot calculations)
+If UseZFractionZbarCalculationsFlag Then
+Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWeights!(), analysis.WtPercents!(), atomfrac!())
+If ierror Then Exit Sub
 'Call ZAFCalculateZbarFrac(sample(1).LastChan%, atomfrac!(), sample(1).AtomicNums%(), CSng(1#), zbar!)
 'If ierror Then Exit Sub
-'analysis.zbar = zbar!
+Call ZAFCalculateZbarFrac(sample(1).LastChan%, atomfrac!(), sample(1).AtomicNums%(), CSng(0.7), zbar!)
+If ierror Then Exit Sub
+analysis.zbar = zbar!
+End If
 End If
 
 ' Calculate Excess Oxygen
@@ -841,7 +845,7 @@ Exit Sub
 End Sub
 
 Sub ZAFCalculateZbarFrac(lchan As Integer, atomfrac() As Single, atomnums() As Integer, exponent As Single, zbar As Single)
-' Calculate a Z bar based on passed data
+' Calculate a Z fraction Zbar based on passed data
 '  lchan = number of elements in arrays
 '  atomfrac = atomic fractions
 '  atomnums = atomic numbers

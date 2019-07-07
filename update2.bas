@@ -281,7 +281,7 @@ Call IOWriteLog("UpdateCalculate2: Standard " & Format$(num%) & " " & StandardNa
 For i% = 1 To sample(1).LastElm%
 ip% = IPOS14(i%, sample(), UpdateStdSample())  ' check element, xray, take-off and kilovolts (only one element will qualify at a time)
 If ip% > 0 Then
-msg$ = UpdateStdSample(1).Elsyms$(ip%) & " " & UpdateStdSample(1).Xrsyms$(ip%) & ", " & Format$(UpdateStdSample(1).TakeoffArray!(ip%)) & " " & Format$(UpdateStdSample(1).KilovoltsArray!(ip%)) & ", " & Format$(UpdateStdSample(1).ElmPercents!(ip%)) & ", " & Format$(analysis.StdZAFCors!(1, row%, ip%))
+msg$ = UpdateStdSample(1).Elsyms$(ip%) & " " & UpdateStdSample(1).Xrsyms$(ip%) & ", " & Format$(UpdateStdSample(1).TakeoffArray!(ip%)) & " " & Format$(UpdateStdSample(1).KilovoltsArray!(ip%)) & ", " & Format$(UpdateStdSample(1).ElmPercents!(ip%)) & ", " & Format$(analysis.StdZAFCors!(1, row%, ip%)) & ", " & Format$(analysis.StdContinuumCorrections!(1, row%, ip%)) & ", " & Format$(analysis.StdContinuumCorrections!(2, row%, ip%))
 Call IOWriteLog(msg$)
 End If
 Next i%

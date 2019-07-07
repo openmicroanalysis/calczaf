@@ -711,7 +711,7 @@ Type TypeAnalysis
         
     StdPercents() As Single     ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
     StdZbars(1 To MAXSTD%) As Single
-    StdContinuumCorrections() As Single   ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
+    StdContinuumCorrections() As Single   ' allocated in InitStandards (1 to 2, 1 To MAXSTD%, 1 To MAXCHAN%) (1 = absorption, 2 = fluorescence)
     StdMACs() As Single         ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
     
     StdAssignsCounts(1 To MAXCHAN%) As Single
@@ -746,7 +746,7 @@ Type TypeAnalysis
     MANAssignsCountTimes() As Single     ' allocated in InitStandards (1 To MAXMAN%, 1 To MAXCHAN%)
     MANAssignsBeamCurrents() As Single   ' allocated in InitStandards (1 To MAXMAN%, 1 To MAXCHAN%)
 
-    UnkContinuumCorrections(1 To MAXCHAN%) As Single      ' continuum correction for unknown
+    UnkContinuumCorrections(1 To 2, 1 To MAXCHAN%) As Single      ' continuum corrections for unknown (1 = absorption, 2 = fluorescence)
 
     SampleIsAnalyzed As Boolean
 End Type
@@ -2974,3 +2974,9 @@ Global CalculatePhiRhoZPlotCurves As Boolean        ' used in CalcZAF
 Global UserSpecifiedOutputChemAgeFlag As Boolean
 
 Global SkipOutputEDSIntensitiesDuringAutomation As Boolean
+
+Global UseMANFluFlag As Integer                     ' MAN fluorescence correction flag
+
+Global UseZFractionZbarCalculationsFlag As Boolean
+Global UseContinuumAbsFluCalculationsFlag As Boolean
+

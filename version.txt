@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/06/19	Modify code for MAN continuum correction to utilize absorption or fluorescence or both (or none).
+v. 12.6.5	Add new flag for MAN continuum fluorescence correction (default = not enabled). Also add new code
+		and empty procedures for future more rigorous continuum absorption and fluorescence corrections.
+
 07/05/19	Modify MAN continuum correction code (Hailfer and B. Wade).
 
 07/04/19	Modify plot wavescan code to handle wavescans that have EDS elements when selecting first elements to plot

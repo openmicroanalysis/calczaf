@@ -2907,17 +2907,17 @@ End If
 UseMACFlag = False      ' don't use empirical MACs as default
 UseAPFFlag = False      ' don't use empirical APFs as default
 
-UseInterfFlag = False    ' don't use interference correction as default
-UseVolElFlag = False    ' don't use volatile element correction as default
-UseVolElType% = 0    ' use linear as default
-UseMANAbsFlag = True    ' use MAN continuum absorption as default
-UseDetailedFlag = True    ' use extra printout as default
-UseDriftFlag = True    ' use standard drift correction as default
-UseBlankCorFlag = False  ' don't use blank trace correction as default
+UseInterfFlag = False       ' don't use interference correction as default
+UseVolElFlag = False        ' don't use volatile element correction as default
+UseVolElType% = 0           ' use linear as default
+UseMANAbsFlag = True        ' use MAN continuum absorption as default
+UseDetailedFlag = True      ' use extra printout as default
+UseDriftFlag = True         ' use standard drift correction as default
+UseBlankCorFlag = False     ' don't use blank trace correction as default
 
-UseOffPeakElementsForMANFlag = False    ' don't use off-peak samples in MAN fits as default
+UseOffPeakElementsForMANFlag = False     ' don't use off-peak samples in MAN fits as default
 UseMANForOffPeakElementsFlag = False     ' don't use MAN correction on off-peak samples as default
-UseBeamDriftCorrectionFlag = True       ' use beam drift correction
+UseBeamDriftCorrectionFlag = True        ' use beam drift correction
 If UCase$(app.EXEName) = UCase$("Probewin") Then UseDeadtimeCorrectionFlag = True        ' use deadtime correction for ProbeWin only by default
 
 AcquisitionOrderFlag = 0
@@ -2926,7 +2926,7 @@ ReturnToOnPeakFlag = True
 UseQuickStandardsFlag = False
 
 PeakCenterMethodFlag = DefaultPeakCenterMethod% ' from INI file (0 = interval halving, 1 = parabolic, 2 = ROM, 3 = manual)
-PeakCenterPreScanFlag = False   ' default is no peaking prescan
+PeakCenterPreScanFlag = False    ' default is no peaking prescan
 PeakCenterPostScanFlag = False   ' default is no peaking postscan
 
 SyncSpecMotionBeamBlankFlag = False
@@ -3380,6 +3380,11 @@ SkipPeakingJustDoPHAFlag% = 0
 ModelPeakingFitType% = 0                                           ' model bgds centroid fit default is none
 
 SkipOutputEDSIntensitiesDuringAutomation = False                   ' allow output of EDS net intensities during automated acquisition
+
+UseMANFluFlag = 0                                                  ' default is do not correct MAN curves for continuum fluorescence
+
+UseZFractionZbarCalculationsFlag = False
+UseContinuumAbsFluCalculationsFlag = False
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
