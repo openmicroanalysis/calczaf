@@ -3385,6 +3385,7 @@ UseMANFluFlag = 0                                                  ' default is 
 
 UseZFractionZbarCalculationsFlag = False
 UseContinuumAbsFluCalculationsFlag = False
+ZFractionZbarCalculationsExponent! = 0.7
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

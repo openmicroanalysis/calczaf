@@ -2979,4 +2979,4 @@ Global UseMANFluFlag As Integer                     ' MAN fluorescence correctio
 
 Global UseZFractionZbarCalculationsFlag As Boolean
 Global UseContinuumAbsFluCalculationsFlag As Boolean
-
+Global ZFractionZbarCalculationsExponent As Single

@@ -7,13 +7,13 @@ Begin VB.Form FormANALYZE
    ClientHeight    =   5745
    ClientLeft      =   -15
    ClientTop       =   270
-   ClientWidth     =   6225
+   ClientWidth     =   6510
    Icon            =   "ANALYZE3.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   5745
-   ScaleWidth      =   6225
+   ScaleWidth      =   6510
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
    Begin MSFlexGridLib.MSFlexGrid GridData 
@@ -144,8 +144,8 @@ Begin VB.Form FormANALYZE
       Left            =   0
       TabIndex        =   0
       Top             =   5490
-      Width           =   6225
-      _ExtentX        =   10980
+      Width           =   6510
+      _ExtentX        =   11483
       _ExtentY        =   450
       SimpleText      =   ""
       _Version        =   327682
@@ -153,7 +153,7 @@ Begin VB.Form FormANALYZE
          NumPanels       =   3
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
-            Object.Width           =   7329
+            Object.Width           =   7832
             TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""
@@ -188,6 +188,16 @@ Begin VB.Form FormANALYZE
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+   End
+   Begin VB.Label LabelZBarText 
+      Appearance      =   0  'Flat
+      Caption         =   "Z - Bar"
+      ForeColor       =   &H80000008&
+      Height          =   255
+      Left            =   4920
+      TabIndex        =   19
+      Top             =   4440
+      Width           =   1335
    End
    Begin VB.Label LabelDataType 
       ForeColor       =   &H00FF0000&
@@ -267,7 +277,7 @@ End Sub
 
 Private Sub StatusBarAnal_PanelClick(ByVal Panel As ComctlLib.Panel)
 If Not DebugMode Then On Error Resume Next
-Select Case Panel.key
+Select Case Panel.Key
 Case "status"
     Exit Sub
 Case "cancel"

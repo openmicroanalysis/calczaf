@@ -135,9 +135,7 @@ Next chan%
 If UseZFractionZbarCalculationsFlag Then
 Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWeights!(), analysis.WtPercents!(), atomfrac!())
 If ierror Then Exit Sub
-'Call ZAFCalculateZbarFrac(sample(1).LastChan%, atomfrac!(), sample(1).AtomicNums%(), CSng(1#), zbar!)
-'If ierror Then Exit Sub
-Call ZAFCalculateZbarFrac(sample(1).LastChan%, atomfrac!(), sample(1).AtomicNums%(), CSng(0.7), zbar!)
+Call ZAFCalculateZbarFrac(sample(1).LastChan%, atomfrac!(), sample(1).AtomicNums%(), ZFractionZbarCalculationsExponent, zbar!)
 If ierror Then Exit Sub
 analysis.zbar = zbar!
 End If
@@ -214,7 +212,13 @@ On Error GoTo ZAFCalZbarLoadTextError
 ' Load the text fields
 tForm.LabelTotal.Caption = Format$(Format$(analysis.TotalPercent!, f83), a80$)
 tForm.LabelAtomic.Caption = Format$(Format$(analysis.AtomicWeight!, f83), a80$)
+
 tForm.LabelZbar.Caption = Format$(Format$(analysis.zbar!, f83), a80$)
+If Not UseZFractionZbarCalculationsFlag Then
+tForm.LabelZBarText.Caption = "Z - Bar"
+Else
+tForm.LabelZBarText.Caption = "Z - Bar (Z Frac.)"
+End If
 
 ' Special for Oxide standards
 tForm.LabelCalculated.Caption = Format$(Format$(analysis.CalculatedOxygen!, f83), a80$)
