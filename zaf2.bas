@@ -122,16 +122,16 @@ End If
 analysis.TotalCations! = total_cations!
 analysis.totalatoms! = total_atoms!
 
-' Calculate zbar and average atomic weight
+' Calculate average atomic weight and Z-bar
 If analysis.TotalPercent! <> 0# And sum_atoms! <> 0# Then
 For chan% = 1 To sample(1).LastChan%
 If sample(1).DisableQuantFlag%(chan%) = 0 Or (sample(1).DisableQuantFlag%(chan%) = 1 And sample(1).OxideOrElemental% = 1 And sample(1).OxygenChannel% = chan%) Then
-analysis.zbar! = analysis.zbar! + sample(1).AtomicNums%(chan%) * analysis.WtPercents!(chan%) / analysis.TotalPercent!
 analysis.AtomicWeight! = analysis.AtomicWeight! + sample(1).AtomicWts!(chan%) * atoms!(chan%) / sum_atoms!
+analysis.zbar! = analysis.zbar! + sample(1).AtomicNums%(chan%) * analysis.WtPercents!(chan%) / analysis.TotalPercent!   ' mass fraction Z-bar
 End If
 Next chan%
 
-' New code for Z fraction MAN Zbar??? (see also subroutine MANLoad for MAN plot calculations)
+' New code for Z fraction Z-bar (see also subroutine MANCalculateZbars for MAN plot calculations)
 If UseZFractionZbarCalculationsFlag Then
 Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWeights!(), analysis.WtPercents!(), atomfrac!())
 If ierror Then Exit Sub
@@ -215,9 +215,9 @@ tForm.LabelAtomic.Caption = Format$(Format$(analysis.AtomicWeight!, f83), a80$)
 
 tForm.LabelZbar.Caption = Format$(Format$(analysis.zbar!, f83), a80$)
 If Not UseZFractionZbarCalculationsFlag Then
-tForm.LabelZBarText.Caption = "Z - Bar"
+tForm.LabelZBarText.Caption = "Z-Bar (mass frac.)"
 Else
-tForm.LabelZBarText.Caption = "Z - Bar (Z Frac.)"
+tForm.LabelZBarText.Caption = "Z-Bar (Z frac.)"
 End If
 
 ' Special for Oxide standards

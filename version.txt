@@ -2,11 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+7/10/19		Modify code to remove continuum fluorescence code (not needed). Modify MAN dialog.
+v. 12.6.8
+
 07/08/19	Move Z frac and continuum options to MAN dialog. Fix bug in Standard for zbar label.
 v. 12.6.7
 
 07/07/19	Further modifications for output of new MAN fit parameters and save to MDB file.
-v.12.6.6
+v. 12.6.6
 
 07/06/19	Modify code for MAN continuum correction to utilize absorption or fluorescence or both (or none).
 v. 12.6.5	Add new flag for MAN continuum fluorescence correction (default = not enabled). Also add new code

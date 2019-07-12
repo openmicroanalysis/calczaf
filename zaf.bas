@@ -1409,8 +1409,7 @@ ReDim ZAFDiff(1 To MAXCHAN1%) As Single
 ReDim unkcnts(1 To MAXCHAN1%) As Single
 ReDim stdcnts(1 To MAXCHAN1%) As Single
 
-ReDim continuum_correction1(1 To MAXCHAN1%) As Single    ' for MAN continuum absorption corrections
-ReDim continuum_correction2(1 To MAXCHAN1%) As Single    ' for MAN continuum fluorescence corrections
+ReDim continuum_correction(1 To MAXCHAN1%) As Single    ' for MAN continuum absorption corrections
 
 MaxZAFIter% = 100
 ZAFMinTotal! = 0.001 ' in weight fraction
@@ -2165,17 +2164,12 @@ End If
 
 Next i%
 
-' Load continuum absorption corrections for this sample (not currently utilized)
-Call ZAFGetContinuumAbsorption(continuum_correction1!(), zaf)
-If ierror Then Exit Sub
-
-' Load continuum fluorescence corrections for this sample (not currently utilized)
-Call ZAFGetContinuumFluorescence(continuum_correction2!(), zaf)
+' Load continuum absorption corrections for this sample
+Call ZAFGetContinuumAbsorption(continuum_correction!(), zaf)
 If ierror Then Exit Sub
 
 For i% = 1 To sample(1).LastElm%
-analysis.UnkContinuumCorrections!(1, i%) = continuum_correction1!(i%)
-analysis.UnkContinuumCorrections!(2, i%) = continuum_correction2!(i%)
+analysis.UnkContinuumCorrections!(i%) = continuum_correction!(i%)
 Next i%
 
 ' Load element by difference
@@ -2461,8 +2455,7 @@ Dim tt As Single
 Dim astring As String
 
 ReDim p2(1 To MAXCHAN1%) As Single
-ReDim continuum_correction1(1 To MAXCHAN1%) As Single
-ReDim continuum_correction2(1 To MAXCHAN1%) As Single
+ReDim continuum_correction(1 To MAXCHAN1%) As Single
 
 ' Initialize arrays
 For i% = 1 To MAXCHAN1%
@@ -2863,19 +2856,14 @@ End If
 Next i%
 
 ' Load continuum absorption corrections for this standard (not currently utilized)
-Call ZAFGetContinuumAbsorption(continuum_correction1!(), zaf)
-If ierror Then Exit Sub
-
-' Load continuum fluorescence corrections for this standard (not currently utilized)
-Call ZAFGetContinuumFluorescence(continuum_correction2!(), zaf)
+Call ZAFGetContinuumAbsorption(continuum_correction!(), zaf)
 If ierror Then Exit Sub
 
 For i% = 1 To sample(1).LastChan%
 ip% = IPOS14(i%, sample(), stdsample())  ' check element, xray, take-off and kilovolts for loading standard continuum corrections
 If ip% = 0 Then GoTo 8600
 If i% <= sample(1).LastElm% Then
-analysis.StdContinuumCorrections!(1, row%, i%) = continuum_correction1!(ip%)
-analysis.StdContinuumCorrections!(2, row%, i%) = continuum_correction2!(ip%)
+analysis.StdContinuumCorrections!(row%, i%) = continuum_correction!(ip%)
 End If
 8600:
 Next i%

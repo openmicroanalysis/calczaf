@@ -536,23 +536,11 @@ uncts!(chan%) = sample(1).CorData!(linerow%, chan%)
 
 ' Load matrix corrections for MAN continuum corrections
 If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then
-    If UseMANAbsFlag And Not UseMANFluFlag Then
-        If Not UseContinuumAbsFluCalculationsFlag Then
-        continuum_correction!(chan%) = analysis.UnkZAFCors!(1, chan%)   ' use matrix absorption correction only
+    If UseMANAbsFlag Then
+        If Not UseContinuumAbsCalculationsFlag Then
+        continuum_correction!(chan%) = analysis.UnkZAFCors!(1, chan%)   ' use matrix absorption correction
         Else
-        continuum_correction!(chan%) = analysis.UnkContinuumCorrections!(1, chan%)   ' use continuum absorption correction only
-        End If
-    ElseIf Not UseMANAbsFlag And UseMANFluFlag Then
-        If Not UseContinuumAbsFluCalculationsFlag Then
-        continuum_correction!(chan%) = analysis.UnkZAFCors!(2, chan%)   ' use matrix fluorescence correction only
-        Else
-        continuum_correction!(chan%) = analysis.UnkContinuumCorrections!(2, chan%)   ' use continuum fluorescence correction only
-        End If
-    ElseIf UseMANAbsFlag And UseMANFluFlag Then
-        If Not UseContinuumAbsFluCalculationsFlag Then
-        continuum_correction!(chan%) = analysis.UnkZAFCors!(1, chan%) * analysis.UnkZAFCors!(2, chan%)   ' use matrix absorption and fluorescence corrections
-        Else
-        continuum_correction!(chan%) = analysis.UnkContinuumCorrections!(1, chan%) * analysis.UnkContinuumCorrections!(2, chan%)  ' use continuum absorption and fluorescence corrections
+        continuum_correction!(chan%) = analysis.UnkContinuumCorrections!(chan%)   ' use Heinrich/Myklebust continuum absorption correction
         End If
     End If
 End If
@@ -1759,7 +1747,7 @@ Next i%
 Call IOWriteLog(msg$)
 Next j%
 
-If UseMANAbsFlag Or UseMANFluFlag Then
+If UseMANAbsFlag Then
 Call MathArrayAverage(average, RowUnkMANAbsCors!(), sample(1).Datarows%, sample(1).LastElm%, sample())
 If ierror Then Exit Sub
 msg$ = "ABS%: "

@@ -3381,10 +3381,8 @@ ModelPeakingFitType% = 0                                           ' model bgds 
 
 SkipOutputEDSIntensitiesDuringAutomation = False                   ' allow output of EDS net intensities during automated acquisition
 
-UseMANFluFlag = 0                                                  ' default is do not correct MAN curves for continuum fluorescence
-
 UseZFractionZbarCalculationsFlag = False
-UseContinuumAbsFluCalculationsFlag = False
+UseContinuumAbsCalculationsFlag = False                            ' if true use Hienrich/Myklebust continuum absorption correction
 ZFractionZbarCalculationsExponent! = 0.7
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)

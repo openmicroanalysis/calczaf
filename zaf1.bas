@@ -907,37 +907,6 @@ Exit Sub
 
 End Sub
 
-Sub ZAFGetContinuumFluorescence(continuum_fluorescence() As Single, zaf As TypeZAF)
-' Calculate continuum fluorescence correction for all emitters
-
-ierror = False
-On Error GoTo ZAFGetContinuumFluorescenceError
-
-Dim i As Integer
-
-' Calculate standard (pure element) fluorescence
-
-
-' Calculate sample fluorescence
-
-
-' Create continuum fluorescence correction factors
-For i% = 1 To zaf.in1%
-If zaf.il%(i%) <= MAXRAY% - 1 Then
-continuum_fluorescence!(i%) = 1#                            ' just until code is written
-End If
-Next i%
-
-Exit Sub
-
-' Errors
-ZAFGetContinuumFluorescenceError:
-MsgBox Error$, vbOKOnly + vbCritical, "ZAFGetContinuumFluorescence"
-ierror = True
-Exit Sub
-
-End Sub
-
 Function ZAFFNLint(X9 As Single) As Single
 'LOGARITHMIC INTEGRAL CALCULATION FUNCTION
 

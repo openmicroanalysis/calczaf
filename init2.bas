@@ -670,7 +670,7 @@ ReDim analysis.CalData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
 ReDim analysis.StdZAFCors(1 To MAXZAFCOR%, 1 To MAXSTD%, 1 To MAXCHAN%) As Single
 
 ReDim analysis.StdBetas(1 To MAXSTD%, 1 To MAXCHAN%) As Single
-ReDim analysis.StdContinuumCorrections(1 To 2, 1 To MAXSTD%, 1 To MAXCHAN%) As Single
+ReDim analysis.StdContinuumCorrections(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdMACs(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdPercents(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 
@@ -697,15 +697,11 @@ analysis.StdAssignsActualKilovolts(i%) = 0#
 analysis.StdAssignsEdgeEnergies(i%) = 0#
 analysis.StdAssignsActualOvervoltages(i%) = 0#
 
-For j% = 1 To 2
-analysis.UnkContinuumCorrections!(j%, i%) = 0#
-Next j%
+analysis.UnkContinuumCorrections!(i%) = 0#
 
 For j% = 1 To MAXSTD%
 analysis.StdPercents!(j%, i%) = 0#
-For k% = 1 To 2
-analysis.StdContinuumCorrections!(k%, j%, i%) = 0#
-Next k%
+analysis.StdContinuumCorrections!(j%, i%) = 0#
 analysis.StdMACs!(j%, i%) = 0#
 
 For k% = 1 To MAXZAFCOR%
