@@ -2,7 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-7/10/19		Modify code to remove continuum fluorescence code (not needed). Modify MAN dialog.
+07/25/19	Compile with v. 2.46 OMNI Driver from Ocean Optics (07/25/2019) for Win10 compatibility.
+v. 12.6.9	This requires all CL interface users to uninstall v. 2.38 of the OMNI driver and install
+		v. 2.46 of thye OMNI driver.
+
+07/18/19	Improve date/time output for ConvertToPrbImg app (Poeml).
+
+07/10/19	Modify code to remove continuum fluorescence code (not needed). Modify MAN dialog.
 v. 12.6.8
 
 07/08/19	Move Z frac and continuum options to MAN dialog. Fix bug in Standard for zbar label.
