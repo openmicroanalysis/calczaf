@@ -1409,6 +1409,8 @@ ReDim ZAFDiff(1 To MAXCHAN1%) As Single
 ReDim unkcnts(1 To MAXCHAN1%) As Single
 ReDim stdcnts(1 To MAXCHAN1%) As Single
 
+ReDim atomfracs(1 To MAXCHAN%) As Single
+
 ReDim continuum_correction(1 To MAXCHAN1%) As Single    ' for MAN continuum absorption corrections
 
 MaxZAFIter% = 100
@@ -2002,25 +2004,6 @@ End If
 End If
 Next i%
 zaf.ksum! = 1#
-
-'If DebugMode Then
-'msg$ = "ELEMENT "
-'For i% = 1 To sample(1).LastChan%
-'msg$ = msg$ & Format$(sample(1).Elsyms$(i%) & " " & sample(1).Xrsyms$(i%), a80$)
-'Next i%
-'Call IOWriteLog(msg$)
-'msg$ = "UNKRAT: "
-'For i% = 1 To sample(1).LastChan%
-'msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84), a80$)
-'Next i%
-'Call IOWriteLog(msg$)
-'msg$ = "Conc*100"
-'For i% = 1 To sample(1).LastChan%
-'msg$ = msg$ & Format$(Format$(100# * zaf.conc!(i%), f84), a80$)
-'Next i%
-'Call IOWriteLog(msg$)
-'End If
-
 End If
 
 ' Normalize and check for convergence
@@ -2032,9 +2015,10 @@ If zaf.conc!(i%) > ZAFMinToler! And ZAFDiff!(i%) > zaf.conc!(i%) / 1000# Then r0
 zaf.conc!(i%) = r1!(i%)
 Next i%
 
-' Print out normalized concentrations for each iteration
+' Print out normalized concentrations for each iteration if verbose mode
 If VerboseMode Then
-msg$ = vbCrLf & "NORMELEM"
+Call IOWriteLog(vbCrLf & "ZAFSmp: Iteration #" & Format$(zaf.iter%))
+msg$ = "Norm Wt%"
 For i% = 1 To zaf.in0%
 If zaf.il%(i%) > 0 And zaf.il%(i%) < MAXRAY% Then
 msg$ = msg$ & Format$(Symlo$(zaf.Z%(i%)) & " " & Xraylo$(zaf.il%(i%)), a80$)
@@ -2042,15 +2026,31 @@ Else
 msg$ = msg$ & Format$(Symlo$(zaf.Z%(i%)) & " (" & Format$(zaf.il%(i%)) & ")", a80$)
 End If
 Next i%
+msg$ = msg$ & Format$("UnNorm Sum", a80$)
+Call IOWriteLog(msg$)
+msg$ = "UNKRAT: "
+For i% = 1 To sample(1).LastChan%
+msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84), a80$)
+Next i%
 Call IOWriteLog(msg$)
 msg$ = "Conc*100"
 For i% = 1 To zaf.in0%
 msg$ = msg$ & MiscAutoFormat$(100# * zaf.conc!(i%))
 Next i%
+msg$ = msg$ & Format$(Format$(100# * zaf.ksum!, f83), a80$)
+Call IOWriteLog(msg$)
+
+Call ConvertWeightToAtomic(zaf.in0%, zaf.atwts!(), zaf.conc!(), atomfracs!())
+If ierror Then Exit Sub
+
+msg$ = "AtomFrac"
+For i% = 1 To zaf.in0%
+msg$ = msg$ & MiscAutoFormat$(100# * atomfracs!(i%))
+Next i%
 Call IOWriteLog(msg$)
 End If
 
-' If DebugMode and VerboseMode print out intermediate calculations
+' If DebugMode and VerboseMode print out matrix corrections
 If DebugMode And VerboseMode Then
 Call IOWriteLog(vbCrLf & "ZAFSmp: Iteration #" & Format$(zaf.iter%))
 msg$ = "ELEMENT "

@@ -2,9 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/31/19	Add more VerboseMode output in ZAFSmp.
+
 07/25/19	Compile with v. 2.46 OMNI Driver from Ocean Optics (07/25/2019) for Win10 compatibility.
 v. 12.6.9	This requires all CL interface users to uninstall v. 2.38 of the OMNI driver and install
-		v. 2.46 of thye OMNI driver.
+		v. 2.46 of the OMNI driver.
 
 07/18/19	Improve date/time output for ConvertToPrbImg app (Poeml).
 

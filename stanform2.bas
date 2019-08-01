@@ -25,6 +25,7 @@ Dim evezbar As Single    ' Everhart, Danguy and Quivy
 Dim donozbar As Single   ' Donovan (for continuum)
 Dim donob65zbar As Single  ' Donovan (for backscatter)
 Dim donob70zbar As Single  ' Donovan (for backscatter)
+Dim donob707zbar As Single  ' Donovan (for backscatter)
 Dim donob80zbar As Single  ' Donovan (for backscatter)
 Dim donob85zbar As Single  ' Donovan (for backscatter)
 Dim donob90zbar As Single  ' Donovan (for backscatter)
@@ -135,6 +136,8 @@ Call StanFormCalculateZbarFrac(Int(0), sample(1).LastChan%, atmfrac!(), sample(1
 If ierror Then Exit Sub
 Call StanFormCalculateZbarFrac(Int(0), sample(1).LastChan%, atmfrac!(), sample(1).AtomicNums%(), sample(1).AtomicNums%(), atemp2!(), 0.7!, masfrac!(), donob70zbar!)
 If ierror Then Exit Sub
+Call StanFormCalculateZbarFrac(Int(0), sample(1).LastChan%, atmfrac!(), sample(1).AtomicNums%(), sample(1).AtomicNums%(), atemp2!(), 0.707!, masfrac!(), donob707zbar!)
+If ierror Then Exit Sub
 Call StanFormCalculateZbarFrac(Int(0), sample(1).LastChan%, atmfrac!(), sample(1).AtomicNums%(), sample(1).AtomicNums%(), atemp2!(), 0.8!, masfrac!(), donob80zbar!)
 If ierror Then Exit Sub
 Call StanFormCalculateZbarFrac(Int(0), sample(1).LastChan%, atmfrac!(), sample(1).AtomicNums%(), sample(1).AtomicNums%(), atemp2!(), 0.85!, masfrac!(), donob85zbar!)
@@ -225,6 +228,7 @@ Call IOWriteLog(vbNullString)
 Call IOWriteLog("Zbar (Donovan Z^0.5 for continuum) = " & MiscAutoFormat$(donozbar!))
 Call IOWriteLog("Zbar (Donovan Z^0.65 for backscatter) = " & MiscAutoFormat$(donob65zbar!))
 Call IOWriteLog("Zbar (Donovan Z^0.70 for backscatter) = " & MiscAutoFormat$(donob70zbar!))
+Call IOWriteLog("Zbar (Donovan Z^0.707 for backscatter) = " & MiscAutoFormat$(donob707zbar!))
 Call IOWriteLog("Zbar (Donovan Z^0.80 for backscatter) = " & MiscAutoFormat$(donob80zbar!))
 Call IOWriteLog("Zbar (Donovan Z^0.85 for backscatter) = " & MiscAutoFormat$(donob85zbar!))
 Call IOWriteLog("Zbar (Donovan Z^0.90 for backscatter) = " & MiscAutoFormat$(donob90zbar!))
@@ -258,7 +262,7 @@ Exit Sub
 
 End Sub
 
-Sub StanFormCalculateZbarFrac(mode As Integer, lchan As Integer, atomfrac() As Single, atomnums() As Integer, zdata1() As Integer, zdata2() As Single, exponent As Single, fracdata() As Single, Zbar As Single)
+Sub StanFormCalculateZbarFrac(mode As Integer, lchan As Integer, atomfrac() As Single, atomnums() As Integer, zdata1() As Integer, zdata2() As Single, exponent As Single, fracdata() As Single, zbar As Single)
 ' Calculate a Z bar based on passed data (integer)
 '  mode = 0 for use integer zdata or 1 for use real zdata
 '  lchan = number of elements in arrays
@@ -297,9 +301,9 @@ End If
 Next i%
 
 ' Calculate Z bar
-Zbar! = 0
+zbar! = 0
 For i% = 1 To lchan%
-Zbar! = Zbar! + fracdata!(i%) * atomnums%(i%)
+zbar! = zbar! + fracdata!(i%) * atomnums%(i%)
 Next i%
 
 Exit Sub
