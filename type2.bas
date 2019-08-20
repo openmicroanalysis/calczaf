@@ -392,7 +392,14 @@ Call IOWriteLog(msg$)
 End If
 
 If sample(1).RelativeElementFlag% Then
-msg$ = "Element " & MiscAutoUcase$(sample(1).RelativeElement$) & " is Calculated " & Str$(sample(1).RelativeRatio!) & " Atoms Relative To 1.0 Atom of " & MiscAutoUcase$(sample(1).RelativeToElement$)
+msg$ = "Element " & MiscAutoUcase$(sample(1).RelativeElement$) & " is calculated " & Str$(sample(1).RelativeRatio!) & " Atoms Relative To 1.0 Atom of " & MiscAutoUcase$(sample(1).RelativeToElement$)
+Call IOWriteLog(msg$)
+End If
+
+If sample(1).FerrousFerricCalculationFlag Then
+msg$ = "Excess Oxygen From Ferric Iron Calculated and Included in the Matrix Correction"
+Call IOWriteLog(msg$)
+msg$ = "Charge Balance Method of Droop (1987), Total Cations= " & MiscAutoFormat4$(sample(1).FerrousFerricTotalCations!) & ", Total Oxygens= " & MiscAutoFormat4$(sample(1).FerrousFerricTotalOxygens!)
 Call IOWriteLog(msg$)
 End If
 

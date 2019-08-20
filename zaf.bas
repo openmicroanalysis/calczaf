@@ -936,6 +936,13 @@ Exit Sub
 m5! = 0#
 m6! = 0#
 For i% = 1 To zaf.in0%
+
+' Add check for negative concentrations to avoid problems with jbar calculation below
+If zaf.conc!(i%) < NOT_ANALYZED_VALUE_SINGLE! / 100# Then
+'GoTo ZAFMipBadJbar                                             ' commented out to just exit instead of error message (added 08/18/2019 for Buse)
+Exit Sub
+End If
+
 m5! = m5! + zaf.conc!(i%) * zaf.Z%(i%) / zaf.atwts!(i%)
 m6! = m6! + zaf.conc!(i%) * zaf.Z%(i%) * Log(jm!(i%)) / zaf.atwts!(i%)
 Next i%
@@ -1106,8 +1113,13 @@ zz! = zz! / pp!
 aa! = aa! / pp!
 m7! = ZAFMACCal(i%, zaf)    ' load sample MAC
 
+' Check zz! parameter to avoid negative Exp() term in ZAFMip2
+If zz! < 0# Then
+'GoTo ZAFPhiCalBadZZ                ' commented out to just exit instead of error message (added 08/18/2019 for Buse)
+Exit Sub
+End If
+
 ' Calculate mean ionization for sample
-If zz! < 0# Then GoTo ZAFPhiCalBadZZ
 Call ZAFMip2(i%, zz!, ww!)
 If ierror Then Exit Sub
 
@@ -1402,6 +1414,9 @@ Dim ZAFMinTotal  As Single, ZAFMinToler As Single
 Dim i7 As Integer, i8 As Integer
 Dim temp As Single, oxygen As Single
 Dim astring As String
+
+Dim tFerricToTotalIronRatio As Single, tFerricOxygen As Single
+Dim tFe_as_FeO As Single, tFe_as_Fe2O3 As Single
 
 ReDim r1(1 To MAXCHAN1%) As Single
 ReDim ZAFDiff(1 To MAXCHAN1%) As Single
@@ -1932,7 +1947,17 @@ r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
 Next i%
 
 ' Calculate equivalent oxygen from halogens and subtract from calculated oxygen if flagged
-If UseOxygenFromHalogensCorrectionFlag Then r1!(zaf.in0%) = r1!(zaf.in0%) - ConvertHalogensToOxygen(zaf.in1%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), r1!())
+If UseOxygenFromHalogensCorrectionFlag Then
+r1!(zaf.in0%) = r1!(zaf.in0%) - ConvertHalogensToOxygen(zaf.in1%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), r1!())
+If ierror Then Exit Sub
+End If
+
+' Calculate excess oxygen from ferric Fe
+If sample(1).FerrousFerricCalculationFlag Then
+Call ConvertFerrousFerricRatioFromComposition(zaf.in0%, zaf.Z%(), zaf.atwts!(), r1!(), sample(1).numcat%(), sample(1).numoxd%(), zaf.p1!(), sample(1).DisableQuantFlag%(), sample(1).FerrousFerricTotalCations!, sample(1).FerrousFerricTotalOxygens!, tFerricToTotalIronRatio!, tFerricOxygen!, tFe_as_FeO!, tFe_as_Fe2O3!)
+If ierror Then Exit Sub
+r1(zaf.in0%) = r1(zaf.in0%) + tFerricOxygen! / 100#
+End If
 
 ' Add to sum
 zaf.ksum! = zaf.ksum! + r1!(zaf.in0%)
@@ -2127,6 +2152,15 @@ Next i%
 
 ' Load return arrays with analyzed elements
 analysis.ZAFIter! = zaf.iter%
+
+' Calculate total FeO and total Fe2O3 if ferrous/ferric calculate flag is set
+If sample(1).FerrousFerricCalculationFlag Then
+analysis.FerricToTotalIronRatio! = tFerricToTotalIronRatio!     ' ferric iron to total iron ratio
+analysis.FerricFerrousFeO! = tFe_as_FeO!                        ' calculated FeO
+analysis.FerricFerrousFe2O3! = tFe_as_Fe2O3!                    ' calculated Fe2O3
+analysis.FerricOxygen! = tFerricOxygen!                         ' calculated oxygen from Fe2O3
+End If
+
 For i% = 1 To sample(1).LastElm%
 analysis.Elsyms$(i%) = sample(1).Elsyms$(i%)
 analysis.Xrsyms$(i%) = sample(1).Xrsyms$(i%)

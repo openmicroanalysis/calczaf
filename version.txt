@@ -2,6 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/19/19	Add additional error trapping and output for ferrous/ferric calculations in PFE. Add controls for CalcZAF.
+v. 12.7.1
+
+08/18/19	Modify check for bad zz parameter in ZAFPhiCal and check for negative concentration in ZAFMip (Buse).
+
+		Work on output for ferrous/ferric calculations.
+
+08/16/19	First implementation of ferrous/ferric calculation for excess oxygen in minerals (von der Handt,
+v. 12.7.0	Fournelle, Bullock and Locock).
+
 07/31/19	Add more VerboseMode output in ZAFSmp.
 
 07/25/19	Compile with v. 2.46 OMNI Driver from Ocean Optics (07/25/2019) for Win10 compatibility.

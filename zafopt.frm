@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form FormZAFOPT 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Calculation Options"
-   ClientHeight    =   4815
+   ClientHeight    =   5265
    ClientLeft      =   1440
    ClientTop       =   3480
-   ClientWidth     =   12510
+   ClientWidth     =   12765
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -21,14 +21,14 @@ Begin VB.Form FormZAFOPT
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   4815
-   ScaleWidth      =   12510
+   ScaleHeight     =   5265
+   ScaleWidth      =   12765
    ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame3 
       Caption         =   "EDS Spectral Data And Quant Calculations"
       ForeColor       =   &H00FF0000&
       Height          =   1575
-      Left            =   8160
+      Left            =   8400
       TabIndex        =   40
       Top             =   960
       Width           =   4215
@@ -81,9 +81,9 @@ Begin VB.Form FormZAFOPT
       Caption         =   "Sample Conductive Coating"
       ForeColor       =   &H00FF0000&
       Height          =   1935
-      Left            =   8160
+      Left            =   8400
       TabIndex        =   26
-      Top             =   2760
+      Top             =   3240
       Width           =   4215
       Begin VB.TextBox TextCoatingThickness 
          Height          =   285
@@ -199,8 +199,8 @@ Begin VB.Form FormZAFOPT
       Height          =   855
       Left            =   120
       TabIndex        =   20
-      Top             =   3840
-      Width           =   7815
+      Top             =   4320
+      Width           =   8055
       Begin VB.ComboBox ComboFormula 
          Appearance      =   0  'Flat
          Height          =   315
@@ -255,11 +255,11 @@ Begin VB.Form FormZAFOPT
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
-      Height          =   375
-      Left            =   10440
+      Height          =   495
+      Left            =   10920
       TabIndex        =   7
       TabStop         =   0   'False
-      Top             =   240
+      Top             =   120
       Width           =   975
    End
    Begin VB.CommandButton CommandOK 
@@ -267,7 +267,7 @@ Begin VB.Form FormZAFOPT
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   8880
+      Left            =   9240
       Style           =   1  'Graphical
       TabIndex        =   6
       TabStop         =   0   'False
@@ -277,14 +277,39 @@ Begin VB.Form FormZAFOPT
    Begin VB.Frame Frame1 
       Caption         =   "Calculation Options"
       ForeColor       =   &H00FF0000&
-      Height          =   3495
+      Height          =   3855
       Left            =   120
       TabIndex        =   0
       Top             =   120
-      Width           =   7815
+      Width           =   8055
+      Begin VB.CheckBox CheckFerrousFerricCalculation 
+         Caption         =   "Calculate Excess Oxygen From Ferrous/Ferric Ratio"
+         Height          =   315
+         Left            =   120
+         TabIndex        =   50
+         ToolTipText     =   "Calculate the excess oxygen from ferric iron based on total charge balance (Droop et al., 1987)"
+         Top             =   3480
+         Width           =   4815
+      End
+      Begin VB.TextBox TextFerrousFerricTotalCations 
+         Height          =   285
+         Left            =   5640
+         TabIndex        =   49
+         ToolTipText     =   "Enter total formula cations for this iron bearing mineral (e.g., ilmenite = 2)"
+         Top             =   3480
+         Width           =   735
+      End
+      Begin VB.TextBox TextFerrousFerricTotalOxygens 
+         Height          =   285
+         Left            =   7200
+         TabIndex        =   48
+         ToolTipText     =   "Enter total formula oxygens for this iron bearing mineral (e.g., ilmenite = 3)"
+         Top             =   3480
+         Width           =   735
+      End
       Begin VB.TextBox TextDensity 
          Height          =   285
-         Left            =   6720
+         Left            =   6960
          TabIndex        =   46
          Top             =   1200
          Width           =   975
@@ -304,13 +329,13 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"Zafopt.frx":0000
+         ToolTipText     =   $"ZAFOPT.frx":0000
          Top             =   3120
          Width           =   4095
       End
       Begin VB.TextBox TextHydrogenStoichiometry 
          Height          =   285
-         Left            =   5400
+         Left            =   5640
          TabIndex        =   37
          TabStop         =   0   'False
          ToolTipText     =   "Ratio of hydrogen to oxygen atoms (1 = OH and 2 = H2O)"
@@ -319,7 +344,7 @@ Begin VB.Form FormZAFOPT
       End
       Begin VB.TextBox TextDifferenceFormula 
          Height          =   285
-         Left            =   3480
+         Left            =   3600
          TabIndex        =   35
          ToolTipText     =   "Enter the formula by difference (not saved for export/import)"
          Top             =   1800
@@ -432,7 +457,7 @@ Begin VB.Form FormZAFOPT
       Begin VB.ComboBox ComboStoichiometry 
          Appearance      =   0  'Flat
          Height          =   315
-         Left            =   5400
+         Left            =   5640
          Style           =   2  'Dropdown List
          TabIndex        =   15
          TabStop         =   0   'False
@@ -442,7 +467,7 @@ Begin VB.Form FormZAFOPT
       Begin VB.ComboBox ComboRelativeTo 
          Appearance      =   0  'Flat
          Height          =   315
-         Left            =   6840
+         Left            =   7080
          Style           =   2  'Dropdown List
          TabIndex        =   14
          TabStop         =   0   'False
@@ -451,7 +476,7 @@ Begin VB.Form FormZAFOPT
       End
       Begin VB.TextBox TextStoichiometry 
          Height          =   285
-         Left            =   3480
+         Left            =   3600
          TabIndex        =   13
          Top             =   2280
          Width           =   855
@@ -459,17 +484,17 @@ Begin VB.Form FormZAFOPT
       Begin VB.ComboBox ComboDifference 
          Appearance      =   0  'Flat
          Height          =   315
-         Left            =   5400
+         Left            =   5640
          Style           =   2  'Dropdown List
          TabIndex        =   12
          TabStop         =   0   'False
-         Top             =   1560
+         Top             =   1440
          Width           =   735
       End
       Begin VB.ComboBox ComboRelative 
          Appearance      =   0  'Flat
          Height          =   315
-         Left            =   5400
+         Left            =   5640
          Style           =   2  'Dropdown List
          TabIndex        =   11
          TabStop         =   0   'False
@@ -478,7 +503,7 @@ Begin VB.Form FormZAFOPT
       End
       Begin VB.TextBox TextRelative 
          Height          =   285
-         Left            =   3480
+         Left            =   3600
          TabIndex        =   10
          Top             =   2640
          Width           =   855
@@ -486,7 +511,7 @@ Begin VB.Form FormZAFOPT
       Begin VB.OptionButton OptionElemental 
          Caption         =   "Calculate as Elemental"
          Height          =   255
-         Left            =   4080
+         Left            =   4320
          TabIndex        =   9
          TabStop         =   0   'False
          ToolTipText     =   "Calculate the composition as elemental (with stoichiometric oxygen)"
@@ -496,18 +521,52 @@ Begin VB.Form FormZAFOPT
       Begin VB.OptionButton OptionOxide 
          Caption         =   "Calculate with Stoichiometric Oxygen"
          Height          =   255
-         Left            =   4080
+         Left            =   4320
          TabIndex        =   8
          TabStop         =   0   'False
          ToolTipText     =   "Calculate the composition with oxygen by stoichiometry added to the matrix correction"
          Top             =   360
          Width           =   3615
       End
+      Begin VB.Label Label15 
+         Caption         =   "Cations"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   5040
+         TabIndex        =   52
+         Top             =   3480
+         Width           =   615
+      End
+      Begin VB.Label Label16 
+         Caption         =   "Oxygens"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   6480
+         TabIndex        =   51
+         Top             =   3480
+         Width           =   615
+      End
       Begin VB.Label Label6 
          Alignment       =   2  'Center
          Caption         =   "Density"
          Height          =   255
-         Left            =   6720
+         Left            =   6960
          TabIndex        =   47
          Top             =   960
          Width           =   975
@@ -524,7 +583,7 @@ Begin VB.Form FormZAFOPT
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   6360
+         Left            =   6480
          TabIndex        =   39
          Top             =   3120
          Width           =   1335
@@ -544,7 +603,7 @@ Begin VB.Form FormZAFOPT
          EndProperty
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   6840
+         Left            =   7080
          TabIndex        =   17
          Top             =   2400
          Width           =   855
@@ -564,7 +623,7 @@ Begin VB.Form FormZAFOPT
          EndProperty
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   4320
+         Left            =   4440
          TabIndex        =   3
          Top             =   2280
          Width           =   1095
@@ -584,7 +643,7 @@ Begin VB.Form FormZAFOPT
          EndProperty
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   4320
+         Left            =   4440
          TabIndex        =   4
          Top             =   2640
          Width           =   1095
@@ -604,7 +663,7 @@ Begin VB.Form FormZAFOPT
          EndProperty
          ForeColor       =   &H80000008&
          Height          =   255
-         Left            =   6240
+         Left            =   6480
          TabIndex        =   5
          Top             =   2400
          Width           =   495
@@ -621,7 +680,7 @@ Option Explicit
 
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub
@@ -672,6 +731,16 @@ Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
 Private Sub TextDifferenceFormula_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub TextFerrousFerricTotalCations_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub TextFerrousFerricTotalOxygens_GotFocus()
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

@@ -594,7 +594,7 @@ Exit Sub
 
 End Sub
 
-Sub ConvertWeightToOxide(lchan As Integer, atwts() As Single, numcats() As Integer, numoxds() As Integer, wts() As Single, excess As Single, oxwts() As Single)
+Sub ConvertWeightToOxide(lchan As Integer, atwts() As Single, NumCats() As Integer, NumOxds() As Integer, wts() As Single, excess As Single, oxwts() As Single)
 ' Convert from weight percent to oxide percent for the entire array
 
 ierror = False
@@ -605,8 +605,8 @@ Dim temp As Single
 
 For i% = 1 To lchan%
 If atwts!(i%) <> AllAtomicWts!(ATOMIC_NUM_OXYGEN%) Then
-temp! = wts!(i%) * (atwts!(i%) * numcats%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * numoxds%(i%))
-oxwts!(i%) = temp! / (atwts!(i%) * numcats%(i%))
+temp! = wts!(i%) * (atwts!(i%) * NumCats%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * NumOxds%(i%))
+oxwts!(i%) = temp! / (atwts!(i%) * NumCats%(i%))
 Else
 oxwts!(i%) = excess!
 End If
@@ -1045,4 +1045,182 @@ ierror = True
 Exit Function
 
 End Function
+
+Sub ConvertFerrousFerricRatioFromComposition(nelements As Integer, AtomicNumbers() As Integer, AtomicWeights() As Single, ElementalWeightFractions() As Single, NumCats() As Integer, NumOxds() As Integer, OxideProportions() As Single, DisableQuantFlags() As Integer, MineralCations As Single, MineralOxygens As Single, FerricToTotalIronRatio As Single, FerricOxygen As Single, Fe_as_FeO As Single, Fe_as_Fe2O3 As Single)
+' Procedure to calculate ferrous/ferric ratio from concentrations and specified cations and oxygens (assumes only Fe is multi-valent)
+'  nelements = number of elements in composition
+'  AtomicNumbers() = atomic numbers of each element
+'  AtomicWeights() = atomic weight of each element
+'  ElementalWeightFractions() = elemental weight fractions for each element
+'  OxideProportions() = oxide conversion factors for all elements (force iron stoichiometry to assume FeO stoichiometry = 0.286497)
+'  DisableQuantFlags%() = diable quant flags for each element
+'  MineralCations = total number of cations in mineral formula
+'  MineralOxygens = total number of oxygens in mineral formula
+'  NumCats() - number of cations in oxide formula
+'  NumOxds() = number of oxygens in oxide formula
+'  FerricToTotalIronRatio = ratio of ferric iron to total iron
+'  FerricOxygen = excess oxygen in weight%
+'  Fe_as_FeO = calculated FeO in weight%
+'  Fe_as_Fe2O3 = calculated Fe2O3 in weight%
+
+ierror = False
+On Error GoTo ConvertFerrousFerricRatioFromCompositionError
+
+Const FeO_to_Fe2O3! = 1.11134
+
+Dim ip As Integer
+Dim n As Integer
+
+Dim summoles As Single
+Dim sumnorms As Single
+Dim ferrousmoles As Single
+Dim ferricmoles As Single
+
+ReDim atoms(1 To MAXCHAN%) As Single
+ReDim oxides(1 To MAXCHAN%) As Single
+ReDim moles(1 To MAXCHAN%) As Single
+ReDim normcats(1 To MAXCHAN%) As Single
+
+' Determine Fe channel
+ip% = IPOS2DQ%(nelements%, ATOMIC_NUM_IRON%, AtomicNumbers%(), DisableQuantFlags%())
+If ip% = 0 Then GoTo ConvertFerrousFerricRatioFromCompositionNoIron
+
+' Check that Fe oxide stocihiometry is 1 : 1
+If NumCats%(ip%) <> 1 Or NumOxds%(ip%) <> 1 Then GoTo ConvertFerrousFerricRatioFromCompositionNotFeO
+
+' Calculate oxide weight percents (force iron to FeO)
+For n% = 1 To nelements%
+
+If AtomicNumbers%(n%) <> ATOMIC_NUM_IRON% Then
+oxides!(n%) = ElementalWeightFractions!(n%) + ElementalWeightFractions!(n%) * OxideProportions!(n%)      ' convert all elements except Fe to oxides
+Else
+oxides!(n%) = ElementalWeightFractions!(n%) + ElementalWeightFractions!(n%) * FeO_OXIDE_PROPORTION!      ' force convert Fe to FeO to be consistent below
+End If
+
+Next n%
+
+' Calculate moles of each oxide
+summoles! = 0
+For n% = 1 To nelements%
+
+' Calculate moles of each cation
+'If n% < nelements% Then
+If AtomicNumbers%(n%) <> ATOMIC_NUM_OXYGEN% Then
+
+If AtomicNumbers%(n%) <> ATOMIC_NUM_IRON% Then
+moles!(n%) = (100# * oxides!(n%)) / (NumCats%(n%) * AtomicWeights!(n%) + NumOxds%(n%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%))      ' convert to formula moles
+Else
+moles!(n%) = (100# * oxides!(n%)) / (AtomicWeights!(n%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%))                                    ' convert based on Fe : O moles
+End If
+
+' Calculate the sum of the cations
+summoles! = summoles + moles!(n%)
+
+' Calculate moles of oxygen
+Else
+moles!(n%) = (100# * oxides!(n%)) / AtomicWeights!(n%)
+End If
+
+Next n%
+
+' Normalize to the number of total cations
+sumnorms! = 0#
+For n% = 1 To nelements%
+normcats!(n%) = moles!(n%) / summoles! * MineralCations!
+
+' Calculate sum of normalized moles for cations only
+'If n% < nelements% Then
+If AtomicNumbers%(n%) <> ATOMIC_NUM_OXYGEN% Then
+sumnorms! = sumnorms! + normcats!(n%)
+End If
+
+Next n%
+
+If VerboseMode Then
+msg$ = vbCrLf & "ELEMENT "
+For n% = 1 To nelements%
+msg$ = msg$ & Format$(Symup$(AtomicNumbers%(n%)), a80$)
+Next n%
+Call IOWriteLog(msg$)
+
+msg$ = "OXIDES  "
+For n% = 1 To nelements%
+msg$ = msg$ & Format$(Format$(100# * oxides!(n%), f84), a80$)
+Next n%
+Call IOWriteLog(msg$)
+
+msg$ = "MOLES   "
+For n% = 1 To nelements%
+msg$ = msg$ & Format$(Format$(moles!(n%), f84), a80$)
+Next n%
+msg$ = msg$ & Space$(8) & Format$("SUM CAT=", a80$) & Format$(Format$(summoles!, f84), a80$)
+
+Call IOWriteLog(msg$)
+msg$ = "NORMCAT "
+For n% = 1 To nelements%
+msg$ = msg$ & Format$(Format$(normcats!(n%), f84), a80$)
+Next n%
+msg$ = msg$ & Space$(8) & Format$("SUM CAT=", a80$) & Format$(Format$(sumnorms!, f84), a80$)
+Call IOWriteLog(msg$)
+End If
+
+' Check charge balance
+If normcats!(nelements) <= MineralOxygens! Then
+
+If 2 * (MineralOxygens! - normcats!(nelements%)) <= normcats!(ip%) Then
+ferricmoles! = 2 * (MineralOxygens! - normcats!(nelements%))
+ferrousmoles! = normcats!(ip%) - ferricmoles!
+Else
+ferricmoles! = normcats!(ip%)
+ferrousmoles! = 0
+End If
+
+Else
+ferricmoles! = 0#
+ferrousmoles! = moles!(ip%)
+End If
+
+' Calculate ferric to total iron ratio
+FerricToTotalIronRatio! = ferricmoles! / (ferricmoles + ferrousmoles!)
+
+' Calculate FeO and Fe2O3 in weight percent
+Fe_as_FeO! = (1 - FerricToTotalIronRatio!) * 100# * oxides!(ip%)
+Fe_as_Fe2O3! = (100# * oxides!(ip%) - Fe_as_FeO!) / (2 * (AllAtomicWts!(ATOMIC_NUM_IRON%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) / (2 * AllAtomicWts!(ATOMIC_NUM_IRON%) + 3 * AllAtomicWts!(ATOMIC_NUM_OXYGEN%)))
+
+FerricOxygen! = Fe_as_Fe2O3! * (1 - (2 * (AllAtomicWts!(ATOMIC_NUM_IRON%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) / (2 * AllAtomicWts!(ATOMIC_NUM_IRON%) + 3 * AllAtomicWts!(ATOMIC_NUM_OXYGEN%))))
+
+If DebugMode Then
+Call IOWriteLog(vbNullString)
+msg$ = "FerricIronToTotalIronRatio: " & Format$(Format$(FerricToTotalIronRatio!, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "Ferrous Oxide (FeO):        " & Format$(Format$(Fe_as_FeO!, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "Ferric Oxide (Fe2O3):       " & Format$(Format$(Fe_as_Fe2O3!, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "Excess Oxygen from Fe2O3:   " & Format$(Format$(FerricOxygen!, f84), a80$)
+Call IOWriteLog(msg$)
+End If
+
+Exit Sub
+
+' Errors
+ConvertFerrousFerricRatioFromCompositionError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertFerrousFerricRatioFromComposition"
+ierror = True
+Exit Sub
+
+ConvertFerrousFerricRatioFromCompositionNoIron:
+msg$ = "No iron is present in the element list. Cannot calculate a ferrous/ferric ratio."
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertFerrousFerricRatioFromComposition"
+ierror = True
+Exit Sub
+
+ConvertFerrousFerricRatioFromCompositionNotFeO:
+msg$ = "Cannot calculate a ferrous/ferric ratio. Iron stoichiometry must be specified as FeO (Cations=1, Oxygens=1) in the Elements/Cations dialog."
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertFerrousFerricRatioFromComposition"
+ierror = True
+Exit Sub
+
+End Sub
+
 

@@ -439,6 +439,9 @@ If tKeyword$ = "UserSpecifiedOutputStandardAlgebraicDifferencesFlag" Then tDefau
 If tKeyword$ = "UserSpecifiedOutputDetectionLimitsOxide" Then tDefault& = 0
 
 If tKeyword$ = "UserSpecifiedOutputChemAgeFlag" Then tDefault& = 0
+
+If tKeyword$ = "UserSpecifiedOutputFerrousFerricFlag" Then tDefault& = 0
+
 End If
 
 ' Load passed boolean keyword
@@ -1704,6 +1707,8 @@ Call InitINI4(UserSpecifiedOutputAbsorbedCurrent2Flag, "UserSpecifiedOutputAbsor
 Call InitINI4(UserSpecifiedOutputDetectionLimitsOxideFlag, "UserSpecifiedOutputDetectionLimitsOxide", "Software")
 
 Call InitINI4(UserSpecifiedOutputChemAgeFlag, "UserSpecifiedOutputChemAgeFlag", "Software")
+
+Call InitINI4(UserSpecifiedOutputFerrousFerricFlag, "UserSpecifiedOutputFerrousFerricFlag", "Software")
 
 ' Load DefaultNthPointAcquisitionInterval
 lpAppName$ = "Software"

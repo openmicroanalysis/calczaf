@@ -505,6 +505,10 @@ sample(1).DisplayBiotiteCalculationFlag% = False
 sample(1).HydrogenStoichiometryFlag% = False
 sample(1).HydrogenStoichiometryRatio! = 0#
 
+sample(1).FerrousFerricCalculationFlag = False
+sample(1).FerrousFerricTotalCations! = 0#
+sample(1).FerrousFerricTotalOxygens! = 0#
+
 sample(1).CoatingFlag = DefaultSampleCoatingFlag%  ' 0 = uncoated, 1 = coated
 sample(1).CoatingElement% = DefaultSampleCoatingElement%
 sample(1).CoatingDensity! = DefaultSampleCoatingDensity!
@@ -578,6 +582,10 @@ sample(1).ChemicalAgeCalculationFlag = False
 
 sample(1).PTCDoNotNormalizeSpecifiedFlag = False
 sample(1).EDSSpectraQuantMethodOrProject$ = vbNullString
+
+sample(1).FerrousFerricCalculationFlag = False
+sample(1).FerrousFerricTotalCations! = 0#
+sample(1).FerrousFerricTotalOxygens! = 0#
 
 sample(1).LastEDSSpecifiedCountTime! = EDSSpecifiedCountTime!
 sample(1).LastEDSUnknownCountFactor! = EDSUnknownCountFactor!

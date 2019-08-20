@@ -333,6 +333,8 @@ Global Const MAXFORBIDDEN% = 20          ' maximum number of forbidden elements
 Global Const NOT_ANALYZED_VALUE_SINGLE! = 0.00000001       ' 10^-8
 'Global Const NOT_ANALYZED_VALUE_DOUBLE# = 0.00000001       ' 10^-8     (do not utilize as it causes a problem for Pro Essentials with .NullDataValueX property)
 
+Global Const FeO_OXIDE_PROPORTION! = 0.286497     ' Fe to FeO stoichiometry (see parameter z.p1!() in ZAF.BAS)
+
 Global Const MAX_EXCEL_2003_COLS% = 256  ' maximum number of columns supported by Excel 2003 (version 11)
 
 Global Const LOTSOFGRIDPOINTS% = 1000    ' lots of polygon points (hide FormAUTOMATE)
@@ -749,6 +751,11 @@ Type TypeAnalysis
     StdContinuumCorrections() As Single     ' Heinrich/Myklebust continuum corrections for stds, allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
 
     SampleIsAnalyzed As Boolean
+    
+    FerricToTotalIronRatio As Single         ' ferric to total iron ratio
+    FerricFerrousFeO As Single           ' total FeO
+    FerricFerrousFe2O3 As Single         ' total Fe2O3
+    FerricOxygen As Single               ' oxygen from Fe2O3 (not including specified excess oxygen)
 End Type
 
 ' Sample arrays
@@ -1135,6 +1142,10 @@ Type TypeSample
     LastCLDarkSpectraCountTimeFraction As Single
     
     MaterialType As String                            ' for standard database only
+    
+    FerrousFerricCalculationFlag As Boolean           ' flag to calculate ferrous/ferric ratio for excess oxygen in matrix corrections
+    FerrousFerricTotalCations As Single               ' total number of cations in the ferrous/ferric mineral
+    FerrousFerricTotalOxygens As Single               ' total number of oxygens in the ferrous/ferric mineral
 End Type
 
 Type TypeImage
@@ -2979,4 +2990,6 @@ Global UseZFractionZbarCalculationsFlag As Boolean
 Global ZFractionZbarCalculationsExponent As Single
 
 Global UseContinuumAbsCalculationsFlag As Boolean
+
+Global UserSpecifiedOutputFerrousFerricFlag As Boolean
 

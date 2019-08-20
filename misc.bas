@@ -1618,6 +1618,43 @@ Exit Function
 
 End Function
 
+Function IPOS2DQ(ByVal n As Integer, ByVal num As Integer, numarray() As Integer, dqarray() As Integer) As Integer
+' This routine returns as its value a pointer to the first occurance
+' of 'num' in the integer array 'numarray'.  The first 'n' positions
+' in  'numarray' are searched and the disable flag is checked.
+' If 'num' does not occur in those positions IPOS2DQ is equal to 0. Example:
+'  n = 4
+'  num    = 26
+'  numarray = 9,20,26,30
+'  dqarray = 1,0,0,0
+'  IPOS2DQ    will be set to 3
+
+ierror = False
+On Error GoTo IPOS2DQError
+
+Dim i As Integer
+
+If n% <= 0 Then GoTo Fail2DQ
+For i% = 1 To n%
+If numarray%(i%) = num% And dqarray%(i%) = 0 Then GoTo Found2DQ
+Next i%
+
+Fail2DQ:
+IPOS2DQ = 0
+Exit Function
+
+Found2DQ:
+IPOS2DQ = i%
+Exit Function
+
+' Errors
+IPOS2DQError:
+MsgBox Error$, vbOKOnly + vbCritical, "IPOS2DQ"
+ierror = True
+Exit Function
+
+End Function
+
 Function MiscAutoFormat4(ByVal treal As Single) As String
 ' Function to return an automatically formatted real number in 4 characters
 

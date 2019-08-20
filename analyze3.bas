@@ -23,6 +23,11 @@ Dim RowUnkHalogenCorrectedOxygen(1 To MAXROW%) As Single
 Dim RowUnkChargeBalance(1 To MAXROW%)  As Single
 Dim RowUnkFeChargeBalance(1 To MAXROW%)  As Single
 
+Dim RowUnkFerricToTotalIronRatio(1 To MAXROW%)  As Single
+Dim RowUnkFerrousFerricFeO(1 To MAXROW%)  As Single
+Dim RowUnkFerrousFerricFe2O3(1 To MAXROW%)  As Single
+Dim RowUnkFerricOxygen(1 To MAXROW%)  As Single
+
 Dim RowUnkKRaws(1 To MAXROW%, 1 To MAXCHAN%) As Single
 Dim RowUnkKrats(1 To MAXROW%, 1 To MAXCHAN%) As Single
 Dim RowUnkZAFCors(1 To MAXROW%, 1 To MAXCHAN%) As Single
@@ -466,6 +471,11 @@ RowUnkOxygenFromHalogens!(linerow%) = analysis.OxygenFromHalogens!
 RowUnkHalogenCorrectedOxygen!(linerow%) = analysis.HalogenCorrectedOxygen!
 RowUnkChargeBalance!(linerow%) = analysis.ChargeBalance!
 RowUnkFeChargeBalance!(linerow%) = analysis.FeCharge!
+
+RowUnkFerricToTotalIronRatio!(linerow%) = analysis.FerricToTotalIronRatio!
+RowUnkFerrousFerricFeO!(linerow%) = analysis.FerricFerrousFeO!
+RowUnkFerrousFerricFe2O3!(linerow%) = analysis.FerricFerrousFe2O3!
+RowUnkFerricOxygen!(linerow%) = analysis.FerricOxygen!
 
 ' Check for zero total
 If analysis.TotalPercent! < MinTotalValue! Then
@@ -1218,6 +1228,11 @@ RowUnkHalogenCorrectedOxygen!(linerow%) = analysis.HalogenCorrectedOxygen!
 RowUnkChargeBalance!(linerow%) = analysis.ChargeBalance!
 RowUnkFeChargeBalance!(linerow%) = analysis.FeCharge!
 
+RowUnkFerricToTotalIronRatio!(linerow%) = analysis.FerricToTotalIronRatio!
+RowUnkFerrousFerricFeO!(linerow%) = analysis.FerricFerrousFeO!
+RowUnkFerrousFerricFe2O3!(linerow%) = analysis.FerricFerrousFe2O3!
+RowUnkFerricOxygen!(linerow%) = analysis.FerricOxygen!
+
 Exit Sub
 
 ' Errors
@@ -1281,6 +1296,11 @@ RowUnkOxygenFromHalogens!(j%) = 0#
 RowUnkHalogenCorrectedOxygen!(j%) = 0#
 RowUnkChargeBalance!(j%) = 0#
 RowUnkFeChargeBalance!(j%) = 0#
+
+RowUnkFerricToTotalIronRatio!(j%) = 0#
+RowUnkFerrousFerricFeO!(j%) = 0#
+RowUnkFerrousFerricFe2O3!(j%) = 0#
+RowUnkFerricOxygen(j%) = 0#
 
 For i% = 1 To MAXCHAN%
 RowUnkKrats!(j%, i%) = 0#
@@ -1386,6 +1406,23 @@ analysis.ChargeBalance! = average.averags!(1)
 Call MathAverage(average, RowUnkFeChargeBalance!(), sample(1).Datarows%, sample())
 If ierror Then Exit Sub
 analysis.FeCharge! = average.averags!(1)
+
+' Calculate averages
+Call MathAverage(average, RowUnkFerricToTotalIronRatio!(), sample(1).Datarows%, sample())
+If ierror Then Exit Sub
+analysis.FerricToTotalIronRatio! = average.averags!(1)
+
+Call MathAverage(average, RowUnkFerrousFerricFeO!(), sample(1).Datarows%, sample())
+If ierror Then Exit Sub
+analysis.FerricFerrousFeO! = average.averags!(1)
+
+Call MathAverage(average, RowUnkFerrousFerricFe2O3!(), sample(1).Datarows%, sample())
+If ierror Then Exit Sub
+analysis.FerricFerrousFe2O3! = average.averags!(1)
+
+Call MathAverage(average, RowUnkFerricOxygen!(), sample(1).Datarows%, sample())
+If ierror Then Exit Sub
+analysis.FerricOxygen! = average.averags!(1)
 
 Exit Sub
 
@@ -2633,6 +2670,13 @@ Call IOWriteLog(msg$)
 End If
         
 Loop
+
+' Output ferrous/ferric results after eleemntal weight percents
+If mode% = 1 And sample(1).FerrousFerricCalculationFlag Then
+Call AnalyzeTypeFerrousFerric(sample(), analysis)
+If ierror Then Exit Sub
+End If
+
 Exit Sub
 
 ' Errors
@@ -2738,6 +2782,10 @@ Sub AnalyzeReturnAnalysisFactors3(mode As Integer, row As Integer, tvalue As Sin
 ' mode = 10 return RowUnkChargeBalance
 ' mode = 11 return RowUnkFeChargeBalance
 ' mode = 12 return RowUnkTotalAtoms
+' mode = 13 return RowUnkFerricToTotalIronRatio
+' mode = 14 return RowUnkFerrousFerricFeO
+' mode = 15 return RowUnkFerrousFerricFe2O3
+' mode = 16 return RowUnkFerricOxygen
 
 ierror = False
 On Error GoTo AnalyzeReturnAnalysisFactors3Error
@@ -2754,6 +2802,10 @@ If mode% = 9 Then tvalue! = RowUnkHalogenCorrectedOxygen!(row%)
 If mode% = 10 Then tvalue! = RowUnkChargeBalance!(row%)
 If mode% = 11 Then tvalue! = RowUnkFeChargeBalance!(row%)
 If mode% = 12 Then tvalue! = RowUnkTotalAtoms!(row%)
+If mode% = 13 Then tvalue! = RowUnkFerricToTotalIronRatio!(row%)
+If mode% = 14 Then tvalue! = RowUnkFerrousFerricFeO!(row%)
+If mode% = 15 Then tvalue! = RowUnkFerrousFerricFe2O3!(row%)
+If mode% = 16 Then tvalue! = RowUnkFerricOxygen(row%)
 
 Exit Sub
 
@@ -3093,3 +3145,53 @@ Exit Sub
 
 End Sub
 
+Sub AnalyzeTypeFerrousFerric(sample() As TypeSample, analysis As TypeAnalysis)
+' Output ferrous/ferric results to log window
+
+ierror = False
+On Error GoTo AnalyzeTypeFerrousFerricError
+
+Dim linerow As Integer
+
+Dim average As TypeAverage
+
+msg$ = vbCrLf & "Ferrous/Ferric Calculation Results:"
+Call IOWriteLog$(msg$)
+ 
+msg$ = "        Ferric/TotalFe" & "   FeO    " & "    Fe2O3   " & " Oxygen from Fe2O3  "
+Call IOWriteLog$(msg$)
+
+' Print results for each line
+For linerow% = 1 To sample(1).Datarows
+If sample(1).LineStatus(linerow%) Then
+
+msg$ = Format$(Format$(sample(1).Linenumber&(linerow%), i50$), a60$)
+msg$ = msg$ & Format$(Format$(RowUnkFerricToTotalIronRatio!(linerow%), f83$), a120$)
+msg$ = msg$ & Format$(Format$(RowUnkFerrousFerricFeO!(linerow%), f83$), a120$)
+msg$ = msg$ & Format$(Format$(RowUnkFerrousFerricFe2O3!(linerow%), f83$), a120$)
+msg$ = msg$ & Format$(Format$(RowUnkFerricOxygen!(linerow%), f83$), a120$)
+
+Call IOWriteLog(msg$)
+
+End If
+Next linerow%
+
+' Output average results
+msg$ = vbCrLf & "AVER: "
+
+msg$ = msg$ & Format$(Format$(analysis.FerricToTotalIronRatio!, f83), a120$)
+msg$ = msg$ & Format$(Format$(analysis.FerricFerrousFeO!, f83), a120$)
+msg$ = msg$ & Format$(Format$(analysis.FerricFerrousFe2O3!, f83), a120$)
+msg$ = msg$ & Format$(Format$(analysis.FerricOxygen!, f83), a120$)
+
+Call IOWriteLog(msg$)
+
+Exit Sub
+
+' Errors
+AnalyzeTypeFerrousFerricError:
+MsgBox Error$, vbOKOnly + vbCritical, "AnalyzeTypeFerrousFerric"
+ierror = True
+Exit Sub
+
+End Sub
