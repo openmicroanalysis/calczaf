@@ -374,7 +374,8 @@ zz! = zz! + zaf.conc!(i1%) * zaf.Z%(i1%)
 zn! = zn! + zaf.conc!(i1%) * Log(zaf.Z%(i1%))
 Next i1%
 
-If zz! < 0# Then GoTo ZAFAbsBadZZ
+' Check for bad zn! parameter
+If zn! < 0# Then GoTo ZAFAbsBadZN
 
 zn! = Exp(zn!)
 For i% = 1 To zaf.in1%
@@ -403,7 +404,8 @@ zn! = zn! + zaf.conc!(i1%) * Log(zaf.Z%(i1%))
 avez! = avez! + zaf.conc!(i1%) * Sqr(zaf.Z%(i1%))
 Next i1%
 
-If zz! < 0# Then GoTo ZAFAbsBadZZ
+' Check for bad zn! parameter
+If zn! < 0# Then GoTo ZAFAbsBadZN
 
 zn! = Exp(zn!)
 meanz! = avez! * avez!
@@ -442,15 +444,10 @@ MsgBox Error$, vbOKOnly + vbCritical, "ZAFAbs"
 ierror = True
 Exit Sub
 
-ZAFAbsBadZZ:
-msg$ = "Bad (negative) zz parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf & vbCrLf
+ZAFAbsBadZN:
+msg$ = vbCrLf & "ZAFAbs: Negative (zn) parameter (" & Format$(zn!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
-If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFAbs", msg$, 20#
-Call IOWriteLog(msg$)
-Else
-Call IOWriteLog(msg$)
-End If
+Call IOWriteLog(msg$)        ' just log error instead of msgbox (added 08/18/2019 for Buse)
 'ierror = True
 Exit Sub
 
@@ -938,11 +935,7 @@ m6! = 0#
 For i% = 1 To zaf.in0%
 
 ' Add check for negative concentrations to avoid problems with jbar calculation below
-If zaf.conc!(i%) < NOT_ANALYZED_VALUE_SINGLE! / 100# Then
-'GoTo ZAFMipBadJbar                                             ' commented out to just exit instead of error message (added 08/18/2019 for Buse)
-Exit Sub
-End If
-
+'If zaf.conc!(i%) < 0# Then GoTo ZAFMipBadJbar
 m5! = m5! + zaf.conc!(i%) * zaf.Z%(i%) / zaf.atwts!(i%)
 m6! = m6! + zaf.conc!(i%) * zaf.Z%(i%) * Log(jm!(i%)) / zaf.atwts!(i%)
 Next i%
@@ -960,15 +953,10 @@ ierror = True
 Exit Sub
 
 ZAFMipBadJbar:
-msg$ = "Bad jbar parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf & vbCrLf
+msg$ = vbCrLf & "ZAFMip: Unable to calculate (jbar) parameter due to excessively large exponentiation of (m6 / m5) expression (" & Format$(m6! / m5!) & ") for the sample analysis (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
-If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFMip", msg$, 20#
 Call IOWriteLog(msg$)
-Else
-Call IOWriteLog(msg$)
-End If
-'ierror = True
+'ierror = True          ' just log error instead of msgbox (added 08/18/2019 for Buse)
 Exit Sub
 
 End Sub
@@ -1114,10 +1102,7 @@ aa! = aa! / pp!
 m7! = ZAFMACCal(i%, zaf)    ' load sample MAC
 
 ' Check zz! parameter to avoid negative Exp() term in ZAFMip2
-If zz! < 0# Then
-'GoTo ZAFPhiCalBadZZ                ' commented out to just exit instead of error message (added 08/18/2019 for Buse)
-Exit Sub
-End If
+If zz! < 0# Then GoTo ZAFPhiCalBadZZ
 
 ' Calculate mean ionization for sample
 Call ZAFMip2(i%, zz!, ww!)
@@ -1136,14 +1121,14 @@ x2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * (1# /
 ' PACKWOOD-BROWN 1982 XRS PHI(PZ) ALPHA EXPRESSION
 If iabs% = 7 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
-If tx4! < 0# Then GoTo ZAFPhiCalBadX4
+If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 395000# * zz! ^ 0.95 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
 x3! = 0.4 * x4! * zz! ^ 0.6
 
 ' BASTIN 1984 XRS PHI(PZ) ALPHA EXPRESSION
 ElseIf iabs% = 8 Then
 tx4! = Log(1.166 * v0! / ww!) / v1!
-If tx4! < 0# Then GoTo ZAFPhiCalBadX4
+If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 175000# / (v0! ^ 1.25 * (uu! - 1#) ^ 0.55) * (tx4!) ^ 0.5
 x2! = 0.98 * x2! * Exp(0.001 * zz!)
 x3! = 0.4 * x4! * (zz! ^ 1.7 / aa!) * (uu! - 1#) ^ 0.3
@@ -1151,14 +1136,14 @@ x3! = 0.4 * x4! * (zz! ^ 1.7 / aa!) * (uu! - 1#) ^ 0.3
 ' BROWN 1981 JTA PHI(PZ) ALPHA EXPRESSION
 ElseIf iabs% = 9 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
-If tx4! < 0# Then GoTo ZAFPhiCalBadX4
+If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 297000# * zz! ^ 1.05 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
 x3! = 850000# * zz! * zz! / (aa! * v0! * v0! * (x2! - 1#))
 
 ' BASTIN 1986/SCANNING
 ElseIf iabs% = 10 Then
 tx4! = Log(1.166 * v0! / ww!) / v1!
-If tx4! < 0# Then GoTo ZAFPhiCalBadX4
+If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 175000# / (v0! ^ 1.25 * (uu! - 1#) ^ 0.55) * (tx4!) ^ 0.5
 x2! = 5# * 3.14159 * (uu! + 1#) / (Log(uu! + 1#) * uu!) * (Log(uu! + 1#) - 5# + 5# * (uu! + 1#) ^ (-0.2))
 If uu! < 3# Then x2! = 1# + (uu! - 1#) / (0.3384 + 0.4742 * (uu! - 1#))
@@ -1168,7 +1153,7 @@ x3! = x4! * (zz! ^ x3!) / aa!
 ' RIVEROS 1987/XRS
 ElseIf iabs% = 11 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
-If tx4! < 0# Then GoTo ZAFPhiCalBadX4
+If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 214000# * zz! ^ 1.16 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
 x2! = (1# + hh!) * uu! * Log(uu!) / (uu! - 1#)
 x3! = 10900# * zz! ^ 1.5 / (aa! * (v0! - v1!))
@@ -1338,26 +1323,16 @@ ierror = True
 Exit Sub
 
 ZAFPhiCalBadZZ:
-msg$ = "Bad (negative) zz parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf & vbCrLf
+msg$ = vbCrLf & "ZAFPhiCal: Negative (zz) parameter (" & Format$(zz!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
-If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFPhiCal", msg$, 20#
-Call IOWriteLog(msg$)
-Else
-Call IOWriteLog(msg$)
-End If
+Call IOWriteLog(msg$)   ' just log error instead of msgbox (added 08/18/2019 for Buse)
 'ierror = True
 Exit Sub
 
-ZAFPhiCalBadX4:
-msg$ = "Bad (negative) x4 parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf & vbCrLf
+ZAFPhiCalBadtx4:
+msg$ = vbCrLf & "ZAFPhiCal: Negative (tx4) parameter (" & Format$(tx4!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure using the hydrogen by stochiometry to excess oxygen calculation appropriately (see Calculation Options button in the Analyze! window."
-If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFPhiCal", msg$, 20#
-Call IOWriteLog(msg$)
-Else
-Call IOWriteLog(msg$)
-End If
+Call IOWriteLog(msg$)   ' just log error instead of msgbox (added 08/18/2019 for Buse)
 'ierror = True
 Exit Sub
 
@@ -3827,14 +3802,9 @@ ierror = True
 Exit Sub
 
 ZAFBksNegative:
-msg$ = vbCrLf & "Bad (negative) bks parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf
+msg$ = vbCrLf & "ZAFBks: Negative (ju(i) + eta(i) * gu(i)) expression (" & Format$(ju!(i%) + eta!(i%) * gu!(i%)) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
-If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFBks", msg$, 20#
 Call IOWriteLog(msg$)
-Else
-Call IOWriteLog(msg$)
-End If
 'ierror = True
 Exit Sub
 
@@ -3866,7 +3836,7 @@ rr! = 1# + 2.8 * (1# - 0.9 / uu!) * hh!
 ElseIf iphi% = 2 Then
 jpu! = 3.43378 - 10.7872 / uu! + 10.97628 / (uu! * uu!) - 3.62286 / (uu! * uu! * uu!)
 gpu! = -0.59299 + 21.55329 / uu! - 30.55248 / (uu! * uu!) + 9.59218 / (uu! * uu! * uu!)
-If 1# + hh! < 0# Then GoTo ZAFPhiNegative
+If 1# + hh! < 0# Then GoTo ZAFPhiNegative1plushh
 rr! = 1# + hh! / (1# + hh!) * (jpu! + gpu! * Log(1# + hh!))
 
 ' RPHI3 RIVEROS PHI(0) EXPRESSION
@@ -3875,7 +3845,7 @@ rr! = 1# + hh! * uu! * Log(uu!) / (uu! - 1#)
 
 ' RPHI4 POUCHOU and PICHOIR PHI(0) EXPRESSION
 ElseIf iphi% = 4 Then
-If hh! < 0# Then GoTo ZAFPhiNegative
+If hh! < 0# Then GoTo ZAFPhiNegativehh
 rr! = 1# + 3.3 * (1# - Exp((2.3 * hh! - 2#) * Log(uu!))) * Exp(1.2 * Log(hh!))
 
 ' RPHI5 KARDUCK and REHBACH PHI(0) EXPRESSION
@@ -3920,15 +3890,17 @@ MsgBox Error$, vbOKOnly + vbCritical, "ZAFPhi"
 ierror = True
 Exit Sub
 
-ZAFPhiNegative:
-msg$ = vbCrLf & "Bad (negative) hh parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf
+ZAFPhiNegative1plushh:
+msg$ = vbCrLf & "ZAFPhi: Negative (1 + hh) parameter (" & Format$(1 + hh!) & ") calculated for the sample analysis (ii=" & Format$(ii%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
-If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFPhi", msg$, 20#
 Call IOWriteLog(msg$)
-Else
+'ierror = True
+Exit Sub
+
+ZAFPhiNegativehh:
+msg$ = vbCrLf & "ZAFPhi: Negative (hh) parameter (" & Format$(hh!) & ") calculated for the sample analysis (ii=" & Format$(ii%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
 Call IOWriteLog(msg$)
-End If
 'ierror = True
 Exit Sub
 
@@ -4011,7 +3983,7 @@ fp1# = -a1# / xi! * (fp1# - rm# * (rm# - 2# / xi!) - 2# / xi! / xi!)
 fp2# = -b1# / xi! * (Exp(-xi! * rc#) - 1#)
 fp3# = ((rc# - rx#) * (rc# - rx# + 2# / xi!) + 2# / xi! / xi!) * Exp(-xi! * rc#)
 
-If -xi * rx# > MAXLOGEXPS! Then GoTo ZAFPapBadFp1
+If -xi * rx# > MAXLOGEXPS! Then GoTo ZAFPapBadFp3
 fp3# = -a2# / xi! * (-fp3# + 2# / xi! / xi! * Exp(-xi! * rx#))
 fff# = a1# / 3# * ((rc# - rm#) * (rc# - rm#) * (rc# - rm#) + rm# * rm# * rm#) + b1# * rc#
 fff# = fff# + a2# / 3# * (rx# - rc#) * (rx# - rc#) * (rx# - rc#)
@@ -4073,26 +4045,23 @@ ierror = True
 Exit Sub
 
 ZAFPapBadZZ:
-msg$ = "Bad (negative) zz parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf & vbCrLf
+msg$ = vbCrLf & "ZAFPap: Negative (zz) parameter (" & Format$(zz!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
-If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFPap", msg$, 20#
 Call IOWriteLog(msg$)
-Else
-Call IOWriteLog(msg$)
-End If
 'ierror = True
 Exit Sub
 
 ZAFPapBadFp1:
-msg$ = "Bad fp parameter calculated for the sample analysis. This usually indicates negative concentrations so you should check that you are not analyzing epoxy." & vbCrLf & vbCrLf
+msg$ = vbCrLf & "ZAFPap: Excessive (fp1) exponentiation for (-xi * rc) expression (" & Format$(-xi * rc#) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
-If Not CalcImageQuantFlag Then
-MiscMsgBoxTim FormMSGBOXTIME, "ZAFPap", msg$, 20#
 Call IOWriteLog(msg$)
-Else
+'ierror = True
+Exit Sub
+
+ZAFPapBadFp3:
+msg$ = vbCrLf & "ZAFPap: Excessive (fp3) exponentiation for (-xi * rx) expression (" & Format$(-xi * rx#) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
 Call IOWriteLog(msg$)
-End If
 'ierror = True
 Exit Sub
 

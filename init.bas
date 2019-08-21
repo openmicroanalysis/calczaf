@@ -1313,7 +1313,7 @@ Exit Sub
 End Sub
 
 Sub InitFiles()
-' Routine to load file names (everytime) and to create an Userdata directory (first time installation only).
+' Routine to load common file names
 
 ierror = False
 On Error GoTo InitFilesError
@@ -5352,13 +5352,14 @@ Exit Sub
 End Sub
 
 Sub InitUserDataDirectory(firsttime As Boolean)
-' Create the UserData, StandardPOSData, CalcZAFDATData and ColumnPCCData directories
+' Check for the UserData, StandardPOSData, CalcZAFDATData and ColumnPCCData directories
 
 ierror = False
 On Error GoTo InitUserDataDirectoryError
 
 Dim response As Integer
 Dim tmsg As String
+Dim valid As Long
 
 ' Check that user data directory drive already exists
 firsttime = False
@@ -5372,15 +5373,79 @@ End If
 ' Check that user data directory already exists
 tmsg$ = "InitUserDataDirectory: checking User Data folder..."
 If Dir$(UserDataDirectory$, vbDirectory) = vbNullString Then
+
+' Ask user whether to create a new user data folder
 msg$ = "User Data Directory " & UserDataDirectory$ & " as specified in " & ProbeWinINIFile$ & " was not found." & vbCrLf & vbCrLf
 msg$ = msg$ & "Would you like Probe for EPMA to create the folder for you?"
 response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton1, "InitUserDataDirectory")
+
+' If yes, ask user where to create userdata folder
 If response% = vbYes Then
-MkDir UserDataDirectory$
+UserDataDirectory$ = IOBrowseForFolderByPath(False, UserDataDirectory$ & "\", "Please browse to the disk drive you want all user data files stored in or click Cancel to use the C:\ drive", FormMAIN)
+If ierror Then Exit Sub
+
+' Check if user clicked cancel button
+If Trim$(UserDataDirectory$) = vbNullString Then UserDataDirectory$ = "C:\UserData"
+
+' Use selected drive letter (only)
+UserDataDirectory$ = Left(UserDataDirectory$, 1) & ":\UserData"
+
+' Create the new user data directory on this disk drive
+If Dir$(UserDataDirectory$, vbDirectory) = vbNullString Then MkDir UserDataDirectory$
+
+' Update Probewin.ini file for location of new user data directory
+valid& = WritePrivateProfileString("Software", "UserDataDirectory", VbDquote$ & UserDataDirectory$ & VbDquote$, ProbeWinINIFile$)
 firsttime = True
 
+' Update other data folder strings for current disk drive
+UserImagesDirectory$ = Left(UserDataDirectory$, 1) & ":\UserImages"
+valid& = WritePrivateProfileString("Software", "UserImagesDirectory", VbDquote$ & UserImagesDirectory$ & VbDquote$, ProbeWinINIFile$)
+
+UserEDSDirectory$ = Left(UserDataDirectory$, 1) & ":\UserEDS"
+valid& = WritePrivateProfileString("Software", "UserEDSDirectory", VbDquote$ & UserEDSDirectory$ & VbDquote$, ProbeWinINIFile$)
+
+UserCLDirectory$ = Left(UserDataDirectory$, 1) & ":\UserCL"
+valid& = WritePrivateProfileString("Software", "UserCLDirectory", VbDquote$ & UserCLDirectory$ & VbDquote$, ProbeWinINIFile$)
+
+UserEBSDDirectory$ = Left(UserDataDirectory$, 1) & ":\UserEBSD"
+valid& = WritePrivateProfileString("Software", "UserEBSDDirectory", VbDquote$ & UserEBSDDirectory$ & VbDquote$, ProbeWinINIFile$)
+
+' Update other user data directory sub folders
+StandardPOSFileDirectory$ = UserDataDirectory$ & "\StandardPOSData"
+valid& = WritePrivateProfileString("Standards", "StandardPOSFileDirectory", VbDquote$ & StandardPOSFileDirectory$ & VbDquote$, ProbeWinINIFile$)    ' note different keyword!!!
+
+CalcZAFDATFileDirectory$ = UserDataDirectory$ & "\CalcZAFDATData"
+valid& = WritePrivateProfileString("Software", "CalcZAFDATFileDirectory", VbDquote$ & CalcZAFDATFileDirectory$ & VbDquote$, ProbeWinINIFile$)
+
+ColumnPCCFileDirectory$ = UserDataDirectory$ & "\ColumnPCCData"
+valid& = WritePrivateProfileString("Software", "ColumnPCCFileDirectory", VbDquote$ & ColumnPCCFileDirectory$ & VbDquote$, ProbeWinINIFile$)
+
+SurferDataDirectory$ = UserDataDirectory$ & "\SurferData"
+valid& = WritePrivateProfileString("Software", "SurferDataDirectory", VbDquote$ & SurferDataDirectory$ & VbDquote$, ProbeWinINIFile$)
+
+GrapherDataDirectory$ = UserDataDirectory$ & "\GrapherData"
+valid& = WritePrivateProfileString("Software", "GrapherDataDirectory", VbDquote$ & GrapherDataDirectory$ & VbDquote$, ProbeWinINIFile$)
+
+DemoImagesDirectory$ = UserDataDirectory$ & "\DemoImages"
+valid& = WritePrivateProfileString("Software", "DemoImagesDirectory", VbDquote$ & DemoImagesDirectory$ & VbDquote$, ProbeWinINIFile$)
+OriginalDemoImagesDirectory$ = DemoImagesDirectory$
+
+' Update Penepma directories
+PENDBASE_Path$ = UserDataDirectory$ & "\Penepma12\Pendbase"     ' "C:\Userdata\Penepma06\Pendbase"
+valid& = WritePrivateProfileString("Software", "PENDBASE_Path", VbDquote$ & PENDBASE_Path$ & VbDquote$, ProbeWinINIFile$)
+
+PENEPMA_Path$ = UserDataDirectory$ & "\Penepma12\Penepma"        ' "C:\Userdata\Penepma12\Penepma"
+valid& = WritePrivateProfileString("Software", "PENEPMA_Path", VbDquote$ & PENEPMA_Path$ & VbDquote$, ProbeWinINIFile$)
+
+PENEPMA_Root$ = UserDataDirectory$ & "\Penepma12"                ' "C:\Userdata\Penepma12"
+valid& = WritePrivateProfileString("Software", "PENEPMA_Root", VbDquote$ & PENEPMA_Root$ & VbDquote$, ProbeWinINIFile$)
+
+PENEPMA_PAR_Path$ = UserDataDirectory$ & "\Penepma12\Penfluor"                 ' "C:\Userdata\Penepma12\Penfluor"
+valid& = WritePrivateProfileString("Software", "PENEPMA_PAR_Path", VbDquote$ & PENEPMA_PAR_Path$ & VbDquote$, ProbeWinINIFile$)
+
+' If no, warn user and end program
 Else
-msg$ = "Please create the folder " & UserDataDirectory$ & " manually or edit the " & ProbeWinINIFile$ & " file to indicate the correct User Data Directory and try again."
+msg$ = "Please create the folder " & UserDataDirectory$ & " manually or edit the " & ProbeWinINIFile$ & " file to indicate the correct User Data Directory and try again. The program will now end."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
 End
 End If
@@ -5524,7 +5589,7 @@ msg$ = msg$ & "CalcZAFDATFileDirectory$= " & CalcZAFDATFileDirectory$ & vbCrLf
 msg$ = msg$ & "ColumnPCCFileDirectory$= " & ColumnPCCFileDirectory$ & vbCrLf
 msg$ = msg$ & "SurferDataDirectory$= " & SurferDataDirectory$ & vbCrLf
 msg$ = msg$ & "GrapherDataDirectory$= " & GrapherDataDirectory$ & vbCrLf
-msg$ = msg$ & "DemoImagesDirectory$= " & OriginalDemoImagesDirectory$ & vbCrLf
+msg$ = msg$ & "DemoImagesDirectory$= " & DemoImagesDirectory$ & vbCrLf
 msg$ = msg$ & "UserImagesDirectory$= " & UserImagesDirectory$ & vbCrLf
 MsgBox Error$ & " while " & tmsg$ & vbCrLf & vbCrLf & msg$, vbOKOnly + vbCritical, "InitUserDataDirectory"
 ierror = True
