@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/21/19	Add "string search" text field for auto-selection of samples based on user string in
+		FormAnalyze and FormAutomate. Add checkbox to only display samples with data (or not all disabled data)
+		in FormAnalyze, FormPlot anbd FormPlot_Wave (von der Handt).
+
 08/20/19	Improve error messages for matrix correction math errors (negative parameters, etc.).
 
 		Allow user to select disk drive for new user data folders, etc. (von der Handt)

@@ -42,7 +42,7 @@ If tForm.OptionUnknown.value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1
 If tForm.OptionWavescan.value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
 
 ' Check for FormANALYZE and if so, check display only samples with data checkbox
-If tForm.Name = "FormANALYZE" Then
+If tForm.Name = "FormANALYZE" Or tForm.Name = "FormPLOT_WAVE" Or tForm.Name = "FormPLOT" Then
 If tForm.CheckOnlyDisplaySamplesWithData.value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
 End If
 
