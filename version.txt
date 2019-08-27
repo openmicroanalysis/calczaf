@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/26/19	Modify PFE CalcZAF output to export sample name and line number (if not averaging).
+v. 12.7.2
+
 08/21/19	Add "string search" text field for auto-selection of samples based on user string in
 		FormAnalyze and FormAutomate. Add checkbox to only display samples with data (or not all disabled data)
 		in FormAnalyze, FormPlot anbd FormPlot_Wave (von der Handt).
@@ -81,7 +84,7 @@ v. 12.6.3	x-ray maps in CalcImage (Mott). Code is now correct for both drift cor
 05/11/19	Bump vesion so CalcZAF/Standard are updated.
 v. 12.6.2
 
-05/07/19	Tweak code in Penepma pure element output to utilize elemntal densities. Modify OxideOrElemental and MAN
+05/07/19	Tweak code in Penepma pure element output to utilize elemental densities. Modify OxideOrElemental and MAN
 		code in CalcImage to respect disable quant flag for measured oxygen.
 
 04/27/19	Update PFE Reference manual for correct equations for calculating peaking start size (Seward).
