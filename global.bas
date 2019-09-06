@@ -168,6 +168,7 @@ Global Const ANGEV! = 12398.54           ' angstrom per eV (and visa versa)
 Global Const EVPERKEV# = 1000#           ' eV per keV
 Global Const MILLIVOLTPERVOLT# = 1000#   ' millivolt per volt
 
+Global Const MICROSECPERMILLSEC& = 1000# ' micro-secs per milli-secs
 Global Const MSPS! = 1000000#            ' micro-secs per second
 Global Const TENTHMSECPERSEC# = 10000#   ' 1/10th millsecs per second
 Global Const MSECPERSEC# = 1000#         ' milli-seconds per second
@@ -2992,4 +2993,6 @@ Global ZFractionZbarCalculationsExponent As Single
 Global UseContinuumAbsCalculationsFlag As Boolean
 
 Global UserSpecifiedOutputFerrousFerricFlag As Boolean
+
+Global UserSpecifiedOutputMachineReadableFlag As Boolean
 

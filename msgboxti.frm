@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormMSGBOXTIM 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "MsgBoxTim"
-   ClientHeight    =   2010
+   ClientHeight    =   2550
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7950
@@ -10,7 +10,7 @@ Begin VB.Form FormMSGBOXTIM
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2010
+   ScaleHeight     =   2550
    ScaleWidth      =   7950
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
@@ -29,7 +29,7 @@ Begin VB.Form FormMSGBOXTIM
       Height          =   495
       Left            =   4080
       TabIndex        =   2
-      Top             =   1440
+      Top             =   1920
       Width           =   855
    End
    Begin VB.Timer Timer1 
@@ -54,11 +54,11 @@ Begin VB.Form FormMSGBOXTIM
       Left            =   2880
       Style           =   1  'Graphical
       TabIndex        =   0
-      Top             =   1440
+      Top             =   1920
       Width           =   975
    End
    Begin VB.Label Label1 
-      Height          =   1215
+      Height          =   1695
       Left            =   720
       TabIndex        =   1
       Top             =   120

@@ -2345,10 +2345,10 @@ InterfaceStringImage(0) = "Demonstration (Imaging)"
 InterfaceStringImage(1) = "Unused"
 InterfaceStringImage(2) = "Unused"
 InterfaceStringImage(3) = "Unused"
-InterfaceStringImage(4) = "JEOL 8900/8200/8500"
+InterfaceStringImage(4) = "JEOL 8x00/8x30 Mapping"
 InterfaceStringImage(5) = "Cameca SX100/SXFive Mapping"
 InterfaceStringImage(6) = "Cameca SX100/SXFive Video"
-InterfaceStringImage(7) = "Unused"
+InterfaceStringImage(7) = "JEOL EDS API Video"
 InterfaceStringImage(8) = "Unused"
 InterfaceStringImage(9) = "Bruker RTIfcCLIENT"
 InterfaceStringImage(10) = "Thermo TEPortal"
@@ -2697,45 +2697,39 @@ ImageAnalogUnitsShortStrings$(1) = "Not Implemented"         ' Unused
 ImageAnalogUnitsShortStrings$(2) = "Not Implemented"         ' Unused
 ImageAnalogUnitsShortStrings$(3) = "Not Implemented"         ' Unused
 
-If ImageInterfaceType% = 7 Then
-ImageAnalogUnitsShortStrings$(4) = "Preset Values"           ' JEOL EDS API video imaging
-Else
 If JeolEOSInterfaceType& = 3 Then
 ImageAnalogUnitsShortStrings$(4) = "Microsecs/Pixel"         ' JEOL 8230/8530
 Else
 ImageAnalogUnitsShortStrings$(4) = "A/D Averages/Pixel"      ' JEOL 8900/8200/8500
 End If
-End If
 
 ImageAnalogUnitsShortStrings$(5) = "Millisecs/Pixel"         ' SX100/SXFive mapping
 ImageAnalogUnitsShortStrings$(6) = "Scan Rate"               ' SX100/SXFive video
-ImageAnalogUnitsShortStrings$(7) = "Micro-sec per pixel"     ' JEOL EDS OEM video
+ImageAnalogUnitsShortStrings$(7) = "Microsecs/Pixel"         ' JEOL EDS OEM video
 ImageAnalogUnitsShortStrings$(8) = "Not Implemented"         ' Unused
 ImageAnalogUnitsShortStrings$(9) = "A/D Averages/Pixel"      ' Bruker RTIfcClient
 ImageAnalogUnitsShortStrings$(10) = "Frame Time in Secs"     ' Thermo TEPortal
 
 ' DefaultImageAnalogUnits long strings
-ImageAnalogUnitsLongStrings(0) = "A/D Averages/Pixel (1-1000)"      ' demo
-ImageAnalogUnitsLongStrings(1) = "Not Implemented"                  ' Unused
-ImageAnalogUnitsLongStrings(2) = "Not Implemented"                  ' Unused
-ImageAnalogUnitsLongStrings(3) = "Not Implemented"                  ' Unused
+ImageAnalogUnitsLongStrings(0) = "A/D Averages/Pixel (1-1000)"                  ' demo
+ImageAnalogUnitsLongStrings(1) = "Not Implemented"                              ' Unused
+ImageAnalogUnitsLongStrings(2) = "Not Implemented"                              ' Unused
+ImageAnalogUnitsLongStrings(3) = "Not Implemented"                              ' Unused
 
-If ImageInterfaceType% = 7 Then
-ImageAnalogUnitsLongStrings$(4) = "Not applicable for JEOL EDS"         ' JEOL EDS API video imaging
-Else
 If JeolEOSInterfaceType& = 3 Then
-ImageAnalogUnitsLongStrings(4) = "Microsecs/Pixel (100-100000000)"  ' JEOL 8230/8530
+ImageAnalogUnitsLongStrings(4) = "Micro-seconds per Pixel (100-10000)"          ' JEOL 8230/8530
 Else
-ImageAnalogUnitsLongStrings(4) = "A/D Averages/Pixel (1-1000)"      ' JEOL 8900/8200/8500
-End If
+ImageAnalogUnitsLongStrings(4) = "A/D Averages/Pixel (1-1000)"                  ' JEOL 8900/8200/8500
 End If
 
-ImageAnalogUnitsLongStrings(5) = "Millisecs/Pixel (1-1000)"         ' SX100/SXFive mapping
-ImageAnalogUnitsLongStrings(6) = "Scan Rate (1-7)"                  ' SX100/SXFive video
-ImageAnalogUnitsLongStrings(7) = "Micro-sec per pixel"              ' JEOL EDS OEM video
-ImageAnalogUnitsLongStrings(8) = "Not Implemented"                  ' Unused
-ImageAnalogUnitsLongStrings(9) = "A/D Averages/Pixel (2 to 1000)"   ' Bruker RTIfcClient
-ImageAnalogUnitsLongStrings(10) = "Frame Time in Secs (1-100)"      ' Thermo TEPortal
+ImageAnalogUnitsLongStrings(5) = "Millisecs/Pixel (1-1000)"                     ' SX100/SXFive mapping
+ImageAnalogUnitsLongStrings(6) = "Video Scan Rate (1-7)"                        ' SX100/SXFive video
+
+ImageAnalogUnitsLongStrings(7) = "Micro-seconds per Pixel (100-10000)"          ' JEOL EDS OEM video (new version)
+
+ImageAnalogUnitsLongStrings(8) = "Not Implemented"                              ' Unused
+ImageAnalogUnitsLongStrings(9) = "A/D Averages/Pixel (2 to 1000)"               ' Bruker RTIfcClient
+ImageAnalogUnitsLongStrings(10) = "Frame Time in Secs (1-100)"                  ' Thermo TEPortal
 
 ' DefaultImageAnalogUnits ToolTip strings
 ImageAnalogUnitsToolTipStrings(0) = "Specify the number of A-D conversions to average per pixel (range 1 - 1000)"       ' demo
@@ -2744,16 +2738,16 @@ ImageAnalogUnitsToolTipStrings(2) = "Not Implemented"                           
 ImageAnalogUnitsToolTipStrings(3) = "Not Implemented"                                                                   ' Unused
 
 If JeolEOSInterfaceType& = 3 Then
-ImageAnalogUnitsToolTipStrings(4) = "Specify the number micro-seconds per pixel (range 100 to 100000000)"               ' JEOL 8230/8530
+ImageAnalogUnitsToolTipStrings(4) = "Specify the number micro-seconds per pixel (range 100 to 10000)"                   ' JEOL 8230/8530
 Else
-ImageAnalogUnitsToolTipStrings(4) = "Specify the number of A-D conversions to average per pixel (range 1 - 1000)"       ' JEOL 8900/8200/8500
+ImageAnalogUnitsToolTipStrings(4) = "Specify the number of A-D conversions to average per pixel (range 1 to 1000)"      ' JEOL 8900/8200/8500
 End If
 
-ImageAnalogUnitsToolTipStrings(5) = "Specify the image dwell time in milli-seconds per pixel (range 1 - 1000)"          ' SX100/SXFive mapping
+ImageAnalogUnitsToolTipStrings(5) = "Specify the image dwell time in milli-seconds per pixel (range 1 to 1000)"         ' SX100/SXFive mapping
 ImageAnalogUnitsToolTipStrings(6) = "Specify the image scan speed (range = 1 - 7)"                                      ' SX100/SXFive Video
-ImageAnalogUnitsToolTipStrings(7) = "Video frame time is specified by imaging resolution"                               ' JEOL EDS OEM
+ImageAnalogUnitsToolTipStrings(7) = "Specify the number micro-seconds per pixel (range 100 to 10000)"                   ' JEOL EDS OEM (new version)
 ImageAnalogUnitsToolTipStrings(8) = "Not implemented"                                                                   ' Unused
-ImageAnalogUnitsToolTipStrings(9) = "Specify the number of A-D conversions to average per pixel (range 2 - 1000)"       ' Bruker RTIfcClient
+ImageAnalogUnitsToolTipStrings(9) = "Specify the number of A-D conversions to average per pixel (range 2 to 1000)"      ' Bruker RTIfcClient
 ImageAnalogUnitsToolTipStrings(10) = "Enter the imaging frame time in seconds (1 to 100)"                               ' Thermo TEPortal
 
 ' Load interference assignment orders
@@ -3104,12 +3098,12 @@ ElseIf ImageInterfaceType% = 3 Then     ' Unused
     DefaultImageAnalogAverages% = 1
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
-ElseIf ImageInterfaceType% = 4 Then     ' JEOL
+ElseIf ImageInterfaceType% = 4 Then     ' JEOL 8900/8200/8500 or 8230/8530
     If JeolEOSInterfaceType& = 3 Then
-    DefaultImageAnalogAverages% = 200   ' JEOL micro-secs (range 100 - 100000000)
+    DefaultImageAnalogAverages% = 200   ' JEOL micro-secs (range 100 - 10000)   ' 8230/8530
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
     Else
-    DefaultImageAnalogAverages% = 8     ' JEOL A/D averages (range 1 - 1000)
+    DefaultImageAnalogAverages% = 8     ' JEOL A/D averages (range 1 - 1000)    ' 8900/8200/8500
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
     End If
 
@@ -3122,7 +3116,7 @@ ElseIf ImageInterfaceType% = 6 Then     ' SX100/SXFive video scan speed (range 1
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
 ElseIf ImageInterfaceType% = 7 Then     ' JEOL EDS OEM
-    DefaultImageAnalogAverages% = 1
+    DefaultImageAnalogAverages% = 200   ' JEOL micro-secs (range 100 - 10000)
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
 ElseIf ImageInterfaceType% = 8 Then     ' Unused
@@ -4538,8 +4532,10 @@ tForm.Height = twindow!(4)
 ' Set window width and height
 Else
 If tForm.BorderStyle = vbSizable Or tForm.BorderStyle = vbSizableToolWindow Then
+If tForm.Name <> "FormIMAGE" Then   ' to allow form to re-size based on ImageInterfaceImageIxIy
 tForm.Width = twindow!(3)
 tForm.Height = twindow!(4)
+End If
 End If
 End If
 

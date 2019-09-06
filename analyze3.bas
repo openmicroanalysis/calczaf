@@ -500,6 +500,7 @@ ierror = False
 On Error GoTo AnalyzeWeightCorrectError
 
 Const INTERF_TOO_NEGATIVE# = -0.01    ' in raw k-ratio units (-0.01 = -1%)
+Const MAXNEGATIVE_KRATIO! = -0.2
 
 Dim chan As Integer, j As Integer, jmax As Integer, response As Integer
 Dim intfchan As Integer, intfstd As Integer, assignstd As Integer, ip As Integer
@@ -779,7 +780,18 @@ blankcts!(chan%) = temp! * analysis.StdAssignsBetas!(chan%) / analysis.UnkBetas!
 ElseIf CorrectionFlag% = MAXCORRECTION% Then
 End If
 
+' Perform actual blank correction on sample intensities
 uncts!(chan%) = uncts!(chan%) - blankcts!(chan%)
+
+' Check for very negative counts after blank correction
+If uncts!(chan%) / analysis.StdAssignsCounts!(chan%) < MAXNEGATIVE_KRATIO! Then
+tmsg$ = "The blank correction assignment (Un " & Format$(sample(1).BlankCorrectionUnks%(chan%)) & ") is producing a very negative k-ratio (" & Format$(uncts!(chan%) / analysis.StdAssignsCounts!(chan%)) & ") for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " in sample " & SampleGetString2$(sample())
+tmsg$ = tmsg$ & vbCrLf & vbCrLf & "Please check that the blank assignment and blank level in the Standard Assignments dialog are correctly specified for this sample."
+MsgBox tmsg$, vbOKOnly + vbExclamation, "AnalyzeWeightCorrect"
+ierror = True
+Exit Sub
+End If
+
 End If
 End If
 End If

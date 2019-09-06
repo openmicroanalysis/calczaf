@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormMSGBOXTIME 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "MsgBoxTime"
-   ClientHeight    =   2010
+   ClientHeight    =   2955
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   7950
@@ -10,7 +10,7 @@ Begin VB.Form FormMSGBOXTIME
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2010
+   ScaleHeight     =   2955
    ScaleWidth      =   7950
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
@@ -33,14 +33,14 @@ Begin VB.Form FormMSGBOXTIME
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   3720
+      Left            =   3480
       Style           =   1  'Graphical
       TabIndex        =   0
-      Top             =   1440
+      Top             =   2400
       Width           =   975
    End
    Begin VB.Label Label1 
-      Height          =   1215
+      Height          =   2175
       Left            =   720
       TabIndex        =   1
       Top             =   120

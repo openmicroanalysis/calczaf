@@ -442,6 +442,8 @@ If tKeyword$ = "UserSpecifiedOutputChemAgeFlag" Then tDefault& = 0
 
 If tKeyword$ = "UserSpecifiedOutputFerrousFerricFlag" Then tDefault& = 0
 
+If tKeyword$ = "UserSpecifiedOutputMachineReadableFlag" Then tDefault& = 0
+
 End If
 
 ' Load passed boolean keyword
@@ -1709,6 +1711,8 @@ Call InitINI4(UserSpecifiedOutputDetectionLimitsOxideFlag, "UserSpecifiedOutputD
 Call InitINI4(UserSpecifiedOutputChemAgeFlag, "UserSpecifiedOutputChemAgeFlag", "Software")
 
 Call InitINI4(UserSpecifiedOutputFerrousFerricFlag, "UserSpecifiedOutputFerrousFerricFlag", "Software")
+
+Call InitINI4(UserSpecifiedOutputMachineReadableFlag, "UserSpecifiedOutputMachineReadableFlag", "Software")
 
 ' Load DefaultNthPointAcquisitionInterval
 lpAppName$ = "Software"
@@ -4291,10 +4295,15 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then ImageInterfaceImageIxIy! = Val(Left$(lpReturnString$, valid&))
-If ImageInterfaceImageIxIy! < 0.5 Or ImageInterfaceImageIxIy! > 2# Then
-msg$ = "ImageInterfaceImageIxIy keyword value out of range in " & ProbeWinINIFile$
+If ImageInterfaceImageIxIy! < 1# Or ImageInterfaceImageIxIy! > 1.3333 Then
+msg$ = "ImageInterfaceImageIxIy keyword value out of range in " & ProbeWinINIFile$ & ". Must be between 1.0 and 1.3333."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 ImageInterfaceImageIxIy! = Val(lpDefault$)
+End If
+If ImageInterfaceType% = 4 And ImageInterfaceImageIxIy! <> 1# Then
+msg$ = "Invalid ImageInterfaceImageIxIy keyword value in " & ProbeWinINIFile$ & ". Must be 1.0 for JEOL 8900/8200/8500 imaging interface."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
+ImageInterfaceImageIxIy! = 1#
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
