@@ -2,7 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-09/05/19	Modify demo imaging code to utilize aspect ration from INI file. Also implement most code for new 
+09/06/19	Small tweaks to imaging code. Add Glenn and Changkun to JEOL EDS beta testers in About form.
+
+09/05/19	Modify demo imaging code to utilize aspect ratio from INI file. Also implement code for new 
 v. 12.7.3	JEOL EDS video imaging API.
 
 		Add new user specified output parameter for "machine readable" column headings (Adams).

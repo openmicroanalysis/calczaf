@@ -74,10 +74,10 @@ Begin VB.Form FormABOUT
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
          Height          =   1095
-         Left            =   600
+         Left            =   360
          TabIndex        =   5
          Top             =   1920
-         Width           =   8055
+         Width           =   8535
       End
       Begin VB.Image Image1 
          Height          =   960
@@ -173,7 +173,8 @@ FormABOUT.LabelAboutTitle.Caption = tmsg$
 
 tmsg$ = "Many thanks to our excellent and hard working beta testing team:" & vbCrLf & vbCrLf
 tmsg$ = tmsg$ & "Anette von der Handt and Karsten Goemann (JEOL 8530), Owen Neill (JEOL 8500), Paul Carpenter (JEOL 8200), "
-tmsg$ = tmsg$ & "Heather Lowers (JEOL 8900), Angus Netting (Cameca SXFIVE), Gareth Seward and Karsten Goemann (Cameca SX100)"
+tmsg$ = tmsg$ & "David Adams (JEOL 8900), Angus Netting (Cameca SXFIVE), Gareth Seward and Karsten Goemann (Cameca SX100) "
+tmsg$ = tmsg$ & "and Glenn Poirier and Changkun Park (JEOL EDS)"
 FormABOUT.LabelAboutBeta.Caption = tmsg$
 
 tmsg$ = vbCrLf & "Thanks to Paul Carpenter, Don Snyder and Mark Rivers for their helpful advice and" & vbCrLf
