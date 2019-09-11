@@ -35,6 +35,7 @@ sample(1).Xrsyms$(chan%) = vbNullString
 sample(1).BraggOrders%(chan%) = 1           ' assume first order as default
 sample(1).numcat%(chan%) = 0
 sample(1).numoxd%(chan%) = 0
+sample(1).AtomicCharges!(chan%) = 0#
 sample(1).ElmPercents!(chan%) = 0#
 
 ' 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point

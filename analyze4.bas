@@ -326,6 +326,7 @@ sample(1).Xrsyms$(sample(1).LastChan%) = vbNullString
 ' Make sure cations are loaded
 sample(1).numcat%(sample(1).LastChan%) = tmpsample(1).numcat%(i%)
 sample(1).numoxd%(sample(1).LastChan%) = tmpsample(1).numoxd%(i%)
+sample(1).AtomicCharges!(sample(1).LastChan%) = tmpsample(1).AtomicCharges!(i%)
 sample(1).ElmPercents!(sample(1).LastChan%) = tmpsample(1).ElmPercents!(i%)
 6000: Next i%
 

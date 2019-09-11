@@ -338,7 +338,7 @@ GetElmOldSample(1).Xrsyms$(GetElmOldSample(1).LastChan%) = vbNullString
     
 ' Make sure cations are loaded
 If GetElmTmpSample(1).numcat%(i%) = 0 Then GetElmTmpSample(1).numcat%(i%) = AllCat%(ip%)
-If GetElmTmpSample(1).numoxd%(i%) = 0 Then GetElmTmpSample(1).numoxd%(i%) = AllOxd%(ip%)
+'If GetElmTmpSample(1).numoxd%(i%) = 0 Then GetElmTmpSample(1).numoxd%(i%) = AllOxd%(ip%)       ' zero oxygens is valid
 GetElmOldSample(1).numcat%(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).numcat%(i%)
 GetElmOldSample(1).numoxd%(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).numoxd%(i%)
 GetElmOldSample(1).ElmPercents!(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).ElmPercents!(i%)

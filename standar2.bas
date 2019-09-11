@@ -147,6 +147,11 @@ sample(1).Elsyms$(sample(1).LastChan%) = Trim$(vbNullString & stds("Symbol"))
 sample(1).ElmPercents!(sample(1).LastChan%) = stds("Percent")
 sample(1).numcat%(sample(1).LastChan%) = stds("NumCat")
 sample(1).numoxd%(sample(1).LastChan%) = stds("NumOxd")
+
+ip% = IPOS1(MAXELM%, sample(1).Elsyms$(sample(1).LastChan%), Symlo$())
+If ip% > 0 Then
+sample(1).AtomicCharges!(sample(1).LastChan%) = AllAtomicCharges!(ip%)
+End If
 stds.MoveNext
 Loop
 
@@ -415,6 +420,7 @@ sample(1).Elsyms$(sample(1).LastChan%) = Symup$(ATOMIC_NUM_OXYGEN%)
 sample(1).Xrsyms$(sample(1).LastChan%) = vbNullString
 sample(1).numcat%(sample(1).LastChan%) = AllCat%(ATOMIC_NUM_OXYGEN%)
 sample(1).numoxd%(sample(1).LastChan%) = AllOxd%(ATOMIC_NUM_OXYGEN%)
+sample(1).AtomicCharges!(sample(1).LastChan%) = AllAtomicCharges!(ATOMIC_NUM_OXYGEN%)
 sample(1).ElmPercents!(sample(1).LastChan%) = sum2!
 
 ' Add to elemental sum

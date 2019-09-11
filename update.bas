@@ -1978,6 +1978,7 @@ End If
 ' Check for calculation flags
 If sample(1).numcat%(i%) <> UpdateOldSample(1).numcat%(i%) Then UpdateChangedSample = True
 If sample(1).numoxd%(i%) <> UpdateOldSample(1).numoxd%(i%) Then UpdateChangedSample = True
+If sample(1).AtomicCharges!(i%) <> UpdateOldSample(1).AtomicCharges!(i%) Then UpdateChangedSample = True
 
 If sample(1).BlankCorrectionUnks%(i%) <> UpdateOldSample(1).BlankCorrectionUnks%(i%) Then UpdateChangedSample = True
 If sample(1).BlankCorrectionLevels!(i%) <> UpdateOldSample(1).BlankCorrectionLevels!(i%) Then UpdateChangedSample = True

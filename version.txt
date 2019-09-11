@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/10/19	Fix atomic charges bug for calculating sum of cations in ImportExport code.
+v.12.7.4
+
 09/09/19	Fix sample import/export feature (Dungan).
 
 09/06/19	Small tweaks to imaging code. Add Glenn and Changkun to JEOL EDS beta testers in About form.
