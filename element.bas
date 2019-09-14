@@ -373,7 +373,7 @@ Exit Function
 End Function
 
 Sub ElementLoadArrays(sample() As TypeSample)
-' This routine loads the atomic weights, atomic numbers, formula coefficients for oxide formulas, etc.
+' This routine loads the atomic weights, atomic numbers and element and oxide formula symbols
 
 ierror = False
 On Error GoTo ElementLoadArraysError
@@ -391,7 +391,6 @@ sample(1).Oxsyup$(chan%) = vbNullString
 sample(1).Elsyup$(chan%) = vbNullString
 sample(1).AtomicWts!(chan%) = 0#
 sample(1).AtomicNums%(chan%) = 0
-'sample(1).AtomicCharges!(chan%) = 0#            ' commented out since loaded from Probe MDB file
 
 ' Load default conditions
 If sample(1).takeoff! = 0# Then sample(1).takeoff! = DefaultTakeOff!
@@ -412,7 +411,6 @@ sample(1).Oxsyup$(chan%) = oxup$
 sample(1).Elsyup$(chan%) = elup$
 sample(1).AtomicNums%(chan%) = AllAtomicNums%(num%)
 sample(1).AtomicWts!(chan%) = AllAtomicWts!(num%)
-'sample(1).AtomicCharges!(chan%) = AllAtomicCharges!(num%)            ' commented out since loaded from Probe MDB file
 End If
 
 Next chan%

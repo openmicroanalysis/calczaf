@@ -2996,3 +2996,4 @@ Global UserSpecifiedOutputFerrousFerricFlag As Boolean
 
 Global UserSpecifiedOutputMachineReadableFlag As Boolean
 
+Global UseEDSStoredNetIntensitiesFlag As Boolean

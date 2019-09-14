@@ -4295,8 +4295,8 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then ImageInterfaceImageIxIy! = Val(Left$(lpReturnString$, valid&))
-If ImageInterfaceImageIxIy! < 1# Or ImageInterfaceImageIxIy! > 1.3333 Then
-msg$ = "ImageInterfaceImageIxIy keyword value out of range in " & ProbeWinINIFile$ & ". Must be between 1.0 and 1.3333."
+If ImageInterfaceImageIxIy! < 1# Or ImageInterfaceImageIxIy! > 1.33333 Then
+msg$ = "ImageInterfaceImageIxIy keyword value out of range in " & ProbeWinINIFile$ & ". Must be between 1.0 and 1.33333."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 ImageInterfaceImageIxIy! = Val(lpDefault$)
 End If
