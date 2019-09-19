@@ -28,14 +28,14 @@ Begin VB.Form FormEDITMAC
       ForeColor       =   &H00FF0000&
       Height          =   1095
       Left            =   120
-      TabIndex        =   2
+      TabIndex        =   6
       Top             =   120
       Width           =   5535
       Begin VB.ComboBox ComboAbsorber 
          Appearance      =   0  'Flat
          Height          =   315
          Left            =   2760
-         TabIndex        =   9
+         TabIndex        =   2
          Text            =   "ComboAbsorber"
          Top             =   600
          Width           =   1215
@@ -44,7 +44,7 @@ Begin VB.Form FormEDITMAC
          Appearance      =   0  'Flat
          Height          =   300
          Left            =   120
-         TabIndex        =   5
+         TabIndex        =   0
          Text            =   "ComboElement"
          Top             =   600
          Width           =   1215
@@ -53,7 +53,7 @@ Begin VB.Form FormEDITMAC
          Appearance      =   0  'Flat
          Height          =   315
          Left            =   1440
-         TabIndex        =   4
+         TabIndex        =   1
          Text            =   "ComboXray"
          Top             =   600
          Width           =   1215
@@ -84,7 +84,7 @@ Begin VB.Form FormEDITMAC
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   120
-         TabIndex        =   8
+         TabIndex        =   9
          Top             =   360
          Width           =   1215
       End
@@ -95,7 +95,7 @@ Begin VB.Form FormEDITMAC
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   1440
-         TabIndex        =   7
+         TabIndex        =   8
          Top             =   360
          Width           =   1215
       End
@@ -106,7 +106,7 @@ Begin VB.Form FormEDITMAC
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   4200
-         TabIndex        =   6
+         TabIndex        =   7
          Top             =   360
          Width           =   1215
       End
@@ -116,7 +116,7 @@ Begin VB.Form FormEDITMAC
       Caption         =   "Cancel"
       Height          =   375
       Left            =   5760
-      TabIndex        =   1
+      TabIndex        =   5
       Top             =   720
       Width           =   975
    End
@@ -127,7 +127,7 @@ Begin VB.Form FormEDITMAC
       Height          =   495
       Left            =   5760
       Style           =   1  'Graphical
-      TabIndex        =   0
+      TabIndex        =   4
       Top             =   120
       Width           =   975
    End

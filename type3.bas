@@ -913,12 +913,26 @@ Call IOWriteLog(msg$)
 End If
 End If
 
+Loop
+End If
+
 ' Type out volatile correction assignments (-1 = self, 0 = none, >0 = assigned)
 If UseDetailedFlag Or DebugMode Then
 msg$ = vbCrLf & "Miscellaneous Sample Acquisition/Calculation Parameters: "
 Call IOWriteLog(msg$)
 Call ElementGetData(sample())
 If ierror Then Exit Sub
+
+n% = 0
+Do Until False
+n% = n% + 1
+Call TypeGetRange(Int(1), n%, ii%, jj%, sample())
+If ierror Then Exit Sub
+If ii% > sample(1).LastElm% Then Exit Do
+
+If n% <> 1 Then
+Call IOWriteLog(vbNullString)
+End If
 
 msg$ = "KILO: "
 For i% = ii% To jj%
@@ -1045,7 +1059,6 @@ msg$ = msg$ & Format$(DASHED4$, a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
-End If
 End If
 End If
 

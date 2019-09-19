@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/18/19	Fix tab order in Elements/cations and Stndard Assignments dialogs (Poeml and Goemann). Add
+		shortcut key to Digitze window for Single Points (and Shotgun but that one doesn't 
+		work for some reason!) (Poirier). Add sorted standard list in MAN dialog (Ben Wade).
+
 09/13/19	Add feature to store EDS net intensities in probe database for off-line use without an EDS
 v. 12.7.5	interface. Applies to Bruker and Thermo but especially JEOL EDS.
 

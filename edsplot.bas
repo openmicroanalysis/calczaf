@@ -63,7 +63,7 @@ tForm.Pesgo1.ydata(0, i% - 1) = ytemp!
 
 ' Load x axis data
 xtemp! = sample(1).EDSSpectraEVPerChannel!(datarow%) * (i% - 1) / EVPERKEV#
-If EDSSpectraInterfaceType% = 2 Then
+If EDSSpectraInterfaceTypeStored% = 2 Then
 xtemp! = xtemp! + sample(1).EDSSpectraStartEnergy!(datarow%)                    ' Bruker zero spectrum starts at plus start energy in keV
 End If
 

@@ -28,13 +28,13 @@ Begin VB.Form FormEDITXRAY
       ForeColor       =   &H00FF0000&
       Height          =   1095
       Left            =   120
-      TabIndex        =   2
+      TabIndex        =   5
       Top             =   120
       Width           =   5655
       Begin VB.TextBox TextDataValue 
          Height          =   285
          Left            =   4320
-         TabIndex        =   8
+         TabIndex        =   2
          ToolTipText     =   "Enter the new or modified x-ray energy (in eV) or fluorescent yield (in fraction)"
          Top             =   600
          Width           =   1215
@@ -43,7 +43,7 @@ Begin VB.Form FormEDITXRAY
          Appearance      =   0  'Flat
          Height          =   300
          Left            =   2040
-         TabIndex        =   4
+         TabIndex        =   1
          Text            =   "ComboXray"
          Top             =   600
          Width           =   1215
@@ -52,7 +52,7 @@ Begin VB.Form FormEDITXRAY
          Appearance      =   0  'Flat
          Height          =   300
          Left            =   120
-         TabIndex        =   3
+         TabIndex        =   0
          Text            =   "ComboElement"
          Top             =   600
          Width           =   1215
@@ -64,7 +64,7 @@ Begin VB.Form FormEDITXRAY
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   4320
-         TabIndex        =   7
+         TabIndex        =   8
          Top             =   360
          Width           =   1215
       End
@@ -75,7 +75,7 @@ Begin VB.Form FormEDITXRAY
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   2040
-         TabIndex        =   6
+         TabIndex        =   7
          Top             =   360
          Width           =   1215
       End
@@ -86,7 +86,7 @@ Begin VB.Form FormEDITXRAY
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   120
-         TabIndex        =   5
+         TabIndex        =   6
          Top             =   360
          Width           =   1215
       End
@@ -96,7 +96,7 @@ Begin VB.Form FormEDITXRAY
       Caption         =   "Cancel"
       Height          =   375
       Left            =   5880
-      TabIndex        =   1
+      TabIndex        =   4
       Top             =   720
       Width           =   975
    End
@@ -107,7 +107,7 @@ Begin VB.Form FormEDITXRAY
       Height          =   495
       Left            =   5880
       Style           =   1  'Graphical
-      TabIndex        =   0
+      TabIndex        =   3
       Top             =   120
       Width           =   975
    End
