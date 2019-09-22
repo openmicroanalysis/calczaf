@@ -2,8 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-09/18/19	Fix tab order in Elements/cations and Stndard Assignments dialogs (Poeml and Goemann). Add
-		shortcut key to Digitze window for Single Points (and Shotgun but that one doesn't 
+09/21/19	Add <alt> key shortcuts to main apps (Poeml).
+
+		Fix minor bug in CalcImage Calculation Options dialog code (Neill).
+
+09/18/19	Fix tab order in Elements/cations and Standard Assignments dialogs (Poeml and Goemann). Add
+		shortcut key to Digitize window for Single Points (and Shotgun but that one doesn't 
 		work for some reason!) (Poirier). Add sorted standard list in MAN dialog (Ben Wade).
 
 09/13/19	Add feature to store EDS net intensities in probe database for off-line use without an EDS
@@ -28,7 +32,7 @@ v. 12.7.2
 
 08/21/19	Add "string search" text field for auto-selection of samples based on user string in
 		FormAnalyze and FormAutomate. Add checkbox to only display samples with data (or not all disabled data)
-		in FormAnalyze, FormPlot anbd FormPlot_Wave (von der Handt).
+		in FormAnalyze, FormPlot and FormPlot_Wave (von der Handt).
 
 08/20/19	Improve error messages for matrix correction math errors (negative parameters, etc.).
 
@@ -65,7 +69,7 @@ v. 12.6.6
 v. 12.6.5	Add new flag for MAN continuum fluorescence correction (default = not enabled). Also add new code
 		and empty procedures for future more rigorous continuum absorption and fluorescence corrections.
 
-07/05/19	Modify MAN continuum correction code (Hailfer and B. Wade).
+07/05/19	Modify MAN continuum correction code (Haifler and B. Wade).
 
 07/04/19	Modify plot wavescan code to handle wavescans that have EDS elements when selecting first elements to plot
 
@@ -80,17 +84,17 @@ v. 12.6.4	and txt files for additional x-ray lines.
 
 		Improve Report code to handle EDS elements better.Improve text Report output for EDS elements also.
 		
-		Improve log window output for aggrgate mode for analysis.
+		Improve log window output for aggregate mode for analysis.
 
 06/07/19	Add call to insert faraday cup in AcquireStop in not already inserted (e.g., after 
 		manual peaking) (Carpenter).
 
 06/06/19	New matrix.mdb with 383950 k-ratios from Penfluor/Fanal MC.
 
-06/05/19	Fix beam current and standard intensity drfit corrections for Cameca and JEOL
+06/05/19	Fix beam current and standard intensity drift corrections for Cameca and JEOL
 v. 12.6.3	x-ray maps in CalcImage (Mott). Code is now correct for both drift corrections.
 
-		Fix mis-naming of color scale object in strip and slice scripts.
+		Fix misnaming of color scale object in strip and slice scripts.
 
 05/23/19	Improve JEOL EDS time constants code (Goemann). Update Remote and Matrix readme files.
 
@@ -102,7 +106,7 @@ v. 12.6.3	x-ray maps in CalcImage (Mott). Code is now correct for both drift cor
 
 05/16/19	Modify image acquisition interface so TextAverages control enable/disable works correctly.
 
-05/11/19	Bump vesion so CalcZAF/Standard are updated.
+05/11/19	Bump version so CalcZAF/Standard are updated.
 v. 12.6.2
 
 05/07/19	Tweak code in Penepma pure element output to utilize elemental densities. Modify OxideOrElemental and MAN
@@ -125,7 +129,7 @@ v. 12.6.1
 
 03/21/19	Modify number of material files in Standard for Penepma GUI, to 3, to avoid errors in three material input files. 
 v. 12.6.0	Third material controls are invisible, so they are not saved. But this allows manually edited input files with
-		three materials,to run without errors in batch mode.
+		three materials, to run without errors in batch mode.
 
 03/20/19	New updated matrix.mdb file with new calculations for gaseous elements.
 
@@ -141,7 +145,7 @@ v. 12.6.0	Third material controls are invisible, so they are not saved. But this
 v. 12.5.9	on SX100 instrument with hardware problems. See SX100SetPHAParameters and SX100StopAllCounters (Neill).
 
 03/01/19	Modify TDI code in VolatileCorrectionAll to skip EDS elements (Neill). Also modify code
-		in DataVolatileGetData and DataVolatileGetData2 routnes to add sample number, sample
+		in DataVolatileGetData and DataVolatileGetData2 routines to add sample number, sample
 		name in error message for missing TDI data.
 
 02/23/19	First test of integrated WDS and EDS mapping quantification in CalcImage- "it werks"!
@@ -177,7 +181,7 @@ v. 12.5.8
 01/27/19	Modify TypeCounts code to print beam currents even if no analyzed elements (just EDS spectra).
 
 01/26/19	Modify Surfer scripts to handle Surfer 16 missing color scales in CalcImage. Modify Grapher scripts to
-		use thicker lines for travere plot output in Probe for EPMA.
+		use thicker lines for traverse plot output in Probe for EPMA.
 		
 		Add spectro position in nominal interference output (PFE and Standard)
 
@@ -219,7 +223,7 @@ v. 12.5.6
 12/15/18	Add line profile feature to CalcImage (Seward and Buse).  Modify Remote and Matrix ActiveX "quick start" instructions.
 v. 12.5.5
 
-12/12/2018	Modify ROM wavscan code for 8900/8200/8500 to utilize 10 points per data transfer with short 
+12/12/2018	Modify ROM wavescan code for 8900/8200/8500 to utilize 10 points per data transfer with short 
 		count times (Allaz).
 
 12/10/18	Work more on line profile extraction method (Buse).
@@ -231,7 +235,7 @@ v. 12.5.5
 		
 		Add more special users and famous birthdays (Neill).
 
-12/7/18		Add new line profile pixel extraction metjhod in CalcIage (Seward). Improve CalcZAF alpha factor debug output.
+12/7/18		Add new line profile pixel extraction method in CalcIage (Seward). Improve CalcZAF alpha factor debug output.
 v. 12.5.4
 
 12/3/18		Fix display issue for disabled quant elements (Goemann) in PFE.  Fix pixel extraction image display issue in CI.
@@ -308,7 +312,7 @@ v. 12.5.0	A lot of work, but not much improvement in speed.
 
 		Add send EDS and CL data to new combined sample (Seward).
 
-09/26/18	Fix bug in CalcImage when blanked pixels are present and atomic percent output is not selected (Gormann).
+09/26/18	Fix bug in CalcImage when blanked pixels are present and atomic percent output is not selected (Goemann).
 v. 12.4.9
 
 09/22/18	Minor tweak to MPB display wavescan overlay code.
@@ -327,7 +331,7 @@ v. 12.4.8
 		Automatically select correct sample type when outputting results from Analyze! window using user 
 		specified output (to allow published results to be output for standards).
 
-09/10/18	In Penepma and Penfluor binary calulation codes force material density to 1.0 in case a gaseous
+09/10/18	In Penepma and Penfluor binary calculation codes force material density to 1.0 in case a gaseous
 v. 12.4.7	element is present.  Otherwise low emission intensities are calculated, probably due to detector 
 		geometry issues.
 
@@ -407,7 +411,7 @@ v. 12.3.8	New.bas code to update MPB and Nth point based on last sample of that 
 v. 12.3.7
 
 05/23/18	Modify code in GetElmAll, GetCondAll, GetCond2All, GetTimeAll, GetSpecAll, etc. to
-		to save changes *before* unloading forms (MacDonald).
+		save changes *before* unloading forms (MacDonald).
 
 05/22/18	Add fault tolerant database open calls for DataStandard and DataScan procedures (Poirier).
 v. 12.3.6
@@ -478,7 +482,7 @@ v. 12.2.7	Modify Matrix and remote installers to install to Common Files
 		Scott Boroughs. Default scan mode is now PIC.
 
 04/06/18	Modify JEOL code so BUP is returned as a scan mode (Adams, Locock).
-v. 12.2.6	Add INI flags for loading standard formula and oxuygen by stoichiometry 
+v. 12.2.6	Add INI flags for loading standard formula and oxygen by stoichiometry 
 		flags to PFE. Add INI flag for setting beam mode after manual acquisition.
 
 04/05/18	AcquireSetScanModeMagnification: only set mag if analytical scan mode
@@ -528,7 +532,7 @@ v. 12.2.0
 v. 12.1.9	
 		Add batch file output for automated processing in CalcImage (when new project is created).
 
-02/22/18	Move Help and Convert mernus from log window form to main CalcImage form.
+02/22/18	Move Help and Convert menus from log window form to main CalcImage form.
 v. 12.1.8
 		Add gridxy_silent.bas to distribution (Buse and Hatton) for command line reprocessing.
 		
@@ -548,11 +552,11 @@ v. 12.1.8
 
 02/14/18	Add better error handling when check file type of MDB files during Load File Setup (Neill).
 
-02/13/18	Add code to check for exisitng EDS spectra before warning user about mismatch EDS interfaces (Spilde).
+02/13/18	Add code to check for existing EDS spectra before warning user about mismatch EDS interfaces (Spilde).
 
 		Disable "shared" bgd buttons if MDB is older than 8.3.2 (Seward).
 		
-		Add convert all PrbImg fils to ASCII tab delimited (remidelville).
+		Add convert all PrbImg files to ASCII tab delimited (remidelville).
 		
 		Add EDS interface type to Report button output.
 
@@ -580,7 +584,7 @@ v. 12.1.5
 
 		Add trap to check for change in EDSSpectraInterfaceType for existing probe run databases (Botto).
 
-01/19/18	Remove readonly stage/spec INI flags (obsolete). Work on SF code.
+01/19/18	Remove read only stage/spec INI flags (obsolete). Work on SF code.
 
 01/18/18	Fix bug in standard assignments where interf. orders were not being saved (Goemann).
 v. 12.1.4
@@ -598,7 +602,7 @@ v. 12.1.4
 
 01/04/18	Fix error bar calculation display in log space for TDI intensities (Buse).
 
-		Add warning if current EDS configuration is different than stored EDFS configuration (Porier).
+		Add warning if current EDS configuration is different than stored EDFS configuration (Poirier).
 
 12/31/17	Improve WDS demo simulation code.  Fix unknown oxide demo compositions.
 

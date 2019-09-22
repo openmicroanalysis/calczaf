@@ -25,14 +25,14 @@ Begin VB.Form FormMAIN
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   4920
    ScaleWidth      =   10605
-   Begin MailMessageCtl.MailMessage MailMessage1 
-      Left            =   2280
+   Begin SmtpClientCtl.SmtpClient SmtpClient1 
+      Left            =   1680
       Top             =   0
       _cx             =   741
       _cy             =   741
    End
-   Begin SmtpClientCtl.SmtpClient SmtpClient1 
-      Left            =   1680
+   Begin MailMessageCtl.MailMessage MailMessage1 
+      Left            =   2280
       Top             =   0
       _cx             =   741
       _cy             =   741
@@ -53,7 +53,6 @@ Begin VB.Form FormMAIN
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
             Object.Width           =   14579
-            TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""
             Object.ToolTipText     =   "Automation status"
@@ -184,11 +183,11 @@ Begin VB.Form FormMAIN
       Caption         =   "&File"
       HelpContextID   =   98
       Begin VB.Menu menuFileOpen 
-         Caption         =   "Open CalcZAF Input Data File (Test with CALCZAF.DAT, CALCBIN.DAT, AuCu_NBS-K-ratios.DAT, Olivine particle-JTA-0.5um.DAT, etc.)"
+         Caption         =   "&Open CalcZAF Input Data File (Test with CALCZAF.DAT, CALCBIN.DAT, AuCu_NBS-K-ratios.DAT, Olivine particle-JTA-0.5um.DAT, etc.)"
          HelpContextID   =   715
       End
       Begin VB.Menu menuFileClose 
-         Caption         =   "Close CalcZAF Input Data File"
+         Caption         =   "&Close CalcZAF Input Data File"
          HelpContextID   =   716
       End
       Begin VB.Menu menuFileSeparator1 
@@ -212,9 +211,8 @@ Begin VB.Form FormMAIN
          Caption         =   "-"
       End
       Begin VB.Menu menuFilePrintLog 
-         Caption         =   "Print Log"
+         Caption         =   "&Print Log"
          HelpContextID   =   101
-         Shortcut        =   ^P
       End
       Begin VB.Menu menuFilePrintSetup 
          Caption         =   "Print Setup"
@@ -259,7 +257,7 @@ Begin VB.Form FormMAIN
       Caption         =   "&Standard"
       HelpContextID   =   110
       Begin VB.Menu menuStandardStandardDatabase 
-         Caption         =   "Standard Database"
+         Caption         =   "&Standard Database"
          HelpContextID   =   111
       End
       Begin VB.Menu menuStandardSeparator2 
@@ -270,14 +268,14 @@ Begin VB.Form FormMAIN
          HelpContextID   =   717
       End
       Begin VB.Menu menuStandardEditStandardParameters 
-         Caption         =   "Edit Standard Coating Parameters"
+         Caption         =   "&Edit Standard Coating Parameters"
          HelpContextID   =   719
       End
       Begin VB.Menu menuStandardSeparator3 
          Caption         =   "-"
       End
       Begin VB.Menu menuStandardAddStandardsToRun 
-         Caption         =   "Add/Remove Standards To/From Run"
+         Caption         =   "&Add/Remove Standards To/From Run"
          HelpContextID   =   796
       End
    End
@@ -285,11 +283,11 @@ Begin VB.Form FormMAIN
       Caption         =   "&X-Ray"
       HelpContextID   =   113
       Begin VB.Menu menuXrayXrayDatabase 
-         Caption         =   "X-Ray Database"
+         Caption         =   "&X-Ray Database"
          HelpContextID   =   114
       End
       Begin VB.Menu menuXrayCalculateSpectrometerPosition 
-         Caption         =   "Calculate Spectrometer Position"
+         Caption         =   "&Calculate Spectrometer Position"
       End
       Begin VB.Menu menuXraySeparator0 
          Caption         =   "-"
@@ -339,7 +337,7 @@ Begin VB.Form FormMAIN
          Caption         =   "-"
       End
       Begin VB.Menu menuXrayDisplayMACEmitterAbsorber 
-         Caption         =   "Display MAC Emitter Absorber Pair"
+         Caption         =   "&Display MAC Emitter Absorber Pair"
          HelpContextID   =   510
       End
       Begin VB.Menu menuXraySeparator1 
@@ -377,7 +375,7 @@ Begin VB.Form FormMAIN
          Caption         =   "-"
       End
       Begin VB.Menu menuXrayEditMACTable 
-         Caption         =   "Edit MAC Table"
+         Caption         =   "&Edit MAC Table"
          HelpContextID   =   122
       End
       Begin VB.Menu menuXraySeparator2 
@@ -454,19 +452,19 @@ Begin VB.Form FormMAIN
       Caption         =   "&Analytical"
       HelpContextID   =   129
       Begin VB.Menu menuAnalyticalZAFSelections 
-         Caption         =   "ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections"
+         Caption         =   "&ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections"
          HelpContextID   =   134
       End
       Begin VB.Menu menuAnalyticalConditions 
-         Caption         =   "Operating Conditions"
+         Caption         =   "&Operating Conditions"
          HelpContextID   =   135
       End
       Begin VB.Menu menuAnalyticalEmpiricalMACs 
-         Caption         =   "Empirical MACs"
+         Caption         =   "&Empirical MACs"
          HelpContextID   =   133
       End
       Begin VB.Menu menuAnalyticalParticleandThinFilm 
-         Caption         =   "Particle and Thin Film"
+         Caption         =   "&Particle and Thin Film"
          HelpContextID   =   528
       End
       Begin VB.Menu menuAnalyticalElements 
@@ -512,7 +510,7 @@ Begin VB.Form FormMAIN
          Caption         =   "-"
       End
       Begin VB.Menu menuAnalyticalAlphaFactors 
-         Caption         =   "Calculate and Plot Binary Alpha Factors"
+         Caption         =   "&Calculate and Plot Binary Alpha Factors"
          HelpContextID   =   627
       End
       Begin VB.Menu menuAnalyticalKFactorsAlphaFactors 
@@ -523,7 +521,7 @@ Begin VB.Form FormMAIN
          Caption         =   "-"
       End
       Begin VB.Menu menuAnalyticalBinaryCalculationOptions 
-         Caption         =   "Binary Calculation Options"
+         Caption         =   "&Binary Calculation Options"
          HelpContextID   =   136
       End
       Begin VB.Menu menuAnalyticalCalculateBinaryIntensities 
@@ -588,7 +586,7 @@ Begin VB.Form FormMAIN
       Caption         =   "&Run"
       HelpContextID   =   147
       Begin VB.Menu menuRunListStandardCompositions 
-         Caption         =   "List Standard Compositions"
+         Caption         =   "&List Standard Compositions"
          HelpContextID   =   148
       End
       Begin VB.Menu menuRunListCurrentMACs 
@@ -606,11 +604,11 @@ Begin VB.Form FormMAIN
          Caption         =   "-"
       End
       Begin VB.Menu menuRunModelDetectionLimits 
-         Caption         =   "Model Detection Limits"
+         Caption         =   "&Model Detection Limits"
          HelpContextID   =   151
       End
       Begin VB.Menu menuRunCalculateElectronXrayRanges 
-         Caption         =   "Calculate Electron and Xray Ranges"
+         Caption         =   "&Calculate Electron and Xray Ranges"
          HelpContextID   =   775
       End
       Begin VB.Menu menuRunCalculateTemperatureRise 
@@ -675,33 +673,32 @@ Begin VB.Form FormMAIN
       Caption         =   "&Help"
       HelpContextID   =   161
       Begin VB.Menu menuHelpAboutCalcZAF 
-         Caption         =   "About CalcZAF"
+         Caption         =   "&About CalcZAF"
          HelpContextID   =   162
       End
       Begin VB.Menu menuHelpOnCalcZAF 
-         Caption         =   "Help on CalcZAF"
+         Caption         =   "&Help on CalcZAF"
          HelpContextID   =   163
-         Shortcut        =   ^H
       End
       Begin VB.Menu menuHelpGettingStartedWithCalcZAF 
-         Caption         =   "Getting Started With CalcZAF"
+         Caption         =   "&Getting Started With CalcZAF"
       End
       Begin VB.Menu menuHelpSeparator1 
          Caption         =   "-"
       End
       Begin VB.Menu menuHelpUpdateCalcZAF 
-         Caption         =   "Update CalcZAF"
+         Caption         =   "&Update CalcZAF"
          HelpContextID   =   722
       End
       Begin VB.Menu menuHelpSeparator2 
          Caption         =   "-"
       End
       Begin VB.Menu menuHelpProbeSoftwareOnTheWeb 
-         Caption         =   "Probe Software On The Web"
+         Caption         =   "&Probe Software On The Web"
          HelpContextID   =   778
       End
       Begin VB.Menu menuHelpProbeSoftwareUserForum 
-         Caption         =   "Connect To Probe Software User Forum"
+         Caption         =   "&Connect To Probe Software User Forum"
       End
    End
 End

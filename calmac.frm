@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "comdlg32.ocx"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
 Begin VB.Form FormMAIN 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Calmac (Calculate Mass Absorption Coefficients Using ABSORB.BAS)"
@@ -34,6 +34,7 @@ Begin VB.Form FormMAIN
       _ExtentX        =   12938
       _ExtentY        =   3413
       _Version        =   393217
+      Enabled         =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
       TextRTF         =   $"CALMAC.frx":6E7FA
@@ -198,7 +199,7 @@ Begin VB.Form FormMAIN
    Begin VB.Menu menuHelp 
       Caption         =   "&Help"
       Begin VB.Menu menuHelpAbout 
-         Caption         =   "About"
+         Caption         =   "&About CalMAC"
       End
    End
 End

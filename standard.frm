@@ -27,14 +27,14 @@ Begin VB.Form FormMAIN
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   7545
    ScaleWidth      =   11325
-   Begin MailMessageCtl.MailMessage MailMessage1 
-      Left            =   2280
+   Begin SmtpClientCtl.SmtpClient SmtpClient1 
+      Left            =   1680
       Top             =   0
       _cx             =   741
       _cy             =   741
    End
-   Begin SmtpClientCtl.SmtpClient SmtpClient1 
-      Left            =   1680
+   Begin MailMessageCtl.MailMessage MailMessage1 
+      Left            =   2280
       Top             =   0
       _cx             =   741
       _cy             =   741
@@ -270,6 +270,7 @@ Begin VB.Form FormMAIN
       _ExtentX        =   18230
       _ExtentY        =   6376
       _Version        =   393217
+      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"STANDARD.frx":59D8A
    End
@@ -382,15 +383,13 @@ Begin VB.Form FormMAIN
       Begin VB.Menu menuFileFileInformation 
          Caption         =   "File Information"
          HelpContextID   =   174
-         Shortcut        =   ^F
       End
       Begin VB.Menu menuFileSeparator3 
          Caption         =   "-"
       End
       Begin VB.Menu menuFilePrintLog 
-         Caption         =   "Print Log"
+         Caption         =   "&Print Log"
          HelpContextID   =   175
-         Shortcut        =   ^P
       End
       Begin VB.Menu menuFilePrintSetup 
          Caption         =   "Print Setup"
@@ -435,17 +434,15 @@ Begin VB.Form FormMAIN
       Caption         =   "&Standard"
       HelpContextID   =   184
       Begin VB.Menu menuStandardNew 
-         Caption         =   "New"
+         Caption         =   "&New"
          HelpContextID   =   185
-         Shortcut        =   ^N
       End
       Begin VB.Menu menuStandardModify 
-         Caption         =   "Modify"
+         Caption         =   "&Modify"
          HelpContextID   =   187
-         Shortcut        =   ^M
       End
       Begin VB.Menu menuStandardDuplicate 
-         Caption         =   "Duplicate"
+         Caption         =   "&Duplicate"
          HelpContextID   =   188
       End
       Begin VB.Menu menuStandardSeparator0 
@@ -463,7 +460,7 @@ Begin VB.Form FormMAIN
          Caption         =   "-"
       End
       Begin VB.Menu menuStandardListStandardNames 
-         Caption         =   "List All Standard Names"
+         Caption         =   "&List All Standard Names"
          HelpContextID   =   606
       End
       Begin VB.Menu menuStandardListStandardNamesZbar 
@@ -501,15 +498,15 @@ Begin VB.Form FormMAIN
       Caption         =   "&Misc Options"
       HelpContextID   =   194
       Begin VB.Menu menuOptionsSearch 
-         Caption         =   "Search (for a standard name string)"
+         Caption         =   "&Search (for a standard name string)"
          HelpContextID   =   512
       End
       Begin VB.Menu menuOptionsFind 
-         Caption         =   "Find (a specific element range in all standards)"
+         Caption         =   "&Find (a specific element range in all standards)"
          HelpContextID   =   195
       End
       Begin VB.Menu menuOptionsMatch 
-         Caption         =   "Match (a composition with all standards)"
+         Caption         =   "&Match (a composition with all standards)"
          HelpContextID   =   616
       End
       Begin VB.Menu menuOptionsModalAnalysis 
@@ -517,7 +514,7 @@ Begin VB.Form FormMAIN
          HelpContextID   =   198
       End
       Begin VB.Menu menuOptionsInterferences 
-         Caption         =   "Interferences (calculate spectral overlaps)"
+         Caption         =   "&Interferences (calculate spectral overlaps)"
          HelpContextID   =   202
       End
    End
@@ -525,7 +522,7 @@ Begin VB.Form FormMAIN
       Caption         =   "&X-Ray"
       HelpContextID   =   203
       Begin VB.Menu menuXrayXrayDatabase 
-         Caption         =   "X-Ray Database"
+         Caption         =   "&X-Ray Database"
          HelpContextID   =   204
       End
       Begin VB.Menu menuXraySeparator0 
@@ -555,11 +552,11 @@ Begin VB.Form FormMAIN
       Caption         =   "&Analytical"
       HelpContextID   =   210
       Begin VB.Menu menuAnalyticalZAFSelections 
-         Caption         =   "ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections"
+         Caption         =   "&ZAF, Phi-Rho-Z, Alpha Factor and Calibration Curve Selections"
          HelpContextID   =   212
       End
       Begin VB.Menu menuAnalyticalConditions 
-         Caption         =   "Operating Conditions"
+         Caption         =   "&Operating Conditions"
          HelpContextID   =   213
       End
       Begin VB.Menu menuAnalyticalEmpiricalMACs 
@@ -654,22 +651,21 @@ Begin VB.Form FormMAIN
       Caption         =   "&Help"
       HelpContextID   =   228
       Begin VB.Menu menuHelpAboutStandard 
-         Caption         =   "About STANDARD"
+         Caption         =   "&About STANDARD"
          HelpContextID   =   229
       End
       Begin VB.Menu menuHelpOnStandard 
-         Caption         =   "Help on STANDARD"
+         Caption         =   "&Help on STANDARD"
          HelpContextID   =   230
-         Shortcut        =   ^H
       End
       Begin VB.Menu menuHelpSeparator1 
          Caption         =   "-"
       End
       Begin VB.Menu menuHelpProbeSoftwareOnTheWeb 
-         Caption         =   "Probe Software On The Web"
+         Caption         =   "&Probe Software On The Web"
       End
       Begin VB.Menu menuHelpProbeSoftwareUserForum 
-         Caption         =   "Connect To Probe Software User Forum"
+         Caption         =   "&Connect To Probe Software User Forum"
       End
    End
 End
