@@ -85,6 +85,7 @@ Begin VB.Form FormGETPTC
          Height          =   255
          Left            =   240
          TabIndex        =   23
+         TabStop         =   0   'False
          ToolTipText     =   "To force the application to normalize specified elements (fixed concentrations) along with the other element concentration"
          Top             =   3120
          Width           =   7935
@@ -105,6 +106,7 @@ Begin VB.Form FormGETPTC
          Left            =   8040
          Style           =   1  'Graphical
          TabIndex        =   22
+         TabStop         =   0   'False
          Top             =   240
          Width           =   2055
       End
@@ -124,6 +126,7 @@ Begin VB.Form FormGETPTC
          Left            =   8040
          Style           =   1  'Graphical
          TabIndex        =   21
+         TabStop         =   0   'False
          Top             =   480
          Width           =   2055
       End
@@ -178,8 +181,8 @@ Begin VB.Form FormGETPTC
          EndProperty
          Height          =   285
          Left            =   2640
-         TabIndex        =   12
-         ToolTipText     =   "Enter the numerical integration step size"
+         TabIndex        =   10
+         ToolTipText     =   "Enter the numerical integration step size (use smaller values for smaller particles or thinner films)"
          Top             =   2760
          Width           =   1095
       End
@@ -230,12 +233,12 @@ Begin VB.Form FormGETPTC
          Height          =   285
          Left            =   2640
          TabIndex        =   7
-         ToolTipText     =   "Enter the particle diameter or thin film thickness"
+         ToolTipText     =   "Enter the particle diameter or thin film thickness in microns"
          Top             =   1320
          Width           =   1095
       End
       Begin VB.Label Label10 
-         Caption         =   "0.00001 g/cm^2 (15 keV, 10 um)   (Use smaller value for higher keV, thinner particle size)"
+         Caption         =   "0.00001 g/cm^2 (15 keV, 10 um)   (Use smaller value for higher keV, smaller size, thinner)"
          Height          =   255
          Left            =   3840
          TabIndex        =   15
@@ -244,7 +247,7 @@ Begin VB.Form FormGETPTC
          Width           =   6495
       End
       Begin VB.Label Label9 
-         Caption         =   "Sample thickness to diameter ratio = 1 (typical for equant particles)"
+         Caption         =   "Sample thickness to diameter ratio = 1 (typical for equant particles or thin films)"
          Height          =   255
          Left            =   3840
          TabIndex        =   14
@@ -273,7 +276,7 @@ Begin VB.Form FormGETPTC
          EndProperty
          Height          =   255
          Left            =   120
-         TabIndex        =   11
+         TabIndex        =   12
          Top             =   2760
          Width           =   2415
       End
@@ -281,7 +284,7 @@ Begin VB.Form FormGETPTC
          Caption         =   "Use 10000 (mg/cm^2) for thick specimens or enter thickness in um for thin films or particles"
          Height          =   255
          Left            =   3840
-         TabIndex        =   10
+         TabIndex        =   11
          ToolTipText     =   $"GETPTC.frx":009D
          Top             =   1320
          Width           =   6495
@@ -304,7 +307,7 @@ Begin VB.Form FormGETPTC
          Width           =   2415
       End
       Begin VB.Label Label4 
-         Caption         =   "Particle Density"
+         Caption         =   "Particle/Film Density"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -321,7 +324,7 @@ Begin VB.Form FormGETPTC
          Width           =   2415
       End
       Begin VB.Label Label3 
-         Caption         =   "Particle Diameter"
+         Caption         =   "Particle Diameter/Thickness"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -335,7 +338,7 @@ Begin VB.Form FormGETPTC
          Left            =   120
          TabIndex        =   4
          Top             =   1320
-         Width           =   2415
+         Width           =   2535
       End
       Begin VB.Label Label1 
          Caption         =   "Particle/Thin Film Model"

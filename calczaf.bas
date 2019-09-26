@@ -4536,10 +4536,10 @@ icancelanal = False
 ' Check if calculating all matrix corrections
 tzaf% = izaf%
 For j% = 1 To MAXZAF%   ' do not use 0 (individual selections)
-izaf% = j%
 
 ' Increment matrix correction (if calculate all matrix corrections)
 If CalculateAllMatrixCorrections Then
+izaf% = j%
 Call AnalyzeChangeZAF(CalcZAFAnalysis, CalcZAFOldSample, CalcZAFTmpSample)
 If ierror Then
 izaf% = tzaf%
