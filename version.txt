@@ -2,6 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/02/19	Fix normalization of MPBs if linear off-peak bgd fit selected.
+
+		Only get EDs spectra net intensities for first datarow of wavescan samples.
+		
+		Add disable/enable buttons to Run | Display EDS Spectra dialog. Add max keV and throughput to display.
+		
+		Modify Automate! code to only update Z position when performing auto-focus (Matthews).
+
+09/30/19	If returned EDS net intensity is zero, force to a small non-zero number so we can know that it was stored originally.
+
 09/29/19	Add Yes To All button to different bgds for stds vs. unks. Skip output of 
 		EDS net intensities for wavescans in TypeWavescans.
 
