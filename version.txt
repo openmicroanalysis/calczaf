@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/08/19	Modify get stored EDS net intensity code for wavescans.
+
 10/02/19	Fix normalization of MPBs if linear off-peak bgd fit selected.
 
 		Only get EDs spectra net intensities for first datarow of wavescan samples.
@@ -15,7 +17,7 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 09/29/19	Add Yes To All button to different bgds for stds vs. unks. Skip output of 
 		EDS net intensities for wavescans in TypeWavescans.
 
-09/25/19	Fix bug in AnalyzeAll that focred recalculation of std k-factors if not using default 
+09/25/19	Fix bug in AnalyzeAll that forced recalculation of std k-factors if not using default 
 v. 12.7.6	matrix corrections (Poeml). Fix bug in EDS net intensity output during automation.
 
 09/21/19	Add <alt> key shortcuts to main apps (Poeml).
