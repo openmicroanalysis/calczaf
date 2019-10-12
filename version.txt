@@ -2,11 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/11/19	Fix bug in GetOpt where max keV and throughput (TC) were getting displayed as previous values (JEOL EDS only) (Park).
+
+10/10/19	Fix bug in DataEDSSpectraGetStoredNetIntensities where bgd counts were added in (Park).
+
 10/08/19	Modify get stored EDS net intensity code for wavescans.
 
 10/02/19	Fix normalization of MPBs if linear off-peak bgd fit selected.
 
-		Only get EDs spectra net intensities for first datarow of wavescan samples.
+		Only get EDS spectra net intensities for first datarow of wavescan samples.
 		
 		Add disable/enable buttons to Run | Display EDS Spectra dialog. Add max keV and throughput to display.
 		
