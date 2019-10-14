@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/13/19	Fix ProbFormOutputCustom to handle multiple selected samples.
+
 10/12/19	Improve net intensity output format in Run | Display Export EDS Spectra dialog.
 
 		Modify Analyze! (right click) Export analysis to custom.mdb and Analyze! Match code to utilize average of composition.
