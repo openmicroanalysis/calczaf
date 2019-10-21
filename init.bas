@@ -2307,12 +2307,13 @@ MaxThroughputArrayValue!(4) = 60#
 
 ' Thermo
 ElseIf EDSSpectraInterfaceType% = 5 Then
-MaxEnergyArraySize% = 5
+MaxEnergyArraySize% = 6
 MaxEnergyArrayValue!(1) = 5#
 MaxEnergyArrayValue!(2) = 10#
 MaxEnergyArrayValue!(3) = 20#
 MaxEnergyArrayValue!(4) = 40#
 MaxEnergyArrayValue!(5) = 80#
+MaxEnergyArrayValue!(6) = 0#    ' 0 = auto max keV (Pathfinder)
 
 MaxThroughputArraySize% = 11    ' (0 (AUTO), 6400, 4000, 3200, 2000, 1600, 1000, 800, 600, 400, 200 nano-secs)
 MaxThroughputArrayValue!(1) = 200#
