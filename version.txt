@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/24/19	Modify beam size behavior when starting image acquisition (Mushock).
+v. 12.7.8
+
 10/20/19	Add zero value for Thermo max keV cutoff (auto value).
 
 10/13/19	Fix ProbFormOutputCustom to handle multiple selected samples.
@@ -17,7 +20,7 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 10/08/19	Modify get stored EDS net intensity code for wavescans.
 
 10/02/19	Fix normalization of MPBs if linear off-peak bgd fit selected.
-
+v. 12.7.7
 		Only get EDS spectra net intensities for first datarow of wavescan samples.
 		
 		Add disable/enable buttons to Run | Display EDS Spectra dialog. Add max keV and throughput to display.
