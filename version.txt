@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/31/19	Add debug statements to JEOL EDS get time constant.
+
 10/24/19	Modify beam size behavior when starting image acquisition (Mushock).
 v. 12.7.8
 

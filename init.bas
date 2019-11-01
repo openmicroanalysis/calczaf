@@ -2277,8 +2277,11 @@ If CLSpectraInterfaceType% = 2 Then InterfaceStringCLUnitsX$(2) = "nm"
 If CLSpectraInterfaceType% = 3 Then InterfaceStringCLUnitsX$(3) = "nm"
 If CLSpectraInterfaceType% = 4 Then InterfaceStringCLUnitsX$(4) = "nm"
 
-' Demo (Bruker style config)
+' Load values for max energy (keV limits) and throughput (time constants)
 If MaxEnergyArraySize% = 0 Or MaxThroughputArraySize% = 0 Then
+
+' Demo (Bruker style config)
+If EDSSpectraInterfaceType% = 0 Then
 MaxEnergyArraySize% = 4
 MaxEnergyArrayValue!(1) = 10#
 MaxEnergyArrayValue!(2) = 20#
@@ -2292,7 +2295,7 @@ MaxThroughputArrayValue!(3) = 90#
 MaxThroughputArrayValue!(4) = 60#
 
 ' Bruker
-If EDSSpectraInterfaceType% = 2 Then
+ElseIf EDSSpectraInterfaceType% = 2 Then
 MaxEnergyArraySize% = 4
 MaxEnergyArrayValue!(1) = 10#
 MaxEnergyArrayValue!(2) = 20#
@@ -2333,7 +2336,7 @@ ElseIf EDSSpectraInterfaceType% = 6 Then
 MaxEnergyArraySize% = 1
 MaxEnergyArrayValue!(1) = 20#       ' JEOL OEM EDS is always 20 keV
 
-MaxThroughputArraySize% = 4         ' older systems use 3 time constants, newer systems use 4 time constants (T1, T2, T3, T4)
+MaxThroughputArraySize% = 4         ' older systems use 3 time constants, newer systems use 4 time constants (T1, T2, T3, T4) (see JEOLEDSSpectraGetMaxEnergyThroughput)
 MaxThroughputArrayValue!(1) = 1#
 MaxThroughputArrayValue!(2) = 2#
 MaxThroughputArrayValue!(3) = 3#
