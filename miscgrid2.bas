@@ -27,7 +27,7 @@ For i% = 0 To tGrid.cols - 1
 tGrid.col = i%
 If Trim$(tGrid.Text) <> vbNullString Then
 trows% = j%
-tcols% = i%
+If i% > tcols% Then tcols% = i%         ' keep largest number of columns in case last line is disabled in Analyze! after analysis
 End If
 Next i%
 Next j%

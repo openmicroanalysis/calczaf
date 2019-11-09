@@ -11,7 +11,7 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'Private Const ERR_EXCEL_NOTRUNNING& = 429
+Private Const ERR_EXCEL_NOTRUNNING& = 429
 
 ' Declare necessary API routines:
 Private Declare Function FindWindow Lib "user32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As Long) As Long
@@ -243,7 +243,7 @@ Exit Sub
 
 ' Errors
 ExcelSendLabelToSpreadsheetError:
-MsgBox Error$, vbOKOnly + vbCritical, "ExcelSendLabelToSpreadsheet"
+MsgBox Error$ & ", please make sure Excel is open and linked using the Output menu.", vbOKOnly + vbCritical, "ExcelSendLabelToSpreadsheet"
 ierror = True
 Exit Sub
 
@@ -307,6 +307,13 @@ End If
 'ExcelAppIsRunning = True
 'End If
 
+' Alternative code (may be required for future versions of Excel)
+'If Not ExcelIsProcessRunning("EXCEL.EXE") Then
+'ExcelAppIsRunning = False
+'Else
+'ExcelAppIsRunning = True
+'End If
+
 Exit Function
 
 ' Errors
@@ -316,6 +323,31 @@ ierror = True
 Exit Function
 
 End Function
+
+'Function ExcelIsProcessRunning(process As String) As Boolean
+'
+'ierror = False
+'On Error GoTo ExcelIsProcessRunningError
+'
+'    Dim objList As Object
+'
+'    Set objList = GetObject("winmgmts:").ExecQuery("select * from win32_process where name='" & process & "'")
+'
+'    If objList.count > 0 Then
+'        ExcelIsProcessRunning = True
+'    Else
+'        ExcelIsProcessRunning = False
+'    End If
+'
+'Exit Function
+'
+' Errors
+'ExcelIsProcessRunningError:
+'MsgBox Error$, vbOKOnly + vbCritical, "ExcelIsProcessRunning"
+'ierror = True
+'Exit Function
+'
+'End Function
 
 Sub ExcelSendFileToExcelSheet(arraysize As Integer, tfilename As String)
 ' Send a tab delimited file to an excel spreadsheet
