@@ -768,3 +768,27 @@ ierror = True
 Exit Function
 
 End Function
+
+Function MiscGetLastFolderName(sDir As String) As String
+' Returns last folder in a path
+
+ierror = False
+On Error GoTo MiscGetLastFolderNameError
+
+    Dim sPos As Long
+    Dim ePos As Long
+    
+    ePos& = InStrRev(sDir$, "\")
+    sPos& = InStrRev(sDir$, "\", ePos& - 1)
+    
+    MiscGetLastFolderName$ = Mid$(sDir$, sPos& + 1, (ePos& - sPos&) - 1)
+
+Exit Function
+
+' Errors
+MiscGetLastFolderNameError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscGetLastFolderName"
+ierror = True
+Exit Function
+
+End Function

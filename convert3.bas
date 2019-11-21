@@ -287,5 +287,111 @@ Exit Function
 
 End Function
 
+Function ConvertWeightsToZBar(mode As Integer, lchan As Integer, wtpts() As Single, atnums() As Integer, atwts() As Single, exponent As Single) As Single
+' Convert the passed weight percents, atomic numbers and atomic weights to average Z
+'   mode = 0 calculate mass fraction Zbar
+'   mode = 1 calculate Z fraction Zbar
+
+ierror = False
+On Error GoTo ConvertWeightsToZbarError
+
+Dim chan As Integer
+Dim total As Single, zbar As Single
+
+ReDim atomfrac(1 To MAXCHAN1%) As Single
+
+' Calculate mass fraction Zbar
+If mode% = 0 Then
+
+' Calculate total for passed concentrations
+total! = 0#
+For chan% = 1 To lchan%
+total! = total! + wtpts!(chan%)
+Next chan%
+
+If total! <= 0# Then GoTo ConvertWeightsToZbarZeroTotal
+
+' Calculate mass fraction Zbar
+For chan% = 1 To lchan%
+zbar! = zbar! + atnums%(chan%) * wtpts!(chan%) / total!
+Next chan%
+
+' New code for Z fraction Zbar
+Else
+Call ConvertWeightToAtomic(lchan%, atwts!(), wtpts!(), atomfrac!())
+If ierror Then Exit Function
+Call ConvertCalculateZbarFrac(lchan%, atomfrac!(), atnums%(), exponent!, zbar!)
+If ierror Then Exit Function
+End If
+
+ConvertWeightsToZBar! = zbar!
+
+Exit Function
+
+' Errors
+ConvertWeightsToZbarError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertWeightsToZbar"
+ierror = True
+Exit Function
+
+ConvertWeightsToZbarZeroTotal:
+msg$ = "Zero (or negative) total sum for passed concentrations"
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertWeightsToZbar"
+ierror = True
+Exit Function
+
+End Function
+
+Sub ConvertCalculateZbarFrac(lchan As Integer, atomfrac() As Single, atomnums() As Integer, exponent As Single, zbar As Single)
+' Calculate a Z fraction Zbar based on passed data
+'  lchan = number of elements in arrays
+'  atomfrac = atomic fractions
+'  atomnums = atomic numbers
+'  exponent = exponent for fraction calculation
+'  zbar = returned zbar based on fraction
+
+ierror = False
+On Error GoTo ConvertCalculateZbarFracError
+
+Dim i As Integer
+Dim sum As Single
+
+ReDim fracdata(1 To lchan%) As Single
+
+' Calculate sum for fraction
+sum! = 0#
+For i% = 1 To lchan%
+sum! = sum! + atomfrac!(i%) * atomnums%(i%) ^ exponent!
+Next i%
+If sum! = 0# Then GoTo ConvertCalculateZbarFracBadSum
+
+' Calculate Z fractions (also known as electron fraction)
+For i% = 1 To lchan%
+fracdata!(i%) = (atomfrac!(i%) * atomnums%(i%) ^ exponent!) / sum!
+Next i%
+
+' Calculate Z bar
+zbar! = 0
+For i% = 1 To lchan%
+zbar! = zbar! + fracdata!(i%) * atomnums%(i%)
+Next i%
+
+Exit Sub
+
+' Errors
+ConvertCalculateZbarFracError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertCalculateZbarFrac"
+ierror = True
+Exit Sub
+
+ConvertCalculateZbarFracBadSum:
+Screen.MousePointer = vbDefault
+msg$ = "Bad sum in fraction calculation"
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertCalculateZbarFrac"
+ierror = True
+Exit Sub
+
+End Sub
 
 

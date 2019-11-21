@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/20/19	Add zbar output to List Standard Compositions menu output (and fix density output).
+
+		Modify Zbar calculation code.
+
+11/14/19	Add code to import JEOL 8230/8530 standard composition to the standard database and also 
+		standard positions to the .POS files. See Standard.exe and Stage.exe File menus.
+
 11/02/19	Fix some minor bugs and improve error messages (Neill).
 
 11/01/19	Modify debug mode statements in real time code. Fix JEOL time constant max parameter loading in GetOpt.

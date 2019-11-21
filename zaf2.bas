@@ -21,11 +21,9 @@ On Error GoTo ZAFCalZbarError
 Dim chan As Integer, ip As Integer
 Dim temp As Single, sum_atoms As Single, sum_cations As Single
 Dim total_atoms As Single, total_cations As Single
-Dim zbar As Single
 
 ReDim atoms(1 To MAXCHAN1%) As Single
 ReDim basis(1 To MAXCHAN1%) As Single
-ReDim atomfrac(1 To MAXCHAN1%) As Single
 
 If VerboseMode Then
 Call IOWriteLog(vbCrLf & "Entering ZAFCalZBar...")
@@ -122,23 +120,27 @@ End If
 analysis.TotalCations! = total_cations!
 analysis.totalatoms! = total_atoms!
 
-' Calculate average atomic weight and Z-bar
+' Calculate average atomic weight and average atomic number (Zbar)
 If analysis.TotalPercent! <> 0# And sum_atoms! <> 0# Then
+
+' Calculate average atomic weight
 For chan% = 1 To sample(1).LastChan%
-If sample(1).DisableQuantFlag%(chan%) = 0 Or (sample(1).DisableQuantFlag%(chan%) = 1 And sample(1).OxideOrElemental% = 1 And sample(1).OxygenChannel% = chan%) Then
+'If sample(1).DisableQuantFlag%(chan%) = 0 Or (sample(1).DisableQuantFlag%(chan%) = 1 And sample(1).OxideOrElemental% = 1 And sample(1).OxygenChannel% = chan%) Then
 analysis.AtomicWeight! = analysis.AtomicWeight! + sample(1).AtomicWts!(chan%) * atoms!(chan%) / sum_atoms!
-analysis.zbar! = analysis.zbar! + sample(1).AtomicNums%(chan%) * analysis.WtPercents!(chan%) / analysis.TotalPercent!   ' mass fraction Z-bar
-End If
+'End If
 Next chan%
 
-' New code for Z fraction Z-bar (see also subroutine MANCalculateZbars for MAN plot calculations)
-If UseZFractionZbarCalculationsFlag Then
-Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWeights!(), analysis.WtPercents!(), atomfrac!())
+' Calculate mass fraction Zbar
+If Not UseZFractionZbarCalculationsFlag Then
+analysis.zbar! = ConvertWeightsToZBar!(Int(0), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), ZFractionZbarCalculationsExponent!)
 If ierror Then Exit Sub
-Call ZAFCalculateZbarFrac(sample(1).LastChan%, atomfrac!(), sample(1).AtomicNums%(), ZFractionZbarCalculationsExponent, zbar!)
+
+' Calculate Z fraction Zbar
+Else
+analysis.zbar! = ConvertWeightsToZBar!(Int(1), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), ZFractionZbarCalculationsExponent!)
 If ierror Then Exit Sub
-analysis.zbar = zbar!
 End If
+
 End If
 
 ' Calculate Excess Oxygen
@@ -847,56 +849,3 @@ ierror = True
 Exit Sub
 
 End Sub
-
-Sub ZAFCalculateZbarFrac(lchan As Integer, atomfrac() As Single, atomnums() As Integer, exponent As Single, zbar As Single)
-' Calculate a Z fraction Zbar based on passed data
-'  lchan = number of elements in arrays
-'  atomfrac = atomic fractions
-'  atomnums = atomic numbers
-'  exponent = exponent for fraction calculation
-'  zbar = returned zbar based on fraction
-
-ierror = False
-On Error GoTo ZAFCalculateZbarFracError
-
-Dim i As Integer
-Dim sum As Single
-
-ReDim fracdata(1 To lchan%) As Single
-
-' Calculate sum for fraction
-sum! = 0#
-For i% = 1 To lchan%
-sum! = sum! + atomfrac!(i%) * atomnums%(i%) ^ exponent!
-Next i%
-If sum! = 0# Then GoTo ZAFCalculateZbarFracBadSum
-
-' Calculate Z fractions (also known as electron fraction)
-For i% = 1 To lchan%
-fracdata!(i%) = (atomfrac!(i%) * atomnums%(i%) ^ exponent!) / sum!
-Next i%
-
-' Calculate Z bar
-zbar! = 0
-For i% = 1 To lchan%
-zbar! = zbar! + fracdata!(i%) * atomnums%(i%)
-Next i%
-
-Exit Sub
-
-' Errors
-ZAFCalculateZbarFracError:
-Screen.MousePointer = vbDefault
-MsgBox Error$, vbOKOnly + vbCritical, "ZAFCalculateZbarFrac"
-ierror = True
-Exit Sub
-
-ZAFCalculateZbarFracBadSum:
-Screen.MousePointer = vbDefault
-msg$ = "Bad sum in fraction calculation"
-MsgBox msg$, vbOKOnly + vbExclamation, "ZAFCalculateZbarFrac"
-ierror = True
-Exit Sub
-
-End Sub
-

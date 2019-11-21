@@ -914,27 +914,39 @@ Exit Sub
 End Sub
 
 Sub StandardImportJEOL(tForm As Form)
-' Import selected JEOL import file and add to currently open standard composition database.
+' Import selected JEOL 8200/8500 import file(s) and add to currently open standard composition database (needs rework)
 
 ierror = False
 On Error GoTo StandardImportJEOLError
 
-Dim tfilename As String
+Dim tfilename As String, tpath As String, tstring As String
+
+Dim nCount As Long, n As Long, m As Long
+Dim sAllFiles() As String
+Dim arrayfilenames(1 To 1) As String
 
 ' Initialize the Tmp sample
 Call InitSample(StandardTmpSample())
 If ierror Then Exit Sub
 
-' Get path to existing file
-tfilename$ = vbNullString
-Call IOGetFileName(Int(2), "TXT", tfilename$, tForm)
+' Get path to standard folder (each sub folder is a standard block/mount)
+tpath$ = "C:\"
+tstring$ = "Browse to Folder Containing JEOL 8200/8500 Standard Block/Mount Files"
+tpath$ = IOBrowseForFolderByPath(False, tpath$, tstring$, tForm)
 If ierror Then Exit Sub
+If Trim$(tpath$) = vbNullString Then Exit Sub
+
+' Get all JEOL standard files recursively
+Call DirectorySearch("*.cmp", tpath$, True, nCount&, sAllFiles$())                  ' what extension does 8200/8500 use?
+If ierror Then Exit Sub
+If nCount& < 1 Then GoTo StandardImportJEOLNoFiles
+
+Screen.MousePointer = vbHourglass
+For n& = 1 To nCount&
+tfilename$ = sAllFiles$(n&)
 
 ' Open the ASCII file and import the data to the standard database
 Open tfilename$ For Input As #ImportDataFileNumber%
-
-' Loop on file
-Do Until EOF(ImportDataFileNumber%)
 
 ' Parse data
 Call StandardImportJEOLParseFile(ImportDataFileNumber%, tfilename$, StandardTmpSample())
@@ -943,8 +955,17 @@ Close #ImportDataFileNumber%
 Exit Sub
 End If
 
+' Check if standard contains elements
+If StandardTmpSample(1).LastChan% > 0 Then
+
+' Get next available standard number
+StandardTmpSample(1).number% = StandardGetNumber()
+If ierror Then
+Close #ImportDataFileNumber%
+Exit Sub
+End If
+
 ' Add the standard to the database
-If StandardTmpSample(1).LastChan% > 1 Then
 Call StandardAddRecord(StandardTmpSample())
 If ierror Then
 Close #ImportDataFileNumber%
@@ -961,10 +982,10 @@ StandardIndexDensities!(NumberOfAvailableStandards%) = StandardTmpSample(1).Samp
 StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
 End If
 
-Loop
-
 ' Close the import file
 Close #ImportDataFileNumber%
+Next n&
+
 Screen.MousePointer = vbDefault
 Exit Sub
 
@@ -973,6 +994,12 @@ StandardImportJEOLError:
 Close #ImportDataFileNumber%
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "StandardImportJEOL"
+ierror = True
+Exit Sub
+
+StandardImportJEOLNoFiles:
+msg$ = "No standard files were found in any folders or sub folders"
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL"
 ierror = True
 Exit Sub
 
@@ -987,145 +1014,33 @@ Exit Sub
 End Sub
 
 Sub StandardImportJEOLParseFile(tImportDataFileNumber%, tfilename As String, sample() As TypeSample)
-' Parse JEOL standard import format
+' Parse JEOL 8200/8500 standard import format
 
 ierror = False
 On Error GoTo StandardImportJEOLParseFileError
 
-Dim i As Integer, data_format As Integer
+Dim i As Integer
 Dim ielm As Integer
 Dim astring As String, bstring As String
 
 ReDim temp1(1 To MAXCHAN%) As Single
 ReDim temp2(1 To MAXCHAN%) As Single
 
-' Read standard number and parse
-Call MiscReadUntilDelimit(tImportDataFileNumber%, astring$, vbLf)   ' read to each linefeed (UNIX format)
-If ierror Then
-Close #ImportDataFileNumber%
-Exit Sub
-End If
 
-sample(1).number% = Val(astring$)
 
-' Read standard name and parse
-Call MiscReadUntilDelimit(tImportDataFileNumber%, astring$, vbLf)   ' read to each linefeed (UNIX format)
-If ierror Then
-Close #ImportDataFileNumber%
-Exit Sub
-End If
 
-astring$ = Replace$(astring$, VbDquote$, vbNullString)  ' remove extra double quotes
-sample(1).Name$ = Trim$(astring$)
 
-' Read standard comment and parse
-Call MiscReadUntilDelimit(tImportDataFileNumber%, astring$, vbLf)   ' read to each linefeed (UNIX format)
-If ierror Then
-Close #ImportDataFileNumber%
-Exit Sub
-End If
-
-astring$ = Replace$(astring$, VbDquote$, vbNullString)  ' remove extra double quotes
-sample(1).Description$ = Trim$(astring$)
-
-' Read standard oxide flag and parse
-Call MiscReadUntilDelimit(tImportDataFileNumber%, astring$, vbLf)   ' read to each linefeed (UNIX format)
-If ierror Then
-Close #ImportDataFileNumber%
-Exit Sub
-End If
-
-' Display as oxide flag
-Call MiscParseStringToString(astring$, bstring$)    ' parse values
-If Val(bstring$) <> 0 Then
-sample(1).DisplayAsOxideFlag% = True
-Else
-sample(1).DisplayAsOxideFlag% = False
-End If
-
-sample(1).SampleDensity! = DEFAULTDENSITY!
-
-' Number of elements
-Call MiscParseStringToString(astring$, bstring$)    ' parse values
-sample(1).LastChan% = Val(bstring$)
-If sample(1).LastChan% > MAXCHAN% Then GoTo StandardImportJEOLParseFileTooManyElements
-
-' Data format
-Call MiscParseStringToString(astring$, bstring$)    ' parse values
-data_format% = Val(bstring$)
-If data_format% < 1 Or data_format% > 3 Then GoTo StandardImportJEOLParseFileBadDataFormat
-
-' Read atomic numbers
-Call MiscReadUntilDelimit(tImportDataFileNumber%, astring$, vbLf)   ' read to each linefeed (UNIX format)
-If ierror Then
-Close #ImportDataFileNumber%
-Exit Sub
-End If
-
-' Loop on elements
-For i% = 1 To sample(1).LastChan%
-Call MiscParseStringToString(astring$, bstring$)    ' parse values
-ielm% = Val(bstring$)
-If ielm% < 1 Or ielm% > MAXELM% Then GoTo StandardImportJEOLParseFileBadElement
-
-sample(1).Elsyms$(i%) = Symlo$(ielm%)
-sample(1).numcat%(i%) = AllCat%(ielm%)
-sample(1).numoxd%(i%) = AllOxd%(ielm%)
-'If sample(1).Elsyms$(i%) = 8 And sample(1).ElmPercents!(i%) > 5# Then sample(1).DisplayAsOxideFlag% = True    ' assume oxide display if oxygen > 5%
-Next i%
-
-' Read cations/anions (not used)
-Call MiscReadUntilDelimit(tImportDataFileNumber%, astring$, vbLf)   ' read to each linefeed (UNIX format)
-If ierror Then
-Close #ImportDataFileNumber%
-Exit Sub
-End If
-
-' Read concentrations
-Call MiscReadUntilDelimit(tImportDataFileNumber%, astring$, vbLf)   ' read to each linefeed (UNIX format)
-If ierror Then
-Close #ImportDataFileNumber%
-Exit Sub
-End If
-
-' Parse concentrations
-For i% = 1 To sample(1).LastChan%
-Call MiscParseStringToString(astring$, bstring$)    ' parse values
-temp1!(i%) = Val(bstring$)
-Next i%
-
-' Convert concentrations
-For i% = 1 To sample(1).LastChan%
-
-' Elemental
-If data_format% = 1 Then
-temp2!(i%) = temp1!(i%)
-
-' Formula
-ElseIf data_format% = 2 Then
-temp2!(i%) = ConvertAtomToWeight!(sample(1).LastChan%, i%, temp1!(), sample(1).Elsyms$())
-
-' Oxide
-ElseIf data_format% = 3 Then
-temp2!(i%) = ConvertOxdToElm!(temp1!(i%), sample(1).Elsyms$(i%), sample(1).numcat%(i%), sample(1).numoxd%(i%))
-End If
-
-' Load concentrations
-sample(1).ElmPercents!(i%) = temp2!(i%)
-Next i%
 
 Exit Sub
 
 ' Errors
 StandardImportJEOLParseFileError:
-Close #ImportDataFileNumber%
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "StandardImportJEOLParseFile"
 ierror = True
 Exit Sub
 
 StandardImportJEOLParseFileTooManyElements:
-Close #ImportDataFileNumber%
 Screen.MousePointer = vbDefault
 msg$ = "Too many elements in standard number " & Str$(sample(1).number%) & " in " & tfilename$
 MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOLParseFile"
@@ -1133,7 +1048,6 @@ ierror = True
 Exit Sub
 
 StandardImportJEOLParseFileBadDataFormat:
-Close #ImportDataFileNumber%
 Screen.MousePointer = vbDefault
 msg$ = "Invalid data format value in standard number " & Str$(sample(1).number%) & " in " & tfilename$
 MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOLParseFile"
@@ -1141,10 +1055,380 @@ ierror = True
 Exit Sub
 
 StandardImportJEOLParseFileBadElement:
-Close #ImportDataFileNumber%
 Screen.MousePointer = vbDefault
 msg$ = "Invalid element number in standard number " & Str$(sample(1).number%) & " in " & tfilename$
 MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOLParseFile"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub StandardImportJEOL8x30(tForm As Form)
+' Import JEOL 8230/8530 standard files and add to currently open standard composition database
+
+ierror = False
+On Error GoTo StandardImportJEOL8x30Error
+
+Dim response As Integer
+Dim tpath As String, tstring As String
+Dim tfilename As String, tfilename2 As String
+
+Dim nCount As Long, n As Long, m As Long
+Dim sAllFiles() As String
+Dim arrayfilenames(1 To 1) As String
+
+' Initialize the Tmp sample
+Call InitSample(StandardTmpSample())
+If ierror Then Exit Sub
+
+' Get path to standard folder (each sub folder is a standard block/mount)
+tpath$ = "C:\"
+tstring$ = "Browse to Folder Containing JEOL 8230/8530 Standard Block/Mount Folders"
+tpath$ = IOBrowseForFolderByPath(False, tpath$, tstring$, tForm)
+If ierror Then Exit Sub
+If Trim$(tpath$) = vbNullString Then Exit Sub
+
+' Get all JEOL Cmp files recursively
+Call DirectorySearch("*.cmp", tpath$, True, nCount&, sAllFiles$())
+If ierror Then Exit Sub
+If nCount& < 1 Then GoTo StandardImportJEOL8x30NoFiles
+
+' Ask user whether to include block/mount folder in standard name
+msg$ = "Would you like to include the block/mount folder name in the standard name?"
+response% = MsgBox(msg$, vbYesNoCancel + vbQuestion + vbDefaultButton2, "StandardImportJEOL8x30")
+If response% = vbCancel Then Exit Sub
+
+Screen.MousePointer = vbHourglass
+For n& = 1 To nCount&
+tfilename$ = sAllFiles$(n&)
+
+' Open the ASCII file and import the data to the standard database
+Open tfilename$ For Input As #ImportDataFileNumber%
+
+' Parse data
+Call StandardImportJEOL8x30ParseFile(ImportDataFileNumber%, tfilename$, response%, StandardTmpSample())
+If ierror Then
+Close #ImportDataFileNumber%
+Exit Sub
+End If
+
+' Check if standard contains elements
+If StandardTmpSample(1).LastChan% > 0 Then
+
+' Get next available standard number
+StandardTmpSample(1).number% = StandardGetNumber()
+If ierror Then
+Close #ImportDataFileNumber%
+Exit Sub
+End If
+
+' Add the standard to the database
+Call StandardAddRecord(StandardTmpSample())
+If ierror Then
+Close #ImportDataFileNumber%
+Exit Sub
+End If
+
+' Update available standard list
+If NumberOfAvailableStandards% + 1 > MAXINDEX% Then GoTo StandardImportJEOL8x30TooMany
+NumberOfAvailableStandards% = NumberOfAvailableStandards% + 1
+StandardIndexNumbers%(NumberOfAvailableStandards%) = StandardTmpSample(1).number%
+StandardIndexNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).Name$
+StandardIndexDescriptions$(NumberOfAvailableStandards%) = StandardTmpSample(1).Description$
+StandardIndexDensities!(NumberOfAvailableStandards%) = StandardTmpSample(1).SampleDensity!
+StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
+End If
+
+' Close the import file
+Close #ImportDataFileNumber%
+
+' Now write a small text file with the standard number and stage positions
+tfilename2$ = MiscGetFileNameNoExtension(tfilename$) & ".txt"
+Open tfilename2$ For Output As #ExportDataFileNumber%
+Write #ExportDataFileNumber%, StandardTmpSample(1).number%, StandardTmpSample(1).Name$, StandardTmpSample(1).StagePositions!(1, 1), StandardTmpSample(1).StagePositions!(1, 2), StandardTmpSample(1).StagePositions!(1, 3)
+Close #ExportDataFileNumber%
+
+Next n&
+
+Screen.MousePointer = vbDefault
+MsgBox "All JEOL standard compositions saved to current standard composition database", vbOKOnly + vbInformation, "StandardImportJEOL8x30"
+Exit Sub
+
+' Errors
+StandardImportJEOL8x30Error:
+Close #ImportDataFileNumber%
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "StandardImportJEOL8x30"
+ierror = True
+Exit Sub
+
+StandardImportJEOL8x30NoFiles:
+msg$ = "No .cmp files were found in any folders or sub folders"
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30"
+ierror = True
+Exit Sub
+
+StandardImportJEOL8x30TooMany:
+Close #ImportDataFileNumber%
+Screen.MousePointer = vbDefault
+msg$ = "Too many standards were found in " & tfilename$
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub StandardImportJEOL8x30ParseFile(tImportDataFileNumber%, tfilename As String, response As Integer, sample() As TypeSample)
+' Parse JEOL 8230/8530 standard import format .Cmp files
+'   mode = vbNo do not use block/mount folder in name
+'   mode = vbYes do use block folder/mount in name
+
+ierror = False
+On Error GoTo StandardImportJEOL8x30ParseFileError
+
+Dim materialflag As Integer, ratioflag As Integer, ivalence As Integer
+Dim chan As Integer, ielm As Integer
+Dim astring As String, bstring As String
+Dim tparameter As String, tfolder As String
+
+ReDim temp1(1 To MAXCHAN%) As Single
+ReDim temp2(1 To MAXCHAN%) As Single
+
+' Parse out the folder name
+If response% = vbYes Then
+tfolder$ = MiscGetPathOnly$(tfilename$)
+tfolder$ = MiscGetLastFolderName$(tfolder$)
+If ierror Then Exit Sub
+End If
+
+' Read standard name
+tparameter$ = "$XM_CMP_STD_SAMPLE_NAME"
+Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
+If ierror Then Exit Sub
+
+sample(1).Name$ = Trim$(astring$)
+
+' Read standard comment
+tparameter$ = "$XM_CMP_COMMENT"
+Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
+If ierror Then Exit Sub
+
+sample(1).Description$ = Trim$(astring$)
+
+' Create name from name and comment and block/mount folder (if specified)
+If response% = vbYes Then
+If sample(1).Description$ <> vbNullString Then
+sample(1).Name$ = tfolder$ & "_" & Trim(sample(1).Name$ & "_" & sample(1).Description$)
+Else
+sample(1).Name$ = tfolder$ & "_" & Trim(sample(1).Name$)
+End If
+
+Else
+If sample(1).Description$ <> vbNullString Then
+sample(1).Name$ = Trim(sample(1).Name$ & "_" & sample(1).Description$)
+Else
+sample(1).Name$ = Trim(sample(1).Name$)
+End If
+End If
+
+' Make sure that sample name does not contain any embedded double quotes
+sample(1).Name$ = Replace$(sample(1).Name$, VbDquote$, VbSquote$)
+If ierror Then Exit Sub
+
+' Read material type flag (0 = elemental, 1 = oxide)
+tparameter$ = "$XM_CMP_MATERIAL"
+Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
+If ierror Then Exit Sub
+
+If Val(astring$) = 0 Then
+materialflag% = 0               ' elemental data
+Else
+materialflag% = 1               ' oxide data
+End If
+sample(1).OxideOrElemental% = 2         ' standards are always stored as elemental compositions
+
+' Get ratio type flag (0 = elemental or oxide percents, 1 = formula atoms)?
+tparameter$ = "$XM_CMP_RATIO_TYPE"
+Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
+If ierror Then Exit Sub
+
+ratioflag% = Val(astring$)
+
+' Number of elements
+tparameter$ = "$XM_CMP_NUMBER_OF_DATA"
+Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
+If ierror Then Exit Sub
+
+sample(1).LastChan% = Val(astring$)
+If sample(1).LastChan% = 0 Then GoTo StandardImportJEOL8x30ParseFileNoElements
+If sample(1).LastChan% > MAXCHAN% Then GoTo StandardImportJEOL8x30ParseFileTooManyElements
+
+' Loop on elements
+For chan% = 1 To sample(1).LastChan%
+
+tparameter$ = "$XM_CMP_COMPOSITION%" & Format$(chan% - 1)
+Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
+If ierror Then Exit Sub
+
+' Parse element, valence, and concentration
+Call MiscParseStringToString(astring$, bstring$)    ' parse element symbol
+ielm% = IPOS1%(MAXELM%, bstring$, Symlo$())
+If ielm% = 0 Then GoTo StandardImportJEOL8x30ParseFileBadElement
+sample(1).Elsyms$(chan%) = Symlo$(ielm%)
+
+Call MiscParseStringToString(astring$, bstring$)    ' parse valence
+ivalence% = Val(bstring$)                           ' not utilized yet!
+
+Call MiscParseStringToString(astring$, bstring$)    ' parse concentration/atoms
+temp1!(chan%) = Val(bstring$)
+
+' Load other parameters
+sample(1).numcat%(chan%) = AllCat%(ielm%)
+sample(1).numoxd%(chan%) = AllOxd%(ielm%)
+
+Next chan%
+
+' Load default density
+sample(1).SampleDensity! = DEFAULTDENSITY!
+
+' If oxide data, add oxygen to elements
+If materialflag% = 1 Then
+sample(1).LastChan% = sample(1).LastChan% + 1
+sample(1).Elsyms$(sample(1).LastChan%) = Symlo$(ATOMIC_NUM_OXYGEN%)
+ivalence% = -2                                      ' not utilized yet!
+
+' Load other parameters
+sample(1).numcat%(sample(1).LastChan%) = AllCat%(ATOMIC_NUM_OXYGEN%)
+sample(1).numoxd%(sample(1).LastChan%) = AllOxd%(ATOMIC_NUM_OXYGEN%)
+End If
+
+' Convert atoms to elemental concentrations
+If ratioflag% = 1 Then
+
+' Load temp array for atom to elemental conversion
+For chan% = 1 To sample(1).LastChan%
+temp2(chan%) = temp1(chan%)
+Next chan%
+
+' Convert atoms to weight percent
+For chan% = 1 To sample(1).LastChan%
+temp1!(chan%) = ConvertAtomToWeight(sample(1).LastChan%, chan%, temp2!(), sample(1).Elsyms$())
+If ierror Then Exit Sub
+Next chan%
+End If
+
+' Convert all to elemental concentrations
+For chan% = 1 To sample(1).LastChan%
+
+' Elemental material, just load concentrations
+If materialflag% = 0 Then
+temp2!(chan%) = temp1!(chan%)
+
+' Oxide material, convert to elemental
+ElseIf materialflag% = 1 Then
+temp2!(chan%) = ConvertOxdToElm!(temp1!(chan%), sample(1).Elsyms$(chan%), sample(1).numcat%(chan%), sample(1).numoxd%(chan%))
+End If
+
+' Load elemental concentrations
+sample(1).ElmPercents!(chan%) = temp2!(chan%)
+
+' Assume oxide display if oxygen > 5%
+If UCase$(Trim$(sample(1).Elsyms$(chan%))) = UCase$(Trim$(Symlo$(ATOMIC_NUM_OXYGEN%))) And sample(1).ElmPercents!(chan%) > 5# Then sample(1).DisplayAsOxideFlag% = True
+Next chan%
+
+' Now that oxides are converted to elemental concentrations, if oxide material, calculate oxygen from cations
+If materialflag% = 1 Then
+sample(1).OxygenChannel% = sample(1).LastChan%
+sample(1).ElmPercents!(sample(1).OxygenChannel%) = ConvertOxygenFromCations!(sample())
+If ierror Then Exit Sub
+End If
+
+' Finally get stage positions for subsequent saving in .POS files (See StagForm.bas in Stage app)
+tparameter$ = "$XM_CMP_STAGE_POS"
+Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
+If ierror Then Exit Sub
+
+' Parse stage data
+Call MiscParseStringToString(astring$, bstring$)    ' get X position
+sample(1).StagePositions!(1, 1) = Val(bstring$)
+Call MiscParseStringToString(astring$, bstring$)    ' get Y position
+sample(1).StagePositions!(1, 2) = Val(bstring$)
+Call MiscParseStringToString(astring$, bstring$)    ' get Z position
+sample(1).StagePositions!(1, 3) = Val(bstring$)
+
+Exit Sub
+
+' Errors
+StandardImportJEOL8x30ParseFileError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "StandardImportJEOL8x30ParseFile"
+ierror = True
+Exit Sub
+
+StandardImportJEOL8x30ParseFileNoElements:
+Screen.MousePointer = vbDefault
+msg$ = "No elements defined in " & tfilename$
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30ParseFile"
+ierror = True
+Exit Sub
+
+StandardImportJEOL8x30ParseFileTooManyElements:
+Screen.MousePointer = vbDefault
+msg$ = "Too many elements defined in " & tfilename$
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30ParseFile"
+ierror = True
+Exit Sub
+
+StandardImportJEOL8x30ParseFileBadElement:
+Screen.MousePointer = vbDefault
+msg$ = "Invalid element symbol (" & astring$ & ") in " & tfilename$
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30ParseFile"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub StandardImportJEOL8x30ParseFile2(tfilename As String, tparameter As String, treturn As String)
+' Read the 8x30 JEOL .cmp file and load specified parameter
+
+ierror = False
+On Error GoTo StandardImportJEOL8x30ParseFile2Error
+
+Dim n As Integer
+Dim tfilenumber As Integer
+Dim astring As String, bstring As String
+
+tfilenumber% = FreeFile()
+treturn$ = vbNullString
+
+' Read each parameter by looping through the .cnd file
+Open tfilename$ For Input As tfilenumber%
+
+Do Until EOF(tfilenumber%)
+Line Input #tfilenumber%, astring$
+
+If InStr(astring$, tparameter$) > 0 Then
+treturn$ = Trim$(Mid$(astring$, Len(tparameter$) + 2))
+Close tfilenumber%
+Exit Sub
+End If
+
+Loop
+
+Close tfilenumber%
+
+' If we get to here something is wrong because the parameter was not found
+msg$ = "Unable to find parameter (" & tparameter$ & ") in file " & tfilename$
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30ParseFile2"
+ierror = True
+
+Exit Sub
+
+' Errors
+StandardImportJEOL8x30ParseFile2Error:
+Close tfilenumber%
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "StandardImportJEOL8x30ParseFile2"
 ierror = True
 Exit Sub
 

@@ -65,6 +65,7 @@ End If
 End If
 
 ' Type sample setup
+If sample(1).LastElm% > 0 Then          ' skip output if no WDS or EDS analyzed elements
 Call TypeSampleSetup(sample())
 If ierror Then Exit Sub
 
@@ -86,6 +87,7 @@ End If
 If sample(1).IntegratedIntensitiesFlag% Then
 msg$ = vbCrLf & "Warning: Sample Contains One or More Elements Specified for Integrated Intensity Acquisition"
 Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
+End If
 End If
 
 ' Print type of data to Log window

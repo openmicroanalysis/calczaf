@@ -270,7 +270,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   18230
       _ExtentY        =   6376
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"STANDARD.frx":59D8A
    End
@@ -373,9 +372,12 @@ Begin VB.Form FormMAIN
          HelpContextID   =   640
       End
       Begin VB.Menu menuFileImportStandardsFromJEOLTextFile 
-         Caption         =   "Import Standards From JEOL Text File (created from Perl script)"
+         Caption         =   "Import Standards From JEOL (8200/8500)"
          Enabled         =   0   'False
          HelpContextID   =   779
+      End
+      Begin VB.Menu menuFileImportStandardsFromJEOL8x30TextFile 
+         Caption         =   "Import Standards From JEOL (8230/8530)"
       End
       Begin VB.Menu menuFileSeparator2 
          Caption         =   "-"
@@ -1150,13 +1152,13 @@ If ierror Then Exit Sub
 
 End Sub
 
-Private Sub menuFileImportStandardsFromJEOLTextFile_Click()
+Private Sub menuFileImportStandardsFromJEOL8x30TextFile_Click()
 If Not DebugMode Then On Error Resume Next
 Dim response As Integer
 Dim tfilename As String
 
 If StandardDataFile$ <> vbNullString Then
-msg$ = "Do you want to close the currently open standard database and create a new STANDARD.MDB default database from the JEOL Import Text File?"
+msg$ = "Do you want to import standard compositions from the JEOL 8230/8530 standard composition folder, into the currently open standard database?"
 response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton2, "Standard")
 If response% = vbNo Then Exit Sub
 End If
@@ -1172,7 +1174,8 @@ Call InitStandardIndex
 Call StanFormClear
 Call StanFormUpdate
 
-' Open new file for importing JEOL standard data
+' Open new file for importing JEOL 8230/8530 standard data
+If StandardDataFile$ = vbNullString Then
 tfilename$ = "standard.mdb"
 Call StandardOpenNEWFile(tfilename$, FormMAIN)
 If ierror Then Exit Sub
@@ -1180,11 +1183,62 @@ If ierror Then Exit Sub
 ' Update the file info fields
 MDBUserName$ = MDBUserName$
 MDBFileTitle$ = "Default Standard Database"
-MDBFileDescription$ = "JEOL Text File Import Standard Database"
+MDBFileDescription$ = "JEOL Import Standard Database"
 Call FileInfoSaveData(tfilename$)
 If ierror Then Exit Sub
+End If
 
-' Import the JEOL standards
+' Import the JEOL 8230/8530 standards
+Call StandardImportJEOL8x30(FormMAIN)
+'If ierror Then Exit Sub
+
+' Load the standard list box (even if there was an error importing)
+Call StandardLoadList(FormMAIN.ListAvailableStandards)
+If ierror Then Exit Sub
+
+' Update the MAIN form
+Call StanFormUpdate
+If ierror Then Exit Sub
+
+End Sub
+
+Private Sub menuFileImportStandardsFromJEOLTextFile_Click()
+If Not DebugMode Then On Error Resume Next
+Dim response As Integer
+Dim tfilename As String
+
+If StandardDataFile$ <> vbNullString Then
+msg$ = "Do you want to import standard compositions from the JEOL 8200/8500 standard composition folder, into the currently open standard database?"
+response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton2, "Standard")
+If response% = vbNo Then Exit Sub
+End If
+
+' Read the PROBEWIN.INI file
+Call InitINI
+
+' Initialize the arrays
+Call InitData
+Call InitStandardIndex
+
+' Clear the form
+Call StanFormClear
+Call StanFormUpdate
+
+' Open new file for importing JEOL 8200/8500 standard data
+If StandardDataFile$ = vbNullString Then
+tfilename$ = "standard.mdb"
+Call StandardOpenNEWFile(tfilename$, FormMAIN)
+If ierror Then Exit Sub
+
+' Update the file info fields
+MDBUserName$ = MDBUserName$
+MDBFileTitle$ = "Default Standard Database"
+MDBFileDescription$ = "JEOL Import Standard Database"
+Call FileInfoSaveData(tfilename$)
+If ierror Then Exit Sub
+End If
+
+' Import the JEOL 8200/8500 standards
 Call StandardImportJEOL(FormMAIN)
 'If ierror Then Exit Sub
 
