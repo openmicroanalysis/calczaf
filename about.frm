@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormABOUT 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "About This Program"
-   ClientHeight    =   11865
+   ClientHeight    =   11385
    ClientLeft      =   2400
    ClientTop       =   1545
    ClientWidth     =   9495
@@ -21,7 +21,7 @@ Begin VB.Form FormABOUT
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   11865
+   ScaleHeight     =   11385
    ScaleWidth      =   9495
    Begin VB.CommandButton CommandOK 
       BackColor       =   &H00C0FFC0&
@@ -32,12 +32,12 @@ Begin VB.Form FormABOUT
       Style           =   1  'Graphical
       TabIndex        =   2
       TabStop         =   0   'False
-      Top             =   11280
+      Top             =   10800
       Width           =   1575
    End
    Begin VB.Frame Frame1 
       ClipControls    =   0   'False
-      Height          =   11055
+      Height          =   10575
       Left            =   120
       TabIndex        =   0
       Top             =   120
@@ -58,13 +58,13 @@ Begin VB.Form FormABOUT
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   7
-         Top             =   9960
+         Top             =   9480
          Width           =   6375
       End
       Begin VB.Label LabelAboutSpecialists 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Height          =   2175
+         Height          =   1695
          Left            =   120
          TabIndex        =   6
          Top             =   7680
@@ -132,7 +132,7 @@ Begin VB.Form FormABOUT
       MousePointer    =   99  'Custom
       TabIndex        =   3
       ToolTipText     =   "Click here to visit the Probe Software web site"
-      Top             =   11400
+      Top             =   10920
       Width           =   2775
    End
 End
@@ -201,7 +201,6 @@ FormABOUT.LabelAbout.Caption = tmsg$
 
 tmsg$ = vbCrLf & "For additional support, consultation and/or training please contact our team of Microprobe Specialists:" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
-tmsg$ = tmsg$ & "Paul Carpenter, 314 602-9697, carpenter@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Gareth Seward, 805 637-7265, seward@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Karsten Goemann, +61 407-101-990, goemann@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Owen Neill, 207 653-6331, neill@probesoftware.com" & vbCrLf

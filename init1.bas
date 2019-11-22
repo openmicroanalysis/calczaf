@@ -2358,11 +2358,11 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "FilamentStandbyType"
-nDefault& = 0           ' 0 = reduce heat only, 1 = reduce heat and keV, 2 = reduce keV only, 3 = external script
+nDefault& = 0           ' 0 = reduce heat only, 1 = reduce heat and keV, 2 = reduce keV only, 3 = external script, 4 = PCC file
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 FilamentStandbyType% = valid&
-If FilamentStandbyType% < 0 Or FilamentStandbyType% > 3 Then
+If FilamentStandbyType% < 0 Or FilamentStandbyType% > 4 Then
 msg$ = "FilamentStandbyType keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 FilamentStandbyType% = nDefault&
@@ -2376,13 +2376,18 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then FilamentStandbyExternalScript$ = Left$(lpReturnString$, valid&)
-If FilamentStandbyType% = 3 And Trim$(FilamentStandbyExternalScript$) = vbNullString Then
-msg$ = "FilamentStandbyExternalScript keyword is blank in " & ProbeWinINIFile$
+If (FilamentStandbyType% = 3 Or FilamentStandbyType% = 4) And Trim$(FilamentStandbyExternalScript$) = vbNullString Then
+msg$ = "FilamentStandbyExternalScript (or PCC filename) keyword is blank in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
-If FilamentStandbyType% = 3 And Dir$(FilamentStandbyExternalScript$) = vbNullString Then    ' check that file actually exists
-msg$ = "FilamentStandbyExternalScript keyword file was not found as specified in " & ProbeWinINIFile$
+If (FilamentStandbyType% = 3 Or FilamentStandbyType% = 4) And MiscGetPathOnly2$(FilamentStandbyExternalScript$) = vbNullString Then    ' check that full path is specified
+msg$ = "FilamentStandbyExternalScript keyword file (" & FilamentStandbyExternalScript$ & ") does not contain the full path as specified in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
+End
+End If
+If (FilamentStandbyType% = 3 Or FilamentStandbyType% = 4) And Dir$(FilamentStandbyExternalScript$) = vbNullString Then    ' check that file actually exists
+msg$ = "FilamentStandbyExternalScript keyword file (" & FilamentStandbyExternalScript$ & ") was not found as specified in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
