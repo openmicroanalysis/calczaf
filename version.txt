@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/23/19	Add new MAN flag for off-peak (interpolated) MAN fits for even when eleemnt is present (Orlandini).
+v. 12.7.9
+
 11/22/19	Fix label on checkbox in Automate! if Cameca FEG (Ntaflos).
 
 11/21/19	Add PCC file load for filament standby as new Probewin.ini option (Ntaflos).
