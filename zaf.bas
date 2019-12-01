@@ -1603,29 +1603,35 @@ Next i%
 
 ' Calculate unknown K-ratios. Use intensities modified by coating correction (if specified)
 For i% = 1 To sample(1).LastElm%
+
+' Check disable acquisition flag
 If sample(1).DisableAcqFlag%(i%) = 0 Then
 If analysis.StdAssignsCounts!(i%) <> 0# Then
+
+' Check disable quant flag
 If sample(1).DisableQuantFlag%(i%) = 0 Then
 zaf.kraw!(i%) = unkcnts!(i%) / stdcnts!(i%)
 zaf.krat!(i%) = (unkcnts!(i%) / stdcnts!(i%)) * analysis.StdAssignsKfactors!(i%)
 End If
 End If
-If zaf.krat!(i%) = 0# Then zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE! / 100# ' use a non-zero value
+
+' Check for zero k-ratio
+If zaf.krat!(i%) = 0# Then zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE! / 100#    ' use a non-zero value
 
 ' Check for force to zero flag
 If ForceNegativeKratiosToZeroFlag = True Then
-If zaf.krat!(i%) <= 0# Then zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE! / 100# ' use a non-zero value
+If zaf.krat!(i%) <= 0# Then zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE! / 100#   ' use a non-zero value
 End If
 
 ' Load voltage
 zaf.eO!(i%) = sample(1).KilovoltsArray!(i%)
 
-' Check for disable quant flag
-If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 16    ' use for disabled quant element
-
 ' Check for extremely negative k-ratios on each measured element
 If zaf.krat!(i%) <= MAXNEGATIVE_KRATIO! Then GoTo ZAFSmpVeryNegativeKratio
 End If
+
+' Check for disable quant flag
+If sample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 16    ' use flag for disabled quant element
 Next i%
 
 ' Input specified elemental weight percents into ZAF array, and check for element by difference, element by stoichiometry and element to oxide

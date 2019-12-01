@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/30/19	Fix very, very subtle bug when elements disabled for acq/quant have different elements than standards (Poirier).
+
 11/27/19	Add "basic EPMA" window for beginning users (Chouinard).
 
 		Fix negative alpha error in ZAFBks for Pouchou and Pichior method (Seward).
