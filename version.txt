@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/13/19	Add button to assign TDI (volatile) fit in Run menu (von der Handt). Also add display of current assigned fit.
+
 12/12/19	Add Imaging button to Basic EPMA window.
 
 12/11/19	Modify Plot! wavescan code to update hi/lo off-peaks for selected samples from Model Backgrouds dialog.
