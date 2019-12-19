@@ -2,13 +2,18 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/18/19	Add negative "eta" trap for PAP and XPP ZAFBks sample code for cracks in quant images. Bump
+v. 12.8.0	version number for new XRAY.MDB (CalcZAF.msi).
+
+12/16/19	New XRAY.MDB file using Access 2000 format (Seward and Ntaflos).
+
 12/13/19	Add button to assign TDI (volatile) fit in Run menu (von der Handt). Also add display of current assigned fit.
 
 12/12/19	Add Imaging button to Basic EPMA window.
 
-12/11/19	Modify Plot! wavescan code to update hi/lo off-peaks for selected samples from Model Backgrouds dialog.
+12/11/19	Modify Plot! wavescan code to update hi/lo off-peaks for selected samples from Model Backgrounds dialog.
 
-		Modify button color/placement in Basic EPMA and add display, ouput images (von der Handt).
+		Modify button color/placement in Basic EPMA and add display, output images (von der Handt).
 
 12/4/19		Improve Basic EPMA window (Chouinard).
 
@@ -18,7 +23,7 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 
 		Fix negative alpha error in ZAFBks for Pouchou and Pichior method (Seward).
 
-11/23/19	Add new MAN flag for off-peak (interpolated) MAN fits for even when eleemnt is present (Orlandini).
+11/23/19	Add new MAN flag for off-peak (interpolated) MAN fits for even when element is present (Orlandini).
 v. 12.7.9
 
 11/22/19	Fix label on checkbox in Automate! if Cameca FEG (Ntaflos).

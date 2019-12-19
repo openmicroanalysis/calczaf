@@ -3789,6 +3789,7 @@ ElseIf ibks% = 7 Then
 For i% = 1 To zaf.in1%
 zaf.bks!(i%) = 1#
 If zaf.il%(i%) <= MAXRAY% - 1 Then
+If eta!(i%) <= 0# Then GoTo ZAFBksNegativeEta
 meanw! = 0.595 + eta!(i%) / 3.7 + Exp(4.55 * Log(eta!(i%)))
 u0! = zaf.v!(i%)    ' typo fixed 5-23-2005 (was zaf.z(i%))
 ju0! = 1 + u0! * (Log(u0!) - 1#)
@@ -3817,6 +3818,13 @@ Exit Sub
 
 ZAFBksNegativeAlpha:
 msg$ = vbCrLf & "ZAFBks: Negative alpha expression (" & Format$(Alpha!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
+Exit Sub
+
+ZAFBksNegativeEta:
+msg$ = vbCrLf & "ZAFBks: Negative or zero eta expression (" & Format$(eta!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
 Call IOWriteLog(msg$)
 'ierror = True

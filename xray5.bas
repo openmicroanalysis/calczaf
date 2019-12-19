@@ -70,9 +70,9 @@ FormXRAY.TextKev.Text = Str$(keV!)
 
 ' Load absorption edges checkbox
 If DefaultAbsorptionEdgeDisplay% = 1 Then
-FormXRAY.CheckAbsorptionEdges.value = vbChecked
+FormXRAY.CheckAbsorptionEdges.Value = vbChecked
 Else
-FormXRAY.CheckAbsorptionEdges.value = vbUnchecked
+FormXRAY.CheckAbsorptionEdges.Value = vbUnchecked
 End If
 
 ' Set "Graph Selected" button ebale
@@ -149,7 +149,7 @@ tempmin! = xstop!
 tempmax! = xstart!
 End If
 
-' Open xray database (exclusive and read only)
+' Open xray database (non exclusive and read only)
 Screen.MousePointer = vbHourglass
 Set PrDb = OpenDatabase(XrayDataFile$, XrayDatabaseNonExclusiveAccess%, dbReadOnly)
 
@@ -327,7 +327,7 @@ xstop! = Val(FormXRAY.TextStop.Text)
 End If
 
 ' Load x-ray absorption edges flag
-If FormXRAY.CheckAbsorptionEdges.value = vbChecked Then
+If FormXRAY.CheckAbsorptionEdges.Value = vbChecked Then
 method% = 1
 Else
 method% = 0
@@ -430,7 +430,7 @@ Call FileInfoCreateDatabase(XrayDataFile$)
 If ierror Then Exit Sub
 
 ' Open as existing database
-Set StDb = OpenDatabase(XrayDataFile$, DatabaseExclusiveAccess%, False)
+Set StDb = OpenDatabase(XrayDataFile$, XrayDatabaseExclusiveAccess%, False)
 
 ' Specify the xray database "Xray" table
 Set Xray = StDb.CreateTableDef("NewTableDef")
@@ -491,7 +491,7 @@ Screen.MousePointer = vbDefault
 Call FileInfoMakeNewTable(Int(6), vbNullString)
 If ierror Then Exit Sub
 
-msg$ = "Output completed to XRAY.MDB"
+msg$ = "Output completed to XRAY.MDB (" & XrayDataFile$ & ")"
 MsgBox msg$, vbOKOnly + vbInformation, "XrayOpenNewMDB"
 
 Exit Sub
@@ -654,7 +654,7 @@ tempmin! = xstop!
 tempmax! = xstart!
 End If
 
-' Open xray database (exclusive and read only)
+' Open xray database (non exclusive and read only)
 Screen.MousePointer = vbHourglass
 Set PrDb = OpenDatabase(XrayDataFile$, XrayDatabaseNonExclusiveAccess%, dbReadOnly)
 

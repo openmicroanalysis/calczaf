@@ -355,7 +355,7 @@ End If
 Next chan%
 
 ' Iterate on the MAN, interference, volatile and APF corrections
-MaxMANIter% = 100
+MaxMANIter% = 10            ' change from 100 to 10 (12-18-2019)
 analysis.MANIter! = 1#
 analysis.zbar! = 10.8    ' assume quartz z-bar for first MAN iteration
 alldone = False
