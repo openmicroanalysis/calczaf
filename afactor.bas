@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeAFACTOR"
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -1686,7 +1686,7 @@ If ip% = 0 Then GoTo 8500
 ' Load the standard percents and z-bar
 analysis.Elsyms$(i%) = stdsample(1).Elsyms$(ip%)
 analysis.StdPercents!(row%, i%) = stdsample(1).ElmPercents!(ip%)
-analysis.StdZbars!(row%) = analysis.Zbar!
+analysis.StdZbars!(row%) = analysis.zbar!
 
 ' Load standard arrays
 If i% <= sample(1).LastElm% Then
@@ -1726,7 +1726,7 @@ msg$ = StandardLoadDescription$(stdsample())
 If ierror Then Exit Sub
 Call IOWriteLog(vbCrLf & msg$)
 
-msg$ = "Standard Z-bar: " & Str$(analysis.Zbar!) & vbCrLf
+msg$ = "Standard Z-bar: " & Str$(analysis.zbar!) & vbCrLf
 Call IOWriteLog(msg$)
 
 ' Type elements

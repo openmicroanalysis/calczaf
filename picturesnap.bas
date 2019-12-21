@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePictureSnap"
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -694,7 +694,7 @@ ierror = False
 On Error GoTo PictureSnapDrawCurrentPositionError
 
 Dim formx As Single, formy As Single, formz As Single
-Dim radius As Single, twidth As Single
+Dim radius As Single, tWidth As Single
 Dim a1 As Single, a2 As Single
 Dim fractionx As Single, fractiony As Single
 
@@ -736,9 +736,9 @@ Call PictureSnapConvert(Int(2), formx!, formy!, formz!, RealTimeMotorPositions!(
 If ierror Then Exit Sub
 
 ' Calculate a radius
-twidth! = Screen.Width
-If twidth! = 0# Then Exit Sub
-radius! = twidth! / 100#
+tWidth! = Screen.Width
+If tWidth! = 0# Then Exit Sub
+radius! = tWidth! / 100#
 
 ' Erase the old circle
 If CLng(oldx!) <> CLng(formx!) Or CLng(oldy!) <> CLng(formy!) Then
@@ -798,9 +798,9 @@ End If
 
 ' Update full window
 If FormPICTURESNAP3.Visible Then
-twidth! = FormPICTURESNAP3.ScaleWidth   ' calculate a radius
-If twidth! <> 0# Then
-radius! = (twidth! / 50#) ^ 0.8
+tWidth! = FormPICTURESNAP3.ScaleWidth   ' calculate a radius
+If tWidth! <> 0# Then
+radius! = (tWidth! / 50#) ^ 0.8
 
 ' Erase the old circle
 If CLng(oldx!) <> CLng(formx!) Or CLng(oldy!) <> CLng(formy!) Then
@@ -1175,7 +1175,7 @@ ierror = False
 On Error GoTo PictureSnapDisplayCurrentMagBoxError
 
 Dim tcolor As Long
-Dim twidth As Integer
+Dim tWidth As Integer
 
 Dim formx As Single, formy As Single, formz As Single
 Dim fractionx As Single, fractiony As Single
@@ -1257,10 +1257,10 @@ End If
 ' Update mag box if scan mode
 If tbeammode% = 1 Then
 tcolor& = RGB(0, 0, 150)
-twidth% = 2
+tWidth% = 2
 
 ' New code to draw magbox corners using rectangle rotation
-Call PictureSnapDrawRectangle(formx!, formy!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, twidth%)
+Call PictureSnapDrawRectangle(formx!, formy!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, tWidth%)
 If ierror Then Exit Sub
 End If
 
@@ -1408,7 +1408,7 @@ Exit Function
 
 End Function
 
-Sub PictureSnapDrawRectangle(xcenter As Single, ycenter As Single, xwidth As Single, ywidth As Single, rotation As Single, tcolor As Long, twidth As Integer)
+Sub PictureSnapDrawRectangle(xcenter As Single, ycenter As Single, xwidth As Single, ywidth As Single, rotation As Single, tcolor As Long, tWidth As Integer)
 ' Draws a rectangle of the specified width and height at the specified screen location (all values in screen units)
 '  xcenter = rectangle center x form position
 '  ycenter = rectangle center y form position
@@ -1514,9 +1514,9 @@ formy4! = vCorner(4).y
     ' Render each line in turn
     For i% = 0 To 3
         If (i% < 3) Then
-            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(i% + 1).x, listOfPoints(i% + 1).y, tcolor&, twidth%
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(i% + 1).x, listOfPoints(i% + 1).y, tcolor&, tWidth%
         Else
-            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(0).x, listOfPoints(0).y, tcolor&, twidth%
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(0).x, listOfPoints(0).y, tcolor&, tWidth%
         End If
     Next i%
     
@@ -1530,7 +1530,7 @@ Exit Sub
 
 End Sub
 
-Sub PictureSnapDrawRectangle2(xcenter As Single, ycenter As Single, xwidth As Single, ywidth As Single, rotation As Single, tcolor As Long, twidth As Integer)
+Sub PictureSnapDrawRectangle2(xcenter As Single, ycenter As Single, xwidth As Single, ywidth As Single, rotation As Single, tcolor As Long, tWidth As Integer)
 ' Draws a rectangle of the specified width and height at the specified screen location (all values in screen units) for FormPICTURESNAP3.Image1
 '  xcenter = rectangle center x form position
 '  ycenter = rectangle center y form position
@@ -1636,9 +1636,9 @@ formy4! = vCorner(4).y
     ' Render each line in turn on FormPICTURESNAP3 main form because image controls do not have an hDC
     For i% = 0 To 3
         If (i% < 3) Then
-            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP3.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(i% + 1).x, listOfPoints(i% + 1).y, tcolor&, twidth%
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP3.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(i% + 1).x, listOfPoints(i% + 1).y, tcolor&, tWidth%
         Else
-            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP3.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(0).x, listOfPoints(0).y, tcolor&, twidth%
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP3.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(0).x, listOfPoints(0).y, tcolor&, tWidth%
         End If
     Next i%
     
@@ -1659,7 +1659,7 @@ ierror = False
 On Error GoTo PictureSnapDrawStageLimits2Error
 
 Dim tcolor As Long
-Dim twidth As Integer
+Dim tWidth As Integer
 
 Dim fractionx As Single, fractiony As Single
 
@@ -1711,10 +1711,10 @@ If ierror Then Exit Sub
 
 ' Set line color and width
 tcolor& = vbYellow
-twidth% = 2
+tWidth% = 2
 
 ' New code to draw stage limit rectangle using rectangle rotation to FormPICTURESNAP.Picture2 control
-Call PictureSnapDrawRectangle(centerx!, centery!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, twidth%)
+Call PictureSnapDrawRectangle(centerx!, centery!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, tWidth%)
 If ierror Then Exit Sub
 
 ' Calculate stage limit distances in FormPICTURESNAP.Picture2 form units to FormPICTURESNAP3 form units
@@ -1722,7 +1722,7 @@ xwidth! = xwidth! * FormPICTURESNAP3.ScaleWidth / FormPICTURESNAP.Picture2.Scale
 ywidth! = ywidth! * FormPICTURESNAP3.ScaleHeight / FormPICTURESNAP.Picture2.ScaleHeight
 
 ' Now draw stage limit rectangle to FormPICTURESNAP3.Image1 control
-Call PictureSnapDrawRectangle2(FormPICTURESNAP3.ScaleWidth * fractionx!, FormPICTURESNAP3.ScaleHeight * fractiony!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, twidth%)
+Call PictureSnapDrawRectangle2(FormPICTURESNAP3.ScaleWidth * fractionx!, FormPICTURESNAP3.ScaleHeight * fractiony!, xwidth!, ywidth!, PictureSnapRotation!, tcolor&, tWidth%)
 If ierror Then Exit Sub
 
 Exit Sub

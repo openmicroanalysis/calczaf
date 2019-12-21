@@ -82,7 +82,7 @@ Begin VB.Form FormABOUT
       Begin VB.Image Image1 
          Height          =   960
          Left            =   240
-         Picture         =   "ABOUT.frx":0000
+         Picture         =   "About.frx":0000
          Top             =   240
          Width           =   960
       End
@@ -128,7 +128,7 @@ Begin VB.Form FormABOUT
       ForeColor       =   &H00FF0000&
       Height          =   255
       Left            =   1680
-      MouseIcon       =   "ABOUT.frx":0701
+      MouseIcon       =   "About.frx":0701
       MousePointer    =   99  'Custom
       TabIndex        =   3
       ToolTipText     =   "Click here to visit the Probe Software web site"
@@ -141,7 +141,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 
 Private Const clrLinkActive& = vbBlue
@@ -167,7 +167,7 @@ End If
 tmsg$ = tmsg$ & "For Windows XP/Vista/Win7/Win8/Win10" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "Written by John J. Donovan, Probe Software, Inc." & vbCrLf
-tmsg$ = tmsg$ & "(c) Copyright 1995-2019, All Rights Reserved" & vbCrLf & vbCrLf
+tmsg$ = tmsg$ & "(c) Copyright 1995-2020, All Rights Reserved" & vbCrLf & vbCrLf
 tmsg$ = tmsg$ & "Special thanks to Paul Carpenter for his tireless testing and many helpful discussions"
 FormABOUT.LabelAboutTitle.Caption = tmsg$
 

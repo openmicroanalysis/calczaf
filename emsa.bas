@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeEMSA"
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 
 Dim stdsample(1 To 1) As TypeSample

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeCONVERT6"
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 
 Sub ConvertHalog(tfilenumber As Integer, percents() As Single, sample() As TypeSample)

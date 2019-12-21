@@ -329,7 +329,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"ZAFOPT.frx":0000
+         ToolTipText     =   $"Zafopt.frx":0000
          Top             =   3120
          Width           =   4095
       End
@@ -675,12 +675,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub

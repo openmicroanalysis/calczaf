@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/20/19	Add additional error trapping in PAP routines to deal with "cracks" in x-ray maps (Mott). Edit copyright to
+		2020 in all source files.
+
 12/18/19	Add negative "eta" trap for PAP and XPP ZAFBks sample code for cracks in quant images. Bump
 v. 12.8.0	version number for new XRAY.MDB (CalcZAF.msi).
 

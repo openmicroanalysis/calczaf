@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscSystem"
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -274,7 +274,7 @@ Private Type WIN32_FIND_DATA
 End Type
 
 Private Type FileInfo
-    filename As String
+    Filename As String
     Modified As Currency
 End Type
 
@@ -1142,7 +1142,7 @@ hFind& = FindFirstFile(tpath$, WFD)
     Do
         If (WFD.dwFileAttributes And vbDirectory) = 0 Then
             ReDim Preserve tFiles(n&)
-            tFiles(n&).filename = Left$(WFD.cFileName, lstrlen(WFD.cFileName))
+            tFiles(n&).Filename = Left$(WFD.cFileName, lstrlen(WFD.cFileName))
             CopyMemory tFiles(n&).Modified, WFD.ftLastWriteTime, 8
             n& = n& + 1
         End If
@@ -1167,7 +1167,7 @@ ReDim tfilenames(1 To UBound(tFiles)) As String
 ReDim tfiledates(1 To UBound(tFiles)) As Variant
 
 For n& = 1 To UBound(tFiles)
-tfilenames$(n&) = tFiles(n&).filename$
+tfilenames$(n&) = tFiles(n&).Filename$
 tfiledates(n&) = FileDateTime(MiscGetPathOnly2$(tpath$) & "\" & tfilenames$(n&))
 Next n&
 

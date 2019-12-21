@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeINIT"
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -3402,7 +3402,7 @@ Else
 tmsg$ = "Welcome to " & app.EXEName & ", Probe for EPMA (Xtreme Edition) v. " & ProgramVersionString$
 End If
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD% Or FONT_UNDERLINE%), Int(0))
-tmsg$ = "Copyright (c) 1995-2019 by John J. Donovan"
+tmsg$ = "Copyright (c) 1995-2020 by John J. Donovan"
 Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD%), Int(0))
 tmsg$ = vbCrLf & "This software is registered to :"
 Call IOWriteLog(tmsg$)
@@ -4464,7 +4464,7 @@ Dim astring As String, tcomment As String
 
 Dim nMonitors As Long
 Dim vWidth As Long, vHeight As Long
-Dim twidth() As Long, tHeight() As Long
+Dim tWidth() As Long, tHeight() As Long
 
 ' Check for blank username (not Probewin.exe)
 If Trim$(userstring$) = vbNullString Then
@@ -4519,7 +4519,7 @@ If tForm.WindowState = vbMaximized Then Exit Sub
 If tForm.WindowState = vbMinimized Then Exit Sub
 
 ' Check if saved window position is outside visible area (different monitor) (Screen object in VB6 does not handle dual monitors)
-Call MonitorsGetVirtualExtents(nMonitors&, twidth&(), tHeight&(), vWidth&, vHeight&)
+Call MonitorsGetVirtualExtents(nMonitors&, tWidth&(), tHeight&(), vWidth&, vHeight&)
 If ierror Then Exit Sub
 If (twindow!(1) < 0 Or twindow!(1) > vWidth& * Screen.TwipsPerPixelX) Or (twindow!(2) < 0 Or twindow!(2) > vHeight& * Screen.TwipsPerPixelY) Then
 Call MiscCenterForm(tForm)

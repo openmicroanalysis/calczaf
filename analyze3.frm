@@ -267,7 +267,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 
 Private Sub CommandNext_Click()
@@ -277,7 +277,7 @@ End Sub
 
 Private Sub StatusBarAnal_PanelClick(ByVal Panel As ComctlLib.Panel)
 If Not DebugMode Then On Error Resume Next
-Select Case Panel.Key
+Select Case Panel.key
 Case "status"
     Exit Sub
 Case "cancel"

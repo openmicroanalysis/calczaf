@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeZAF"
-' (c) Copyright 1995-2019 by John J. Donovan (credit to John Armstrong for original code)
+' (c) Copyright 1995-2020 by John J. Donovan (credit to John Armstrong for original code)
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -3128,8 +3128,10 @@ xpp1! = 0.0000066 * Exp(0.78 * Log(veeO! / u0!)) * (te1! * n2! * n3! - Exp(te1! 
 xpp2! = 0.0000112 * (1.35 - 0.45 * jbar! * jbar!) * Exp(0.1 * Log(veeO! / u0!))
 xpp2! = xpp2! * (te2! * Exp(te2! * Log(u0!)) * Log(u0!) - Exp(te2! * n3!) + 1#) / te2! / te2!
 xpp3! = 0.0000022 / jbar! * Exp((-0.5 + jbar! / 4) * Log(veeO! / u0!))
+If te3! * n3! > MAXLOGEXPD! Then GoTo ZAFStpInvaidExp
 xpp3! = xpp3! * (te3! * Exp(te3! * n3!) * n3! - Exp(te3! * n3!) + 1#) / te3! / te3!
 xp! = 66892# * zipi!(i%) / zaf.atwts!(i%) * ((u0! / veeO!) / m5!) * (xpp1! + xpp2! + xpp3!)
+If xp! = 0 Then GoTo ZAFStpZeroXp
 zaf.stp!(i%) = 1# / xp!
 End If
 Next i%
@@ -3152,6 +3154,20 @@ Exit Sub
 ZAFStpError:
 MsgBox Error$, vbOKOnly + vbCritical, "ZAFStp"
 ierror = True
+Exit Sub
+
+ZAFStpInvaidExp:
+msg$ = vbCrLf & "ZAFStp: Invalid te3! * n3! exponentiation term (" & Format$(te3! * n3!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
+Exit Sub
+
+ZAFStpZeroXp:
+msg$ = vbCrLf & "ZAFStp: Zero xp expression (" & Format$(xp!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
 Exit Sub
 
 End Sub
@@ -3978,6 +3994,7 @@ r0# = 0#
 
 For i1% = 1 To 3
 r00# = Exp((1 - pp!(i1%)) * Log(jbar!)) * dp!(i1%)
+If 1# + pp!(i1%) > MAXLOGEXPD! Then GoTo ZAFPapInvalidExp
 rr0# = Exp((1 + pp!(i1%)) * Log(eC#))
 r0# = r0# + r00# * (Exp((1# + pp!(i1%)) * Log(eO#)) - rr0#) / (1 + pp!(i1%)) / sumatom!     ' ionization range
 Next i1%
@@ -4064,6 +4081,13 @@ Exit Sub
 ZAFPapError:
 MsgBox Error$, vbOKOnly + vbCritical, "ZAFPap"
 ierror = True
+Exit Sub
+
+ZAFPapInvalidExp:
+msg$ = vbCrLf & "ZAFPap: Invalid 1# + pp!(i1%) exponentiation term (" & Format$(1# + pp!(i1%)) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
 Exit Sub
 
 ZAFPapBadZZ:

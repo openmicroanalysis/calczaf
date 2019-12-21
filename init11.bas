@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeInit11"
-' (c) Copyright 1995-2019 by John J. Donovan
+' (c) Copyright 1995-2020 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -433,7 +433,7 @@ Exit Sub
 
 End Sub
 
-Sub InitParseStringToLong(astring As String, ncount As Long, longarray() As Long)
+Sub InitParseStringToLong(astring As String, nCount As Long, longarray() As Long)
 ' Parse a string to a 4 byte long array
 
 ierror = False
@@ -444,7 +444,7 @@ Dim tstring As String
 
 ' Check for empty string
 If astring$ = vbNullString Then GoTo InitParseStringToLongEmpty
-If ncount& < 1 Then GoTo InitParseStringToLongNoCount
+If nCount& < 1 Then GoTo InitParseStringToLongNoCount
 
 ' Parse out sub-strings based on comma placement
 n& = 1
@@ -455,7 +455,7 @@ Else
 longarray&(n&) = Val(tstring$)
 tstring$ = vbNullString
 n& = n& + 1
-If n& > ncount& Then Exit Sub
+If n& > nCount& Then Exit Sub
 End If
 Next i&
 
