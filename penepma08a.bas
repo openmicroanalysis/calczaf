@@ -37,8 +37,11 @@ PENEPMA_DAT_File$ = PENEPMA_Path$ & "\PENEPMA.DAT"
 PENEPMA_SPEC_File$ = PENEPMA_Path$ & "\PE-SPECT-01.DAT"
 PENEPMA_CHAR_File$ = PENEPMA_Path$ & "\PE-CHARACT-01.DAT"
 
+' Penepma 2008
 If Penepma08CheckPenepmaVersion%() = 8 Then
 PENEPMA_EL_TRANS_File$ = PENEPMA_Path$ & "\PE-ENERGY-EL-TRANS.DAT"
+
+' Penepma 2012 or later
 Else
 PENEPMA_EL_TRANS_File$ = PENEPMA_Path$ & "\PE-ENERGY-EL-UP.DAT"
 End If

@@ -68,25 +68,25 @@ Exit Function
 
 Penepma08CheckPenepmaVersionMissingFolderRoot:
 msg$ = "The specified Penepma root path (" & PENEPMA_Root$ & ") was not found. Please check that the proper Penepma folders and files are present or edit the Penepma paths in the " & ProbeWinINIFile$ & " file."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08CheckVersionNumber"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08CheckPenepmaVersion"
 ierror = True
 Exit Function
 
 Penepma08CheckPenepmaVersionMissingFolderPenepma:
 msg$ = "The specified Penepma path (" & PENEPMA_Path$ & ") was not found. Please check that the proper Penepma folders and files are present or edit the Penepma paths in the " & ProbeWinINIFile$ & " file."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08CheckVersionNumber"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08CheckPenepmaVersion"
 ierror = True
 Exit Function
 
 Penepma08CheckPenepmaVersionMissingFolderPendbase:
 msg$ = "The specified Penepma Pendbase path (" & PENDBASE_Path$ & ") was not found. Please check that the proper Penepma folders and files are present or edit the Penepma paths in the " & ProbeWinINIFile$ & " file."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08CheckVersionNumber"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08CheckPenepmaVersion"
 ierror = True
 Exit Function
 
 Penepma08CheckPenepmaVersionMissingFolderPenfluor:
 msg$ = "The specified Penepma Penfluor path (" & PENEPMA_PAR_Path$ & ") was not found. Please check that the proper Penepma folders and files are present or edit the Penepma paths in the " & ProbeWinINIFile$ & " file."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08CheckVersionNumber"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08CheckPenepmaVersion"
 ierror = True
 Exit Function
 

@@ -844,7 +844,7 @@ ierror = True
 Exit Sub
 End If
 
-' Delete exisitng batch file
+' Delete existing batch file
 bfilename$ = PENDBASE_Path$ & "\temp.bat"
 If Dir$(bfilename$) <> vbNullString Then
 Kill bfilename$
@@ -3742,8 +3742,12 @@ Open tfilename$ For Output As #Temp1FileNumber%
 astring$ = vbNullString
 If Penepma08CheckPenepmaVersion%() = 8 Then
 astring$ = astring$ & VbDquote$ & "Penepma 2008" & VbDquote$ & vbTab
-Else
+ElseIf Penepma08CheckPenepmaVersion%() = 12 Then
 astring$ = astring$ & VbDquote$ & "Penepma 2012" & VbDquote$ & vbTab
+ElseIf Penepma08CheckPenepmaVersion%() = 14 Then
+astring$ = astring$ & VbDquote$ & "Penepma 2014" & VbDquote$ & vbTab
+ElseIf Penepma08CheckPenepmaVersion%() = 16 Then
+astring$ = astring$ & VbDquote$ & "Penepma 2016" & VbDquote$ & vbTab
 End If
 
 astring$ = astring$ & VbDquote$ & "A Conc. %" & VbDquote$ & vbTab
@@ -4556,15 +4560,19 @@ If ierror Then Exit Sub
 ' Update form caption
 If Penepma08CheckPenepmaVersion = 8 Then
 tForm.Caption = "Create PENEPMA Material and Input Files (using Penepma08)"
-Else
+ElseIf Penepma08CheckPenepmaVersion = 12 Then
 tForm.Caption = "Create PENEPMA Material and Input Files (using Penepma12)"
+ElseIf Penepma08CheckPenepmaVersion = 14 Then
+tForm.Caption = "Create PENEPMA Material and Input Files (using Penepma14)"
+ElseIf Penepma08CheckPenepmaVersion = 16 Then
+tForm.Caption = "Create PENEPMA Material and Input Files (using Penepma16)"
 End If
 
 ' Check for valid folders
 astring$ = Dir$(PENDBASE_Path$, vbDirectory)
 If astring$ = vbNullString Then
-msg$ = "The Penelope (Pendbase) application files are not found in the specified folder: " & PENDBASE_Path$ & vbCrLf
-msg$ = msg$ & "Please contact Probe Software, Inc to obtain the Penelope application files, copy them to the specified location and try again."
+msg$ = "The Pendbase data files are not found in the specified folder: " & PENDBASE_Path$ & vbCrLf
+msg$ = msg$ & "Please contact Probe Software to obtain the Penelope application files, copy them to the specified location and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08Load"
 ierror = True
 Exit Sub
@@ -4572,8 +4580,8 @@ End If
 
 astring$ = Dir$(PENEPMA_Path$, vbDirectory)
 If astring$ = vbNullString Then
-msg$ = "The Penelope (Penepma08 or Penepma12) application files are not found in the specified folder: " & PENEPMA_Path$ & vbCrLf
-msg$ = msg$ & "Please contact Probe Software, Inc to obtain the Penelope application files, copy them to the specified location and try again."
+msg$ = "The Penepma application files are not found in the specified folder: " & PENEPMA_Path$ & vbCrLf
+msg$ = msg$ & "Please contact Probe Software to obtain the Penelope application files, copy them to the specified location and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08Load"
 ierror = True
 Exit Sub
@@ -4944,8 +4952,11 @@ PENEPMA_DAT_File$ = PENEPMA_Path$ & "\PENEPMA.DAT"
 PENEPMA_SPEC_File$ = PENEPMA_Path$ & "\PE-SPECT-01.DAT"
 PENEPMA_CHAR_File$ = PENEPMA_Path$ & "\PE-CHARACT-01.DAT"
 
+' Penepma 2008
 If Penepma08CheckPenepmaVersion%() = 8 Then
 PENEPMA_EL_TRANS_File$ = PENEPMA_Path$ & "\PE-ENERGY-EL-TRANS.DAT"
+
+' Penepma 2012 or later
 Else
 PENEPMA_EL_TRANS_File$ = PENEPMA_Path$ & "\PE-ENERGY-EL-UP.DAT"
 End If

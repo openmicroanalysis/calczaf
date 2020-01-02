@@ -228,8 +228,8 @@ Call InitSample(PENEPMA_SampleBStd())
 ' Check for valid folders
 astring$ = Dir$(PENDBASE_Path$, vbDirectory)
 If astring$ = vbNullString Then
-msg$ = "The Penelope (Pendbase) application files are not found in the specified folder: " & PENDBASE_Path$ & vbCrLf
-msg$ = msg$ & "Please contact Probe Software, Inc to obtain the Penelope application files, copy them to the specified location and try again."
+msg$ = "The Pendbase data files are not found in the specified folder: " & PENDBASE_Path$ & vbCrLf
+msg$ = msg$ & "Please contact Probe Software to obtain the Penelope application files, copy them to the specified location and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12Load"
 ierror = True
 Exit Sub
@@ -237,8 +237,8 @@ End If
 
 astring$ = Dir$(PENEPMA_Path$, vbDirectory)
 If astring$ = vbNullString Then
-msg$ = "The Penelope (Penepma12) application files are not found in the specified folder: " & PENEPMA_Path$ & vbCrLf
-msg$ = msg$ & "Please contact Probe Software, Inc to obtain the Penelope application files, copy them to the specified location and try again."
+msg$ = "The Penepma application files are not found in the specified folder: " & PENEPMA_Path$ & vbCrLf
+msg$ = msg$ & "Please contact Probe Software to obtain the Penelope application files, copy them to the specified location and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12Load"
 ierror = True
 Exit Sub
@@ -246,8 +246,8 @@ End If
 
 astring$ = Dir$(PENEPMA_Root$ & "\Penfluor", vbDirectory)
 If astring$ = vbNullString Then
-msg$ = "The Penelope (Penepma12 Penfluor) application files are not found in the specified folder: " & PENEPMA_Root$ & "\Penfluor" & vbCrLf
-msg$ = msg$ & "Please contact Probe Software, Inc to obtain the Penelope application files, copy them to the specified location and try again."
+msg$ = "The Penepma Penfluor application files are not found in the specified folder: " & PENEPMA_Root$ & "\Penfluor" & vbCrLf
+msg$ = msg$ & "Please contact Probe Software to obtain the Penelope application files, copy them to the specified location and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12Load"
 ierror = True
 Exit Sub
@@ -255,8 +255,8 @@ End If
 
 astring$ = Dir$(PENEPMA_Root$ & "\Fanal", vbDirectory)
 If astring$ = vbNullString Then
-msg$ = "The Penelope (Penepma12 Fanal) application files are not found in the specified folder: " & PENEPMA_Root$ & "\Fanal" & vbCrLf
-msg$ = msg$ & "Please contact Probe Software, Inc to obtain the Penelope application files, copy them to the specified location and try again."
+msg$ = "The Penepma Fanal application files are not found in the specified folder: " & PENEPMA_Root$ & "\Fanal" & vbCrLf
+msg$ = msg$ & "Please contact Probe Software to obtain the Penelope application files, copy them to the specified location and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12Load"
 ierror = True
 Exit Sub
@@ -6878,9 +6878,11 @@ Dim i As Integer, linecount As Integer
 Dim idnum As Long, atnum As Long, numelm As Long
 Dim ZbyA As Double, wtfrac As Double
 
-' Check for Penepma atomic weights
+' Check Penepma 2008 or 2012 atomic weights
 If Penepma08CheckPenepmaVersion%() <= 12 Then
 tfilename$ = PENDBASE_Path$ & "\pdfiles\" & "pdcompos.p08"
+
+' Penepma 2014 or 2016 atomic weights
 Else
 tfilename$ = PENDBASE_Path$ & "\pdfiles\" & "pdcompos.pen"
 End If

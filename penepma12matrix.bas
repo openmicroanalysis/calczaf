@@ -383,8 +383,12 @@ End If
 
 ' Open file
 Close #Temp1FileNumber%
+
+' Penepma 2008 or 2012
 If Penepma08CheckPenepmaVersion%() <= 12 Then
 tfilename$ = PENDBASE_Path$ & "\pdfiles\pdatconf.pen"
+
+' Penepma 2014 or 2016
 Else
 tfilename$ = PENDBASE_Path$ & "\pdfiles\pdatconf.p14"
 End If
