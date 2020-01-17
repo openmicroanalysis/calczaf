@@ -2,7 +2,7 @@ VERSION 5.00
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
 Begin VB.Form FormPENEPMA12 
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Calculate Penepma 2012 Fluorescence Couple Profiles"
+   Caption         =   "Calculate Penfluor/Fanal 2012 Fluorescence Couple Profiles"
    ClientHeight    =   12495
    ClientLeft      =   45
    ClientTop       =   435

@@ -832,6 +832,7 @@ FormMAIN.menuFileImportSingleRowFormat.Enabled = False
 FormMAIN.menuFileExportSingleRowFormat.Enabled = False
 FormMAIN.menuFileImportStandardsFromCamecaPeakSight.Enabled = False
 'FormMAIN.menuFileImportStandardsFromJEOLTextFile.Enabled = False
+FormMAIN.menuFileImportStandardsFromJEOL8x30TextFile.Enabled = False
 
 FormMAIN.menuFileInputCalcZAFStandardFormatKratios.Enabled = False
 FormMAIN.menuFileAMCSD.Enabled = True                    ' always enabled
@@ -848,6 +849,7 @@ FormMAIN.menuFileImportSingleRowFormat.Enabled = True
 FormMAIN.menuFileExportSingleRowFormat.Enabled = True
 FormMAIN.menuFileImportStandardsFromCamecaPeakSight.Enabled = True
 'FormMAIN.menuFileImportStandardsFromJEOLTextFile.Enabled = True
+FormMAIN.menuFileImportStandardsFromJEOL8x30TextFile.Enabled = True
 
 'FormMAIN.menuFileInputCalcZAFStandardFormatKratios.Enabled = True
 FormMAIN.menuFileAMCSD.Enabled = True
