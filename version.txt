@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/22/20	Update reference manual on TDI fits (Kim).
+
+		Do not load ferric/ferrous options in new sample code for standeard samples. Add ferric/ferrous cation
+		calculations to user specified output (if formula output is also specified).
+
 01/16/20	Edit Penepma menu/window in Standard to indicate Penfluor/Fanal (Llovet). Fix enable on import 8x30 standards menu.
 v. 12.8.2
 
