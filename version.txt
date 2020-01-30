@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/29/20	Fix bug in Specified Concentrations where atomic charges, numcat, numoxd values were not being loaded
+		for newly added elements.
+		
+		Modify confirm for saving sample setups.
+
 01/22/20	Update reference manual on TDI fits (Kim).
 
 		Do not load ferric/ferrous options in new sample code for standeard samples. Add ferric/ferrous cation
