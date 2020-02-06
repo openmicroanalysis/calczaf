@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/05/20	Add color coding for listing anomalous intensities in log window output in PFE. Edit bilayer.in
+		file for Penepma 2016 for new NBANGL parameter (Minter).
+
 01/29/20	Fix bug in Specified Concentrations where atomic charges, numcat, numoxd values were not being loaded
 		for newly added elements.
 		
