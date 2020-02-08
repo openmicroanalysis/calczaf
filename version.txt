@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/07/20	Fix beam normalization problem for shared and MPB backgrounds (Goemann). Start work on new code
+		for updating shared bgds on same spectrometer (Williams and Jercinovic).
+		
+		Modify "machine readable column headings" code to handle empty strings and "%" symbols (Lowers).
+
 02/05/20	Add color coding for listing anomalous intensities in log window output in PFE. Edit bilayer.in
 		file for Penepma 2016 for new NBANGL parameter (Minter).
 

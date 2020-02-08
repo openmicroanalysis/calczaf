@@ -514,6 +514,8 @@ sample(1).CoatingFlag = DefaultSampleCoatingFlag%  ' 0 = uncoated, 1 = coated
 sample(1).CoatingElement% = DefaultSampleCoatingElement%
 sample(1).CoatingDensity! = DefaultSampleCoatingDensity!
 sample(1).CoatingThickness! = DefaultSampleCoatingThickness!  ' in angstroms
+
+' Calculate without function call
 sample(1).CoatingSinThickness! = DefaultSampleCoatingThickness! / Sin(DefaultTakeOff! * PI! / 180#)
 
 ' EDS sample flags
