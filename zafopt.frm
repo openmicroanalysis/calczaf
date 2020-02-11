@@ -329,7 +329,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"Zafopt.frx":0000
+         ToolTipText     =   $"ZAFOPT.frx":0000
          Top             =   3120
          Width           =   4095
       End
@@ -381,7 +381,6 @@ Begin VB.Form FormZAFOPT
       End
       Begin VB.CheckBox CheckDisplayAsOxide 
          Caption         =   "Display Results As Oxide Formulas"
-         Enabled         =   0   'False
          Height          =   255
          Left            =   120
          TabIndex        =   25
@@ -680,7 +679,7 @@ Option Explicit
 
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub

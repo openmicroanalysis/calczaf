@@ -201,6 +201,13 @@ FormZAFOPT.TextCoatingThickness.Text = Format$(ZAFOptionSample(1).CoatingThickne
 If ZAFOptionSample(1).SampleDensity! = 0# Then ZAFOptionSample(1).SampleDensity! = 5#
 FormZAFOPT.TextDensity.Text = Format$(ZAFOptionSample(1).SampleDensity!)
 
+' Disable ferric/ferrous if calculating intensities from concentrations
+If CalcZAFMode% = 0 Then
+FormZAFOPT.CheckFerrousFerricCalculation.Enabled = False
+Else
+FormZAFOPT.CheckFerrousFerricCalculation.Enabled = True
+End If
+
 Exit Sub
 
 ' Errors

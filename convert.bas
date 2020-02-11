@@ -1085,7 +1085,7 @@ ReDim normcats(1 To MAXCHAN%) As Single
 ip% = IPOS2DQ%(nelements%, ATOMIC_NUM_IRON%, AtomicNumbers%(), DisableQuantFlags%())
 If ip% = 0 Then GoTo ConvertFerrousFerricRatioFromCompositionNoIron
 
-' Check that Fe oxide stocihiometry is 1 : 1
+' Check that Fe oxide stoichiometry is 1 : 1
 If NumCats%(ip%) <> 1 Or NumOxds%(ip%) <> 1 Then GoTo ConvertFerrousFerricRatioFromCompositionNotFeO
 
 ' Calculate oxide weight percents (force iron to FeO)
@@ -1104,11 +1104,10 @@ summoles! = 0
 For n% = 1 To nelements%
 
 ' Calculate moles of each cation
-'If n% < nelements% Then
 If AtomicNumbers%(n%) <> ATOMIC_NUM_OXYGEN% Then
 
 If AtomicNumbers%(n%) <> ATOMIC_NUM_IRON% Then
-moles!(n%) = (100# * oxides!(n%)) / (NumCats%(n%) * AtomicWeights!(n%) + NumOxds%(n%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%))      ' convert to formula moles
+moles!(n%) = (100# * oxides!(n%) * NumCats%(n%)) / (NumCats%(n%) * AtomicWeights!(n%) + NumOxds%(n%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%))        ' convert to formula moles
 Else
 moles!(n%) = (100# * oxides!(n%)) / (AtomicWeights!(n%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%))                                    ' convert based on Fe : O moles
 End If
@@ -1129,7 +1128,6 @@ For n% = 1 To nelements%
 normcats!(n%) = moles!(n%) / summoles! * MineralCations!
 
 ' Calculate sum of normalized moles for cations only
-'If n% < nelements% Then
 If AtomicNumbers%(n%) <> ATOMIC_NUM_OXYGEN% Then
 sumnorms! = sumnorms! + normcats!(n%)
 End If
