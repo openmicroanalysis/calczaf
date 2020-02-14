@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/13/20	Add new button/code to allow assigning current shared channel fit parameters and manual flags to all
+v. 12.8.3	other shared channels. That is, other elements on same spectrometer and crystal (Williams and Jercinovic).
+
 02/10/20	Fix ferric/ferrous bug (Locock and Dungan).  Fix minor enable issue in CalcZAF Calculation Options.
 
 02/07/20	Fix beam normalization problem for shared and MPB backgrounds (Goemann). Start work on new code
