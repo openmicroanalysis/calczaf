@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/16/20	Work on increasing MPB arrays from 12 to 18 to deal with more than 6 "shared" bgd elements (Jercinovic and Williams).
+v. 12.8.4
+		Add disables for save sample buttons in Analyze 'shared" bgd and Multipoint dialog.
+
 02/13/20	Add new button/code to allow assigning current shared channel fit parameters and manual flags to all
 v. 12.8.3	other shared channels. That is, other elements on same spectrometer and crystal (Williams and Jercinovic).
 

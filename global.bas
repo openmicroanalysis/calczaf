@@ -108,7 +108,9 @@ Global Const MAXCOEFF9% = 9             ' maximum number of fit coefficients
 Global Const MAXBITMAP% = 12            ' maximum number of stage bit maps
 Global Const MAXLINE& = 99999           ' maximum number of data lines per run
 Global Const MAXDET% = 12               ' maximum number of detector parameters
-Global Const MAXMULTI% = 12             ' maximum number of points on each side for multi point background acquisition
+Global Const MAXMULTI_OLD% = 12         ' (old) maximum number of points on each side for multi point background acquisition
+Global Const MAXMULTI% = 18             ' maximum number of points on each side for multi point background acquisition
+
 Global Const MAXCATION% = 100           ' maximum number of formula cations (1 to MAXCATION% - 1) and oxygens (0 to MAXCATION% - 1)
 Global Const MAXCI% = 5                 ' maximum number of t-test confidence intervals
 Global Const MAXPLOTPOINTS% = 10000     ' maximum number of points in plot graph control
