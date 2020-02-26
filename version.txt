@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/25/20	Change count time normalization for error bars in MPB RUn menu display to utilize non aggregated
+		count time in case aggregate mode is on.  Also use for wavescan error bars (not aggregated anyway)
+		
+		Fix Acquisition Options dialog for change all to MPB.
+
 02/24/20	Fix problem with new MPB fields in element setup databases.
 v. 12.8.5
 
