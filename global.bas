@@ -1523,7 +1523,7 @@ Global BeamCurrentChangeDelay As Single
 Global BeamSizeChangeDelay As Single
 
 Global FilamentStandbyPresent As Integer
-Global FilamentStandbyType As Integer               ' 0 = reduce heat only, 1 = reduce heat and keV, 2 = reduce keV only, 3 = external script
+Global FilamentStandbyType As Integer               ' 0 = reduce heat only, 1 = reduce heat and keV, 2 = reduce keV only, 3 = external script, 4 = load PCC file
 Global FilamentStandbyExternalScript As String
 
 Global OperatingVoltagePresent As Integer

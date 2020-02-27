@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/26/20	Improve PHA acquisition code (B. Wade) and add text for projected detection limits (Chouinard).
+
+		Improve filament standby code.
+
 02/25/20	Change count time normalization for error bars in MPB RUn menu display to utilize non aggregated
 		count time in case aggregate mode is on.  Also use for wavescan error bars (not aggregated anyway)
 		

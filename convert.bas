@@ -999,7 +999,7 @@ tDetect!(i%) = 0#
 bgcts!(i%) = bgaverag.averags!(i%) / NominalBeam!   ' background intensity in cps/nA
 bgcts!(i%) = bgcts!(i%) * bmaverag.averags!(i%) * (hiaverag.averags!(i%) + loaverag.averags!(i%))      ' total counts
 
-If bgcts!(i%) >= 0# And analysis.StdAssignsBeams!(i%) <> 0# Then
+If bgcts!(i%) >= 0# And NominalBeam! >= 0# Then
 temp1! = 3# * Sqr(bgcts!(i%)) * analysis.StdAssignsPercents!(i%)
 temp2! = onaverag.averags!(i%) * bmaverag.averags!(i%) * analysis.StdAssignsCounts!(i%) / NominalBeam!
 If temp2! <> 0# Then tDetect!(i%) = temp1! / temp2!
