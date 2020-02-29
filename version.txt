@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/28/20	Improve filament standby log window text. Add automated imaging in PFE when confirm position only (Goemann). 
+
+		Fix bias delay issue in automated (re-entrant) bias scans (finally after all these years!).
+
 02/26/20	Improve PHA acquisition code (B. Wade) and add text for projected detection limits (Chouinard).
 
 		Improve filament standby code.

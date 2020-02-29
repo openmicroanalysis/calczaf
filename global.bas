@@ -2267,7 +2267,7 @@ Global ImagePaletteArray(0 To BIT8&) As Long
 Global UseImageAutomateModeOnStds As Integer
 Global UseImageAutomateModeOnUnks As Integer
 Global UseImageAutomateModeOnWavs As Integer
-Global UseImageAutomateModes As Integer         ' 1 = before, 2 = after, 3 = both
+Global UseImageAutomateModes As Integer         ' 1 = before, 2 = after, 3 = both, 4 = after confirm only
 
 Global AcquireFirstSampleStarted As Integer     ' flag for before and after image acquisition automation
 
