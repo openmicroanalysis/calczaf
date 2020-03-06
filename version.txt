@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/05/20	Allow user to edit number of points to skip in plot TDI curves. Modify Output Sample parameters
+		to utilize middle pixel (rather than first pixel) in CalcImage (Allaz). 
+
 02/28/20	Improve filament standby log window text. Add automated imaging in PFE when confirm position only (Goemann). 
 
 		Fix bias delay issue in automated (re-entrant) bias scans (finally after all these years!).
