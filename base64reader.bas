@@ -24,6 +24,9 @@ Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, 
 ' scanflag% = 0 beam scan, scanflag% = 1 stage scan
 ' stageflag% = 0 cartesian, stageflag% = 1 anti-cartesian
 
+ierror = False
+On Error GoTo Base64ReaderInputError
+
 Dim lpDefault As String, astring As String
 
 Dim date1 As String, date2 As String
@@ -53,10 +56,7 @@ Dim tmajor As Long, tminor As Long, trevision As Long
 
 Dim gX_Polarity As Integer, gY_Polarity As Integer
 
-ierror = False
-On Error GoTo Base64ReaderInputError
-
-' PrbImg file version number
+' Get PrbImg file version number
 PrbImgVerStr$ = Base64ReaderGetINIString$(lpFileName$, "ProbeImage", "Version", "")
 Call MiscParseStringToStringA(PrbImgVerStr$, ".", astring$)
 If ierror Then Exit Sub

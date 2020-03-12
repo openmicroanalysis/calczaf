@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/11/20	Add load and output to Surfer for TDI correction percents (Allaz).
+
+		Fix Ocean Optics Omnidriver version issue in PFE projects (Moy).
+
 03/06/20	Modify Bruker, JEOL and Demo EDS get net intensity code to allow for sensitivity calculations by returning 
 		"off-peak" bdg count times (Hanson).
 
