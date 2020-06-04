@@ -2,6 +2,40 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/02/20	Modify Update Single Position right click menu to re-select previously selected row (Allaz).
+
+05/27/20	Add error trap for missing TDI files in GetELm code for CalcImage.
+
+05/23/20	Add output of unk/std Z, A and F factors in CalcZAF output in VerbosemOde (Joy).
+v. 12.8.7
+
+05/17/20	Fix minor bug in classify browse .DAT file code where last data column (element by difgference) is 
+		always zero (and not the blanked value) when data has blanked values and user did not output element 
+		by difference maps.
+
+05/11/20	Fix small bug in detection limit calculations for MAN background variance.
+
+05/09/20	Small tweak to Penepma pure element code to avoid spurious overvoltage warning.
+
+05/07/20	Fix demo code to not skip Li and Be during wavescan simulation. Add "smallamount" adjustment when backlash is
+		near motor limit.
+
+05/03/20	Add Li, Be and B Penepma files from Penepma16 for PFE WDS simulation. New penepma12 executables.
+v. 12.8.6
+
+04/29/20	Fix minor display bug in digitize rectangular grid (Collins).
+
+		Work on new load (external file) image code for Imaging window.
+
+04/25/20	Modify demo mode JEOL set beam current if BeamCurrentType=1 (Collins).
+
+04/22/20	Fix minor bug in PrbImg align and crop when more than 2 passes (Fellowes).
+
+04/19/20	Modify CalcImage Align and Crop feature to support PrbImg files (in addition to GRD files) (Fellowes).
+
+04/15/20	Fix Scott and Love reference in PFE Reference Manual (Jercinovic). Add dialog for skipping 
+		fluorescence warnings (Seward).
+
 03/11/20	Add load and output to Surfer for TDI correction percents (Allaz).
 
 		Fix Ocean Optics Omnidriver version issue in PFE projects (Moy).

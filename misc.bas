@@ -1729,6 +1729,45 @@ Exit Function
 
 End Function
 
+Function MiscAutoFormat10(ByVal treal As Single) As String
+' Function to return an automatically formatted real number in 10 characters
+
+ierror = False
+On Error GoTo MiscAutoFormat10Error
+
+Dim astring As String
+
+' Negative numbers
+If treal! < 0# Then
+astring$ = f64$
+If Abs(treal!) >= 1# Then astring$ = f63$
+If Abs(treal!) >= 10# Then astring$ = f62$
+If Abs(treal!) >= 100# Then astring$ = f61$
+If Abs(treal!) >= 1000# Then astring$ = f60$
+
+' Positive numbers
+Else
+astring$ = f65$
+If treal! >= 1 Then astring$ = f64$
+If treal! >= 10# Then astring$ = f63$
+If treal! >= 100# Then astring$ = f62$
+If treal! >= 1000# Then astring$ = f61$
+If treal! >= 10000# Then astring$ = f60$
+End If
+
+' Format number
+MiscAutoFormat10$ = Format$(Format$(treal!, astring$), a100$)
+
+Exit Function
+
+' Errors
+MiscAutoFormat10Error:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscAutoFormat10"
+ierror = True
+Exit Function
+
+End Function
+
 Function IPOS1A(ByVal n As Integer, ByVal sym1 As String, ByVal sym2 As String, sym1array() As String, sym2array() As String) As Integer
 ' This routine returns as its value a pointer to the first occurance of 'sym1' and 'sym2' in the character
 ' arrays 'sym1array' and 'sym2array'. The first 'n' positions in  'sym1array' and sym2array' are searched.

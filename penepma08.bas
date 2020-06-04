@@ -4415,7 +4415,8 @@ For n% = PureElement1% To PureElement2%
 PENEPMASample(1).LastElm% = 1
 PENEPMASample(1).LastChan% = PENEPMASample(1).LastElm%
 PENEPMASample(1).Elsyms$(1) = Symlo$(n%)
-PENEPMASample(1).Xrsyms$(1) = Deflin$(n%)  ' just load defaults here
+PENEPMASample(1).Xrsyms$(1) = Deflin$(n%)                               ' just load defaults here
+PENEPMASample(1).KilovoltsArray!(1) = CSng(BeamEnergy# / EVPERKEV#)     ' just load defaults here
 
 ' Load element data
 Call ElementGetData(PENEPMASample())

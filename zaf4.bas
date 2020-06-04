@@ -137,7 +137,7 @@ Exit Sub
 
 End Sub
 
-Sub ZAFPrintSmp(zaf As TypeZAF, analysis As TypeAnalysis, tdisplayoxide As Integer)
+Sub ZAFPrintSmp(zaf As TypeZAF, analysis As TypeAnalysis, tdisplayoxide As Integer, stdnums() As Integer)
 ' Print sample ZAF results if debug
 ' Note x-ray flags
 '  il() = 0 = stoichiometric element (oxygen)
@@ -184,8 +184,9 @@ Call IOWriteLog(msg$)
 End If
 
 ' Output the element z and the correction factors
-If analysis.UnkZAFCors!(4, 1) <> 0# And analysis.UnkZAFCors!(4, 1) <> 1# And analysis.StdAssignsZAFCors!(4, 1) <> 0# Then     ' just check first element (there has to be at least one element)
-msg$ = vbCrLf & " ELEMENT  ABSCOR  FLUCOR  ZEDCOR  ZAFCOR STP-POW BKS-COR   F(x)u      Ec   Eo/Ec    MACs uZAF/sZAF"
+If analysis.UnkZAFCors!(4, 1) <> 0# And analysis.UnkZAFCors!(4, 1) <> 1# And analysis.StdAssignsZAFCors!(4, 1) <> 0# Then      ' just check first element (there has to be at least one element)
+msg$ = vbCrLf & " ELEMENT  ABSCOR  FLUCOR  ZEDCOR  ZAFCOR STP-POW BKS-COR   F(x)u      Ec   Eo/Ec    MACs  STDNUM uZAF/sZAF"
+If VerboseMode Then msg$ = msg$ & "   uA/sA   uF/sF   uZ/sZ"
 Else
 msg$ = vbCrLf & " ELEMENT  ABSCOR  FLUCOR  ZEDCOR  ZAFCOR STP-POW BKS-COR   F(x)u      Ec   Eo/Ec    MACs"
 End If
@@ -267,8 +268,14 @@ msg$ = msg$ & Format$(Format$(zaf.v!(i%), f84$), a80$)
 msg$ = msg$ & MiscAutoFormat$(zaf.MACs!(i%))
 
 ' SmpZAF/StdZAF
-If analysis.UnkZAFCors!(4, i%) <> 0# And analysis.UnkZAFCors!(4, 1) <> 1# And analysis.StdAssignsZAFCors!(4, i%) <> 0# Then
-msg$ = msg$ & MiscAutoFormatM$(analysis.UnkZAFCors!(4, i%) / analysis.StdAssignsZAFCors!(4, i%))
+If analysis.UnkZAFCors!(4, i%) <> 0# And analysis.UnkZAFCors!(4, i%) <> 1# And analysis.StdAssignsZAFCors!(4, i%) <> 0# Then
+msg$ = msg$ & Format$(stdnums%(i%), a80$)
+msg$ = msg$ & MiscAutoFormat10$(analysis.UnkZAFCors!(4, i%) / analysis.StdAssignsZAFCors!(4, i%))
+If VerboseMode Then
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(1, i%) / analysis.StdAssignsZAFCors!(1, i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(2, i%) / analysis.StdAssignsZAFCors!(2, i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(3, i%) / analysis.StdAssignsZAFCors!(3, i%), f84$), a80$)
+End If
 End If
 
 ' Output line

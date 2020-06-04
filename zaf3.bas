@@ -13,6 +13,8 @@ Option Explicit
 
 Const MAXSHELL% = 30
 
+Dim ask_user_to_skip As Boolean
+
 Dim tmsg As String
 
 Dim jump_ratios(1 To MAXCHAN1%) As Single                                    ' jump ratio, (r-1)/r = fraction of absorbed x-rays causing inner shell ionization (formally ri)
@@ -611,6 +613,7 @@ ZAFFlu2NegativeMAC:
 msg$ = "Average MAC for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
 MiscMsgBoxTim FormMSGBOXTIM, "ZAFFlu2", msg$, 10#
+If Not ask_user_to_skip Then Call ZAFFluConfirmSkip
 Else
 Call IOWriteLog(msg$)
 End If
@@ -621,6 +624,7 @@ ZAFFlu2NegativeFlu:
 msg$ = "Fluorescence factor for " & Format$(Symup$(zaf.Z%(i%)), a20$) & " in this matrix is negative for line " & Str$(zaf.n8) & ", and is probably a bad data point (epoxy, etc.). Delete the analysis line and try again."
 If Not CalcImageQuantFlag Then
 MiscMsgBoxTim FormMSGBOXTIM, "ZAFFlu2", msg$, 10#
+If Not ask_user_to_skip Then Call ZAFFluConfirmSkip
 Else
 Call IOWriteLog(msg$)
 End If
@@ -1082,3 +1086,27 @@ ierror = True
 Exit Function
 
 End Function
+
+Sub ZAFFluConfirmSkip()
+' Confirm with user if warning dialog should be shown
+
+ierror = False
+On Error GoTo ZAFFLUConfirmSkipError
+
+Dim response As Integer
+
+tmsg$ = "Do you want to skip further matrix correction pop up warnings for this run?"
+response% = MsgBox(tmsg$, vbYesNo + vbQuestion, "ZAFFLUConfirmSkip")
+
+If response% = vbYes Then CalcImageQuantFlag = True
+ask_user_to_skip = True
+
+Exit Sub
+
+' Errors
+ZAFFLUConfirmSkipError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFFLUConfirmSkip"
+ierror = True
+Exit Sub
+
+End Sub

@@ -550,7 +550,7 @@ End If
 If DebugMode Then
 'Call ZAFPrintCalculate(zaf, analysis, sample())
 'If ierror Then Exit Sub
-Call ZAFPrintSmp(zaf, analysis, CInt(0))
+Call ZAFPrintSmp(zaf, analysis, CInt(0), sample(1).StdAssigns%())
 If ierror Then Exit Sub
 End If
 
@@ -686,7 +686,7 @@ End If
 If DebugMode Then
 'Call ZAFPrintCalculate(zaf, analysis, sample())
 'If ierror Then Exit Sub
-Call ZAFPrintSmp(zaf, analysis, CInt(0))
+Call ZAFPrintSmp(zaf, analysis, CInt(0), sample(1).StdAssigns%())
 If ierror Then Exit Sub
 End If
 
@@ -2358,7 +2358,7 @@ Call ZAFPrintCalculate(zaf, analysis, sample())
 If ierror Then Exit Sub
 
 ' Print out analytical results for unknown
-Call ZAFPrintSmp(zaf, analysis, sample(1).DisplayAsOxideFlag%)
+Call ZAFPrintSmp(zaf, analysis, sample(1).DisplayAsOxideFlag%, sample(1).StdAssigns%())
 If ierror Then Exit Sub
 End If
 
@@ -2887,7 +2887,7 @@ Next i%
 If VerboseMode Or (UCase$(app.EXEName) = UCase$("Standard") And DebugMode) Or (Not VerboseMode And UCase$(app.EXEName) = UCase$("CalcZAF") And CalcZAFMode% = 0) Then
 Call ZAFPrintCalculate(zaf, analysis, sample())
 If ierror Then Exit Sub
-Call ZAFPrintSmp(zaf, analysis, sample(1).DisplayAsOxideFlag)
+Call ZAFPrintSmp(zaf, analysis, sample(1).DisplayAsOxideFlag, sample(1).StdAssigns%())
 If ierror Then Exit Sub
 End If
 
