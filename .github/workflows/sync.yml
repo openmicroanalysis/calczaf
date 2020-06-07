@@ -26,5 +26,5 @@ jobs:
           git config --global core.ignorecase true
           git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
       - name: Synchronize
-        run: python .github/sync.py --verbose --workdir .
+        run: python .github/sync.py --verbose --no-pull --no-push --workdir .
 
