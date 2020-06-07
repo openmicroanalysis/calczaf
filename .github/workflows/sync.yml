@@ -1,8 +1,12 @@
 name: Sync
 
 on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
   schedule:
-    - cron: '0 6 * * 1'
+    - cron: "0 6 * * 1"
 
 jobs:
   build:
