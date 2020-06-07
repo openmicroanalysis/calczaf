@@ -27,6 +27,4 @@ jobs:
           git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
       - name: Synchronize
         run: python .github/sync.py --verbose --workdir .
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
