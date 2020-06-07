@@ -2,23 +2,22 @@ name: Sync
 
 on:
   schedule:
-    - cron: '0 6 * * MON'
-    
+    - cron: '0 6 * * 1'
+
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        
+  build:
+    runs-on: ubuntu-latest
     steps:
-        - name: Set up Python
-          uses: actions/setup-python@v1
-          with:
-              python-version: 3.x
-        - name: Configure git
-          run: |
-                git config --global push.default simple
-                git config --global user.name "actions"
-                git config --global user.email "actions@openmicroanalysis.org"
-                git config --global core.ignorecase true
-                git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
-        - name: Checkout
-          uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+      - name: Configure git
+        run: |
+          git config --global push.default simple
+          git config --global user.name "actions"
+          git config --global user.email "actions@openmicroanalysis.org"
+          git config --global core.ignorecase true
+          git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
+      - name: Checkout
+        uses: actions/checkout@v2
