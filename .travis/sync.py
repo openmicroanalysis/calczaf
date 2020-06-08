@@ -178,7 +178,7 @@ def compare_remove_files(filepath, work_dir, no_commit):
     work_dir_list = set(os.listdir(work_dir))
     # Ignore these files
     # noinspection SpellCheckingInspection
-    ignore_files = [".travis.yml", ".travis", ".git", ".gitignore", "readme.md", "license", ".idea"]
+    ignore_files = [".travis.yml", ".travis", ".github", ".git", ".gitignore", "readme.md", "license", ".idea"]
     for ignore_file in ignore_files:
         try:
             work_dir_list.remove(ignore_file)
