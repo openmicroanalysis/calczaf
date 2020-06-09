@@ -27,4 +27,8 @@ jobs:
           git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
       - name: Synchronize
         run: python .github/sync.py --verbose --no-pull --no-push --workdir .
+      - name: Push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
