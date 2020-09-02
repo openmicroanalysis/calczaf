@@ -120,12 +120,14 @@ def commit(work_dir, message, tag, do_commit=True, push=True):
     args = ['git', 'push', '--all']
     if not push:
         args.append('--dry-run')
+        return
     subprocess.check_call(args, cwd=work_dir)
 
     if has_tag:
         args = ['git', 'push', '--tags']
         if not push:
             args.append('--dry-run')
+            return
         subprocess.check_call(args, cwd=work_dir)
 
     logger.info('Running git push... DONE')
