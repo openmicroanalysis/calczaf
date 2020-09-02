@@ -2729,7 +2729,7 @@ End If
 ImageAnalogUnitsLongStrings(5) = "Millisecs/Pixel (1-1000)"                     ' SX100/SXFive mapping
 ImageAnalogUnitsLongStrings(6) = "Video Scan Rate (1-7)"                        ' SX100/SXFive video
 
-ImageAnalogUnitsLongStrings(7) = "Micro-seconds per Pixel (100-30000)"          ' JEOL EDS OEM video (new version)
+ImageAnalogUnitsLongStrings(7) = "Micro-seconds per Pixel (1-10000)"            ' JEOL EDS OEM video (new version)
 
 ImageAnalogUnitsLongStrings(8) = "Not Implemented"                              ' Unused
 ImageAnalogUnitsLongStrings(9) = "A/D Averages/Pixel (2 to 1000)"               ' Bruker RTIfcClient
@@ -2749,7 +2749,7 @@ End If
 
 ImageAnalogUnitsToolTipStrings(5) = "Specify the image dwell time in milli-seconds per pixel (range 1 to 1000)"         ' SX100/SXFive mapping
 ImageAnalogUnitsToolTipStrings(6) = "Specify the image scan speed (range = 1 - 7)"                                      ' SX100/SXFive Video
-ImageAnalogUnitsToolTipStrings(7) = "Specify the number of micro-seconds per pixel (range 100 to 30000)"                ' JEOL EDS OEM (new version)
+ImageAnalogUnitsToolTipStrings(7) = "Specify the number of micro-seconds per pixel (range 1 to 10000)"                  ' JEOL EDS OEM (new version)
 ImageAnalogUnitsToolTipStrings(8) = "Not implemented"                                                                   ' Unused
 ImageAnalogUnitsToolTipStrings(9) = "Specify the number of A-D conversions to average per pixel (range 2 to 1000)"      ' Bruker RTIfcClient
 ImageAnalogUnitsToolTipStrings(10) = "Enter the imaging frame time in seconds (1 to 1000)"                              ' Thermo TEPortal

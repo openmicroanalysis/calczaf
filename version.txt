@@ -2,14 +2,44 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/28/20	Fix bug when deleting elements from previous MPB control changes
+
+08/23/20	Changed text label in MPB dialog to handle when using MAN corrections for off-peak elements (because MPB is an off-peak element!).
+
+08/22/20	Add traps for math overflows and underflows in ZAFPap and ZAFStp for PASP and XPP matrix corrections for map quant (Poeml).
+
+08/20/20	Modify SetElm/Model form and code to only display currently specified number of MPB positions (Locock).
+
+08/19/20	Fix small bug in TDI assignments when sample has no data (Ben Wade).
+
+08/13/20	Add code to CalcImage to check on matching spectrometer positions between MDB and PrbImg files (Poeml). Add 
+v. 12.8.9	code to allow for "manual" image/element assignments where duplicate image files are assigned to different elements (Poeml).
+
+		Add memo text field to standard database for each standard (Ben Wade).
+
+07/29/20	Implement new JEOL EDS API calls for improved response and non-locking of JEOL PC-SEM software.
+v. 12.8.8
+
+06/28/20	Modify excess (or deficit) oxygen calculation for standards to zero amount if using correction and 
+		calculating oxygen by stoichiometry. Both for halogen correction and also for Droop correction for excess oxygen.
+		
+		Fix bug in JEOL ConvertToPrbImg code for JEOL 8900/8200/8500 map files (Carpenter).
+		
+		Add code to skip output of images with zero X or Y stage extents (Goemann).
+
+06/24/20	Modify CalcImage to not change off-peak type to high/low only, if already set to slope high/slope low (Telfeyan).
+
+06/23/20	Add code to try and handle oxygen-halogen correction when standard is already corrected for 
+		halogens (Allaz).
+
 06/02/20	Modify Update Single Position right click menu to re-select previously selected row (Allaz).
 
 05/27/20	Add error trap for missing TDI files in GetELm code for CalcImage.
 
-05/23/20	Add output of unk/std Z, A and F factors in CalcZAF output in VerbosemOde (Joy).
+05/23/20	Add output of unk/std Z, A and F factors in CalcZAF output in VerboseMode (Joy).
 v. 12.8.7
 
-05/17/20	Fix minor bug in classify browse .DAT file code where last data column (element by difgference) is 
+05/17/20	Fix minor bug in classify browse .DAT file code where last data column (element by difference) is 
 		always zero (and not the blanked value) when data has blanked values and user did not output element 
 		by difference maps.
 
@@ -41,7 +71,7 @@ v. 12.8.6
 		Fix Ocean Optics Omnidriver version issue in PFE projects (Moy).
 
 03/06/20	Modify Bruker, JEOL and Demo EDS get net intensity code to allow for sensitivity calculations by returning 
-		"off-peak" bdg count times (Hanson).
+		"off-peak" bgd count times (Hanson).
 
 03/05/20	Allow user to edit number of points to skip in plot TDI curves. Modify Output Sample parameters
 		to utilize middle pixel (rather than first pixel) in CalcImage (Allaz). 
@@ -86,7 +116,7 @@ v. 12.8.3	other shared channels. That is, other elements on same spectrometer an
 
 01/22/20	Update reference manual on TDI fits (Kim).
 
-		Do not load ferric/ferrous options in new sample code for standeard samples. Add ferric/ferrous cation
+		Do not load ferric/ferrous options in new sample code for standard samples. Add ferric/ferrous cation
 		calculations to user specified output (if formula output is also specified).
 
 01/16/20	Edit Penepma menu/window in Standard to indicate Penfluor/Fanal (Llovet). Fix enable on import 8x30 standards menu.
@@ -320,7 +350,7 @@ v. 12.5.9	on SX100 instrument with hardware problems. See SX100SetPHAParameters 
 		in DataVolatileGetData and DataVolatileGetData2 routines to add sample number, sample
 		name in error message for missing TDI data.
 
-02/23/19	First test of integrated WDS and EDS mapping quantification in CalcImage- "it werks"!
+02/23/19	First test of integrated WDS and EDS mapping quantification in CalcImage- "it verks"!
 
 		https://vimeo.com/64522190
 

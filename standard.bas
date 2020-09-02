@@ -1569,3 +1569,112 @@ Exit Sub
 
 End Sub
 
+Sub StandardMemoTextGet(stdnum As Integer, memostring As String)
+' Get memo text from the specified standard
+' stdnum = standard number (unique)
+' memostring = memo text
+
+ierror = False
+On Error GoTo StandardMemoTextGetError
+
+Dim SQLQ As String
+
+Dim StDb As Database
+Dim StRs As Recordset
+
+' Open the standard database and get memo text
+Screen.MousePointer = vbHourglass
+Set StDb = OpenDatabase(StandardDataFile$, StandardDatabaseNonExclusiveAccess%, dbReadOnly)
+
+SQLQ$ = "SELECT MemoText.* FROM MemoText WHERE MemoText.MemoTextToNumber = " & Str$(stdnum%)
+Set StRs = StDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
+
+' Load memo text field
+memostring$ = vbNullString
+If Not StRs.EOF Then memostring$ = Trim$(vbNullString & StRs("MemoTextField"))
+StRs.Close
+
+' Close the standard database
+Screen.MousePointer = vbDefault
+StDb.Close
+
+' Make sure objects are deallocated
+If Not StRs Is Nothing Then Set StRs = Nothing
+If Not StDb Is Nothing Then Set StDb = Nothing
+
+Exit Sub
+
+' Errors
+StandardMemoTextGetError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "StandardMemoTextGet"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub StandardMemoTextSend(stdnum As Integer, memostring As String)
+' Write the memmo string to the memo text field
+' stdnum = standard number (unique)
+' memostring = memo text string
+
+ierror = False
+On Error GoTo StandardMemoTextSendError
+
+Dim SQLQ As String
+Dim StDb As Database
+Dim StRs As Recordset
+
+' Check limits
+If stdnum% < 1 Or stdnum% > MAXINTEGER% Then GoTo StandardMemoTextSendBadStandard
+
+' Open the Standard database and write new data to MemoText table
+Screen.MousePointer = vbHourglass
+Set StDb = OpenDatabase(StandardDataFile$, StandardDatabaseExclusiveAccess%, False)
+
+' Open "MemoText" table
+Set StRs = StDb.OpenRecordset("MemoText", dbOpenTable)
+
+Call TransactionBegin("StandardMemoTextSend", StandardDataFile$)
+If ierror Then Exit Sub
+
+' Delete memo text table based on "stdnum"
+SQLQ$ = "DELETE from MemoText WHERE MemoText.MemoTextToNumber = " & Str$(stdnum%)
+StDb.Execute SQLQ$
+
+' Save memo text
+StRs.AddNew
+StRs("MemoTextToNumber") = stdnum%
+StRs("MemoTextField") = Left$(Trim$(memostring$), DbTextMemoStringLength&)
+StRs.Update
+
+Call TransactionCommit("StandardMemoTextSend", StandardDataFile$)
+If ierror Then Exit Sub
+
+StRs.Close
+
+' Close the standard database
+Screen.MousePointer = vbDefault
+StDb.Close
+
+' Make sure objects are deallocated
+If Not StRs Is Nothing Then Set StRs = Nothing
+If Not StDb Is Nothing Then Set StDb = Nothing
+Exit Sub
+
+' Errors
+StandardMemoTextSendError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "StandardMemoTextSend"
+Call TransactionRollback("StandardMemoTextSend", StandardDataFile$)
+ierror = True
+Exit Sub
+
+StandardMemoTextSendBadStandard:
+msg$ = "Memo text standard number is out of range"
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardMemoTextSend"
+ierror = True
+Exit Sub
+
+End Sub
+

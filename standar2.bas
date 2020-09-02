@@ -1065,6 +1065,10 @@ Dim StdFormulaElements As New Field
 
 Dim CLSpectraWavelengths As New Field
 
+Dim MemoText As New TableDef
+Dim MemoTextField As New Field
+Dim MemoTextIndex As New Index      ' text memo index (to sample row numbers)
+
 ' Check for valid file name
 If Trim$(tfilename$) = vbNullString Then
 msg$ = "Standard data file name is blank"
@@ -1331,6 +1335,28 @@ StDb.Execute SQLQ$
 Else
 StRs.Close
 End If
+
+updated = True
+End If
+
+' Add text memo table and records
+If versionnumber! < 12.89 Then
+
+' Specify the standard database table "MemoText" table
+Set MemoText = StDb.CreateTableDef("NewTableDef")
+MemoText.Name = "MemoText"
+
+With MemoText
+.Fields.Append .CreateField("MemoTextToNumber", dbInteger)        ' points back to Standard table/Numbers field
+.Fields.Append .CreateField("MemoTextField", dbMemo, DbTextMemoStringLength&)
+.Fields("MemoTextField").AllowZeroLength = True
+End With
+
+MemoTextIndex.Name = "Text Memo Numbers"
+MemoTextIndex.Fields = "MemoTextToNumber"                           ' index to pointer to standard numbers
+MemoTextIndex.Primary = False
+MemoText.Indexes.Append MemoTextIndex
+StDb.TableDefs.Append MemoText
 
 updated = True
 End If

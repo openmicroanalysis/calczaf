@@ -1409,6 +1409,7 @@ ZAFMinToler! = 0.0001 ' in weight fraction
 
 Const MAXNEGATIVE_KRATIO! = -0.2
 Const MAXNEGATIVE_SUMKRATIO! = -0.01
+Const MAXNEGATIVE_OXYGENCHANNEL! = -0.001
 
 For i% = 1 To MAXCHAN1%
 zaf.krat!(i%) = 0#
@@ -1927,7 +1928,7 @@ For i% = 1 To zaf.in1%
 r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
 Next i%
 
-' Calculate equivalent oxygen from halogens and subtract from calculated oxygen if flagged
+' Calculate equivalent oxygen from halogens and subtract from calculated oxygen if flagged (for standards note deficit oxygen is zeroed out in AnalyzeWeightCalculate and AnalyzeWeightCalculateCurve)
 If UseOxygenFromHalogensCorrectionFlag Then
 r1!(zaf.in0%) = r1!(zaf.in0%) - ConvertHalogensToOxygen(zaf.in1%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), r1!())
 If ierror Then Exit Sub
@@ -3116,6 +3117,7 @@ ElseIf istp% = 5 Then
 m5! = sumatom!
 For i% = 1 To zaf.in1%
 If zaf.il%(i) <= MAXRAY% - 1 Then
+If jbar! = 0# Then GoTo ZAFStpZeroJbar
 veeO! = zaf.eO!(i%) / jbar!
 emm! = em!(i%)
 u0! = zaf.v!(i%)
@@ -3125,10 +3127,11 @@ te3! = 0.5 + jbar! / 4 - emm!
 n2! = Exp(te1! * Log(u0!))
 n3! = Log(u0!)
 xpp1! = 0.0000066 * Exp(0.78 * Log(veeO! / u0!)) * (te1! * n2! * n3! - Exp(te1! * n3!) + 1#) / te1! / te1!
+If Abs(0.0000112 * (1.35 - 0.45 * jbar! * jbar!) * Exp(0.1 * Log(veeO! / u0!))) > MAXSINGLE! Then GoTo ZAFStpTooLarge
 xpp2! = 0.0000112 * (1.35 - 0.45 * jbar! * jbar!) * Exp(0.1 * Log(veeO! / u0!))
 xpp2! = xpp2! * (te2! * Exp(te2! * Log(u0!)) * Log(u0!) - Exp(te2! * n3!) + 1#) / te2! / te2!
 xpp3! = 0.0000022 / jbar! * Exp((-0.5 + jbar! / 4) * Log(veeO! / u0!))
-If te3! * n3! > MAXLOGEXPD! Then GoTo ZAFStpInvaidExp
+If te3! * n3! > MAXLOGEXPD! Then GoTo ZAFStpInvalidExp
 xpp3! = xpp3! * (te3! * Exp(te3! * n3!) * n3! - Exp(te3! * n3!) + 1#) / te3! / te3!
 xp! = 66892# * zipi!(i%) / zaf.atwts!(i%) * ((u0! / veeO!) / m5!) * (xpp1! + xpp2! + xpp3!)
 If xp! = 0 Then GoTo ZAFStpZeroXp
@@ -3156,7 +3159,7 @@ MsgBox Error$, vbOKOnly + vbCritical, "ZAFStp"
 ierror = True
 Exit Sub
 
-ZAFStpInvaidExp:
+ZAFStpInvalidExp:
 msg$ = vbCrLf & "ZAFStp: Invalid te3! * n3! exponentiation term (" & Format$(te3! * n3!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
 Call IOWriteLog(msg$)
@@ -3165,6 +3168,20 @@ Exit Sub
 
 ZAFStpZeroXp:
 msg$ = vbCrLf & "ZAFStp: Zero xp expression (" & Format$(xp!) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
+Exit Sub
+
+ZAFStpTooLarge:
+msg$ = vbCrLf & "ZAFStp: Single precision overflow for xpp2 calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
+Exit Sub
+
+ZAFStpZeroJbar:
+msg$ = vbCrLf & "ZAFStp: Zero jbar calculated for the sample analysis (zafinit=" & Format$(zafinit%) & ") (i=" & Format$(i%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
 Call IOWriteLog(msg$)
 'ierror = True
@@ -3987,7 +4004,9 @@ If zz! < 0# Then GoTo ZAFPapBadZZ
 g1# = 0.11 + 0.41 * Exp(-Exp(0.75 * Log(zz! / 12.75)))
 g2# = 1 - Exp(-Exp(0.35 * Log(u0# - 1)) / 1.19)
 g3# = 1 - Exp(-(u0# - 0.5) * (Exp(0.4 * Log(zz!)) / 4))
+If Abs(CDbl(jbar! * jbar!)) > MAXSINGLE! Then GoTo ZAFPapJbarTooLarge
 dp!(2) = 0.0000112 * (1.35 - 0.45 * jbar! * jbar!)
+If jbar! = 0# Then GoTo ZAFPapJbarZero
 dp!(3) = 0.0000022 / jbar!
 pp!(3) = -(0.5 - 0.25 * jbar!)
 r0# = 0#
@@ -4009,6 +4028,7 @@ xp! = xp! / (zip# * 66892#) * b#
 ff# = xp! / qeO#
 
 phi0# = 1# + 3.3 * (1# - Exp((2.3 * hh! - 2#) * Log(u0#))) * Exp(1.2 * Log(hh!))   ' phi(0)
+If Abs(phi0#) > MAXSINGLE! Then GoTo ZAFPapPhi0TooLarge
 delta# = (rx# - rm#) * (ff# - phi0# * rx# / 3#) * ((rx# - rm#) * ff# - phi0# * rx# * (rm# + rx# / 3#))
 rc# = 1.5 * ((ff# - phi0# * rx# / 3#) / phi0# - Sqr(Abs(delta#)) / phi0# / (rx# - rm#))
 a1# = phi0# / rm# / (rc# - rx# * (rc# / rm# - 1#))
@@ -4059,6 +4079,7 @@ gg# = 0.22 * Log(4# * meanz!) * (1# - 2# * Exp(-meanz! * (u0# - 1#) / 15#))
 hh! = 1# - 10# * (1# - 1# / (1# + u0# / 10#)) / (meanz! * meanz!)
 pee# = gg# * hh! * hh! * hh! * hh! * ff# / (rbar# * rbar#)
 
+If 1# - rbar# * phi0# / ff# <= 0 Then GoTo ZAFStpInvalidSqrt
 B10# = Sqr(2#) * (1# + Sqr(1# - rbar# * phi0# / ff#)) / rbar#
 A10# = (pee# + B10# * (2# * phi0# - B10# * ff#)) / (B10# * ff# * (2# - B10# * rbar#) - phi0#)
 etas# = (A10# - B10#) / B10#
@@ -4106,6 +4127,34 @@ Exit Sub
 
 ZAFPapBadFp3:
 msg$ = vbCrLf & "ZAFPap: Excessive (fp3) exponentiation for (-xi * rx) expression (" & Format$(-xi * rx#) & ") calculated for the sample analysis (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
+Exit Sub
+
+ZAFPapJbarTooLarge:
+msg$ = vbCrLf & "ZAFPap: expression jbar * jbar (" & Format$(CDbl(jbar! * jbar!)) & ") is too large for single precision quantification (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
+Exit Sub
+
+ZAFPapPhi0TooLarge:
+msg$ = vbCrLf & "ZAFPap: expression phi0 (" & Format$(CDbl(phi0#)) & ") is too large for single precision quantification (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
+Exit Sub
+
+ZAFPapJbarZero:
+msg$ = vbCrLf & "ZAFPap: expression jbar is zero (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
+msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
+Call IOWriteLog(msg$)
+'ierror = True
+Exit Sub
+
+ZAFStpInvalidSqrt:
+msg$ = vbCrLf & "ZAFPap: invalid square root (zafinit=" & Format$(zafinit%) & "). This usually indicates negative concentrations so you should check that you are not analyzing epoxy. "
 msg$ = msg$ & "You should also make sure your off-peak background and interference corrections are not overcorrecting, or perhaps you have assigned a blank correction to a major or minor element and you did not enter the correct blank level in the Standard Assignments dialog."
 Call IOWriteLog(msg$)
 'ierror = True

@@ -356,15 +356,6 @@ Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbMagenta, 
 End If
 End If
 
-If analysis.OxygenFromHalogens! > 0# Then
-If Not UseOxygenFromHalogensCorrectionFlag Then
-msg$ = "Oxygen Equivalent from Halogens (F/Cl/Br/I), Not Subtracted in the Matrix Correction"
-Else
-msg$ = "Oxygen Equivalent from Halogens (F/Cl/Br/I), Subtracted in the Matrix Correction"
-End If
-Call IOWriteLog(msg$)
-End If
-
 ' Also warn if unknown and calculated oxygen contains a specified amount of oxygen
 If sample(1).Type% = 2 And sample(1).OxygenChannel% > sample(1).LastElm% Then
 If sample(1).ElmPercents!(sample(1).OxygenChannel%) > 0# Then
@@ -372,6 +363,20 @@ msg$ = "Oxygen Calculated by Cation Stoichiometry Also Includes " & Format$(samp
 Call IOWriteLog(msg$)
 End If
 End If
+End If
+
+' Output halogen correction settings
+If UseOxygenFromHalogensCorrectionFlag Then
+If sample(1).OxideOrElemental% = 1 Then
+msg$ = "Oxygen Equivalent from Halogens (F/Cl/Br/I) was Subtracted in the Matrix Correction"
+Call IOWriteLog(msg$)
+Else
+msg$ = "Oxygen Equivalent from Halogens (F/Cl/Br/I) was not Subtracted in the Matrix Correction (because oxygen was not calculated by cation stoichiometry)"
+Call IOWriteLog(msg$)
+End If
+ElseIf analysis.OxygenFromHalogens! > 0# Then
+msg$ = "Oxygen Equivalent from Halogens (F/Cl/Br/I), was not Subtracted in the Matrix Correction"
+Call IOWriteLog(msg$)
 End If
 
 ' Elements by calculation
@@ -397,10 +402,15 @@ Call IOWriteLog(msg$)
 End If
 
 If sample(1).FerrousFerricCalculationFlag Then
+If sample(1).OxideOrElemental% = 1 Then
 msg$ = "Excess Oxygen From Ferric Iron Calculated and Included in the Matrix Correction"
 Call IOWriteLog(msg$)
 msg$ = "Charge Balance Method of Droop (1987), Total Cations= " & MiscAutoFormat4$(sample(1).FerrousFerricTotalCations!) & ", Total Oxygens= " & MiscAutoFormat4$(sample(1).FerrousFerricTotalOxygens!)
 Call IOWriteLog(msg$)
+Else
+msg$ = "Excess Oxygen From Ferric Iron was not Included in the Matrix Correction (because oxygen was not calculated by cation stoichiometry)"
+Call IOWriteLog(msg$)
+End If
 End If
 
 If MiscIsElementDuplicated(sample()) And Not UseAggregateIntensitiesFlag Then

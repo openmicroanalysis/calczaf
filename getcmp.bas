@@ -1256,3 +1256,60 @@ Exit Sub
 
 End Sub
 
+Sub GetCmpMemoTextLoad()
+' Load the MemoText form for the specified standard
+
+ierror = False
+On Error GoTo GetCmpMemoTextLoadError
+
+Dim memostring As String
+
+' Title the frame control
+FormMemoText.Caption = "Memo Text for Standard : " & Format$(GetCmpTmpSample(1).number%) & ", " & GetCmpTmpSample(1).Name$
+
+' Get memo text for this standard
+Call StandardMemoTextGet(GetCmpTmpSample(1).number%, memostring$)
+If ierror Then Exit Sub
+
+FormMemoText.TextMemoText.Text = memostring$
+
+FormMemoText.Show vbModal
+
+Exit Sub
+
+' Errors
+GetCmpMemoTextLoadError:
+MsgBox Error$, vbOKOnly + vbCritical, "GetCmpMemoTextLoad"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub GetCmpMemoTextSave()
+' Save the MemoText form for the specified standard
+
+ierror = False
+On Error GoTo GetCmpMemoTextSaveError
+
+Dim memostring As String
+
+' Save text
+memostring$ = Trim$(FormMemoText.TextMemoText.Text)
+
+' Get memo text for this standard
+Call StandardMemoTextSend(GetCmpTmpSample(1).number%, memostring$)
+If ierror Then Exit Sub
+
+Unload FormMemoText
+
+Exit Sub
+
+' Errors
+GetCmpMemoTextSaveError:
+MsgBox Error$, vbOKOnly + vbCritical, "GetCmpMemoTextSave"
+ierror = True
+Exit Sub
+
+End Sub
+
+

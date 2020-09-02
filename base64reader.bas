@@ -69,6 +69,7 @@ PrbImgVerNum! = Val(Format$(tmajor) & "." & Format$(tminor) & Format$(trevision)
 
 ' Read in pixel dwell time
 counttime! = Val(Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "PixelTime", "0.0"))
+If ierror Then Exit Sub
 
 ' Read in old style beam current (in amps) in case PrbImg file is older
 beamcurrent1! = Val(Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "BeamCurrent", vbNullString$))
@@ -537,3 +538,106 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub Base64ReaderCheck(tCalcImageNumberofImageFiles As Integer, tCalcImageImageFiles() As String, sample() As TypeSample)
+' Open prbimg and check in some parameters
+
+ierror = False
+On Error GoTo Base64ReaderCheckError
+
+Dim tfilename As String, elm As String, ray As String, crys As String
+Dim j As Integer, nelm As Integer, nray As Integer, nspec As Integer, ip As Integer, response As Integer
+Dim on_pos As Single, hi_offset As Single, lo_offset As Single
+Dim hipos As Single, lopos As Single
+
+' Loop on all PrbImg files
+For j% = 1 To tCalcImageNumberofImageFiles%
+tfilename$ = UserImagesDirectory$ & "\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(tCalcImageImageFiles$(j%)) & ".PrbImg")
+
+' Check that a valid PrbImg file exists (UserImagesDirectory$ is only valid after first creating project!)
+If Dir$(tfilename$) = vbNullString Then Exit Sub
+
+' Read element, x-ray, spectrometer and crystal to match to file
+nelm% = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "Element", vbNullString))
+If ierror Then Exit Sub
+elm$ = Symlo$(nelm%)
+
+nray% = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "Line", vbNullString))
+If ierror Then Exit Sub
+ray$ = Xraylo$(nray%)
+
+nspec% = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "ChannelNumber", vbNullString))
+If ierror Then Exit Sub
+
+crys$ = Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "CrystalName", vbNullString)
+If ierror Then Exit Sub
+
+' Read in spectrometer on-peak and off-peak positions
+on_pos! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "Position", vbNullString))
+If ierror Then Exit Sub
+
+hi_offset! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "PosOffset", vbNullString))
+If ierror Then Exit Sub
+
+lo_offset! = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "NegOffset", vbNullString))
+If ierror Then Exit Sub
+
+' Check for match with MDB file on and off-peaks
+ip% = IPOS13%(elm$, ray$, nspec%, crys$, sample())
+If ip% = 0 Then GoTo Base64ReaderCheckElementNotFound
+
+' Check positions
+If Not MiscDifferenceIsSmall(sample(1).OnPeaks!(ip%), on_pos!, 0.01) Then
+msg$ = "On-peak position (" & Format$(on_pos!) & ") from PrbImg file (" & tfilename$ & "), for element " & elm$ & " " & ray$ & " on spectrometer " & Format$(nspec%) & " " & crys$ & " does not match on-peak position (" & Format$(sample(1).OnPeaks!(ip)) & ") from MDB sample " & sample(1).Name$ & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "Do you want to continue loading the element to map assignments?"
+response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton1, "Base64ReaderCheck")
+If response% = vbNo Then
+ierror = True
+Exit Sub
+End If
+End If
+
+If Not MiscDifferenceIsSmall(sample(1).HiPeaks!(ip%), on_pos! + hi_offset!, 0.01) Then
+If sample(1).BackgroundTypes%(ip%) <> 1 Then  ' 0=off-peak, 1=MAN, 2=multipoint
+msg$ = "Hi off-peak position (" & Format$(on_pos! + hi_offset!) & ") from PrbImg file (" & tfilename$ & "), for element " & elm$ & " " & ray$ & " on spectrometer " & Format$(nspec%) & " " & crys$ & " does not match hi off-peak position (" & Format$(sample(1).HiPeaks!(ip)) & ") from MDB sample " & sample(1).Name$ & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "Do you want to continue loading the element to map assignments?"
+response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton1, "Base64ReaderCheck")
+If response% = vbNo Then
+ierror = True
+Exit Sub
+End If
+End If
+End If
+
+If Not MiscDifferenceIsSmall(sample(1).LoPeaks!(ip%), on_pos! + lo_offset!, 0.01) Then
+If sample(1).BackgroundTypes%(ip%) <> 1 Then  ' 0=off-peak, 1=MAN, 2=multipoint
+msg$ = "Lo off-peak position (" & Format$(on_pos! + lo_offset!) & ") from PrbImg file (" & tfilename$ & "), for element " & elm$ & " " & ray$ & " on spectrometer " & Format$(nspec%) & " " & crys$ & " does not match lo off-peak position (" & Format$(sample(1).LoPeaks!(ip)) & ") from MDB sample " & sample(1).Name$ & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "Do you want to continue loading the element to map assignments?"
+response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton1, "Base64ReaderCheck")
+If response% = vbNo Then
+ierror = True
+Exit Sub
+End If
+End If
+End If
+
+Next j%
+
+Exit Sub
+
+' Errors
+Base64ReaderCheckError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "Base64ReaderCheck"
+ierror = True
+Exit Sub
+
+Base64ReaderCheckElementNotFound:
+Screen.MousePointer = vbDefault
+msg$ = "PrbImg file (" & tfilename$ & "), element " & elm$ & ray$ & " on spectrometer " & Format$(nspec%) & crys$ & " was not found in MDB sample " & sample(1).Name$
+MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderCheck"
+ierror = True
+Exit Sub
+
+End Sub
+

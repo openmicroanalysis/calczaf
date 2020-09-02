@@ -336,11 +336,17 @@ End If
 End If
 End If
 
-' If element is oxygen, make sure that correct excess oxygen is specified based on the sample cations (standards only)
+' If element is oxygen, make sure that correct excess or deficit oxygen is specified based on the sample cations (standards only)
 Else
 
 If sample(1).Type% = 1 Then
 analysis.WtPercents!(chan%) = ConvertTotalToExcessOxygen!(Int(1), sample(), stdsample())
+If UseOxygenFromHalogensCorrectionFlag And sample(1).OxideOrElemental% = 1 Then
+If analysis.WtPercents!(chan%) < 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen deficit from standard database
+End If
+If sample(1).FerrousFerricCalculationFlag And sample(1).OxideOrElemental% = 1 Then
+If analysis.WtPercents!(chan%) > 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen excess from standard database
+End If
 
 ' For unknowns, use specified oxygen weight percent
 Else
@@ -1043,11 +1049,18 @@ Else
 
 If sample(1).Type% = 1 Then
 analysis.WtPercents!(chan%) = ConvertTotalToExcessOxygen!(Int(1), sample(), stdsample())
+If UseOxygenFromHalogensCorrectionFlag And sample(1).OxideOrElemental% = 1 Then
+If analysis.WtPercents!(chan%) < 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen equivalence of halogen from standard database
+End If
+If sample(1).FerrousFerricCalculationFlag And sample(1).OxideOrElemental% = 1 Then
+If analysis.WtPercents!(chan%) > 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen excess from standard database
+End If
 
 ' For unknowns, use specified oxygen weight percent
 Else
 analysis.WtPercents!(chan%) = stdsample(1).ElmPercents!(ip%)
 End If
+
 excess! = analysis.WtPercents!(chan%)   ' store excess oxygen for iteration
 End If
 End If

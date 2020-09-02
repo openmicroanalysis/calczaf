@@ -290,7 +290,7 @@ temp# = temp1# / temp2#
 c# = Exp(temp#)
 
 ' Calculate a
-If c# < 0# Then Exit Sub
+If c# <= 0# Then GoTo LeastExponentialBadExponentiation
 temp1# = (Log(tydata!(1)) + Log(tydata!(2)) + n# * (Log(txdata!(2)) + Log(txdata!(1))) - 2 * Log(c#))
 temp2# = txdata!(1) + txdata!(2)
 If temp2# = 0# Then Exit Sub
@@ -310,6 +310,16 @@ Exit Sub
 
 LeastExponentialBadExponent:
 msg$ = "Exponent must be greater than -8 and less than 8"
+MsgBox msg$, vbOKOnly + vbExclamation, "LeastExponential"
+ierror = True
+Exit Sub
+
+LeastExponentialBadExponentiation:
+msg$ = "Invalid exponentiation for value of c (" & Format$(c#) & ")" & vbCrLf & vbCrLf
+msg$ = msg$ & "Txdata!(1) = " & Format$(txdata(1)) & vbCrLf
+msg$ = msg$ & "Txdata!(2) = " & Format$(txdata(2)) & vbCrLf
+msg$ = msg$ & "Tydata!(1) = " & Format$(tydata(1)) & vbCrLf
+msg$ = msg$ & "Tydata!(2) = " & Format$(tydata(2))
 MsgBox msg$, vbOKOnly + vbExclamation, "LeastExponential"
 ierror = True
 Exit Sub

@@ -25,6 +25,15 @@ Begin VB.Form FormGETCMP
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   9705
    ScaleWidth      =   9840
+   Begin VB.CommandButton CommandMemoText 
+      Caption         =   "Memo Text"
+      Height          =   375
+      Left            =   8040
+      TabIndex        =   49
+      ToolTipText     =   "Edit memo text for additional standard information"
+      Top             =   2280
+      Width           =   1455
+   End
    Begin VB.CommandButton CommandEnterAtomFormula 
       Appearance      =   0  'Flat
       BackColor       =   &H0080FFFF&
@@ -171,18 +180,18 @@ Begin VB.Form FormGETCMP
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   495
+      Height          =   375
       Left            =   8040
       TabIndex        =   33
       TabStop         =   0   'False
-      Top             =   2040
+      Top             =   1800
       Width           =   1455
    End
    Begin VB.TextBox TextDensity 
       Height          =   285
       Left            =   8040
       TabIndex        =   3
-      Top             =   1680
+      Top             =   1440
       Width           =   1455
    End
    Begin VB.CommandButton CommandUpdateExcess 
@@ -320,7 +329,7 @@ Begin VB.Form FormGETCMP
       Left            =   7920
       TabIndex        =   8
       TabStop         =   0   'False
-      Top             =   840
+      Top             =   720
       Width           =   1695
    End
    Begin VB.CommandButton CommandOK 
@@ -333,7 +342,7 @@ Begin VB.Form FormGETCMP
       Style           =   1  'Graphical
       TabIndex        =   7
       TabStop         =   0   'False
-      Top             =   240
+      Top             =   120
       Width           =   1695
    End
    Begin VB.Frame Frame1 
@@ -406,7 +415,7 @@ Begin VB.Form FormGETCMP
       Height          =   255
       Left            =   8040
       TabIndex        =   32
-      Top             =   1440
+      Top             =   1200
       Width           =   1455
    End
    Begin VB.Label LabelHalogenCorrectedOxygen 
@@ -666,6 +675,12 @@ End Sub
 Private Sub CommandImportEDSSpectra_Click()
 If Not DebugMode Then On Error Resume Next
 Call GetCmpImportSpectrum(Int(0), FormGETCMP)
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandMemoText_Click()
+If Not DebugMode Then On Error Resume Next
+Call GetCmpMemoTextLoad
 If ierror Then Exit Sub
 End Sub
 

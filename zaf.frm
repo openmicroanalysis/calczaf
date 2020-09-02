@@ -3,7 +3,7 @@ Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
 Begin VB.Form FormZAF 
    Appearance      =   0  'Flat
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Calculate ZAF Corrections"
+   Caption         =   "Calculate ZAF and Phi-Rho-Z Corrections"
    ClientHeight    =   6015
    ClientLeft      =   1740
    ClientTop       =   2955
