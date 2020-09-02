@@ -18,9 +18,6 @@ jobs:
           python-version: 3.x
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-         persist-credentials: false
-         fetch-depth: 0
       - name: Configure git
         run: |
           git config --global push.default simple
@@ -30,8 +27,6 @@ jobs:
           git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
       - name: Synchronize
         run: python .github/sync.py --verbose --no-pull --no-push --workdir .
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Push
         uses: ad-m/github-push-action@master
         with:
