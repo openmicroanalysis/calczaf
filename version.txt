@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/08/20	Minor tweaks to CalcImage Align and Crop dialog (Poeml).
+
 08/28/20	Fix bug when deleting elements from previous MPB control changes
 
 08/23/20	Changed text label in MPB dialog to handle when using MAN corrections for off-peak elements (because MPB is an off-peak element!).
