@@ -516,7 +516,7 @@ Call IOWriteLog(msg$)
 msg$ = "MULFIT"
 For i% = ii% To jj%
 If sample(1).BackgroundTypes%(i%) = 2 Or sample(1).OffPeakCorrectionTypes%(i%) = MAXOFFBGDTYPES% Then
-msg$ = msg$ & Format$(Format$(sample(1).MultiPointBackgroundFitType%(i%), i80$), a80$)  ' 0 = linear, 1 = 2nd order polynomial, 2 = exponential
+msg$ = msg$ & Format$(MultiPointBackgroundFitTypeStrings2$(sample(1).MultiPointBackgroundFitType%(i%)), a80$)  ' 0 = linear, 1 = 2nd order polynomial, 2 = exponential
 Else
 msg$ = msg$ & Format$(DASHED4$, a80$)
 End If

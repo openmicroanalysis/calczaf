@@ -3000,3 +3000,7 @@ Global UserSpecifiedOutputFerrousFerricFlag As Boolean
 Global UserSpecifiedOutputMachineReadableFlag As Boolean
 
 Global UseEDSStoredNetIntensitiesFlag As Boolean
+
+Global MultiPointBackgroundFitTypeStrings(0 To 2) As String
+Global MultiPointBackgroundFitTypeStrings2(0 To 2) As String
+

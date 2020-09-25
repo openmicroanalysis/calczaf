@@ -3383,6 +3383,15 @@ UseZFractionZbarCalculationsFlag = False
 UseContinuumAbsCalculationsFlag = False                            ' if true use Hienrich/Myklebust continuum absorption correction
 ZFractionZbarCalculationsExponent! = 0.7
 
+' MPB fit types
+MultiPointBackgroundFitTypeStrings$(0) = "Linear"
+MultiPointBackgroundFitTypeStrings$(1) = "Polynomial"
+MultiPointBackgroundFitTypeStrings$(2) = "Exponential"
+
+MultiPointBackgroundFitTypeStrings2$(0) = "Linear"
+MultiPointBackgroundFitTypeStrings2$(1) = "Polynom"
+MultiPointBackgroundFitTypeStrings2$(2) = "Exponen"
+
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
 If ierror Then Exit Sub
