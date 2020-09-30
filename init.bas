@@ -3250,7 +3250,7 @@ DefaultMultiPointNumberofPointsIterateHi% = 2
 DefaultMultiPointNumberofPointsIterateLo% = 2
 
 'UseFluorescenceByBetaLinesFlag = False        ' do not initialize here (only in INI)
-GeologicalSortOrderFlag% = 0
+'GeologicalSortOrderFlag% = 0                  ' do not initialize here (only in INI)
 
 UseUnknownCountTimeForInterferenceStandardFlag% = 0
 VolElTimeWeightingFactor% = 2

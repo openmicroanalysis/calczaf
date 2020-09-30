@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/28/20	Fix initialization issue with GeologicalSortOrderFlag (von der Handt).
+
 09/24/20	Add output for MAN and MPB parameters to Analyze Report table (von der Handt).
 
 		Modify MPB fit type output to use global string.
