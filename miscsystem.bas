@@ -274,7 +274,7 @@ Private Type WIN32_FIND_DATA
 End Type
 
 Private Type FileInfo
-    Filename As String
+    filename As String
     Modified As Currency
 End Type
 
@@ -1142,7 +1142,7 @@ hFind& = FindFirstFile(tpath$, WFD)
     Do
         If (WFD.dwFileAttributes And vbDirectory) = 0 Then
             ReDim Preserve tFiles(n&)
-            tFiles(n&).Filename = Left$(WFD.cFileName, lstrlen(WFD.cFileName))
+            tFiles(n&).filename = Left$(WFD.cFileName, lstrlen(WFD.cFileName))
             CopyMemory tFiles(n&).Modified, WFD.ftLastWriteTime, 8
             n& = n& + 1
         End If
@@ -1167,7 +1167,7 @@ ReDim tfilenames(1 To UBound(tFiles)) As String
 ReDim tfiledates(1 To UBound(tFiles)) As Variant
 
 For n& = 1 To UBound(tFiles)
-tfilenames$(n&) = tFiles(n&).Filename$
+tfilenames$(n&) = tFiles(n&).filename$
 tfiledates(n&) = FileDateTime(MiscGetPathOnly2$(tpath$) & "\" & tfilenames$(n&))
 Next n&
 
@@ -1209,3 +1209,29 @@ ierror = True
 Exit Function
 
 End Function
+
+Public Sub MiscMakePath(ByVal sPath As String)
+' Creates multiple (nested) directories as necessary
+
+ierror = False
+On Error GoTo MiscMakePathError
+
+  Dim Splits() As String, CurFolder As String
+  Dim i As Integer
+  
+  Splits = Split(sPath$, "\")
+  For i% = LBound(Splits) To UBound(Splits)
+    CurFolder$ = CurFolder$ & Splits(i%) & "\"
+    If Dir$(CurFolder$, vbDirectory) = vbNullString Then MkDir CurFolder$
+  Next i%
+
+Exit Sub
+
+' Errors
+MiscMakePathError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscMakePath"
+ierror = True
+Exit Sub
+
+End Sub
+

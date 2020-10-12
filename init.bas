@@ -5420,22 +5420,22 @@ UserEBSDDirectory$ = Left(UserDataDirectory$, 1) & ":\UserEBSD"
 valid& = WritePrivateProfileString("Software", "UserEBSDDirectory", VbDquote$ & UserEBSDDirectory$ & VbDquote$, ProbeWinINIFile$)
 
 ' Update other user data directory sub folders
-StandardPOSFileDirectory$ = UserDataDirectory$ & "\StandardPOSData"
+StandardPOSFileDirectory$ = UserDataDirectory$ & "\PFE\StandardPOSData"
 valid& = WritePrivateProfileString("Standards", "StandardPOSFileDirectory", VbDquote$ & StandardPOSFileDirectory$ & VbDquote$, ProbeWinINIFile$)    ' note different keyword!!!
 
-CalcZAFDATFileDirectory$ = UserDataDirectory$ & "\CalcZAFDATData"
+CalcZAFDATFileDirectory$ = UserDataDirectory$ & "\PFE\CalcZAFDATData"
 valid& = WritePrivateProfileString("Software", "CalcZAFDATFileDirectory", VbDquote$ & CalcZAFDATFileDirectory$ & VbDquote$, ProbeWinINIFile$)
 
-ColumnPCCFileDirectory$ = UserDataDirectory$ & "\ColumnPCCData"
+ColumnPCCFileDirectory$ = UserDataDirectory$ & "\PFE\ColumnPCCData"
 valid& = WritePrivateProfileString("Software", "ColumnPCCFileDirectory", VbDquote$ & ColumnPCCFileDirectory$ & VbDquote$, ProbeWinINIFile$)
 
-SurferDataDirectory$ = UserDataDirectory$ & "\SurferData"
+SurferDataDirectory$ = UserDataDirectory$ & "\PFE\SurferData"
 valid& = WritePrivateProfileString("Software", "SurferDataDirectory", VbDquote$ & SurferDataDirectory$ & VbDquote$, ProbeWinINIFile$)
 
-GrapherDataDirectory$ = UserDataDirectory$ & "\GrapherData"
+GrapherDataDirectory$ = UserDataDirectory$ & "\PFE\GrapherData"
 valid& = WritePrivateProfileString("Software", "GrapherDataDirectory", VbDquote$ & GrapherDataDirectory$ & VbDquote$, ProbeWinINIFile$)
 
-DemoImagesDirectory$ = UserDataDirectory$ & "\DemoImages"
+DemoImagesDirectory$ = UserDataDirectory$ & "\PFE\DemoImages"
 valid& = WritePrivateProfileString("Software", "DemoImagesDirectory", VbDquote$ & DemoImagesDirectory$ & VbDquote$, ProbeWinINIFile$)
 OriginalDemoImagesDirectory$ = DemoImagesDirectory$
 
@@ -5472,7 +5472,8 @@ msg$ = "Standard POS File Directory " & StandardPOSFileDirectory$ & " as specifi
 msg$ = msg$ & "Would you like Probe for EPMA to create the folder for you?"
 response% = MsgBox(msg$, vbYesNo + vbQuestion + vbDefaultButton1, "InitUserDataDirectory")
 If response% = vbYes Then
-MkDir StandardPOSFileDirectory$
+Call MiscMakePath(StandardPOSFileDirectory$)        ' to deal with possible nested directories (only necessary for first sub folder created)
+'MkDir StandardPOSFileDirectory$
 Else
 msg$ = "Please create the folder " & StandardPOSFileDirectory$ & " manually or edit the " & ProbeWinINIFile$ & " file to indicate the correct Standard POS Data Directory and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitUserDataDirectory"
