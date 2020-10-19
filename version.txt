@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/16/20	Fix minor display bug in Assign MAN Fits regarding Z fraction calculations flag (Neill).
+
 10/10/20	Add code to handle creating multiple (nested) directories for PFE sub folders. Modify InitUserDataDirectory code
 		to place all PFE specific user files in UserData\PFE subfolders.
 
