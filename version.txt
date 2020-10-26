@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/23/20	Add additional error trapping for filenames and image dimensions for align and crop code (Poeml).
+
 10/19/20	Modify CalcImage Align and Crop to dimension data array at the beginning (Poeml).
 
 10/16/20	Fix minor display bug in Assign MAN Fits regarding Z fraction calculations flag (Neill).
