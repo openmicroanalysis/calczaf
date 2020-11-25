@@ -29,22 +29,22 @@ Begin VB.Form FormPENEPMA08Batch
       Top             =   11880
       Width           =   7215
       Begin VB.CommandButton CommandRename 
-         Caption         =   "Copy and Rename PARs"
+         Caption         =   "Copy and Rename DAT files"
          Height          =   315
-         Left            =   4920
+         Left            =   4800
          TabIndex        =   46
-         ToolTipText     =   "Copy Penepma pure element files and rename to synthetic spectrum folder"
+         ToolTipText     =   $"PENEPMA08Batch.frx":0000
          Top             =   840
-         Width           =   2055
+         Width           =   2175
       End
       Begin VB.CommandButton CommandCreatePure 
          Caption         =   "Create Bulk Pure Element Input Files For Penepma"
          Height          =   495
-         Left            =   4920
+         Left            =   4800
          TabIndex        =   39
          TabStop         =   0   'False
          Top             =   360
-         Width           =   2055
+         Width           =   2175
       End
       Begin VB.CheckBox CheckDoNotOverwriteExisting 
          Caption         =   "Do Not Overwrite Existing Input Files"
@@ -144,7 +144,7 @@ Begin VB.Form FormPENEPMA08Batch
          Style           =   1  'Graphical
          TabIndex        =   29
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA08Batch.frx":0000
+         ToolTipText     =   $"PENEPMA08Batch.frx":008B
          Top             =   1800
          Width           =   1335
       End
@@ -562,7 +562,7 @@ Begin VB.Form FormPENEPMA08Batch
    End
    Begin VB.Label LabelPENEPMA08Batch 
       Alignment       =   2  'Center
-      Caption         =   $"PENEPMA08Batch.frx":0096
+      Caption         =   $"PENEPMA08Batch.frx":0121
       Height          =   3015
       Left            =   6000
       TabIndex        =   3

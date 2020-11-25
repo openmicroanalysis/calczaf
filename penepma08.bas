@@ -4853,12 +4853,13 @@ Dim nCount As Long, n As Long
 Dim sAllFiles() As String
 
 ' Load to module and dialog
-tstring$ = "Browse PENEPMA Batch Project Folder For Pure Elements Copy/Rename"
+tstring$ = "Browse PENEPMA Batch Project Folder For Pure Elements Copy/Rename (create target folder first, e.g., C:\Penepma12\Penepma\pure\30keV)"
 If PENEPMA_BATCH_FOLDER$ = vbNullString Then PENEPMA_BATCH_FOLDER$ = PENEPMA_Path$
 tpath$ = IOBrowseForFolderByPath(True, PENEPMA_BATCH_FOLDER$, tstring$, FormPENEPMA08Batch)
 If ierror Then Exit Sub
+If Trim$(tpath$) = vbNullString Then Exit Sub
 
-If Trim$(tpath$) <> vbNullString Then PENEPMA_BATCH_FOLDER$ = tpath$
+PENEPMA_BATCH_FOLDER$ = tpath$
 FormPENEPMA08Batch.TextBatchFolder.Text = PENEPMA_BATCH_FOLDER$
 
 ' Now go through each folder and copy files as PENEPMA_Path$ & "\pure\" & Format$(tkeV%) & "keV\pe-spect-01" & "_" & Trim$(tSym$) & ".dat"

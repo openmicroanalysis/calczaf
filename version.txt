@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/24/20	Modify Model Backgrounds code to utilize current zoom for centroid fit. Modify button name and tooltip help
+v. 12.9.0		for DAT files in Standard Penepma GUI batch form.
+
 10/23/20	Add additional error trapping for filenames and image dimensions for align and crop code (Poeml).
 
 10/19/20	Modify CalcImage Align and Crop to dimension data array at the beginning (Poeml).
