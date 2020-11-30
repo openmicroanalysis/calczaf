@@ -5488,6 +5488,7 @@ End If
 End If
 
 ' Calculate CalcZAF matrix corrections for this material (use Material A only) (loads MaterialMeasuredTakeoff# and MaterialMeasuredEnergy# for Penepma12CalculateMatrix)
+Sleep 200   ' to make sure above file copy completes
 Call Penepma12GetParFileComposition(Int(1), PENEPMA_Root$ & "\Fanal\db\" & ParameterFileA$, PENEPMA_SampleA())
 If ierror Then Exit Sub
 
