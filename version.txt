@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/02/20	Improve accuracy of mag recalculation in align and crop for beam scans.
+
 12/01/20	Handle "overflow" error in align and crop procedure (Fellowes).
 
 11/27/20	Add Sleep 200 after PAR file copy in k-ratio extraction code to prevent "end of file" errors on some computers".
