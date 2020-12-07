@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/05/20	Modify AcquireDoCondition code to handle when all elements in a condition are disabled for acquisition (Poirier).
+v. 12.9.1
+		Change stageflag variable to orientationflag and modify comments to avoid confusion in CalcImage source code..
+		
+		Modify ConvertToPrbImg code to specifiy "AntiCartesian" or "Cartesian" for JEOL stage vs. beam scan acquisitions
+		in coverted PrbImg files.
+
 12/02/20	Improve accuracy of mag recalculation in align and crop for beam scans.
 
 12/01/20	Handle "overflow" error in align and crop procedure (Fellowes).

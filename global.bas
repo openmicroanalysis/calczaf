@@ -2910,8 +2910,8 @@ Global ModelPeakingFitType As Integer
 
 Global GraphWavescanType As Integer         ' 1 = spectrometer, 2 = angstroms, 3 = keV
 
-Global CalcImageScanTypeFlag As Integer     ' 0 = beam scan, 1 = stage scan
-Global CalcImageStageTypeFlag As Integer    ' 0 = cartesian (Cameca), 1 = anti-cartesian (JEOL)
+Global CalcImageScanTypeFlag As Integer             ' 0 = beam scan, 1 = stage scan
+Global CalcImageOrientationTypeFlag As Integer      ' 0 = Cameca stage/beam scan or JEOL beam scan (upper left/lower right), 1 = JEOL stage scan (upper right/lower left)
 
 Global ThermoNSSVersionNumber As Single
 

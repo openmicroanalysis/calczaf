@@ -19,10 +19,10 @@ Private Type TypeByt4
 strval(1 To 4) As Byte
 End Type
 
-Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scanrota As Double, scanflag As Integer, stageflag As Integer, tIntegrateEDSSpectrumImagingFilename As String)
+Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scanrota As Double, scanflag As Integer, orientationflag As Integer, tIntegrateEDSSpectrumImagingFilename As String)
 ' Open prbimg and read in some parameters
 ' scanflag% = 0 beam scan, scanflag% = 1 stage scan
-' stageflag% = 0 cartesian, stageflag% = 1 anti-cartesian
+' orientationflag% = 0 starts/ends upper left/lower right (Cameca stage or beam scan or JEOL beam scan), orientationflag% = 1 starts/ends upper right/lower left (JEOL stage scan)
 
 ierror = False
 On Error GoTo Base64ReaderInputError
@@ -153,17 +153,17 @@ End If
 astring$ = Base64ReaderGetINIString$(lpFileName$, "ProbeImage", "ScanOrientation", vbNullString$)
 If ierror Then Exit Sub
 If astring$ = "AntiCartesian" Then
-stageflag% = 1                          ' JEOL
+orientationflag% = 1                          ' JEOL stage scan (upper right/lower left pixel acquisition order)
 Else
-stageflag% = 0                          ' Cameca
+orientationflag% = 0                          ' Cameca stage/beam scan or JEOL beam scan (upper left/lower right pixel acquisition order)
 End If
 
-' Try to determine scan and stage types for older PrbImg files
+' Try to determine scan type and scan orientation for older PrbImg files
 Else
-scanflag% = 0   ' assume beam scan (what else can one do?)
-stageflag% = 1   ' assume JEOL anti-cartesian stage
-If RegXmin& < RegXmax& Then             ' Cameca minimum x pixels are 32 so this will work (min/max can be 0 for y axis if 1 pixel high)
-stageflag% = 0
+scanflag% = 1                           ' assume stage scan (most likely?)
+orientationflag% = 0                    ' assume Cameca stage or beam scan or JEOL beam scan (upper left/lower right pixel acquisition)
+If RegXmin& > RegXmax& Then             ' Check if JEOL scan. Minimum x pixels are 32 so this will work (min/max can be 0 for y axis if 1 pixel high)
+orientationflag% = 1
 End If
 End If
 
@@ -247,7 +247,7 @@ End If
 zmin# = ImageZmin#
 zmax# = ImageZmax#
 
-' Handle conversion from Probe Image PrbImg file stage units for Cameca (always mm in PrbImg)
+' Handle conversion from Probe Image PrbImg file stage units for Cameca (always mm in PrbImg) (global parameter)
 If Default_Stage_Units$ = "um" Then
 xmin# = xmin# * MICRONSPERMM&
 xmax# = xmax# * MICRONSPERMM&
