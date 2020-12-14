@@ -2997,7 +2997,8 @@ For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 jbar! = jm!(i%)
 
-If zaf.il%(i%) = 1 Or zaf.il%(i%) = 2 Then  ' K lines
+' K lines (1 = Ka, 2 = Kb)
+If zaf.il%(i%) = 1 Or zaf.il%(i%) = 2 Then
 emm! = 0.86 + 0.12 * Exp(-zaf.Z%(i%) * zaf.Z%(i%) / 25#)
 Select Case zaf.Z%(i%)
     Case Is < 12
@@ -3013,19 +3014,15 @@ wght! = 1# - wght!
 elinshell% = 2
 omega! = Exp(2.373 * Log(zaf.Z%(i%)) - 8.902)
 
-ElseIf zaf.il%(i%) = 3 Or zaf.il%(i%) = 4 Then  ' L lines
+' L lines (3 = La, 4 = Lb, 7 = Ln, 8 = Lg, 9 = Lv, 10 = Ll)
+ElseIf zaf.il%(i%) = 3 Or zaf.il%(i%) = 4 Or zaf.il%(i%) = 7 Or zaf.il%(i%) = 8 Or zaf.il%(i%) = 9 Or zaf.il%(i%) = 10 Then
 emm! = 0.82
 wght! = 0.979 - 0.00187 * zaf.Z%(i%)
 elinshell% = 4
 omega! = Exp(2.946 * Log(zaf.Z%(i%)) - 13.94)
 
-ElseIf zaf.il%(i%) = 5 Or zaf.il%(i%) = 6 Then  ' M lines
-emm! = 0.78
-wght! = 1#
-elinshell% = 6
-omega! = 0.5 * Exp(2.946 * Log(zaf.Z%(i%) / 2#) - 13.94)
-
-Else                                            ' additional x-ray lines...???
+' M lines (5 = Ma, 6 = Lb, 11 = Mg, 12 = Mz)
+ElseIf zaf.il%(i%) = 5 Or zaf.il%(i%) = 6 Or zaf.il%(i%) = 11 Or zaf.il%(i%) = 12 Then
 emm! = 0.78
 wght! = 1#
 elinshell% = 6
