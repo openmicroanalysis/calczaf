@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/15/20	Modify search/remove shared bgd source code to handle high/low only off-peak fit 
+		types (Williams).   Also preserves original off-peak fit type when clearing shared bdgs.
+
 12/12/20	Modify PAP stopping power code to better handle Ln, Ll, Ln, Lg lines, etc (Moy).
 v. 12.9.2
 
