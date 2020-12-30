@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMODAL"
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
 
 Global Const MAXGROUP% = 48             ' maximum number of groups

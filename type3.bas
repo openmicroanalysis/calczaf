@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeTYPE3"
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
 
 Sub TypeNewCounts(sample() As TypeSample)

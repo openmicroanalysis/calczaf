@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGETZAFALL"
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -225,7 +225,7 @@ On Error GoTo GetZAFAllSetEnablesError
 Dim i As Integer, tIndex As Integer
 
 ' Load option index
-For i% = 0 To FormGETZAFALL.Option6.Count - 1
+For i% = 0 To FormGETZAFALL.Option6.count - 1
 If FormGETZAFALL.Option6(i%).value = True Then tIndex% = i%
 Next i%
 

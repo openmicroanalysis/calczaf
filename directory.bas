@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeDIRECTORY"
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
   
 Public Const MAX_PATH As Long = 260

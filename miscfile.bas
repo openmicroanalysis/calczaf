@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscFile"
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -775,13 +775,13 @@ Function MiscGetLastFolderName(sDir As String) As String
 ierror = False
 On Error GoTo MiscGetLastFolderNameError
 
-    Dim sPos As Long
+    Dim spos As Long
     Dim ePos As Long
     
     ePos& = InStrRev(sDir$, "\")
-    sPos& = InStrRev(sDir$, "\", ePos& - 1)
+    spos& = InStrRev(sDir$, "\", ePos& - 1)
     
-    MiscGetLastFolderName$ = Mid$(sDir$, sPos& + 1, (ePos& - sPos&) - 1)
+    MiscGetLastFolderName$ = Mid$(sDir$, spos& + 1, (ePos& - spos&) - 1)
 
 Exit Function
 

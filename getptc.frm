@@ -242,7 +242,7 @@ Begin VB.Form FormGETPTC
          Height          =   255
          Left            =   3840
          TabIndex        =   15
-         ToolTipText     =   $"getptc.frx":0000
+         ToolTipText     =   $"GETPTC.frx":0000
          Top             =   2760
          Width           =   6495
       End
@@ -285,7 +285,7 @@ Begin VB.Form FormGETPTC
          Height          =   255
          Left            =   3840
          TabIndex        =   11
-         ToolTipText     =   $"getptc.frx":009D
+         ToolTipText     =   $"GETPTC.frx":009D
          Top             =   1320
          Width           =   6495
       End
@@ -391,7 +391,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
 
 Dim TextChanged As Boolean

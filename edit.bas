@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeEDIT"
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -711,13 +711,13 @@ Sub EditMACSave()
 ierror = False
 On Error GoTo EditMACSaveError
 
-Dim Elm As String, ray As String, absorb As String
+Dim elm As String, ray As String, absorb As String
 Dim ip As Integer, ipp As Integer, ippp As Integer
 Dim response As Integer
 Dim temp1 As Single, temp2 As Single
 
-Elm$ = FormEDITMAC.ComboElement.Text
-ip% = IPOS1(MAXELM%, Elm$, Symlo$())
+elm$ = FormEDITMAC.ComboElement.Text
+ip% = IPOS1(MAXELM%, elm$, Symlo$())
 If ip% = 0 Then GoTo EditMACSaveInvalidElement
 
 ray$ = FormEDITMAC.ComboXRay.Text
@@ -735,7 +735,7 @@ Call EditGetMACData(ip%, ipp%, ippp%, temp1!)
 If ierror Then Exit Sub
 
 ' Save change
-msg$ = "Are you sure you want to change the data value for " & Elm$ & " " & ray$ & " absorbed by " & absorb$ & " from " & Str$(temp1!) & " to " & Str$(temp2!) & "?"
+msg$ = "Are you sure you want to change the data value for " & elm$ & " " & ray$ & " absorbed by " & absorb$ & " from " & Str$(temp1!) & " to " & Str$(temp2!) & "?"
 response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditMACSave")
 
 If response% = vbCancel Then
@@ -760,7 +760,7 @@ ierror = True
 Exit Sub
 
 EditMACSaveInvalidElement:
-msg$ = Elm$ & " is an invalid element"
+msg$ = elm$ & " is an invalid element"
 MsgBox msg$, vbOKOnly + vbExclamation, "EditMACSave"
 ierror = True
 Exit Sub
@@ -966,12 +966,12 @@ Sub EditUpdateDataValue()
 ierror = False
 On Error GoTo EditUpdateDataValueError
 
-Dim Elm As String, ray As String
+Dim elm As String, ray As String
 Dim ip As Integer, ipp As Integer
 Dim temp As Single
 
-Elm$ = FormEDITXRAY.ComboElement.Text
-ip% = IPOS1(MAXELM%, Elm$, Symlo$())
+elm$ = FormEDITXRAY.ComboElement.Text
+ip% = IPOS1(MAXELM%, elm$, Symlo$())
 If ip% = 0 Then Exit Sub
 
 ' Emission or fluorescent yield
@@ -1009,12 +1009,12 @@ Sub EditUpdateMACValue()
 ierror = False
 On Error GoTo EditUpdateMACValueError
 
-Dim Elm As String, ray As String, absorb As String
+Dim elm As String, ray As String, absorb As String
 Dim ip As Integer, ipp As Integer, ippp As Integer
 Dim temp As Single
 
-Elm$ = FormEDITMAC.ComboElement.Text
-ip% = IPOS1(MAXELM%, Elm$, Symlo$())
+elm$ = FormEDITMAC.ComboElement.Text
+ip% = IPOS1(MAXELM%, elm$, Symlo$())
 If ip% = 0 Then Exit Sub
 
 ray$ = FormEDITMAC.ComboXRay.Text
@@ -1153,13 +1153,13 @@ Sub EditXraySave()
 ierror = False
 On Error GoTo EditXraySaveError
 
-Dim Elm As String, ray As String
+Dim elm As String, ray As String
 Dim ip As Integer, ipp As Integer
 Dim response As Integer
 Dim temp1 As Single, temp2 As Single
 
-Elm$ = FormEDITXRAY.ComboElement.Text
-ip% = IPOS1(MAXELM%, Elm$, Symlo$())
+elm$ = FormEDITXRAY.ComboElement.Text
+ip% = IPOS1(MAXELM%, elm$, Symlo$())
 If ip% = 0 Then GoTo EditXraySaveInvalidElement
 
 If XrayType% = 1 Or XrayType% = 3 Then
@@ -1180,7 +1180,7 @@ Call EditGetXrayData(ip%, ipp%, temp1!)
 If ierror Then Exit Sub
 
 ' Save change
-msg$ = "Are you sure you want to change the data value for " & Elm$ & " " & ray$ & " from " & Str$(temp1!) & " to " & Str$(temp2!) & "?"
+msg$ = "Are you sure you want to change the data value for " & elm$ & " " & ray$ & " from " & Str$(temp1!) & " to " & Str$(temp2!) & "?"
 response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "EditXraySave")
 
 If response% = vbCancel Then
@@ -1209,7 +1209,7 @@ ierror = True
 Exit Sub
 
 EditXraySaveInvalidElement:
-msg$ = Elm$ & " is an invalid element"
+msg$ = elm$ & " is an invalid element"
 MsgBox msg$, vbOKOnly + vbExclamation, "EditXraySave"
 ierror = True
 Exit Sub

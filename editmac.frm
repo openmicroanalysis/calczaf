@@ -62,7 +62,7 @@ Begin VB.Form FormEDITMAC
          Height          =   285
          Left            =   4200
          TabIndex        =   3
-         ToolTipText     =   "Enter the new or modified mass absorption coefficient"
+         ToolTipText     =   "Enter the new or modified mass absorption coefficient in cm2/g"
          Top             =   600
          Width           =   1215
       End
@@ -137,7 +137,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
 
 Private Sub ComboAbsorber_Change()

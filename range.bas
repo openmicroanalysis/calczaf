@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeRANGE"
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -92,11 +92,11 @@ Sub RangeSave()
 ierror = False
 On Error GoTo RangeSaveError
 
-Dim Elm As String, ray As String
+Dim elm As String, ray As String
 Dim ip As Integer, ipp As Integer
 
-Elm$ = FormRANGE.ComboElement.Text
-ip% = IPOS1(MAXELM%, Elm$, Symlo$())
+elm$ = FormRANGE.ComboElement.Text
+ip% = IPOS1(MAXELM%, elm$, Symlo$())
 If ip% = 0 Then GoTo RangeSaveInvalidElement
 
 ray$ = FormRANGE.ComboXRay.Text
@@ -120,7 +120,7 @@ ierror = True
 Exit Sub
 
 RangeSaveInvalidElement:
-msg$ = Elm$ & " is an invalid element"
+msg$ = elm$ & " is an invalid element"
 MsgBox msg$, vbOKOnly + vbExclamation, "RangeSave"
 ierror = True
 Exit Sub

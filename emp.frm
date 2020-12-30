@@ -27,7 +27,7 @@ Begin VB.Form FormEMP
       Height          =   285
       Left            =   12480
       TabIndex        =   11
-      ToolTipText     =   $"Emp.frx":0000
+      ToolTipText     =   $"EMP.frx":0000
       Top             =   3480
       Visible         =   0   'False
       Width           =   2295
@@ -89,7 +89,7 @@ Begin VB.Form FormEMP
       Left            =   7200
       TabIndex        =   2
       TabStop         =   0   'False
-      ToolTipText     =   $"Emp.frx":00DE
+      ToolTipText     =   $"EMP.frx":00DE
       Top             =   720
       Width           =   7575
    End
@@ -123,7 +123,7 @@ Begin VB.Form FormEMP
    End
    Begin VB.Label LabelMAC 
       Alignment       =   2  'Center
-      Caption         =   $"Emp.frx":016C
+      Caption         =   $"EMP.frx":016C
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -146,7 +146,7 @@ Begin VB.Form FormEMP
       Enabled         =   0   'False
       Height          =   975
       Left            =   6360
-      OleObjectBlob   =   "Emp.frx":02CA
+      OleObjectBlob   =   "EMP.frx":02D5
       TabIndex        =   14
       Top             =   4440
       Visible         =   0   'False
@@ -154,7 +154,7 @@ Begin VB.Form FormEMP
    End
    Begin VB.Label LabelAPF 
       Alignment       =   2  'Center
-      Caption         =   $"Emp.frx":A0E2
+      Caption         =   $"EMP.frx":A0ED
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -192,7 +192,7 @@ Begin VB.Form FormEMP
    End
    Begin VB.Label LabelReNormalize 
       Alignment       =   2  'Center
-      Caption         =   $"Emp.frx":A519
+      Caption         =   $"EMP.frx":A524
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -274,7 +274,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2020 by John J. Donovan
+' (c) Copyright 1995-2021 by John J. Donovan
 Option Explicit
 
 Private Sub CommandAddToRun_Click()
