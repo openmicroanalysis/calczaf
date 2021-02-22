@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/20/21	Add display of image dimensions and stage extents in GetQuant dialog (Locock).
+
+02/12/21	Update Penfluor/Fanal matrix.mdb k-ratio database.
+
 01/23/21	Modify TDI code to handle Nth point with zero time fraction (Allaz). This is because with
 		zero time fraction, there is no on-peak data for the first of Nth points. See:
 		DataVolatileGetData
