@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/2/21		Modify JEOLSetMagnificatyion code to check for beam mode prior to set mag (Tsukamoto). This is
+v. 12.9.4	apparently only an issue with the new iSP100/iHP200 JEOL instruments.
+
 02/22/21	Add code for stage extents display for new project in CalcImage.
 
 02/20/21	Add display of image dimensions and stage extents in GetQuant dialog (Locock).
