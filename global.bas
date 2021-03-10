@@ -2504,12 +2504,12 @@ Global AcquireVolatileSelfStandardIntensitiesFlag As Boolean   ' true = acquire 
 Global WaveScanMeasureFaradayNthPoint As Integer
 Global UseCountOverwriteIntensityDataFlag As Boolean
 
-Global bgdstrings(0 To MAXOFFBGDTYPES%) As String   ' long strings for off-peak backgrounds (lower case)
-Global bgstrings(0 To MAXOFFBGDTYPES%) As String    ' short strings for off-peak backgrounds (upper case)
-Global bglstrings(0 To MAXOFFBGDTYPES%) As String   ' long strings for off-peak backgrounds (upper case)
+Global BgdStrings(0 To MAXOFFBGDTYPES%) As String   ' long strings for off-peak backgrounds (lower case)
+Global BgStrings(0 To MAXOFFBGDTYPES%) As String    ' short strings for off-peak backgrounds (upper case)
+Global BglStrings(0 To MAXOFFBGDTYPES%) As String   ' long strings for off-peak backgrounds (upper case)
 
-Global bgdtypestrings(0 To 2) As String             ' background type strings (0 = off-peak, 1 = MAN, 2 = Multi-Point bgd)
-Global beammodestrings(0 To 2) As String            ' beam mode strings (0 = spot, 1 = scan, 2 = digital)
+Global BgdTypeStrings(0 To 2) As String             ' background type strings (0 = off-peak, 1 = MAN, 2 = Multi-Point bgd)
+Global BeamModeStrings(0 To 2) As String            ' beam mode strings (0 = spot, 1 = scan, 2 = digital)
 
 Global DefaultMultiPointNumberofPointsAcquireHi As Integer
 Global DefaultMultiPointNumberofPointsAcquireLo As Integer
@@ -2583,7 +2583,7 @@ Global UserSpecifiedOutputSampleConditionsFlag As Boolean
 
 Global ForceNegativeInterferenceIntensitiesToZeroFlag As Boolean
 
-Global monthsyms(1 To 12) As String                  ' alphabetic month strings
+Global MonthSyms(1 To 12) As String                  ' alphabetic month strings
 Global MineralStrings(0 To MAXMINTYPES%) As String   ' five mineral end-member strings (including zero for none)
 
 Global ThermoNSSLocalRemoteMode As Integer  '(0 = NSS and PFE on same computer, 1 = Thermo on remote computer)
@@ -3004,3 +3004,4 @@ Global UseEDSStoredNetIntensitiesFlag As Boolean
 Global MultiPointBackgroundFitTypeStrings(0 To 2) As String
 Global MultiPointBackgroundFitTypeStrings2(0 To 2) As String
 
+Global JEOLiSP100iHP200Flag As Integer

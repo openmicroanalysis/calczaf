@@ -99,8 +99,7 @@ If tmpsample(1).DisableAcqFlag%(i%) = 0 Then
 ielm% = IPOS5(Int(0), i%, tmpsample(), sample())
 If ielm% > 0 And tmpsample(1).DisableQuantFlag%(i%) = 0 Then
 If sample(1).DisableQuantFlag%(ielm%) = 0 Then  ' if not disabled in first sample, warn user
-msg$ = "Warning in AnalyzeCombineSamples: element " & tmpsample(1).Elsyms$(i%) & " is already present in the combined sample and will not be loaded again"
-Call IOWriteLog(msg$)
+Call IOWriteLog("Warning in AnalyzeCombineSamples: element " & tmpsample(1).Elsyms$(i%) & " is already present in the combined sample and will not be loaded again")
 GoTo 4000
 End If
 End If
