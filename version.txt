@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/10/21	Modify check for JEOL set image shift code to check for probe scan on instead of sampling mode spot.
+
 03/09/21	Modify JEOL 8x30 set beam mode code for improved performance. Thanks to von der Handt, Goemann, Poirier and 
 		Boroughs for beta testing (special thanks to Anette who actually helped us figure this all out!).
 
