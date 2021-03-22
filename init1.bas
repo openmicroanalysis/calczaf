@@ -4101,18 +4101,18 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 End
 End If
 
-' New flag for JEOL iSP100/iHP200 EPMA instrument
-'lpAppName$ = "Hardware"
-'lpKeyName$ = "JEOLiSP100iHP200Flag"
-'nDefault& = False
-'tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-'valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-'If valid& <> 0 Then
-'JEOLiSP100iHP200Flag% = True
-'Else
-'JEOLiSP100iHP200Flag% = False
-'End If
-'If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+' Unfreeze flag for JEOL 8x30 and iSP100/iHP200 EPMA instruments
+lpAppName$ = "Hardware"
+lpKeyName$ = "JEOLUnfreezeAfterFlag"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+JEOLUnfreezeAfterFlag% = True
+Else
+JEOLUnfreezeAfterFlag% = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 Exit Sub
 

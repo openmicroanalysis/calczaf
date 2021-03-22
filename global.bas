@@ -377,6 +377,7 @@ Global Const DbTextElementStringLength% = 2
 Global Const DbTextDefaultImageAnalogUnitsLength% = 32
 Global Const DbTextKratiosDATLineLength% = 164
 Global Const DbTextFormulaStringLength% = 128
+Global Const DbTextInstrumentAcknowledgementLength% = 128
 
 Global Const DbTextMemoStringLength& = 65535
 
@@ -3004,4 +3005,4 @@ Global UseEDSStoredNetIntensitiesFlag As Boolean
 Global MultiPointBackgroundFitTypeStrings(0 To 2) As String
 Global MultiPointBackgroundFitTypeStrings2(0 To 2) As String
 
-Global JEOLiSP100iHP200Flag As Integer
+Global JEOLUnfreezeAfterFlag As Integer

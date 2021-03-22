@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/18/21	Add InstrumentAcknowledgementString to User's MDB probe data file (von der Handt).
+v. 12.9.5	Add "unfreeze" command to JEOL 8x30 instruments. Add auto brightness/contrast to JEOL 8x30.
+
+		This version of Probe for EPMA now works for JEOL iSP100/iHP200F EPMA instruments!!!
+
 03/10/21	Modify check for JEOL set image shift code to check for probe scan on instead of sampling mode spot.
 
 03/09/21	Modify JEOL 8x30 set beam mode code for improved performance. Thanks to von der Handt, Goemann, Poirier and 
