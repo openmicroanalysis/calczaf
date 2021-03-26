@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/24/21	Fix FOV calibration issue for Thermo and Bruker imaging in PFE (Goemann).
+
+03/23/21	Modify JEOL set mag code (8x30) to switch to scan mode, before setting mag and switch back if necessary (Goemann).
+
+		Add check for JEOL EDS running if getting net intensities (Allaz).
+
 03/18/21	Add InstrumentAcknowledgementString to User's MDB probe data file (von der Handt).
 v. 12.9.5	Add "unfreeze" command to JEOL 8x30 instruments. Add auto brightness/contrast to JEOL 8x30.
 

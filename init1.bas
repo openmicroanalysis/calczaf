@@ -4319,7 +4319,7 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 ImageInterfaceImageIxIy! = Val(lpDefault$)
 End If
 If ImageInterfaceType% = 4 And ImageInterfaceImageIxIy! <> 1# Then
-msg$ = "Invalid ImageInterfaceImageIxIy keyword value in " & ProbeWinINIFile$ & ". Must be 1.0 for JEOL 8900/8200/8500 imaging interface."
+msg$ = "Invalid ImageInterfaceImageIxIy keyword value in " & ProbeWinINIFile$ & ". Must be 1.0 for JEOL 8900/8200/8500/8230/8530/iSP100/iHP200 imaging interface."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 ImageInterfaceImageIxIy! = 1#
 End If
