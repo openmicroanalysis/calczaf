@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/09/21	Add error trapping for user specifying element by EDS using Virtual Standard Instenities (Boroughs).
+
 04/07/21	Fix minor bug load/save of KLMOption in DataRun (Seward).
 
 03/26/21	Add code to read both mag and keV from timer in FormIMAGE. Add "interactive" help button to 

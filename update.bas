@@ -1857,6 +1857,7 @@ End If
 
 ' Load virtual standard intensity from database table (moved here to allow interference counts to be loaded below)
 Else
+If sample(1).CrystalNames$(chan%) = EDS_CRYSTAL$ Then GoTo UpdateCalculateStdDriftVirtualInvalidForEDS
 Call VirtualCalculate2(chan%, sample(), analysis.StdAssignsCounts!(chan%))
 If ierror Then Exit Sub
 End If
@@ -1884,6 +1885,13 @@ Exit Sub
 ' Errors
 UpdateCalculateStdDriftError:
 MsgBox Error$, vbOKOnly + vbCritical, "UpdateCalculateStdDrift"
+ierror = True
+Exit Sub
+
+UpdateCalculateStdDriftVirtualInvalidForEDS:
+msg$ = "Virtual standards are not valid for element " & Format$(sample(1).Elsyms$(chan%)) & " by EDS. Please uncheck the Use Virtual Standard for Standard Intensity Calculation checkbox in Standard Assignments."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateCalculateStdDrift"
+Call AnalyzeStatusAnal(vbNullString)
 ierror = True
 Exit Sub
 
