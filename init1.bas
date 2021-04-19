@@ -76,7 +76,7 @@ Exit Function
 
 ' Errors
 InitGetINIDataError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitGetINIData"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitGetINIData"
 ierror = True
 Exit Function
 
@@ -248,7 +248,7 @@ Exit Sub
 
 ' Errors
 InitINI2Error:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINI2"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINI2"
 ierror = True
 Exit Sub
 
@@ -336,7 +336,7 @@ Exit Sub
 
 ' Errors
 InitINI3Error:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINI3"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINI3"
 ierror = True
 Exit Sub
 
@@ -463,7 +463,7 @@ Exit Sub
 
 ' Errors
 InitINI4Error:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINI4"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$, vbOKOnly + vbCritical, "InitINI4"
 ierror = True
 Exit Sub
 
@@ -898,7 +898,7 @@ Exit Sub
 
 ' Errors
 InitINIGeneralError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIGeneral"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIGeneral"
 ierror = True
 Exit Sub
 
@@ -2074,7 +2074,7 @@ Exit Sub
 
 ' Errors
 InitINISoftwareError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINISoftware"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINISoftware"
 ierror = True
 Exit Sub
 
@@ -3037,7 +3037,7 @@ Exit Sub
 
 ' Errors
 InitINIHardwareError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIHardware"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIHardware"
 ierror = True
 Exit Sub
 
@@ -4118,7 +4118,7 @@ Exit Sub
 
 ' Errors
 InitINIHardware2Error:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIHardware2"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIHardware2"
 ierror = True
 Exit Sub
 
@@ -4674,7 +4674,7 @@ Exit Sub
 
 ' Errors
 InitINIImageError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIImage"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIImage"
 ierror = True
 Exit Sub
 
@@ -4766,7 +4766,7 @@ Exit Sub
 
 ' Errors
 InitINIImage2Error:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIImage2"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIImage2"
 ierror = True
 Exit Sub
 
@@ -4892,7 +4892,7 @@ Exit Sub
 
 ' Errors
 InitINICountingError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINICounting"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINICounting"
 ierror = True
 Exit Sub
 
@@ -5093,7 +5093,7 @@ Exit Sub
 
 ' Errors
 InitINIFaradayError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIFaraday"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIFaraday"
 ierror = True
 Exit Sub
 
@@ -5371,7 +5371,7 @@ Exit Sub
 
 ' Errors
 InitINIPHAError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIPHA"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIPHA"
 ierror = True
 Exit Sub
 
@@ -5481,7 +5481,7 @@ Exit Sub
 
 ' Errors
 InitINIPlotError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIPlot"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIPlot"
 ierror = True
 Exit Sub
 
@@ -5670,7 +5670,7 @@ Exit Sub
 
 ' Errors
 InitINIStandardsError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIStandards"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIStandards"
 ierror = True
 Exit Sub
 
@@ -5837,7 +5837,7 @@ Exit Sub
 
 ' Errors
 InitINIStageBitmapsError:
-MsgBox Error$, vbOKOnly + vbCritical, "InitINIStageBitmaps"
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIStageBitmaps"
 ierror = True
 Exit Sub
 
