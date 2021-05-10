@@ -2,9 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/08/21	Modify UpdateGetStandards code to use Use MAN for Off-Peak Elements flag instead for better consistency.
+
+05/07/21	Fix code in UpdateGetStandards where off-peak standards are utilized for MAN fits and loading standard 
+v. 12.9.6	and standard interference intensities (Fellowes).
+
 04/17/21	Add additional error info to InitINI codes.  Add "hourglass" cursor when loading Grapher/Surfer objects.
 
-04/09/21	Add error trapping for user specifying element by EDS using Virtual Standard Instenities (Boroughs).
+04/09/21	Add error trapping for user specifying element by EDS using Virtual Standard Intensities (Boroughs).
 
 04/07/21	Fix minor bug load/save of KLMOption in DataRun (Seward).
 

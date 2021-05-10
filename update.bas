@@ -403,7 +403,8 @@ End If
 Next chan%
 End If
 
-' Correct the data for dead time, beam drift and off-peak background (results returned in sample(1).CorData!())
+' Correct the data for dead time, beam drift (and off-peak background if NOT using MAN for off-peak elements)
+If UseMANForOffPeakElementsFlag = False Then
 If Not UseAggregateIntensitiesFlag Then
 Call DataCorrectData(Int(0), UpdateTmpSample())
 If ierror Then Exit Sub
@@ -413,6 +414,19 @@ Call DataCorrectData(Int(2), UpdateTmpSample())     ' skip aggregate intensity l
 If ierror Then Exit Sub
 Call DataCorrectDataAggregate(Int(2), sample(), UpdateTmpSample())     ' perform aggregate intensity based on unknown
 If ierror Then Exit Sub
+End If
+
+' Correct the data for dead time, beam drift (and MAN background if using MAN background corrections for off-peak elements)
+Else
+If Not UseAggregateIntensitiesFlag Then
+Call DataCorrectData(Int(1), UpdateTmpSample())
+If ierror Then Exit Sub
+Else
+Call DataCorrectData(Int(3), UpdateTmpSample())     ' skip aggregate intensity load
+If ierror Then Exit Sub
+Call DataCorrectDataAggregate(Int(3), sample(), UpdateTmpSample())     ' perform aggregate intensity based on unknown
+If ierror Then Exit Sub
+End If
 End If
 
 ' Correct on-peak intensities (UpdateTmpSample(1).CorData!()) for TDI volatile correction
@@ -2277,7 +2291,7 @@ End If
 Next chan%
 End If
 
-' Correct the data for dead time, beam drift (and off-peak background if NOT using off-peak sample elements)
+' Correct the data for dead time, beam drift (and off-peak background if NOT using off-peak sample elements for MAN fits)
 If UseOffPeakElementsForMANFlag = False Then
 If Not UseAggregateIntensitiesFlag Then
 Call DataCorrectData(Int(0), UpdateTmpSample())
@@ -2290,6 +2304,7 @@ Call DataCorrectDataAggregate(Int(2), sample(), UpdateTmpSample())     ' perform
 If ierror Then Exit Sub
 End If
 
+' Correct the data for dead time, beam drift (and MAN background if using off-peak sample elements for MAN fits)
 Else
 If Not UseAggregateIntensitiesFlag Then
 Call DataCorrectData(Int(1), UpdateTmpSample())
