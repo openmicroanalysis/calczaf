@@ -634,7 +634,7 @@ Exit Sub
 
 Base64ReaderCheckElementNotFound:
 Screen.MousePointer = vbDefault
-msg$ = "PrbImg file (" & tfilename$ & "), element " & elm$ & ray$ & " on spectrometer " & Format$(nspec%) & crys$ & " was not found in MDB sample " & sample(1).Name$
+msg$ = "PrbImg file (" & tfilename$ & "), element " & elm$ & " " & ray$ & " on spectrometer " & Format$(nspec%) & " " & crys$ & " was not found in MDB sample " & sample(1).Name$
 MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderCheck"
 ierror = True
 Exit Sub

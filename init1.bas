@@ -2409,7 +2409,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "EDSSpectraInterfaceType"
-nDefault& = 0   ' 0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM
+nDefault& = 0   ' 0 = Demo, 1 = MEC (future JEOL EDS), 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 EDSSpectraInterfaceType% = valid&
@@ -2419,6 +2419,7 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 EDSSpectraInterfaceType% = nDefault&
 End If
 If EDSSpectraInterfaceType% = 1 Or EDSSpectraInterfaceType% = 3 Or EDSSpectraInterfaceType% = 4 Then
+'If EDSSpectraInterfaceType% = 3 Or EDSSpectraInterfaceType% = 4 Then
 msg$ = "EDSSpectraInterfaceType (" & Format$(EDSSpectraInterfaceType%) & ") is not supported by Probe for EPMA in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
@@ -3951,7 +3952,7 @@ If Left$(lpReturnString2$, tValid&) = vbNullString Then
 If EDSSpectraInterfaceType% = 5 Then
 msg$ = "Thermo NSS Version Number keyword was not found in " & ProbeWinINIFile$ & ". Therefore, version 3.0 of the Thermo NSS application will be assumed." & vbCrLf & vbCrLf
 msg$ = msg$ & "If this is incorrect, please edit the Thermo NSS version number keyword in " & ProbeWinINIFile$ & ", for the correct version number of NSS. " & vbCrLf & vbCrLf
-msg$ = msg$ & "Note that for Thermo Pathfinder v. 1, specify ThermoNSSVersionNumber=5"
+msg$ = msg$ & "Note that for Thermo Pathfinder v. 1 or higher, specify ThermoNSSVersionNumber=5"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 End If
 End If
@@ -3960,7 +3961,7 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then ThermoNSSVersionNumber! = Val(Left$(lpReturnString$, valid&))
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
-' Load max energy values for EDS (0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM)
+' Load max energy values for EDS (0 = Demo, 1 = JEOL MEC, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM)
 If EDSInterfaceMaxEnergyThroughputPresent Then
 lpAppName$ = "Hardware"
 lpKeyName$ = "MaxEnergyArraySize"
@@ -3991,7 +3992,7 @@ End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 Next i%
 
-' Load max throughput values for EDS (0 = Demo, 1 = Unused, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM)
+' Load max throughput values for EDS (0 = Demo, 1 = JEOL MEC, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM)
 lpAppName$ = "Hardware"
 lpKeyName$ = "MaxThroughputArraySize"
 nDefault& = MaxThroughputArraySize%

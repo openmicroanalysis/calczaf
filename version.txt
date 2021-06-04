@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/02/21	Start work on new JEOL MEC EDS API (iSP100/iHP200F only).
+
+05/28/21	Add warning message if not acquiring beam current on standard and unknown samples (Goemann).
+
 05/08/21	Modify UpdateGetStandards code to use Use MAN for Off-Peak Elements flag instead for better consistency.
 
 05/07/21	Fix code in UpdateGetStandards where off-peak standards are utilized for MAN fits and loading standard 
