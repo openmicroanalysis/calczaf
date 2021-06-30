@@ -1934,7 +1934,7 @@ r1!(zaf.in0%) = r1!(zaf.in0%) - ConvertHalogensToOxygen(zaf.in1%, sample(1).Elsy
 If ierror Then Exit Sub
 End If
 
-' Calculate excess oxygen from ferric Fe
+' Calculate excess oxygen from ferric Fe (from Droop, 1987 and Locock spreadsheet)
 If sample(1).FerrousFerricCalculationFlag Then
 Call ConvertFerrousFerricRatioFromComposition(zaf.in0%, zaf.Z%(), zaf.atwts!(), r1!(), sample(1).numcat%(), sample(1).numoxd%(), zaf.p1!(), sample(1).DisableQuantFlag%(), sample(1).FerrousFerricTotalCations!, sample(1).FerrousFerricTotalOxygens!, tFerricToTotalIronRatio!, tFerricOxygen!, tFe_as_FeO!, tFe_as_Fe2O3!)
 If ierror Then Exit Sub

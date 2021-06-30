@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/29/21	Add BadgerFilm text to STRATAGem Output menu.
+
+		Add Moy et al, 2021 Z Fraction exponent calculation button to Assign MAN dialog 
+		and improve code for updating MAN fit display.
+
 06/02/21	Start work on new JEOL MEC EDS API (iSP100/iHP200F only).
 
 05/28/21	Add warning message if not acquiring beam current on standard and unknown samples (Goemann).

@@ -1047,7 +1047,7 @@ Exit Function
 End Function
 
 Sub ConvertFerrousFerricRatioFromComposition(nelements As Integer, AtomicNumbers() As Integer, AtomicWeights() As Single, ElementalWeightFractions() As Single, NumCats() As Integer, NumOxds() As Integer, OxideProportions() As Single, DisableQuantFlags() As Integer, MineralCations As Single, MineralOxygens As Single, FerricToTotalIronRatio As Single, FerricOxygen As Single, Fe_as_FeO As Single, Fe_as_Fe2O3 As Single)
-' Procedure to calculate ferrous/ferric ratio from concentrations and specified cations and oxygens (assumes only Fe is multi-valent)
+' Procedure to calculate ferrous/ferric ratio from concentrations and specified cations and oxygens (assumes only Fe is multi-valent) from Droop, 1987 and Locock spreadsheet
 '  nelements = number of elements in composition
 '  AtomicNumbers() = atomic numbers of each element
 '  AtomicWeights() = atomic weight of each element
