@@ -61,9 +61,11 @@ End If
 astring$ = sample(1).Name$
 If datarow% > 0 Then                                                                                       ' PFE
 astring$ = sample(1).Name$ & ",  Line " & Format$(sample(1).Linenumber&(datarow%))
+If tForm.Name <> "FormEDSDISPLAY3" Then
 astring$ = astring$ & ",  keV: " & Format$(sample(1).EDSSpectraAcceleratingVoltage!(datarow%))
 astring$ = astring$ & ",  Max keV: " & Format$(sample(1).EDSSpectraEndEnergy!(datarow%))
 astring$ = astring$ & ",  TC: " & Format$(sample(1).EDSSpectraADCTimeConstant!(datarow%))
+End If
 Else
 astring$ = sample(1).EDSSpectraAcceleratingVoltage!(datarow%) & " keV , " & sample(1).Name$                ' Standard
 End If

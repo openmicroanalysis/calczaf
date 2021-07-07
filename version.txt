@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/05/21	Tweak EDS live time display of parameters.
+
 06/29/21	Add BadgerFilm text to STRATAGem Output menu.
 
 		Add Moy et al, 2021 Z Fraction exponent calculation button to Assign MAN dialog 
