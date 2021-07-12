@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/09/21	Modify TDI time calculation in TimeCalculate (Chouinard).
+
+		Add Nachlas to About dialog.
+		
+		Modify get/set beam size for 8230/8530 to support fractional beam sizes (Buse).
+
 07/05/21	Tweak EDS live time display of parameters.
 
 06/29/21	Add BadgerFilm text to STRATAGem Output menu.

@@ -204,7 +204,8 @@ tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "Gareth Seward, 805 637-7265, seward@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Karsten Goemann, +61 407-101-990, goemann@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Owen Neill, 207 653-6331, neill@probesoftware.com" & vbCrLf
-tmsg$ = tmsg$ & "Anette von der Handt, 612 222-6711, vonderhandt@probesoftware.com"
+tmsg$ = tmsg$ & "Anette von der Handt, 612 222-6711, vonderhandt@probesoftware.com" & vbCrLf
+tmsg$ = tmsg$ & "Will Nachlas, 207 653-6331, nachlas@probesoftware.com"
 
 FormABOUT.LabelAboutSpecialists.Caption = tmsg$
 
