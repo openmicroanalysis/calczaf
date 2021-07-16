@@ -4115,6 +4115,19 @@ JEOLUnfreezeAfterFlag% = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+' Use USB port to read SXFive tactis video images
+lpAppName$ = "Hardware"
+lpKeyName$ = "CamecaSXFiveTactisUSBVideoFlag"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+CamecaSXFiveTactisUSBVideoFlag% = True
+Else
+CamecaSXFiveTactisUSBVideoFlag% = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors

@@ -3006,3 +3006,5 @@ Global MultiPointBackgroundFitTypeStrings(0 To 2) As String
 Global MultiPointBackgroundFitTypeStrings2(0 To 2) As String
 
 Global JEOLUnfreezeAfterFlag As Integer
+
+Global CamecaSXFiveTactisUSBVideoFlag As Integer

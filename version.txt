@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/15/21	Round beam current in PCC file to nearest nano-amp. Comment out unfreeze command after 
+		setting conditions from Analytical Conditions dialogs (von der Handt).
+
+07/14/21	Tweak TDI TimeCalculate estimate for TDI intervals.  Add SXFive tactis USB video flag to INI.
+
+		Fix read beam size bug in Analytical conditions for fractional beam sizes and scan/sampling 
+		mode for 8230/8530 in set column conditions (von der Handt).
+
 07/09/21	Modify TDI time calculation in TimeCalculate (Chouinard).
 
 		Add Nachlas to About dialog.
