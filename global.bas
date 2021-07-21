@@ -1150,6 +1150,8 @@ Type TypeSample
     FerrousFerricCalculationFlag As Boolean           ' flag to calculate ferrous/ferric ratio for excess oxygen in matrix corrections
     FerrousFerricTotalCations As Single               ' total number of cations in the ferrous/ferric mineral
     FerrousFerricTotalOxygens As Single               ' total number of oxygens in the ferrous/ferric mineral
+    
+    FerrousFerricOption As Integer                    ' new Droop option for amphiboles (Moy)
 End Type
 
 Type TypeImage

@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/20/21	Add Aurelien Moy code for Droop method for amphiboles (still testing).
+v. 12.9.7
+		Add font size control to image display dialog (Rom).
+
 07/15/21	Round beam current in PCC file to nearest nano-amp. Comment out unfreeze command after 
 		setting conditions from Analytical Conditions dialogs (von der Handt).
 

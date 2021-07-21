@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form FormZAFOPT 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Calculation Options"
-   ClientHeight    =   5265
+   ClientHeight    =   5655
    ClientLeft      =   1440
    ClientTop       =   3480
-   ClientWidth     =   12765
+   ClientWidth     =   13155
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -21,14 +21,14 @@ Begin VB.Form FormZAFOPT
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   5265
-   ScaleWidth      =   12765
+   ScaleHeight     =   5655
+   ScaleWidth      =   13155
    ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame3 
       Caption         =   "EDS Spectral Data And Quant Calculations"
       ForeColor       =   &H00FF0000&
       Height          =   1575
-      Left            =   8400
+      Left            =   8760
       TabIndex        =   40
       Top             =   960
       Width           =   4215
@@ -81,7 +81,7 @@ Begin VB.Form FormZAFOPT
       Caption         =   "Sample Conductive Coating"
       ForeColor       =   &H00FF0000&
       Height          =   1935
-      Left            =   8400
+      Left            =   8760
       TabIndex        =   26
       Top             =   3240
       Width           =   4215
@@ -199,8 +199,8 @@ Begin VB.Form FormZAFOPT
       Height          =   855
       Left            =   120
       TabIndex        =   20
-      Top             =   4320
-      Width           =   8055
+      Top             =   4680
+      Width           =   8415
       Begin VB.ComboBox ComboFormula 
          Appearance      =   0  'Flat
          Height          =   315
@@ -277,11 +277,95 @@ Begin VB.Form FormZAFOPT
    Begin VB.Frame Frame1 
       Caption         =   "Calculation Options"
       ForeColor       =   &H00FF0000&
-      Height          =   3855
+      Height          =   4335
       Left            =   120
       TabIndex        =   0
       Top             =   120
-      Width           =   8055
+      Width           =   8415
+      Begin VB.Frame Frame7 
+         BorderStyle     =   0  'None
+         Height          =   375
+         Left            =   120
+         TabIndex        =   53
+         Top             =   3840
+         Width           =   8175
+         Begin VB.OptionButton OptionFerrousFerricOption 
+            Caption         =   "Mineral"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   0
+            Left            =   240
+            TabIndex        =   56
+            ToolTipText     =   "Select Droop option. Use Mineral for simple minerals."
+            Top             =   120
+            Value           =   -1  'True
+            Width           =   975
+         End
+         Begin VB.OptionButton OptionFerrousFerricOption 
+            Caption         =   "Sodic Amphibole"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   1
+            Left            =   1200
+            TabIndex        =   55
+            ToolTipText     =   $"ZAFOPT.frx":0000
+            Top             =   120
+            Width           =   1575
+         End
+         Begin VB.OptionButton OptionFerrousFerricOption 
+            Caption         =   "Calcic Amphibole"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   2
+            Left            =   2760
+            TabIndex        =   54
+            ToolTipText     =   "Select Droop option. Use Calcic Amphibole for 13 cations exclusive of Ca, Na and K (suitable for many calcic amphiboles)."
+            Top             =   120
+            Width           =   1575
+         End
+         Begin VB.Label Label17 
+            Alignment       =   2  'Center
+            Caption         =   "Contributed by Andrew Locock and Aurelien Moy"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Left            =   4560
+            TabIndex        =   57
+            Top             =   120
+            Width           =   3615
+         End
+      End
       Begin VB.CheckBox CheckFerrousFerricCalculation 
          Caption         =   "Calculate Excess Oxygen From Ferrous/Ferric Ratio"
          Height          =   315
@@ -309,7 +393,7 @@ Begin VB.Form FormZAFOPT
       End
       Begin VB.TextBox TextDensity 
          Height          =   285
-         Left            =   6960
+         Left            =   7080
          TabIndex        =   46
          Top             =   1200
          Width           =   975
@@ -329,7 +413,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"ZAFOPT.frx":0000
+         ToolTipText     =   $"ZAFOPT.frx":0093
          Top             =   3120
          Width           =   4095
       End
@@ -565,7 +649,7 @@ Begin VB.Form FormZAFOPT
          Alignment       =   2  'Center
          Caption         =   "Density"
          Height          =   255
-         Left            =   6960
+         Left            =   7080
          TabIndex        =   47
          Top             =   960
          Width           =   975

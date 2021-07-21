@@ -159,6 +159,7 @@ FormZAFOPT.CheckFerrousFerricCalculation.Value = vbUnchecked
 End If
 FormZAFOPT.TextFerrousFerricTotalCations.Text = Format$(ZAFOptionSample(1).FerrousFerricTotalCations!)
 FormZAFOPT.TextFerrousFerricTotalOxygens.Text = Format$(ZAFOptionSample(1).FerrousFerricTotalOxygens!)
+FormZAFOPT.OptionFerrousFerricOption(ZAFOptionSample(1).FerrousFerricOption%).Value = True                ' new Droop option for amphiboles (Moy)
 
 ' Load formula calculations
 If ZAFOptionSample(1).FormulaElementFlag% Then
@@ -204,8 +205,14 @@ FormZAFOPT.TextDensity.Text = Format$(ZAFOptionSample(1).SampleDensity!)
 ' Disable ferric/ferrous if calculating intensities from concentrations
 If CalcZAFMode% = 0 Then
 FormZAFOPT.CheckFerrousFerricCalculation.Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(0).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(1).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(2).Enabled = False
 Else
 FormZAFOPT.CheckFerrousFerricCalculation.Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(0).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(1).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(2).Enabled = True
 End If
 
 Exit Sub
@@ -424,6 +431,9 @@ ZAFOptionSample(1).FerrousFerricCalculationFlag = False
 End If
 ZAFOptionSample(1).FerrousFerricTotalCations! = Val(FormZAFOPT.TextFerrousFerricTotalCations.Text)
 ZAFOptionSample(1).FerrousFerricTotalOxygens! = Val(FormZAFOPT.TextFerrousFerricTotalOxygens.Text)
+For i% = 0 To 2
+If FormZAFOPT.OptionFerrousFerricOption(i%).Value = True Then ZAFOptionSample(1).FerrousFerricOption% = i%         ' new Droop option for amphiboles (Moy)
+Next i%
 
 ' Set calculation flags
 If ZAFOptionSample(1).DifferenceElement$ <> vbNullString Then ZAFOptionSample(1).DifferenceElementFlag% = True

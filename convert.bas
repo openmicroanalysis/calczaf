@@ -1221,4 +1221,216 @@ Exit Sub
 
 End Sub
 
+Sub ConvertFerrousFerricRatioFromComposition2(nelements As Integer, AtomicNumbers() As Integer, AtomicWeights() As Single, ElementalWeightFractions() As Single, NumCats() As Integer, NumOxds() As Integer, OxideProportions() As Single, DisableQuantFlags() As Integer, MineralCations As Single, MineralOxygens As Single, FerricToTotalIronRatio As Single, FerricOxygen As Single, Fe_as_FeO As Single, Fe_as_Fe2O3 As Single, Droop_option_for_amphibole As Integer)
+' Procedure to calculate ferrous/ferric ratio from concentrations and specified cations and oxygens (assumes only Fe is multi-valent) from Droop, 1987 and Locock spreadsheet
+' New code containing Aurelien Moy's modifications to handle amphibole compositions
+'  nelements = number of elements in composition
+'  AtomicNumbers() = atomic numbers of each element
+'  AtomicWeights() = atomic weight of each element
+'  ElementalWeightFractions() = elemental weight fractions for each element
+'  OxideProportions() = oxide conversion factors for all elements (force iron stoichiometry to assume FeO stoichiometry = 0.286497)
+'  DisableQuantFlags%() = diable quant flags for each element
+'  MineralCations = total number of cations in mineral formula
+'  MineralOxygens = total number of oxygens in mineral formula
+'  NumCats() - number of cations in oxide formula
+'  NumOxds() = number of oxygens in oxide formula
+'  FerricToTotalIronRatio = ratio of ferric iron to total iron
+'  FerricOxygen = excess oxygen in weight%
+'  Fe_as_FeO = calculated FeO in weight%
+'  Fe_as_Fe2O3 = calculated Fe2O3 in weight%
+'  Droop_option_for_amphibole
+'    0 = general formula, using original Droop method
+'    1 = Formula calculated on the basis of 23 oxygens anhydrous, assuming a total of 15 cations exclusive of Na and K (suitable for Fe-Mg-amphiboles and coexisting calcic amphiboles).
+'    2 = Formula calculated on the basis of 23 oxygens anhydrous, assuming a total of 13 cations exclusive of Ca, Na and K (suitable for many calcic amphiboles).
 
+ierror = False
+On Error GoTo ConvertFerrousFerricRatioFromComposition2Error
+
+Const FeO_to_Fe2O3! = 1.11134
+
+Dim ip As Integer
+Dim n As Integer
+
+Dim summoles As Single
+Dim ferrousmoles As Single
+Dim ferricmoles As Single
+
+ReDim oxides(1 To MAXCHAN%) As Single
+ReDim moles(1 To MAXCHAN%) As Single
+
+Dim atomic_fraction(1 To MAXCHAN%) As Single                            ' atomic fraction o the different elements
+Dim sum_O_from_atomic_fraction As Single                                ' total number of O atoms in atomic fraction
+Dim formula_with_mineral_oxygens_atoms_of_O(1 To MAXCHAN%) As Single    ' atomic fractions of the elements in the normalized atomic formula (normalized to a given number of O atoms given by MineralOxygens! (e.g., 23 for amphibole))
+Dim total_cations As Single                                             ' total number of cations in the normalized atomic formula (normalized to MineralOxyens!)
+Dim Fe3_atomic_formula As Single                                        ' number of Fe3+ atoms in the normalized formula (normalized to a given number of cations MineralCations!)
+Dim Fe2_atomic_formula As Single                                        ' number of Fe2+ atoms in the normalized formula (normalized to a given number of cations MineralCations!)
+
+' Determine Fe channel
+ip% = IPOS2DQ%(nelements%, ATOMIC_NUM_IRON%, AtomicNumbers%(), DisableQuantFlags%())
+If ip% = 0 Then GoTo ConvertFerrousFerricRatioFromComposition2NoIron
+
+' Check that Fe oxide stoichiometry is 1 : 1
+If NumCats%(ip%) <> 1 Or NumOxds%(ip%) <> 1 Then GoTo ConvertFerrousFerricRatioFromComposition2NotFeO
+
+' Calculate oxide weight percents (force iron to FeO)
+For n% = 1 To nelements%
+
+If AtomicNumbers%(n%) <> ATOMIC_NUM_IRON% Then
+oxides!(n%) = ElementalWeightFractions!(n%) + ElementalWeightFractions!(n%) * OxideProportions!(n%)      ' convert all elements except Fe to oxides
+Else
+oxides!(n%) = ElementalWeightFractions!(n%) + ElementalWeightFractions!(n%) * FeO_OXIDE_PROPORTION!      ' force convert Fe to FeO to be consistent below
+End If
+
+Next n%
+
+' Calculate moles of each oxide
+summoles! = 0
+For n% = 1 To nelements%
+
+' Calculate moles of each cation
+If AtomicNumbers%(n%) <> ATOMIC_NUM_OXYGEN% Then
+
+    If AtomicNumbers%(n%) <> ATOMIC_NUM_IRON% Then
+    moles!(n%) = (100# * oxides!(n%) * NumCats%(n%)) / (NumCats%(n%) * AtomicWeights!(n%) + NumOxds%(n%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%))        ' convert to formula moles
+    Else
+    moles!(n%) = (100# * oxides!(n%)) / (AtomicWeights!(n%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%))                                    ' convert based on Fe : O moles
+    End If
+
+' Calculate the sum of the cations
+summoles! = summoles + moles!(n%)
+
+' Calculate moles of oxygen
+Else
+moles!(n%) = (100# * oxides!(n%)) / AtomicWeights!(n%)
+End If
+
+Next n%
+
+' Calculate the atomic raction of the different elements
+For n% = 1 To nelements%
+    atomic_fraction!(n%) = moles!(n%) / summoles!
+Next n%
+
+' Calculates the numner of atomic oxygen. Excludes the anions O, F and Cl as they do not contribute.
+sum_O_from_atomic_fraction! = 0
+For n% = 1 To nelements%
+    If AtomicNumbers%(n%) <> ATOMIC_NUM_OXYGEN% And AtomicNumbers%(n%) <> ATOMIC_NUM_FLUORINE% And AtomicNumbers%(n%) <> ATOMIC_NUM_CHLORINE% Then
+        sum_O_from_atomic_fraction! = sum_O_from_atomic_fraction! + atomic_fraction!(n%) * NumOxds%(n%) / NumCats%(n%)
+    End If
+Next n%
+
+' Calculates the atomic formula based on MineralOxygens! atoms of O. Also calculates the total number of cations in the normalized atomic formula.
+total_cations! = 0
+For n% = 1 To nelements%
+    formula_with_mineral_oxygens_atoms_of_O!(n%) = atomic_fraction!(n%) / sum_O_from_atomic_fraction! * MineralOxygens!
+    If Droop_option_for_amphibole = 0 Then
+        If AtomicNumbers%(n%) <> ATOMIC_NUM_OXYGEN% And AtomicNumbers%(n%) <> ATOMIC_NUM_FLUORINE% And AtomicNumbers%(n%) <> ATOMIC_NUM_CHLORINE% Then
+            total_cations! = total_cations! + formula_with_mineral_oxygens_atoms_of_O!(n%)
+        End If
+    ElseIf Droop_option_for_amphibole = 1 Then
+        If AtomicNumbers%(n%) <> ATOMIC_NUM_OXYGEN% And AtomicNumbers%(n%) <> ATOMIC_NUM_FLUORINE% And AtomicNumbers%(n%) <> ATOMIC_NUM_CHLORINE% And AtomicNumbers%(n%) <> ATOMIC_NUM_SODIUM% And AtomicNumbers%(n%) <> ATOMIC_NUM_POTASSIUM% Then
+            total_cations! = total_cations! + formula_with_mineral_oxygens_atoms_of_O!(n%)
+        End If
+    ElseIf Droop_option_for_amphibole = 2 Then
+        If AtomicNumbers%(n%) <> ATOMIC_NUM_OXYGEN% And AtomicNumbers%(n%) <> ATOMIC_NUM_FLUORINE% And AtomicNumbers%(n%) <> ATOMIC_NUM_CHLORINE% And AtomicNumbers%(n%) <> ATOMIC_NUM_SODIUM% And AtomicNumbers%(n%) <> ATOMIC_NUM_POTASSIUM% And AtomicNumbers%(n%) <> ATOMIC_NUM_CALCIUM% Then
+            total_cations! = total_cations! + formula_with_mineral_oxygens_atoms_of_O!(n%)
+        End If
+    End If
+    
+Next n%
+
+' Handle special cases for amhiboles. Make sure that MineralOxygens = 23 and that MineralCations is either 15 or 13.
+If Droop_option_for_amphibole = 1 Then
+    If MineralOxygens! <> 23 Or MineralCations! <> 15 Then
+        MineralOxygens! = 23
+        MineralCations! = 15
+        Call IOWriteLogRichText(vbCrLf & "Warning in ConvertFerrousFerricRatioFromComposition2: Number of oxygens changed to 23 and number of cations changed to 15", vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
+    End If
+ElseIf Droop_option_for_amphibole = 2 Then
+    If MineralOxygens! <> 23 Or MineralCations! <> 13 Then
+        MineralOxygens! = 23
+        MineralCations! = 13
+        Call IOWriteLogRichText(vbCrLf & "Warning in ConvertFerrousFerricRatioFromComposition2: Number of oxygens changed to 23 and number of cations changed to 13", vbNullString, Int(LogWindowFontSize%), vbMagenta, Int(FONT_REGULAR%), Int(0))
+    End If
+End If
+
+' Calculates Fe3+ and Fe2+ for a given number of cations (given by MineralCations!)
+If MineralCations! <= total_cations! Then
+    Fe3_atomic_formula! = 2 * MineralOxygens! * (1 - MineralCations! / total_cations!)      ' Droop's (1987) formula (Fe3+ = 2*X*(1-T/S))
+    If Fe3_atomic_formula! < formula_with_mineral_oxygens_atoms_of_O!(ip%) * MineralCations! / total_cations! Then
+        Fe2_atomic_formula! = formula_with_mineral_oxygens_atoms_of_O!(ip%) * MineralCations! / total_cations! - Fe3_atomic_formula!
+    Else
+        Fe3_atomic_formula! = formula_with_mineral_oxygens_atoms_of_O!(ip%)
+        Fe2_atomic_formula! = 0
+    End If
+Else
+    Fe3_atomic_formula! = 0
+    Fe2_atomic_formula! = formula_with_mineral_oxygens_atoms_of_O!(ip%)
+End If
+
+' Calculates the ratio Fe3+ / (Fe3+ + Fe2+)
+FerricToTotalIronRatio! = Fe3_atomic_formula! / (Fe3_atomic_formula! + Fe2_atomic_formula!)
+
+' Convert atomic Fe3+ and Fe2+ to oxides. Also calculates FerricOxygen!
+Fe_as_FeO! = (1 - FerricToTotalIronRatio!) * 100# * oxides!(ip%)
+Fe_as_Fe2O3! = (100# * oxides!(ip%) - Fe_as_FeO!) / (2 * (AllAtomicWts!(ATOMIC_NUM_IRON%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) / (2 * AllAtomicWts!(ATOMIC_NUM_IRON%) + 3 * AllAtomicWts!(ATOMIC_NUM_OXYGEN%)))
+FerricOxygen! = Fe_as_Fe2O3! * (1 - (2 * (AllAtomicWts!(ATOMIC_NUM_IRON%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) / (2 * AllAtomicWts!(ATOMIC_NUM_IRON%) + 3 * AllAtomicWts!(ATOMIC_NUM_OXYGEN%))))
+
+If VerboseMode Then
+msg$ = vbCrLf & "ELEMENT "
+For n% = 1 To nelements%
+msg$ = msg$ & Format$(Symup$(AtomicNumbers%(n%)), a80$)
+Next n%
+Call IOWriteLog(msg$)
+
+msg$ = "OXIDES  "
+For n% = 1 To nelements%
+msg$ = msg$ & Format$(Format$(100# * oxides!(n%), f84), a80$)
+Next n%
+Call IOWriteLog(msg$)
+
+msg$ = "MOLES   "
+For n% = 1 To nelements%
+msg$ = msg$ & Format$(Format$(moles!(n%), f84), a80$)
+Next n%
+msg$ = msg$ & Space$(8) & Format$("SUM CAT=", a80$) & Format$(Format$(summoles!, f84), a80$)
+
+msg$ = "ATFRAC  "
+For n% = 1 To nelements%
+msg$ = msg$ & Format$(Format$(atomic_fraction!(n%), f84), a80$)
+Next n%
+End If
+
+If DebugMode Then
+Call IOWriteLog(vbNullString)
+msg$ = "FerricIronToTotalIronRatio: " & Format$(Format$(FerricToTotalIronRatio!, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "Ferrous Oxide (FeO):        " & Format$(Format$(Fe_as_FeO!, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "Ferric Oxide (Fe2O3):       " & Format$(Format$(Fe_as_Fe2O3!, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "Excess Oxygen from Fe2O3:   " & Format$(Format$(FerricOxygen!, f84), a80$)
+Call IOWriteLog(msg$)
+End If
+
+Exit Sub
+
+' Errors
+ConvertFerrousFerricRatioFromComposition2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertFerrousFerricRatioFromComposition2"
+ierror = True
+Exit Sub
+
+ConvertFerrousFerricRatioFromComposition2NoIron:
+msg$ = "No iron is present in the element list. Cannot calculate a ferrous/ferric ratio."
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertFerrousFerricRatioFromComposition2"
+ierror = True
+Exit Sub
+
+ConvertFerrousFerricRatioFromComposition2NotFeO:
+msg$ = "Cannot calculate a ferrous/ferric ratio. Iron stoichiometry must be specified as FeO (Cations=1, Oxygens=1) in the Elements/Cations dialog."
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertFerrousFerricRatioFromComposition2"
+ierror = True
+Exit Sub
+
+End Sub

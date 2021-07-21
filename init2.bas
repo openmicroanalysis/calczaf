@@ -472,6 +472,7 @@ sample(1).ImageShiftX! = 0#
 sample(1).ImageShiftY! = 0#
 sample(1).beammode% = DefaultBeamMode%      ' 0 = spot, 1 = scan, 2 = digital spot
 
+' Calculation options flags
 sample(1).OxideOrElemental% = 0#
 sample(1).Description$ = vbNullString
 sample(1).DisplayAsOxideFlag = False
@@ -509,11 +510,12 @@ sample(1).HydrogenStoichiometryRatio! = 0#
 sample(1).FerrousFerricCalculationFlag = False
 sample(1).FerrousFerricTotalCations! = 0#
 sample(1).FerrousFerricTotalOxygens! = 0#
+sample(1).FerrousFerricOption% = 0                         ' 0 = normal, 1 = sodic amphiboles, 2 = calcic amphiboles (Moy)
 
-sample(1).CoatingFlag = DefaultSampleCoatingFlag%  ' 0 = uncoated, 1 = coated
+sample(1).CoatingFlag = DefaultSampleCoatingFlag%               ' 0 = uncoated, 1 = coated
 sample(1).CoatingElement% = DefaultSampleCoatingElement%
 sample(1).CoatingDensity! = DefaultSampleCoatingDensity!
-sample(1).CoatingThickness! = DefaultSampleCoatingThickness!  ' in angstroms
+sample(1).CoatingThickness! = DefaultSampleCoatingThickness!    ' in angstroms
 
 ' Calculate without function call
 sample(1).CoatingSinThickness! = DefaultSampleCoatingThickness! / Sin(DefaultTakeOff! * PI! / 180#)
@@ -563,9 +565,6 @@ For k% = 1 To MAXCOND%
 sample(1).ConditionOrders%(k%) = 1
 Next k%
 
-' Other
-sample(1).OxygenChannel% = 0
-
 ' PTC options
 sample(1).iptc% = 0
 sample(1).PTCModel% = 0
@@ -574,6 +573,8 @@ sample(1).PTCDensity! = 0#
 sample(1).PTCThicknessFactor! = 0#
 sample(1).PTCNumericalIntegrationStep! = 0#
 
+' Other
+sample(1).OxygenChannel% = 0
 sample(1).AlternatingOnAndOffPeakAcquisitionFlag% = 0
 
 sample(1).SpecifyMatrixByAnalysisUnknownNumber% = 0
@@ -585,10 +586,6 @@ sample(1).ChemicalAgeCalculationFlag = False
 
 sample(1).PTCDoNotNormalizeSpecifiedFlag = False
 sample(1).EDSSpectraQuantMethodOrProject$ = vbNullString
-
-sample(1).FerrousFerricCalculationFlag = False
-sample(1).FerrousFerricTotalCations! = 0#
-sample(1).FerrousFerricTotalOxygens! = 0#
 
 sample(1).LastEDSSpecifiedCountTime! = EDSSpecifiedCountTime!
 sample(1).LastEDSUnknownCountFactor! = EDSUnknownCountFactor!

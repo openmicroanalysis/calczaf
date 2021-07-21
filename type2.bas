@@ -405,7 +405,7 @@ If sample(1).FerrousFerricCalculationFlag Then
 If sample(1).OxideOrElemental% = 1 Then
 msg$ = "Excess Oxygen From Ferric Iron Calculated and Included in the Matrix Correction"
 Call IOWriteLog(msg$)
-msg$ = "Charge Balance Method of Droop (1987), Total Cations= " & MiscAutoFormat4$(sample(1).FerrousFerricTotalCations!) & ", Total Oxygens= " & MiscAutoFormat4$(sample(1).FerrousFerricTotalOxygens!)
+msg$ = "Charge Balance Method of Droop (1987), Total Cations= " & MiscAutoFormat4$(sample(1).FerrousFerricTotalCations!) & ", Total Oxygens= " & MiscAutoFormat4$(sample(1).FerrousFerricTotalOxygens!) & ", Droop Option= " & Format$(sample(1).FerrousFerricOption% = 0)
 Call IOWriteLog(msg$)
 Else
 msg$ = "Excess Oxygen From Ferric Iron was not Included in the Matrix Correction (because oxygen was not calculated by cation stoichiometry)"
