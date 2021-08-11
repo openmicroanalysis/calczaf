@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/10/21	Modify code to also add "tails" to LDE/PC crystals.
+
+08/09/21	Add code to create "polygonization" tails in WDS spectrum simulations to better simulate spectral interferences.
+		This new code requires an update to the Penepma files using the Help | Update menus in either PFE or CalcZAF.
+		Without the Penepma update the WDS simulation will still run, but no "polygonization" tail artifacts will be added
+		to the WDS spectra.
+
 07/20/21	Add Aurelien Moy code for Droop method for amphiboles (still testing).
 v. 12.9.7
 		Add font size control to image display dialog (Rom).

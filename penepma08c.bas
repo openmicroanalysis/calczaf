@@ -165,6 +165,7 @@ Sub Penepma08RunConvolgEXE(mode As Integer)
 '  mode = 2  use WDS PET resolution (~2 eV)
 '  mode = 3  use WDS TAP resolution (~8 eV)
 '  mode = 4  use WDS LDE resolution (~20 eV)
+'  mode = 5  use WDS resolution 1eV for polygonization simulation
 
 ierror = False
 On Error GoTo Penepma08RunConvolgEXEError
@@ -178,7 +179,7 @@ If PENEPMA_SPEC_File$ = vbNullString Then GoTo Penepma08RunConvolgEXENotSpecifie
 If Dir$(PENEPMA_SPEC_File$) = vbNullString Then Exit Sub
 
 ' Check for valid mode
-If mode% < 0 Or mode > 4 Then GoTo Penepma08RunConvolgEXEBadMode
+If mode% < 0 Or mode > 5 Then GoTo Penepma08RunConvolgEXEBadMode
 
 ' Check for blank convolg output file name
 If Trim$(PENEPMA_CONVOLG_File$) = vbNullString Then GoTo Penepma08RunConvolgEXENoConvolgFilename
@@ -220,6 +221,9 @@ If Dir$(PENEPMA_Path$ & "\Convolg_TAP.exe") = vbNullString Then GoTo Penepma08Ru
 ElseIf mode% = 4 Then
 astring$ = "convolg_LDE.exe < " & "convolg.in"
 If Dir$(PENEPMA_Path$ & "\Convolg_LDE.exe") = vbNullString Then GoTo Penepma08RunConvolgEXENotFound
+ElseIf mode% = 5 Then
+astring$ = "convolg.exe < " & "convolg.in"
+If Dir$(PENEPMA_Path$ & "\Convolg.exe") = vbNullString Then GoTo Penepma08RunConvolgEXENotFound
 End If
 Print #tfilenumber%, astring$
 Close #tfilenumber%
@@ -292,6 +296,7 @@ Sub Penepma08CreateConvolgFile(mode As Integer)
 '  mode = 2  use WDS PET resolution (~6 eV)
 '  mode = 3  use WDS TAP resolution (~8 eV)
 '  mode = 4  use WDS LDE resolution (~20 eV)
+'  mode = 5  use WDS resolution but for EDS simulation (polygonization)
 
 ierror = False
 On Error GoTo Penepma08CreateConvolgFileError
@@ -308,6 +313,8 @@ Open tfilename$ For Output As #tfilenumber%
 Print #tfilenumber%, MiscGetFileNameOnly$(PENEPMA_SPEC_File$)
 If mode% = 0 Then
 Print #tfilenumber%, Format$(DEMO_EDS_EVPERCHANNEL!)        ' always assume 20 eV per channel for EDS (0 to 20 keV range)
+ElseIf mode% = 5 Then
+Print #tfilenumber%, Format$(DEMO_WDS_EVPERCHANNEL!)        ' always assume 1 eV per channel for WDS polygonization simulation
 Else
 Print #tfilenumber%, Format$(DEMO_WDS_EVPERCHANNEL!)        ' always assume 1 eV per channel for WDS (range can vary depending on simulation!)
 End If

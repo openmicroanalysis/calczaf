@@ -304,7 +304,7 @@ Begin VB.Form FormZAFOPT
             Index           =   0
             Left            =   240
             TabIndex        =   56
-            ToolTipText     =   "Select Droop option. Use Mineral for simple minerals."
+            ToolTipText     =   "Select Droop option. Use Mineral for simple minerals, e.g. Fe-Ti oxides, etc."
             Top             =   120
             Value           =   -1  'True
             Width           =   975
@@ -790,6 +790,17 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
 If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
+End Sub
+
+Private Sub OptionFerrousFerricOption_Click(Index As Integer)
+If Not DebugMode Then On Error Resume Next
+If FormZAFOPT.OptionFerrousFerricOption(1).Value = True Then
+FormZAFOPT.TextFerrousFerricTotalCations.Text = Format$(15)
+FormZAFOPT.TextFerrousFerricTotalOxygens.Text = Format$(23)
+ElseIf FormZAFOPT.OptionFerrousFerricOption(2).Value = True Then
+FormZAFOPT.TextFerrousFerricTotalCations.Text = Format$(13)
+FormZAFOPT.TextFerrousFerricTotalOxygens.Text = Format$(23)
+End If
 End Sub
 
 Private Sub OptionOxide_Click()
