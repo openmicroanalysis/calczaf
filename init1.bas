@@ -5847,6 +5847,20 @@ End
 End If
 Next i%
 
+' Now load default StageBitMapIndex
+lpAppName$ = "Standards"
+lpKeyName$ = "StageBitMapIndex"
+nDefault& = 1
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+StageBitMapIndex% = valid&
+If StageBitMapIndex% < 1 Or StageBitMapIndex% > MAXBITMAP% Then
+msg$ = "StageBitMapIndex keyword value is out of range in " & tfilename$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIStageBitmaps"
+StageBitMapIndex% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors
