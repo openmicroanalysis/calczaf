@@ -2181,9 +2181,9 @@ Dim tmsg As String, astring As String
 
 Static initialized As Boolean
 
-' Penepma WDS simulation mode
-UsePenepmaSimulationForDemoMode = True
-'UsePenepmaSimulationForDemoMode = False     ' default
+' Penepma WDS simulation mode (can be modified by user in Acquire! | Acquisition Options dialog- FormGETOPT)
+UsePenepmaSimulationForDemoMode = True          ' use Penepma simulation for modeling of secondary emission lines (interferences, etc.)
+'UsePenepmaSimulationForDemoMode = False         ' use for basic WDS intensity simulation (e.g, to simulate TDI effects)
 
 ' Program version number
 ProgramVersionString$ = Format$(app.major) & "." & Format$(app.minor) & "." & Format$(app.Revision)

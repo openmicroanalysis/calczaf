@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/20/21	Add note to tooltip help in GetOpt form to remind users that for TDI simulation, uncheck the Use Penepma 
+		Intensity calculation checkbox.
+
+08/18/21	Modify DemoWDS code to improve background curvature for LDE/PC Bragg crystals.
+
 08/13/21	Modify loading of standard images from BMP files stored in StandardPOSDirectory (fix bug that was not loading 
 		multiple images with same standard number). Add code to load stanbdard images during confirm dialog (von der Handt).
 		
