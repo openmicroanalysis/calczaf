@@ -239,7 +239,7 @@ astring$ = sample(1).Description$
 astring$ = Replace$(astring$, vbCrLf, VbComma$)
 Print #EMSASpectrumFileNumber%, "#COMMENT     : " & Left$(Trim$(astring$), 64)
 
-Print #EMSASpectrumFileNumber%, "#DATE        : " & Day(Now) & "-" & monthsyms$(Month(Now)) & "-" & Year(Now)
+Print #EMSASpectrumFileNumber%, "#DATE        : " & Day(Now) & "-" & MonthSyms$(Month(Now)) & "-" & Year(Now)
 Print #EMSASpectrumFileNumber%, "#TIME        : " & Hour(Now) & ":" & Minute(Now)
 
 ' Write the EPMA and EDS interface types
@@ -369,7 +369,7 @@ Print #EMSASpectrumFileNumber%, "#SPECTRUM    : "
 If mode% = 0 Then
 For n% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)
 temp1! = sample(1).EDSSpectraIntensities&(datarow%, n%) / sample(1).EDSSpectraLiveTime!(datarow%)
-Print #EMSASpectrumFileNumber%, MiscAutoFormat$(temp1!) & VbComma$
+Print #EMSASpectrumFileNumber%, MiscAutoFormat$(temp1!)
 Next n%
 End If
 

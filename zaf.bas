@@ -1701,6 +1701,15 @@ If zaf.krat!(i%) = 0# Then zaf.krat!(i%) = NOT_ANALYZED_VALUE_SINGLE! / 100#
 zaf.ksum! = zaf.ksum! + zaf.krat!(i%)
 Next i%
 
+' Add in element relative to another element
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) = 17 Then
+zaf.krat!(i%) = zaf.krat!(ipp%) / zaf.atwts!(ipp%)
+zaf.krat!(i%) = zaf.krat!(i%) * sample(1).RelativeRatio! * zaf.atwts!(i%)
+zaf.ksum! = zaf.ksum! + zaf.krat!(i%)
+End If
+Next i%
+
 ' Add in stoichiometric element (oxygen)
 If zaf.il%(zaf.in0%) = 0 Then
 zaf.krat!(zaf.in0%) = 0#
@@ -1718,20 +1727,6 @@ zaf.ksum! = zaf.ksum! + zaf.krat!(i%) + zaf.krat!(i%) * zaf.p1!(i%)
 End If
 Next i%
 End If
-
-' Add in element relative to another element
-For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 17 Then
-zaf.krat!(i%) = zaf.krat!(ipp%) / zaf.atwts!(ipp%)
-zaf.krat!(i%) = zaf.krat!(i%) * sample(1).RelativeRatio! * zaf.atwts!(i%)
-If zaf.il%(zaf.in0%) = 0 Then   ' if calculating oxygen by stoichiometry
-zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) + zaf.krat!(i%) * zaf.p1!(i%)
-zaf.ksum! = zaf.ksum! + zaf.krat!(i%) + zaf.krat!(i%) * zaf.p1!(i%)
-Else
-zaf.ksum! = zaf.ksum! + zaf.krat!(i%)
-End If
-End If
-Next i%
 
 ' Add in hydrogen by stoichiometry to excess oxygen
 For i% = 1 To zaf.in1%
@@ -1912,6 +1907,16 @@ zaf.ksum! = zaf.ksum! + r1!(i%)
 End If
 Next i%
 
+' Calculate element relative to another element (moved from below to handle if element by stoichiometry to another element is a halogen, per Locock)
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) = 17 Then
+r1!(i%) = r1!(ipp%) / zaf.atwts!(ipp%)
+r1!(i%) = r1!(i%) * sample(1).RelativeRatio! * zaf.atwts!(i%)
+zaf.ksum! = zaf.ksum! + r1!(i%)
+zaf.krat!(i%) = r1!(i%)
+End If
+Next i%
+
 ' Calculate element relative to stoichiometric oxygen based on previous iteration calculation of oxygen
 If zaf.il%(zaf.in0%) = 0 Then    ' if calculating oxygen by stoichiometry
 For i% = 1 To zaf.in1%
@@ -1945,21 +1950,6 @@ End If
 ' Add to sum
 zaf.ksum! = zaf.ksum! + r1!(zaf.in0%)
 End If
-
-' Calculate element relative to another element
-For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 17 Then
-r1!(i%) = r1!(ipp%) / zaf.atwts!(ipp%)
-r1!(i%) = r1!(i%) * sample(1).RelativeRatio! * zaf.atwts!(i%)
-If zaf.il%(zaf.in0%) = 0 Then   ' if calculating oxygen by stoichiometry
-r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
-zaf.ksum! = zaf.ksum! + r1!(i%) + r1!(i%) * zaf.p1!(i%)
-Else
-zaf.ksum! = zaf.ksum! + r1!(i%)
-End If
-zaf.krat!(i%) = r1!(i%)
-End If
-Next i%
 
 ' Calculate hydrogen by stoichiometry to excess oxygen (function ZAFConvertExcessOxygenToHydrogen checks ForceNegativeKratiosToZeroFlag for negative excess oxygen)
 For i% = 1 To zaf.in1%

@@ -604,7 +604,7 @@ End If
 If sample(1).LastElm% > 0 And UseDetailedFlag Then
 msg$ = vbCrLf & "Last (Current) On and Off Peak Count Times: "
 If sample(1).Type% = 2 And ProbeDataFileVersionNumber! > 2.44 Then
-If MiscIsDifferent2(sample(1).LastElm%, sample(1).LastMaxCounts&()) Or DebugMode Then
+If (sample(1).LastElm% > 1 And MiscIsDifferent2(sample(1).LastElm%, sample(1).LastMaxCounts&())) Or DebugMode Then
 msg$ = msg$ & "(" & VbDquote$ & DASHED4$ & VbDquote$ & " indicates default max count)"
 End If
 End If
@@ -637,7 +637,7 @@ If sample(1).Type% <> 3 Then
 msg$ = "BGD:  "
 For i% = ii% To jj%
 If sample(1).CrystalNames$(i%) <> EDS_CRYSTAL$ Then
-msg$ = msg$ & Format$(bgdtypestrings$(sample(1).BackgroundTypes%(i%)), a80$)
+msg$ = msg$ & Format$(BgdTypeStrings$(sample(1).BackgroundTypes%(i%)), a80$)
 Else
 msg$ = msg$ & Format$(EDS_CRYSTAL$, a80$) ' special treatment for EDS spectrum data
 End If
@@ -654,7 +654,7 @@ msg$ = msg$ & Format$("INT", a80$)
 Else
 If sample(1).BackgroundTypes%(i%) <> 1 Then  ' 0=off-peak, 1=MAN, 2=multipoint
 If sample(1).CrystalNames$(i%) <> EDS_CRYSTAL$ Then
-msg$ = msg$ & Format$(bgstrings$(sample(1).OffPeakCorrectionTypes%(i%)), a80$)  ' 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point
+msg$ = msg$ & Format$(BgStrings$(sample(1).OffPeakCorrectionTypes%(i%)), a80$)  ' 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point
 Else
 msg$ = msg$ & Format$(EDS_CRYSTAL$, a80$)
 End If
@@ -883,7 +883,7 @@ End If
 End If
 
 If sample(1).Type% = 2 And ProbeDataFileVersionNumber! > 4# Then
-If MiscIsDifferent2(sample(1).LastElm%, sample(1).LastMaxCounts&()) Or DebugMode Then
+If (sample(1).LastElm% > 1 And MiscIsDifferent2(sample(1).LastElm%, sample(1).LastMaxCounts&())) Or DebugMode Then
 msg$ = "MAXCNT"
 For i% = ii% To jj%
 If sample(1).LastMaxCounts&(i%) = MAXCOUNT& Then

@@ -2,6 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/26/21	Found problem with moving element by stoichiometry to another element code. Now works for
+		element by stoichiometry to another element whether that element is a halogen or not (Locock).
+
+08/25/21	Removed previous modification for halogen-oxygen correction because it causes a problem
+		for other elements by calculation. Working with Locock and Moy on the issue.
+
+08/22/21	Modify ZAFSmp to calculate element relative to another element *before* oxygen by stocichiometry and 
+		halogen-oxygen correction calculations in case element by stoichiometry to another element is a 
+		halogen (Locock).
+
 08/20/21	Add note to tooltip help in GetOpt form to remind users that for TDI simulation, uncheck the Use Penepma 
 		Intensity calculation checkbox.
 
