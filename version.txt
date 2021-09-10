@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/09/21	Create new move stage increment code for moving XY axes together.
+
+09/01/21	Modify Load standard image code during Confirm dialog.
+
+		Modify stage increment code during wavescan/peakscan (Boroughs).
+
 08/26/21	Found problem with moving element by stoichiometry to another element code. Now works for
 		element by stoichiometry to another element whether that element is a halogen or not (Locock).
 

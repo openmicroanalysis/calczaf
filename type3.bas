@@ -604,7 +604,7 @@ End If
 If sample(1).LastElm% > 0 And UseDetailedFlag Then
 msg$ = vbCrLf & "Last (Current) On and Off Peak Count Times: "
 If sample(1).Type% = 2 And ProbeDataFileVersionNumber! > 2.44 Then
-If (sample(1).LastElm% > 1 And MiscIsDifferent2(sample(1).LastElm%, sample(1).LastMaxCounts&())) Or DebugMode Then
+If MiscIsDifferent2(sample(1).LastElm%, sample(1).LastMaxCounts&()) Or DebugMode Then
 msg$ = msg$ & "(" & VbDquote$ & DASHED4$ & VbDquote$ & " indicates default max count)"
 End If
 End If
@@ -883,7 +883,7 @@ End If
 End If
 
 If sample(1).Type% = 2 And ProbeDataFileVersionNumber! > 4# Then
-If (sample(1).LastElm% > 1 And MiscIsDifferent2(sample(1).LastElm%, sample(1).LastMaxCounts&())) Or DebugMode Then
+If MiscIsDifferent2(sample(1).LastElm%, sample(1).LastMaxCounts&()) Or DebugMode Then
 msg$ = "MAXCNT"
 For i% = ii% To jj%
 If sample(1).LastMaxCounts&(i%) = MAXCOUNT& Then
