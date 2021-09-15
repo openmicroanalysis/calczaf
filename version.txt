@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/14/21	Add warnings to Droop amphiobole recalculation code because under development by Moy (Locock).
+
+		Fix problem with copying off-peak files when converting TDI PrbImg files in CalcImage. Fix
+		new project code in CalcImage to load TDI image before off-peaks in case more than one spectro 
+		pass is utilized.
+
 09/09/21	Create new move stage increment code for moving XY axes together.
 
 09/01/21	Modify Load standard image code during Confirm dialog.
@@ -14,17 +20,17 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 08/25/21	Removed previous modification for halogen-oxygen correction because it causes a problem
 		for other elements by calculation. Working with Locock and Moy on the issue.
 
-08/22/21	Modify ZAFSmp to calculate element relative to another element *before* oxygen by stocichiometry and 
+08/22/21	Modify ZAFSmp to calculate element relative to another element *before* oxygen by stoichiometry and 
 		halogen-oxygen correction calculations in case element by stoichiometry to another element is a 
 		halogen (Locock).
 
-08/20/21	Add note to tooltip help in GetOpt form to remind users that for TDI simulation, uncheck the Use Penepma 
+08/20/21	Add note to tool tip help in GetOpt form to remind users that for TDI simulation, uncheck the Use Penepma 
 		Intensity calculation checkbox.
 
 08/18/21	Modify DemoWDS code to improve background curvature for LDE/PC Bragg crystals.
 
 08/13/21	Modify loading of standard images from BMP files stored in StandardPOSDirectory (fix bug that was not loading 
-		multiple images with same standard number). Add code to load stanbdard images during confirm dialog (von der Handt).
+		multiple images with same standard number). Add code to load standard images during confirm dialog (von der Handt).
 		
 		Add new keyword to Probewin.ini to specify which WMF image file to load as default when StageMap form loads.
 
@@ -118,7 +124,7 @@ v. 12.9.3
 12/16/20	Add more file read error information in TestFid app.
 
 12/15/20	Modify search/remove shared bgd source code to handle high/low only off-peak fit 
-		types (Williams).   Also preserves original off-peak fit type when clearing shared bdgs.
+		types (Williams).   Also preserves original off-peak fit type when clearing shared bgds.
 
 12/12/20	Modify PAP stopping power code to better handle Ln, Ll, Ln, Lg lines, etc (Moy).
 v. 12.9.2
@@ -126,16 +132,16 @@ v. 12.9.2
 12/10/20	Modify shared background search code to exclude high off-peaks if low only, and exclude low off-peaks if 
 		high only (Williams and Jercinovic).
 
-12/08/20	Modify AcquireDoWavescan code to improve handing of disabled elements in combined condiiton samples. 
+12/08/20	Modify AcquireDoWavescan code to improve handing of disabled elements in combined condition samples. 
 
 12/05/20	Modify AcquireDoCondition code to handle when all elements in a condition are disabled for acquisition (Poirier).
 v. 12.9.1
 		Change stageflag variable to orientationflag and modify comments to avoid confusion in CalcImage source code..
 		
-		Modify ConvertToPrbImg code to specifiy "AntiCartesian" or "Cartesian" for JEOL stage vs. beam scan acquisitions
-		in coverted PrbImg files.
+		Modify ConvertToPrbImg code to specify "AntiCartesian" or "Cartesian" for JEOL stage vs. beam scan acquisitions
+		in converted PrbImg files.
 		
-		Modify AcquireDoSample code to improve handimng of disabled elements in combined condition samples (Poirier). 
+		Modify AcquireDoSample code to improve handling of disabled elements in combined condition samples (Poirier). 
 
 12/02/20	Improve accuracy of mag recalculation in align and crop for beam scans.
 
@@ -146,7 +152,7 @@ v. 12.9.1
 11/26/20	Modify code to allow bias scan acquisition displayed range to start at actual start for bias and gain scans if
 		DisplayFullScanRangeForAcquisitionFlag=1 (von der Handt).
 
-11/24/20	Modify Model Backgrounds code to utilize current zoom for centroid fit. Modify button name and tooltip help
+11/24/20	Modify Model Backgrounds code to utilize current zoom for centroid fit. Modify button name and tool tip help
 v. 12.9.0		for DAT files in Standard Penepma GUI batch form.
 
 10/23/20	Add additional error trapping for filenames and image dimensions for align and crop code (Poeml).
@@ -156,7 +162,7 @@ v. 12.9.0		for DAT files in Standard Penepma GUI batch form.
 10/16/20	Fix minor display bug in Assign MAN Fits regarding Z fraction calculations flag (Neill).
 
 10/10/20	Add code to handle creating multiple (nested) directories for PFE sub folders. Modify InitUserDataDirectory code
-		to place all PFE specific user files in UserData\PFE subfolders.
+		to place all PFE specific user files in UserData\PFE sub folders.
 
 09/28/20	Fix initialization issue with GeologicalSortOrderFlag (von der Handt).
 
