@@ -198,6 +198,15 @@ Dim StdFormulaFlags As New Field
 Dim StdFormulaRatios As New Field
 Dim StdFormulaElements As New Field
 
+Dim CLSpectraWavelengths As New Field
+Dim CLSpectraIntensityDark As New Field
+
+Dim MemoText As New TableDef
+Dim MemoTextField As New Field
+Dim MemoTextIndex As New Index      ' text memo index (to sample row numbers)
+
+Dim StdMountNames As New Field
+
 ImportDataFile$ = vbNullString
 ExportDataFile$ = vbNullString
 
@@ -510,6 +519,38 @@ StdFormulaElements.Type = dbText
 StdFormulaElements.Size = DbTextElementStringLength%
 StdFormulaElements.AllowZeroLength = True
 StDb.TableDefs("Standard").Fields.Append StdFormulaElements
+
+' Add CL spectra wavelength (nanometers and dark intensities) field to CL Spectra table
+CLSpectraWavelengths.Name = "CLSpectraNanometers"
+CLSpectraWavelengths.Type = dbSingle
+StDb.TableDefs("CLSpectra").Fields.Append CLSpectraWavelengths
+
+CLSpectraIntensityDark.Name = "CLSpectraIntensityDark"
+CLSpectraIntensityDark.Type = dbSingle
+StDb.TableDefs("CLSpectra").Fields.Append CLSpectraIntensityDark
+
+' Specify the standard database table "MemoText" table
+Set MemoText = StDb.CreateTableDef("NewTableDef")
+MemoText.Name = "MemoText"
+
+With MemoText
+.Fields.Append .CreateField("MemoTextToNumber", dbInteger)        ' points back to Standard table/Numbers field
+.Fields.Append .CreateField("MemoTextField", dbMemo, DbTextMemoStringLength&)
+.Fields("MemoTextField").AllowZeroLength = True
+End With
+
+MemoTextIndex.Name = "Text Memo Numbers"
+MemoTextIndex.Fields = "MemoTextToNumber"                           ' index to pointer to standard numbers
+MemoTextIndex.Primary = False
+MemoText.Indexes.Append MemoTextIndex
+StDb.TableDefs.Append MemoText
+
+' Add mount name(s) to standard table
+StdMountNames.Name = "MountNames"
+StdMountNames.Type = dbText
+StdMountNames.Size = DbTextDescriptionLength%
+StdMountNames.AllowZeroLength = True
+StDb.TableDefs("Standard").Fields.Append StdMountNames
 
 Call TransactionCommit("StandardOpenNewFile", StandardDataFile$)
 If ierror Then Exit Sub

@@ -45,6 +45,7 @@ StandardIndexNames$(NumberOfAvailableStandards%) = Trim$(vbNullString & stds("Na
 StandardIndexDescriptions$(NumberOfAvailableStandards%) = Trim$(vbNullString & stds("Descriptions"))
 StandardIndexDensities!(NumberOfAvailableStandards%) = stds("Densities")
 StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = Trim$(vbNullString & stds("MaterialTypes"))
+StandardIndexMountNames$(NumberOfAvailableStandards%) = Trim$(vbNullString & stds("MountNames"))
 
 stds.MoveNext
 Loop
@@ -128,6 +129,7 @@ sample(1).Description$ = Trim$(vbNullString & StDt("Descriptions"))
 sample(1).DisplayAsOxideFlag% = StDt("DisplayAsOxideFlags")
 sample(1).SampleDensity! = StDt("Densities")
 sample(1).MaterialType$ = Trim$(vbNullString & StDt("MaterialTypes"))
+sample(1).MountNames$ = Trim$(vbNullString & StDt("MountNames"))
 
 sample(1).FormulaElementFlag = StDt("FormulaFlags")
 sample(1).FormulaRatio! = Val(StDt("FormulaRatios"))
@@ -682,6 +684,7 @@ StDt("Descriptions") = Left$(sample(1).Description$, DbTextDescriptionLength%)
 StDt("DisplayAsOxideFlags") = sample(1).DisplayAsOxideFlag%
 StDt("Densities") = sample(1).SampleDensity!
 StDt("MaterialTypes") = Left$(sample(1).MaterialType$, DbTextNameLength%)
+StDt("MountNames") = Left$(sample(1).MountNames$, DbTextDescriptionLength%)
 
 StDt("FormulaFlags") = sample(1).FormulaElementFlag
 StDt("FormulaRatios") = sample(1).FormulaRatio!
@@ -788,6 +791,7 @@ tmsg$ = tmsg$ & vbCrLf & "TakeOff = " & Format$(Format$(sample(1).takeoff!, f41$
 tmsg$ = tmsg$ & "  KiloVolt = " & Format$(Format$(sample(1).kilovolts!, f41$), a40$)
 tmsg$ = tmsg$ & "  Density = " & Format$(Format$(sample(1).SampleDensity!, f63$), a60$)
 If Trim$(sample(1).MaterialType$) <> vbNullString Then tmsg$ = tmsg$ & "  Type = " & sample(1).MaterialType$
+If Trim$(sample(1).MountNames$) <> vbNullString Then tmsg$ = tmsg$ & "  Mount = " & sample(1).MountNames$
 
 ' Add sample description field
 If sample(1).Description$ <> vbNullString Then
@@ -1064,10 +1068,13 @@ Dim StdFormulaRatios As New Field
 Dim StdFormulaElements As New Field
 
 Dim CLSpectraWavelengths As New Field
+Dim CLSpectraIntensityDark As New Field
 
 Dim MemoText As New TableDef
 Dim MemoTextField As New Field
 Dim MemoTextIndex As New Index      ' text memo index (to sample row numbers)
+
+Dim StdMountNames As New Field
 
 ' Check for valid file name
 If Trim$(tfilename$) = vbNullString Then
@@ -1357,6 +1364,26 @@ MemoTextIndex.Fields = "MemoTextToNumber"                           ' index to p
 MemoTextIndex.Primary = False
 MemoText.Indexes.Append MemoTextIndex
 StDb.TableDefs.Append MemoText
+
+updated = True
+End If
+
+' Add *missing* CL feild and new standard mount field
+If versionnumber! < 12.98 Then
+
+' Add "missing" CL dark intensity field only if it is missing (missing in some standard databases somehow?)
+On Error Resume Next
+CLSpectraIntensityDark.Name = "CLSpectraIntensityDark"
+CLSpectraIntensityDark.Type = dbSingle
+StDb.TableDefs("CLSpectra").Fields.Append CLSpectraIntensityDark
+On Error GoTo StandardUpdateMDBFileError
+
+' Add mount name(s) to standard table
+StdMountNames.Name = "MountNames"
+StdMountNames.Type = dbText
+StdMountNames.Size = DbTextDescriptionLength%
+StdMountNames.AllowZeroLength = True
+StDb.TableDefs("Standard").Fields.Append StdMountNames
 
 updated = True
 End If

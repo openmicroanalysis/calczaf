@@ -109,6 +109,7 @@ GetCmpTmpSample(1).SampleDensity! = Val(FormGETCMP.TextDensity.Text)
 
 ' Save material type (text string)
 GetCmpTmpSample(1).MaterialType$ = Trim$(FormGETCMP.TextMaterialType.Text)
+GetCmpTmpSample(1).MountNames$ = Trim$(FormGETCMP.TextMountNames.Text)
 
 ' New code to save formula options (06/15/2017)
 If FormGETCMP.ComboFormula.ListCount > 0 Then
@@ -195,6 +196,7 @@ GetCmpOldSample(1).OxideOrElemental% = GetCmpTmpSample(1).OxideOrElemental%
 GetCmpOldSample(1).SampleDensity! = GetCmpTmpSample(1).SampleDensity!
 
 GetCmpOldSample(1).MaterialType$ = GetCmpTmpSample(1).MaterialType$
+GetCmpOldSample(1).MountNames$ = GetCmpTmpSample(1).MountNames$
 
 GetCmpOldSample(1).FormulaElementFlag = GetCmpTmpSample(1).FormulaElementFlag
 GetCmpOldSample(1).FormulaRatio! = GetCmpTmpSample(1).FormulaRatio!
@@ -908,6 +910,7 @@ FormGETCMP.TextName.Text = GetCmpTmpSample(1).Name$
 FormGETCMP.TextDensity.Text = MiscAutoFormat$(GetCmpTmpSample(1).SampleDensity!)
 
 FormGETCMP.TextMaterialType.Text = Trim$(GetCmpTmpSample(1).MaterialType$)
+FormGETCMP.TextMountNames.Text = Trim(GetCmpTmpSample(1).MountNames$)
 
 ' Load formula calculation controls (new code 06/15/2017)
 FormGETCMP.ComboFormula.Clear

@@ -123,7 +123,8 @@ StandardIndexNumbers%(NumberOfAvailableStandards%) = StandardTmpSample(1).number
 StandardIndexNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).Name$
 StandardIndexDescriptions$(NumberOfAvailableStandards%) = StandardTmpSample(1).Description$
 StandardIndexDensities!(NumberOfAvailableStandards%) = StandardTmpSample(1).SampleDensity!
-StandardIndexMaterialTypes(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
+StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
+StandardIndexMountNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).MountNames$
 End If
 
 Loop
@@ -874,6 +875,7 @@ StandardIndexNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).Name$
 StandardIndexDescriptions$(NumberOfAvailableStandards%) = StandardTmpSample(1).Description$
 StandardIndexDensities!(NumberOfAvailableStandards%) = StandardTmpSample(1).SampleDensity!
 StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
+StandardIndexMountNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).MountNames$
 End If
 
 End If
@@ -980,6 +982,7 @@ StandardIndexNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).Name$
 StandardIndexDescriptions$(NumberOfAvailableStandards%) = StandardTmpSample(1).Description$
 StandardIndexDensities!(NumberOfAvailableStandards%) = StandardTmpSample(1).SampleDensity!
 StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
+StandardIndexMountNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).MountNames$
 End If
 
 ' Close the import file
@@ -1137,6 +1140,7 @@ StandardIndexNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).Name$
 StandardIndexDescriptions$(NumberOfAvailableStandards%) = StandardTmpSample(1).Description$
 StandardIndexDensities!(NumberOfAvailableStandards%) = StandardTmpSample(1).SampleDensity!
 StandardIndexMaterialTypes$(NumberOfAvailableStandards%) = StandardTmpSample(1).MaterialType$
+StandardIndexMountNames$(NumberOfAvailableStandards%) = StandardTmpSample(1).MountNames$
 End If
 
 ' Close the import file

@@ -1152,6 +1152,8 @@ Type TypeSample
     FerrousFerricTotalOxygens As Single               ' total number of oxygens in the ferrous/ferric mineral
     
     FerrousFerricOption As Integer                    ' new Droop option for amphiboles (Moy)
+    
+    MountNames As String                              ' for standard database only (comma delimited string containing standard mounts with this standard)
 End Type
 
 Type TypeImage
@@ -1450,6 +1452,7 @@ Global StandardIndexNames(1 To MAXINDEX%) As String
 Global StandardIndexDescriptions(1 To MAXINDEX%) As String
 Global StandardIndexDensities(1 To MAXINDEX%) As Single
 Global StandardIndexMaterialTypes(1 To MAXINDEX%) As String
+Global StandardIndexMountNames(1 To MAXINDEX%) As String        ' comma delimited string containing standard mounts with this standard
 
 ' Global variables
 Global FileViewer As String

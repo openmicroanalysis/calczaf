@@ -651,6 +651,7 @@ StandardIndexNames$(i%) = vbNullString
 StandardIndexDescriptions$(i%) = vbNullString
 StandardIndexDensities!(i%) = 0#
 StandardIndexMaterialTypes$(i%) = vbNullString
+StandardIndexMountNames$(i%) = vbNullString
 Next i%
 
 Exit Sub

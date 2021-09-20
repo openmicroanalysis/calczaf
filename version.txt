@@ -2,7 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-09/14/21	Add warnings to Droop amphiobole recalculation code because under development by Moy (Locock).
+09/18/21	Add <alt> for small adjustments to Model Background dialog for polynomial fits. Add "interactive" Help button
+v. 12.9.8	for Calculate Detection Limits and Sensitivity option in Calculation Options.
+
+		Add new standard database field for standard mount name(s) (Seward).
+
+09/14/21	Add warnings to Droop amphibole recalculation code because under development by Moy (Locock).
 
 		Fix problem with copying off-peak files when converting TDI PrbImg files in CalcImage. Fix
 		new project code in CalcImage to load TDI image before off-peaks in case more than one spectro 

@@ -571,3 +571,41 @@ Exit Sub
 
 End Sub
 
+Sub AddStdMountNamesFilter()
+' Filter the available standard list based on the standard mount name entered
+
+ierror = False
+On Error GoTo AddStdMountNamesFilterError
+
+Dim n As Integer, ip As Integer
+Dim mstring As String
+
+' Load mount name (assume only one standard mount entered at a time)
+mstring$ = Trim$(FormADDSTD.TextMountNames.Text)
+
+' Check if any characters entered. If not, load all standards and exit
+If mstring$ = vbNullString Then
+Call StandardLoadList(FormADDSTD.ListAvailableStandards)
+If ierror Then Exit Sub
+Exit Sub
+End If
+
+' Load available list based on mount name string entered by user
+FormADDSTD.ListAvailableStandards.Clear
+For n% = 1 To NumberOfAvailableStandards%
+If InStr(UCase$(StandardIndexMountNames$(n%)), UCase$(mstring$)) Then
+FormADDSTD.ListAvailableStandards.AddItem StandardGetString$(n%)
+FormADDSTD.ListAvailableStandards.ItemData(FormADDSTD.ListAvailableStandards.NewIndex) = StandardIndexNumbers%(n%)
+End If
+Next n%
+
+Exit Sub
+
+' Errors
+AddStdMountNamesFilterError:
+MsgBox Error$, vbOKOnly + vbCritical, "AddStdMountNamesFilter"
+ierror = True
+Exit Sub
+
+End Sub
+

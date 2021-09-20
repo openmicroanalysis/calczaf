@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormADDSTD 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Add Standards to Run"
-   ClientHeight    =   5865
+   ClientHeight    =   6375
    ClientLeft      =   330
    ClientTop       =   1575
    ClientWidth     =   10440
@@ -21,8 +21,16 @@ Begin VB.Form FormADDSTD
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   5865
+   ScaleHeight     =   6375
    ScaleWidth      =   10440
+   Begin VB.TextBox TextMountNames 
+      Height          =   285
+      Left            =   6840
+      TabIndex        =   38
+      ToolTipText     =   "Enter a few characters in the standard mount name to filter the available standard list"
+      Top             =   6000
+      Width           =   3375
+   End
    Begin VB.CommandButton CommandLoadFromPOS 
       Caption         =   "Load POS"
       Height          =   375
@@ -524,9 +532,32 @@ Begin VB.Form FormADDSTD
       Top             =   3240
       Width           =   1215
    End
+   Begin VB.Label Label6 
+      Caption         =   "Enter name of standard mount to list only those standards in that standard mount"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   39
+      Top             =   6000
+      Width           =   6135
+   End
+   Begin VB.Line Line2 
+      X1              =   120
+      X2              =   10320
+      Y1              =   5880
+      Y2              =   5880
+   End
    Begin VB.Line Line1 
       X1              =   120
-      X2              =   10200
+      X2              =   10320
       Y1              =   4320
       Y2              =   4320
    End
@@ -705,6 +736,12 @@ Private Sub ListCurrentStandards_DblClick()
 ' Remove the selected standard to the run
 If Not DebugMode Then On Error Resume Next
 Call AddStdRemove
+If ierror Then Exit Sub
+End Sub
+
+Private Sub TextMountNames_Change()
+If Not DebugMode Then On Error Resume Next
+Call AddStdMountNamesFilter
 If ierror Then Exit Sub
 End Sub
 

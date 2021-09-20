@@ -4,7 +4,7 @@ Begin VB.Form FormGETCMP
    Appearance      =   0  'Flat
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Standard Composition"
-   ClientHeight    =   9705
+   ClientHeight    =   10395
    ClientLeft      =   1545
    ClientTop       =   1245
    ClientWidth     =   9840
@@ -23,8 +23,16 @@ Begin VB.Form FormGETCMP
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   9705
+   ScaleHeight     =   10395
    ScaleWidth      =   9840
+   Begin VB.TextBox TextMountNames 
+      Height          =   285
+      Left            =   5040
+      TabIndex        =   51
+      ToolTipText     =   "Enter standard mount name(s) this standard is contained in (for filtering the standard list in Add/Remove Standards)"
+      Top             =   8280
+      Width           =   4695
+   End
    Begin VB.CommandButton CommandMemoText 
       Caption         =   "Memo Text"
       Height          =   375
@@ -44,7 +52,7 @@ Begin VB.Form FormGETCMP
       TabIndex        =   21
       TabStop         =   0   'False
       ToolTipText     =   "Enter the standard composition as a formula (e.g., Fe2SiO4 or MgCaSi2O6)"
-      Top             =   6600
+      Top             =   6720
       Width           =   4695
    End
    Begin VB.ComboBox ComboFormula 
@@ -55,7 +63,7 @@ Begin VB.Form FormGETCMP
       TabIndex        =   47
       TabStop         =   0   'False
       ToolTipText     =   $"GETCMP.frx":0000
-      Top             =   7080
+      Top             =   7320
       Width           =   735
    End
    Begin VB.TextBox TextFormula 
@@ -64,7 +72,7 @@ Begin VB.Form FormGETCMP
       TabIndex        =   46
       TabStop         =   0   'False
       ToolTipText     =   "Number of atoms for the formula basis"
-      Top             =   7080
+      Top             =   7320
       Width           =   615
    End
    Begin VB.CheckBox CheckFormula 
@@ -83,16 +91,25 @@ Begin VB.Form FormGETCMP
       TabIndex        =   45
       TabStop         =   0   'False
       ToolTipText     =   "Perform a formula atom calculation"
-      Top             =   7080
+      Top             =   7320
       Width           =   2655
    End
    Begin VB.TextBox TextMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   285
-      Left            =   240
+      Left            =   120
       TabIndex        =   5
       ToolTipText     =   "Enter an optional material type description for this standard (for filtering the standard list in Add/Remove Standards)"
-      Top             =   7680
-      Width           =   5175
+      Top             =   8280
+      Width           =   4815
    End
    Begin VB.CommandButton CommandDeleteCLSpectrum 
       Caption         =   "Delete CL Spectrum"
@@ -100,7 +117,7 @@ Begin VB.Form FormGETCMP
       Left            =   5040
       TabIndex        =   41
       TabStop         =   0   'False
-      Top             =   9120
+      Top             =   9720
       Width           =   1935
    End
    Begin VB.CommandButton CommandDeleteEDSSpectrum 
@@ -109,7 +126,7 @@ Begin VB.Form FormGETCMP
       Left            =   2880
       TabIndex        =   40
       TabStop         =   0   'False
-      Top             =   9120
+      Top             =   9720
       Width           =   2055
    End
    Begin VB.CommandButton CommandDisplayCLSpectrum 
@@ -120,7 +137,7 @@ Begin VB.Form FormGETCMP
       Style           =   1  'Graphical
       TabIndex        =   39
       TabStop         =   0   'False
-      Top             =   8640
+      Top             =   9240
       Width           =   1935
    End
    Begin VB.CommandButton CommandDisplayEDSSpectrum 
@@ -131,7 +148,7 @@ Begin VB.Form FormGETCMP
       Style           =   1  'Graphical
       TabIndex        =   38
       TabStop         =   0   'False
-      Top             =   8640
+      Top             =   9240
       Width           =   2055
    End
    Begin VB.ListBox ListCLSpectra 
@@ -139,7 +156,7 @@ Begin VB.Form FormGETCMP
       Left            =   7080
       TabIndex        =   37
       TabStop         =   0   'False
-      Top             =   8160
+      Top             =   8760
       Width           =   2655
    End
    Begin VB.ListBox ListEDSSpectra 
@@ -147,7 +164,7 @@ Begin VB.Form FormGETCMP
       Left            =   120
       TabIndex        =   36
       TabStop         =   0   'False
-      Top             =   8160
+      Top             =   8760
       Width           =   2655
    End
    Begin VB.CommandButton CommandImportCLSpectra 
@@ -156,7 +173,7 @@ Begin VB.Form FormGETCMP
       Left            =   5040
       TabIndex        =   35
       TabStop         =   0   'False
-      Top             =   8160
+      Top             =   8760
       Width           =   1935
    End
    Begin VB.CommandButton CommandImportEDSSpectra 
@@ -165,7 +182,7 @@ Begin VB.Form FormGETCMP
       Left            =   2880
       TabIndex        =   34
       TabStop         =   0   'False
-      Top             =   8160
+      Top             =   8760
       Width           =   2055
    End
    Begin VB.CommandButton CommandCalculateDensity 
@@ -368,6 +385,14 @@ Begin VB.Form FormGETCMP
          Cols            =   8
       End
    End
+   Begin VB.Label Label12 
+      Caption         =   "Optional Standard Mount Name(s)"
+      Height          =   255
+      Left            =   5040
+      TabIndex        =   50
+      Top             =   8040
+      Width           =   4575
+   End
    Begin VB.Line Line2 
       X1              =   5400
       X2              =   9600
@@ -391,23 +416,22 @@ Begin VB.Form FormGETCMP
       Height          =   255
       Left            =   3600
       TabIndex        =   48
-      Top             =   7080
+      Top             =   7320
       Width           =   855
    End
    Begin VB.Label Label10 
-      Alignment       =   2  'Center
-      Caption         =   "Optional Material Type (e.g., silicate, alloy, feldspar, etc.)"
+      Caption         =   "Optional Material Type (e.g., silicate, alloy, etc.)"
       Height          =   255
-      Left            =   240
+      Left            =   120
       TabIndex        =   44
-      Top             =   7440
-      Width           =   5175
+      Top             =   8040
+      Width           =   4815
    End
    Begin VB.Line Line1 
       X1              =   120
       X2              =   9720
-      Y1              =   8040
-      Y2              =   8040
+      Y1              =   8640
+      Y2              =   8640
    End
    Begin VB.Label Label9 
       Alignment       =   2  'Center
@@ -780,6 +804,11 @@ Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
 Private Sub TextMaterialType_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub TextMountNames_GotFocus()
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
