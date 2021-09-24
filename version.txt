@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/23/21	Modify MPB code to better handle zero acquire MPB points on high or low side. Modify Report code to check version before
+		testing InterfaceTypeStored parameter for instrument interface.
+		
+		Work on BMP std image loading and unloading (Goemann).
+
+09/22/21	Modify saving of fiducial set info to probe database. Note simulation microprobe in Report output.
+
 09/18/21	Add <alt> for small adjustments to Model Background dialog for polynomial fits. Add "interactive" Help button
 v. 12.9.8	for Calculate Detection Limits and Sensitivity option in Calculation Options.
 
