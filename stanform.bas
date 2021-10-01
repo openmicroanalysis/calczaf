@@ -1064,7 +1064,7 @@ msg$ = "Are you sure that you want to delete standard :"
 msg$ = msg$ & vbCrLf & StandardGetString2$(standardstodelete%(i%))
 msg$ = msg$ & vbCrLf & " from database :"
 msg$ = msg$ & vbCrLf & StandardDataFile$ & "?"
-response% = MiscMsgBoxAll(FormMSGBOXALL, "StanFormDeleteSelectedStandards", msg$)
+response% = MiscMsgBoxAll(FormMSGBOXALL, "StanFormDeleteSelectedStandards", msg$, CSng(0#))
 If response% = vbNo Then GoTo 1000
 If response% = vbCancel Then Exit For
 

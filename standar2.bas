@@ -505,8 +505,8 @@ Exit Sub
 
 End Sub
 
-Function StandardTypeStandard(stdrow As Integer, analysis As TypeAnalysis, sample() As TypeSample) As String
-' Return a string containing the standard composition for a standard
+Sub StandardTypeStandard(stdnum As Integer)
+' Type the standard composition for a standard, no calculations
 
 ierror = False
 On Error GoTo StandardTypeStandardError
@@ -514,60 +514,54 @@ On Error GoTo StandardTypeStandardError
 Dim n As Integer, i As Integer
 Dim ii As Integer, jj As Integer
 Dim tmsg As String
+Dim sum As Single
 
-tmsg$ = vbCrLf & StandardLoadDescription(sample())
-If ierror Then Exit Function
+' Get composition of standard
+Call StandardGetMDBStandard(stdnum%, stdtmpsample())
+If ierror Then Exit Sub
 
-' Type out analyzed data for the sample
+' Load standard description (no conditions)
+tmsg$ = vbCrLf & StandardLoadDescription3(stdtmpsample())
+If ierror Then Exit Sub
+
+' Type out standard data
 n = 0
 Do Until False
 n% = n% + 1
-Call TypeGetRange(Int(2), n%, ii%, jj%, sample())
-If ierror Then Exit Function
-If ii% > sample(1).LastChan% Then Exit Do
+Call TypeGetRange(Int(2), n%, ii%, jj%, stdtmpsample())
+If ierror Then Exit Sub
+If ii% > stdtmpsample(1).LastChan% Then Exit Do
 
 ' Load standard composition
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & vbCrLf & "ELEM: "
 For i% = ii% To jj%
-tmsg$ = tmsg$ & Format$(sample(1).Elsyup$(i%), a80$)
+tmsg$ = tmsg$ & Format$(MiscAutoUcase$(stdtmpsample(1).Elsyms$(i%)), a80$)
 Next i%
 
+tmsg$ = tmsg$ & Format$("SUM", a80$)
+
+sum! = 0#
 tmsg$ = tmsg$ & vbCrLf & "ELWT: "
 For i% = ii% To jj%
-tmsg$ = tmsg$ & Format$(Format$(sample(1).ElmPercents!(i%), f83$), a80$)
+tmsg$ = tmsg$ & Format$(Format$(stdtmpsample(1).ElmPercents!(i%), f83$), a80$)
+sum! = sum! + stdtmpsample(1).ElmPercents!(i%)
 Next i%
 
-tmsg$ = tmsg$ & vbCrLf & "KFAC: "
-For i% = ii% To jj%
-tmsg$ = tmsg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84$), a80$)
-Next i%
-
-tmsg$ = tmsg$ & vbCrLf & "ZCOR: "
-For i% = ii% To jj%
-tmsg$ = tmsg$ & Format$(Format$(analysis.StdZAFCors!(4, stdrow%, i%), f84$), a80$)
-Next i%
-
-' 0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters
-If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
-tmsg$ = tmsg$ & vbCrLf & "BETA: "
-For i% = ii% To jj%
-tmsg$ = tmsg$ & Format$(Format$(analysis.StdBetas!(stdrow%, i%), f84$), a80$)
-Next i%
-End If
-
+tmsg$ = tmsg$ & Format$(Format$(sum!, f83$), a80$)
 Loop
 
-StandardTypeStandard$ = tmsg$
-Exit Function
+Call IOWriteLog(tmsg$)
+
+Exit Sub
 
 ' Errors
 StandardTypeStandardError:
 MsgBox Error$, vbOKOnly + vbCritical, "StandardTypeStandard"
 ierror = True
-Exit Function
+Exit Sub
 
-End Function
+End Sub
 
 Function StandardIsDemoStandardDatabaseLoaded() As Boolean
 ' Check whether demo standard database is loaded
@@ -631,25 +625,6 @@ ierror = True
 Exit Function
 
 End Function
-
-Sub StandardTypeStandard2(stdnum As Integer)
-' Simple type standard, no calculations
-
-ierror = False
-On Error GoTo StandardTypeStandard2Error
-
-Call StandardTypeStandard(stdnum%, analysis, stdtmpsample())
-If ierror Then Exit Sub
-
-Exit Sub
-
-' Errors
-StandardTypeStandard2Error:
-MsgBox Error$, vbOKOnly + vbCritical, "StandardTypeStandard2"
-ierror = True
-Exit Sub
-
-End Sub
 
 Sub StandardAddRecord(sample() As TypeSample)
 ' Routine to append a standard to the standard database
@@ -836,6 +811,40 @@ Exit Function
 ' Errors
 StandardLoadDescription2Error:
 MsgBox Error$, vbOKOnly + vbCritical, "StandardLoadDescription2"
+ierror = True
+Exit Function
+
+End Function
+
+Function StandardLoadDescription3(sample() As TypeSample) As String
+' This routine returns the sample description string (no takeoff or keV)
+
+ierror = False
+On Error GoTo StandardLoadDescription3Error
+
+Dim tmsg As String
+
+' Load sample name string
+StandardLoadDescription3$ = vbNullString
+tmsg$ = TypeLoadString(sample())
+If ierror Then Exit Function
+
+' Load take off angle and kilovolts
+tmsg$ = tmsg$ & "  Density = " & Format$(Format$(sample(1).SampleDensity!, f63$), a60$)
+If Trim$(sample(1).MaterialType$) <> vbNullString Then tmsg$ = tmsg$ & "  Type = " & sample(1).MaterialType$
+If Trim$(sample(1).MountNames$) <> vbNullString Then tmsg$ = tmsg$ & "  Mount = " & sample(1).MountNames$
+
+' Add sample description field
+If sample(1).Description$ <> vbNullString Then
+tmsg$ = tmsg$ & vbCrLf & vbCrLf & sample(1).Description$
+End If
+
+StandardLoadDescription3$ = tmsg$
+Exit Function
+
+' Errors
+StandardLoadDescription3Error:
+MsgBox Error$, vbOKOnly + vbCritical, "StandardLoadDescription3"
 ierror = True
 Exit Function
 

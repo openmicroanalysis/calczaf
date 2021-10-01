@@ -7281,7 +7281,7 @@ End If
 
 ' Display standard data
 If method% = 1 Then
-If stdnum% > 0 Then Call StandardTypeStandard2(stdnum%)
+If stdnum% > 0 Then Call StandardTypeStandard(stdnum%)
 If ierror Then Exit Sub
 End If
 

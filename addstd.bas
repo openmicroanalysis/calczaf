@@ -17,7 +17,7 @@ Dim AddStdStandardsToAdd(1 To MAXSTD%) As Integer
 Dim tNumberofStandards As Integer
 Dim tStandardNumbers(1 To MAXSTD%) As Integer
 
-Const MAXMATERIALTYPES% = 20
+Const MAXMATERIALTYPES% = 30
 
 Sub AddStdAdd()
 ' Routine to add selected standard(s) to the "add to" list
@@ -461,7 +461,7 @@ Dim tMaterialTypes() As String
 ' Load material types that are checked
 tt% = 0
 For n% = 1 To MAXMATERIALTYPES%
-If FormADDSTD.CheckMaterialType(n% - 1).value = vbChecked Then
+If FormADDSTD.CheckMaterialType(n% - 1).Value = vbChecked Then
 tt% = tt% + 1
 ReDim Preserve tMaterialTypes(1 To tt%) As String
 tMaterialTypes$(tt%) = FormADDSTD.CheckMaterialType(n% - 1).Caption

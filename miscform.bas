@@ -19,7 +19,7 @@ Option Explicit
 'vbIgnore   5   Ignore button pressed
 'vbYes      6   Yes button pressed
 'vbNo       7   No button pressed
-Global Const vbYesToAll% = 8        ' not specified by VB5
+Global Const vbYesToAll% = 8        ' not specified by VB6
 
 Global MsgBoxAllReturnValue As Integer
 
@@ -76,17 +76,27 @@ Private Const GW_OWNER& = 4
 Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lparam As Long) As Long
 Private Declare Function GetWindow Lib "user32" (ByVal hWnd As Long, ByVal wCmd As Long) As Long
 
-Function MiscMsgBoxAll(tForm As Form, astring As String, bstring As String) As Integer
+Function MiscMsgBoxAll(tForm As Form, astring As String, bstring As String, timeinterval As Single) As Integer
 ' "Yes to All" MsgBox function
 ' tForm is modal form
 ' astring is the form caption
 ' bstring is the label caption
+' timeinterval is optional wait time to unload the form and continue
 
 ierror = False
 On Error GoTo MiscMsgBoxAllError
 
+' 65535 is maximum milliseconds for interval property
+If timeinterval! > BIT16& / MSECPERSEC# Then timeinterval! = BIT16& / MSECPERSEC#
+
 tForm.Caption = astring$
 tForm.Label1.Caption = bstring$
+
+' Load and enable timer if non-zero timeinterval
+If timeinterval! > 0# Then
+tForm.Timer1.Interval = timeinterval! * MSECPERSEC#
+tForm.Timer1.Enabled = True
+End If
 
 tForm.Show vbModal
 MiscMsgBoxAll% = MsgBoxAllReturnValue%

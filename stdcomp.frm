@@ -114,6 +114,6 @@ If FormSTDCOMP.ListAvailableStandards.ListIndex < 0 Then Exit Sub
 stdnum% = FormSTDCOMP.ListAvailableStandards.ItemData(FormSTDCOMP.ListAvailableStandards.ListIndex)
 
 ' Display standard data
-If stdnum% > 0 Then Call StandardTypeStandard2(stdnum%)
+If stdnum% > 0 Then Call StandardTypeStandard(stdnum%)
 If ierror Then Exit Sub
 End Sub

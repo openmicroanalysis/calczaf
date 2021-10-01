@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormADDSTD 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Add Standards to Run"
-   ClientHeight    =   6375
+   ClientHeight    =   7080
    ClientLeft      =   330
    ClientTop       =   1575
    ClientWidth     =   10440
@@ -21,14 +21,194 @@ Begin VB.Form FormADDSTD
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   6375
+   ScaleHeight     =   7080
    ScaleWidth      =   10440
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   29
+      Left            =   8400
+      TabIndex        =   49
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   6240
+      Width           =   1815
+   End
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   28
+      Left            =   6360
+      TabIndex        =   48
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   6240
+      Width           =   1815
+   End
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   27
+      Left            =   4320
+      TabIndex        =   47
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   6240
+      Width           =   1815
+   End
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   26
+      Left            =   2280
+      TabIndex        =   46
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   6240
+      Width           =   1815
+   End
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   25
+      Left            =   240
+      TabIndex        =   45
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   6240
+      Width           =   1815
+   End
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   24
+      Left            =   8400
+      TabIndex        =   44
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   5880
+      Width           =   1815
+   End
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   23
+      Left            =   6360
+      TabIndex        =   43
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   5880
+      Width           =   1815
+   End
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   22
+      Left            =   4320
+      TabIndex        =   42
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   5880
+      Width           =   1815
+   End
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   21
+      Left            =   2280
+      TabIndex        =   41
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   5880
+      Width           =   1815
+   End
+   Begin VB.CheckBox CheckMaterialType 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   20
+      Left            =   240
+      TabIndex        =   40
+      ToolTipText     =   "Check this material type to filter the available standard list"
+      Top             =   5880
+      Width           =   1815
+   End
    Begin VB.TextBox TextMountNames 
       Height          =   285
       Left            =   6840
       TabIndex        =   38
       ToolTipText     =   "Enter a few characters in the standard mount name to filter the available standard list"
-      Top             =   6000
+      Top             =   6720
       Width           =   3375
    End
    Begin VB.CommandButton CommandLoadFromPOS 
@@ -496,7 +676,7 @@ Begin VB.Form FormADDSTD
       Sorted          =   -1  'True
       TabIndex        =   5
       TabStop         =   0   'False
-      ToolTipText     =   "Double click to add a single standard to the run"
+      ToolTipText     =   "Double click to add a single standard to the run (single click to only output composition to log window)"
       Top             =   360
       Width           =   5055
    End
@@ -546,14 +726,14 @@ Begin VB.Form FormADDSTD
       Height          =   255
       Left            =   240
       TabIndex        =   39
-      Top             =   6000
+      Top             =   6720
       Width           =   6135
    End
    Begin VB.Line Line2 
       X1              =   120
       X2              =   10320
-      Y1              =   5880
-      Y2              =   5880
+      Y1              =   6600
+      Y2              =   6600
    End
    Begin VB.Line Line1 
       X1              =   120
@@ -723,6 +903,19 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
 If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
+End Sub
+
+Private Sub ListAvailableStandards_Click()
+If Not DebugMode Then On Error Resume Next
+Dim stdnum As Integer
+
+' Get standard from listbox
+If FormADDSTD.ListAvailableStandards.ListIndex < 0 Then Exit Sub
+stdnum% = FormADDSTD.ListAvailableStandards.ItemData(FormADDSTD.ListAvailableStandards.ListIndex)
+
+' Display standard data
+If stdnum% > 0 Then Call StandardTypeStandard(stdnum%)
+If ierror Then Exit Sub
 End Sub
 
 Private Sub ListAvailableStandards_DblClick()

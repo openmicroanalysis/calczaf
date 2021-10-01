@@ -14,6 +14,11 @@ Begin VB.Form FormMSGBOXALL
    ScaleWidth      =   4695
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.Timer Timer1 
+      Enabled         =   0   'False
+      Left            =   120
+      Top             =   1080
+   End
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
@@ -137,4 +142,10 @@ If Not DebugMode Then On Error Resume Next
 Call MiscCenterForm(FormMSGBOXALL)
 Call MiscLoadIcon(FormMSGBOXALL)
 HelpContextID = IOGetHelpContextID("FormMSGBOXALL")
+End Sub
+
+Private Sub Timer1_Timer()
+If Not DebugMode Then On Error Resume Next
+MsgBoxAllReturnValue% = 8       ' assume yes to all if timer elapses
+Unload FormMSGBOXALL
 End Sub

@@ -817,7 +817,7 @@ Begin VB.Form FormPENEPMA12
          Sorted          =   -1  'True
          TabIndex        =   47
          TabStop         =   0   'False
-         ToolTipText     =   "Standard compositions available for output for Material B Std (for matrix calculation please select a pure element standard)"
+         ToolTipText     =   $"PENEPMA12_PE.frx":636B
          Top             =   1080
          Width           =   2895
       End
@@ -829,7 +829,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   41
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":636B
+         ToolTipText     =   $"PENEPMA12_PE.frx":640A
          Top             =   5160
          Width           =   2895
       End
@@ -863,7 +863,7 @@ Begin VB.Form FormPENEPMA12
          Sorted          =   -1  'True
          TabIndex        =   30
          TabStop         =   0   'False
-         ToolTipText     =   "Standard compositions available for output for Material A"
+         ToolTipText     =   "Standard compositions available for output for Material A (double-click for composition)"
          Top             =   1080
          Width           =   2895
       End
@@ -884,7 +884,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   25
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":6408
+         ToolTipText     =   $"PENEPMA12_PE.frx":64A7
          Top             =   4440
          Width           =   2895
       End
@@ -894,7 +894,7 @@ Begin VB.Form FormPENEPMA12
          Sorted          =   -1  'True
          TabIndex        =   24
          TabStop         =   0   'False
-         ToolTipText     =   "Standard compositions available for output for Material B"
+         ToolTipText     =   "Standard compositions available for output for Material B (double-click for composition)"
          Top             =   1080
          Width           =   2895
       End
@@ -930,7 +930,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   23
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":6499
+         ToolTipText     =   $"PENEPMA12_PE.frx":6538
          Top             =   5160
          Width           =   2895
       End
@@ -951,7 +951,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   15
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":6550
+         ToolTipText     =   $"PENEPMA12_PE.frx":65EF
          Top             =   4440
          Width           =   2895
       End
@@ -987,7 +987,7 @@ Begin VB.Form FormPENEPMA12
          Style           =   1  'Graphical
          TabIndex        =   14
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA12_PE.frx":65E1
+         ToolTipText     =   $"PENEPMA12_PE.frx":6680
          Top             =   5160
          Width           =   2895
       End
@@ -1244,7 +1244,7 @@ Begin VB.Form FormPENEPMA12
    End
    Begin VB.Label Label25 
       Alignment       =   2  'Center
-      Caption         =   $"PENEPMA12_PE.frx":6698
+      Caption         =   $"PENEPMA12_PE.frx":6737
       Height          =   855
       Left            =   240
       TabIndex        =   80

@@ -2,6 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/29/21	Add 30 second timeout on "Using different backgrounds for standards and unknowns" messgebox (Orlandini).
+
+		Add output of std compositions in some dialogs when clicking or double-clicking on "available standards".
+
+09/26/21	Fix display bug for integrated intensity scans on instruments that scan from high to loow (BacklashFactors).
+
+		Increase number of standard "materials" from 20 to 30 in Add/Remove Standards.
+		
+		Partially fix bug in integrated intensities when using scan end points option and exponential fit.
+
 09/23/21	Modify MPB code to better handle zero acquire MPB points on high or low side. Modify Report code to check version before
 		testing InterfaceTypeStored parameter for instrument interface.
 		
