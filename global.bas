@@ -1154,6 +1154,8 @@ Type TypeSample
     FerrousFerricOption As Integer                    ' new Droop option for amphiboles (Moy)
     
     MountNames As String                              ' for standard database only (comma delimited string containing standard mounts with this standard)
+    
+    UnknownIsStandardNumber As Integer                ' assume unknown is a standard, 0 = not a standard, non-zero = standard number
 End Type
 
 Type TypeImage

@@ -512,6 +512,8 @@ sample(1).FerrousFerricTotalCations! = 0#
 sample(1).FerrousFerricTotalOxygens! = 0#
 sample(1).FerrousFerricOption% = 0                         ' 0 = normal, 1 = sodic amphiboles, 2 = calcic amphiboles (Moy)
 
+sample(1).UnknownIsStandardNumber% = 0                     ' new unknown is standard option
+
 sample(1).CoatingFlag = DefaultSampleCoatingFlag%               ' 0 = uncoated, 1 = coated
 sample(1).CoatingElement% = DefaultSampleCoatingElement%
 sample(1).CoatingDensity! = DefaultSampleCoatingDensity!

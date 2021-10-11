@@ -257,7 +257,7 @@ Next j%
 
 msg$ = "BackgroundTypes:" & vbCrLf
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(bgdtypestrings$(sample(1).BackgroundTypes%(i%)), a80$)  ' 0=off-peak, 1=MAN, 2=multipoint
+msg$ = msg$ & Format$(BgdTypeStrings$(sample(1).BackgroundTypes%(i%)), a80$)  ' 0=off-peak, 1=MAN, 2=multipoint
 Next i%
 Call IOWriteLog(msg$)
 
@@ -1778,7 +1778,7 @@ msg$ = msg$ & Format$("INT", a80$)
 Else
 If sample(1).BackgroundTypes%(i%) <> 1 Then  ' 0=off-peak, 1=MAN, 2=multipoint
 If sample(1).CrystalNames$(i%) <> EDS_CRYSTAL$ Then
-msg$ = msg$ & Format$(bgstrings$(sample(1).OffPeakCorrectionTypes%(i%)), a80$)  ' 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point
+msg$ = msg$ & Format$(BgStrings$(sample(1).OffPeakCorrectionTypes%(i%)), a80$)  ' 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point
 Else
 msg$ = msg$ & Format$(EDS_CRYSTAL$, a80$)
 End If
@@ -2933,14 +2933,29 @@ Dim sum As Single, stdpercent As Single
 
 ReDim temp(1 To MAXCHAN%) As Single
 
+' Only output published data if elemental or oxide output
+If mode% = 1 Or mode% = 2 Then
+
 ' Print out element or oxide published values
-If (mode% = 1 Or mode% = 2) And sample(1).Type = 1 Then
+If sample(1).Type = 1 Then
 ip% = IPOS2(NumberofStandards%, sample(1).number%, StandardNumbers%())
 If ip% = 0 Then GoTo AnalyzeTypePublishedNotFound
 
 ' Get the standard composition from standard database (for sum and excess oxygen calculations)
 Call StandardGetMDBStandard(sample(1).number%, stdsample())
 If ierror Then Exit Sub
+
+ElseIf sample(1).Type% = 2 And sample(1).UnknownIsStandardNumber% > 0 Then
+ip% = IPOS2(NumberofStandards%, sample(1).UnknownIsStandardNumber%, StandardNumbers%())
+If ip% = 0 Then GoTo AnalyzeTypePublishedNotFound
+
+' Get the standard composition from standard database (for sum and excess oxygen calculations)
+Call StandardGetMDBStandard(sample(1).UnknownIsStandardNumber%, stdsample())
+If ierror Then Exit Sub
+
+Else
+Exit Sub
+End If
 
 ' Sum standard database weight percents (use elemental percent to avoid problems with missing trace oxygen from unspecified elements)
 sum! = 0#
@@ -3063,6 +3078,7 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 End If
+
 End If
 
 Exit Sub
