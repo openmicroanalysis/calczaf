@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/23/21	Fix bug in TestCL app.
+
 10/09/21	Fix bug in CalcImage (new project wizard) where off-peak maps weren't loaded if no TDI images are present.
 		Caused by code changes from 9/14/2021. Doh!
 
@@ -13,7 +15,7 @@ v. 12.9.9
 
 		Modify CalcImage profile plot to not print point numbers if more than 20 profile points to plot.
 
-09/29/21	Add 30 second timeout on "Using different backgrounds for standards and unknowns" messgebox (Orlandini).
+09/29/21	Add 30 second timeout on "Using different backgrounds for standards and unknowns" messagebox (Orlandini).
 
 		Add output of std compositions in some dialogs when clicking or double-clicking on "available standards".
 
