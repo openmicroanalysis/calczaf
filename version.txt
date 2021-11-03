@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/02/21	Fix specify matrix by unknown number bug when loading file setup into new run (Orlandini).
+
 10/23/21	Fix bug in TestCL app.
 
 10/09/21	Fix bug in CalcImage (new project wizard) where off-peak maps weren't loaded if no TDI images are present.
