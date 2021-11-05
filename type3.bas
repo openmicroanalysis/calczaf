@@ -812,10 +812,11 @@ msg$ = msg$ & Format$(Format$(count_time!, f82$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
+' Output actual off-peak background count times
 If Not sample(1).AllMANBgdFlag Then
 msg$ = "HITIME"
 For i% = ii% To jj%
-If sample(1).BackgroundTypes%(i%) = 1 Or sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then    ' 0=off-peak, 1=MAN, 2=multipoint
+If sample(1).BackgroundTypes%(i%) <> 0 Or sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then    ' 0=off-peak, 1=MAN, 2=multipoint
 msg$ = msg$ & Format$(DASHED4$, a80$)
 Else
 
@@ -847,7 +848,7 @@ Call IOWriteLog(msg$)
 
 msg$ = "LOTIME"
 For i% = ii% To jj%
-If sample(1).BackgroundTypes%(i%) = 1 Or sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then   ' 0=off-peak, 1=MAN, 2=multipoint
+If sample(1).BackgroundTypes%(i%) <> 0 Or sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then   ' 0=off-peak, 1=MAN, 2=multipoint
 msg$ = msg$ & Format$(DASHED4$, a80$)
 Else
 
@@ -878,7 +879,74 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
+' Output actual MPB background count times
+If MiscContainsInteger(sample(1).LastElm%, sample(1).BackgroundTypes%(), Int(2)) Then
+msg$ = "HIMULT"
+For i% = ii% To jj%
+If sample(1).BackgroundTypes%(i%) <> 2 Or sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then    ' 0=off-peak, 1=MAN, 2=multipoint
+msg$ = msg$ & Format$(DASHED4$, a80$)
+Else
+
+If sample(1).Type% = 2 Then          ' unknown sample
+count_time! = sample(1).LastHiCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%) * sample(1).LastCountFactors!(i%)
 End If
+
+If sample(1).Type% = 1 Then         ' standard sample
+count_time! = sample(1).LastHiCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%)
+
+' Standard sample has no data
+If sample(1).Datarows% = 0 Then
+If AcquireIsUseUnknownCountTimeForInterferenceStandardFlag(i%, sample()) Then
+count_time! = sample(1).LastHiCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%) * sample(1).LastCountFactors!(i%)
+End If
+
+' Standard sample has data
+Else
+If sample(1).UnknownCountTimeForInterferenceStandardChanFlag(i%) Then
+count_time! = sample(1).LastHiCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%) * sample(1).LastCountFactors!(i%)
+End If
+End If
+End If
+
+msg$ = msg$ & Format$(Format$(count_time!, f82$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "LOMULT"
+For i% = ii% To jj%
+If sample(1).BackgroundTypes%(i%) <> 2 Or sample(1).CrystalNames$(i%) = EDS_CRYSTAL$ Then   ' 0=off-peak, 1=MAN, 2=multipoint
+msg$ = msg$ & Format$(DASHED4$, a80$)
+Else
+
+If sample(1).Type% = 2 Then          ' unknown sample
+count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%) * sample(1).LastCountFactors!(i%)
+End If
+
+If sample(1).Type% = 1 Then         ' standard sample
+count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%)
+
+' Standard sample has no data
+If sample(1).Datarows% = 0 Then
+If AcquireIsUseUnknownCountTimeForInterferenceStandardFlag(i%, sample()) Then
+count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%) * sample(1).LastCountFactors!(i%)
+End If
+
+' Standard sample has data
+Else
+If sample(1).UnknownCountTimeForInterferenceStandardChanFlag(i%) Then
+count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%) * sample(1).LastCountFactors!(i%)
+End If
+End If
+End If
+
+msg$ = msg$ & Format$(Format$(count_time!, f82$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+End If
+End If
+
 End If
 End If
 

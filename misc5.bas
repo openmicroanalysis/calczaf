@@ -34,6 +34,30 @@ Exit Function
 
 End Function
 
+Function MiscContainsInteger(lchan As Integer, narray() As Integer, tinteger As Integer) As Boolean
+' Check if integer array contains the passed integer
+
+ierror = False
+On Error GoTo MiscContainsIntegerError
+
+Dim i As Integer
+
+MiscContainsInteger = False
+For i% = 1 To lchan%
+If narray%(i%) = tinteger% Then MiscContainsInteger = True
+Next i%
+
+Exit Function
+
+' Errors
+MiscContainsIntegerError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscContainsInteger"
+ierror = True
+Exit Function
+
+End Function
+
+
 Function MiscAllZero(lchan As Integer, narray() As Integer) As Boolean
 ' Check if integer array is all zeros
 
