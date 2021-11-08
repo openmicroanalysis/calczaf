@@ -878,8 +878,9 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 End If
+End If
 
-' Output actual MPB background count times
+' Output actual (acquired) MPB background count times
 If MiscContainsInteger(sample(1).LastElm%, sample(1).BackgroundTypes%(), Int(2)) Then
 msg$ = "HIMULT"
 For i% = ii% To jj%
@@ -920,22 +921,22 @@ msg$ = msg$ & Format$(DASHED4$, a80$)
 Else
 
 If sample(1).Type% = 2 Then          ' unknown sample
-count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%) * sample(1).LastCountFactors!(i%)
+count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireLo%(i%) * sample(1).LastCountFactors!(i%)
 End If
 
 If sample(1).Type% = 1 Then         ' standard sample
-count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%)
+count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireLo%(i%)
 
 ' Standard sample has no data
 If sample(1).Datarows% = 0 Then
 If AcquireIsUseUnknownCountTimeForInterferenceStandardFlag(i%, sample()) Then
-count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%) * sample(1).LastCountFactors!(i%)
+count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireLo%(i%) * sample(1).LastCountFactors!(i%)
 End If
 
 ' Standard sample has data
 Else
 If sample(1).UnknownCountTimeForInterferenceStandardChanFlag(i%) Then
-count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireHi%(i%) * sample(1).LastCountFactors!(i%)
+count_time! = sample(1).LastLoCountTimes!(i%) / 2# * sample(1).MultiPointNumberofPointsAcquireLo%(i%) * sample(1).LastCountFactors!(i%)
 End If
 End If
 End If
@@ -944,7 +945,6 @@ msg$ = msg$ & Format$(Format$(count_time!, f82$), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
-End If
 End If
 
 End If

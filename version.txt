@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/07/21	Add Acquisition Options button to Basic EPMA form (von der Handt).
+
+11/06/21	Modify MPB count times in DataCorrectData to reflect actual MPBs utilized by "iterate" parameter.
+
 11/04/21	Modify log window output for off-peak and MPB count times to show each separately.
 
 11/02/21	Fix specify matrix by unknown number bug when loading file setup into new run (Orlandini).
