@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/09/21	Fix EDS net intensity bug in combine analysis lines and get data lines from Analyze! window (Boroughs).
+
 11/07/21	Add Acquisition Options button to Basic EPMA form (von der Handt).
 
 11/06/21	Modify MPB count times in DataCorrectData to reflect actual MPBs utilized by "iterate" parameter.
