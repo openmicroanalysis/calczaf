@@ -3015,3 +3015,5 @@ Global MultiPointBackgroundFitTypeStrings2(0 To 2) As String
 Global JEOLUnfreezeAfterFlag As Integer
 
 Global CamecaSXFiveTactisUSBVideoFlag As Integer
+
+Global DisableStageMoveAll As Integer               ' special flag to disable move stage and get status stage

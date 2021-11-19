@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/17/21	Update User Reference manual.
+v. 13.0.1
+
+11/16/21	Implement TCP/IP auto focus for JEOL iSP100/iHP200F (not yet working).
+
+		Add diable stage move flag for stage mechanical/electronic issues (Maner).
+
 11/13/21	Add "expansion" feature to Extract Polygon window in CalcImage for working with small 
 		images (von der Handt).
 		
