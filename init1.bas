@@ -2070,6 +2070,20 @@ AnalyticalTotalMaximum! = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+lpAppName$ = "Software"
+lpKeyName$ = "SpecifiedAPFMaximumLineEnergy"
+lpDefault$ = "1000"         ' default allow emission lines less than Na Ka
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then SpecifiedAPFMaximumLineEnergy! = Val(Left$(lpReturnString$, valid&))
+If SpecifiedAPFMaximumLineEnergy! > 2500# Then
+msg$ = "SpecifiedAPFMaximumLineEnergy keyword value is out of range in " & ProbeWinINIFile$ & ", (must be less than or equal to 2500 eV)"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
+SpecifiedAPFMaximumLineEnergy! = Val(lpDefault$)
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
 Exit Sub
 
 ' Errors

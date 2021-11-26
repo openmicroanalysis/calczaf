@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/24/21	Add SpecifiedAPFMaximumLineEnergy keyword to probewin.ini to limit specified APF to a maximum 
+v. 13.0.2	emission line energy.
+		
+		Improve Imaging window enables/disables during image acquisition (Lerner).
+
 11/23/21	Add code to disable specified APF text control if x-ray emission energy is greater than 1800 eV.
 
 11/17/21	Update User Reference manual.
