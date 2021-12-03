@@ -1385,7 +1385,7 @@ On Error GoTo ZAFSmpError
 Dim i As Integer, j As Integer
 Dim ip As Integer, ipp As Integer, ippp As Integer
 Dim r0 As Integer, MaxZAFIter  As Integer
-Dim ZAFMinTotal  As Single, ZAFMinToler As Single
+Dim ZAFMinTotal  As Single, ZAFMinToler As Single, ZAFToler As Single
 Dim i7 As Integer, i8 As Integer
 Dim temp As Single, oxygen As Single
 Dim astring As String
@@ -1404,8 +1404,14 @@ ReDim atomfracs(1 To MAXCHAN%) As Single
 ReDim continuum_correction(1 To MAXCHAN1%) As Single    ' for MAN continuum absorption corrections
 
 MaxZAFIter% = 100
-ZAFMinTotal! = 0.001 ' in weight fraction
-ZAFMinToler! = 0.0001 ' in weight fraction
+ZAFMinTotal! = 0.001    ' in weight fraction
+ZAFMinToler! = 0.0001   ' in weight fraction
+ZAFToler! = 1000#       ' in inverted relative weight fraction
+
+' Check if an element is calculated relative to stoichiometric oxygen
+If IPOS2%(zaf.in1%, Int(15), zaf.il%()) > 0 Then
+ZAFToler! = 100000#     ' in inverted relative weight fraction
+End If
 
 Const MAXNEGATIVE_KRATIO! = -0.2
 Const MAXNEGATIVE_SUMKRATIO! = -0.01
@@ -1718,6 +1724,10 @@ zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) + zaf.krat!(i%) * zaf.p1!(i%)
 Next i%
 zaf.ksum! = zaf.ksum! + zaf.krat!(zaf.in0%)
 
+If VerboseMode Then
+Call IOWriteLog(vbCrLf & "ZAFSmp: 1st approximation stoichiometric oxygen: " & Format$(zaf.krat!(zaf.in0%)))
+End If
+
 ' Add in elements calculated relative to stoichiometric element (in0%)
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) = 15 Then
@@ -1933,6 +1943,22 @@ For i% = 1 To zaf.in1%
 r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
 Next i%
 
+' Calculate element relative to stoichiometric oxygen based on previous iteration calculation of oxygen
+' New code from Aurelien Moy fixes carbon by stoichiometry relative to calculated oxygen, but breaks halogen by stoichiometry to another element
+'For i% = 1 To zaf.in1%
+'    If zaf.il%(i%) = 15 Then
+'        temp! = sample(1).StoichiometryRatio! * zaf.atwts!(i%) * zaf.p1!(i%) / zaf.atwts!(zaf.in0%)
+'        r1!(zaf.in0%) = r1!(zaf.in0%) * (1 + temp! / (1 - temp!))
+'        r1!(i%) = r1!(zaf.in0%) * sample(1).StoichiometryRatio! * zaf.atwts!(i%) / zaf.atwts!(zaf.in0%)
+'        zaf.ksum! = zaf.ksum! + r1!(i%)
+'        zaf.krat!(i%) = r1!(i%)
+'    End If
+'Next i%
+
+If VerboseMode Then
+Call IOWriteLog(vbCrLf & "ZAFSmp: iteration " & Format$(zaf.iter%) & " stoichiometric oxygen: " & Format$(r1!(zaf.in0%)))
+End If
+
 ' Calculate equivalent oxygen from halogens and subtract from calculated oxygen if flagged (for standards note deficit oxygen is zeroed out in AnalyzeWeightCalculate and AnalyzeWeightCalculateCurve)
 If UseOxygenFromHalogensCorrectionFlag Then
 r1!(zaf.in0%) = r1!(zaf.in0%) - ConvertHalogensToOxygen(zaf.in1%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), r1!())
@@ -2009,7 +2035,7 @@ If zaf.ksum! < ZAFMinTotal! Then GoTo ZAFSmpInsufficientTotal
 For i% = 1 To zaf.in0%
 r1!(i%) = r1!(i%) / zaf.ksum!
 ZAFDiff!(i%) = Abs(zaf.conc!(i%) - r1!(i%))
-If zaf.conc!(i%) > ZAFMinToler! And ZAFDiff!(i%) > zaf.conc!(i%) / 1000# Then r0% = 1 ' not converged yet
+If zaf.conc!(i%) > ZAFMinToler! And ZAFDiff!(i%) > zaf.conc!(i%) / ZAFToler! Then r0% = 1 ' not converged yet
 zaf.conc!(i%) = r1!(i%)
 Next i%
 
@@ -2780,10 +2806,10 @@ analysis.ZAFIter! = zaf.iter%
 For i% = 1 To sample(1).LastElm%
 
 ' See if this standard is the assigned standard for this element
-If sample(1).StdAssigns%(i%) <> stdsample(1).number% Then GoTo 8400
+If sample(1).StdAssigns%(i%) = stdsample(1).number% Then
 
 ip% = IPOS14(i%, sample(), stdsample())  ' check element, xray, take-off and kilovolts
-If ip% = 0 Then GoTo 8400
+If ip% > 0 Then
 
 ' Load standard assigned percents
 analysis.StdAssignsPercents!(i%) = zaf.conc!(ip%) * 100#
@@ -2806,7 +2832,7 @@ zaf.coating_std_assigns_thickness(i%) = stdsample(1).CoatingThickness!          
 zaf.coating_std_assigns_sinthickness(i%) = stdsample(1).CoatingSinThickness!       ' coating thickness for assigned standard coating
 
 ' Load individual matrix factors
-If zaf.genstd!(ip%) = 0# Then GoTo 8400
+If zaf.genstd!(ip%) > 0# Then
 analysis.StdAssignsZAFCors!(1, i%) = zaf.gensmp!(ip%) / zaf.genstd!(ip%)
 analysis.StdAssignsZAFCors!(2, i%) = 1# / (1# + zaf.vv!(ip%))
 analysis.StdAssignsZAFCors!(3, i%) = zaf.zed!(ip%)
@@ -2826,20 +2852,24 @@ Else
 analysis.StdAssignsActualKilovolts!(i%) = zaf.eO!(ip%)
 analysis.StdAssignsActualOvervoltages!(i%) = zaf.v!(ip%)
 End If
-8400:
+End If
+
+End If
+
+End If
 Next i%
 
 ' Load standard arrays for this standard into the standard list arrays
 For i% = 1 To sample(1).LastChan%
 ip% = IPOS14(i%, sample(), stdsample())  ' check element, xray, take-off and kilovolts for loading standard k-factors corrections
-If ip% = 0 Then GoTo 8500
+If ip% > 0 Then
 
 ' Load the standard percents
 analysis.StdPercents!(row%, i%) = stdsample(1).ElmPercents!(ip%)
 analysis.StdZbars!(row%) = analysis.zbar!
 
 ' If ZAF corrections are zero don't load values
-If zaf.genstd!(ip%) = 0# Then GoTo 8500
+If zaf.genstd!(ip%) > 0# Then
 
 ' Load standard arrays
 If i% <= sample(1).LastElm% Then
@@ -2859,20 +2889,19 @@ analysis.StdZAFCors!(8, row%, i%) = 1# / zaf.gensmp!(ip%)
 analysis.StdMACs!(row%, i%) = ZAFMACCal(ip%, zaf)   ' load average MAC for this emitter
 End If
 
-8500:
+End If
+End If
 Next i%
 
-' Load continuum absorption corrections for this standard (not currently utilized)
+' Load continuum absorption corrections for this standard (selected in MAN dialog, see MAN FitData procedure)
 Call ZAFGetContinuumAbsorption(continuum_correction!(), zaf)
 If ierror Then Exit Sub
 
 For i% = 1 To sample(1).LastChan%
 ip% = IPOS14(i%, sample(), stdsample())  ' check element, xray, take-off and kilovolts for loading standard continuum corrections
-If ip% = 0 Then GoTo 8600
-If i% <= sample(1).LastElm% Then
+If ip% >= 1 And i% <= sample(1).LastElm% Then
 analysis.StdContinuumCorrections!(row%, i%) = continuum_correction!(ip%)
 End If
-8600:
 Next i%
 
 ' Print out the standard k-ratio calculation for this standard if Standard.exe Debugmode or CalcZAFMode = 0
@@ -3964,7 +3993,7 @@ Dim i1 As Integer
 Dim g1 As Double, g2 As Double, g3 As Double
 Dim r0 As Double, r00 As Double, rr0 As Double
 Dim u0 As Double, eC As Double, eO As Double
-Dim b As Double, emm As Double, qeO As Double
+Dim B As Double, emm As Double, qeO As Double
 Dim dee As Double, q0 As Double, qq As Double
 Dim rx As Double, rm As Double, phi0 As Double
 
@@ -3982,7 +4011,7 @@ Dim fff As Double
 eO# = zaf.eO!(ii%)
 u0# = zaf.v!(ii%)       ' used to be zaf.y!(ii%)
 eC# = zaf.eC!(ii%)
-b# = zaf.atwts!(ii%)    ' used to be zaf.b!(ii%)
+B# = zaf.atwts!(ii%)    ' used to be zaf.b!(ii%)
 emm# = em!(ii%)
 zip# = zipi!(ii%)
 
@@ -4012,7 +4041,7 @@ qq# = q0# + (1# - q0#) * Exp(-(u0# - 1#) * zz! / 40#)
 rx# = qq# * dee# * r0#              ' depth range of ionization
 rm# = g1# * g2# * g3# * rx#         ' depth of maximum phi
 qeO# = Log(u0#) / (eC# * eC# * Exp(emm# * Log(u0#)))
-xp! = xp! / (zip# * 66892#) * b#
+xp! = xp! / (zip# * 66892#) * B#
 ff# = xp! / qeO#
 
 phi0# = 1# + 3.3 * (1# - Exp((2.3 * hh! - 2#) * Log(u0#))) * Exp(1.2 * Log(hh!))   ' phi(0)
@@ -4054,7 +4083,7 @@ End If
 ' Simplified PAP
 If mode% = 2 Then
 qeO# = Log(u0#) / (eC# * eC# * Exp(emm# * Log(u0#)))
-xp! = xp! / (zip# * 66892#) * b#
+xp! = xp! / (zip# * 66892#) * B#
 ff# = xp! / qeO#
 
 phi0# = 1# + 3.3 * (1# - Exp((2.3 * hh! - 2#) * Log(u0#))) * Exp(1.2 * Log(hh!))    ' phi(0)
