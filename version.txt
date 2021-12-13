@@ -2,7 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-12/02/21	Increase ZAF tolerance from 1000 to 10000 whcih adds another iteration and is helpful for calculating
+12/10/21	Add check for maximum BIM file size (Goemann).
+v. 13.0.4
+		Add code to save on and off-peak positions in GetPeakSave for any changes from Peaking or Plot! code.
+
+12/08/21	Comment out image size disables/enables because it resets the image size option controls 
+		when using automated imaging (Goemann).
+		
+		Add default image size and channel number to Probewin.ini file (Goemann).
+
+12/02/21	Increase ZAF tolerance from 1000 to 100000 which adds another iteration and is helpful for calculating
 v. 13.0.3	carbon by stoichiometry to stoichiometrically calculated oxygen (e.g., carbonates).
 
 11/24/21	Add SpecifiedAPFMaximumLineEnergy keyword to probewin.ini to limit specified APF to a maximum 

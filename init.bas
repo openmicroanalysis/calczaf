@@ -3136,10 +3136,6 @@ ElseIf ImageInterfaceType% = 10 Then    ' Thermo TE_Portal
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 End If
 
-DefaultImageChannelNumber% = 1
-DefaultImageIx% = 128
-DefaultImageIy% = 128
-
 NumberOfImages% = 0
 UseImageAutomateModeOnStds% = False
 UseImageAutomateModeOnUnks% = False
@@ -3334,7 +3330,10 @@ ProbeImageAcquisitionFile$ = vbNullString
 ProbeImageSampleSetupNumber% = 0
 
 UseStageReproducibilityCorrectionFlag = False
-ImageSizeIndex% = -1            ' to force loading of default image size
+'ImageSizeIndex% = -1                        ' to force loading of default image size (now loaded in INI file, see InitINIImage)
+'DefaultImageChannelNumber% = 1              ' set in INI file (InitINIImage)
+DefaultImageIx% = 128
+DefaultImageIy% = 128
 
 If CLSpectraInterfaceType% = 0 Then
 CLSpectrumAcquisitionOverhead = 1#          ' demo mode

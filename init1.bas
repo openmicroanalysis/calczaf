@@ -4710,6 +4710,32 @@ MosaicMagnification! = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+lpAppName$ = "Image"
+lpKeyName$ = "ImageSizeIndex"
+nDefault& = 2           ' 0 = 128, 1 = 256, 2 = 512, 3 = 1024, 4 = 2048 (do not allow 0 = 128 or 4 = 2048)
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+ImageSizeIndex% = valid&
+If ImageSizeIndex% < 1 Or ImageSizeIndex% > MAXIMAGESIZES& - 1 Then
+msg$ = "ImageSizeIndex keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
+ImageSizeIndex% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Image"
+lpKeyName$ = "ImageChannelNumber"
+nDefault& = 1           ' allow 1 or 2 (not 3)
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+DefaultImageChannelNumber% = valid&
+If DefaultImageChannelNumber% < 1 Or DefaultImageChannelNumber% > 2 Then
+msg$ = "ImageChannelNumber keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
+DefaultImageChannelNumber% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors
