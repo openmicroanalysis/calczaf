@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/17/21	Add new Thermo Portal get/set functions for detector sub type, time constant, and zero pulse width
+v.13.0.5	to improve net intensity spectral processing (von der Handt and Seward).
+
 12/15/21	Modify Report output to allow user to specify report output file name (von der Handt).
 
 12/10/21	Add check for maximum BIM file size (Goemann).

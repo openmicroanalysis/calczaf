@@ -411,6 +411,9 @@ ReDim sample(1).EDSSpectraStartEnergy(1 To MAXROW%) As Single
 ReDim sample(1).EDSSpectraEndEnergy(1 To MAXROW%) As Single
 ReDim sample(1).EDSSpectraADCTimeConstant(1 To MAXROW%) As Single
 
+ReDim sample(1).EDSSpectraDetectorSubtype(1 To MAXROW%) As Long             ' used by Thermo only
+ReDim sample(1).EDSSpectraZeroWidth(1 To MAXROW%) As Double                 ' used by Thermo only
+
 ReDim sample(1).EDSSpectraKLineBCoefficient(1 To MAXROW%) As Single         ' used by Bruker only
 ReDim sample(1).EDSSpectraKLineCCoefficient(1 To MAXROW%) As Single         ' used by Bruker only
 

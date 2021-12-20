@@ -3966,7 +3966,8 @@ If Left$(lpReturnString2$, tValid&) = vbNullString Then
 If EDSSpectraInterfaceType% = 5 Then
 msg$ = "Thermo NSS Version Number keyword was not found in " & ProbeWinINIFile$ & ". Therefore, version 3.0 of the Thermo NSS application will be assumed." & vbCrLf & vbCrLf
 msg$ = msg$ & "If this is incorrect, please edit the Thermo NSS version number keyword in " & ProbeWinINIFile$ & ", for the correct version number of NSS. " & vbCrLf & vbCrLf
-msg$ = msg$ & "Note that for Thermo Pathfinder v. 1 or higher, specify ThermoNSSVersionNumber=5"
+msg$ = msg$ & "Note that for Thermo Pathfinder v. 1, specify ThermoNSSVersionNumber=5"
+msg$ = msg$ & "Note that for Thermo Pathfinder v. 2 or higher, specify ThermoNSSVersionNumber=6"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 End If
 End If
