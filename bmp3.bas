@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeBMP3"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -266,8 +266,8 @@ lhDC = CreateCompatibleDC(objFrom.hDC)
     
 ' Create a bitmap compatible with the object we are copying from
 If (lhDC <> 0) Then
-lWidthPixels = objFrom.scaleX(objFrom.ScaleWidth, objFrom.ScaleMode, vbPixels)
-lHeightPixels = objFrom.scaleY(objFrom.ScaleHeight, objFrom.ScaleMode, vbPixels)
+lWidthPixels = objFrom.ScaleX(objFrom.ScaleWidth, objFrom.ScaleMode, vbPixels)
+lHeightPixels = objFrom.ScaleY(objFrom.ScaleHeight, objFrom.ScaleMode, vbPixels)
 lhBMP = CreateCompatibleBitmap(objFrom.hDC, lWidthPixels, lHeightPixels)
     
     ' Select the bitmap into the DC we have created, and store the old bitmap that was there

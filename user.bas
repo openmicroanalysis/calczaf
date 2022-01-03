@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeUSER"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -269,18 +269,18 @@ Exit Sub
 
 End Sub
 
-Sub UserOpenOldFile(filename As String)
+Sub UserOpenOldFile(Filename As String)
 ' Open existing user file
 
 ierror = False
 On Error GoTo UserFormOpenOldFileError
 
 ' Get data fields
-Call FileInfoLoadData(Int(4), filename$)
+Call FileInfoLoadData(Int(4), Filename$)
 If ierror Then Exit Sub
 
 ' No errors, load filename
-UserDataFile$ = filename$
+UserDataFile$ = Filename$
 MDBUserName$ = app.EXEName      ' for InitWindow
 
 Exit Sub

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSTANFORM2"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 
 Const MAXCONTINUUM% = 5

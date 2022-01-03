@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSTUDENT"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 
 Function StudentBetacf(a As Single, b As Single, x As Single) As Single

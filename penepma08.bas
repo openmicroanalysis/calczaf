@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePENEPMA08"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 
 ' Changed to 3 materials 03/21/2019 to allow three materials to be read without errors, but not saved (controls for third material are not visible)

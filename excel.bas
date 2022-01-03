@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeExcel"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -168,7 +168,7 @@ If Not ExcelAppIsRunning() Then GoTo ExcelSendDataToSpreadsheetNoApp
 
 ' Load cell range
 For i% = 1 To nCol%
-xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).value = MiscSetSignificantDigits(10, temp#(i%))
+xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).Value = MiscSetSignificantDigits(10, temp#(i%))
 Next i%
 
 ' Increment row
@@ -219,14 +219,14 @@ End If
 If Not changed Then Exit Sub
 
 ' Load sample name
-xlSheet.Cells(ExcelRow&, 1).value = VbDquote$ & astring$ & VbDquote$
+xlSheet.Cells(ExcelRow&, 1).Value = VbDquote$ & astring$ & VbDquote$
 
 ' Increment row
 ExcelRow& = ExcelRow& + 1
 
 ' Load cell range
 For i% = 1 To nCol%
-xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).value = VbDquote$ & tlabel$(i%) & VbDquote$
+xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).Value = VbDquote$ & tlabel$(i%) & VbDquote$
 Next i%
 
 ' Increment row

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSTANDAR2"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -658,12 +658,13 @@ StDt("Names") = Left$(sample(1).Name$, DbTextNameLength%)
 StDt("Descriptions") = Left$(sample(1).Description$, DbTextDescriptionLength%)
 StDt("DisplayAsOxideFlags") = sample(1).DisplayAsOxideFlag%
 StDt("Densities") = sample(1).SampleDensity!
-StDt("MaterialTypes") = Left$(sample(1).MaterialType$, DbTextNameLength%)
-StDt("MountNames") = Left$(sample(1).MountNames$, DbTextDescriptionLength%)
 
 StDt("FormulaFlags") = sample(1).FormulaElementFlag
 StDt("FormulaRatios") = sample(1).FormulaRatio!
 StDt("FormulaElements") = Left$(sample(1).FormulaElement$, DbTextElementStringLength%)
+
+StDt("MaterialTypes") = Left$(sample(1).MaterialType$, DbTextNameLength%)
+StDt("MountNames") = Left$(sample(1).MountNames$, DbTextDescriptionLength%)
 
 StDt.Update
 StDt.Close

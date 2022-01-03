@@ -324,7 +324,7 @@ Begin VB.Form FormZAFOPT
             Index           =   1
             Left            =   1200
             TabIndex        =   55
-            ToolTipText     =   $"ZAFOPT.frx":0000
+            ToolTipText     =   $"Zafopt.frx":0000
             Top             =   120
             Width           =   1575
          End
@@ -413,7 +413,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"ZAFOPT.frx":0093
+         ToolTipText     =   $"Zafopt.frx":0093
          Top             =   3120
          Width           =   4095
       End
@@ -758,12 +758,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub
@@ -794,10 +794,10 @@ End Sub
 
 Private Sub OptionFerrousFerricOption_Click(Index As Integer)
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.OptionFerrousFerricOption(1).Value = True Then
+If FormZAFOPT.OptionFerrousFerricOption(1).value = True Then
 FormZAFOPT.TextFerrousFerricTotalCations.Text = Format$(15)
 FormZAFOPT.TextFerrousFerricTotalOxygens.Text = Format$(23)
-ElseIf FormZAFOPT.OptionFerrousFerricOption(2).Value = True Then
+ElseIf FormZAFOPT.OptionFerrousFerricOption(2).value = True Then
 FormZAFOPT.TextFerrousFerricTotalCations.Text = Format$(13)
 FormZAFOPT.TextFerrousFerricTotalOxygens.Text = Format$(23)
 End If

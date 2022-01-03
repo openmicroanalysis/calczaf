@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeREGRESS"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 
 Sub RegressGetStats(tData() As Double, n As Integer, np As Integer, mean As Double, Std As Double)

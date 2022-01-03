@@ -2,8 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/31/21	Modify Standard database import/export code to include material types, formulas basis and mount 
+v. 13.0.6		names (von der Handt).
+
 12/17/21	Add new Thermo Portal get/set functions for detector sub type, time constant, and zero pulse width
-v.13.0.5	to improve net intensity spectral processing (von der Handt and Seward).
+v. 13.0.5	to improve net intensity spectral processing (von der Handt and Seward).
 
 12/15/21	Modify Report output to allow user to specify report output file name (von der Handt).
 
@@ -292,7 +295,7 @@ v. 12.8.8
 
 06/02/20	Modify Update Single Position right click menu to re-select previously selected row (Allaz).
 
-05/27/20	Add error trap for missing TDI files in GetELm code for CalcImage.
+05/27/20	Add error trap for missing TDI files in GetElm code for CalcImage.
 
 05/23/20	Add output of unk/std Z, A and F factors in CalcZAF output in VerboseMode (Joy).
 v. 12.8.7
@@ -342,7 +345,7 @@ v. 12.8.6
 
 		Improve filament standby code.
 
-02/25/20	Change count time normalization for error bars in MPB RUn menu display to utilize non aggregated
+02/25/20	Change count time normalization for error bars in MPB Run menu display to utilize non aggregated
 		count time in case aggregate mode is on.  Also use for wavescan error bars (not aggregated anyway)
 		
 		Fix Acquisition Options dialog for change all to MPB.

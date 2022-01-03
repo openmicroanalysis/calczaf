@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSTANDARD4"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 
 Dim StandardTmpSample(1 To 1) As TypeSample
@@ -245,6 +245,12 @@ Next i%
 linecount& = linecount& + 1
 If DebugMode Then Call IOWriteLog(msg$)
 
+' Read material types, formula flags, etc.
+Input #ImportDataFileNumber%, sample(1).MaterialType$, sample(1).FormulaElementFlag, sample(1).FormulaRatio!, sample(1).FormulaElement$, sample(1).MountNames$
+msg$ = VbDquote$ & sample(1).MaterialType$ & VbDquote$ & ", " & sample(1).FormulaElementFlag & ", " & Str$(sample(1).FormulaRatio!) & ", " & VbDquote$ & sample(1).FormulaElement$ & VbDquote$ & ", " & VbDquote$ & sample(1).MountNames$ & VbDquote$
+linecount& = linecount& + 1
+If DebugMode Then Call IOWriteLog(msg$)
+
 Exit Sub
 
 ' Errors
@@ -379,6 +385,9 @@ End If
 Next i%
 Next n%
 
+' Read material type, formula flags, etc.
+Input #ImportDataFileNumber%, sample(1).MaterialType$, sample(1).FormulaElementFlag, sample(1).FormulaRatio!, sample(1).FormulaElement$, sample(1).MountNames$
+
 ' Load kilovolts array
 For i% = 1 To sample(1).LastChan%
 sample(1).TakeoffArray!(i%) = sample(1).takeoff!
@@ -388,6 +397,7 @@ sample(1).BeamSizeArray(i%) = sample(1).beamsize!
 Next i%
 
 linecount& = linecount& + 1
+
 Exit Sub
 
 ' Errors
@@ -593,6 +603,12 @@ For n% = 1 To MAXELM%
 bstring$ = bstring$ & VbDquote & Symup$(n%) & " OXD" & VbDquote & vbTab
 Next n%
 
+bstring$ = bstring$ & VbDquote$ & "Material Type" & VbDquote$ & vbTab
+bstring$ = bstring$ & VbDquote$ & "Formula Element Flag" & VbDquote$ & vbTab
+bstring$ = bstring$ & VbDquote$ & "Formula Ratio" & VbDquote$ & vbTab
+bstring$ = bstring$ & VbDquote$ & "Formula Element" & VbDquote$ & vbTab
+bstring$ = bstring$ & VbDquote$ & "Mount Names" & VbDquote & vbTab
+
 Print #ImportDataFileNumber%, bstring$
 End If
 
@@ -621,6 +637,10 @@ If ierror Then Exit Sub
 End If
 
 Next i%
+
+' Confirm with user
+msg$ = "Export file " & ImportDataFile$ & " containing standard compositions was exported."
+MsgBox msg$, vbOKOnly + vbInformation, "StandardWriteDATFile"
 
 Exit Sub
 
@@ -722,6 +742,9 @@ msg$ = msg$ & Format$(Format$((sample(1).ElmPercents!(i%)), f83$), a80$)
 Next i%
 Print #ImportDataFileNumber%, msg$
 
+' Write material types, formula flags, etc.
+Print #ImportDataFileNumber%, VbDquote$ & sample(1).MaterialType$ & VbDquote$, sample(1).FormulaElementFlag, sample(1).FormulaRatio!, VbDquote$ & sample(1).FormulaElement$ & VbDquote$, VbDquote$ & sample(1).MountNames$ & VbDquote
+
 Exit Sub
 
 ' Errors
@@ -742,6 +765,7 @@ Dim i As Integer, n As Integer
 Dim tmsg As String
 Dim astring As String, bstring As String
 Dim cstring As String, dstring As String
+Dim estring As String
 
 ' Write standard number and name
 sample(1).Name$ = Replace$(sample(1).Name$, VbDquote$, VbSquote$)
@@ -789,8 +813,11 @@ Next i%
 dstring$ = dstring$ & tmsg$ & vbTab
 Next n%
 
+' Write material type, flormula flags, etc
+estring$ = VbDquote$ & sample(1).MaterialType$ & VbDquote$ & vbTab & sample(1).FormulaElementFlag & vbTab & sample(1).FormulaRatio! & vbTab & VbDquote$ & sample(1).FormulaElement$ & VbDquote$ & vbTab & VbDquote$ & sample(1).MountNames$ & VbDquote & vbTab
+
 ' Write the line to the file
-Print #ImportDataFileNumber%, astring$ & bstring$ & cstring$ & dstring$
+Print #ImportDataFileNumber%, astring$ & bstring$ & cstring$ & dstring$ & estring$
 Exit Sub
 
 ' Errors

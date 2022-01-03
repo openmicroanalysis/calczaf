@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePLAN3Da"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 
 Sub Plan3dLUBKSB(a() As Double, n As Integer, np As Integer, indx() As Integer, b() As Double)

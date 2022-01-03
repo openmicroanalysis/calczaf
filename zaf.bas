@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeZAF"
-' (c) Copyright 1995-2021 by John J. Donovan (credit to John Armstrong for original code)
+' (c) Copyright 1995-2022 by John J. Donovan (credit to John Armstrong for original code)
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -3993,7 +3993,7 @@ Dim i1 As Integer
 Dim g1 As Double, g2 As Double, g3 As Double
 Dim r0 As Double, r00 As Double, rr0 As Double
 Dim u0 As Double, eC As Double, eO As Double
-Dim B As Double, emm As Double, qeO As Double
+Dim b As Double, emm As Double, qeO As Double
 Dim dee As Double, q0 As Double, qq As Double
 Dim rx As Double, rm As Double, phi0 As Double
 
@@ -4011,7 +4011,7 @@ Dim fff As Double
 eO# = zaf.eO!(ii%)
 u0# = zaf.v!(ii%)       ' used to be zaf.y!(ii%)
 eC# = zaf.eC!(ii%)
-B# = zaf.atwts!(ii%)    ' used to be zaf.b!(ii%)
+b# = zaf.atwts!(ii%)    ' used to be zaf.b!(ii%)
 emm# = em!(ii%)
 zip# = zipi!(ii%)
 
@@ -4041,7 +4041,7 @@ qq# = q0# + (1# - q0#) * Exp(-(u0# - 1#) * zz! / 40#)
 rx# = qq# * dee# * r0#              ' depth range of ionization
 rm# = g1# * g2# * g3# * rx#         ' depth of maximum phi
 qeO# = Log(u0#) / (eC# * eC# * Exp(emm# * Log(u0#)))
-xp! = xp! / (zip# * 66892#) * B#
+xp! = xp! / (zip# * 66892#) * b#
 ff# = xp! / qeO#
 
 phi0# = 1# + 3.3 * (1# - Exp((2.3 * hh! - 2#) * Log(u0#))) * Exp(1.2 * Log(hh!))   ' phi(0)
@@ -4083,7 +4083,7 @@ End If
 ' Simplified PAP
 If mode% = 2 Then
 qeO# = Log(u0#) / (eC# * eC# * Exp(emm# * Log(u0#)))
-xp! = xp! / (zip# * 66892#) * B#
+xp! = xp! / (zip# * 66892#) * b#
 ff# = xp! / qeO#
 
 phi0# = 1# + 3.3 * (1# - Exp((2.3 * hh! - 2#) * Log(u0#))) * Exp(1.2 * Log(hh!))    ' phi(0)

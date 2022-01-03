@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePERIODIC2"
-' (c) Copyright 1995-2021 by John J. Donovan
+' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -27,10 +27,10 @@ FormPERIODIC2.CommandElement(i% - 1).Caption = Symup$(i%)
 
 If PeriodicElement(i%) Then
 FormPERIODIC2.CommandElement(i% - 1).BackColor = vbRed
-FormPERIODIC2.CommandElement(i% - 1).tag = True
+FormPERIODIC2.CommandElement(i% - 1).Tag = True
 Else
 FormPERIODIC2.CommandElement(i% - 1).BackColor = vbButtonFace
-FormPERIODIC2.CommandElement(i% - 1).tag = False
+FormPERIODIC2.CommandElement(i% - 1).Tag = False
 End If
 
 Next i%
@@ -57,7 +57,7 @@ Dim i As Integer
 
 ' Save element symbols based on current selections
 For i% = 1 To MAXELM%
-If FormPERIODIC2.CommandElement(i% - 1).tag = True Then
+If FormPERIODIC2.CommandElement(i% - 1).Tag = True Then
 PeriodicElement(i%) = True
 Else
 PeriodicElement(i%) = False
@@ -87,10 +87,10 @@ PeriodicElement(ielm%) = Not PeriodicElement(ielm%)
 ' Update form
 If PeriodicElement(ielm%) Then
 FormPERIODIC2.CommandElement(ielm% - 1).BackColor = vbRed
-FormPERIODIC2.CommandElement(ielm% - 1).tag = True
+FormPERIODIC2.CommandElement(ielm% - 1).Tag = True
 Else
 FormPERIODIC2.CommandElement(ielm% - 1).BackColor = vbButtonFace
-FormPERIODIC2.CommandElement(ielm% - 1).tag = False
+FormPERIODIC2.CommandElement(ielm% - 1).Tag = False
 End If
 
 Exit Sub
@@ -160,7 +160,7 @@ Dim i As Integer
 ' Load element symbols based on current selections
 For i% = 1 To MAXELM%
 FormPERIODIC2.CommandElement(i% - 1).BackColor = vbButtonFace
-FormPERIODIC2.CommandElement(i% - 1).tag = False
+FormPERIODIC2.CommandElement(i% - 1).Tag = False
 Next i%
 
 Exit Sub
