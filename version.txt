@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/06/22	Modify GetElm code to check if MPB arrays actually contain data if assigning MPB background correction
+		to off-peak elements (Mott).
+		
+		Also skip loading disable acq elements in MPB dialog.
+
 12/31/21	Modify Standard database import/export code to include material types, formulas basis and mount 
 v. 13.0.6		names (von der Handt).
 
