@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/07/22	Update Remote and Matrix installation instructions to use "as admin" to run TestRemote and TestMatrix 
+		the first time to properly register the active-x classes (Ruscitto).
+
 01/06/22	Modify GetElm code to check if MPB arrays actually contain data if assigning MPB background correction
 		to off-peak elements (Mott).
 		
