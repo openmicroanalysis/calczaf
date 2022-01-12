@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/11/22	Fix bug in SetupUpdateMDB when updating setup databases from versions older than 11.39 (Creighton).
+
 01/07/22	Update Remote and Matrix installation instructions to use "as admin" to run TestRemote and TestMatrix 
 		the first time to properly register the active-x classes (Ruscitto).
 
