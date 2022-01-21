@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/20/22	Add total, oxygen by stoich, etc. output for formula calculations in CalcImage (Buse).
+v. 13.0.8
+
+01/19/22	Tweak polygon filtering pixel code to improve speed (Allaz).
+
 01/14/22	Add report output for wavescan samples (right click menu in Analyze! window) (Locock).
 v. 13.0.7
 		Also add sample name to report file name as default.		
