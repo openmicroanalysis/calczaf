@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/23/22	Add excess oxygen from ferric iron to image output in CalcImage.
+
+01/22/22	Modify other unanalyzed element map outputs in CalcImage.
+
+01/21/22	Modify excess oxygen calculations for self-consistency. Fix minor bug.
+
 01/20/22	Add total, oxygen by stoich, etc. output for formula calculations in CalcImage (Buse).
 v. 13.0.8
 
