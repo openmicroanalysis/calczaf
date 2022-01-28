@@ -860,8 +860,9 @@ Type TypeSample
     EDSSpectraMaxCounts() As Long
     EDSSpectraADCTimeConstant() As Single       ' pulse processing time (in vendor units)
     
-    EDSSpectraDetectorSubtype() As Long           ' used by Thermo only
-    EDSSpectraZeroWidth() As Double               ' used by Thermo only
+    EDSSpectraDetectorSubtype() As Long           ' used by Thermo PF 2.10 and higher only for spectrum processing only
+    EDSSpectraZeroWidth() As Double               ' used by Thermo PF 2.10 and higher only
+    EDSSpectraTimeConstant() As Long              ' used by Thermo PF 2.10 and higher only
     
     EDSSpectraKLineBCoefficient() As Single     ' used by Bruker only
     EDSSpectraKLineCCoefficient() As Single     ' used by Bruker only

@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/27/22	Add additional time constant fields for Thermo Pathfinder 2.10 and hiogher.
+v. 13.0.9	
+		Fix Read Conditions button code in Automate! Conditions dialog (Collins).
+
 01/23/22	Add excess oxygen from ferric iron to image output in CalcImage.
 
 01/22/22	Modify other unanalyzed element map outputs in CalcImage.

@@ -1408,8 +1408,8 @@ ZAFMinTotal! = 0.001    ' in weight fraction
 ZAFMinToler! = 0.0001   ' in weight fraction
 ZAFToler! = 1000#       ' in inverted relative weight fraction
 
-' Check if an element is calculated relative to stoichiometric oxygen
-If IPOS2%(zaf.in1%, Int(15), zaf.il%()) > 0 Then
+' Check if an element is calculated relative to stoichiometric oxygen or calculated relative to another element
+If IPOS2%(zaf.in1%, Int(15), zaf.il%()) > 0 Or IPOS2%(zaf.in1%, Int(17), zaf.il%()) > 0 Then
 ZAFToler! = 100000#     ' in inverted relative weight fraction
 End If
 
