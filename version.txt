@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/02/22	Add projected acquisition time for Probe Image mapping acquisitions.
+
 01/29/22	Fix TePortal DLL calls for new functions (Seddio).
 
 01/27/22	Add additional time constant fields for Thermo Pathfinder 2.10 and hiogher.
