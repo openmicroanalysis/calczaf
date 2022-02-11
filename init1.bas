@@ -553,7 +553,7 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then DefaultBeamCurrent! = Val(Left$(lpReturnString$, valid&))
-If DefaultBeamCurrent! < MINBEAMCURRENT! * 10# Or DefaultBeamCurrent! > MAXBEAMSIZE! Then
+If DefaultBeamCurrent! < MINBEAMCURRENT! * 10# Or DefaultBeamCurrent! > MAXBEAMCURRENT! Then
 msg$ = "BeamCurrent keyword value out of range in " & ProbeWinINIFile$ & " (must be between " & Format$(MINBEAMCURRENT! * 10) & " and " & Format$(MAXBEAMCURRENT!) & ")"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIGeneral"
 DefaultBeamCurrent! = Val(lpDefault$)

@@ -2,15 +2,42 @@ VERSION 5.00
 Begin VB.Form FormPENEPMA08Batch 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "PENEPMA- Batch Mode"
-   ClientHeight    =   13140
+   ClientHeight    =   12705
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   7455
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   13140
+   ScaleHeight     =   12705
    ScaleWidth      =   7455
    StartUpPosition =   3  'Windows Default
+   Begin VB.Frame Frame5 
+      Caption         =   "Extract Continuum"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FF0000&
+      Height          =   1215
+      Left            =   5520
+      TabIndex        =   48
+      Top             =   9960
+      Width           =   1815
+      Begin VB.CommandButton CommandExtractContinuum 
+         Caption         =   "Extract Continuum Channels"
+         Height          =   735
+         Left            =   240
+         TabIndex        =   49
+         ToolTipText     =   $"PENEPMA08Batch.frx":0000
+         Top             =   360
+         Width           =   1335
+      End
+   End
    Begin VB.Frame Frame4 
       Caption         =   "Generate Bulk Pure Element Input Files Based On Specified Range"
       BeginProperty Font 
@@ -26,14 +53,14 @@ Begin VB.Form FormPENEPMA08Batch
       Height          =   1215
       Left            =   120
       TabIndex        =   33
-      Top             =   11880
+      Top             =   11400
       Width           =   7215
       Begin VB.CommandButton CommandRename 
          Caption         =   "Copy and Rename DAT files"
          Height          =   315
          Left            =   4800
          TabIndex        =   46
-         ToolTipText     =   $"PENEPMA08Batch.frx":0000
+         ToolTipText     =   $"PENEPMA08Batch.frx":008C
          Top             =   840
          Width           =   2175
       End
@@ -125,7 +152,7 @@ Begin VB.Form FormPENEPMA08Batch
       Height          =   2175
       Left            =   120
       TabIndex        =   24
-      Top             =   7920
+      Top             =   7560
       Width           =   7215
       Begin VB.TextBox TextBatchFolder 
          Enabled         =   0   'False
@@ -144,7 +171,7 @@ Begin VB.Form FormPENEPMA08Batch
          Style           =   1  'Graphical
          TabIndex        =   29
          TabStop         =   0   'False
-         ToolTipText     =   $"PENEPMA08Batch.frx":008B
+         ToolTipText     =   $"PENEPMA08Batch.frx":0117
          Top             =   1800
          Width           =   1335
       End
@@ -234,7 +261,7 @@ Begin VB.Form FormPENEPMA08Batch
       End
    End
    Begin VB.Frame Frame2 
-      Caption         =   "Generate Penepma Binary Composition Input Files (11 binaries from 1 to 99%) "
+      Caption         =   "Generate Binary Composition Input Files"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -248,17 +275,17 @@ Begin VB.Form FormPENEPMA08Batch
       Height          =   1215
       Left            =   120
       TabIndex        =   17
-      Top             =   10440
-      Width           =   7215
+      Top             =   9960
+      Width           =   5295
       Begin VB.CommandButton CommandCreateBinaries 
          Caption         =   "Create Binary Composition Input Files For Penepma"
          Height          =   735
-         Left            =   2280
+         Left            =   1680
          TabIndex        =   21
          TabStop         =   0   'False
          ToolTipText     =   "Create binary composition files from 1 to 99% (be sure to specify the proper batch folder)"
          Top             =   360
-         Width           =   1935
+         Width           =   1815
       End
       Begin VB.ComboBox ComboBinaryElement2 
          Height          =   315
@@ -281,12 +308,12 @@ Begin VB.Form FormPENEPMA08Batch
       Begin VB.CommandButton CommandExtractKRatios 
          Caption         =   "Extract K-Ratios From Binary Compositions"
          Height          =   735
-         Left            =   5040
+         Left            =   3600
          TabIndex        =   18
          TabStop         =   0   'False
          ToolTipText     =   "Extract the k-ratios from the batch folder containing the binary composition calculations"
          Top             =   360
-         Width           =   1935
+         Width           =   1575
       End
       Begin VB.Label LabelToAnd 
          Alignment       =   2  'Center
@@ -562,7 +589,7 @@ Begin VB.Form FormPENEPMA08Batch
    End
    Begin VB.Label LabelPENEPMA08Batch 
       Alignment       =   2  'Center
-      Caption         =   $"PENEPMA08Batch.frx":0121
+      Caption         =   $"PENEPMA08Batch.frx":01AD
       Height          =   3015
       Left            =   6000
       TabIndex        =   3
@@ -606,6 +633,12 @@ If ierror Then Exit Sub
 Call Penepma08BatchBulkPureElementCreate(FormPENEPMA08_PE)
 If ierror Then Exit Sub
 Call Penepma08BatchLoad
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandExtractContinuum_Click()
+If Not DebugMode Then On Error Resume Next
+Call Penepma08ExtractContinuumChannels
 If ierror Then Exit Sub
 End Sub
 

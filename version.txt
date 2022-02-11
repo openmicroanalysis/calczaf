@@ -2,6 +2,20 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/10/22	Fix bug when combining samples with integrated intensities so the reverse order checkbox 
+		is respected (Goemann).
+
+02/09/22	Work on Penepma continuum extraction code.
+
+02/07/22	Modify maximum keV, current and size to more reasonable limits:
+v. 13.1.0
+		Global Const MAXKILOVOLTS! = 50#         ' maximum beam energy in kilovolts
+		Global Const MAXBEAMCURRENT! = 1000#     ' maximum beam current in nA
+		Global Const MAXBEAMSIZE! = 50#          ' maximum beam size in microns
+
+		Add code to extract continuum intensities from Penepma spectrum files in Standard
+		Penepma Batch window.
+
 02/02/22	Add projected acquisition time for Probe Image mapping acquisitions.
 
 01/29/22	Fix TePortal DLL calls for new functions (Seddio).

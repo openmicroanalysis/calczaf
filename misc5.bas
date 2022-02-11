@@ -742,3 +742,33 @@ Exit Function
 
 End Function
 
+Sub MiscFindClosestMatch(target As Single, np As Long, sarray() As Single, index As Long)
+' Returns the array index to the closest value in an array to the passed target
+
+ierror = False
+On Error GoTo MiscFindClosestMatchError
+
+Dim n As Long
+Dim diff As Single
+
+index& = 0
+diff! = MAXSINGLE!
+
+' Find closest match to target in array
+For n& = 1 To np&
+  If Abs(target! - sarray!(n&)) < diff! Then
+    diff! = Abs(target! - sarray(n&))
+    index& = n&
+  End If
+Next
+
+Exit Sub
+
+' Errors
+MiscFindClosestMatchError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscFindClosestMatch"
+ierror = True
+Exit Sub
+
+End Sub
+

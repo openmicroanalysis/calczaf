@@ -2191,7 +2191,7 @@ Exit Function
 End Function
 
 Sub Penepma08ReadMaterialFile(tMaterialFile As String, sample() As TypeSample)
-' Read the material file and return composition
+' Read the default material file and return composition
 
 ierror = False
 On Error GoTo Penepma08ReadMaterialFileError
@@ -2207,7 +2207,7 @@ If ierror Then Exit Sub
 
 If tMaterialFile$ = vbNullString Then GoTo Penepma08ReadMaterialFileBlankFile
 tfilename$ = PENEPMA_Path$ & "\" & tMaterialFile$
-If Dir$(tfilename$) = vbNullString Then GoTo Penepma08ReadMaterialFileNoFIle
+If Dir$(tfilename$) = vbNullString Then GoTo Penepma08ReadMaterialFileNoFile
 Open tfilename$ For Input As #Temp1FileNumber%
 
 ' Locate number of elements
@@ -2247,9 +2247,83 @@ MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08ReadMaterialFile"
 ierror = True
 Exit Sub
 
-Penepma08ReadMaterialFileNoFIle:
+Penepma08ReadMaterialFileNoFile:
 msg$ = "Specified material file was not found in the path " & PENEPMA_Path$
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08ReadMaterialFile"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub Penepma08ReadMaterialFile2(tMaterialFile As String, masfrac() As Single, atmfrac() As Single, sample() As TypeSample)
+' Read the specified pe-material.dat file and return mass fraction and atom fractions
+
+ierror = False
+On Error GoTo Penepma08ReadMaterialFile2Error
+
+Dim i As Integer, n As Integer, ip As Integer
+Dim tfilename As String, astring As String
+
+' Clear sample
+Call InitSample(sample())
+If ierror Then Exit Sub
+
+If tMaterialFile$ = vbNullString Then GoTo Penepma08ReadMaterialFile2BlankFile
+If Dir$(tMaterialFile$) = vbNullString Then GoTo Penepma08ReadMaterialFile2NoFile
+Open tMaterialFile$ For Input As #Temp1FileNumber%
+
+' Locate number of elements
+Do Until InStr(astring$, "Number of elements") > 0
+Line Input #Temp1FileNumber%, astring$
+Loop
+
+' Get number of elements
+sample(1).LastChan% = Val(Right$(astring$, 2))
+For i% = 1 To sample(1).LastChan%
+Line Input #Temp1FileNumber%, astring$
+
+' Locate atomic number
+n% = InStr(astring$, "Element: ") + Len("Element: ")
+sample(1).Elsyms$(i%) = LCase$(Mid$(astring$, n%, 2))
+atmfrac!(i%) = Val(Mid$(astring$, 41))
+Next i%
+Close #Temp1FileNumber%
+
+' Convert to weight percent
+For i% = 1 To sample(1).LastChan%
+masfrac!(i%) = ConvertAtomToWeight!(sample(1).LastChan%, i%, atmfrac!(), sample(1).Elsyms$())
+masfrac!(i%) = masfrac!(i%) / 100#
+Next i%
+
+' Load other parameters
+For i% = 1 To sample(1).LastChan%
+ip% = IPOS1(MAXELM%, sample(1).Elsyms$(i%), Symlo$())
+If ip% > 0 Then
+sample(1).AtomicNums%(i%) = ip%
+sample(1).AtomicWts!(i%) = AllAtomicWts!(ip%)
+End If
+Next i%
+
+sample(1).LastElm% = sample(1).LastChan%
+
+Exit Sub
+
+' Errors
+Penepma08ReadMaterialFile2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08ReadMaterialFile2"
+Close #Temp1FileNumber%
+ierror = True
+Exit Sub
+
+Penepma08ReadMaterialFile2BlankFile:
+msg$ = "No material file selected for output"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08ReadMaterialFile2"
+ierror = True
+Exit Sub
+
+Penepma08ReadMaterialFile2NoFile:
+msg$ = "Specified material file was not found in the path " & PENEPMA_Path$
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08ReadMaterialFile2"
 ierror = True
 Exit Sub
 
@@ -4936,18 +5010,18 @@ ierror = False
 On Error GoTo Penepma08PlotSpectraError
 
 Dim tFlag As Boolean
-Dim tpath As String, tstring As String, tfolder As String, tfilename As String
+Dim tpath As String, tstring As String, tFolder As String, tfilename As String
 
 ' Ask user for Penepma.dat
 tFlag = False
 tpath$ = PENEPMA_Path$
 tstring$ = "Browse Folder For Penepma Files"
-tfolder$ = IOBrowseForFolderByPath(tFlag, tpath$, tstring$, FormPENEPMA08_PE)
+tFolder$ = IOBrowseForFolderByPath(tFlag, tpath$, tstring$, FormPENEPMA08_PE)
 If ierror Then Exit Sub
-If Trim$(tfolder$) = vbNullString Then Exit Sub
+If Trim$(tFolder$) = vbNullString Then Exit Sub
 
 ' Load filename and delete dump file
-PENEPMA_Path$ = tfolder$
+PENEPMA_Path$ = tFolder$
 
 ' Load Penepma output (display) files
 PENEPMA_DAT_File$ = PENEPMA_Path$ & "\PENEPMA.DAT"
@@ -5007,7 +5081,7 @@ Exit Sub
 
 Penepma08PlotSpectraNotFound:
 Screen.MousePointer = vbDefault
-msg$ = "The Penepma.dat file was not found in folder " & tfolder$
+msg$ = "The Penepma.dat file was not found in folder " & tFolder$
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08PlotSpectra"
 ierror = True
 Exit Sub

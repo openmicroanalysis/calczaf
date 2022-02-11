@@ -292,14 +292,14 @@ Global Const MAXIMAGESIZES& = 4          ' dimensioned 0 to MAXIMAGESIZES&
 Global Const MAXPALETTE% = 4             ' maximum number of color palettes
 
 Global Const MINTAKEOFF! = 10#           ' minimum takeoff in degrees
-Global Const MINKILOVOLTS! = 1#          ' minimum beam size in kilovolts
+Global Const MINKILOVOLTS! = 1#          ' minimum beam energy in kilovolts
 Global Const MINBEAMCURRENT! = 0.01      ' minimum beam current in nA
 Global Const MINBEAMSIZE! = 0#           ' minimum beam size in microns
 
 Global Const MAXTAKEOFF! = 75            ' maximum takeoff in degrees
-Global Const MAXKILOVOLTS! = 100#        ' maximum beam size in kilovolts
-Global Const MAXBEAMCURRENT! = 2000#     ' maximum beam current in nA
-Global Const MAXBEAMSIZE! = 500#         ' maximum beam size in microns
+Global Const MAXKILOVOLTS! = 40#         ' maximum beam energy in kilovolts
+Global Const MAXBEAMCURRENT! = 1000#     ' maximum beam current in nA
+Global Const MAXBEAMSIZE! = 50#          ' maximum beam size in microns
 
 Global Const MINREPLICATES% = 1          ' minimum number of replicate samples
 Global Const MAXREPLICATES% = 500        ' maximum number of replicates samples
