@@ -647,20 +647,8 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitMotors2"
 ierror = True
 Exit Sub
 
-InitMotors2LowGreaterThanOrEqualHigh:
-msg$ = "Low is greater than or equal to high in " & MotorsFile$ & " on line " & Str$(linecount%)
-MsgBox msg$, vbOKOnly + vbExclamation, "InitMotors2"
-ierror = True
-Exit Sub
-
 InitMotors2InvalidDataUnitMicrons:
 msg$ = "Stage Units To Microns parameters in " & MotorsFile$ & " on line " & Str$(linecount%) & " must be 1 (Cameca um) or 1000 (JEOL mm)"
-MsgBox msg$, vbOKOnly + vbExclamation, "InitMotors2"
-ierror = True
-Exit Sub
-
-InitMotors2JeolPositiveBacklash:
-msg$ = "Only negative backlash factors are allowed for JEOL 8900/8200/8500/8230/8530 in " & MotorsFile$ & " on line " & Str$(linecount%)
 MsgBox msg$, vbOKOnly + vbExclamation, "InitMotors2"
 ierror = True
 Exit Sub
