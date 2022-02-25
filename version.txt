@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/23/22	Fix minor bug in Acquire automated image when using confirm only option (Matthews).
+
 02/20/22	Minor tweaks to form controls.
 
 02/19/22	Minor code cleanup (Project Analyzer).
