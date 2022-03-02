@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/01/22	Fix bug in Recalb code when EDS element is present.
+v. 13.11
+		Add field for current spectro position for de-tuned PHA scan acquisitions.
+
 02/23/22	Fix minor bug in Acquire automated image when using confirm only option (Matthews).
 
 02/20/22	Minor tweaks to form controls.

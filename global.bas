@@ -1245,6 +1245,8 @@ Type TypeScan
     ScanROMPeakingSet As Integer    ' 0 = final, 1 = coarse
     
     ScanPHAHardwareType As Integer  ' 0 = traditional PHA, 1 = MCA PHA
+    
+    ScanCurPeakPos As Single        ' v. 13.11
 End Type
 
 Type TypeMultiPoint

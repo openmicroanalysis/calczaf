@@ -839,6 +839,7 @@ tScan.ScanROMPeakingType% = 0
 tScan.ScanDateTime = Now
 tScan.ScanROMPeakingSet% = 0    ' 0 = final, 1 = coarse
 tScan.ScanPHAHardwareType% = PHAHardwareType%   ' 0 = traditional PHA, 1 = MCA PHA
+tScan.ScanCurPeakPos! = 0#
 
 Exit Sub
 
