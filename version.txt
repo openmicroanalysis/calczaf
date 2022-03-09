@@ -2,8 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-03/01/22	Fix bug in Recalb code when EDS element is present.
-v. 13.11
+03/07/22	Modify code to re-set reload standard intensity arrays flag after editing dead time constants in PFE.
+
+		Fix JEOL process time bug (Seward) in JEOLEDSSpectraGet.
+
+03/01/22	Fix bug in Recalb code when EDS element is present (Allaz).
+v. 13.1.1
 		Add field for current spectro position for de-tuned PHA scan acquisitions.
 
 02/23/22	Fix minor bug in Acquire automated image when using confirm only option (Matthews).

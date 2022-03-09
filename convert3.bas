@@ -348,7 +348,7 @@ Sub ConvertCalculateZbarFrac(lchan As Integer, atomfrac() As Single, atomnums() 
 '  atomfrac = atomic fractions
 '  atomnums = atomic numbers
 '  exponent = exponent for fraction calculation
-'  zbar = returned zbar based on fraction
+'  zbar = returned zbar based on atomic fractions
 
 ierror = False
 On Error GoTo ConvertCalculateZbarFracError
