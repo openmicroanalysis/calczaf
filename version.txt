@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/16/22	Modify JEOL EDS get image code to not acquire duplicate image (Seward and Allaz).
+
 03/07/22	Modify code to re-set reload standard intensity arrays flag after editing dead time constants in PFE.
 
 		Fix JEOL process time bug (Seward) in JEOLEDSSpectraGet.
