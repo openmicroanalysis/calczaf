@@ -53,6 +53,7 @@ Begin VB.Form FormMAIN
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
             Object.Width           =   14579
+            TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""
             Object.ToolTipText     =   "Automation status"

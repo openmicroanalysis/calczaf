@@ -386,11 +386,13 @@ MiscIsInstrumentStageStored = MiscIsInstrumentStage(InstType$)
 Exit Function
 End If
 
-If InterfaceTypeStored% = 1 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
+' 0=Demo, 1=Unused, 2=JEOL 8900/8200/8500/8x30, 3=Unused, 4=Unused, 5=SX100/SXFive
+If InterfaceTypeStored% = 1 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = False      ' AMB (Obsolete)
 If InterfaceTypeStored% = 2 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' JEOL 8900/8200/8500/8x30
-If InterfaceTypeStored% = 3 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
-If InterfaceTypeStored% = 4 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = True      ' not used
+If InterfaceTypeStored% = 3 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = False      ' not used
+If InterfaceTypeStored% = 4 And InstType$ = "JEOL" Then MiscIsInstrumentStageStored = False      ' not used
 If InterfaceTypeStored% = 5 And InstType$ = "CAMECA" Then MiscIsInstrumentStageStored = True    ' Cameca SX100/SXFive
+If InterfaceTypeStored% = 6 And InstType$ = "CAMECA" Then MiscIsInstrumentStageStored = True    ' Cameca SX50/51 (Obsolete)
 
 Exit Function
 

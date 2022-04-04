@@ -3025,3 +3025,8 @@ Global CamecaSXFiveTactisUSBVideoFlag As Integer
 Global DisableStageMoveAll As Integer               ' special flag to disable move stage and get status stage
 
 Global SpecifiedAPFMaximumLineEnergy As Single
+
+Global DefaultJEOLUnfreezeDelay As Integer
+
+Global JEOLSpectrometerOrientationType As Integer
+Global SpectrometerOrientations(1 To MAXSPEC%) As Integer

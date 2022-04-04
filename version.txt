@@ -2,6 +2,23 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/03/22	Modify JEOL spectrometer orientation angles. Fix prescan bug if EDS or CL flag is set. 
+		Update PFE Reference Manual.
+
+04/02/22	Add spectrometer orientation information to Probewin.ini file
+v. 13.1.2
+		Improve JEOL EDS imaging code (Allaz and Poirier) with Scan Delay button.
+		
+		More work on consensus k-ratio output.
+
+03/29/22	Start work on consensus k-ratio output format.
+
+03/22/22	Add Scan Unfreeze Delay button in FormIMAGE for improved JEOL EDS imaging.
+
+03/21/22	Make JEOLUnFreezeFlag default = true for new installations (Allaz and Seward).
+
+03/20/22	Modify code to add JEOL unfreeze command before imaging.
+
 03/16/22	Modify JEOL EDS get image code to not acquire duplicate image (Seward and Allaz).
 
 03/07/22	Modify code to re-set reload standard intensity arrays flag after editing dead time constants in PFE.

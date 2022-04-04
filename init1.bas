@@ -4120,7 +4120,7 @@ End If
 ' Unfreeze flag for JEOL 8x30 and iSP100/iHP200 EPMA instruments
 lpAppName$ = "Hardware"
 lpKeyName$ = "JEOLUnfreezeAfterFlag"
-nDefault& = False
+nDefault& = False                           ' assume non JEOL instrument
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 If valid& <> 0 Then
@@ -4734,6 +4734,19 @@ If DefaultImageChannelNumber% < 1 Or DefaultImageChannelNumber% > 2 Then
 msg$ = "ImageChannelNumber keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 DefaultImageChannelNumber% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Image"
+lpKeyName$ = "JEOLUnfreezeDelay"
+nDefault& = 2           ' in seconds
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+DefaultJEOLUnfreezeDelay% = valid&
+If DefaultJEOLUnfreezeDelay% < 1 Or DefaultJEOLUnfreezeDelay% > 60 Then
+msg$ = "JEOLUnfreezeDelay keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
+DefaultJEOLUnfreezeDelay% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
