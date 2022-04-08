@@ -4155,6 +4155,19 @@ DisableStageMoveAll% = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+lpAppName$ = "Hardware"
+lpKeyName$ = "AutomatedImageAcquisitionMagChangeMilliSecDelay"
+nDefault& = 500                                                     ' seems to be required for Thermo imaging interface
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+AutomatedImageAcquisitionMagChangeMilliSecDelay& = valid&
+If AutomatedImageAcquisitionMagChangeMilliSecDelay& < 10 Or AutomatedImageAcquisitionMagChangeMilliSecDelay& > 10000 Then
+msg$ = "AutomatedImageAcquisitionMagChangeMilliSecDelay keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+AutomatedImageAcquisitionMagChangeMilliSecDelay& = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors
@@ -4218,7 +4231,7 @@ End If
 
 lpAppName$ = "Image"
 lpKeyName$ = "ImageInterfaceType"
-nDefault& = 0   ' 0=Demo, 1=Unused, 2=Unused, 3=Unused, 4=8900/8200/8500/8x30, 5=SX100/SXFive Mapping, 6=SX100/SXFive Video, 7=JEOL 8230/8530 Video, 8=Unused, 9=Bruker, 10=Thermo
+nDefault& = 0   ' 0=Demo, 1=Unused, 2=Unused, 3=Unused, 4=8900/8200/8500/8x30, 5=SX100/SXFive Mapping, 6=SX100/SXFive Video, 7=JEOL 8230/8530 Video, 8=iSP100/iHP200F MEC Video, 9=Bruker, 10=Thermo
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 ImageInterfaceType% = valid&
@@ -4228,7 +4241,8 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 ImageInterfaceType% = nDefault&
 End If
 If ImageInterfaceType% = 1 Or ImageInterfaceType% = 2 Or ImageInterfaceType% = 3 Or ImageInterfaceType% = 8 Then
-msg$ = "ImageInterfaceType keyword value (" & Format$(ImageInterfaceType%) & ") is no longer supported by Probe for EPMA in " & ProbeWinINIFile$
+'If ImageInterfaceType% = 1 Or ImageInterfaceType% = 2 Or ImageInterfaceType% = 3 Then
+msg$ = "ImageInterfaceType keyword value (" & Format$(ImageInterfaceType%) & ") is not supported by Probe for EPMA in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 ImageInterfaceType% = nDefault&
 End If
@@ -4247,6 +4261,12 @@ End If
 ' Check if 8230/8530 if JEOL video imaging interface
 If InterfaceType% > 0 And ImageInterfaceType% = 7 And JeolEOSInterfaceType& <> 3 Then
 msg$ = "ImageInterfaceType keyword value (" & Format$(ImageInterfaceType%) & ") requires the JEOL 8230/8530 instrument interface in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
+End
+End If
+' Check if iSP100/iHP200F if JEOL MEC video imaging interface
+If InterfaceType% > 0 And ImageInterfaceType% = 8 And JeolEOSInterfaceType& <> 3 Then
+msg$ = "ImageInterfaceType keyword value (" & Format$(ImageInterfaceType%) & ") requires the JEOL iSP100/iHP200F instrument interface in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIImage"
 End
 End If

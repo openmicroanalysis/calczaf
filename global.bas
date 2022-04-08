@@ -3030,3 +3030,5 @@ Global DefaultJEOLUnfreezeDelay As Integer
 
 Global JEOLSpectrometerOrientationType As Integer
 Global SpectrometerOrientations(1 To MAXSPEC%) As Integer
+
+Global AutomatedImageAcquisitionMagChangeMilliSecDelay As Long

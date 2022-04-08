@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/07/22	Add Newbury birthday to greeting list.
+
+04/06/22	More work on MEC EDS interface. Add AutomatedImageAcquisitionMagChangeMilliSecDelay for
+		automated delay after mag change (Goemann).
+
 04/03/22	Modify JEOL spectrometer orientation angles. Fix prescan bug if EDS or CL flag is set. 
 		Update PFE Reference Manual.
 
