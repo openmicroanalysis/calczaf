@@ -140,8 +140,15 @@ Exit Sub
 
 ' Errors
 ExcelCloseSpreadsheetError:
-MsgBox Error$, vbOKOnly + vbCritical, "ExcelCloseSpreadsheet"
+MsgBox Error$ & ", we suggest you do not close the spreadsheet from within Excel, and instead allow Probe for EPMA to handle the file saving and closing of Excel.", vbOKOnly + vbCritical, "ExcelCloseSpreadsheet"
 ierror = True
+
+' Excel is closed by user manually, re-set objects
+Set xlSheet = Nothing
+Set xlBook = Nothing
+Set xlApp = Nothing
+ExcelNcol% = 0
+ExcelRow& = 1
 Exit Sub
 
 'ExcelCloseSpreadsheetNoApp:
@@ -168,7 +175,7 @@ If Not ExcelAppIsRunning() Then GoTo ExcelSendDataToSpreadsheetNoApp
 
 ' Load cell range
 For i% = 1 To nCol%
-xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).Value = MiscSetSignificantDigits(10, temp#(i%))
+xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).value = MiscSetSignificantDigits(10, temp#(i%))
 Next i%
 
 ' Increment row
@@ -219,14 +226,14 @@ End If
 If Not changed Then Exit Sub
 
 ' Load sample name
-xlSheet.Cells(ExcelRow&, 1).Value = VbDquote$ & astring$ & VbDquote$
+xlSheet.Cells(ExcelRow&, 1).value = VbDquote$ & astring$ & VbDquote$
 
 ' Increment row
 ExcelRow& = ExcelRow& + 1
 
 ' Load cell range
 For i% = 1 To nCol%
-xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).Value = VbDquote$ & tlabel$(i%) & VbDquote$
+xlSheet.Cells(ExcelRow&, ExcelColumn& + i%).value = VbDquote$ & tlabel$(i%) & VbDquote$
 Next i%
 
 ' Increment row
