@@ -29,7 +29,7 @@ Begin VB.Form FormGETCMP
       Height          =   285
       Left            =   5040
       TabIndex        =   6
-      ToolTipText     =   "Enter standard mount name(s) this standard is contained in (for filtering the standard list in Add/Remove Standards)"
+      ToolTipText     =   $"GETCMP.frx":0000
       Top             =   8280
       Width           =   4695
    End
@@ -63,7 +63,7 @@ Begin VB.Form FormGETCMP
       Style           =   2  'Dropdown List
       TabIndex        =   48
       TabStop         =   0   'False
-      ToolTipText     =   $"GETCMP.frx":0000
+      ToolTipText     =   $"GETCMP.frx":00AC
       Top             =   7320
       Width           =   735
    End
