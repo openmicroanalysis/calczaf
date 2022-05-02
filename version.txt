@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/30/22	Modify Report code to output report even if no data lines in sample (von der Handt)
+
 04/26/22	Modify consensus k-ratio output format to output each element on separate line (Ritchie).
 
 04/25/22	Add more tip of the day lines (Matthews).
