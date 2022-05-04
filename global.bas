@@ -3029,6 +3029,6 @@ Global SpecifiedAPFMaximumLineEnergy As Single
 Global DefaultJEOLUnfreezeDelay As Integer
 
 Global JEOLSpectrometerOrientationType As Integer
-Global SpectrometerOrientations(1 To MAXSPEC%) As Integer
-
+Global SpectrometerOrientations(0 To MAXSPEC%) As Integer   ' zero index for EDS spectrometer
+    
 Global AutomatedImageAcquisitionMagChangeMilliSecDelay As Long
