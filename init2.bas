@@ -514,7 +514,7 @@ sample(1).HydrogenStoichiometryRatio! = 0#
 sample(1).FerrousFerricCalculationFlag = False
 sample(1).FerrousFerricTotalCations! = 0#
 sample(1).FerrousFerricTotalOxygens! = 0#
-sample(1).FerrousFerricOption% = 0                         ' 0 = normal, 1 = sodic amphiboles, 2 = calcic amphiboles (Moy)
+sample(1).FerrousFerricOption% = 0                         ' 0 = normal, 1 = sodic amphiboles, 2 = calcic amphiboles (Locok and Moy)
 
 sample(1).UnknownIsStandardNumber% = 0                     ' new unknown is standard option
 

@@ -3379,6 +3379,15 @@ MultiPointBackgroundFitTypeStrings2$(0) = "Linear"
 MultiPointBackgroundFitTypeStrings2$(1) = "Polynom"
 MultiPointBackgroundFitTypeStrings2$(2) = "Exponen"
 
+' Locock/Moy ferric/ferrous methods
+FerricFerrousMethodStrings$(0) = "Droop mineral charge balance"
+FerricFerrousMethodStrings$(1) = "Locock/Moy Sodic amphibole"
+FerricFerrousMethodStrings$(2) = "Locock/Moy Calcic amphibole"
+FerricFerrousMethodStrings$(3) = "Locock/Moy Na-Ca amphibole"
+FerricFerrousMethodStrings$(4) = "Locock/Moy Fe-Mg-Mn amphibole"
+FerricFerrousMethodStrings$(5) = "Locock/Moy Li amphibole"
+FerricFerrousMethodStrings$(6) = "Locock/Moy Oxy amphibole"
+
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
 If ierror Then Exit Sub

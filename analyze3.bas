@@ -3196,7 +3196,7 @@ Dim linerow As Integer
 
 Dim average As TypeAverage
 
-msg$ = vbCrLf & "Ferrous/Ferric Calculation Results:"
+msg$ = vbCrLf & "Ferrous/Ferric Calculation Results (Method = " & FerricFerrousMethodStrings$(sample(1).FerrousFerricOption%) & "):"
 Call IOWriteLog$(msg$)
  
 msg$ = "        Ferric/TotalFe" & "   FeO    " & "    Fe2O3   " & " Oxygen from Fe2O3  "

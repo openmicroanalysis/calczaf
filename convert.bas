@@ -1434,3 +1434,1698 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub ConvertFerrousFerricRatioFromComposition3(nelements As Integer, AtomicNumbers() As Integer, AtomicWeights() As Single, ElementalWeightFractions() As Single, NumCats() As Integer, NumOxds() As Integer, OxideProportions() As Single, DisableQuantFlags() As Integer, MineralCations As Single, MineralOxygens As Single, FerricToTotalIronRatio As Single, FerricOxygen As Single, Fe_as_FeO As Single, Fe_as_Fe2O3 As Single, Droop_option_for_amphibole As Integer)
+' Procedure to calculate ferrous/ferric ratio from concentrations (for amphiboles) and specified cations and oxygens (assumes only Fe and Mn are multi-valent) from Locock spreadsheet
+'  nelements = number of elements in composition
+'  AtomicNumbers() = atomic numbers of each element
+'  AtomicWeights() = atomic weight of each element
+'  ElementalWeightFractions() = elemental weight fractions for each element
+'  OxideProportions() = oxide conversion factors for all elements (force iron stoichiometry to assume FeO stoichiometry = 0.286497)
+'  NumCats() - number of cations in oxide formula
+'  NumOxds() = number of oxygens in oxide formula
+'  DisableQuantFlags%() = diable quant flags for each element
+'  MineralCations = total number of cations in mineral formula
+'  MineralOxygens = total number of oxygens in mineral formula
+
+'  FerricToTotalIronRatio = ratio of ferric iron to total iron
+'  FerricOxygen = excess oxygen in weight%
+'  Fe_as_FeO = calculated FeO in weight%
+'  Fe_as_Fe2O3 = calculated Fe2O3 in weight%
+'  Droop_option_for_amphibole
+'    0 = general formula, using original Droop method (not called)
+'    1 = sodic amphiboles
+'    2 = calcic amphiboles
+'    3 = Na-Ca amphiboles
+'    4 = Fe-Mg-Mn amphiboles
+'    5 = Oxy amphiboles
+'    6 = Li amphiboles
+
+ierror = False
+On Error GoTo ConvertFerrousFerricRatioFromComposition3Error
+
+Dim ip As Integer
+Dim n As Integer
+
+' Determine Fe channel
+ip% = IPOS2DQ%(nelements%, ATOMIC_NUM_IRON%, AtomicNumbers%(), DisableQuantFlags%())
+If ip% = 0 Then GoTo ConvertFerrousFerricRatioFromComposition3NoIron
+
+' Check that Fe oxide stoichiometry is 1 : 1
+If NumCats%(ip%) <> 1 Or NumOxds%(ip%) <> 1 Then GoTo ConvertFerrousFerricRatioFromComposition3NotFeO
+
+' Declare the variables used by the AmphiboleCalculationLoop function to return the results
+Dim Fe3overSumFe As Single
+Dim Mn3overSumMn As Single
+Dim finalWtPercentValues_H2O As Single
+
+Fe3overSumFe! = 0#
+Mn3overSumMn! = 0#
+finalWtPercentValues_H2O! = 0#
+
+' Declaration of the 8 different options. This should be handled in the interface.
+Dim ORTHOROMBIC As Integer
+Dim USE_INITIAL_M3_OVER_SUM_M As Integer
+Dim ESTIMATEOH2_2TI As Integer
+Dim REQUIRE_INITIAL_H2O As Integer
+
+Dim REQUIRE_SUM_SI_TO_CA_LE_15 As Integer
+Dim REQUIRE_SUM_SI_TO_MG_GE_13 As Integer
+Dim REQUIRE_SUM_SI_TO_NA_GE_15 As Integer
+Dim REQUIRE_SUM_SI_TO_K_GE_15_5 As Integer
+
+' Sodic amphibole
+If Droop_option_for_amphibole% = 1 Then
+ORTHOROMBIC% = 0
+USE_INITIAL_M3_OVER_SUM_M% = 0
+ESTIMATEOH2_2TI% = 0
+REQUIRE_INITIAL_H2O% = 1
+
+REQUIRE_SUM_SI_TO_CA_LE_15% = 0
+REQUIRE_SUM_SI_TO_MG_GE_13% = 0
+REQUIRE_SUM_SI_TO_NA_GE_15% = 1
+REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
+
+' Calcic amphibole
+ElseIf Droop_option_for_amphibole% = 2 Then
+ORTHOROMBIC% = 0
+USE_INITIAL_M3_OVER_SUM_M% = 0
+ESTIMATEOH2_2TI% = 0
+REQUIRE_INITIAL_H2O% = 1
+
+REQUIRE_SUM_SI_TO_CA_LE_15% = 1
+REQUIRE_SUM_SI_TO_MG_GE_13% = 0
+REQUIRE_SUM_SI_TO_NA_GE_15% = 0
+REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
+
+' Na-Ca amphibole
+ElseIf Droop_option_for_amphibole% = 3 Then
+ORTHOROMBIC% = 0
+USE_INITIAL_M3_OVER_SUM_M% = 0
+ESTIMATEOH2_2TI% = 0
+REQUIRE_INITIAL_H2O% = 1
+
+REQUIRE_SUM_SI_TO_CA_LE_15% = 1
+REQUIRE_SUM_SI_TO_MG_GE_13% = 0
+REQUIRE_SUM_SI_TO_NA_GE_15% = 1
+REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
+
+' Fe-Mg-Mn amphibole
+ElseIf Droop_option_for_amphibole% = 4 Then
+ORTHOROMBIC% = 0
+USE_INITIAL_M3_OVER_SUM_M% = 0
+ESTIMATEOH2_2TI% = 0
+REQUIRE_INITIAL_H2O% = 1
+
+REQUIRE_SUM_SI_TO_CA_LE_15% = 0
+REQUIRE_SUM_SI_TO_MG_GE_13% = 1
+REQUIRE_SUM_SI_TO_NA_GE_15% = 0
+REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
+
+' Oxy amphibole
+ElseIf Droop_option_for_amphibole% = 5 Then
+ORTHOROMBIC% = 0
+USE_INITIAL_M3_OVER_SUM_M% = 0
+ESTIMATEOH2_2TI% = 0
+REQUIRE_INITIAL_H2O% = 1
+
+REQUIRE_SUM_SI_TO_CA_LE_15% = 1
+REQUIRE_SUM_SI_TO_MG_GE_13% = 0
+REQUIRE_SUM_SI_TO_NA_GE_15% = 0
+REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
+
+' Li amphibole
+ElseIf Droop_option_for_amphibole% = 6 Then
+ORTHOROMBIC% = 0
+USE_INITIAL_M3_OVER_SUM_M% = 0
+ESTIMATEOH2_2TI% = 0
+REQUIRE_INITIAL_H2O% = 1
+
+REQUIRE_SUM_SI_TO_CA_LE_15% = 1
+REQUIRE_SUM_SI_TO_MG_GE_13% = 0
+REQUIRE_SUM_SI_TO_NA_GE_15% = 0
+REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
+End If
+
+Dim options_from_Locock_spreadsheet(1 To 8) As Integer
+options_from_Locock_spreadsheet%(1) = ORTHOROMBIC%
+options_from_Locock_spreadsheet%(2) = USE_INITIAL_M3_OVER_SUM_M%
+options_from_Locock_spreadsheet%(3) = ESTIMATEOH2_2TI%
+options_from_Locock_spreadsheet%(4) = REQUIRE_INITIAL_H2O%
+options_from_Locock_spreadsheet%(5) = REQUIRE_SUM_SI_TO_CA_LE_15%
+options_from_Locock_spreadsheet%(6) = REQUIRE_SUM_SI_TO_MG_GE_13%
+options_from_Locock_spreadsheet%(7) = REQUIRE_SUM_SI_TO_NA_GE_15%
+options_from_Locock_spreadsheet%(8) = REQUIRE_SUM_SI_TO_K_GE_15_5%
+
+' Call the AmphiboleCalculationLoop procedure using 7 passes
+For n% = 1 To 7
+    Call ConvertAmphiboleCalculationLoop(nelements, AtomicNumbers(), AtomicWeights(), ElementalWeightFractions(), NumCats(), NumOxds(), OxideProportions(), DisableQuantFlags(), n%, Fe3overSumFe, Mn3overSumMn, finalWtPercentValues_H2O, options_from_Locock_spreadsheet())
+    If ierror Then Exit Sub
+Next n%
+
+' Convert the ferric to total iron ratio into FeO and Fe2O3 wt%. Also does the same with Mn.
+Dim finalWtPercentValues_MnO As Single
+Dim finalWtPercentValues_Mn2O3 As Single
+Dim finalWtPercentValues_FeO As Single
+Dim finalWtPercentValues_Fe2O3 As Single
+Dim finalWtPercentValues_Total As Single
+
+' Determine Mn channel
+ip% = IPOS2DQ%(nelements%, 25, AtomicNumbers%(), DisableQuantFlags%())
+If ip% = 0 Then
+    finalWtPercentValues_MnO! = 0#
+    finalWtPercentValues_Mn2O3! = 0#
+Else
+    finalWtPercentValues_MnO! = Round((1 - Mn3overSumMn!) * (ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%) + 0# * 0.89865734954961) * 100#, 3)
+    finalWtPercentValues_Mn2O3! = Round((Mn3overSumMn! / 0.89865734954961) * (ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%) + 0# * 0.89865734954961) * 100#, 3)
+End If
+
+' Determine Fe channel
+ip% = IPOS2DQ%(nelements%, 26, AtomicNumbers%(), DisableQuantFlags%())
+If ip% = 0 Then
+    finalWtPercentValues_FeO! = 0#
+    finalWtPercentValues_Fe2O3! = 0#
+Else
+    finalWtPercentValues_FeO! = Round((1 - Fe3overSumFe!) * (ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%) + 0# * 0.899808502) * 100#, 3)
+    finalWtPercentValues_Fe2O3! = Round((Fe3overSumFe! / 0.899808502) * (ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%) + 0# * 0.899808502) * 100#, 3)
+End If
+
+' Calculate the H2O content in wt%
+finalWtPercentValues_H2O! = finalWtPercentValues_H2O! * 100#
+
+' Calculates FerricToTotalIronRatio, Fe_as_FeO, Fe_as_Fe2O3 and FerricOxygen
+FerricToTotalIronRatio! = Fe3overSumFe!
+Fe_as_FeO! = finalWtPercentValues_FeO!
+Fe_as_Fe2O3! = finalWtPercentValues_Fe2O3!
+FerricOxygen! = Fe_as_Fe2O3! * (1 - (2 * (AllAtomicWts!(ATOMIC_NUM_IRON%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) / (2 * AllAtomicWts!(ATOMIC_NUM_IRON%) + 3 * AllAtomicWts!(ATOMIC_NUM_OXYGEN%))))
+
+If VerboseMode Then
+msg$ = vbCrLf & "ELEMENT "
+For n% = 1 To nelements%
+msg$ = msg$ & Format$(Symup$(AtomicNumbers%(n%)), a80$)
+Next n%
+Call IOWriteLog(msg$)
+End If
+
+If DebugMode Then
+Call IOWriteLog(vbNullString)
+msg$ = "ORTHOROMBIC: " & Format$(Format$(ORTHOROMBIC%, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "USE_INITIAL_M3_OVER_SUM_M: " & Format$(Format$(USE_INITIAL_M3_OVER_SUM_M%, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "ESTIMATEOH2_2TI: " & Format$(Format$(ESTIMATEOH2_2TI%, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "REQUIRE_INITIAL_H2O: " & Format$(Format$(REQUIRE_INITIAL_H2O%, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "REQUIRE_SUM_SI_TO_CA_LE_15: " & Format$(Format$(REQUIRE_SUM_SI_TO_CA_LE_15%, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "REQUIRE_SUM_SI_TO_MG_GE_13: " & Format$(Format$(REQUIRE_SUM_SI_TO_MG_GE_13%, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "REQUIRE_SUM_SI_TO_NA_GE_15: " & Format$(Format$(REQUIRE_SUM_SI_TO_NA_GE_15%, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "REQUIRE_SUM_SI_TO_K_GE_15_5: " & Format$(Format$(REQUIRE_SUM_SI_TO_K_GE_15_5%, f84), a80$)
+Call IOWriteLog(msg$)
+
+Call IOWriteLog(vbNullString)
+msg$ = "FerricIronToTotalIronRatio: " & Format$(Format$(FerricToTotalIronRatio!, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "Ferrous Oxide (FeO):        " & Format$(Format$(Fe_as_FeO!, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "Ferric Oxide (Fe2O3):       " & Format$(Format$(Fe_as_Fe2O3!, f84), a80$)
+Call IOWriteLog(msg$)
+msg$ = "Excess Oxygen from Fe2O3:   " & Format$(Format$(FerricOxygen!, f84), a80$)
+Call IOWriteLog(msg$)
+End If
+
+Exit Sub
+
+' Errors
+ConvertFerrousFerricRatioFromComposition3Error:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertFerrousFerricRatioFromComposition3"
+ierror = True
+Exit Sub
+
+ConvertFerrousFerricRatioFromComposition3NoIron:
+msg$ = "No iron is present in the element list. Cannot calculate a ferrous/ferric ratio."
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertFerrousFerricRatioFromComposition3"
+ierror = True
+Exit Sub
+
+ConvertFerrousFerricRatioFromComposition3NotFeO:
+msg$ = "Cannot calculate a ferrous/ferric ratio. Iron stoichiometry must be specified as FeO (Cations=1, Oxygens=1) in the Elements/Cations dialog."
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertFerrousFerricRatioFromComposition3"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub ConvertAmphiboleCalculationLoop(nelements As Integer, AtomicNumbers() As Integer, AtomicWeights() As Single, ElementalWeightFractions() As Single, NumCats() As Integer, NumOxds() As Integer, OxideProportions() As Single, DisableQuantFlags() As Integer, loopNumber As Integer, Fe3overSumFe As Single, Mn3overSumMn As Single, finalWtPercentValues_H2O As Single, options_from_Locock_spreadsheet() As Integer)
+' Based on Locock amphibole spreadsheet
+
+ierror = False
+On Error GoTo ConvertAmphiboleCalculationLoopError
+
+' Declaration of the 8 different options. This should be handled in the interface.
+Dim ORTHOROMBIC As Boolean
+Dim USE_INITIAL_M3_OVER_SUM_M As Boolean
+Dim ESTIMATEOH2_2TI As Boolean
+Dim REQUIRE_INITIAL_H2O As Boolean
+
+ORTHOROMBIC = options_from_Locock_spreadsheet%(1)
+USE_INITIAL_M3_OVER_SUM_M = options_from_Locock_spreadsheet%(2)
+ESTIMATEOH2_2TI = options_from_Locock_spreadsheet%(3)
+REQUIRE_INITIAL_H2O = options_from_Locock_spreadsheet%(4)
+
+Dim REQUIRE_SUM_SI_TO_CA_LE_15 As Integer
+Dim REQUIRE_SUM_SI_TO_MG_GE_13 As Integer
+Dim REQUIRE_SUM_SI_TO_NA_GE_15 As Integer
+Dim REQUIRE_SUM_SI_TO_K_GE_15_5 As Integer
+REQUIRE_SUM_SI_TO_CA_LE_15% = options_from_Locock_spreadsheet%(5)
+REQUIRE_SUM_SI_TO_MG_GE_13% = options_from_Locock_spreadsheet%(6)
+REQUIRE_SUM_SI_TO_NA_GE_15% = options_from_Locock_spreadsheet%(7)
+REQUIRE_SUM_SI_TO_K_GE_15_5% = options_from_Locock_spreadsheet%(8)
+
+' Variables used in the loops (n) and when retrieving the element channel used (ip)
+Dim ip As Integer
+Dim n As Integer
+
+' List of elements used in Locock's spreadsheet. In the same order as in the speadsheet.
+Dim elementList(1 To 24) As Integer
+elementList%(1) = ATOMIC_NUM_SILICON%
+elementList%(2) = 15
+elementList%(3) = 22
+elementList%(4) = 40
+elementList%(5) = 13
+elementList%(6) = 21
+elementList%(7) = 23
+elementList%(8) = 24
+elementList%(9) = 25
+elementList%(10) = 25
+elementList%(11) = 26
+elementList%(12) = 26
+elementList%(13) = 27
+elementList%(14) = 28
+elementList%(15) = 30
+elementList%(16) = 4
+elementList%(17) = 12
+elementList%(18) = 20
+elementList%(19) = 38
+elementList%(20) = 3
+elementList%(21) = 11
+elementList%(22) = 82
+elementList%(23) = 19
+elementList%(24) = 1
+
+Dim oxidesElements(1 To 24) As Single ' array containing the oxide weigth of the elements
+Dim molarProportionsCations(1 To 24) As Single ' array containing the molar proportion of the cations
+Dim molarProportionsAnions(1 To 24) As Single ' array containing the molar proportion of the anions
+
+' Channel indexes for F and Cl
+Dim ipF As Integer
+Dim ipCl As Integer
+
+' Elemental weigth fractions and molar proportions for F and Cl
+Dim ElementalWeightFractionsF As Single
+Dim ElementalWeightFractionsCl As Single
+Dim molarProportionsAnionsF As Single
+Dim molarProportionsAnionsCl As Single
+
+Dim OFClCalc As Single
+Dim initialTotal As Single
+
+' Convert the elemental compostion to oxide. Handles the case where the element is FeO or Fe2O3 as well as MnO or Mn2O3.
+' The first loop (or first pass) is handled differently than the others.
+For n% = 1 To 24
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        oxidesElements!(n%) = 0#
+        molarProportionsCations!(n%) = 0#
+        molarProportionsAnions!(n%) = 0#
+    Else
+        If n% = 9 Then
+            If loopNumber = 1 Then
+                oxidesElements!(n%) = ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%) ' convert elements to oxides XXX need to check for H2O
+            Else
+                oxidesElements!(n%) = (1 - Mn3overSumMn!) * (0 * 0.89865734954961 + ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%))
+            End If
+            molarProportionsCations!(n%) = oxidesElements!(n%) / (NumCats%(ip%) * AtomicWeights!(ip%) + NumOxds%(ip%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) * NumCats%(ip%) * 100#
+            molarProportionsAnions!(n%) = molarProportionsCations!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        
+        ElseIf n% = 10 Then
+            If loopNumber = 1 Then
+                oxidesElements!(n%) = 0#  'initialOxide_Mn2O3!
+            Else
+                oxidesElements!(n%) = Mn3overSumMn! * (0 * 0.89865734954961 + ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%)) / 0.89865734954961
+            End If
+            molarProportionsCations!(n%) = oxidesElements!(n%) / 157.87429 * 2# * 100#
+            molarProportionsAnions!(n%) = 1.5 * molarProportionsCations!(n%)
+            
+        ElseIf n% = 11 Then
+            If loopNumber = 1 Then
+                oxidesElements!(n%) = ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%) ' convert elements to oxides XXX need to check for H2O
+            Else
+                oxidesElements!(n%) = (1 - Fe3overSumFe!) * (0 * 0.899808502 + ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%))
+            End If
+            molarProportionsCations!(n%) = oxidesElements!(n%) / (NumCats%(ip%) * AtomicWeights!(ip%) + NumOxds%(ip%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) * NumCats%(ip%) * 100#
+            molarProportionsAnions!(n%) = molarProportionsCations!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        
+        ElseIf n% = 12 Then
+            If loopNumber = 1 Then
+                oxidesElements!(n%) = 0#  'initialOxide_Fe2O3!
+            Else
+                 oxidesElements!(n%) = Fe3overSumFe! * (0 * 0.899808502 + ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%)) / 0.899808502
+            End If
+            molarProportionsCations!(n%) = oxidesElements!(n%) / 159.6882 * 2# * 100#
+            molarProportionsAnions!(n%) = 1.5 * molarProportionsCations!(n%)
+            
+        Else
+            oxidesElements!(n%) = ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%) ' convert elements to oxides XXX need to check for H2O
+            molarProportionsCations!(n%) = oxidesElements!(n%) / (NumCats%(ip%) * AtomicWeights!(ip%) + NumOxds%(ip%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) * NumCats%(ip%) * 100#
+            molarProportionsAnions!(n%) = molarProportionsCations!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        End If
+    End If
+Next n%
+
+ipF% = IPOS2DQ%(nelements%, 9, AtomicNumbers%(), DisableQuantFlags%())
+If ipF% > 0 Then
+    ElementalWeightFractionsF! = ElementalWeightFractions!(ipF%)
+    molarProportionsAnionsF! = ElementalWeightFractionsF! / AtomicWeights!(ipF%)
+Else
+    ElementalWeightFractionsF! = 0#
+    molarProportionsAnionsF! = 0#
+End If
+
+ipCl% = IPOS2DQ%(nelements%, 17, AtomicNumbers%(), DisableQuantFlags%())
+If ipCl% > 0 Then
+    ElementalWeightFractionsCl! = ElementalWeightFractions!(ipCl%)
+    molarProportionsAnionsCl! = ElementalWeightFractionsCl! / AtomicWeights!(ipCl%)
+Else
+    ElementalWeightFractionsCl! = 0#
+    molarProportionsAnionsCl! = 0#
+End If
+
+OFClCalc! = 0#
+If ElementalWeightFractionsF! + ElementalWeightFractionsCl! > 0# Then
+    OFClCalc! = Round(-ElementalWeightFractionsF! * 15.9994 / (2# * 18.9984032) - ElementalWeightFractionsCl! * 15.9994 / (2# * 35.453), 2#)
+End If
+
+initialTotal = 0#
+For n% = 1 To 24
+    initialTotal! = initialTotal! + oxidesElements!(n%)
+Next n%
+initialTotal = initialTotal + ElementalWeightFractionsF! + ElementalWeightFractionsCl! + OFClCalc!
+
+Dim sumWithH As Single
+Dim sumWithoutH As Single
+Dim sumSitoCa As Single
+Dim sumSitoMg As Single
+Dim sumSitoNa As Single
+
+sumSitoMg! = 0#
+For n% = 1 To 17
+    sumSitoMg! = sumSitoMg! + molarProportionsCations!(n%)
+Next n%
+
+sumSitoMg! = sumSitoMg! + molarProportionsCations!(20)
+sumSitoCa! = sumSitoMg! + molarProportionsCations!(18) + molarProportionsCations!(19)
+sumSitoNa! = sumSitoCa! + molarProportionsCations!(21)
+sumWithoutH! = sumSitoNa! + molarProportionsCations!(22) + molarProportionsCations!(23)
+sumWithH! = sumWithoutH! + molarProportionsCations!(24)
+
+Dim sumOfAllAnions As Single
+Dim sumOfAllAnionsMinusOHFCl As Single
+
+sumOfAllAnions! = 0#
+sumOfAllAnionsMinusOHFCl! = 0#
+For n% = 1 To 24
+    sumOfAllAnions! = sumOfAllAnions! + molarProportionsAnions!(n%)
+Next n%
+
+sumOfAllAnions! = sumOfAllAnions! + 0.5 * molarProportionsAnionsF! + 0.5 * molarProportionsAnionsCl!
+sumOfAllAnionsMinusOHFCl! = sumOfAllAnions! - 0.5 * molarProportionsAnionsF! - 0.5 * molarProportionsAnionsCl! - molarProportionsAnions!(24)
+
+Dim FplusClper24anions As Single
+FplusClper24anions! = (molarProportionsAnionsF! + molarProportionsAnionsCl!) / sumOfAllAnions! * 24#
+Dim Hper24anions As Single
+Hper24anions! = molarProportionsCations!(24) / sumOfAllAnions! * 24#
+Dim OequivalentsMin As Single
+OequivalentsMin! = 24# - 0.5 * Hper24anions! - 0.5 * FplusClper24anions!
+Dim Tiper24anions As Single
+
+If (molarProportionsCations!(3) / sumOfAllAnions! * 24# > 8# - (molarProportionsCations!(5) + molarProportionsCations!(2) + molarProportionsCations!(1)) / sumOfAllAnions! * 24#) And (8# - (molarProportionsCations!(5) + molarProportionsCations!(2) + molarProportionsCations!(1)) / sumOfAllAnions! * 24#) > 0 Then
+    Tiper24anions! = (molarProportionsCations!(3) / sumOfAllAnions! * 24#) - (8# - (molarProportionsCations!(5) + molarProportionsCations!(2) + molarProportionsCations!(1)) / sumOfAllAnions! * 24#)
+Else
+    Tiper24anions! = (molarProportionsCations!(3) / sumOfAllAnions! * 24#)
+End If
+
+Dim OequivalentsMax As Single
+If 23# + Tiper24anions! > 24# Then
+    OequivalentsMax! = 24# - 0.5 * FplusClper24anions!
+Else
+    OequivalentsMax! = 23# + Tiper24anions!
+End If
+
+' Calculates the initial proportion of the cations
+Dim initialProportionsCations(1 To 23) As Single
+Dim initialProportionsCationSumSitoK As Single
+initialProportionsCationSumSitoK! = 0#
+For n% = 1 To 23
+    If REQUIRE_INITIAL_H2O = True Then
+        initialProportionsCations!(n%) = molarProportionsCations!(n%) / sumOfAllAnionsMinusOHFCl! * OequivalentsMin!
+    ElseIf ESTIMATEOH2_2TI = True Then
+        initialProportionsCations!(n%) = molarProportionsCations!(n%) / sumOfAllAnionsMinusOHFCl! * OequivalentsMax!
+    Else
+        initialProportionsCations!(n%) = molarProportionsCations!(n%) / sumOfAllAnionsMinusOHFCl! * 23#
+    End If
+    initialProportionsCationSumSitoK! = initialProportionsCationSumSitoK! + initialProportionsCations!(n%)
+Next n%
+
+Dim initialproportionsOH As Single
+Dim initialproportionsF As Single
+Dim initialproportionsCl As Single
+Dim initialproportionsSumSitoCa As Single
+Dim initialproportionsSumSitoMg As Single
+Dim initialproportionsSumSitoNa As Single
+
+If REQUIRE_INITIAL_H2O = True Then
+        initialproportionsOH! = molarProportionsCations!(24) / sumOfAllAnionsMinusOHFCl! * OequivalentsMin!
+        initialproportionsF! = molarProportionsAnionsF! / sumOfAllAnionsMinusOHFCl! * OequivalentsMin!
+        initialproportionsCl! = molarProportionsAnionsCl! / sumOfAllAnionsMinusOHFCl! * OequivalentsMin!
+ElseIf ESTIMATEOH2_2TI = True Then
+        initialproportionsOH! = molarProportionsCations!(24) / sumOfAllAnionsMinusOHFCl! * OequivalentsMax!
+        initialproportionsF! = molarProportionsAnionsF! / sumOfAllAnionsMinusOHFCl! * OequivalentsMax!
+        initialproportionsCl! = molarProportionsAnionsCl! / sumOfAllAnionsMinusOHFCl! * OequivalentsMax!
+Else
+        initialproportionsOH! = molarProportionsCations!(24) / sumOfAllAnionsMinusOHFCl! * 23#
+        initialproportionsF! = molarProportionsAnionsF! / sumOfAllAnionsMinusOHFCl! * 23#
+        initialproportionsCl! = molarProportionsAnionsCl! / sumOfAllAnionsMinusOHFCl! * 23#
+End If
+
+initialproportionsSumSitoMg! = 0
+For n% = 1 To 17
+    initialproportionsSumSitoMg! = initialproportionsSumSitoMg! + initialProportionsCations!(n%)
+Next n%
+initialproportionsSumSitoMg! = initialproportionsSumSitoMg! + initialProportionsCations!(20)
+initialproportionsSumSitoCa! = initialproportionsSumSitoMg! + initialProportionsCations!(18) + initialProportionsCations!(19)
+initialproportionsSumSitoNa! = initialproportionsSumSitoCa! + initialProportionsCations!(21)
+
+Dim initialproportions_Fe3overSumFe As Single 'todo XXX
+Dim initialproportions_Mn3overSumMn As Single 'todo XXX
+
+If initialProportionsCations!(12) + initialProportionsCations!(11) > 0 Then
+    initialproportions_Fe3overSumFe! = initialProportionsCations!(12) / (initialProportionsCations!(12) + initialProportionsCations!(11))
+    initialproportions_Mn3overSumMn! = initialProportionsCations!(10) / (initialProportionsCations!(10) + initialProportionsCations!(9))
+Else
+    initialproportions_Fe3overSumFe! = 0#
+    initialproportions_Mn3overSumMn! = 0#
+End If
+
+' Calculates the oxygen Anions Corresponding To Cations
+Dim oxygenAnionsCorrespondingToCations(1 To 23) As Single
+Dim sumOequivalents As Single
+
+sumOequivalents! = 0#
+For n% = 1 To 23
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        oxygenAnionsCorrespondingToCations!(n%) = 0#
+    ElseIf n% = 10 Or n% = 12 Then
+        oxygenAnionsCorrespondingToCations!(n%) = initialProportionsCations!(n%) * 1.5
+        sumOequivalents! = sumOequivalents! + oxygenAnionsCorrespondingToCations!(n%)
+    Else
+        oxygenAnionsCorrespondingToCations!(n%) = initialProportionsCations!(n%) * NumOxds%(ip%) / NumCats%(ip%) 'Assume MnO and FeO in PfE
+        sumOequivalents! = sumOequivalents! + oxygenAnionsCorrespondingToCations!(n%)
+    End If
+Next n%
+
+' All ferrous Fe and Mn2+
+Dim allFerrousIronAndMn2(1 To 23) As Single
+Dim cst As Single
+
+cst! = sumOequivalents! / (sumOequivalents! - (oxygenAnionsCorrespondingToCations!(12) - initialProportionsCations!(12)) - (oxygenAnionsCorrespondingToCations!(10) - initialProportionsCations!(10)))
+For n% = 1 To 23
+    If n% = 9 Then
+        allFerrousIronAndMn2!(n%) = (initialProportionsCations!(n%) + initialProportionsCations!(n% + 1)) * cst!
+    ElseIf n% = 10 Then
+        allFerrousIronAndMn2!(n%) = 0#
+    ElseIf n% = 11 Then
+        allFerrousIronAndMn2!(n%) = (initialProportionsCations!(n%) + initialProportionsCations!(n% + 1)) * cst!
+    ElseIf n% = 12 Then
+        allFerrousIronAndMn2!(n%) = 0#
+    Else
+        allFerrousIronAndMn2!(n%) = initialProportionsCations!(n%) * cst!
+    End If
+Next n%
+
+Dim allFerrousIronAndMn2_sumSitoK As Single
+Dim allFerrousIronAndMn2_sumSitoCa As Single
+Dim allFerrousIronAndMn2_sumSitoMg As Single
+Dim allFerrousIronAndMn2_sumSitoNa As Single
+
+allFerrousIronAndMn2_sumSitoMg! = 0#
+For n% = 1 To 17
+    allFerrousIronAndMn2_sumSitoMg! = allFerrousIronAndMn2_sumSitoMg! + allFerrousIronAndMn2!(n%)
+Next
+allFerrousIronAndMn2_sumSitoMg! = allFerrousIronAndMn2_sumSitoMg! + allFerrousIronAndMn2!(20)
+allFerrousIronAndMn2_sumSitoCa! = allFerrousIronAndMn2_sumSitoMg! + allFerrousIronAndMn2!(18) + allFerrousIronAndMn2!(19)
+allFerrousIronAndMn2_sumSitoNa! = allFerrousIronAndMn2_sumSitoCa! + allFerrousIronAndMn2!(21)
+allFerrousIronAndMn2_sumSitoK! = allFerrousIronAndMn2_sumSitoNa! + allFerrousIronAndMn2!(22) + allFerrousIronAndMn2!(23)
+
+Dim allFerrousIronAndMn2_oxygenAnionsCorrespondingToCations(1 To 23) As Single
+Dim allFerrousIronAndMn2_sumOequivalents As Single
+allFerrousIronAndMn2_sumOequivalents! = 0#
+For n% = 1 To 23
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        allFerrousIronAndMn2_oxygenAnionsCorrespondingToCations!(n%) = 0#
+    ElseIf n% = 10 Or n% = 12 Then
+        allFerrousIronAndMn2_oxygenAnionsCorrespondingToCations!(n%) = allFerrousIronAndMn2!(n%) * 1.5
+        allFerrousIronAndMn2_sumOequivalents! = allFerrousIronAndMn2_sumOequivalents! + allFerrousIronAndMn2_oxygenAnionsCorrespondingToCations!(n%)
+    Else
+        allFerrousIronAndMn2_oxygenAnionsCorrespondingToCations!(n%) = allFerrousIronAndMn2!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        allFerrousIronAndMn2_sumOequivalents! = allFerrousIronAndMn2_sumOequivalents! + allFerrousIronAndMn2_oxygenAnionsCorrespondingToCations!(n%)
+    End If
+Next
+
+' All ferric Fe and Mn2+
+Dim allFerricIronAndMn2(1 To 23) As Single
+
+cst! = sumOequivalents! / (sumOequivalents! + (oxygenAnionsCorrespondingToCations!(11) * 0.5) - (oxygenAnionsCorrespondingToCations!(10) - initialProportionsCations!(10)))
+For n% = 1 To 23
+    If n% = 9 Then
+        allFerricIronAndMn2!(n%) = (initialProportionsCations!(n%) + initialProportionsCations!(n% + 1)) * cst!
+    ElseIf n% = 10 Then
+        allFerricIronAndMn2!(n%) = 0#
+    ElseIf n% = 12 Then
+        allFerricIronAndMn2!(n%) = (initialProportionsCations!(n% - 1) + initialProportionsCations!(n%)) * cst!
+    ElseIf n% = 11 Then
+        allFerricIronAndMn2!(n%) = 0#
+    Else
+        allFerricIronAndMn2!(n%) = initialProportionsCations!(n%) * cst!
+    End If
+Next n%
+
+Dim allFerricIronAndMn2_sumSitoK As Single
+Dim allFerricIronAndMn2_sumSitoCa As Single
+Dim allFerricIronAndMn2_sumSitoMg As Single
+Dim allFerricIronAndMn2_sumSitoNa As Single
+allFerricIronAndMn2_sumSitoMg! = 0#
+For n% = 1 To 17
+    allFerricIronAndMn2_sumSitoMg! = allFerricIronAndMn2_sumSitoMg! + allFerricIronAndMn2!(n%)
+Next
+allFerricIronAndMn2_sumSitoMg! = allFerricIronAndMn2_sumSitoMg! + allFerricIronAndMn2!(20)
+allFerricIronAndMn2_sumSitoCa! = allFerricIronAndMn2_sumSitoMg! + allFerricIronAndMn2!(18) + allFerricIronAndMn2!(19)
+allFerricIronAndMn2_sumSitoNa! = allFerricIronAndMn2_sumSitoCa! + allFerricIronAndMn2!(21)
+allFerricIronAndMn2_sumSitoK! = allFerricIronAndMn2_sumSitoNa! + allFerricIronAndMn2!(22) + allFerricIronAndMn2!(23)
+
+Dim allFerricIronAndMn2_oxygenAnionsCorrespondingToCations(1 To 23) As Single
+Dim allFerricIronAndMn2_sumOequivalents As Single
+allFerricIronAndMn2_sumOequivalents! = 0#
+For n% = 1 To 23
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        allFerricIronAndMn2_oxygenAnionsCorrespondingToCations!(n%) = 0#
+    ElseIf n% = 10 Or n% = 12 Then
+        allFerricIronAndMn2_oxygenAnionsCorrespondingToCations!(n%) = allFerricIronAndMn2!(n%) * 1.5
+        allFerricIronAndMn2_sumOequivalents! = allFerricIronAndMn2_sumOequivalents! + allFerricIronAndMn2_oxygenAnionsCorrespondingToCations!(n%)
+    Else
+        allFerricIronAndMn2_oxygenAnionsCorrespondingToCations!(n%) = allFerricIronAndMn2!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        allFerricIronAndMn2_sumOequivalents! = allFerricIronAndMn2_sumOequivalents! + allFerricIronAndMn2_oxygenAnionsCorrespondingToCations!(n%)
+    End If
+Next n%
+
+' All ferric Fe and Mn3+
+Dim allFerricIronAndMn3(1 To 23) As Single
+
+cst! = sumOequivalents! / (sumOequivalents! + (oxygenAnionsCorrespondingToCations!(11) * 0.5) + (oxygenAnionsCorrespondingToCations!(9) * 0.5))
+For n% = 1 To 23
+    If n% = 10 Then
+        allFerricIronAndMn3!(n%) = (initialProportionsCations!(n% - 1) + initialProportionsCations!(n%)) * cst!
+    ElseIf n% = 9 Then
+        allFerricIronAndMn3!(n%) = 0#
+    ElseIf n% = 12 Then
+        allFerricIronAndMn3!(n%) = (initialProportionsCations!(n% - 1) + initialProportionsCations!(n%)) * cst!
+    ElseIf n% = 11 Then
+        allFerricIronAndMn3!(n%) = 0#
+    Else
+        allFerricIronAndMn3!(n%) = initialProportionsCations!(n%) * cst!
+    End If
+Next n%
+
+Dim allFerricIronAndMn3_sumSitoK As Single
+Dim allFerricIronAndMn3_sumSitoCa As Single
+Dim allFerricIronAndMn3_sumSitoMg As Single
+Dim allFerricIronAndMn3_sumSitoNa As Single
+allFerricIronAndMn3_sumSitoMg! = 0#
+For n% = 1 To 17
+    allFerricIronAndMn3_sumSitoMg! = allFerricIronAndMn3_sumSitoMg! + allFerricIronAndMn3!(n%)
+Next
+allFerricIronAndMn3_sumSitoMg! = allFerricIronAndMn3_sumSitoMg! + allFerricIronAndMn3!(20)
+allFerricIronAndMn3_sumSitoCa! = allFerricIronAndMn3_sumSitoMg! + allFerricIronAndMn3!(18) + allFerricIronAndMn3!(19)
+allFerricIronAndMn3_sumSitoNa! = allFerricIronAndMn3_sumSitoCa! + allFerricIronAndMn3!(21)
+allFerricIronAndMn3_sumSitoK! = allFerricIronAndMn3_sumSitoNa! + allFerricIronAndMn3!(22) + allFerricIronAndMn3!(23)
+
+Dim allFerricIronAndMn3_oxygenAnionsCorrespondingToCations(1 To 23) As Single
+Dim allFerricIronAndMn3_sumOequivalents As Single
+allFerricIronAndMn3_sumOequivalents! = 0#
+For n% = 1 To 23
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        allFerricIronAndMn3_oxygenAnionsCorrespondingToCations!(n%) = 0#
+    ElseIf n% = 10 Or n% = 12 Then
+        allFerricIronAndMn3_oxygenAnionsCorrespondingToCations!(n%) = allFerricIronAndMn3!(n%) * 1.5
+        allFerricIronAndMn3_sumOequivalents! = allFerricIronAndMn3_sumOequivalents! + allFerricIronAndMn3_oxygenAnionsCorrespondingToCations!(n%)
+    Else
+        allFerricIronAndMn3_oxygenAnionsCorrespondingToCations!(n%) = allFerricIronAndMn3!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        allFerricIronAndMn3_sumOequivalents! = allFerricIronAndMn3_sumOequivalents! + allFerricIronAndMn3_oxygenAnionsCorrespondingToCations!(n%)
+    End If
+Next n%
+
+Dim Fe3andMn2inChargeBalance As Integer
+Dim Fe3andMn3inChargeBalance As Integer
+
+If allFerricIronAndMn2!(1) <= 8 Then
+    Dim average As Single
+    average! = (allFerricIronAndMn2_sumSitoK! + allFerricIronAndMn2_sumSitoCa! + allFerricIronAndMn2_sumSitoMg! + allFerricIronAndMn2_sumSitoNa!) / 4#
+    If average! / sumOequivalents! <= ((16# + 15# + 13# + 15#) / 4#) / 24# Then
+        Fe3andMn2inChargeBalance% = 1
+    Else
+        Fe3andMn2inChargeBalance% = 0
+    End If
+Else
+    Fe3andMn2inChargeBalance% = 0
+End If
+If Fe3andMn2inChargeBalance% = 0 Then
+    Fe3andMn3inChargeBalance% = 1
+Else
+    Fe3andMn3inChargeBalance% = 0
+End If
+
+Dim chargeBalancePer15CationsSitoCa(1 To 23) As Single
+
+For n% = 1 To 23
+    If Fe3andMn2inChargeBalance% = 1 Then
+        If allFerrousIronAndMn2_sumSitoCa! >= 15# Then
+            If allFerricIronAndMn2_sumSitoCa! <= 15# Then
+                chargeBalancePer15CationsSitoCa!(n%) = (15# - allFerricIronAndMn2_sumSitoCa!) / (allFerrousIronAndMn2_sumSitoCa! - allFerricIronAndMn2_sumSitoCa!) * allFerrousIronAndMn2!(n%) + (1# - (15# - allFerricIronAndMn2_sumSitoCa!) / (allFerrousIronAndMn2_sumSitoCa! - allFerricIronAndMn2_sumSitoCa!)) * allFerricIronAndMn2!(n%)
+            Else
+                chargeBalancePer15CationsSitoCa!(n%) = allFerricIronAndMn2!(n%)
+            End If
+        Else
+            chargeBalancePer15CationsSitoCa!(n%) = allFerrousIronAndMn2!(n%)
+        End If
+    Else
+        If allFerrousIronAndMn2_sumSitoCa! >= 15# Then
+            If allFerricIronAndMn3_sumSitoCa! <= 15# Then
+                chargeBalancePer15CationsSitoCa!(n%) = (15# - allFerricIronAndMn3_sumSitoCa!) / (allFerrousIronAndMn2_sumSitoCa! - allFerricIronAndMn3_sumSitoCa!) * allFerrousIronAndMn2!(n%) + (1# - (15# - allFerricIronAndMn3_sumSitoCa!) / (allFerrousIronAndMn2_sumSitoCa! - allFerricIronAndMn3_sumSitoCa!)) * allFerricIronAndMn3!(n%)
+            Else
+                chargeBalancePer15CationsSitoCa!(n%) = allFerricIronAndMn3!(n%)
+            End If
+        Else
+            chargeBalancePer15CationsSitoCa!(n%) = allFerrousIronAndMn2!(n%)
+        End If
+    End If
+Next n%
+
+Dim chargeBalancePer15CationsSitoCa_sumSitoK As Single
+Dim chargeBalancePer15CationsSitoCa_sumSitoCa As Single
+Dim chargeBalancePer15CationsSitoCa_sumSitoMg As Single
+Dim chargeBalancePer15CationsSitoCa_sumSitoNa As Single
+chargeBalancePer15CationsSitoCa_sumSitoMg! = 0
+For n% = 1 To 17
+    chargeBalancePer15CationsSitoCa_sumSitoMg! = chargeBalancePer15CationsSitoCa_sumSitoMg! + chargeBalancePer15CationsSitoCa!(n%)
+Next
+chargeBalancePer15CationsSitoCa_sumSitoMg! = chargeBalancePer15CationsSitoCa_sumSitoMg! + chargeBalancePer15CationsSitoCa!(20)
+chargeBalancePer15CationsSitoCa_sumSitoCa! = chargeBalancePer15CationsSitoCa_sumSitoMg! + chargeBalancePer15CationsSitoCa!(18) + chargeBalancePer15CationsSitoCa!(19)
+chargeBalancePer15CationsSitoCa_sumSitoNa! = chargeBalancePer15CationsSitoCa_sumSitoCa! + chargeBalancePer15CationsSitoCa!(21)
+chargeBalancePer15CationsSitoCa_sumSitoK! = chargeBalancePer15CationsSitoCa_sumSitoNa! + chargeBalancePer15CationsSitoCa!(22) + chargeBalancePer15CationsSitoCa!(23)
+
+Dim chargeBalancePer15CationsSitoCa_Fe3overSumFe As Single
+Dim chargeBalancePer15CationsSitoCa_Mn3overSumMn As Single
+If chargeBalancePer15CationsSitoCa!(11) + chargeBalancePer15CationsSitoCa!(12) > 0 Then
+    chargeBalancePer15CationsSitoCa_Fe3overSumFe! = chargeBalancePer15CationsSitoCa!(12) / (chargeBalancePer15CationsSitoCa!(11) + chargeBalancePer15CationsSitoCa!(12))
+Else
+    chargeBalancePer15CationsSitoCa_Fe3overSumFe! = 0
+End If
+If chargeBalancePer15CationsSitoCa!(9) + chargeBalancePer15CationsSitoCa!(10) > 0 Then
+    chargeBalancePer15CationsSitoCa_Mn3overSumMn! = chargeBalancePer15CationsSitoCa!(10) / (chargeBalancePer15CationsSitoCa!(9) + chargeBalancePer15CationsSitoCa!(10))
+Else
+    chargeBalancePer15CationsSitoCa_Mn3overSumMn! = 0
+End If
+
+Dim chargeBalancePer15CationsSitoCa_oxygenAnionsCorrespondingToCations(1 To 23) As Single
+Dim chargeBalancePer15CationsSitoCa_sumOequivalents As Single
+chargeBalancePer15CationsSitoCa_sumOequivalents! = 0
+For n% = 1 To 23
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        chargeBalancePer15CationsSitoCa_oxygenAnionsCorrespondingToCations!(n%) = 0
+    ElseIf n% = 10 Or n% = 12 Then
+        chargeBalancePer15CationsSitoCa_oxygenAnionsCorrespondingToCations!(n%) = chargeBalancePer15CationsSitoCa!(n%) * 1.5
+        chargeBalancePer15CationsSitoCa_sumOequivalents! = chargeBalancePer15CationsSitoCa_sumOequivalents! + chargeBalancePer15CationsSitoCa_oxygenAnionsCorrespondingToCations!(n%)
+    Else
+        chargeBalancePer15CationsSitoCa_oxygenAnionsCorrespondingToCations!(n%) = chargeBalancePer15CationsSitoCa!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        chargeBalancePer15CationsSitoCa_sumOequivalents! = chargeBalancePer15CationsSitoCa_sumOequivalents! + chargeBalancePer15CationsSitoCa_oxygenAnionsCorrespondingToCations!(n%)
+    End If
+Next n%
+
+Dim chargeBalancePer13CationsSitoMg(1 To 23) As Single
+
+For n% = 1 To 23
+    If Fe3andMn2inChargeBalance% = 1 Then
+        If allFerrousIronAndMn2_sumSitoMg! >= 13# Then
+            If allFerricIronAndMn2_sumSitoMg! <= 13# Then
+                chargeBalancePer13CationsSitoMg!(n%) = (13# - allFerricIronAndMn2_sumSitoMg!) / (allFerrousIronAndMn2_sumSitoMg! - allFerricIronAndMn2_sumSitoMg!) * allFerrousIronAndMn2!(n%) + (1# - (13# - allFerricIronAndMn2_sumSitoMg!) / (allFerrousIronAndMn2_sumSitoMg! - allFerricIronAndMn2_sumSitoMg!)) * allFerricIronAndMn2!(n%)
+            Else
+                chargeBalancePer13CationsSitoMg!(n%) = allFerricIronAndMn2!(n%)
+            End If
+        Else
+            chargeBalancePer13CationsSitoMg!(n%) = allFerrousIronAndMn2!(n%)
+        End If
+    Else
+        If allFerrousIronAndMn2_sumSitoMg! >= 13# Then
+            If allFerricIronAndMn3_sumSitoMg! <= 13# Then
+                chargeBalancePer13CationsSitoMg!(n%) = (13# - allFerricIronAndMn3_sumSitoMg!) / (allFerrousIronAndMn2_sumSitoMg! - allFerricIronAndMn3_sumSitoMg!) * allFerrousIronAndMn2!(n%) + (1# - (13# - allFerricIronAndMn3_sumSitoMg!) / (allFerrousIronAndMn2_sumSitoMg! - allFerricIronAndMn3_sumSitoMg!)) * allFerricIronAndMn3!(n%)
+            Else
+                chargeBalancePer13CationsSitoMg!(n%) = allFerricIronAndMn3!(n%)
+            End If
+        Else
+            chargeBalancePer13CationsSitoMg!(n%) = allFerrousIronAndMn2!(n%)
+        End If
+    End If
+Next n%
+
+Dim chargeBalancePer13CationsSitoMg_sumSitoK As Single
+Dim chargeBalancePer13CationsSitoMg_sumSitoCa As Single
+Dim chargeBalancePer13CationsSitoMg_sumSitoMg As Single
+Dim chargeBalancePer13CationsSitoMg_sumSitoNa As Single
+chargeBalancePer13CationsSitoMg_sumSitoMg! = 0#
+For n% = 1 To 17
+    chargeBalancePer13CationsSitoMg_sumSitoMg! = chargeBalancePer13CationsSitoMg_sumSitoMg! + chargeBalancePer13CationsSitoMg!(n%)
+Next
+chargeBalancePer13CationsSitoMg_sumSitoMg! = chargeBalancePer13CationsSitoMg_sumSitoMg! + chargeBalancePer13CationsSitoMg!(20)
+chargeBalancePer13CationsSitoMg_sumSitoCa! = chargeBalancePer13CationsSitoMg_sumSitoMg! + chargeBalancePer13CationsSitoMg!(18) + chargeBalancePer13CationsSitoMg!(19)
+chargeBalancePer13CationsSitoMg_sumSitoNa! = chargeBalancePer13CationsSitoMg_sumSitoCa! + chargeBalancePer13CationsSitoMg!(21)
+chargeBalancePer13CationsSitoMg_sumSitoK! = chargeBalancePer13CationsSitoMg_sumSitoNa! + chargeBalancePer13CationsSitoMg!(22) + chargeBalancePer13CationsSitoMg!(23)
+
+Dim chargeBalancePer13CationsSitoMg_Fe3overSumFe As Single
+Dim chargeBalancePer13CationsSitoMg_Mn3overSumMn As Single
+If chargeBalancePer13CationsSitoMg!(11) + chargeBalancePer13CationsSitoMg!(12) > 0 Then
+    chargeBalancePer13CationsSitoMg_Fe3overSumFe! = chargeBalancePer13CationsSitoMg!(12) / (chargeBalancePer13CationsSitoMg!(11) + chargeBalancePer13CationsSitoMg!(12))
+Else
+    chargeBalancePer13CationsSitoMg_Fe3overSumFe! = 0#
+End If
+If chargeBalancePer13CationsSitoMg!(9) + chargeBalancePer13CationsSitoMg!(10) > 0 Then
+    chargeBalancePer13CationsSitoMg_Mn3overSumMn! = chargeBalancePer13CationsSitoMg!(10) / (chargeBalancePer13CationsSitoMg!(9) + chargeBalancePer13CationsSitoMg!(10))
+Else
+    chargeBalancePer13CationsSitoMg_Mn3overSumMn! = 0#
+End If
+
+Dim chargeBalancePer13CationsSitoMg_oxygenAnionsCorrespondingToCations(1 To 23) As Single
+Dim chargeBalancePer13CationsSitoMg_sumOequivalents As Single
+
+chargeBalancePer13CationsSitoMg_sumOequivalents! = 0#
+For n% = 1 To 23
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        chargeBalancePer13CationsSitoMg_oxygenAnionsCorrespondingToCations!(n%) = 0#
+    ElseIf n% = 10 Or n% = 12 Then
+        chargeBalancePer13CationsSitoMg_oxygenAnionsCorrespondingToCations!(n%) = chargeBalancePer13CationsSitoMg!(n%) * 1.5
+        chargeBalancePer13CationsSitoMg_sumOequivalents! = chargeBalancePer13CationsSitoMg_sumOequivalents! + chargeBalancePer13CationsSitoMg_oxygenAnionsCorrespondingToCations!(n%)
+    Else
+        chargeBalancePer13CationsSitoMg_oxygenAnionsCorrespondingToCations!(n%) = chargeBalancePer13CationsSitoMg!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        chargeBalancePer13CationsSitoMg_sumOequivalents! = chargeBalancePer13CationsSitoMg_sumOequivalents! + chargeBalancePer13CationsSitoMg_oxygenAnionsCorrespondingToCations!(n%)
+    End If
+Next
+
+Dim chargeBalancePer15CationsSitoNa(1 To 23) As Single
+For n% = 1 To 23
+    If Fe3andMn2inChargeBalance% = 1 Then
+        If allFerrousIronAndMn2_sumSitoNa! >= 15# Then
+            If allFerricIronAndMn2_sumSitoNa! <= 15# Then
+                chargeBalancePer15CationsSitoNa!(n%) = (15# - allFerricIronAndMn2_sumSitoNa!) / (allFerrousIronAndMn2_sumSitoNa! - allFerricIronAndMn2_sumSitoNa!) * allFerrousIronAndMn2!(n%) + (1# - (15# - allFerricIronAndMn2_sumSitoNa!) / (allFerrousIronAndMn2_sumSitoNa! - allFerricIronAndMn2_sumSitoNa!)) * allFerricIronAndMn2!(n%)
+            Else
+                chargeBalancePer15CationsSitoNa!(n%) = allFerricIronAndMn2!(n%)
+            End If
+        Else
+            chargeBalancePer15CationsSitoNa!(n%) = allFerrousIronAndMn2!(n%)
+        End If
+    Else
+        If allFerrousIronAndMn2_sumSitoNa! >= 15# Then
+            If allFerricIronAndMn3_sumSitoNa! <= 150 Then
+                chargeBalancePer15CationsSitoNa!(n%) = (15# - allFerricIronAndMn3_sumSitoNa!) / (allFerrousIronAndMn2_sumSitoNa! - allFerricIronAndMn3_sumSitoNa!) * allFerrousIronAndMn2!(n%) + (1# - (15# - allFerricIronAndMn3_sumSitoNa!) / (allFerrousIronAndMn2_sumSitoNa! - allFerricIronAndMn3_sumSitoNa!)) * allFerricIronAndMn3!(n%)
+            Else
+                chargeBalancePer15CationsSitoNa!(n%) = allFerricIronAndMn3!(n%)
+            End If
+        Else
+            chargeBalancePer15CationsSitoNa!(n%) = allFerrousIronAndMn2!(n%)
+        End If
+    End If
+Next n%
+
+Dim chargeBalancePer15CationsSitoNa_sumSitoK As Single
+Dim chargeBalancePer15CationsSitoNa_sumSitoCa As Single
+Dim chargeBalancePer15CationsSitoNa_sumSitoMg As Single
+Dim chargeBalancePer15CationsSitoNa_sumSitoNa As Single
+
+chargeBalancePer15CationsSitoNa_sumSitoMg! = 0#
+For n% = 1 To 17
+    chargeBalancePer15CationsSitoNa_sumSitoMg! = chargeBalancePer15CationsSitoNa_sumSitoMg! + chargeBalancePer15CationsSitoNa!(n%)
+Next
+chargeBalancePer15CationsSitoNa_sumSitoMg! = chargeBalancePer15CationsSitoNa_sumSitoMg! + chargeBalancePer15CationsSitoNa!(20)
+chargeBalancePer15CationsSitoNa_sumSitoCa! = chargeBalancePer15CationsSitoNa_sumSitoMg! + chargeBalancePer15CationsSitoNa!(18) + chargeBalancePer15CationsSitoNa!(19)
+chargeBalancePer15CationsSitoNa_sumSitoNa! = chargeBalancePer15CationsSitoNa_sumSitoCa! + chargeBalancePer15CationsSitoNa!(21)
+chargeBalancePer15CationsSitoNa_sumSitoK! = chargeBalancePer15CationsSitoNa_sumSitoNa! + chargeBalancePer15CationsSitoNa!(22) + chargeBalancePer15CationsSitoNa!(23)
+
+Dim chargeBalancePer15CationsSitoNa_Fe3overSumFe As Single
+Dim chargeBalancePer15CationsSitoNa_Mn3overSumMn As Single
+If chargeBalancePer15CationsSitoNa!(11) + chargeBalancePer15CationsSitoNa!(12) > 0 Then
+    chargeBalancePer15CationsSitoNa_Fe3overSumFe! = chargeBalancePer15CationsSitoNa!(12) / (chargeBalancePer15CationsSitoNa!(11) + chargeBalancePer15CationsSitoNa!(12))
+Else
+    chargeBalancePer15CationsSitoNa_Fe3overSumFe! = 0#
+End If
+If chargeBalancePer15CationsSitoNa!(9) + chargeBalancePer15CationsSitoNa!(10) > 0 Then
+    chargeBalancePer15CationsSitoNa_Mn3overSumMn! = chargeBalancePer15CationsSitoNa!(10) / (chargeBalancePer15CationsSitoNa!(9) + chargeBalancePer15CationsSitoNa!(10))
+Else
+    chargeBalancePer15CationsSitoNa_Mn3overSumMn! = 0#
+End If
+
+Dim chargeBalancePer15CationsSitoNa_oxygenAnionsCorrespondingToCations(1 To 23) As Single
+Dim chargeBalancePer15CationsSitoNa_sumOequivalents As Single
+chargeBalancePer15CationsSitoNa_sumOequivalents! = 0#
+For n% = 1 To 23
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        chargeBalancePer15CationsSitoNa_oxygenAnionsCorrespondingToCations!(n%) = 0
+    ElseIf n% = 10 Or n% = 12 Then
+        chargeBalancePer15CationsSitoNa_oxygenAnionsCorrespondingToCations!(n%) = chargeBalancePer15CationsSitoNa!(n%) * 1.5
+        chargeBalancePer15CationsSitoNa_sumOequivalents! = chargeBalancePer15CationsSitoNa_sumOequivalents! + chargeBalancePer15CationsSitoNa_oxygenAnionsCorrespondingToCations!(n%)
+    Else
+        chargeBalancePer15CationsSitoNa_oxygenAnionsCorrespondingToCations!(n%) = chargeBalancePer15CationsSitoNa!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        chargeBalancePer15CationsSitoNa_sumOequivalents! = chargeBalancePer15CationsSitoNa_sumOequivalents! + chargeBalancePer15CationsSitoNa_oxygenAnionsCorrespondingToCations!(n%)
+    End If
+Next
+
+Dim chargeBalancePer16CationsTotalNonH(1 To 23) As Single
+For n% = 1 To 23
+    If Fe3andMn2inChargeBalance% = 1 Then
+        If allFerrousIronAndMn2_sumSitoK! >= 16# Then
+            If allFerricIronAndMn2_sumSitoK! <= 16# Then
+                chargeBalancePer16CationsTotalNonH!(n%) = (16# - allFerricIronAndMn2_sumSitoK!) / (allFerrousIronAndMn2_sumSitoK! - allFerricIronAndMn2_sumSitoK!) * allFerrousIronAndMn2!(n%) + (1# - (16# - allFerricIronAndMn2_sumSitoK!) / (allFerrousIronAndMn2_sumSitoK! - allFerricIronAndMn2_sumSitoK!)) * allFerricIronAndMn2!(n%)
+            Else
+                chargeBalancePer16CationsTotalNonH!(n%) = allFerricIronAndMn2!(n%)
+            End If
+        Else
+            chargeBalancePer16CationsTotalNonH!(n%) = allFerrousIronAndMn2!(n%)
+        End If
+    Else
+        If allFerrousIronAndMn2_sumSitoK! >= 16 Then
+            If allFerricIronAndMn3_sumSitoK! <= 16 Then
+                chargeBalancePer16CationsTotalNonH!(n%) = (16# - allFerricIronAndMn3_sumSitoK!) / (allFerrousIronAndMn2_sumSitoK! - allFerricIronAndMn3_sumSitoK!) * allFerrousIronAndMn2!(n%) + (1# - (16# - allFerricIronAndMn3_sumSitoK!) / (allFerrousIronAndMn2_sumSitoK! - allFerricIronAndMn3_sumSitoK!)) * allFerricIronAndMn3!(n%)
+            Else
+                chargeBalancePer16CationsTotalNonH!(n%) = allFerricIronAndMn3!(n%)
+            End If
+        Else
+            chargeBalancePer16CationsTotalNonH!(n%) = allFerrousIronAndMn2!(n%)
+        End If
+    End If
+Next n%
+
+Dim chargeBalancePer16CationsTotalNonH_sumSitoK As Single
+Dim chargeBalancePer16CationsTotalNonH_sumSitoCa As Single
+Dim chargeBalancePer16CationsTotalNonH_sumSitoMg As Single
+Dim chargeBalancePer16CationsTotalNonH_sumSitoNa As Single
+chargeBalancePer16CationsTotalNonH_sumSitoMg! = 0#
+For n% = 1 To 17
+    chargeBalancePer16CationsTotalNonH_sumSitoMg! = chargeBalancePer16CationsTotalNonH_sumSitoMg! + chargeBalancePer16CationsTotalNonH!(n%)
+Next
+chargeBalancePer16CationsTotalNonH_sumSitoMg! = chargeBalancePer16CationsTotalNonH_sumSitoMg! + chargeBalancePer16CationsTotalNonH!(20)
+chargeBalancePer16CationsTotalNonH_sumSitoCa! = chargeBalancePer16CationsTotalNonH_sumSitoMg! + chargeBalancePer16CationsTotalNonH!(18) + chargeBalancePer16CationsTotalNonH!(19)
+chargeBalancePer16CationsTotalNonH_sumSitoNa! = chargeBalancePer16CationsTotalNonH_sumSitoCa! + chargeBalancePer16CationsTotalNonH!(21)
+chargeBalancePer16CationsTotalNonH_sumSitoK! = chargeBalancePer16CationsTotalNonH_sumSitoNa! + chargeBalancePer16CationsTotalNonH!(22) + chargeBalancePer16CationsTotalNonH!(23)
+
+Dim chargeBalancePer16CationsTotalNonH_Fe3overSumFe As Single
+Dim chargeBalancePer16CationsTotalNonH_Mn3overSumMn As Single
+If chargeBalancePer16CationsTotalNonH!(11) + chargeBalancePer16CationsTotalNonH!(12) > 0 Then
+    chargeBalancePer16CationsTotalNonH_Fe3overSumFe! = chargeBalancePer16CationsTotalNonH!(12) / (chargeBalancePer16CationsTotalNonH!(11) + chargeBalancePer16CationsTotalNonH!(12))
+Else
+    chargeBalancePer16CationsTotalNonH_Fe3overSumFe! = 0#
+End If
+If chargeBalancePer16CationsTotalNonH!(9) + chargeBalancePer16CationsTotalNonH!(10) > 0 Then
+    chargeBalancePer16CationsTotalNonH_Mn3overSumMn! = chargeBalancePer16CationsTotalNonH!(10) / (chargeBalancePer16CationsTotalNonH!(9) + chargeBalancePer16CationsTotalNonH!(10))
+Else
+    chargeBalancePer16CationsTotalNonH_Mn3overSumMn! = 0#
+End If
+
+Dim chargeBalancePer16CationsTotalNonH_oxygenAnionsCorrespondingToCations(1 To 23) As Single
+Dim chargeBalancePer16CationsTotalNonH_sumOequivalents As Single
+chargeBalancePer16CationsTotalNonH_sumOequivalents! = 0#
+For n% = 1 To 23
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        chargeBalancePer16CationsTotalNonH_oxygenAnionsCorrespondingToCations!(n%) = 0#
+    ElseIf n% = 10 Or n% = 12 Then
+        chargeBalancePer16CationsTotalNonH_oxygenAnionsCorrespondingToCations!(n%) = chargeBalancePer16CationsTotalNonH!(n%) * 1.5
+        chargeBalancePer16CationsTotalNonH_sumOequivalents! = chargeBalancePer16CationsTotalNonH_sumOequivalents! + chargeBalancePer16CationsTotalNonH_oxygenAnionsCorrespondingToCations!(n%)
+    Else
+        chargeBalancePer16CationsTotalNonH_oxygenAnionsCorrespondingToCations!(n%) = chargeBalancePer16CationsTotalNonH!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        chargeBalancePer16CationsTotalNonH_sumOequivalents! = chargeBalancePer16CationsTotalNonH_sumOequivalents! + chargeBalancePer16CationsTotalNonH_oxygenAnionsCorrespondingToCations!(n%)
+    End If
+Next
+
+' Criteria tests (threshold 0.0050 apfu)
+' Sum Si to Ca (+Li) <=15
+Dim sumSitoCa_LE_15_Si_LE_8apfu As Single
+Dim sumSitoCa_LE_15_NonHCations_LE_16apfu As Single
+Dim sumSitoCa_LE_15_SumSitoCa_LE_15apfu As Single
+Dim sumSitoCa_LE_15_SumSitoMg_GE_13apfu As Single
+Dim sumSitoCa_LE_15_SitoNa_GE_15apfu As Single
+Dim sumSitoCa_LE_15_MaxDeviation As Single
+Dim sumSitoCa_LE_15_Fe3overSumFe As Single
+Dim sumSitoCa_LE_15_Mn3overSumMn As Single
+
+sumSitoCa_LE_15_MaxDeviation! = 0#
+If chargeBalancePer15CationsSitoCa!(1) <= 8# Then
+    sumSitoCa_LE_15_Si_LE_8apfu! = 1#
+Else
+    sumSitoCa_LE_15_Si_LE_8apfu! = Abs(chargeBalancePer15CationsSitoCa!(1) - 8#)
+    If sumSitoCa_LE_15_Si_LE_8apfu! > sumSitoCa_LE_15_MaxDeviation! Then
+        sumSitoCa_LE_15_MaxDeviation! = sumSitoCa_LE_15_Si_LE_8apfu!
+    End If
+End If
+If chargeBalancePer15CationsSitoCa_sumSitoK! <= 16# Then
+    sumSitoCa_LE_15_NonHCations_LE_16apfu! = 1#
+Else
+    sumSitoCa_LE_15_NonHCations_LE_16apfu! = Abs(chargeBalancePer15CationsSitoCa_sumSitoK! - 16#)
+    If sumSitoCa_LE_15_NonHCations_LE_16apfu! > sumSitoCa_LE_15_MaxDeviation! Then
+        sumSitoCa_LE_15_MaxDeviation! = sumSitoCa_LE_15_NonHCations_LE_16apfu!
+    End If
+End If
+If chargeBalancePer15CationsSitoCa_sumSitoCa! <= 15# Then
+    sumSitoCa_LE_15_SumSitoCa_LE_15apfu! = 1#
+Else
+    sumSitoCa_LE_15_SumSitoCa_LE_15apfu! = Abs(chargeBalancePer15CationsSitoCa_sumSitoCa! - 15#)
+    If sumSitoCa_LE_15_SumSitoCa_LE_15apfu! > sumSitoCa_LE_15_MaxDeviation! Then
+        sumSitoCa_LE_15_MaxDeviation! = sumSitoCa_LE_15_SumSitoCa_LE_15apfu!
+    End If
+End If
+If chargeBalancePer15CationsSitoCa_sumSitoMg! >= 13# Then
+    sumSitoCa_LE_15_SumSitoMg_GE_13apfu! = 1#
+Else
+    sumSitoCa_LE_15_SumSitoMg_GE_13apfu! = Abs(13# - chargeBalancePer15CationsSitoCa_sumSitoMg!)
+    If sumSitoCa_LE_15_SumSitoMg_GE_13apfu! > sumSitoCa_LE_15_MaxDeviation! Then
+        sumSitoCa_LE_15_MaxDeviation! = sumSitoCa_LE_15_SumSitoMg_GE_13apfu!
+    End If
+End If
+If chargeBalancePer15CationsSitoCa_sumSitoNa! >= 15# Then
+    sumSitoCa_LE_15_SitoNa_GE_15apfu! = 1#
+Else
+    sumSitoCa_LE_15_SitoNa_GE_15apfu! = Abs(15# - chargeBalancePer15CationsSitoCa_sumSitoNa!)
+    If sumSitoCa_LE_15_SitoNa_GE_15apfu! > sumSitoCa_LE_15_MaxDeviation! Then
+        sumSitoCa_LE_15_MaxDeviation! = sumSitoCa_LE_15_SitoNa_GE_15apfu!
+    End If
+End If
+
+If sumSitoCa_LE_15_MaxDeviation! < 0.005 Then
+    sumSitoCa_LE_15_MaxDeviation! = 0#
+End If
+
+sumSitoCa_LE_15_Fe3overSumFe = chargeBalancePer15CationsSitoCa_Fe3overSumFe
+sumSitoCa_LE_15_Mn3overSumMn = chargeBalancePer15CationsSitoCa_Mn3overSumMn
+
+' Sum Si to Mg (+Li) >=13
+Dim sumSitoMg_GE_13_Si_LE_8apfu As Single
+Dim sumSitoMg_GE_13_NonHCations_LE_16apfu As Single
+Dim sumSitoMg_GE_13_SumSitoCa_LE_15apfu As Single
+Dim sumSitoMg_GE_13_SumSitoMg_GE_13apfu As Single
+Dim sumSitoMg_GE_13_SitoNa_GE_15apfu As Single
+Dim sumSitoMg_GE_13_MaxDeviation As Single
+Dim sumSitoMg_GE_13_Fe3overSumFe As Single
+Dim sumSitoMg_GE_13_Mn3overSumMn As Single
+
+sumSitoMg_GE_13_MaxDeviation! = 0#
+If chargeBalancePer13CationsSitoMg!(1) <= 8# Then
+    sumSitoMg_GE_13_Si_LE_8apfu! = 1#
+Else
+    sumSitoMg_GE_13_Si_LE_8apfu! = Abs(chargeBalancePer13CationsSitoMg!(1) - 8#)
+    If sumSitoMg_GE_13_Si_LE_8apfu! > sumSitoMg_GE_13_MaxDeviation! Then
+        sumSitoMg_GE_13_MaxDeviation! = sumSitoMg_GE_13_Si_LE_8apfu!
+    End If
+End If
+If chargeBalancePer13CationsSitoMg_sumSitoK! <= 16# Then
+    sumSitoMg_GE_13_NonHCations_LE_16apfu! = 1#
+Else
+    sumSitoMg_GE_13_NonHCations_LE_16apfu! = Abs(chargeBalancePer13CationsSitoMg_sumSitoK! - 16#)
+    If sumSitoMg_GE_13_NonHCations_LE_16apfu! > sumSitoMg_GE_13_MaxDeviation! Then
+        sumSitoMg_GE_13_MaxDeviation! = sumSitoMg_GE_13_NonHCations_LE_16apfu!
+    End If
+End If
+If chargeBalancePer13CationsSitoMg_sumSitoCa! <= 15# Then
+    sumSitoMg_GE_13_SumSitoCa_LE_15apfu! = 1#
+Else
+    sumSitoMg_GE_13_SumSitoCa_LE_15apfu! = Abs(chargeBalancePer13CationsSitoMg_sumSitoCa! - 15#)
+    If sumSitoMg_GE_13_SumSitoCa_LE_15apfu! > sumSitoMg_GE_13_MaxDeviation! Then
+        sumSitoMg_GE_13_MaxDeviation! = sumSitoMg_GE_13_SumSitoCa_LE_15apfu!
+    End If
+End If
+If Round(chargeBalancePer13CationsSitoMg_sumSitoMg!, 5) >= 13# Then 'XXX has to round it otherwise the equality is not respected
+    sumSitoMg_GE_13_SumSitoMg_GE_13apfu! = 1#
+Else
+    sumSitoMg_GE_13_SumSitoMg_GE_13apfu! = Abs(13 - chargeBalancePer13CationsSitoMg_sumSitoMg!)
+    If sumSitoMg_GE_13_SumSitoMg_GE_13apfu! > sumSitoMg_GE_13_MaxDeviation! Then
+        sumSitoMg_GE_13_MaxDeviation! = sumSitoMg_GE_13_SumSitoMg_GE_13apfu!
+    End If
+End If
+If chargeBalancePer13CationsSitoMg_sumSitoNa! >= 15# Then
+    sumSitoMg_GE_13_SitoNa_GE_15apfu! = 1#
+Else
+    sumSitoMg_GE_13_SitoNa_GE_15apfu! = Abs(15# - chargeBalancePer13CationsSitoMg_sumSitoNa!)
+    If sumSitoMg_GE_13_SitoNa_GE_15apfu! > sumSitoMg_GE_13_MaxDeviation! Then
+        sumSitoMg_GE_13_MaxDeviation! = sumSitoMg_GE_13_SitoNa_GE_15apfu!
+    End If
+End If
+
+If sumSitoMg_GE_13_MaxDeviation! < 0.005 Then
+    sumSitoMg_GE_13_MaxDeviation! = 0#
+End If
+
+sumSitoMg_GE_13_Fe3overSumFe = chargeBalancePer13CationsSitoMg_Fe3overSumFe
+sumSitoMg_GE_13_Mn3overSumMn = chargeBalancePer13CationsSitoMg_Mn3overSumMn
+
+' Sum Si to Na >=15
+Dim sumSitoNa_GE_15_Si_LE_8apfu As Single
+Dim sumSitoNa_GE_15_NonHCations_LE_16apfu As Single
+Dim sumSitoNa_GE_15_SumSitoCa_LE_15apfu As Single
+Dim sumSitoNa_GE_15_SumSitoMg_GE_13apfu As Single
+Dim sumSitoNa_GE_15_SitoNa_GE_15apfu As Single
+Dim sumSitoNa_GE_15_MaxDeviation As Single
+Dim sumSitoNa_GE_15_Fe3overSumFe As Single
+Dim sumSitoNa_GE_15_Mn3overSumMn As Single
+
+sumSitoNa_GE_15_MaxDeviation! = 0
+If chargeBalancePer15CationsSitoNa!(1) <= 8 Then
+    sumSitoNa_GE_15_Si_LE_8apfu! = 1
+Else
+    sumSitoNa_GE_15_Si_LE_8apfu! = Abs(chargeBalancePer15CationsSitoNa!(1) - 8)
+    If sumSitoNa_GE_15_Si_LE_8apfu! > sumSitoNa_GE_15_MaxDeviation! Then 'this if is unnecessary
+        sumSitoNa_GE_15_MaxDeviation! = sumSitoNa_GE_15_Si_LE_8apfu!
+    End If
+End If
+If chargeBalancePer15CationsSitoNa_sumSitoK! <= 16 Then
+    sumSitoNa_GE_15_NonHCations_LE_16apfu! = 1
+Else
+    sumSitoNa_GE_15_NonHCations_LE_16apfu! = Abs(chargeBalancePer15CationsSitoNa_sumSitoK! - 16)
+    If sumSitoNa_GE_15_NonHCations_LE_16apfu! > sumSitoNa_GE_15_MaxDeviation! Then
+        sumSitoNa_GE_15_MaxDeviation! = sumSitoNa_GE_15_NonHCations_LE_16apfu!
+    End If
+End If
+If chargeBalancePer15CationsSitoNa_sumSitoCa! <= 15 Then
+    sumSitoNa_GE_15_SumSitoCa_LE_15apfu! = 1
+Else
+    sumSitoNa_GE_15_SumSitoCa_LE_15apfu! = Abs(chargeBalancePer15CationsSitoNa_sumSitoCa! - 15)
+    If sumSitoNa_GE_15_SumSitoCa_LE_15apfu! > sumSitoNa_GE_15_MaxDeviation! Then
+        sumSitoNa_GE_15_MaxDeviation! = sumSitoNa_GE_15_SumSitoCa_LE_15apfu!
+    End If
+End If
+If chargeBalancePer15CationsSitoNa_sumSitoMg! >= 13 Then
+    sumSitoNa_GE_15_SumSitoMg_GE_13apfu! = 1
+Else
+    sumSitoNa_GE_15_SumSitoMg_GE_13apfu! = Abs(13 - chargeBalancePer15CationsSitoNa_sumSitoMg!)
+    If sumSitoNa_GE_15_SumSitoMg_GE_13apfu! > sumSitoNa_GE_15_MaxDeviation! Then
+        sumSitoNa_GE_15_MaxDeviation! = sumSitoNa_GE_15_SumSitoMg_GE_13apfu!
+    End If
+End If
+If chargeBalancePer15CationsSitoNa_sumSitoNa! >= 15 Then
+    sumSitoNa_GE_15_SitoNa_GE_15apfu! = 1
+Else
+    sumSitoNa_GE_15_SitoNa_GE_15apfu! = Abs(15 - chargeBalancePer15CationsSitoNa_sumSitoNa!)
+    If sumSitoNa_GE_15_SitoNa_GE_15apfu! > sumSitoNa_GE_15_MaxDeviation! Then
+        sumSitoNa_GE_15_MaxDeviation! = sumSitoNa_GE_15_SitoNa_GE_15apfu!
+    End If
+End If
+
+If sumSitoNa_GE_15_MaxDeviation! < 0.005 Then
+    sumSitoNa_GE_15_MaxDeviation! = 0
+End If
+
+sumSitoNa_GE_15_Fe3overSumFe = chargeBalancePer15CationsSitoNa_Fe3overSumFe
+sumSitoNa_GE_15_Mn3overSumMn = chargeBalancePer15CationsSitoNa_Mn3overSumMn
+
+' Sum Si to K <=16
+Dim sumSitoK_LE_16_Si_LE_8apfu As Single
+Dim sumSitoK_LE_16_NonHCations_LE_16apfu As Single
+Dim sumSitoK_LE_16_SumSitoCa_LE_15apfu As Single
+Dim sumSitoK_LE_16_SumSitoMg_GE_13apfu As Single
+Dim sumSitoK_LE_16_SitoNa_GE_15apfu As Single
+Dim sumSitoK_LE_16_SitoK_GE_15_5apfu As Single
+Dim sumSitoK_LE_16_MaxDeviation As Single
+Dim sumSitoK_LE_16_Fe3overSumFe As Single
+Dim sumSitoK_LE_16_Mn3overSumMn As Single
+
+sumSitoK_LE_16_MaxDeviation! = 0
+If chargeBalancePer16CationsTotalNonH!(1) <= 8 Then
+    sumSitoK_LE_16_Si_LE_8apfu! = 1
+Else
+    sumSitoK_LE_16_Si_LE_8apfu! = Abs(chargeBalancePer16CationsTotalNonH!(1) - 8)
+    If sumSitoK_LE_16_Si_LE_8apfu! > sumSitoK_LE_16_MaxDeviation! Then 'this if is unnecessary
+        sumSitoK_LE_16_MaxDeviation! = sumSitoK_LE_16_Si_LE_8apfu!
+    End If
+End If
+If chargeBalancePer16CationsTotalNonH_sumSitoK! <= 16 Then
+    sumSitoK_LE_16_NonHCations_LE_16apfu! = 1
+Else
+    sumSitoK_LE_16_NonHCations_LE_16apfu! = Abs(chargeBalancePer16CationsTotalNonH_sumSitoK! - 16)
+    If sumSitoK_LE_16_NonHCations_LE_16apfu! > sumSitoK_LE_16_MaxDeviation! Then
+        sumSitoK_LE_16_MaxDeviation! = sumSitoK_LE_16_NonHCations_LE_16apfu!
+    End If
+End If
+If chargeBalancePer16CationsTotalNonH_sumSitoCa! <= 15 Then
+    sumSitoK_LE_16_SumSitoCa_LE_15apfu! = 1
+Else
+    sumSitoK_LE_16_SumSitoCa_LE_15apfu! = Abs(chargeBalancePer16CationsTotalNonH_sumSitoCa! - 15)
+    If sumSitoK_LE_16_SumSitoCa_LE_15apfu! > sumSitoK_LE_16_MaxDeviation! Then
+        sumSitoK_LE_16_MaxDeviation! = sumSitoK_LE_16_SumSitoCa_LE_15apfu!
+    End If
+End If
+If chargeBalancePer16CationsTotalNonH_sumSitoMg! >= 13 Then
+    sumSitoK_LE_16_SumSitoMg_GE_13apfu! = 1
+Else
+    sumSitoK_LE_16_SumSitoMg_GE_13apfu! = Abs(13 - chargeBalancePer16CationsTotalNonH_sumSitoMg!)
+    If sumSitoK_LE_16_SumSitoMg_GE_13apfu! > sumSitoK_LE_16_MaxDeviation! Then
+        sumSitoK_LE_16_MaxDeviation! = sumSitoK_LE_16_SumSitoMg_GE_13apfu!
+    End If
+End If
+If chargeBalancePer16CationsTotalNonH_sumSitoNa! >= 15 Then
+    sumSitoK_LE_16_SitoNa_GE_15apfu! = 1
+Else
+    sumSitoK_LE_16_SitoNa_GE_15apfu! = Abs(15 - chargeBalancePer16CationsTotalNonH_sumSitoNa!)
+    If sumSitoK_LE_16_SitoNa_GE_15apfu! > sumSitoK_LE_16_MaxDeviation! Then
+        sumSitoK_LE_16_MaxDeviation! = sumSitoK_LE_16_SitoNa_GE_15apfu!
+    End If
+End If
+If chargeBalancePer16CationsTotalNonH_sumSitoK! >= 15.5 Then
+    sumSitoK_LE_16_SitoK_GE_15_5apfu! = 1
+Else
+    sumSitoK_LE_16_SitoK_GE_15_5apfu! = Abs(15.5 - chargeBalancePer16CationsTotalNonH_sumSitoK!)
+    If sumSitoK_LE_16_SitoK_GE_15_5apfu! > sumSitoK_LE_16_MaxDeviation! Then
+        sumSitoK_LE_16_MaxDeviation! = sumSitoK_LE_16_SitoK_GE_15_5apfu!
+    End If
+End If
+
+If sumSitoK_LE_16_MaxDeviation! < 0.005 Then
+    sumSitoK_LE_16_MaxDeviation! = 0
+End If
+
+sumSitoK_LE_16_Fe3overSumFe = chargeBalancePer16CationsTotalNonH_Fe3overSumFe
+sumSitoK_LE_16_Mn3overSumMn = chargeBalancePer16CationsTotalNonH_Mn3overSumMn
+
+' Deviations
+Dim deviations(1 To 4) As Single
+Dim min As Single
+Dim min2 As Single
+Dim min3 As Single
+
+deviations!(1) = sumSitoCa_LE_15_MaxDeviation!
+deviations!(2) = sumSitoMg_GE_13_MaxDeviation!
+deviations!(3) = sumSitoNa_GE_15_MaxDeviation!
+deviations!(4) = sumSitoK_LE_16_MaxDeviation!
+
+Call ConvertBubbleSort(deviations)
+If ierror Then Exit Sub
+min! = deviations!(1)
+min2! = deviations!(2)
+min3! = deviations!(3)
+
+Dim AcceptedDeviationFromIdeal_threshold_0_0050 As Single
+If min2! - min! <= 0.005 Then
+    If min3! - min2! <= 0.005 Then
+        AcceptedDeviationFromIdeal_threshold_0_0050! = min3!
+    Else
+        AcceptedDeviationFromIdeal_threshold_0_0050! = min2!
+    End If
+Else
+    AcceptedDeviationFromIdeal_threshold_0_0050! = min!
+End If
+
+Dim preferedFormula_sumSitoCa_EQ_15 As Single
+Dim preferedFormula_sumSitoMg_EQ_13 As Single
+Dim preferedFormula_sumSitoNa_EQ_15 As Single
+Dim preferedFormula_sumSitoK_EQ_15_5 As Single
+
+If REQUIRE_SUM_SI_TO_CA_LE_15% = 1 Then
+    preferedFormula_sumSitoCa_EQ_15! = 1
+Else
+    If REQUIRE_SUM_SI_TO_MG_GE_13% + REQUIRE_SUM_SI_TO_NA_GE_15% + REQUIRE_SUM_SI_TO_K_GE_15_5% > 0 Then
+        preferedFormula_sumSitoCa_EQ_15! = 0
+    Else
+        If sumSitoCa_LE_15_MaxDeviation! <= AcceptedDeviationFromIdeal_threshold_0_0050! Then
+            preferedFormula_sumSitoCa_EQ_15! = 1
+        Else
+            preferedFormula_sumSitoCa_EQ_15! = 0
+        End If
+    End If
+End If
+
+If REQUIRE_SUM_SI_TO_MG_GE_13% = 1 Then
+    preferedFormula_sumSitoMg_EQ_13! = 1
+Else
+    If REQUIRE_SUM_SI_TO_CA_LE_15% + REQUIRE_SUM_SI_TO_NA_GE_15% + REQUIRE_SUM_SI_TO_K_GE_15_5% > 0 Then
+        preferedFormula_sumSitoMg_EQ_13! = 0
+    Else
+        If sumSitoMg_GE_13_MaxDeviation! <= AcceptedDeviationFromIdeal_threshold_0_0050! Then
+            preferedFormula_sumSitoMg_EQ_13! = 1
+        Else
+            preferedFormula_sumSitoMg_EQ_13! = 0
+        End If
+    End If
+End If
+
+If REQUIRE_SUM_SI_TO_NA_GE_15% = 1 Then
+    preferedFormula_sumSitoNa_EQ_15! = 1
+Else
+    If REQUIRE_SUM_SI_TO_CA_LE_15% + REQUIRE_SUM_SI_TO_MG_GE_13% + REQUIRE_SUM_SI_TO_K_GE_15_5% > 0 Then
+        preferedFormula_sumSitoNa_EQ_15! = 0
+    Else
+        If sumSitoNa_GE_15_MaxDeviation! <= AcceptedDeviationFromIdeal_threshold_0_0050! Then
+            preferedFormula_sumSitoNa_EQ_15! = 1
+        Else
+            preferedFormula_sumSitoNa_EQ_15! = 0
+        End If
+    End If
+End If
+
+If REQUIRE_SUM_SI_TO_K_GE_15_5% = 1 Then
+    preferedFormula_sumSitoK_EQ_15_5! = 1
+Else
+    If REQUIRE_SUM_SI_TO_CA_LE_15% + REQUIRE_SUM_SI_TO_MG_GE_13% + REQUIRE_SUM_SI_TO_NA_GE_15% > 0 Then
+        preferedFormula_sumSitoK_EQ_15_5! = 0
+    Else
+        If sumSitoK_LE_16_MaxDeviation! <= AcceptedDeviationFromIdeal_threshold_0_0050! Then
+            preferedFormula_sumSitoK_EQ_15_5! = 1
+        Else
+            preferedFormula_sumSitoK_EQ_15_5! = 0
+        End If
+    End If
+End If
+
+Dim preferredFormulaSubtotal As Single
+preferredFormulaSubtotal! = preferedFormula_sumSitoCa_EQ_15! + preferedFormula_sumSitoMg_EQ_13! + preferedFormula_sumSitoNa_EQ_15! + preferedFormula_sumSitoK_EQ_15_5!
+
+' Formula
+Dim formula(1 To 23) As Single
+For n% = 1 To 23
+    formula(n%) = 0
+    If USE_INITIAL_M3_OVER_SUM_M = True Then
+        formula!(n%) = initialProportionsCations!(n%)
+    Else
+        If preferedFormula_sumSitoCa_EQ_15 > 0 Then
+            formula!(n%) = formula!(n%) + chargeBalancePer15CationsSitoCa!(n%)
+        End If
+        If preferedFormula_sumSitoMg_EQ_13 > 0 Then
+            formula!(n%) = formula!(n%) + chargeBalancePer13CationsSitoMg!(n%)
+        End If
+        If preferedFormula_sumSitoNa_EQ_15 > 0 Then
+            formula!(n%) = formula!(n%) + chargeBalancePer15CationsSitoNa!(n%)
+        End If
+        If preferedFormula_sumSitoK_EQ_15_5 > 0 Then
+            formula!(n%) = formula!(n%) + chargeBalancePer16CationsTotalNonH!(n%)
+        End If
+        formula!(n%) = formula!(n%) / preferredFormulaSubtotal!
+    End If
+Next
+
+Dim formula_sumSitoK As Single
+Dim formula_sumSitoCa As Single
+Dim formula_sumSitoMg As Single
+Dim formula_sumSitoNa As Single
+
+formula_sumSitoMg! = 0
+For n% = 1 To 17
+    formula_sumSitoMg! = formula_sumSitoMg! + formula!(n%)
+Next
+formula_sumSitoMg! = formula_sumSitoMg! + formula!(20)
+formula_sumSitoCa! = formula_sumSitoMg! + formula!(18) + formula!(19)
+formula_sumSitoNa! = formula_sumSitoCa! + formula!(21)
+formula_sumSitoK! = formula_sumSitoNa! + formula!(22) + formula!(23)
+
+Dim formula_OH_preliminary_step1 As Single
+Dim formula_F_preliminary As Single
+Dim formula_Cl_preliminary As Single
+Dim formula_OH_preliminary_step2 As Single
+Dim formula_H_mesured_and_rounded As Single
+Dim formula_Fe3overSumFe As Single
+Dim formula_Mn3overSumMn As Single
+
+If initialproportionsOH! > 0 Then
+    formula_OH_preliminary_step1! = initialproportionsOH!
+Else
+    formula_OH_preliminary_step1! = molarProportionsCations!(24) / molarProportionsCations!(1) * formula!(1)
+End If
+If initialproportionsF! > 0 Then
+    formula_F_preliminary! = initialproportionsF!
+Else
+    formula_F_preliminary! = molarProportionsAnionsF / molarProportionsCations!(1) * formula!(1)
+End If
+If initialproportionsCl! > 0 Then
+    formula_Cl_preliminary! = initialproportionsCl!
+Else
+    formula_Cl_preliminary! = molarProportionsAnionsCl / molarProportionsCations!(1) * formula!(1)
+End If
+
+If REQUIRE_INITIAL_H2O = True Then
+    formula_OH_preliminary_step2! = formula_OH_preliminary_step1!
+Else
+    If formula_OH_preliminary_step1! + formula_F_preliminary! + formula_Cl_preliminary! > 2 Then
+        If formula_F_preliminary! + formula_Cl_preliminary! < 2 Then
+            formula_OH_preliminary_step2! = 2 - (formula_F_preliminary! + formula_Cl_preliminary!)
+        Else
+            formula_OH_preliminary_step2! = 0
+        End If
+    Else
+        If formula_OH_preliminary_step1! + formula_F_preliminary! + formula_Cl_preliminary! < 2 Then
+            If 2 - formula_F_preliminary! - formula_Cl_preliminary! > 0 Then
+                formula_OH_preliminary_step2! = 2 - formula_F_preliminary! - formula_Cl_preliminary!
+            Else
+                formula_OH_preliminary_step2! = 0
+            End If
+        Else
+            formula_OH_preliminary_step2! = formula_OH_preliminary_step1!
+        End If
+    End If
+End If
+
+
+If REQUIRE_INITIAL_H2O = True Then
+    formula_H_mesured_and_rounded! = formula_OH_preliminary_step2!
+Else
+    If ESTIMATEOH2_2TI = True Then
+        If formula_OH_preliminary_step1! + formula_F_preliminary! + formula_Cl_preliminary! > 2 Then
+            If 2 * formula_OH_preliminary_step1! / (formula_OH_preliminary_step1! + formula_F_preliminary! + formula_Cl_preliminary!) - 2 * formula!(3) > 0 Then
+                formula_H_mesured_and_rounded = 2 * formula_OH_preliminary_step1! / (formula_OH_preliminary_step1! + formula_F_preliminary! + formula_Cl_preliminary!) - 2 * formula!(3)
+            Else
+                formula_H_mesured_and_rounded = 0
+            End If
+        Else
+            If formula_OH_preliminary_step1! + formula_F_preliminary! + formula_Cl_preliminary! < 2 Then
+                Dim tmp As Single
+                If formula!(3) > 8 - (formula!(1) + formula!(2) + formula!(5)) And 8 - (formula!(1) + formula!(2) + formula!(5)) > 0 Then
+                    tmp! = formula!(3) - (8 - (formula!(1) + formula!(2) + formula!(5)))
+                Else
+                    tmp! = formula!(3)
+                End If
+                If 2 - formula_F_preliminary! - formula_Cl_preliminary! - 2 * tmp! > 0 Then
+                    formula_H_mesured_and_rounded! = 2 - formula_F_preliminary! - formula_Cl_preliminary! - 2 * tmp!
+                Else
+                    formula_H_mesured_and_rounded! = 0
+                End If
+            Else
+                formula_H_mesured_and_rounded! = formula_OH_preliminary_step1!
+            End If
+        End If
+    Else
+        If formula_OH_preliminary_step1! + formula_F_preliminary! + formula_Cl_preliminary! > 2 Then
+            If formula_F_preliminary! + formula_Cl_preliminary! < 2 Then
+                formula_H_mesured_and_rounded! = 2 - (formula_F_preliminary! + formula_Cl_preliminary!)
+            Else
+                formula_H_mesured_and_rounded! = 0
+            End If
+        Else
+            If formula_OH_preliminary_step1! + formula_F_preliminary! + formula_Cl_preliminary! < 2 Then
+                If 2 - formula_F_preliminary! - formula_Cl_preliminary! > 0 Then
+                    formula_H_mesured_and_rounded! = 2 - formula_F_preliminary! - formula_Cl_preliminary!
+                Else
+                    formula_H_mesured_and_rounded! = 0
+                End If
+            Else
+                formula_H_mesured_and_rounded! = formula_OH_preliminary_step1!
+            End If
+        End If
+    End If
+End If
+
+
+If formula!(11) + formula!(12) > 0 Then
+    formula_Fe3overSumFe! = formula!(12) / (formula!(11) + formula!(12))
+Else
+    formula_Fe3overSumFe! = 0
+End If
+If formula!(9) + formula!(10) > 0 Then
+    formula_Mn3overSumMn! = formula!(10) / (formula!(9) + formula!(10))
+Else
+    formula_Mn3overSumMn! = 0
+End If
+
+Dim formula_AnionsCorrespondingToCations(1 To 23) As Single
+Dim formula_AnionsCorrespondingToCations_sum As Single
+Dim formula_AnionsCorrespondingToCations_H As Single
+Dim formula_AnionsCorrespondingToCations_F As Single
+Dim formula_AnionsCorrespondingToCations_Cl As Single
+Dim formula_AnionsCorrespondingToCations_sumTotal As Single
+
+formula_AnionsCorrespondingToCations_sum! = 0
+For n% = 1 To 23
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        formula_AnionsCorrespondingToCations!(n%) = 0
+    ElseIf n% = 10 Or n% = 12 Then
+        formula_AnionsCorrespondingToCations!(n%) = formula!(n%) * 1.5
+        formula_AnionsCorrespondingToCations_sum! = formula_AnionsCorrespondingToCations_sum! + formula_AnionsCorrespondingToCations!(n%)
+    Else
+        formula_AnionsCorrespondingToCations!(n%) = formula!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        formula_AnionsCorrespondingToCations_sum! = formula_AnionsCorrespondingToCations_sum! + formula_AnionsCorrespondingToCations!(n%)
+    End If
+Next
+
+formula_AnionsCorrespondingToCations_H! = 0.5 * formula_H_mesured_and_rounded!
+
+If formula_F_preliminary! + formula_Cl_preliminary! > 2 Then
+    formula_AnionsCorrespondingToCations_F! = 2 * formula_F_preliminary! / (formula_F_preliminary! + formula_Cl_preliminary!)
+Else
+    formula_AnionsCorrespondingToCations_F! = formula_F_preliminary!
+End If
+
+If formula_F_preliminary! + formula_Cl_preliminary! > 2 Then
+    formula_AnionsCorrespondingToCations_Cl! = 2 * formula_Cl_preliminary! / (formula_F_preliminary! + formula_Cl_preliminary!)
+Else
+    formula_AnionsCorrespondingToCations_Cl! = formula_Cl_preliminary!
+End If
+
+formula_AnionsCorrespondingToCations_sumTotal! = formula_AnionsCorrespondingToCations_sum! + formula_AnionsCorrespondingToCations_H! + formula_AnionsCorrespondingToCations_F! * 0.5 + formula_AnionsCorrespondingToCations_Cl! * 0.5
+
+
+Dim formula_AnionsCorrespondingToCations_checkChargeBalanceCations As Single
+Dim formula_AnionsCorrespondingToCations_checkChargeBalanceAnions As Single
+formula_AnionsCorrespondingToCations_checkChargeBalanceCations! = 4 * (formula!(1) + formula!(3) + formula!(4)) + 3 * (formula!(5) + formula!(6) + formula!(7) + formula!(8) + formula!(10) + formula!(12)) + 2 * (formula!(9) + formula!(11) + formula!(13) + formula!(14) + formula!(15) + formula!(16) + formula!(17) + formula!(18) + formula!(19) + formula!(22)) + formula!(20) + formula!(21) + formula!(23) + formula_H_mesured_and_rounded!
+formula_AnionsCorrespondingToCations_checkChargeBalanceAnions! = -2 * (formula_AnionsCorrespondingToCations_sum! - 0.5 * formula_AnionsCorrespondingToCations_F! - 0.5 * formula_AnionsCorrespondingToCations_Cl!) - 2 * formula_AnionsCorrespondingToCations_H! - formula_AnionsCorrespondingToCations_F! - formula_AnionsCorrespondingToCations_Cl!
+
+
+Dim formula_AnionsCorrespondingToCations_correctedMn2 As Single
+Dim formula_AnionsCorrespondingToCations_correctedMn3 As Single
+Dim formula_AnionsCorrespondingToCations_correctedFe2 As Single
+Dim formula_AnionsCorrespondingToCations_correctedFe3 As Single
+
+If USE_INITIAL_M3_OVER_SUM_M = False Then
+    If formula!(11) > 0 And formula!(10) > 0 Then
+        If formula!(10) > formula!(11) Then
+            formula_AnionsCorrespondingToCations_correctedFe2! = 0
+        Else
+            formula_AnionsCorrespondingToCations_correctedFe2! = 24 * (formula!(11) - formula!(10)) / formula_AnionsCorrespondingToCations_sumTotal!
+        End If
+    Else
+        formula_AnionsCorrespondingToCations_correctedFe2! = 24 * formula!(11) / formula_AnionsCorrespondingToCations_sumTotal!
+    End If
+Else
+    formula_AnionsCorrespondingToCations_correctedFe2! = 24 / formula_AnionsCorrespondingToCations_sumTotal! * formula!(11)
+End If
+
+If USE_INITIAL_M3_OVER_SUM_M = False Then
+    If formula_AnionsCorrespondingToCations_correctedFe2! = 0 Then
+        formula_AnionsCorrespondingToCations_correctedMn2! = 24 * (formula!(9) + formula!(11)) / formula_AnionsCorrespondingToCations_sumTotal!
+    Else
+        formula_AnionsCorrespondingToCations_correctedMn2! = 24 * (formula!(9) + formula!(10)) / formula_AnionsCorrespondingToCations_sumTotal!
+    End If
+Else
+    formula_AnionsCorrespondingToCations_correctedMn2! = 24 / formula_AnionsCorrespondingToCations_sumTotal! * formula!(9)
+End If
+
+If USE_INITIAL_M3_OVER_SUM_M = False Then
+    If formula_AnionsCorrespondingToCations_correctedFe2! = 0 Then
+        formula_AnionsCorrespondingToCations_correctedMn3! = 24 * (formula!(10) - formula!(11)) / formula_AnionsCorrespondingToCations_sumTotal!
+    Else
+        formula_AnionsCorrespondingToCations_correctedMn3! = 0
+    End If
+Else
+    formula_AnionsCorrespondingToCations_correctedMn3! = 24 / formula_AnionsCorrespondingToCations_sumTotal! * formula!(10)
+End If
+
+If USE_INITIAL_M3_OVER_SUM_M = False Then
+    If formula_AnionsCorrespondingToCations_correctedFe2! = 0 Then
+        formula_AnionsCorrespondingToCations_correctedFe3! = 24 * (formula!(12) + formula!(11)) / formula_AnionsCorrespondingToCations_sumTotal!
+    Else
+        formula_AnionsCorrespondingToCations_correctedFe3! = 24 * (formula!(12) + formula!(10)) / formula_AnionsCorrespondingToCations_sumTotal!
+    End If
+Else
+    formula_AnionsCorrespondingToCations_correctedFe3! = 24 / formula_AnionsCorrespondingToCations_sumTotal! * formula!(12)
+End If
+
+
+' Formula normalized
+Dim formulaNormalized(1 To 24) As Single
+For n% = 1 To 23
+    If n% = 9 Then
+        formulaNormalized!(n%) = formula_AnionsCorrespondingToCations_correctedMn2!
+    ElseIf n% = 10 Then
+        formulaNormalized!(n%) = formula_AnionsCorrespondingToCations_correctedMn3!
+    ElseIf n% = 11 Then
+        formulaNormalized!(n%) = formula_AnionsCorrespondingToCations_correctedFe2!
+    ElseIf n% = 12 Then
+        formulaNormalized!(n%) = formula_AnionsCorrespondingToCations_correctedFe3!
+    Else
+        formulaNormalized!(n%) = 24 * formula!(n%) / formula_AnionsCorrespondingToCations_sumTotal!
+    End If
+Next
+
+formulaNormalized!(24) = 24# * formula_H_mesured_and_rounded! / formula_AnionsCorrespondingToCations_sumTotal!
+
+Dim formulaNormalized_sumSitoK As Single
+Dim formulaNormalized_sumSitoCa As Single
+Dim formulaNormalized_sumSitoMg As Single
+Dim formulaNormalized_sumSitoNa As Single
+formulaNormalized_sumSitoMg! = 0
+For n% = 1 To 17
+    formulaNormalized_sumSitoMg! = formulaNormalized_sumSitoMg! + formulaNormalized!(n%)
+Next
+formulaNormalized_sumSitoMg! = formulaNormalized_sumSitoMg! + formulaNormalized!(20)
+formulaNormalized_sumSitoCa! = formulaNormalized_sumSitoMg! + formulaNormalized!(18) + formulaNormalized!(19)
+formulaNormalized_sumSitoNa! = formulaNormalized_sumSitoCa! + formulaNormalized!(21)
+formulaNormalized_sumSitoK! = formulaNormalized_sumSitoNa! + formulaNormalized!(22) + formulaNormalized!(23)
+
+Dim formulaNormalized_Fe3overSumFe As Single
+Dim formulaNormalized_Mn3overSumMn As Single
+If formulaNormalized!(11) + formulaNormalized!(12) > 0 Then
+    formulaNormalized_Fe3overSumFe! = formulaNormalized!(12) / (formulaNormalized!(11) + formulaNormalized!(12))
+Else
+    formulaNormalized_Fe3overSumFe! = 0
+End If
+If formulaNormalized!(9) + formulaNormalized!(10) > 0 Then
+    formulaNormalized_Mn3overSumMn! = formulaNormalized!(10) / (formulaNormalized!(9) + formulaNormalized!(10))
+Else
+    formulaNormalized_Mn3overSumMn! = 0
+End If
+
+
+Dim formulaNormalized_AnionsCorrespondingToCations(1 To 24) As Single
+Dim formulaNormalized_AnionsCorrespondingToCations_sum As Single
+Dim formulaNormalized_AnionsCorrespondingToCations_F As Single
+Dim formulaNormalized_AnionsCorrespondingToCations_Cl As Single
+
+formulaNormalized_AnionsCorrespondingToCations_sum! = 0
+For n% = 1 To 24
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% = 0 Then
+        formulaNormalized_AnionsCorrespondingToCations!(n%) = 0
+    ElseIf n% = 10 Or n% = 12 Then
+        formulaNormalized_AnionsCorrespondingToCations!(n%) = formulaNormalized!(n%) * 1.5
+        formulaNormalized_AnionsCorrespondingToCations_sum! = formulaNormalized_AnionsCorrespondingToCations_sum! + formulaNormalized_AnionsCorrespondingToCations!(n%)
+    Else
+        formulaNormalized_AnionsCorrespondingToCations!(n%) = formulaNormalized!(n%) * NumOxds%(ip%) / NumCats%(ip%)
+        formulaNormalized_AnionsCorrespondingToCations_sum! = formulaNormalized_AnionsCorrespondingToCations_sum! + formulaNormalized_AnionsCorrespondingToCations!(n%)
+    End If
+Next
+
+If formula_AnionsCorrespondingToCations_sumTotal! > 24 Then
+    formulaNormalized_AnionsCorrespondingToCations_F! = 24 * formula_AnionsCorrespondingToCations_F! / formula_AnionsCorrespondingToCations_sumTotal!
+Else
+    formulaNormalized_AnionsCorrespondingToCations_F! = formula_AnionsCorrespondingToCations_F!
+End If
+If formula_AnionsCorrespondingToCations_sumTotal! > 24 Then
+    formulaNormalized_AnionsCorrespondingToCations_Cl! = 24 * formula_AnionsCorrespondingToCations_Cl! / formula_AnionsCorrespondingToCations_sumTotal!
+Else
+    formulaNormalized_AnionsCorrespondingToCations_Cl! = formula_AnionsCorrespondingToCations_Cl!
+End If
+
+formulaNormalized_AnionsCorrespondingToCations_sum! = formulaNormalized_AnionsCorrespondingToCations_sum! + 0.5 * formulaNormalized_AnionsCorrespondingToCations_F! + 0.5 * formulaNormalized_AnionsCorrespondingToCations_Cl!
+
+Dim molarMassOfEmpiricalFormula As Single
+molarMassOfEmpiricalFormula! = 0
+For n% = 1 To 24
+    ip% = IPOS2DQ%(nelements%, elementList%(n%), AtomicNumbers%(), DisableQuantFlags%())
+    If ip% <> 0 Then
+        molarMassOfEmpiricalFormula! = molarMassOfEmpiricalFormula! + formulaNormalized!(n%) * (NumCats%(ip%) * AtomicWeights!(ip%) + NumOxds%(ip%) * AllAtomicWts!(ATOMIC_NUM_OXYGEN%)) / NumCats%(ip%)
+    End If
+Next
+
+ ' Adding F
+ip% = IPOS2DQ%(nelements%, 9, AtomicNumbers%(), DisableQuantFlags%())
+If ip% <> 0 Then
+    molarMassOfEmpiricalFormula! = molarMassOfEmpiricalFormula! + formulaNormalized_AnionsCorrespondingToCations_F! * AtomicWeights!(ip%)
+End If
+
+' Adding Cl
+ip% = IPOS2DQ%(nelements%, 17, AtomicNumbers%(), DisableQuantFlags%())
+If ip% <> 0 Then
+    molarMassOfEmpiricalFormula! = molarMassOfEmpiricalFormula! + formulaNormalized_AnionsCorrespondingToCations_Cl! * AtomicWeights!(ip%)
+End If
+
+molarMassOfEmpiricalFormula! = molarMassOfEmpiricalFormula! - formulaNormalized_AnionsCorrespondingToCations_F! * 15.9994 * 0.5 - formulaNormalized_AnionsCorrespondingToCations_Cl! * 15.9994 * 0.5
+
+' Final results to be returned by the function
+If REQUIRE_INITIAL_H2O = True Then
+    finalWtPercentValues_H2O! = oxidesElements!(24)
+Else
+    Dim molarMass_H2O As Single
+    Dim molarMass_SiO2 As Single
+    molarMass_H2O! = 18.01528
+    molarMass_SiO2! = 60.0843
+    finalWtPercentValues_H2O! = Round((formulaNormalized!(24) / 2 * molarMass_H2O! / molarMassOfEmpiricalFormula! * 100) * oxidesElements!(1) / (formulaNormalized!(1) * molarMass_SiO2! / molarMassOfEmpiricalFormula! * 100), 3)
+End If
+
+Fe3overSumFe! = formulaNormalized_Fe3overSumFe!
+Mn3overSumMn! = formulaNormalized_Mn3overSumMn!
+
+Exit Sub
+
+' Errors
+ConvertAmphiboleCalculationLoopError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertAmphibolesCalculationLoop"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub ConvertBubbleSort(ByRef pvarArray As Variant)
+' Sort the elements of the array pvararray by increasing value
+
+ierror = False
+On Error GoTo ConvertBubbleSortError
+
+Dim i As Long
+Dim imin As Long
+Dim imax As Long
+Dim varSwap As Variant
+Dim blnSwapped As Boolean
+
+imin& = LBound(pvarArray)
+imax& = UBound(pvarArray) - 1
+Do
+    blnSwapped = False
+    For i& = imin& To imax&
+        If pvarArray(i) > pvarArray(i + 1) Then
+            varSwap = pvarArray(i)
+            pvarArray(i) = pvarArray(i + 1)
+            pvarArray(i + 1) = varSwap
+            blnSwapped = True
+        End If
+    Next i&
+    imax& = imax& - 1
+Loop Until Not blnSwapped
+
+Exit Sub
+
+' Errors
+ConvertBubbleSortError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertBubbleSort"
+ierror = True
+Exit Sub
+
+End Sub
