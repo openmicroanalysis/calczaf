@@ -3386,7 +3386,7 @@ FerricFerrousMethodStrings$(2) = "Locock/Moy Calcic amphibole"
 FerricFerrousMethodStrings$(3) = "Locock/Moy Na-Ca amphibole"
 FerricFerrousMethodStrings$(4) = "Locock/Moy Fe-Mg-Mn amphibole"
 FerricFerrousMethodStrings$(5) = "Locock/Moy Li amphibole"
-FerricFerrousMethodStrings$(6) = "Locock/Moy Oxy amphibole"
+FerricFerrousMethodStrings$(6) = "Locock/Moy Oxo amphibole"
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

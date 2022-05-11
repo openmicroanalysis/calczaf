@@ -1458,14 +1458,21 @@ Sub ConvertFerrousFerricRatioFromComposition3(nelements As Integer, AtomicNumber
 '    2 = calcic amphiboles
 '    3 = Na-Ca amphiboles
 '    4 = Fe-Mg-Mn amphiboles
-'    5 = Oxy amphiboles
+'    5 = Oxo amphiboles
 '    6 = Li amphiboles
 
 ierror = False
 On Error GoTo ConvertFerrousFerricRatioFromComposition3Error
 
+Dim waterspecified As Boolean
+Dim tipresent As Boolean
 Dim ip As Integer
 Dim n As Integer
+
+' Declare the variables used by the AmphiboleCalculationLoop function to return the results
+Dim Fe3overSumFe As Single
+Dim Mn3overSumMn As Single
+Dim finalWtPercentValues_H2O As Single
 
 ' Determine Fe channel
 ip% = IPOS2DQ%(nelements%, ATOMIC_NUM_IRON%, AtomicNumbers%(), DisableQuantFlags%())
@@ -1474,17 +1481,24 @@ If ip% = 0 Then GoTo ConvertFerrousFerricRatioFromComposition3NoIron
 ' Check that Fe oxide stoichiometry is 1 : 1
 If NumCats%(ip%) <> 1 Or NumOxds%(ip%) <> 1 Then GoTo ConvertFerrousFerricRatioFromComposition3NotFeO
 
-' Declare the variables used by the AmphiboleCalculationLoop function to return the results
-Dim Fe3overSumFe As Single
-Dim Mn3overSumMn As Single
-Dim finalWtPercentValues_H2O As Single
+' Determine H2O channel and set flag as suggested by Locock
+ip% = IPOS2DQ%(nelements%, ATOMIC_NUM_HYDROGEN%, AtomicNumbers%(), DisableQuantFlags%())
+If ip% > 0 Then
+If ElementalWeightFractions!(ip%) * 100# > NOT_ANALYZED_VALUE_SINGLE! Then waterspecified = True
+End If
+
+' Check for TiO2 greater than 1 wt% (or Ti > 0.6 wt%) as suggested by Locock
+ip% = IPOS2DQ%(nelements%, ATOMIC_NUM_TITANIUM%, AtomicNumbers%(), DisableQuantFlags%())
+If ip% > 0 Then
+If ElementalWeightFractions!(ip%) * 100# > 0.6 Then tipresent = True
+End If
 
 Fe3overSumFe! = 0#
 Mn3overSumMn! = 0#
 finalWtPercentValues_H2O! = 0#
 
-' Declaration of the 8 different options. This should be handled in the interface.
-Dim ORTHOROMBIC As Integer
+' Declaration of the 8 different options. This is handled in the ferrous/ferric interface in Calculation Options.
+Dim ORTHORHOMBIC As Integer
 Dim USE_INITIAL_M3_OVER_SUM_M As Integer
 Dim ESTIMATEOH2_2TI As Integer
 Dim REQUIRE_INITIAL_H2O As Integer
@@ -1496,58 +1510,58 @@ Dim REQUIRE_SUM_SI_TO_K_GE_15_5 As Integer
 
 ' Sodic amphibole
 If Droop_option_for_amphibole% = 1 Then
-ORTHOROMBIC% = 0
+ORTHORHOMBIC% = 0
 USE_INITIAL_M3_OVER_SUM_M% = 0
-ESTIMATEOH2_2TI% = 0
-REQUIRE_INITIAL_H2O% = 1
+If tipresent Then ESTIMATEOH2_2TI% = 1
+If waterspecified Then REQUIRE_INITIAL_H2O% = 1
 
 REQUIRE_SUM_SI_TO_CA_LE_15% = 0
-REQUIRE_SUM_SI_TO_MG_GE_13% = 0
-REQUIRE_SUM_SI_TO_NA_GE_15% = 1
-REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
+REQUIRE_SUM_SI_TO_MG_GE_13% = 1
+REQUIRE_SUM_SI_TO_NA_GE_15% = 0
+REQUIRE_SUM_SI_TO_K_GE_15_5% = 1
 
 ' Calcic amphibole
 ElseIf Droop_option_for_amphibole% = 2 Then
-ORTHOROMBIC% = 0
+ORTHORHOMBIC% = 0
 USE_INITIAL_M3_OVER_SUM_M% = 0
-ESTIMATEOH2_2TI% = 0
-REQUIRE_INITIAL_H2O% = 1
+If tipresent Then ESTIMATEOH2_2TI% = 1
+If waterspecified Then REQUIRE_INITIAL_H2O% = 1
 
 REQUIRE_SUM_SI_TO_CA_LE_15% = 1
-REQUIRE_SUM_SI_TO_MG_GE_13% = 0
+REQUIRE_SUM_SI_TO_MG_GE_13% = 1
 REQUIRE_SUM_SI_TO_NA_GE_15% = 0
 REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
 
 ' Na-Ca amphibole
 ElseIf Droop_option_for_amphibole% = 3 Then
-ORTHOROMBIC% = 0
+ORTHORHOMBIC% = 0
 USE_INITIAL_M3_OVER_SUM_M% = 0
-ESTIMATEOH2_2TI% = 0
-REQUIRE_INITIAL_H2O% = 1
+If tipresent Then ESTIMATEOH2_2TI% = 1
+If waterspecified Then REQUIRE_INITIAL_H2O% = 1
+
+REQUIRE_SUM_SI_TO_CA_LE_15% = 1
+REQUIRE_SUM_SI_TO_MG_GE_13% = 0
+REQUIRE_SUM_SI_TO_NA_GE_15% = 1
+REQUIRE_SUM_SI_TO_K_GE_15_5% = 1
+
+' Fe-Mg-Mn amphibole
+ElseIf Droop_option_for_amphibole% = 4 Then
+ORTHORHOMBIC% = 0
+USE_INITIAL_M3_OVER_SUM_M% = 0
+If tipresent Then ESTIMATEOH2_2TI% = 1
+If waterspecified Then REQUIRE_INITIAL_H2O% = 1
 
 REQUIRE_SUM_SI_TO_CA_LE_15% = 1
 REQUIRE_SUM_SI_TO_MG_GE_13% = 0
 REQUIRE_SUM_SI_TO_NA_GE_15% = 1
 REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
 
-' Fe-Mg-Mn amphibole
-ElseIf Droop_option_for_amphibole% = 4 Then
-ORTHOROMBIC% = 0
-USE_INITIAL_M3_OVER_SUM_M% = 0
-ESTIMATEOH2_2TI% = 0
-REQUIRE_INITIAL_H2O% = 1
-
-REQUIRE_SUM_SI_TO_CA_LE_15% = 0
-REQUIRE_SUM_SI_TO_MG_GE_13% = 1
-REQUIRE_SUM_SI_TO_NA_GE_15% = 0
-REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
-
-' Oxy amphibole
+' Oxo amphibole
 ElseIf Droop_option_for_amphibole% = 5 Then
-ORTHOROMBIC% = 0
+ORTHORHOMBIC% = 0
 USE_INITIAL_M3_OVER_SUM_M% = 0
-ESTIMATEOH2_2TI% = 0
-REQUIRE_INITIAL_H2O% = 1
+If tipresent Then ESTIMATEOH2_2TI% = 1
+If waterspecified Then REQUIRE_INITIAL_H2O% = 1
 
 REQUIRE_SUM_SI_TO_CA_LE_15% = 1
 REQUIRE_SUM_SI_TO_MG_GE_13% = 0
@@ -1556,19 +1570,19 @@ REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
 
 ' Li amphibole
 ElseIf Droop_option_for_amphibole% = 6 Then
-ORTHOROMBIC% = 0
+ORTHORHOMBIC% = 0
 USE_INITIAL_M3_OVER_SUM_M% = 0
-ESTIMATEOH2_2TI% = 0
-REQUIRE_INITIAL_H2O% = 1
+If tipresent Then ESTIMATEOH2_2TI% = 1
+If waterspecified Then REQUIRE_INITIAL_H2O% = 1
 
-REQUIRE_SUM_SI_TO_CA_LE_15% = 1
+REQUIRE_SUM_SI_TO_CA_LE_15% = 0
 REQUIRE_SUM_SI_TO_MG_GE_13% = 0
-REQUIRE_SUM_SI_TO_NA_GE_15% = 0
+REQUIRE_SUM_SI_TO_NA_GE_15% = 1
 REQUIRE_SUM_SI_TO_K_GE_15_5% = 0
 End If
 
 Dim options_from_Locock_spreadsheet(1 To 8) As Integer
-options_from_Locock_spreadsheet%(1) = ORTHOROMBIC%
+options_from_Locock_spreadsheet%(1) = ORTHORHOMBIC%
 options_from_Locock_spreadsheet%(2) = USE_INITIAL_M3_OVER_SUM_M%
 options_from_Locock_spreadsheet%(3) = ESTIMATEOH2_2TI%
 options_from_Locock_spreadsheet%(4) = REQUIRE_INITIAL_H2O%
@@ -1629,7 +1643,7 @@ End If
 
 If DebugMode Then
 Call IOWriteLog(vbNullString)
-msg$ = "ORTHOROMBIC: " & Format$(Format$(ORTHOROMBIC%, f84), a80$)
+msg$ = "ORTHORHOMBIC: " & Format$(Format$(ORTHORHOMBIC%, f84), a80$)
 Call IOWriteLog(msg$)
 msg$ = "USE_INITIAL_M3_OVER_SUM_M: " & Format$(Format$(USE_INITIAL_M3_OVER_SUM_M%, f84), a80$)
 Call IOWriteLog(msg$)
@@ -1686,12 +1700,12 @@ ierror = False
 On Error GoTo ConvertAmphiboleCalculationLoopError
 
 ' Declaration of the 8 different options. This should be handled in the interface.
-Dim ORTHOROMBIC As Boolean
+Dim ORTHORHOMBIC As Boolean
 Dim USE_INITIAL_M3_OVER_SUM_M As Boolean
 Dim ESTIMATEOH2_2TI As Boolean
 Dim REQUIRE_INITIAL_H2O As Boolean
 
-ORTHOROMBIC = options_from_Locock_spreadsheet%(1)
+ORTHORHOMBIC = options_from_Locock_spreadsheet%(1)
 USE_INITIAL_M3_OVER_SUM_M = options_from_Locock_spreadsheet%(2)
 ESTIMATEOH2_2TI = options_from_Locock_spreadsheet%(3)
 REQUIRE_INITIAL_H2O = options_from_Locock_spreadsheet%(4)
@@ -1712,33 +1726,33 @@ Dim n As Integer
 ' List of elements used in Locock's spreadsheet. In the same order as in the speadsheet.
 Dim elementList(1 To 24) As Integer
 elementList%(1) = ATOMIC_NUM_SILICON%
-elementList%(2) = 15
-elementList%(3) = 22
-elementList%(4) = 40
-elementList%(5) = 13
-elementList%(6) = 21
-elementList%(7) = 23
-elementList%(8) = 24
-elementList%(9) = 25
-elementList%(10) = 25
-elementList%(11) = 26
-elementList%(12) = 26
-elementList%(13) = 27
-elementList%(14) = 28
-elementList%(15) = 30
-elementList%(16) = 4
-elementList%(17) = 12
-elementList%(18) = 20
-elementList%(19) = 38
-elementList%(20) = 3
-elementList%(21) = 11
-elementList%(22) = 82
-elementList%(23) = 19
-elementList%(24) = 1
+elementList%(2) = ATOMIC_NUM_PHOSPHORUS%
+elementList%(3) = ATOMIC_NUM_TITANIUM%
+elementList%(4) = ATOMIC_NUM_ZIRCONIUM%
+elementList%(5) = ATOMIC_NUM_ALUMINUM%
+elementList%(6) = ATOMIC_NUM_SCANDIUM%
+elementList%(7) = ATOMIC_NUM_VANADIUM%
+elementList%(8) = ATOMIC_NUM_CHROMIUM%
+elementList%(9) = ATOMIC_NUM_MANGANESE%         ' MnO
+elementList%(10) = ATOMIC_NUM_MANGANESE%        ' Mn2O3
+elementList%(11) = ATOMIC_NUM_IRON%             ' FeO
+elementList%(12) = ATOMIC_NUM_IRON%             ' Fe2O3
+elementList%(13) = ATOMIC_NUM_COBALT%
+elementList%(14) = ATOMIC_NUM_NICKEL%
+elementList%(15) = ATOMIC_NUM_ZINC%
+elementList%(16) = ATOMIC_NUM_BERYLLIUM%
+elementList%(17) = ATOMIC_NUM_MAGNESIUM%
+elementList%(18) = ATOMIC_NUM_CALCIUM%
+elementList%(19) = ATOMIC_NUM_STRONTIUM%
+elementList%(20) = ATOMIC_NUM_LITHIUM%
+elementList%(21) = ATOMIC_NUM_SODIUM%
+elementList%(22) = ATOMIC_NUM_LEAD%
+elementList%(23) = ATOMIC_NUM_POTASSIUM%
+elementList%(24) = ATOMIC_NUM_HYDROGEN%
 
-Dim oxidesElements(1 To 24) As Single ' array containing the oxide weigth of the elements
-Dim molarProportionsCations(1 To 24) As Single ' array containing the molar proportion of the cations
-Dim molarProportionsAnions(1 To 24) As Single ' array containing the molar proportion of the anions
+Dim oxidesElements(1 To 24) As Single           ' array containing the oxide weight of the elements
+Dim molarProportionsCations(1 To 24) As Single  ' array containing the molar proportion of the cations
+Dim molarProportionsAnions(1 To 24) As Single   ' array containing the molar proportion of the anions
 
 ' Channel indexes for F and Cl
 Dim ipF As Integer
@@ -1773,7 +1787,7 @@ For n% = 1 To 24
         
         ElseIf n% = 10 Then
             If loopNumber = 1 Then
-                oxidesElements!(n%) = 0#  'initialOxide_Mn2O3!
+                oxidesElements!(n%) = 0#  ' initialize Oxide_Mn2O3!
             Else
                 oxidesElements!(n%) = Mn3overSumMn! * (0 * 0.89865734954961 + ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%)) / 0.89865734954961
             End If
@@ -1791,7 +1805,7 @@ For n% = 1 To 24
         
         ElseIf n% = 12 Then
             If loopNumber = 1 Then
-                oxidesElements!(n%) = 0#  'initialOxide_Fe2O3!
+                oxidesElements!(n%) = 0#  ' initialize Oxide_Fe2O3!
             Else
                  oxidesElements!(n%) = Fe3overSumFe! * (0 * 0.899808502 + ElementalWeightFractions!(ip%) + ElementalWeightFractions!(ip%) * OxideProportions!(ip%)) / 0.899808502
             End If
@@ -1929,8 +1943,8 @@ initialproportionsSumSitoMg! = initialproportionsSumSitoMg! + initialProportions
 initialproportionsSumSitoCa! = initialproportionsSumSitoMg! + initialProportionsCations!(18) + initialProportionsCations!(19)
 initialproportionsSumSitoNa! = initialproportionsSumSitoCa! + initialProportionsCations!(21)
 
-Dim initialproportions_Fe3overSumFe As Single 'todo XXX
-Dim initialproportions_Mn3overSumMn As Single 'todo XXX
+Dim initialproportions_Fe3overSumFe As Single ' todo XXX
+Dim initialproportions_Mn3overSumMn As Single ' todo XXX
 
 If initialProportionsCations!(12) + initialProportionsCations!(11) > 0 Then
     initialproportions_Fe3overSumFe! = initialProportionsCations!(12) / (initialProportionsCations!(12) + initialProportionsCations!(11))
@@ -2488,7 +2502,7 @@ Else
         sumSitoMg_GE_13_MaxDeviation! = sumSitoMg_GE_13_SumSitoCa_LE_15apfu!
     End If
 End If
-If Round(chargeBalancePer13CationsSitoMg_sumSitoMg!, 5) >= 13# Then 'XXX has to round it otherwise the equality is not respected
+If Round(chargeBalancePer13CationsSitoMg_sumSitoMg!, 5) >= 13# Then ' XXX has to round it otherwise the equality is not respected
     sumSitoMg_GE_13_SumSitoMg_GE_13apfu! = 1#
 Else
     sumSitoMg_GE_13_SumSitoMg_GE_13apfu! = Abs(13 - chargeBalancePer13CationsSitoMg_sumSitoMg!)
@@ -2527,7 +2541,7 @@ If chargeBalancePer15CationsSitoNa!(1) <= 8 Then
     sumSitoNa_GE_15_Si_LE_8apfu! = 1
 Else
     sumSitoNa_GE_15_Si_LE_8apfu! = Abs(chargeBalancePer15CationsSitoNa!(1) - 8)
-    If sumSitoNa_GE_15_Si_LE_8apfu! > sumSitoNa_GE_15_MaxDeviation! Then 'this if is unnecessary
+    If sumSitoNa_GE_15_Si_LE_8apfu! > sumSitoNa_GE_15_MaxDeviation! Then            ' this if is unnecessary
         sumSitoNa_GE_15_MaxDeviation! = sumSitoNa_GE_15_Si_LE_8apfu!
     End If
 End If
@@ -2587,7 +2601,7 @@ If chargeBalancePer16CationsTotalNonH!(1) <= 8 Then
     sumSitoK_LE_16_Si_LE_8apfu! = 1
 Else
     sumSitoK_LE_16_Si_LE_8apfu! = Abs(chargeBalancePer16CationsTotalNonH!(1) - 8)
-    If sumSitoK_LE_16_Si_LE_8apfu! > sumSitoK_LE_16_MaxDeviation! Then 'this if is unnecessary
+    If sumSitoK_LE_16_Si_LE_8apfu! > sumSitoK_LE_16_MaxDeviation! Then              ' this if is unnecessary
         sumSitoK_LE_16_MaxDeviation! = sumSitoK_LE_16_Si_LE_8apfu!
     End If
 End If

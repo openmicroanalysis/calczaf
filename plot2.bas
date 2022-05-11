@@ -210,6 +210,9 @@ Dim OS64bitMode As Boolean
 Dim astring As String
 Dim tfilename As String, filedir As String
 
+Dim gX_Polarity As Integer, gY_Polarity As Integer
+Dim gStage_Units As String
+
 ' Get complete path only
 filedir$ = MiscGetPathOnly$(basfile$)
 
@@ -277,6 +280,13 @@ astring$ = "Dim YLabel As String"
 Print #Temp1FileNumber%, astring$
 Print #Temp1FileNumber%, vbNullString
 
+' Output JEOL stage invert flags
+astring$ = "Dim XInvert As Integer"
+Print #Temp1FileNumber%, astring$
+astring$ = "Dim YInvert As Integer"
+Print #Temp1FileNumber%, astring$
+Print #Temp1FileNumber%, vbNullString
+
 ' Bug in Win 7 (64) causes current directory to change- comment out CurDir statement if so
 OS64bitMode = MiscSystemIsHost64Bit()
 
@@ -306,6 +316,17 @@ Print #Temp1FileNumber%, astring$
 astring$ = "YLabel$ = " & VbDquote$ & zlabel$ & VbDquote$
 Print #Temp1FileNumber%, astring$
 
+' Get stage polarity
+Call GridCheckGRDInfo(tfilename$ & ".grd", gX_Polarity%, gY_Polarity%, gStage_Units$)
+If ierror Then Exit Sub
+
+' Write axis invert flags (for JEOL "anti-cartesian" display in Surfer)
+astring$ = "XInvert% = " & Format$(gX_Polarity%)
+Print #Temp1FileNumber%, astring$
+astring$ = "YInvert% = " & Format$(gY_Polarity%)
+Print #Temp1FileNumber%, astring$
+Print #Temp1FileNumber%, vbNullString
+
 ' Output number of columns line
 astring$ = "MaxCol% = " & Str$(nsets%)
 Print #Temp1FileNumber%, astring$
@@ -330,7 +351,7 @@ Print #Temp1FileNumber%, vbNullString
 
 astring$ = VbSquote$ & " Call output routine"
 Print #Temp1FileNumber%, astring$
-astring$ = "Call GridAll(Directory$, File$, Sample$, MaxCol%, XLabel$, YLabel$, ZLabel$())"
+astring$ = "Call GridAll(Directory$, File$, Sample$, XInvert%, YInvert%, MaxCol%, XLabel$, YLabel$, ZLabel$())"
 Print #Temp1FileNumber%, astring$
 Print #Temp1FileNumber%, vbNullString
 
