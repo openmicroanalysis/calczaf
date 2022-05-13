@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/11/22	Tweak CalcZAF code for ferrous/ferric.
+
 05/09/22	Modify GRIDCC.BAS to handle new Surfer versions (>= 15) that use the Rainbow.clr 
 		color scale file (Liu) for Probe for EPMA surfer grid file mapping. Also add JEOL stage orientation flags.
 		

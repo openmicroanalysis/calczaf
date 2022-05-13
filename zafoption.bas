@@ -39,10 +39,10 @@ End If
 
 ' Load use EDS flag option (only utilized by CalcImage)
 If ZAFOptionSample(1).EDSSpectraUseFlag Then
-FormZAFOPT.CheckUseEDSSpectra.value = vbChecked
+FormZAFOPT.CheckUseEDSSpectra.Value = vbChecked
 FormZAFOPT.CommandSelectQuantMethodOrProject.Enabled = True
 Else
-FormZAFOPT.CheckUseEDSSpectra.value = vbUnchecked
+FormZAFOPT.CheckUseEDSSpectra.Value = vbUnchecked
 FormZAFOPT.CommandSelectQuantMethodOrProject.Enabled = False
 End If
 
@@ -51,22 +51,22 @@ FormZAFOPT.LabelQuantMethodOrProject.Caption = ZAFOptionSample(1).EDSSpectraQuan
 
 ' Load form with calculation options
 If ZAFOptionSample(1).OxideOrElemental% = 1 Then
-FormZAFOPT.OptionOxide.value = True
+FormZAFOPT.OptionOxide.Value = True
 Else
-FormZAFOPT.OptionElemental.value = True
+FormZAFOPT.OptionElemental.Value = True
 End If
 
 ' Save DisplayAsOxideFlag option
 If ZAFOptionSample(1).DisplayAsOxideFlag = True Then
-FormZAFOPT.CheckDisplayAsOxide.value = vbChecked
+FormZAFOPT.CheckDisplayAsOxide.Value = vbChecked
 Else
-FormZAFOPT.CheckDisplayAsOxide.value = vbUnchecked
+FormZAFOPT.CheckDisplayAsOxide.Value = vbUnchecked
 End If
 
 If ZAFOptionSample(1).AtomicPercentFlag = True Then
-FormZAFOPT.CheckAtomicPercents.value = vbChecked
+FormZAFOPT.CheckAtomicPercents.Value = vbChecked
 Else
-FormZAFOPT.CheckAtomicPercents.value = vbUnchecked
+FormZAFOPT.CheckAtomicPercents.Value = vbUnchecked
 End If
 
 ' Clear and load combo boxes
@@ -89,42 +89,42 @@ FormZAFOPT.ComboFormula.AddItem ZAFOptionSample(1).Elsyms$(i%)
 Next i%
 
 ' Load formula by difference
-FormZAFOPT.CheckDifference.value = vbUnchecked
+FormZAFOPT.CheckDifference.Value = vbUnchecked
 If ZAFOptionSample(1).DifferenceElement$ <> vbNullString Then
 ip% = IPOS1B(ZAFOptionSample(1).LastElm + 1, ZAFOptionSample(1).LastChan%, ZAFOptionSample(1).DifferenceElement$, ZAFOptionSample(1).Elsyms$())
 ip% = ip% - ZAFOptionSample(1).LastElm%
 If ip% > 0 Then
-FormZAFOPT.CheckDifference.value = vbChecked
+FormZAFOPT.CheckDifference.Value = vbChecked
 FormZAFOPT.ComboDifference.ListIndex = ip% - 1
 End If
 End If
 
 ' Load defaults based on sample setup
 If ZAFOptionSample(1).DifferenceFormulaFlag Then
-FormZAFOPT.CheckDifferenceFormula.value = vbChecked
+FormZAFOPT.CheckDifferenceFormula.Value = vbChecked
 Else
-FormZAFOPT.CheckDifferenceFormula.value = vbUnchecked
+FormZAFOPT.CheckDifferenceFormula.Value = vbUnchecked
 End If
 FormZAFOPT.TextDifferenceFormula.Text = ZAFOptionSample(1).DifferenceFormula$
 
-FormZAFOPT.CheckStoichiometry.value = vbUnchecked
+FormZAFOPT.CheckStoichiometry.Value = vbUnchecked
 If ZAFOptionSample(1).StoichiometryElement$ <> vbNullString Then
 ip% = IPOS1B(ZAFOptionSample(1).LastElm + 1, ZAFOptionSample(1).LastChan%, ZAFOptionSample(1).StoichiometryElement$, ZAFOptionSample(1).Elsyms$())
 ip% = ip% - ZAFOptionSample(1).LastElm%
 If ip% > 0 Then
-FormZAFOPT.CheckStoichiometry.value = vbChecked
+FormZAFOPT.CheckStoichiometry.Value = vbChecked
 FormZAFOPT.ComboStoichiometry.ListIndex = ip% - 1
 FormZAFOPT.TextStoichiometry.Text = Str$(ZAFOptionSample(1).StoichiometryRatio!)
 End If
 End If
 
-FormZAFOPT.CheckRelative.value = vbUnchecked
+FormZAFOPT.CheckRelative.Value = vbUnchecked
 If ZAFOptionSample(1).RelativeElement$ <> vbNullString And ZAFOptionSample(1).RelativeToElement$ <> vbNullString Then
 ip% = IPOS1B(ZAFOptionSample(1).LastElm + 1, ZAFOptionSample(1).LastChan%, ZAFOptionSample(1).RelativeElement$, ZAFOptionSample(1).Elsyms$())
 ipp% = IPOS1(ZAFOptionSample(1).LastChan, ZAFOptionSample(1).RelativeToElement$, ZAFOptionSample(1).Elsyms$())
 ip% = ip% - ZAFOptionSample(1).LastElm%     ' the RelativeElement must be specified but the RelativeToElement can be an analyzed or specified element
 If ip% > 0 And ipp% > 0 Then
-FormZAFOPT.CheckRelative.value = vbChecked
+FormZAFOPT.CheckRelative.Value = vbChecked
 FormZAFOPT.ComboRelative.ListIndex = ip% - 1
 FormZAFOPT.ComboRelativeTo.ListIndex = ipp% - 1
 FormZAFOPT.TextRelative.Text = Str$(ZAFOptionSample(1).RelativeRatio!)
@@ -138,12 +138,12 @@ FormZAFOPT.CheckCalculateElectronandXrayRanges = vbUnchecked
 End If
 
 If UseOxygenFromHalogensCorrectionFlag Then
-FormZAFOPT.CheckUseOxygenFromHalogensCorrection.value = vbChecked
+FormZAFOPT.CheckUseOxygenFromHalogensCorrection.Value = vbChecked
 Else
-FormZAFOPT.CheckUseOxygenFromHalogensCorrection.value = vbUnchecked
+FormZAFOPT.CheckUseOxygenFromHalogensCorrection.Value = vbUnchecked
 End If
 
-If ZAFOptionSample(1).HydrogenStoichiometryFlag Then FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked
+If ZAFOptionSample(1).HydrogenStoichiometryFlag Then FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked
 FormZAFOPT.TextHydrogenStoichiometry.Text = MiscAutoFormatN$(ZAFOptionSample(1).HydrogenStoichiometryRatio!, 2)
 
 If UCase$(app.EXEName) = UCase$("CalcImage") And ProbeDataFileVersionNumber! <= 7.22 Then
@@ -153,19 +153,21 @@ End If
 
 ' Load ferrous/ferric options
 If ZAFOptionSample(1).FerrousFerricCalculationFlag Then
-FormZAFOPT.CheckFerrousFerricCalculation.value = vbChecked
+FormZAFOPT.CheckFerrousFerricCalculation.Value = vbChecked
 Else
-FormZAFOPT.CheckFerrousFerricCalculation.value = vbUnchecked
+FormZAFOPT.CheckFerrousFerricCalculation.Value = vbUnchecked
+FormZAFOPT.TextFerrousFerricTotalCations.Enabled = False
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = False
 End If
 FormZAFOPT.TextFerrousFerricTotalCations.Text = Format$(ZAFOptionSample(1).FerrousFerricTotalCations!)
 FormZAFOPT.TextFerrousFerricTotalOxygens.Text = Format$(ZAFOptionSample(1).FerrousFerricTotalOxygens!)
-FormZAFOPT.OptionFerrousFerricOption(ZAFOptionSample(1).FerrousFerricOption%).value = True                ' new Droop option for amphiboles (Moy)
+FormZAFOPT.OptionFerrousFerricOption(ZAFOptionSample(1).FerrousFerricOption%).Value = True                ' new Droop option for amphiboles (Moy)
 
 ' Load formula calculations
 If ZAFOptionSample(1).FormulaElementFlag% Then
-FormZAFOPT.CheckFormula.value = vbChecked
+FormZAFOPT.CheckFormula.Value = vbChecked
 Else
-FormZAFOPT.CheckFormula.value = vbUnchecked
+FormZAFOPT.CheckFormula.Value = vbUnchecked
 End If
 
 FormZAFOPT.ComboFormula.ListIndex = 0  ' default to sum of cations
@@ -190,9 +192,9 @@ If ZAFOptionSample(1).CoatingThickness! = 0# Then ZAFOptionSample(1).CoatingThic
 ZAFOptionSample(1).CoatingSinThickness! = MathCalculateSinThickness!(DefaultSampleCoatingThickness!, DefaultTakeOff!)
 
 If ZAFOptionSample(1).CoatingFlag% = 1 Then
-FormZAFOPT.CheckCoatingFlag.value = vbChecked
+FormZAFOPT.CheckCoatingFlag.Value = vbChecked
 Else
-FormZAFOPT.CheckCoatingFlag.value = vbUnchecked
+FormZAFOPT.CheckCoatingFlag.Value = vbUnchecked
 End If
 FormZAFOPT.ComboCoatingElement.Text = Symlo$(ZAFOptionSample(1).CoatingElement%)
 FormZAFOPT.TextCoatingDensity.Text = Format$(ZAFOptionSample(1).CoatingDensity!)
@@ -208,11 +210,19 @@ FormZAFOPT.CheckFerrousFerricCalculation.Enabled = False
 FormZAFOPT.OptionFerrousFerricOption(0).Enabled = False
 FormZAFOPT.OptionFerrousFerricOption(1).Enabled = False
 FormZAFOPT.OptionFerrousFerricOption(2).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(3).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(4).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(5).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(6).Enabled = False
 Else
 FormZAFOPT.CheckFerrousFerricCalculation.Enabled = True
 FormZAFOPT.OptionFerrousFerricOption(0).Enabled = True
 FormZAFOPT.OptionFerrousFerricOption(1).Enabled = True
 FormZAFOPT.OptionFerrousFerricOption(2).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(3).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(4).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(5).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(6).Enabled = True
 End If
 
 Exit Sub
@@ -237,7 +247,7 @@ Dim sym As String
 
 ' Save use EDS flag option (only utilized by CalcImage)
 ZAFOptionSample(1).EDSSpectraUseFlag = False
-If FormZAFOPT.CheckUseEDSSpectra.value = vbChecked Then
+If FormZAFOPT.CheckUseEDSSpectra.Value = vbChecked Then
 ZAFOptionSample(1).EDSSpectraUseFlag = True
 End If
 
@@ -261,7 +271,7 @@ AllAFactorUpdateNeeded = True
 End If
 
 ' Check for proper oxygen flags
-If FormZAFOPT.CheckDisplayAsOxide.value = vbChecked Then
+If FormZAFOPT.CheckDisplayAsOxide.Value = vbChecked Then
 Call ZAFOptionCheckForOxygen
 If ierror Then Exit Sub
 End If
@@ -272,14 +282,14 @@ ZAFOptionSample(1).StoichiometryElementFlag% = False
 ZAFOptionSample(1).RelativeElementFlag% = False
 
 ' Save oxide (stoichiometric oxygen) or elemental mode flag
-If FormZAFOPT.OptionOxide.value Then
+If FormZAFOPT.OptionOxide.Value Then
 ZAFOptionSample(1).OxideOrElemental% = 1
 Else
 ZAFOptionSample(1).OxideOrElemental% = 2
 End If
 
 ' Save DisplayAsOxideFlag options
-If FormZAFOPT.CheckDisplayAsOxide.value = vbChecked Then
+If FormZAFOPT.CheckDisplayAsOxide.Value = vbChecked Then
 ZAFOptionSample(1).DisplayAsOxideFlag = True
 Else
 ZAFOptionSample(1).DisplayAsOxideFlag = False
@@ -292,11 +302,11 @@ If ZAFOptionSample(1).DisableQuantFlag%(ip%) = 0 Then
 msg$ = "You cannot calculate oxygen by stoichiometry because Oxygen is already an Analyzed Element. "
 msg$ = msg$ & "If you want to display the results as oxides, select Display As Oxides. "
 MsgBox msg$
-FormZAFOPT.OptionElemental.value = True
+FormZAFOPT.OptionElemental.Value = True
 End If
 End If
 
-If FormZAFOPT.CheckAtomicPercents.value = vbChecked Then
+If FormZAFOPT.CheckAtomicPercents.Value = vbChecked Then
 ZAFOptionSample(1).AtomicPercentFlag = True
 Else
 ZAFOptionSample(1).AtomicPercentFlag = False
@@ -305,7 +315,7 @@ End If
 ' Save other calculation options
 ZAFOptionSample(1).DifferenceElement$ = vbNullString
 If FormZAFOPT.ComboDifference.ListCount > 0 Then
-If FormZAFOPT.CheckDifference.value = vbChecked And FormZAFOPT.ComboDifference.ListIndex > -1 Then
+If FormZAFOPT.CheckDifference.Value = vbChecked And FormZAFOPT.ComboDifference.ListIndex > -1 Then
 i% = ZAFOptionSample(1).LastElm% + FormZAFOPT.ComboDifference.ListIndex + 1
 If i% > ZAFOptionSample(1).LastElm% And i% <= ZAFOptionSample(1).LastChan% Then
 ZAFOptionSample(1).DifferenceElement$ = ZAFOptionSample(1).Elsyms$(i%)
@@ -314,7 +324,7 @@ End If
 End If
 
 ' Save formula by difference
-If FormZAFOPT.CheckDifferenceFormula.value = vbChecked Then
+If FormZAFOPT.CheckDifferenceFormula.Value = vbChecked Then
 ZAFOptionSample(1).DifferenceFormulaFlag = True
 Else
 ZAFOptionSample(1).DifferenceFormulaFlag = False
@@ -366,7 +376,7 @@ End If
 ZAFOptionSample(1).StoichiometryElement$ = vbNullString
 ZAFOptionSample(1).StoichiometryRatio! = 0#
 If FormZAFOPT.ComboStoichiometry.ListCount > 0 Then
-If FormZAFOPT.CheckStoichiometry.value = vbChecked And FormZAFOPT.ComboStoichiometry.ListIndex > -1 Then
+If FormZAFOPT.CheckStoichiometry.Value = vbChecked And FormZAFOPT.ComboStoichiometry.ListIndex > -1 Then
 If Val(FormZAFOPT.TextStoichiometry.Text) > 0# Then
 i% = ZAFOptionSample(1).LastElm% + FormZAFOPT.ComboStoichiometry.ListIndex + 1
 If i% > ZAFOptionSample(1).LastElm% And i% <= ZAFOptionSample(1).LastChan% Then
@@ -381,7 +391,7 @@ ZAFOptionSample(1).RelativeElement$ = vbNullString
 ZAFOptionSample(1).RelativeToElement$ = vbNullString
 ZAFOptionSample(1).RelativeRatio! = 0#
 If FormZAFOPT.ComboRelative.ListCount > 0 And FormZAFOPT.ComboRelativeTo.ListCount > 0 Then
-If FormZAFOPT.CheckRelative.value = vbChecked And FormZAFOPT.ComboRelative.ListIndex > -1 And FormZAFOPT.ComboRelativeTo.ListIndex > -1 Then
+If FormZAFOPT.CheckRelative.Value = vbChecked And FormZAFOPT.ComboRelative.ListIndex > -1 And FormZAFOPT.ComboRelativeTo.ListIndex > -1 Then
 If Val(FormZAFOPT.TextRelative.Text) > 0# Then
 i% = ZAFOptionSample(1).LastElm% + FormZAFOPT.ComboRelative.ListIndex + 1
 j% = FormZAFOPT.ComboRelativeTo.ListIndex + 1
@@ -402,14 +412,14 @@ Else
 CalculateElectronandXrayRangesFlag = False
 End If
 
-If FormZAFOPT.CheckUseOxygenFromHalogensCorrection.value = vbChecked Then
+If FormZAFOPT.CheckUseOxygenFromHalogensCorrection.Value = vbChecked Then
 UseOxygenFromHalogensCorrectionFlag = True
 Else
 UseOxygenFromHalogensCorrectionFlag = False
 End If
 
 ' Save hydrogen by excess oxygen stroichiometry
-If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
 ZAFOptionSample(1).HydrogenStoichiometryFlag = True
 Else
 ZAFOptionSample(1).HydrogenStoichiometryFlag = False
@@ -423,7 +433,7 @@ ZAFOptionSample(1).HydrogenStoichiometryRatio! = Val(FormZAFOPT.TextHydrogenStoi
 End If
 
 ' Save ferrous/ferric options
-If FormZAFOPT.CheckFerrousFerricCalculation.value = vbChecked Then
+If FormZAFOPT.CheckFerrousFerricCalculation.Value = vbChecked Then
 If Val(FormZAFOPT.TextFerrousFerricTotalCations.Text) <= 0# Or Val(FormZAFOPT.TextFerrousFerricTotalOxygens.Text) <= 0# Then GoTo ZAFOptionSaveMineralCationsOrOxygensZeroOrNegative
 ZAFOptionSample(1).FerrousFerricCalculationFlag = True
 Else
@@ -432,8 +442,18 @@ End If
 ZAFOptionSample(1).FerrousFerricTotalCations! = Val(FormZAFOPT.TextFerrousFerricTotalCations.Text)
 ZAFOptionSample(1).FerrousFerricTotalOxygens! = Val(FormZAFOPT.TextFerrousFerricTotalOxygens.Text)
 For i% = 0 To 2
-If FormZAFOPT.OptionFerrousFerricOption(i%).value = True Then ZAFOptionSample(1).FerrousFerricOption% = i%         ' new Droop option for amphiboles (Moy)
+If FormZAFOPT.OptionFerrousFerricOption(i%).Value = True Then ZAFOptionSample(1).FerrousFerricOption% = i%         ' new Droop option for amphiboles (Moy)
 Next i%
+
+' Check for stoichiometric oxygen calculations
+If FormZAFOPT.CheckFerrousFerricCalculation.Value = vbChecked Then
+If ZAFOptionSample(1).OxideOrElemental% = 2 Then GoTo ZAFOptionSaveFerrousFerricRequiresOxygenByStoichiometry
+
+' Check for zero formula for mineral calculations
+If ZAFOptionSample(1).FerrousFerricOption% = 0 Then
+If Val(FormZAFOPT.TextFerrousFerricTotalCations.Text) <= 0# Or Val(FormZAFOPT.TextFerrousFerricTotalOxygens.Text) <= 0# Then GoTo ZAFOptionSaveMineralCationsOrOxygensZeroOrNegative
+End If
+End If
 
 ' Set calculation flags
 If ZAFOptionSample(1).DifferenceElement$ <> vbNullString Then ZAFOptionSample(1).DifferenceElementFlag% = True
@@ -459,7 +479,7 @@ End If
 End If
 End If
 
-If FormZAFOPT.CheckFormula.value = vbChecked Then
+If FormZAFOPT.CheckFormula.Value = vbChecked Then
 ZAFOptionSample(1).FormulaElementFlag% = True
 Else
 ZAFOptionSample(1).FormulaElementFlag% = False
@@ -470,7 +490,7 @@ If ZAFOptionSample(1).FormulaElementFlag% And ZAFOptionSample(1).FormulaRatio! =
 
 ' Warn user if formula option is checked but no atoms is specified
 '  (no element is ok since that indicates sum all cations)
-If FormZAFOPT.CheckFormula.value = vbChecked And ZAFOptionSample(1).FormulaRatio! = 0# Then
+If FormZAFOPT.CheckFormula.Value = vbChecked And ZAFOptionSample(1).FormulaRatio! = 0# Then
 msg$ = "Formula option was selected, but no formula atoms were specified"
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFOptionSave"
 ierror = True
@@ -478,7 +498,7 @@ Exit Sub
 End If
 
 ' Sample conductive coating
-If FormZAFOPT.CheckCoatingFlag.value = vbChecked Then
+If FormZAFOPT.CheckCoatingFlag.Value = vbChecked Then
 ZAFOptionSample(1).CoatingFlag% = 1
 Else
 ZAFOptionSample(1).CoatingFlag% = 0
@@ -536,14 +556,20 @@ MsgBox Error$, vbOKOnly + vbCritical, "ZAFOptionSave"
 ierror = True
 Exit Sub
 
-ZAFOptionSaveMineralCationsOrOxygensZeroOrNegative:
-msg$ = "Either the total mineral cations or the total mineral oxygens are zero or negative for ferrous/ferric ratio calculations."
+ZAFOptionSaveNoFormulaAtoms:
+msg$ = "No formula atoms were specified. Either uncheck the Formula Element checkbox or specify the formula atoms."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFOptionSave"
 ierror = True
 Exit Sub
 
-ZAFOptionSaveNoFormulaAtoms:
-msg$ = "No formula atoms were specified. Either uncheck the Formula Element checkbox or specify the formula atoms."
+ZAFOptionSaveFerrousFerricRequiresOxygenByStoichiometry:
+msg$ = "Ferrous/ferric ratio calculations requires that oxygen be calculated by stoichiometry."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFOptionSave"
+ierror = True
+Exit Sub
+
+ZAFOptionSaveMineralCationsOrOxygensZeroOrNegative:
+msg$ = "Either the total mineral cations or the total mineral oxygens are zero or negative for ferrous/ferric ratio calculations."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFOptionSave"
 ierror = True
 Exit Sub
@@ -611,7 +637,7 @@ Dim ip As Integer
 
 ' Check for calculated oxygen
 If ZAFOptionSample(1).LastElm% = 0 Or ZAFOptionSample(1).LastChan% = 0 Then Exit Sub
-If FormZAFOPT.OptionOxide.value = True Then Exit Sub
+If FormZAFOPT.OptionOxide.Value = True Then Exit Sub
 
 ' Check for analyzed oxygen
 ip% = IPOS1(ZAFOptionSample(1).LastElm%, Symlo$(ATOMIC_NUM_OXYGEN%), ZAFOptionSample(1).Elsyms$())

@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormZAFOPT 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Calculation Options"
-   ClientHeight    =   5655
+   ClientHeight    =   6030
    ClientLeft      =   1440
    ClientTop       =   3480
    ClientWidth     =   13155
@@ -21,7 +21,7 @@ Begin VB.Form FormZAFOPT
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   5655
+   ScaleHeight     =   6030
    ScaleWidth      =   13155
    ShowInTaskbar   =   0   'False
    Begin VB.Frame Frame3 
@@ -30,7 +30,7 @@ Begin VB.Form FormZAFOPT
       Height          =   1575
       Left            =   8760
       TabIndex        =   40
-      Top             =   960
+      Top             =   2040
       Width           =   4215
       Begin VB.CommandButton CommandHelpOnEDSWDS 
          BackColor       =   &H00FFC0C0&
@@ -83,7 +83,7 @@ Begin VB.Form FormZAFOPT
       Height          =   1935
       Left            =   8760
       TabIndex        =   26
-      Top             =   3240
+      Top             =   3960
       Width           =   4215
       Begin VB.TextBox TextCoatingThickness 
          Height          =   285
@@ -199,7 +199,7 @@ Begin VB.Form FormZAFOPT
       Height          =   855
       Left            =   120
       TabIndex        =   20
-      Top             =   4680
+      Top             =   5040
       Width           =   8415
       Begin VB.ComboBox ComboFormula 
          Appearance      =   0  'Flat
@@ -256,7 +256,7 @@ Begin VB.Form FormZAFOPT
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   495
-      Left            =   10920
+      Left            =   11160
       TabIndex        =   7
       TabStop         =   0   'False
       Top             =   120
@@ -267,7 +267,7 @@ Begin VB.Form FormZAFOPT
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   9240
+      Left            =   9360
       Style           =   1  'Graphical
       TabIndex        =   6
       TabStop         =   0   'False
@@ -277,18 +277,94 @@ Begin VB.Form FormZAFOPT
    Begin VB.Frame Frame1 
       Caption         =   "Calculation Options"
       ForeColor       =   &H00FF0000&
-      Height          =   4335
+      Height          =   4575
       Left            =   120
       TabIndex        =   0
       Top             =   120
       Width           =   8415
       Begin VB.Frame Frame7 
          BorderStyle     =   0  'None
-         Height          =   375
+         Height          =   615
          Left            =   120
          TabIndex        =   53
          Top             =   3840
          Width           =   8175
+         Begin VB.OptionButton OptionFerrousFerricOption 
+            Caption         =   "Li Amphibole"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   6
+            Left            =   5760
+            TabIndex        =   61
+            ToolTipText     =   "Select Droop option. Use Calcic Amphibole for 13 cations exclusive of Ca, Na and K (suitable for many calcic amphiboles)."
+            Top             =   360
+            Width           =   1575
+         End
+         Begin VB.OptionButton OptionFerrousFerricOption 
+            Caption         =   "Oxo Amphibole"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   5
+            Left            =   3960
+            TabIndex        =   60
+            ToolTipText     =   "Select Droop option. Use Calcic Amphibole for 13 cations exclusive of Ca, Na and K (suitable for many calcic amphiboles)."
+            Top             =   360
+            Width           =   1575
+         End
+         Begin VB.OptionButton OptionFerrousFerricOption 
+            Caption         =   "Fe-Mg-Mn Amphibole"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   4
+            Left            =   1920
+            TabIndex        =   59
+            ToolTipText     =   "Select Droop option. Use Calcic Amphibole for 13 cations exclusive of Ca, Na and K (suitable for many calcic amphiboles)."
+            Top             =   360
+            Width           =   2055
+         End
+         Begin VB.OptionButton OptionFerrousFerricOption 
+            Caption         =   "Na-Ca Amphibole"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   255
+            Index           =   3
+            Left            =   240
+            TabIndex        =   58
+            ToolTipText     =   "Select Droop option. Use Calcic Amphibole for 13 cations exclusive of Ca, Na and K (suitable for many calcic amphiboles)."
+            Top             =   360
+            Width           =   1575
+         End
          Begin VB.OptionButton OptionFerrousFerricOption 
             Caption         =   "Mineral"
             BeginProperty Font 
@@ -324,7 +400,7 @@ Begin VB.Form FormZAFOPT
             Index           =   1
             Left            =   1200
             TabIndex        =   55
-            ToolTipText     =   $"Zafopt.frx":0000
+            ToolTipText     =   $"ZAFOPT.frx":0000
             Top             =   120
             Width           =   1575
          End
@@ -341,7 +417,7 @@ Begin VB.Form FormZAFOPT
             EndProperty
             Height          =   255
             Index           =   2
-            Left            =   2760
+            Left            =   2880
             TabIndex        =   54
             ToolTipText     =   "Select Droop option. Use Calcic Amphibole for 13 cations exclusive of Ca, Na and K (suitable for many calcic amphiboles)."
             Top             =   120
@@ -360,9 +436,9 @@ Begin VB.Form FormZAFOPT
                Strikethrough   =   0   'False
             EndProperty
             Height          =   255
-            Left            =   4560
+            Left            =   4680
             TabIndex        =   57
-            Top             =   120
+            Top             =   0
             Width           =   3615
          End
       End
@@ -413,7 +489,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"Zafopt.frx":0093
+         ToolTipText     =   $"ZAFOPT.frx":0093
          Top             =   3120
          Width           =   4095
       End
@@ -761,9 +837,25 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 
+Private Sub CheckFerrousFerricCalculation_Click()
+If Not DebugMode Then On Error Resume Next
+If FormZAFOPT.CheckFerrousFerricCalculation.Value = vbChecked Then
+If FormZAFOPT.OptionFerrousFerricOption(0).Value = True Then
+FormZAFOPT.TextFerrousFerricTotalCations.Enabled = True
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
+Else
+FormZAFOPT.TextFerrousFerricTotalCations.Enabled = False
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = False
+End If
+Else
+FormZAFOPT.TextFerrousFerricTotalCations.Enabled = False
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = False
+End If
+End Sub
+
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub
@@ -794,12 +886,12 @@ End Sub
 
 Private Sub OptionFerrousFerricOption_Click(Index As Integer)
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.OptionFerrousFerricOption(1).value = True Then
-FormZAFOPT.TextFerrousFerricTotalCations.Text = Format$(15)
-FormZAFOPT.TextFerrousFerricTotalOxygens.Text = Format$(23)
-ElseIf FormZAFOPT.OptionFerrousFerricOption(2).value = True Then
-FormZAFOPT.TextFerrousFerricTotalCations.Text = Format$(13)
-FormZAFOPT.TextFerrousFerricTotalOxygens.Text = Format$(23)
+If FormZAFOPT.OptionFerrousFerricOption(0).Value = True Then
+FormZAFOPT.TextFerrousFerricTotalCations.Enabled = True
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
+Else
+FormZAFOPT.TextFerrousFerricTotalCations.Enabled = False
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = False
 End If
 End Sub
 
