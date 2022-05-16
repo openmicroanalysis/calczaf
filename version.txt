@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/15/22	Add code to ask user whether to update dead time constants from SCALERS.DAT file.
+
+05/14/22	Add small spectro mover after delay for JEOL 8x30 and later instruments.
+
+05/13/22	Add "interactive" Help button for amphibole normalizations
+v. 13.1.3
+
 05/11/22	Tweak CalcZAF code for ferrous/ferric.
 
 05/09/22	Modify GRIDCC.BAS to handle new Surfer versions (>= 15) that use the Rainbow.clr 

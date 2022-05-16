@@ -3042,3 +3042,5 @@ Global SpectrometerOrientations(0 To MAXSPEC%) As Integer   ' zero index for EDS
 Global AutomatedImageAcquisitionMagChangeMilliSecDelay As Long
 
 Global FerricFerrousMethodStrings(0 To 6) As String
+
+Global JEOLMoveSpectroMilliSecDelayAfter As Long

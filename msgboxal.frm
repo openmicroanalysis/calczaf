@@ -5,13 +5,13 @@ Begin VB.Form FormMSGBOXALL
    ClientHeight    =   2145
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   4695
+   ClientWidth     =   6615
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   2145
-   ScaleWidth      =   4695
+   ScaleWidth      =   6615
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Timer Timer1 
@@ -32,7 +32,7 @@ Begin VB.Form FormMSGBOXALL
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   2280
+      Left            =   3360
       TabIndex        =   4
       Top             =   1680
       Width           =   975
@@ -50,7 +50,7 @@ Begin VB.Form FormMSGBOXALL
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   3360
+      Left            =   4560
       TabIndex        =   3
       Top             =   1680
       Width           =   1215
@@ -67,7 +67,7 @@ Begin VB.Form FormMSGBOXALL
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   1200
+      Left            =   2160
       TabIndex        =   2
       Top             =   1680
       Width           =   975
@@ -84,7 +84,7 @@ Begin VB.Form FormMSGBOXALL
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   120
+      Left            =   960
       TabIndex        =   1
       Top             =   1680
       Width           =   975
@@ -95,7 +95,7 @@ Begin VB.Form FormMSGBOXALL
       Left            =   720
       TabIndex        =   0
       Top             =   120
-      Width           =   3855
+      Width           =   5775
    End
    Begin VB.Image Image1 
       Height          =   480

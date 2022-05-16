@@ -4168,6 +4168,19 @@ AutomatedImageAcquisitionMagChangeMilliSecDelay& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+lpAppName$ = "Hardware"
+lpKeyName$ = "JEOLMoveSpectroMilliSecDelayAfter"
+nDefault& = 200              ' only necessary for iSP100/iHP200F instrumentsd?
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+JEOLMoveSpectroMilliSecDelayAfter& = valid&
+If JEOLMoveSpectroMilliSecDelayAfter& < 0 Or JEOLMoveSpectroMilliSecDelayAfter& > 10000 Then
+msg$ = "JEOLMoveSpectroMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+JEOLMoveSpectroMilliSecDelayAfter& = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors
