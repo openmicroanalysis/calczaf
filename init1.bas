@@ -4170,7 +4170,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "JEOLMoveSpectroMilliSecDelayAfter"
-nDefault& = 200              ' only necessary for iSP100/iHP200F instrumentsd?
+nDefault& = 200              ' only necessary for iSP100/iHP200F instruments?
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 JEOLMoveSpectroMilliSecDelayAfter& = valid&
@@ -4178,6 +4178,28 @@ If JEOLMoveSpectroMilliSecDelayAfter& < 0 Or JEOLMoveSpectroMilliSecDelayAfter& 
 msg$ = "JEOLMoveSpectroMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 JEOLMoveSpectroMilliSecDelayAfter& = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Hardware"
+lpKeyName$ = "AutomatedPHAParameterDialogTypeFlag"
+If InterfaceType% = 2 Then
+nDefault& = 1              ' use bias scan as default for JEOL instruments
+Else
+nDefault& = 0              ' use PHA scan as default for Cameca instruments
+End If
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+AutomatedPHAParameterDialogTypeFlag% = valid&
+If AutomatedPHAParameterDialogTypeFlag% < 0 Or AutomatedPHAParameterDialogTypeFlag% > 2 Then
+msg$ = "AutomatedPHAParameterDialogTypeFlag keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+AutomatedPHAParameterDialogTypeFlag% = nDefault&
+End If
+If InterfaceType% = 2 And AutomatedPHAParameterDialogTypeFlag% = 2 Then
+msg$ = "AutomatedPHAParameterDialogTypeFlag keyword value of 2 (gain scan) is not allowed for JEOL instruments in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+AutomatedPHAParameterDialogTypeFlag% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 

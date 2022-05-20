@@ -3092,7 +3092,7 @@ ElseIf ImageInterfaceType% = 3 Then     ' Unused
 
 ElseIf ImageInterfaceType% = 4 Then     ' JEOL 8900/8200/8500 or 8230/8530
     If JeolEOSInterfaceType& = 3 Then
-    DefaultImageAnalogAverages% = 200   ' JEOL micro-secs (range 100 - 10000)   ' 8230/8530
+    DefaultImageAnalogAverages% = 100   ' JEOL micro-secs (range 100 - 10000)   ' 8230/8530
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
     Else
     DefaultImageAnalogAverages% = 8     ' JEOL A/D averages (range 1 - 1000)    ' 8900/8200/8500
@@ -3108,7 +3108,7 @@ ElseIf ImageInterfaceType% = 6 Then     ' SX100/SXFive video scan speed (range 1
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
 ElseIf ImageInterfaceType% = 7 Then     ' JEOL EDS OEM
-    DefaultImageAnalogAverages% = 200   ' JEOL micro-secs (range 100 - 10000)
+    DefaultImageAnalogAverages% = 100   ' JEOL micro-secs (range 100 - 10000)
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
 ElseIf ImageInterfaceType% = 8 Then     ' Unused
@@ -3144,7 +3144,7 @@ DisplayPHAParameterDialogAfterFlag = False
 
 AutomatedPHAParameterDialogPriorFlag = False
 AutomatedPHAParameterDialogAfterFlag = True     ' changed 12/3/2014
-AutomatedPHAParameterDialogTypeFlag% = 0
+'AutomatedPHAParameterDialogTypeFlag% = 0       ' now set in Probewin.ini file
 
 DoNotDisplayStandardImagesDuringDigitizationFlag% = False
 NumberOfScans& = 0

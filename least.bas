@@ -11,8 +11,15 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+Const TOOSMALL# = 1E-100
+
+Dim yx() As Double
+Dim xxx() As Double
+Dim xx() As Double
+Dim a() As Double
+
 Sub LeastMathFit(kmax As Integer, nmax As Integer, txdata() As Single, tydata() As Single, acoeff() As Single)
-' This routine does a least square polynomial fit of degree kmax-1 to the supplied data x and y.
+' This routine does a least square polynomial fit of degree kmax-1 to the supplied data x and y. Single precision parameters version.
 ' Nmax is the number of pairs of points (x,y).  The polynomial is of the form:
 ' acoeff(1) + acoeff(2)*x + ... +acoeff(kmax)*x**(kmax-1)
 
@@ -28,7 +35,8 @@ On Error GoTo LeastMathFitError
 Dim i As Integer, j As Integer, k As Integer
 Dim xxxold As Double, yxold As Double, xi As Double
 
-ReDim yx(1 To MAXCOEFF9%) As Double, xxx(1 To 2 * MAXCOEFF9%) As Double
+ReDim yx(1 To MAXCOEFF9%) As Double
+ReDim xxx(1 To 2 * MAXCOEFF9%) As Double
 ReDim xx(1 To MAXCOEFF9%, 1 To MAXCOEFF9%) As Double
 ReDim a(1 To MAXCOEFF9%) As Double
 
@@ -155,7 +163,7 @@ Exit Sub
 End Sub
 
 Sub LeastMathFit2(kmax As Integer, nmax As Integer, txdata() As Double, tydata() As Double, acoeff() As Single)
-' This routine does a least square polynomial fit of degree kmax-1 to the supplied data x and y.
+' This routine does a least square polynomial fit of degree kmax-1 to the supplied data x and y. Double precision parameters version.
 ' Nmax is the number of pairs of points (x,y).  The polynomial is of the form:
 ' acoeff(1) + acoeff(2)*x + ... +acoeff(kmax)*x**(kmax-1)
 
@@ -173,7 +181,8 @@ On Error GoTo LeastMathFit2Error
 Dim i As Integer, j As Integer, k As Integer
 Dim xxxold As Double, yxold As Double, xi As Double
 
-ReDim yx(1 To MAXCOEFF9%) As Double, xxx(1 To 2 * MAXCOEFF9%) As Double
+ReDim yx(1 To MAXCOEFF9%) As Double
+ReDim xxx(1 To 2 * MAXCOEFF9%) As Double
 ReDim xx(1 To MAXCOEFF9%, 1 To MAXCOEFF9%) As Double
 ReDim a(1 To MAXCOEFF9%) As Double
 
@@ -1012,7 +1021,8 @@ End If
 
 ' Do a round of elimination
 For ii% = i% + 1 To kmax%
-If Abs(a#(i%, i%)) < 1E-100 Then GoTo LeastGaussSingularMatrix
+'If Abs(a#(i%, i%)) < 1E-100 Then GoTo LeastGaussSingularMatrix
+If Abs(a#(i%, i%)) < TOOSMALL# Then GoTo LeastGaussSingularMatrix
 fac# = a#(ii%, i%) / a#(i%, i%)
 y#(ii%) = y#(ii%) - fac# * y#(i%)
 a#(ii%, i%) = 0#
@@ -1027,7 +1037,8 @@ a#(i%, ii%) = a#(i%, ii%) / a#(i%, i%)
 Next ii%
 
 ' Check for bad matrix
-If Abs(a#(i%, i%)) < 1E-100 Then GoTo LeastGaussSingularMatrix
+'If Abs(a#(i%, i%)) < 1E-100 Then GoTo LeastGaussSingularMatrix
+If Abs(a#(i%, i%)) < TOOSMALL# Then GoTo LeastGaussSingularMatrix
 y#(i%) = y#(i%) / a#(i%, i%)
 a#(i%, i%) = 1#
 Next i%
@@ -1060,7 +1071,7 @@ ierror = True
 Exit Sub
 
 LeastGaussSingularMatrix:
-msg$ = "Singular matrix"
+msg$ = "Singular matrix, value a#(i%, i%) = " & Format$(a#(i%, i%))
 MsgBox msg$, vbOKOnly + vbExclamation, "LeastGauss"
 ierror = True
 Exit Sub

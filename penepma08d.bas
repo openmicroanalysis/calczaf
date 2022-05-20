@@ -28,6 +28,7 @@ Dim sAllFiles() As String
 Dim nPoints As Long, xnum As Long
 Dim xdata() As Single, ydata() As Single, zdata() As Single
 Dim xmin As Single, xmax As Single, xwidth As Single, theta1 As Single, theta2 As Single, phi1 As Single, phi2 As Single
+Dim response As Integer
 
 Dim maszbar As Single, zedzbar As Single, zed7zbar As Single
 
@@ -52,6 +53,11 @@ Static tpath As String
 
 icancelauto = False
 
+msg$ = "Do you want to output generated or emitted continuum intensities?" & vbCrLf & vbCrLf
+msg$ = msg$ & "CLick Yes for generated continuum intensities or No for emitted continuum intensities."
+response% = MsgBox(msg$, vbYesNoCancel + vbQuestion + vbDefaultButton1, "Penepma08ExtractContinuumChannels")
+If response% = vbCancel Then Exit Sub
+
 ' Browse to a specified folder containing the Penepma output files
 tstring$ = "Browse to PENEPMA Output File(s) Folder containing Penepma continuum calculations"
 If tpath$ = vbNullString Then tpath$ = PENEPMA_Root$ & "\Penepma\"
@@ -59,15 +65,23 @@ tpath$ = IOBrowseForFolderByPath(True, tpath$, tstring$, FormPENEPMA08Batch)
 If ierror Then Exit Sub
 If Trim$(tpath$) = vbNullString Then Exit Sub
 
-' Get the Penepma output files for all files in folder and sub folders
-Call DirectorySearch("*pe-spect-01.dat", tpath$, True, nCount&, sAllFiles$())
+' Get the Penepma generated continuum output files for all files in folder and sub folders
+If response% = vbYes Then
+Call DirectorySearch("*pe-gen-bremss.dat", tpath$, True, nCount&, sAllFiles$())
+Else
+Call DirectorySearch("*pe-intens-01.dat", tpath$, True, nCount&, sAllFiles$())
+End If
 If ierror Then Exit Sub
 
 If nCount& = 0 Then GoTo Penepma08ExtractContinuumChannelsFilesNotFound
 
 ' Open continuum intensity output file
 Close #Temp2FileNumber%
-tfilename$ = tpath$ & "\Continuum_Extractions.dat"
+If response% = vbYes Then
+tfilename$ = tpath$ & "\Continuum_Extractions_Generated.dat"
+Else
+tfilename$ = tpath$ & "\Continuum_Extractions.Emitted.dat"
+End If
 Open tfilename$ For Output As #Temp2FileNumber%
 
 ' Output column labels
@@ -76,9 +90,16 @@ astring$ = astring$ & VbDquote$ & "Zbar Mass" & VbDquote$ & vbTab
 astring$ = astring$ & VbDquote$ & "Zbar Z^1.0" & VbDquote$ & vbTab
 astring$ = astring$ & VbDquote$ & "Zbar Z^0.7" & VbDquote$ & vbTab
 
+' Intensity labels
 For m& = 1 To numkeVs&
 targetkeVs!(m&) = CSng(m&)                                                                      ' load values from 1 to 10 keV
-astring$ = astring$ & VbDquote$ & Format$(targetkeVs!(m&)) & " keV" & VbDquote$ & vbTab
+astring$ = astring$ & VbDquote$ & Format$(targetkeVs!(m&)) & " keV Intensities" & VbDquote$ & vbTab
+Next m&
+
+' Variance labels
+For m& = 1 To numkeVs&
+targetkeVs!(m&) = CSng(m&)                                                                      ' load values from 1 to 10 keV
+astring$ = astring$ & VbDquote$ & Format$(targetkeVs!(m&)) & " keV Variances" & VbDquote$ & vbTab
 Next m&
 
 Print #Temp2FileNumber%, astring$
@@ -128,6 +149,11 @@ astring$ = VbDquote$ & tfolder$ & VbDquote$ & vbTab$ & Format$(maszbar!, a80$) &
 ' Load continuum averages
 For m& = 1 To numkeVs&
 astring$ = astring$ & Format$(averagInts!(m&), a80$) & vbTab
+Next m&
+
+' Load continuum averages variances
+For m& = 1 To numkeVs&
+astring$ = astring$ & Format$(averagVars!(m&), a80$) & vbTab
 Next m&
 
 ' Write zbars and average continuum intensities to output file
