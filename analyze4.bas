@@ -37,13 +37,13 @@ tList.Clear
 For samplerow% = 1 To NumberofSamples%
 
 ' Load standards or unknowns or all
-If tForm.OptionStandard.Value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
-If tForm.OptionUnknown.Value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
-If tForm.OptionWavescan.Value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
+If tForm.OptionStandard.value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
+If tForm.OptionUnknown.value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
+If tForm.OptionWavescan.value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
 
 ' Check for FormANALYZE and if so, check display only samples with data checkbox
 If tForm.Name = "FormANALYZE" Or tForm.Name = "FormPLOT_WAVE" Or tForm.Name = "FormPLOT" Then
-If tForm.CheckOnlyDisplaySamplesWithData.Value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
+If tForm.CheckOnlyDisplaySamplesWithData.value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
 End If
 
 ' Load number set and name
@@ -328,6 +328,14 @@ sample(1).numoxd%(sample(1).LastChan%) = tmpsample(1).numoxd%(i%)
 sample(1).AtomicCharges!(sample(1).LastChan%) = tmpsample(1).AtomicCharges!(i%)
 sample(1).ElmPercents!(sample(1).LastChan%) = tmpsample(1).ElmPercents!(i%)
 6000: Next i%
+
+' Load coating parameters and EDS use flag???
+'sample(1).CoatingDensity! = tmpsample(1).CoatingDensity!
+'sample(1).CoatingElement% = tmpsample(1).CoatingElement%
+'sample(1).CoatingFlag% = tmpsample(1).CoatingFlag%
+'sample(1).CoatingThickness! = tmpsample(1).CoatingThickness!
+
+'sample(1).EDSSpectraUseFlag = tmpsample(1).EDSSpectraUseFlag
 
 ' Since loading specified elements, load stoichiometry assinments
 sample(1).FormulaElementFlag% = tmpsample(1).FormulaElementFlag%

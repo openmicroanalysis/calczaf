@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/25/22	Fix EDS bug when combining sample lines for analysis (Boroughs).
+
+		Add new option for automating multiple setups from Automate! to run all samples at each sample setup
+		condition one at a time.  This feature will be useful to automate constant k-ratio testing at different 
+		beam currents.
+
 05/19/22	Bump version for Standard.exe update. More work on continuum extraction code for Penepma.
 v. 13.1.4
 

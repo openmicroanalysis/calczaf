@@ -3044,3 +3044,5 @@ Global AutomatedImageAcquisitionMagChangeMilliSecDelay As Long
 Global FerricFerrousMethodStrings(0 To 6) As String
 
 Global JEOLMoveSpectroMilliSecDelayAfter As Long
+
+Global RunMultipleSetupsOneAtATimeFlag As Boolean
