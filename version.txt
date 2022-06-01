@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/30/22	Add string selection control to Output | Plot Standard and Unknown XY Plots menu window.
+
+		Add option to increment Y stage when doing multiple sample setups both normal and one at a time.
+
 05/29/22	Fix bug when using "multiple setups one at a time" feature if confirm positions is selected.
 
 05/25/22	Fix EDS bug when combining sample lines for analysis (Boroughs).
