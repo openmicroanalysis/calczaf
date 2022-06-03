@@ -1207,11 +1207,11 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Software"
 lpKeyName$ = "DeadtimeCorrectionType"
-nDefault& = 1
+nDefault& = 2               ' use high precision dead time correction for default (1 = normal, 2 = high precision, 3 = super high precision)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 DeadTimeCorrectionType% = valid&
-If DeadTimeCorrectionType% < 1 Or DeadTimeCorrectionType% > 2 Then
+If DeadTimeCorrectionType% < 1 Or DeadTimeCorrectionType% > 3 Then
 msg$ = "DeadtimeCorrectionType keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
 DeadTimeCorrectionType% = nDefault&
