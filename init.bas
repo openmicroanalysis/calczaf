@@ -2345,6 +2345,10 @@ InterfaceStringImage(8) = "Unused"
 InterfaceStringImage(9) = "Bruker RTIfcCLIENT"
 InterfaceStringImage(10) = "Thermo TEPortal"
 
+DeadTimeCorrectionTypeString$(1) = "Normal"
+DeadTimeCorrectionTypeString$(2) = "High Precision"
+DeadTimeCorrectionTypeString$(3) = "Super High Precision"
+
 ' Update Output menu items
 DebugMode = DefaultDebugMode
 If DebugMode Then

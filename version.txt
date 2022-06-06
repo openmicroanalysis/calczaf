@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/03/22	Add new CalcImage flag to blank pixels outside of min/max analytical totals (Poeml).  Add new
+		code to check for dead time correction type parameter when starting a new sample in PFE.
+
+06/02/22	Modify CalcImage CalcImageSaveQuant code to set atomic percents to not analyzed value if element 
+		is disabled for quant because otherwise very small (but related) values (~10^-9) appear in the image.
+
 06/01/22	Modify default dead time correction type to high precision (in INI file) (Neill). Add super high precision
 v. 13.1.5	dead time correction type (three term factorial).
 

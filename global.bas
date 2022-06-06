@@ -3047,3 +3047,5 @@ Global JEOLMoveSpectroMilliSecDelayAfter As Long
 
 Global RunMultipleSetupsOneAtATimeFlag As Boolean
 Global DoYIncrementOnMultipleSampleSetupsFlag As Integer
+
+Global DeadTimeCorrectionTypeString(1 To 3) As String
