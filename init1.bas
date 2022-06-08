@@ -2423,7 +2423,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "EDSSpectraInterfaceType"
-nDefault& = 0   ' 0 = Demo, 1 = MEC (future JEOL EDS), 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM
+nDefault& = 0   ' 0 = Demo, 1 = JEOL MEC (iSP100/iHP200F), 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL (8230/8530)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 EDSSpectraInterfaceType% = valid&
@@ -2432,16 +2432,22 @@ msg$ = "EDSSpectraInterfaceType keyword value is out of range in " & ProbeWinINI
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 EDSSpectraInterfaceType% = nDefault&
 End If
-If EDSSpectraInterfaceType% = 1 Or EDSSpectraInterfaceType% = 3 Or EDSSpectraInterfaceType% = 4 Then
-'If EDSSpectraInterfaceType% = 3 Or EDSSpectraInterfaceType% = 4 Then
+If EDSSpectraInterfaceType% = 3 Or EDSSpectraInterfaceType% = 4 Then
 msg$ = "EDSSpectraInterfaceType (" & Format$(EDSSpectraInterfaceType%) & ") is not supported by Probe for EPMA in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
-' Check for JEOL 8230/8530 interface if JEOL EDS
+' Check for JEOL iSP100/iHP200F or JEOL 8230/8530 interface if JEOL EDS
 If InterfaceType% <> 0 Then
+If EDSSpectraInterfaceType% = 1 Then
+If InterfaceType% <> 2 Or JeolEOSInterfaceType& <> 3 Then
+msg$ = "EDSSpectraInterfaceType (" & Format$(EDSSpectraInterfaceType%) & ") is only available on JEOL iSP100/iHP200F instruments in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
+End
+End If
+End If
 If EDSSpectraInterfaceType% = 6 Then
 If InterfaceType% <> 2 Or JeolEOSInterfaceType& <> 3 Then
 msg$ = "EDSSpectraInterfaceType (" & Format$(EDSSpectraInterfaceType%) & ") is only available on JEOL 8230/8530 instruments in " & ProbeWinINIFile$

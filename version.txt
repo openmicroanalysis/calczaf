@@ -2,6 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/07/22	Adjust JEOL spectrometer orienattion values. Work on JEOL MEC EDS interface.
+
+06/06/22	Fix calculated oxygen output if oxygen was analyzed, then disabled for quant, then calculate stoichiometric oxygen 
+		was selected by the user (Poeml).
+		
+		Tweak GetDead code to unselect and reselect samples when Select All clicked (in case already all selected).
+		
+		Bump version (to 9) of CIP file for later addition for output of matrix correction images.
+
 06/03/22	Add new CalcImage flag to blank pixels outside of min/max analytical totals (Poeml).  Add new
 		code to check for dead time correction type parameter when starting a new sample in PFE.
 

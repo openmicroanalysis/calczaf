@@ -2245,7 +2245,7 @@ InterfaceString$(5) = "Cameca SX100/SXFive (TCP/IP Socket)"
 
 ' EDS interface type, 0 = Demo, 1 = JEOL MEC, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM
 InterfaceStringEDS$(0) = "EDS Demonstration"
-InterfaceStringEDS$(1) = "JEOL OEM MEC"
+InterfaceStringEDS$(1) = "JEOL MEC"
 InterfaceStringEDS$(2) = "Bruker Quantax"
 InterfaceStringEDS$(3) = "Oxford INCA"
 InterfaceStringEDS$(4) = "Unused"
@@ -2281,6 +2281,17 @@ MaxThroughputArrayValue!(1) = 275#
 MaxThroughputArrayValue!(2) = 130#
 MaxThroughputArrayValue!(3) = 90#
 MaxThroughputArrayValue!(4) = 60#
+
+' JEOL MEC
+ElseIf EDSSpectraInterfaceType% = 1 Then
+MaxEnergyArraySize% = 1
+MaxEnergyArrayValue!(1) = 40#       ' JEOL MEC EDS is always 40 keV
+
+MaxThroughputArraySize% = 4         ' 4 time constants (T1, T2, T3, T4) (see JeolMECSpectraGetMaxEnergyThroughput)
+MaxThroughputArrayValue!(1) = 1#
+MaxThroughputArrayValue!(2) = 2#
+MaxThroughputArrayValue!(3) = 3#
+MaxThroughputArrayValue!(4) = 4#
 
 ' Bruker
 ElseIf EDSSpectraInterfaceType% = 2 Then

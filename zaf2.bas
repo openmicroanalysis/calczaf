@@ -416,7 +416,8 @@ Dim ip As Integer
 
 ' Calculate "sample(1).OxygenChannel%" for use in calculating elemental to oxide conversions
 sample(1).OxygenChannel% = 0
-ip% = IPOS1(sample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), sample(1).Elsyms$())
+'ip% = IPOS1(sample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), sample(1).Elsyms$())
+ip% = IPOS1DQ(sample(1).LastChan%, Symlo$(ATOMIC_NUM_OXYGEN%), sample(1).Elsyms$(), sample(1).DisableQuantFlag%())      ' to handle analyzed oxygen disabled for quant (06/06/2022)
 sample(1).OxygenChannel% = ip%
 
 Exit Sub
