@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/11/22	Add matrix corrections output in CalcImage. Use "Output All Calculated Types to Surfer" menu to output.
+v. 13.1.6
+
+06/10/22	Fix some minor bugs in calcImage regarding blanked pixel calculations (Poeml). Modify Output |
+		Output Standard and Unknown XY Plots menu selection lists to include spectrometer number for when using duplicate 
+		elements.
+
 06/09/22	Minor tweaks to PicturSnapApp, INI files and documentation.
 
 06/07/22	Adjust JEOL spectrometer orienattion values. Work on JEOL MEC EDS interface.
