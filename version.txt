@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/14/22	Fix minor bug with totals image when outputting atomic percents maps in Surfer (Poeml).
+
 06/11/22	Add matrix corrections output in CalcImage. Use "Output All Calculated Types to Surfer" menu to output.
 v. 13.1.6
 
