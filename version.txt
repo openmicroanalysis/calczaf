@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/16/22	Modify RGB image math code to handle blanking values (Poeml).
+
+06/15/22	Increase delay in JEOlSetMagnification when switching modes.
+
+06/12/22	Add current FOV mag to PictureSnapApp draw timer event.  Add initial mag to PictureSnapApp.ini file.
+
 06/14/22	Fix minor bug with totals image when outputting atomic percents maps in Surfer (Poeml).
 
 06/11/22	Add matrix corrections output in CalcImage. Use "Output All Calculated Types to Surfer" menu to output.

@@ -114,11 +114,11 @@ Begin VB.Form FormPENEPMA12
       Begin VB.CheckBox CheckUseGridLines 
          Caption         =   "Use Grid Lines"
          Height          =   255
-         Left            =   4680
+         Left            =   4800
          TabIndex        =   97
          Top             =   2160
          Value           =   1  'Checked
-         Width           =   1455
+         Width           =   1575
       End
       Begin VB.CheckBox CheckUseLogScale 
          Caption         =   "Use Log Scale"
@@ -142,7 +142,7 @@ Begin VB.Form FormPENEPMA12
       Begin VB.CommandButton CommandZoomFull 
          Caption         =   "Zoom Full"
          Height          =   375
-         Left            =   4560
+         Left            =   4800
          TabIndex        =   79
          TabStop         =   0   'False
          ToolTipText     =   "Zoom to full graph extents"
@@ -151,13 +151,22 @@ Begin VB.Form FormPENEPMA12
       End
       Begin VB.CheckBox CheckSendToExcel 
          Caption         =   "Send To Excel"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   255
          Left            =   3120
          TabIndex        =   78
          TabStop         =   0   'False
          ToolTipText     =   "Check this box to send the modified output with ""apparent"" concentrations and matrix correction factors to Excel"
          Top             =   2160
-         Width           =   1455
+         Width           =   1575
       End
       Begin VB.CommandButton CommandRunFanal 
          BackColor       =   &H0080FFFF&
