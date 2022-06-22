@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/18/22	Add Update All button to Update Dead Time Constants dialog.  Updated Reference manual.
+
 06/16/22	Modify RGB image math code to handle blanking values (Poeml).
 
 06/15/22	Increase delay in JEOlSetMagnification when switching modes.
