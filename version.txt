@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/23/22	Add check for missing selected standards if peaking and using assigned standards for each element in Automate!.
+
+		Add Z fraction Zbar menu in Standard for List Standard Name and Zbar menu output.
+
 06/18/22	Add Update All button to Update Dead Time Constants dialog.  Updated Reference manual.
 
 06/16/22	Modify RGB image math code to handle blanking values (Poeml).

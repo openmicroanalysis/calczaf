@@ -252,9 +252,23 @@ Dim astring As String
 
 icancelauto = False
 
+If method% = 0 Then
 If mode% = 0 Then Call IOWriteLog(vbCrLf & "All Standards:")
 If mode% = 1 Then Call IOWriteLog(vbCrLf & "Elemental Standards:")
 If mode% = 2 Then Call IOWriteLog(vbCrLf & "Oxide Standards:")
+Else
+If method% = 1 Then
+If UseZFractionZbarCalculationsFlag Then
+If mode% = 0 Then Call IOWriteLog(vbCrLf & "All Standards (Yukawa Z fraction Zbars):")
+If mode% = 1 Then Call IOWriteLog(vbCrLf & "Elemental Standards (Yukawa Z fraction Zbars):")
+If mode% = 2 Then Call IOWriteLog(vbCrLf & "Oxide Standards (Yukawa Z fraction Zbars):")
+Else
+If mode% = 0 Then Call IOWriteLog(vbCrLf & "All Standards (Mass fraction Zbars):")
+If mode% = 1 Then Call IOWriteLog(vbCrLf & "Elemental Standards (Mass fraction Zbars):")
+If mode% = 2 Then Call IOWriteLog(vbCrLf & "Oxide Standards (Mass fraction Zbars):")
+End If
+End If
+End If
 
 ' Write to Log Window
 For i% = 1 To FormMAIN.ListAvailableStandards.ListCount

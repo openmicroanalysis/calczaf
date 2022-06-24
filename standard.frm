@@ -27,14 +27,14 @@ Begin VB.Form FormMAIN
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   7545
    ScaleWidth      =   11325
-   Begin MailMessageCtl.MailMessage MailMessage1 
-      Left            =   2280
+   Begin SmtpClientCtl.SmtpClient SmtpClient1 
+      Left            =   1680
       Top             =   0
       _cx             =   741
       _cy             =   741
    End
-   Begin SmtpClientCtl.SmtpClient SmtpClient1 
-      Left            =   1680
+   Begin MailMessageCtl.MailMessage MailMessage1 
+      Left            =   2280
       Top             =   0
       _cx             =   741
       _cy             =   741
@@ -270,7 +270,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   18230
       _ExtentY        =   6376
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"STANDARD.frx":59D8A
    End
@@ -467,7 +466,10 @@ Begin VB.Form FormMAIN
          HelpContextID   =   606
       End
       Begin VB.Menu menuStandardListStandardNamesZbar 
-         Caption         =   "List All Standard Names and Average Z"
+         Caption         =   "List All Standard Names and Average Z (mass fraction)"
+      End
+      Begin VB.Menu menuStandardListStandardNamesZbar2 
+         Caption         =   "List All Standard Names and Average Z (Yukawa Z fraction)"
       End
       Begin VB.Menu menuStandardListElementalStandardNames 
          Caption         =   "List Elemental Standard Names"
@@ -1537,7 +1539,17 @@ End Sub
 
 Private Sub menuStandardListStandardNamesZbar_Click()
 If Not DebugMode Then On Error Resume Next
-' List all standard names in database with average Z
+' List all standard names in database with average Z (mass fraction)
+UseZFractionZbarCalculationsFlag = False
+Call StanFormListNames(Int(0), Int(1))
+If ierror Then Exit Sub
+End Sub
+
+Private Sub menuStandardListStandardNamesZbar2_Click()
+If Not DebugMode Then On Error Resume Next
+' List all standard names in database with average Z (mass fraction)
+UseZFractionZbarCalculationsFlag = True
+ZFractionZbarCalculationsExponent! = 0.667
 Call StanFormListNames(Int(0), Int(1))
 If ierror Then Exit Sub
 End Sub
