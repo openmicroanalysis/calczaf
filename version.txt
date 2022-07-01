@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/30/22	Add JEOLMECLoggingFlag to Probewin.ini file for debugging JEOL MEC interface. Fix max BIM
+		file size limit error trap (Boroughs).
+
+06/28/22	Round 8x30 beam curent to PCC file to nearest 1/10th nA if under 1 nA (Hayward).
+
+06/27/22	New update all dead times button.
+v. 13.1.7
+
 06/23/22	Add check for missing selected standards if peaking and using assigned standards for each element in Automate!.
 
 		Add Z fraction Zbar menu in Standard for List Standard Name and Zbar menu output.
