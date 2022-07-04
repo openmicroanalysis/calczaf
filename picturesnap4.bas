@@ -146,9 +146,9 @@ stagez! = RealTimeMotorPositions!(ZMotor%)
 End If
 
 ' Move scroll bars on main window to this position
-temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.min
 FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
-temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.min
 FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
 
 ' Move to position clicked by user
@@ -189,11 +189,11 @@ Call PictureSnapConvert(Int(2), formx!, formy!, CSng(0#), stagex!, stagey!, stag
 If ierror Then Exit Sub
 
 ' Move scroll bars on main window to this position
-temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.min
 If fractionx! >= 0# And fractionx! <= 1# Then
 FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
 End If
-temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.min
 If fractiony! >= 0# And fractiony! <= 1# Then
 FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
 End If
@@ -215,8 +215,10 @@ Exit Sub
 
 End Sub
 
-Sub PictureSnapDigitizePoint(BitMapX As Single, BitMapY As Single)
+Sub PictureSnapDigitizePoint(mode As Integer, BitMapX As Single, BitMapY As Single)
 ' Convert and digitize the stage position on the PictureSnap image
+'   mode = 0 digitize from FormPICTURESNAP
+'   mode = 1 digitize from FormPICTURESNAP3
 
 ierror = False
 On Error GoTo PictureSnapDigitizePointError
@@ -231,6 +233,12 @@ If Not RealTimeMode Then Exit Sub
 ' Check that image is loaded and calibrated
 If PictureSnapFilename$ = vbNullString Then Exit Sub
 If Not PictureSnapCalibrated Then Exit Sub
+
+' Convert FormPICTURESNAP3 form coordinates to FormPICTURESNAP.Picture2 coordinates
+If mode% = 1 Then
+BitMapX! = FormPICTURESNAP.Picture2.ScaleWidth * BitMapX! / FormPICTURESNAP3.ScaleWidth
+BitMapY! = FormPICTURESNAP.Picture2.ScaleHeight * BitMapY! / FormPICTURESNAP3.ScaleHeight
+End If
 
 ' Convert to stage coordinates
 Call PictureSnapConvert(Int(1), BitMapX!, BitMapY!, CSng(0#), stagex!, stagey!, stagez!, fractionx!, fractiony!)

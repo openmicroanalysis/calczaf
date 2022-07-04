@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/01/22	Add right click digitize to PictureSnap full view window in PFE (Seward).
+
 06/30/22	Add JEOLMECLoggingFlag to Probewin.ini file for debugging JEOL MEC interface. Fix max BIM
 		file size limit error trap (Boroughs).
 

@@ -468,7 +468,7 @@ DoEvents
 
 ' Digitize right clicked position to position database (if menu is checked)
 If BitMapButton% = vbRightButton And FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Checked Then
-Call PictureSnapDigitizePoint(BitMapX!, BitMapY!)
+Call PictureSnapDigitizePoint(Int(0), BitMapX!, BitMapY!)
 If ierror Then Exit Sub
 End If
 End Sub
@@ -481,16 +481,16 @@ If ierror Then Exit Sub
 End If
 End Sub
 
-Private Sub Picture2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Picture2_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
 BitMapButton% = Button%
-BitMapX! = x!
-BitMapY! = y!   ' store for double-click and map calibrate
+BitMapX! = X!
+BitMapY! = Y!   ' store for double-click and map calibrate
 End Sub
 
-Private Sub Picture2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Picture2_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
-Call PictureSnapUpdateCursor(Int(0), x!, y!)
+Call PictureSnapUpdateCursor(Int(0), X!, Y!)
 If ierror Then Exit Sub
 If WaitingForCalibrationClick Then
 FormPICTURESNAP.Picture2.MousePointer = vbArrowQuestion

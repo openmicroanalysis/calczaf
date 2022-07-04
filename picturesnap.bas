@@ -18,8 +18,8 @@ Dim CurrentPointX As Single
 Dim CurrentPointY As Single
 
 Private Type VertexType
-    x As Single
-    y As Single
+    X As Single
+    Y As Single
 End Type
 
 ' Scale bar variables for scroll event
@@ -573,7 +573,7 @@ Exit Sub
 End Sub
 
 Sub PictureSnapUpdateCursor2(mode As Integer, xpos As Single, ypos As Single)
-' Update the cursor display for FormPICTURESNAP2
+' Update the cursor display for FormPICTURESNAP3
 ' mode = 0  passed position is mouse coordinates
 ' mode = 1  passed position is stage coordinates
 
@@ -765,35 +765,35 @@ End If
     a1! = formx! + radius! * 2
     a2! = formx! - radius! * 2
     
-    lineVertices(0).x = a1!
-    lineVertices(0).y = formy!
-    lineVertices(1).x = formx! + radius! / 2
-    lineVertices(1).y = formy!
-    lineVertices(2).x = a2!
-    lineVertices(2).y = formy!
-    lineVertices(3).x = formx! - radius! / 2
-    lineVertices(3).y = formy!
+    lineVertices(0).X = a1!
+    lineVertices(0).Y = formy!
+    lineVertices(1).X = formx! + radius! / 2
+    lineVertices(1).Y = formy!
+    lineVertices(2).X = a2!
+    lineVertices(2).Y = formy!
+    lineVertices(3).X = formx! - radius! / 2
+    lineVertices(3).Y = formy!
     
     a1! = formy! + radius! * 2
     a2! = formy! - radius! * 2
     
-    lineVertices(4).x = formx!
-    lineVertices(4).y = a1!
-    lineVertices(5).x = formx!
-    lineVertices(5).y = formy! + radius! / 2
-    lineVertices(6).x = formx!
-    lineVertices(6).y = a2!
-    lineVertices(7).x = formx!
-    lineVertices(7).y = formy! - radius! / 2
+    lineVertices(4).X = formx!
+    lineVertices(4).Y = a1!
+    lineVertices(5).X = formx!
+    lineVertices(5).Y = formy! + radius! / 2
+    lineVertices(6).X = formx!
+    lineVertices(6).Y = a2!
+    lineVertices(7).X = formx!
+    lineVertices(7).Y = formy! - radius! / 2
     
     For i% = 0 To 7
-        lineVertices(i%).x = lineVertices(i).x / twipsToPixelX
-        lineVertices(i%).y = lineVertices(i).y / twipsToPixelY
+        lineVertices(i%).X = lineVertices(i).X / twipsToPixelX
+        lineVertices(i%).Y = lineVertices(i).Y / twipsToPixelY
     Next i%
     
     ' Render all lines in turn
     For i% = 0 To 3
-        GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, lineVertices(i% * 2).x, lineVertices(i% * 2).y, lineVertices(i% * 2 + 1).x, lineVertices(i% * 2 + 1).y, lineColor, lineWidth
+        GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, lineVertices(i% * 2).X, lineVertices(i% * 2).Y, lineVertices(i% * 2 + 1).X, lineVertices(i% * 2 + 1).Y, lineColor, lineWidth
     Next i%
 
 ' Update full window
@@ -1121,18 +1121,18 @@ tdistx! = 1000       ' try 1000 twips
 tdisty! = 1000       ' try 1000 twips
 
 ' Use rotate vertex code to calculate stage orthogonal distances
-vOrigin.x! = 0#
-vOrigin.y! = 0#
+vOrigin.X! = 0#
+vOrigin.Y! = 0#
 
-vCorner(1).x! = tdistx!
-vCorner(1).y! = tdisty!
+vCorner(1).X! = tdistx!
+vCorner(1).Y! = tdisty!
 
 ' Rotate the screen distance by the current rotation angle before converting to stage units
 vCorner(1) = PictureSnapRotateVertex(vCorner(1), vOrigin, PictureSnapRotation!)
 
 ' Load the rotated corners
-rotatedx! = vCorner(1).x
-rotatedy! = vCorner(1).y
+rotatedx! = vCorner(1).X
+rotatedy! = vCorner(1).Y
 
 ' Convert screen to stage coordinates
 Call PictureSnapConvert(Int(1), CSng(0#), CSng(0#), zmin!, sx1!, sy1!, sz1!, fractionx!, fractiony!)
@@ -1289,8 +1289,8 @@ Dim arad As Single
     
 arad! = AngleDegrees! * PI! / 180
     
-PictureSnapRotateVertex.x = ((vCorner.x - vOrigin.x) * Cos(arad!) - (vCorner.y - vOrigin.y) * Sin(arad)) + vOrigin.x
-PictureSnapRotateVertex.y = ((vCorner.y - vOrigin.y) * Cos(arad!) + (vCorner.x - vOrigin.x) * Sin(arad)) + vOrigin.y
+PictureSnapRotateVertex.X = ((vCorner.X - vOrigin.X) * Cos(arad!) - (vCorner.Y - vOrigin.Y) * Sin(arad)) + vOrigin.X
+PictureSnapRotateVertex.Y = ((vCorner.Y - vOrigin.Y) * Cos(arad!) + (vCorner.X - vOrigin.X) * Sin(arad)) + vOrigin.Y
 
 Exit Function
 
@@ -1448,20 +1448,20 @@ formx4! = xcenter! - xwidth! / 2#
 formy4! = ycenter! + ywidth! / 2#
 
 ' Rotate the rectangle based on stage to image rotation
-vCorner(1).x! = formx1!
-vCorner(1).y! = formy1!
+vCorner(1).X! = formx1!
+vCorner(1).Y! = formy1!
 
-vCorner(2).x! = formx2!
-vCorner(2).y! = formy2!
+vCorner(2).X! = formx2!
+vCorner(2).Y! = formy2!
 
-vCorner(3).x! = formx3!
-vCorner(3).y! = formy3!
+vCorner(3).X! = formx3!
+vCorner(3).Y! = formy3!
 
-vCorner(4).x! = formx4!
-vCorner(4).y! = formy4!
+vCorner(4).X! = formx4!
+vCorner(4).Y! = formy4!
 
-vOrigin.x! = xcenter!
-vOrigin.y! = ycenter!
+vOrigin.X! = xcenter!
+vOrigin.Y! = ycenter!
 
 ' Rotate the rectangle for each corner
 vCorner(1) = PictureSnapRotateVertex(vCorner(1), vOrigin, rotation!)
@@ -1470,17 +1470,17 @@ vCorner(3) = PictureSnapRotateVertex(vCorner(3), vOrigin, rotation!)
 vCorner(4) = PictureSnapRotateVertex(vCorner(4), vOrigin, rotation!)
 
 ' Load the rotated corners
-formx1! = vCorner(1).x
-formy1! = vCorner(1).y
+formx1! = vCorner(1).X
+formy1! = vCorner(1).Y
 
-formx2! = vCorner(2).x
-formy2! = vCorner(2).y
+formx2! = vCorner(2).X
+formy2! = vCorner(2).Y
 
-formx3! = vCorner(3).x
-formy3! = vCorner(3).y
+formx3! = vCorner(3).X
+formy3! = vCorner(3).Y
 
-formx4! = vCorner(4).x
-formy4! = vCorner(4).y
+formx4! = vCorner(4).X
+formy4! = vCorner(4).Y
 
 ' Draw the rectangle lines (old native VB6 code)
 'FormPICTURESNAP.Picture2.DrawWidth = twidth%
@@ -1492,14 +1492,14 @@ formy4! = vCorner(4).y
     
     ' GDI+, like most graphics libraries, operates in pixel measurements.  Convert all twips measurements to pixels.
     ReDim listOfPoints(0 To 3) As VertexType
-    listOfPoints(0).x = formx1!
-    listOfPoints(0).y = formy1!
-    listOfPoints(1).x = formx2!
-    listOfPoints(1).y = formy2!
-    listOfPoints(2).x = formx3!
-    listOfPoints(2).y = formy3!
-    listOfPoints(3).x = formx4!
-    listOfPoints(3).y = formy4!
+    listOfPoints(0).X = formx1!
+    listOfPoints(0).Y = formy1!
+    listOfPoints(1).X = formx2!
+    listOfPoints(1).Y = formy2!
+    listOfPoints(2).X = formx3!
+    listOfPoints(2).Y = formy3!
+    listOfPoints(3).X = formx4!
+    listOfPoints(3).Y = formy4!
     
     twipsToPixelX = Screen.TwipsPerPixelX
     If (twipsToPixelX = 0!) Then twipsToPixelX = 15!
@@ -1507,16 +1507,16 @@ formy4! = vCorner(4).y
     If (twipsToPixelY = 0!) Then twipsToPixelY = 15!
     
     For i% = 0 To 3
-        listOfPoints(i%).x = listOfPoints(i%).x / twipsToPixelX
-        listOfPoints(i%).y = listOfPoints(i%).y / twipsToPixelY
+        listOfPoints(i%).X = listOfPoints(i%).X / twipsToPixelX
+        listOfPoints(i%).Y = listOfPoints(i%).Y / twipsToPixelY
     Next i%
     
     ' Render each line in turn
     For i% = 0 To 3
         If (i% < 3) Then
-            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(i% + 1).x, listOfPoints(i% + 1).y, tcolor&, tWidth%
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).X, listOfPoints(i%).Y, listOfPoints(i% + 1).X, listOfPoints(i% + 1).Y, tcolor&, tWidth%
         Else
-            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(0).x, listOfPoints(0).y, tcolor&, tWidth%
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP.Picture2.hDC, listOfPoints(i%).X, listOfPoints(i%).Y, listOfPoints(0).X, listOfPoints(0).Y, tcolor&, tWidth%
         End If
     Next i%
     
@@ -1570,20 +1570,20 @@ formx4! = xcenter! - xwidth! / 2#
 formy4! = ycenter! + ywidth! / 2#
 
 ' Rotate the rectangle based on stage to image rotation
-vCorner(1).x! = formx1!
-vCorner(1).y! = formy1!
+vCorner(1).X! = formx1!
+vCorner(1).Y! = formy1!
 
-vCorner(2).x! = formx2!
-vCorner(2).y! = formy2!
+vCorner(2).X! = formx2!
+vCorner(2).Y! = formy2!
 
-vCorner(3).x! = formx3!
-vCorner(3).y! = formy3!
+vCorner(3).X! = formx3!
+vCorner(3).Y! = formy3!
 
-vCorner(4).x! = formx4!
-vCorner(4).y! = formy4!
+vCorner(4).X! = formx4!
+vCorner(4).Y! = formy4!
 
-vOrigin.x! = xcenter!
-vOrigin.y! = ycenter!
+vOrigin.X! = xcenter!
+vOrigin.Y! = ycenter!
 
 ' Rotate the rectangle for each corner
 vCorner(1) = PictureSnapRotateVertex(vCorner(1), vOrigin, rotation!)
@@ -1592,28 +1592,28 @@ vCorner(3) = PictureSnapRotateVertex(vCorner(3), vOrigin, rotation!)
 vCorner(4) = PictureSnapRotateVertex(vCorner(4), vOrigin, rotation!)
 
 ' Load the rotated corners
-formx1! = vCorner(1).x
-formy1! = vCorner(1).y
+formx1! = vCorner(1).X
+formy1! = vCorner(1).Y
 
-formx2! = vCorner(2).x
-formy2! = vCorner(2).y
+formx2! = vCorner(2).X
+formy2! = vCorner(2).Y
 
-formx3! = vCorner(3).x
-formy3! = vCorner(3).y
+formx3! = vCorner(3).X
+formy3! = vCorner(3).Y
 
-formx4! = vCorner(4).x
-formy4! = vCorner(4).y
+formx4! = vCorner(4).X
+formy4! = vCorner(4).Y
     
     ' GDI+, like most graphics libraries, operates in pixel measurements.  Convert all twips measurements to pixels.
     ReDim listOfPoints(0 To 3) As VertexType
-    listOfPoints(0).x = formx1!
-    listOfPoints(0).y = formy1!
-    listOfPoints(1).x = formx2!
-    listOfPoints(1).y = formy2!
-    listOfPoints(2).x = formx3!
-    listOfPoints(2).y = formy3!
-    listOfPoints(3).x = formx4!
-    listOfPoints(3).y = formy4!
+    listOfPoints(0).X = formx1!
+    listOfPoints(0).Y = formy1!
+    listOfPoints(1).X = formx2!
+    listOfPoints(1).Y = formy2!
+    listOfPoints(2).X = formx3!
+    listOfPoints(2).Y = formy3!
+    listOfPoints(3).X = formx4!
+    listOfPoints(3).Y = formy4!
     
     ' Draw using VB graphics
     'FormPICTURESNAP3.DrawWidth = 2
@@ -1629,16 +1629,16 @@ formy4! = vCorner(4).y
     If (twipsToPixelY = 0!) Then twipsToPixelY = 15!
     
     For i% = 0 To 3
-        listOfPoints(i%).x = listOfPoints(i%).x / twipsToPixelX
-        listOfPoints(i%).y = listOfPoints(i%).y / twipsToPixelY
+        listOfPoints(i%).X = listOfPoints(i%).X / twipsToPixelX
+        listOfPoints(i%).Y = listOfPoints(i%).Y / twipsToPixelY
     Next i%
     
     ' Render each line in turn on FormPICTURESNAP3 main form because image controls do not have an hDC
     For i% = 0 To 3
         If (i% < 3) Then
-            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP3.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(i% + 1).x, listOfPoints(i% + 1).y, tcolor&, tWidth%
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP3.hDC, listOfPoints(i%).X, listOfPoints(i%).Y, listOfPoints(i% + 1).X, listOfPoints(i% + 1).Y, tcolor&, tWidth%
         Else
-            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP3.hDC, listOfPoints(i%).x, listOfPoints(i%).y, listOfPoints(0).x, listOfPoints(0).y, tcolor&, tWidth%
+            GDIPlus_Interface.GDIPlus_DrawLine FormPICTURESNAP3.hDC, listOfPoints(i%).X, listOfPoints(i%).Y, listOfPoints(0).X, listOfPoints(0).Y, tcolor&, tWidth%
         End If
     Next i%
     

@@ -48,6 +48,7 @@ Attribute VB_Exposed = False
 ' (c) Copyright 1995-2022 by John J. Donovan
 Option Explicit
 
+Dim BitMapButton As Integer
 Dim BitMapX As Single
 Dim BitMapY As Single
 
@@ -71,17 +72,33 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
+Private Sub Image1_Click()
+If Not DebugMode Then On Error Resume Next
+' Digitize right clicked position to position database (if menu is checked)
+If BitMapButton% = vbRightButton And FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Checked Then
+Call PictureSnapDigitizePoint(Int(1), BitMapX!, BitMapY!)
+If ierror Then Exit Sub
+End If
+End Sub
+
 Private Sub Image1_DblClick()
 If Not DebugMode Then On Error Resume Next
 Call PictureSnapStageMove2(BitMapX!, BitMapY!)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
-BitMapX! = x!
-BitMapY! = y!   ' store for double-click
-Call PictureSnapUpdateCursor2(Int(0), x!, y!)
+BitMapButton% = Button%
+BitMapX! = X!
+BitMapY! = Y!   ' store for double-click and map calibrate
+End Sub
+
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+If Not DebugMode Then On Error Resume Next
+BitMapX! = X!
+BitMapY! = Y!   ' store for double-click
+Call PictureSnapUpdateCursor2(Int(0), X!, Y!)
 If ierror Then Exit Sub
 If WaitingForCalibrationClick Then
 FormPICTURESNAP3.MousePointer = vbHourglass
