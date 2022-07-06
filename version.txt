@@ -2,12 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/02/22	Add code for plotting of EDS spectra with wavescan data.
+
 07/01/22	Add right click digitize to PictureSnap full view window in PFE (Seward).
 
 06/30/22	Add JEOLMECLoggingFlag to Probewin.ini file for debugging JEOL MEC interface. Fix max BIM
 		file size limit error trap (Boroughs).
 
-06/28/22	Round 8x30 beam curent to PCC file to nearest 1/10th nA if under 1 nA (Hayward).
+06/28/22	Round 8x30 beam current to PCC file to nearest 1/10th nA if under 1 nA (Hayward).
 
 06/27/22	New update all dead times button.
 v. 13.1.7
@@ -29,7 +31,7 @@ v. 13.1.7
 06/11/22	Add matrix corrections output in CalcImage. Use "Output All Calculated Types to Surfer" menu to output.
 v. 13.1.6
 
-06/10/22	Fix some minor bugs in calcImage regarding blanked pixel calculations (Poeml). Modify Output |
+06/10/22	Fix some minor bugs in CalcImage regarding blanked pixel calculations (Poeml). Modify Output |
 		Output Standard and Unknown XY Plots menu selection lists to include spectrometer number for when using duplicate 
 		elements.
 
