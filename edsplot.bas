@@ -49,7 +49,7 @@ End If
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(255), Int(0), Int(0))             ' red
 
-tForm.Pesgo1.Points = sample(1).EDSSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.points = sample(1).EDSSpectraNumberofChannels%(datarow%)
 
 ' Load y axis data subset 0 - eds data
 For i% = 1 To sample(1).EDSSpectraNumberofChannels%(datarow%)
@@ -64,7 +64,10 @@ tForm.Pesgo1.ydata(0, i% - 1) = ytemp!
 ' Load x axis data
 xtemp! = sample(1).EDSSpectraEVPerChannel!(datarow%) * (i% - 1) / EVPERKEV#
 If EDSSpectraInterfaceTypeStored% = 2 Then
-xtemp! = xtemp! + sample(1).EDSSpectraStartEnergy!(datarow%)                    ' Bruker zero spectrum starts at plus start energy in keV
+xtemp! = xtemp! + sample(1).EDSSpectraStartEnergy!(datarow%)                                    ' Bruker zero spectrum starts at plus start energy in keV
+End If
+If EDSSpectraInterfaceTypeStored% = 5 Then
+xtemp! = xtemp! + 0.5 * sample(1).EDSSpectraEVPerChannel!(datarow%) / EVPERKEV#                 ' Thermo starts at zero to eV per channel
 End If
 
 tForm.Pesgo1.xdata(0, i% - 1) = xtemp!

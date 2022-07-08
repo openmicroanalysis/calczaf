@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/07/22	Tweak PFE Output | Output all BMP files menu caption to mention GRD files (Poeml).
+
 07/02/22	Add code for plotting of EDS spectra with wavescan data.
 
 07/01/22	Add right click digitize to PictureSnap full view window in PFE (Seward).
