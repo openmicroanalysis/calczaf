@@ -447,7 +447,7 @@ Begin VB.Form FormZAFOPT
          Height          =   315
          Left            =   120
          TabIndex        =   50
-         ToolTipText     =   "Calculate the excess oxygen from ferric iron based on total charge balance (Droop et al., 1987)"
+         ToolTipText     =   "Calculate the excess oxygen from ferric iron based on total charge balance (Droop, 1987)"
          Top             =   3480
          Width           =   4815
       End
