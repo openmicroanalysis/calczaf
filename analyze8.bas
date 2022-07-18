@@ -81,9 +81,10 @@ If ierror Then Exit Sub
 tfilename$ = MiscGetFileNameNoExtension$(afilename$) & "-" & tmsg$ & ".dat"
 
 ' Store filename for subsequent Excel loading
+Close (Temp1FileNumber%)                                ' close in case file was left open
 arraysize% = arraysize% + 1
 ReDim Preserve filenamearray$(1 To arraysize%)
-filenamearray$(arraysize%) = tfilename$ ' already includes full path
+filenamearray$(arraysize%) = tfilename$                 ' already includes full path
 Open tfilename$ For Output As #Temp1FileNumber%
 
 ' Write header
