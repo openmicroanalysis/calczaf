@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/19/22	Modify TestEDS to output dead time correction calculations.
+
 07/16/22	Modify Combine Selected Samples button code to handle Use All Matrix Corrections (Nachlas).
 
 07/13/22	Fix bug regarding disabled points when combining samples (Fournelle).
