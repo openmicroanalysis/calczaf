@@ -2359,6 +2359,7 @@ InterfaceStringImage(10) = "Thermo TEPortal"
 DeadTimeCorrectionTypeString$(1) = "Normal (traditional single term)"
 DeadTimeCorrectionTypeString$(2) = "High Precision (Willis, 1992 two terms)"
 DeadTimeCorrectionTypeString$(3) = "Super High Precision (six terms)"
+DeadTimeCorrectionTypeString$(4) = "Logarithmic (Moy)"
 
 ' Update Output menu items
 DebugMode = DefaultDebugMode
