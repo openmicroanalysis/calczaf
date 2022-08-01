@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/30/22	New load file setup code that retains original acquisition order when loading standard intensities (Goemann/Feig).
+
 07/22/22	Add logarithmic dead time expression to Analysis Option dialog (MOy). Enable Display PHA button
 v. 13.1.8	in Basic EPMA window and add minimize control (Desormeau and Gordon). 
 
