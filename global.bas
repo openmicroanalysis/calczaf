@@ -2967,8 +2967,8 @@ Global InsertFaradayDuringStageJogFlag As Boolean
 
 Global XtalFlipDuration As Single              ' Bragg crystal flip time
 
-Global UseInterpolatedOffPeaksForMANFitMode As Boolean
-Global UseInterpolatedOffPeaksForMANFitFlag As Boolean
+Global UseInterpolatedOffPeaksForMANFitFlag As Boolean                  ' flag to indicate user wants to utilize off-peak corrected standard intensities for MAN curves
+Global UseInterpolatedOffPeaksForMANFitMode As Boolean                  ' temporary flag to indicate loading of MAN fit curves
 Global UseInterpolatedIntensitiesEvenIfElementIsPresentFlag As Boolean
 
 Global GrapherOutputVersionNumber As Integer         ' Scripter.exe app location moved from \Scripter to Surfer app folder
