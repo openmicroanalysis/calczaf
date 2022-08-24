@@ -29,6 +29,7 @@ Type TypeZAF
 
     atwts(1 To MAXCHAN1%) As Single     ' atomic weights
     conc(1 To MAXCHAN1%) As Single      ' concentrations
+    zfrac(1 To MAXCHAN1%) As Single     ' Z fraction (see Donovan, et al. (2003) equation 20)
     krat(1 To MAXCHAN1%) As Single      ' k-ratio (normalized)
     kraw(1 To MAXCHAN1%) As Single      ' raw k-ratio
     genstd(1 To MAXCHAN1%) As Single    ' pure element intensities

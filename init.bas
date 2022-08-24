@@ -311,7 +311,7 @@ If i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) < 1000 Then GoTo InitMotor
 If i% <= NumberOfTunableSpecs% And SX100Velocity&(i%) > 4000 Then GoTo InitMotorsInvalidSpeed
 If i% = XMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotorsInvalidSpeed    ' change to 500 on 07/04/2010
 If i% = XMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotorsInvalidSpeed
-If i% = YMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotorsInvalidSpeed    ' change to 1000 on 07/04/2010
+If i% = YMotor% And SX100Velocity&(i%) < 500 Then GoTo InitMotorsInvalidSpeed    ' change to 500 on 07/04/2010
 If i% = YMotor% And SX100Velocity&(i%) > 15000 Then GoTo InitMotorsInvalidSpeed
 If i% = ZMotor% And SX100Velocity&(i%) < 1 Then GoTo InitMotorsInvalidSpeed
 If i% = ZMotor% And SX100Velocity&(i%) > 200 Then GoTo InitMotorsInvalidSpeed
@@ -3403,6 +3403,8 @@ FerricFerrousMethodStrings$(3) = "Locock/Moy Na-Ca amphibole"
 FerricFerrousMethodStrings$(4) = "Locock/Moy Fe-Mg-Mn amphibole"
 FerricFerrousMethodStrings$(5) = "Locock/Moy Li amphibole"
 FerricFerrousMethodStrings$(6) = "Locock/Moy Oxo amphibole"
+
+UseZfractionForBackscatterCorrection% = False
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

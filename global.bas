@@ -3051,3 +3051,5 @@ Global DoYIncrementOnMultipleSampleSetupsFlag As Integer
 Global DeadTimeCorrectionTypeString(1 To 4) As String
 
 Global JEOLMECLoggingFlag As Integer
+
+Global UseZfractionForBackscatterCorrection As Integer

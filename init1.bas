@@ -1211,7 +1211,7 @@ nDefault& = 3               ' use super high precision dead time correction for 
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 DeadTimeCorrectionType% = valid&
-If DeadTimeCorrectionType% < 1 Or DeadTimeCorrectionType% > 3 Then
+If DeadTimeCorrectionType% < 1 Or DeadTimeCorrectionType% > 4 Then
 msg$ = "DeadtimeCorrectionType keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
 DeadTimeCorrectionType% = nDefault&

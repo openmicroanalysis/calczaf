@@ -807,7 +807,11 @@ If ibsc% = 1 Or ibsc% = 2 Or ibsc% = 4 Then
 For i% = 1 To zaf.in0%
 eta!(i%) = 0#
 For i1% = 1 To zaf.in0%
+If Not UseZfractionForBackscatterCorrection Then
 eta!(i%) = eta!(i%) + zaf.conc!(i1%) * hb!(i1%)
+Else
+eta!(i%) = eta!(i%) + zaf.zfrac!(i1%) * hb!(i1%)
+End If
 Next i1%
 Next i%
 
@@ -1811,6 +1815,13 @@ Call SecondaryCorrection(row%, zaf.krat!(), sample())
 If ierror Then Exit Sub
 End If
 
+' Calculate as Z fraction also (using Z^2/3) for use with backscatter corrections (see ZAFBsc)
+UseZfractionForBackscatterCorrection% = False           ' just set flag manually here for initial testing with Moy
+If UseZfractionForBackscatterCorrection% Then
+Call ConvertWeightToElectron2(zaf.in0%, 0.666, zaf.Z%(), zaf.atwts!(), zaf.conc!(), zaf.zfrac!())
+If ierror Then Exit Sub
+End If
+
 ' ZAF iteration loop
 zaf.iter% = 1
 zaf.n8& = sample(1).Linenumber&(row%)
@@ -2134,6 +2145,20 @@ For i% = 1 To sample(1).LastElm%
 msg$ = msg$ & Format$(Format$(zaf.conc!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
+End If
+
+' Calculate as Z fraction also (using Z^2/3) for use with backscatter corrections (see ZAFBsc)
+If UseZfractionForBackscatterCorrection% Then
+Call ConvertWeightToElectron2(zaf.in0%, 0.666, zaf.Z%(), zaf.atwts!(), zaf.conc!(), zaf.zfrac!())
+If ierror Then Exit Sub
+
+If DebugMode And VerboseMode Then
+msg$ = "UNZFRAC:"
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(zaf.zfrac!(i%), f84), a80$)
+Next i%
+Call IOWriteLog(msg$)
+End If
 End If
 
 ' Check if iteration is complete

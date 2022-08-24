@@ -521,7 +521,7 @@ Exit Sub
 
 End Sub
 
-Sub ConvertWeightToElectron2(lchan As Integer, exponent As Single, atnums() As Single, atwts() As Single, wts() As Single, elecs() As Single)
+Sub ConvertWeightToElectron2(lchan As Integer, exponent As Single, atnums() As Integer, atwts() As Single, wts() As Single, elecs() As Single)
 ' Convert from weight fraction to electron fraction (Z to "exponent")
 
 ierror = False
@@ -533,13 +533,13 @@ Dim sum As Single
 ' Calculate sum
 sum! = 0#
 For i% = 1 To lchan%
-sum! = sum! + (atnums!(i%) ^ exponent!) * wts!(i%) / atwts!(i%)
+sum! = sum! + (atnums%(i%) ^ exponent!) * wts!(i%) / atwts!(i%)
 Next i%
 If sum! = 0# Then GoTo ConvertWeightToElectron2ZeroSum
 
 For i% = 1 To lchan%
 If sum! <> 0# Then
-elecs!(i%) = (atnums!(i%) ^ exponent!) * (wts!(i%) / atwts!(i%)) / sum!
+elecs!(i%) = (atnums%(i%) ^ exponent!) * (wts!(i%) / atwts!(i%)) / sum!
 Else
 elecs!(i%) = 0#
 End If
