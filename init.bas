@@ -1463,6 +1463,7 @@ TipOfTheDayFile$ = ApplicationCommonAppData$ & "TipOfTheDay.txt"
 ' Load PDF file names (in application folder)
 ProbeforEPMAQuickStartGuide$ = ProgramPath$ & "Probe for EPMA_Quick Start.pdf"
 ProbeforEPMAFAQ$ = ProgramPath$ & "Probe for EPMA Frequently Asked Questions.pdf"
+ProbeforEPMAConstantKratios$ = ProgramPath$ & "Constant K-ratio dead time calibration.pdf"
 
 GettingStartedManual$ = ProgramPath$ & "GettingStarted_ProbeSoftware.pdf"
 AdvancedTopicsManual$ = ProgramPath$ & "AdvancedTopics_ProbeSoftware.pdf"

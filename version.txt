@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/29/22	Add constant k-ratio pdf to PFE distribution (in Help menu).
+
 08/23/22	Minor edits for Use Digitized Points Only checkbox tool tip help and consensus k-ratio menu disable/enable (Neill).
 
 08/05/22	Modify DataCorrectDataBackground to handle using MPB backgrounds for interpolated off-peak MAN fit curves (Fellowes).

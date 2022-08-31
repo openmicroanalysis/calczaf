@@ -2562,6 +2562,7 @@ Global UserSpecifiedOutputMACFlag As Boolean
 Global UserSpecifiedOutputKratioFlag As Boolean
 
 Global ProbeforEPMAFAQ As String
+Global ProbeForEPMAConstantKRatios As String
 
 Global UserSpecifiedOutputStdAssignsFlag As Boolean
 Global InterfaceTypeStored As Integer        ' stored instrument interface type for post-processing
