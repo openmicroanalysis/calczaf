@@ -952,6 +952,10 @@ Type TypeSample
     UnknownCountFactors() As Single     ' changed to single (4/24/02)
     UnknownMaxCounts() As Long          ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
     
+    OnPeakCounts_Raw_Cps() As Single    ' raw cps data, allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    HiPeakCounts_Raw_Cps() As Single    ' raw cps data, allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+    LoPeakCounts_Raw_Cps() As Single    ' raw cps data, allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
+
     OnPeakCounts() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
     HiPeakCounts() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)
     LoPeakCounts() As Single    ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%)

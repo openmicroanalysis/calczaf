@@ -1293,37 +1293,19 @@ Call MathArrayAverage(bmaverage, sample(1).OnBeamCountsArray!(), sample(1).Datar
 If ierror Then Exit Sub
 End If
 
-' Calculate average count data
+' Calculate average count data using raw cps!!!!
 If mode% = 1 Then
-Call MathArrayAverage(ctaverage, sample(1).OnPeakCounts!(), sample(1).Datarows%, sample(1).LastElm%, sample())
+Call MathArrayAverage(ctaverage, sample(1).OnPeakCounts_Raw_Cps!(), sample(1).Datarows%, sample(1).LastElm%, sample())
 If ierror Then Exit Sub
 End If
 If mode% = 2 Then
-Call MathArrayAverage(ctaverage, sample(1).HiPeakCounts!(), sample(1).Datarows%, sample(1).LastElm%, sample())
+Call MathArrayAverage(ctaverage, sample(1).HiPeakCounts_Raw_Cps!(), sample(1).Datarows%, sample(1).LastElm%, sample())
 If ierror Then Exit Sub
 End If
 If mode% = 3 Then
-Call MathArrayAverage(ctaverage, sample(1).LoPeakCounts!(), sample(1).Datarows%, sample(1).LastElm%, sample())
+Call MathArrayAverage(ctaverage, sample(1).LoPeakCounts_Raw_Cps!(), sample(1).Datarows%, sample(1).LastElm%, sample())
 If ierror Then Exit Sub
 End If
-
-' Denormalize counts for beam drift and deadtime
-For i% = ii% To jj%
-If UseBeamDriftCorrectionFlag Then
-If Not sample(1).CombinedConditionsFlag Then
-Call DataCorrectDataBeamDrift2(ctaverage.averags!(i%), bmaverage.averags!(1))      ' de-normalize for beam
-If ierror Then Exit Sub
-Else
-Call DataCorrectDataBeamDrift2(ctaverage.averags!(i%), bmaverage.averags!(i%))     ' de-normalize for beam
-If ierror Then Exit Sub
-End If
-End If
-
-If UseDeadtimeCorrectionFlag And sample(1).CrystalNames$(i%) <> EDS_CRYSTAL$ Then
-Call DataCorrectDataDeadTime2(ctaverage.averags!(i%), sample(1).DeadTimes!(i%))  ' de-normalize for deadtime
-If ierror Then Exit Sub
-End If
-Next i%
 
 ' Denormalize average counts for average count time
 For i% = ii% To jj%
@@ -1409,19 +1391,19 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
-' Now normalize to deadtime and beam
+' Now normalize back for deadtime and beam drift
 For i% = ii% To jj%
 If UseDeadtimeCorrectionFlag And sample(1).CrystalNames$(i%) <> EDS_CRYSTAL$ Then
-Call DataCorrectDataDeadTime(tAverage.Sqroots!(i%), sample(1).DeadTimes!(i%))  ' normalize for deadtime
+Call DataCorrectDataDeadTime(tAverage.Sqroots!(i%), sample(1).DeadTimes!(i%))           ' normalize for deadtime
 If ierror Then Exit Sub
 End If
 
 If UseBeamDriftCorrectionFlag Then
 If Not sample(1).CombinedConditionsFlag Then
-Call DataCorrectDataBeamDrift(tAverage.Sqroots!(i%), bmaverage.averags!(1))  ' normalize for beam
+Call DataCorrectDataBeamDrift(tAverage.Sqroots!(i%), bmaverage.averags!(1))             ' normalize for beam
 If ierror Then Exit Sub
 Else
-Call DataCorrectDataBeamDrift(tAverage.Sqroots!(i%), bmaverage.averags!(i%))     ' normalize for beam
+Call DataCorrectDataBeamDrift(tAverage.Sqroots!(i%), bmaverage.averags!(i%))            ' normalize for beam
 If ierror Then Exit Sub
 End If
 End If

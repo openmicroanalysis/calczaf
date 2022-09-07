@@ -287,17 +287,21 @@ Dim i As Integer, j As Integer, k As Integer
 Dim amsg As String
 
 amsg$ = "Dimensioning raw data sample arrays..."
-ReDim sample(1).OnPeakCounts(1 To MAXROW%, 1 To MAXCHAN%) As Single ' data arrays
+ReDim sample(1).OnPeakCounts_Raw_Cps(1 To MAXROW%, 1 To MAXCHAN%) As Single     ' raw counts (cps) data arrays
+ReDim sample(1).HiPeakCounts_Raw_Cps(1 To MAXROW%, 1 To MAXCHAN%) As Single     ' raw counts (cps) data arrays
+ReDim sample(1).LoPeakCounts_Raw_Cps(1 To MAXROW%, 1 To MAXCHAN%) As Single     ' raw counts (cps) data arrays
+
+ReDim sample(1).OnPeakCounts(1 To MAXROW%, 1 To MAXCHAN%) As Single             ' corrected intensity data arrays (dead time and beam drift corrected)
 ReDim sample(1).HiPeakCounts(1 To MAXROW%, 1 To MAXCHAN%) As Single
 ReDim sample(1).LoPeakCounts(1 To MAXROW%, 1 To MAXCHAN%) As Single
 
-ReDim sample(1).OnCountTimes(1 To MAXROW%, 1 To MAXCHAN%) As Single ' data arrays
+ReDim sample(1).OnCountTimes(1 To MAXROW%, 1 To MAXCHAN%) As Single             ' count time data arrays
 ReDim sample(1).HiCountTimes(1 To MAXROW%, 1 To MAXCHAN%) As Single
 ReDim sample(1).LoCountTimes(1 To MAXROW%, 1 To MAXCHAN%) As Single
 
 ' Dimension corrected data arrays (allocated in DataGetMDBSample to get around 64K limit for user defined type)
 'amsg$ = "Dimensioning corrected data sample arrays..."
-'ReDim sample(1).CorData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
+'ReDim sample(1).CorData(1 To MAXROW%, 1 To MAXCHAN1%) As Single        ' bgd corrected intensities
 'ReDim sample(1).BgdData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
 'ReDim sample(1).ErrData(1 To MAXROW%, 1 To MAXCHAN1%) As Single
     

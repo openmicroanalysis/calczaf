@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/04/22	Add dead time correction%  (DTC%) in count outout. Use new raw data arrays. Add trap for "_WD" and "_SP" in 
+v. 13.1.9	CalcImage create project code (Raia).
+
+		Add raw (cps) counts to Output STandard and Unknown XY Plots dialog.  Add raw cps arrays for samples.
+
 08/29/22	Add constant k-ratio pdf to PFE distribution (in Help menu).
 
 08/23/22	Minor edits for Use Digitized Points Only checkbox tool tip help and consensus k-ratio menu disable/enable (Neill).
