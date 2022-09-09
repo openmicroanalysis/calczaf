@@ -1207,7 +1207,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Software"
 lpKeyName$ = "DeadtimeCorrectionType"
-nDefault& = 3               ' use super high precision dead time correction for default (1 = normal, 2 = high precision, 3 = super high precision)
+nDefault& = 4               ' use logarithmic dead time correction for default (1 = normal, 2 = high precision, 3 = super high precision, 4 = logarithmic)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 DeadTimeCorrectionType% = valid&
