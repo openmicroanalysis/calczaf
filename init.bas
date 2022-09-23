@@ -1463,7 +1463,7 @@ TipOfTheDayFile$ = ApplicationCommonAppData$ & "TipOfTheDay.txt"
 ' Load PDF file names (in application folder)
 ProbeforEPMAQuickStartGuide$ = ProgramPath$ & "Probe for EPMA_Quick Start.pdf"
 ProbeforEPMAFAQ$ = ProgramPath$ & "Probe for EPMA Frequently Asked Questions.pdf"
-ProbeforEPMAConstantKratios$ = ProgramPath$ & "Constant K-ratio dead time calibration.pdf"
+ProbeForEPMAConstantKRatios$ = ProgramPath$ & "Constant K-ratio dead time calibration.pdf"
 
 GettingStartedManual$ = ProgramPath$ & "GettingStarted_ProbeSoftware.pdf"
 AdvancedTopicsManual$ = ProgramPath$ & "AdvancedTopics_ProbeSoftware.pdf"
@@ -2361,6 +2361,7 @@ DeadTimeCorrectionTypeString$(1) = "Normal (traditional single term)"
 DeadTimeCorrectionTypeString$(2) = "High Precision (Willis, 1992 two terms)"
 DeadTimeCorrectionTypeString$(3) = "Super High Precision (six terms)"
 DeadTimeCorrectionTypeString$(4) = "Logarithmic (Moy)"
+DeadTimeCorrectionTypeString$(5) = "Exponential (Almutairi, 2019)"
 
 ' Update Output menu items
 DebugMode = DefaultDebugMode
