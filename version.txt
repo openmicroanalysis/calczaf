@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/29/22	Add JEOLMoveStageMilliSecDelayAfter to probewin.ini and allow up to 3000 msec delay for 8x00 stages with motion 
+		complete flag hardware failure (Yu).
+
 09/21/22	Modify JeolMECSpectraStart to handle EDS status flag better (Matthews).
 
 09/08/22	Add exponential dead time correction. Increase mag delay for JEOL instruments (von der Handt).

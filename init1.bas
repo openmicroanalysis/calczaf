@@ -4226,6 +4226,19 @@ JEOLMECLoggingFlag% = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+lpAppName$ = "Hardware"
+lpKeyName$ = "JEOLMoveStageMilliSecDelayAfter"
+nDefault& = 300           ' EIKS (8x30, iSP100, iHP200F) needs 300 msec delay, 8x00 with motion complete flag failure needs up to 3000 msec delay
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+JEOLMoveStageMilliSecDelayAfter& = valid&
+If JEOLMoveStageMilliSecDelayAfter& < 30 Or JEOLMoveStageMilliSecDelayAfter& > 3000 Then
+msg$ = "JEOLMoveStageMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+JEOLMoveStageMilliSecDelayAfter& = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors

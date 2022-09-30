@@ -3058,3 +3058,5 @@ Global DeadTimeCorrectionTypeString(1 To 5) As String
 Global JEOLMECLoggingFlag As Integer
 
 Global UseZfractionForBackscatterCorrection As Integer
+
+Global JEOLMoveStageMilliSecDelayAfter As Long
