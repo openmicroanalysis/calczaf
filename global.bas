@@ -3060,3 +3060,5 @@ Global JEOLMECLoggingFlag As Integer
 Global UseZfractionForBackscatterCorrection As Integer
 
 Global JEOLMoveStageMilliSecDelayAfter As Long
+
+Global DisableLightControl As Boolean       ' false = normal light control, true = disable reflected and transmitted light control
