@@ -19,8 +19,8 @@ Type TypeZAF
     iter As Integer     ' number of iterations
     ksum As Single      ' sum of k-ratios
 
-    TOA As Single                   ' takeoff angle
-    m1(1 To MAXCHAN1%) As Single    ' takeoff parameter
+    tak(1 To MAXCHAN1%) As Single   ' array for takeoff angles in degrees
+    m1(1 To MAXCHAN1%) As Single    ' takeoff parameters
     eO(1 To MAXCHAN1%) As Single    ' array for kilovolts
 
     p1(1 To MAXCHAN1%) As Single    ' stoichiometric proportion

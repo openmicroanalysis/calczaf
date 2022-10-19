@@ -2544,7 +2544,6 @@ End If
 End If
 
 ' Load atomic numbers, atomic weights, x-ray line types and oxide gravimetric factors for each element in the standard.
-zaf.TOA! = stdsample(1).takeoff!
 For i% = 1 To stdsample(1).LastChan%
 
 ' Load default for unanalyzed elements
@@ -2555,6 +2554,7 @@ End If
 
 ' Calculate takeoff
 If stdsample(1).TakeoffArray!(i%) = 0# Then GoTo ZAFStd2BadTakeoff
+zaf.tak!(i%) = stdsample(1).TakeoffArray!(i%)       ' new for effective takeoff angle testing
 tt! = stdsample(1).TakeoffArray!(i%) * PI! / 180#
 zaf.m1!(i%) = 1# / Sin(tt!)
 
@@ -3336,14 +3336,14 @@ If ierror Then Exit Sub
 
 ' Load atomic numbers, atomic weights, x-ray line types (for analyzed elements only), and oxide gravimetric factor for each element in the probe run.
 zaf.in0% = sample(1).LastChan%
-zaf.TOA! = sample(1).takeoff!
 
 ' Load element arrays
 For i% = 1 To sample(1).LastChan%
+If i% <= sample(1).LastElm% And sample(1).TakeoffArray!(i%) = 0# Then GoTo ZAFSetZAFBadTakeoff
 If i% <= sample(1).LastElm% And sample(1).KilovoltsArray!(i%) = 0# Then GoTo ZAFSetZAFBadKilovolts
-If sample(1).TakeoffArray!(i%) = 0# Then sample(1).TakeoffArray!(i%) = sample(1).takeoff!
 
 ' Bulk sample geometry
+zaf.tak!(i%) = sample(1).TakeoffArray!(i%)       ' new for effective takeoff angle testing
 tt! = sample(1).TakeoffArray!(i%) * 3.14159 / 180#
 zaf.m1!(i%) = 1# / Sin(tt!)
 
@@ -3490,6 +3490,12 @@ MsgBox Error$, vbOKOnly + vbCritical, "ZAFSetZAF"
 ierror = True
 Exit Sub
 
+ZAFSetZAFBadTakeoff:
+msg$ = "Takeoff array is not loaded properly"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
+ierror = True
+Exit Sub
+
 ZAFSetZAFBadKilovolts:
 msg$ = "Kilovolt array is not loaded properly"
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
@@ -3530,9 +3536,9 @@ ReDim zaf.coating_absorbs_std(1 To MAXSTD%, 1 To MAXCHAN1%) As Single     ' elec
 zaf.in0% = 0
 zaf.in1% = 0
 zaf.n8& = 0
-zaf.TOA! = 0#
 
 For i% = 1 To MAXCHAN1%
+zaf.tak!(i%) = 0#
 zaf.m1!(i%) = 0#
 zaf.eO!(i%) = 0#
 zaf.p1!(i%) = 0#

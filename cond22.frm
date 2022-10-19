@@ -54,6 +54,7 @@ Begin VB.Form FormCOND2
          _ExtentX        =   450
          _ExtentY        =   4260
          _Version        =   393216
+         Enabled         =   -1  'True
       End
       Begin VB.ListBox ListElements 
          Height          =   2400
@@ -102,11 +103,10 @@ Begin VB.Form FormCOND2
          Width           =   1575
       End
       Begin VB.TextBox TextTakeOff 
-         Enabled         =   0   'False
          Height          =   285
          Left            =   3720
          TabIndex        =   0
-         ToolTipText     =   "Specify the take-off angle (normally fixed)"
+         ToolTipText     =   "Specify the effective take-off angle"
          Top             =   600
          Width           =   1575
       End

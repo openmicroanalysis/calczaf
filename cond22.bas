@@ -27,7 +27,7 @@ CondTmpSample(1) = sample(1)
 ' Load element list
 FormCOND2.ComboElementXraySpectrometerCrystal.Clear
 For i% = 1 To CondTmpSample(1).LastElm%
-msg$ = CondTmpSample(1).Elsyms$(i%) & " " & CondTmpSample(1).Xrsyms$(i%) & ", Spec " & Str$(CondTmpSample(1).MotorNumbers%(i%)) & " " & CondTmpSample(1).CrystalNames$(i%)
+msg$ = CondTmpSample(1).Elsyms$(i%) & " " & CondTmpSample(1).Xrsyms$(i%) & ", Takeoff " & Str$(CondTmpSample(1).TakeoffArray!(i%)) & ", Kilovolts " & CondTmpSample(1).KilovoltsArray!(i%)
 FormCOND2.ComboElementXraySpectrometerCrystal.AddItem msg$
 FormCOND2.ComboElementXraySpectrometerCrystal.ItemData(FormCOND2.ComboElementXraySpectrometerCrystal.NewIndex) = i%
 Next i%
@@ -67,15 +67,15 @@ On Error GoTo Cond2SaveFieldError
 
 Dim i As Integer
 
-If Val(FormCOND2.TextKiloVolts.Text) < MINKILOVOLTS! Or Val(FormCOND2.TextKiloVolts.Text) > MAXKILOVOLTS! Then
-msg$ = FormCOND2.TextKiloVolts.Text & " for Kilovolts is out of range!"
+If Val(FormCOND2.TextTakeOff.Text) < 1# Or Val(FormCOND2.TextTakeOff.Text) > 90# Then
+msg$ = FormCOND2.TextTakeOff.Text & " for TakeOff is out of range!"
 MsgBox msg$, vbOKOnly + vbExclamation, "Cond2SaveField"
 ierror = True
 Exit Sub
 End If
 
-If Val(FormCOND2.TextTakeOff.Text) < 1# Or Val(FormCOND2.TextTakeOff.Text) > 90# Then
-msg$ = FormCOND2.TextTakeOff.Text & " for TakeOff is out of range!"
+If Val(FormCOND2.TextKiloVolts.Text) < MINKILOVOLTS! Or Val(FormCOND2.TextKiloVolts.Text) > MAXKILOVOLTS! Then
+msg$ = FormCOND2.TextKiloVolts.Text & " for Kilovolts is out of range!"
 MsgBox msg$, vbOKOnly + vbExclamation, "Cond2SaveField"
 ierror = True
 Exit Sub
@@ -241,6 +241,7 @@ Dim i As Integer
 FormCOND2.ListElements.Clear
 For i% = 1 To CondTmpSample(1).LastElm%
 msg$ = Format$(CondTmpSample(1).Elsyms$(i%) & " " & CondTmpSample(1).Xrsyms$(i%), a50$) & vbTab
+msg$ = msg$ & " TakeOff" & Str$(CondTmpSample(1).TakeoffArray!(i%)) & vbTab
 msg$ = msg$ & " KeV" & Str$(CondTmpSample(1).KilovoltsArray!(i%))
 FormCOND2.ListElements.AddItem msg$
 FormCOND2.ListElements.ItemData(FormCOND2.ListElements.NewIndex) = i%

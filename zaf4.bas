@@ -169,7 +169,7 @@ On Error GoTo ZAFPrintSmpError
 Dim i As Integer
 
 ' Print sample heading and parameters
-msg$ = vbCrLf & "SAMPLE: " & Format$(zaf.n8&) & ", TOA: " & Format$(zaf.TOA!) & ", ITERATIONS: " & Format$(zaf.iter%) & ", Z-BAR: " & Format$(analysis.zbar!)
+msg$ = vbCrLf & "SAMPLE: " & Format$(zaf.n8&) & ", ITERATIONS: " & Format$(zaf.iter%) & ", Z-BAR: " & Format$(analysis.zbar!)
 Call IOWriteLog(msg$)
 
 ' Print particle parameters if specified (averaged for all elements?)
@@ -283,7 +283,7 @@ Call IOWriteLog(msg$)
 End If
 Next i%
 
-msg$ = vbCrLf & " ELEMENT   K-RAW K-VALUE ELEMWT% OXIDWT% ATOMIC% FORMULA KILOVOL"
+msg$ = vbCrLf & " ELEMENT   K-RAW K-VALUE ELEMWT% OXIDWT% ATOMIC% FORMULA TAKEOFF KILOVOL"
 If UseParticleCorrectionFlag And iptc% = 1 Then msg$ = msg$ & " NORMEL% NORMOX%"
 If UseConductiveCoatingCorrectionForXrayTransmission Then
 msg$ = msg$ & " COATTRN COATU/S"
@@ -348,15 +348,15 @@ Else
 If zaf.Z%(i%) <> AllAtomicNums%(ATOMIC_NUM_OXYGEN%) Then
 If zaf.in1% <> zaf.in0% Or tdisplayoxide% Then      ' using stoichiometric oxygen
 If Not UseAutomaticFormatForResultsFlag Then
-msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & Format$(Format$(zaf.kraw!(i%), f85$), a80$) & Format$(Format$(zaf.krat!(i%), f85$), a80$) & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(Format$(zaf.OxPercents!(i%), f83$), a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
+msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & Format$(Format$(zaf.kraw!(i%), f85$), a80$) & Format$(Format$(zaf.krat!(i%), f85$), a80$) & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(Format$(zaf.OxPercents!(i%), f83$), a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$) & Format$(Format$(zaf.tak!(i%), f82$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
 Else
-msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & MiscAutoFormat$(zaf.kraw!(i%)) & MiscAutoFormat$(zaf.krat!(i%)) & MiscAutoFormat$(100# * zaf.conc!(i%)) & MiscAutoFormat$(zaf.OxPercents!(i%)) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%)) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
+msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & MiscAutoFormat$(zaf.kraw!(i%)) & MiscAutoFormat$(zaf.krat!(i%)) & MiscAutoFormat$(100# * zaf.conc!(i%)) & MiscAutoFormat$(zaf.OxPercents!(i%)) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%)) & Format$(Format$(zaf.tak!(i%), f82$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
 End If
 Else
 If Not UseAutomaticFormatForResultsFlag Then
-msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & Format$(Format$(zaf.kraw!(i%), f85$), a80$) & Format$(Format$(zaf.krat!(i%), f85$), a80$) & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(DASHED5$, a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
+msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & Format$(Format$(zaf.kraw!(i%), f85$), a80$) & Format$(Format$(zaf.krat!(i%), f85$), a80$) & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(DASHED5$, a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$) & Format$(Format$(zaf.tak!(i%), f82$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
 Else
-msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & MiscAutoFormat$(zaf.kraw!(i%)) & MiscAutoFormat$(zaf.krat!(i%)) & MiscAutoFormat$(100# * zaf.conc!(i%)) & Format$(DASHED5$, a80$) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%)) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
+msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & MiscAutoFormat$(zaf.kraw!(i%)) & MiscAutoFormat$(zaf.krat!(i%)) & MiscAutoFormat$(100# * zaf.conc!(i%)) & Format$(DASHED5$, a80$) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%)) & Format$(Format$(zaf.tak!(i%), f82$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
 End If
 End If
 Else
@@ -368,9 +368,9 @@ msg$ = Format$(Symup$(zaf.Z%(i%)) & "   ", a80$) & a8x$ & a8x$ & MiscAutoFormat$
 End If
 Else
 If Not UseAutomaticFormatForResultsFlag Then
-msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & Format$(Format$(zaf.kraw!(i%), f85$), a80$) & Format$(Format$(zaf.krat!(i%), f85$), a80$) & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(DASHED5$, a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
+msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & Format$(Format$(zaf.kraw!(i%), f85$), a80$) & Format$(Format$(zaf.krat!(i%), f85$), a80$) & Format$(Format$(100# * zaf.conc!(i%), f83$), a80$) & Format$(DASHED5$, a80$) & Format$(Format$(zaf.AtPercents!(i%), f83$), a80$) & Format$(Format$(zaf.Formulas!(i%), f83$), a80$) & Format$(Format$(zaf.tak!(i%), f82$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
 Else
-msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & MiscAutoFormat$(zaf.kraw!(i%)) & MiscAutoFormat$(zaf.krat!(i%)) & MiscAutoFormat$(100# * zaf.conc!(i%)) & Format$(DASHED5$, a80$) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%)) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
+msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$) & MiscAutoFormat$(zaf.kraw!(i%)) & MiscAutoFormat$(zaf.krat!(i%)) & MiscAutoFormat$(100# * zaf.conc!(i%)) & Format$(DASHED5$, a80$) & MiscAutoFormat$(zaf.AtPercents!(i%)) & MiscAutoFormat$(zaf.Formulas!(i%)) & Format$(Format$(zaf.tak!(i%), f82$), a80$) & Format$(Format$(zaf.eO!(i%), f82$), a80$)
 End If
 End If
 End If
@@ -501,7 +501,7 @@ Dim i As Integer
 If (UCase$(app.EXEName) = UCase$("CalcZAF") And CalcZAFMode% < 3) Or (UCase$(app.EXEName) = UCase$("Probewin") And DebugMode) Then
 
 ' Print sample heading and parameters
-msg$ = vbCrLf & "STANDARD PARAMETERS (TOA= " & Format$(zaf.TOA!) & "):"
+msg$ = vbCrLf & "STANDARD PARAMETERS:"
 Call IOWriteLog(msg$)
 
 ' Output the standard composition and k-factors, zbar, etc
@@ -570,7 +570,7 @@ End If
 Call IOWriteLog(msg$)
 Next i%
 
-msg$ = vbCrLf & " ELEMENT STP-POW BKS-COR   F(x)e   F(x)s      Eo      Ec   Eo/Ec"
+msg$ = vbCrLf & " ELEMENT STP-POW BKS-COR   F(x)e   F(x)s   TakeOff   Eo      Ec   Eo/Ec"
 Call IOWriteLog(msg$)
 
 For i% = 1 To sample(1).LastElm%
@@ -589,6 +589,9 @@ msg$ = msg$ & Format$(Format$(analysis.StdAssignsZAFCors!(6, i%), f84$), a80$)
 ' Emitted to generated ratio intensities for pure element and standard
 msg$ = msg$ & Format$(Format$(analysis.StdAssignsZAFCors!(7, i%), f84$), a80$)
 msg$ = msg$ & Format$(Format$(analysis.StdAssignsZAFCors!(8, i%), f84$), a80$)
+
+' Takeoff angle (assume same as sample)
+msg$ = msg$ & Format$(Format$(sample(1).TakeoffArray!(i%), f82$), a80$)
 
 ' Edge and overvoltage
 msg$ = msg$ & Format$(Format$(analysis.StdAssignsActualKilovolts!(i%), f82$), a80$)

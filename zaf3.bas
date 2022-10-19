@@ -496,7 +496,7 @@ If zaf.il%(i%) > MAXRAY% - 1 Then GoTo 7160    ' skip non-emitters
             ' Load Z correlated relative line weights to improve accuracy (i% = emitter, i1% = matrix, i2% = matrix (fluorescing) xray)
             'flu_yield_emitter! = ZAFFLUGetFluYield(fluor_type2%(i%, i1%, i2%), i1%, zaf)        ' not correct?
             'flu_yield_matrix! = ZAFFLUGetFluYield(fluor_type2%(i%, i1%, i2%), i1%, zaf)        ' not correct?
-            'Call ZAFFLULoadLineWeightsPenepma(i%, i1%, zaf.TOA!, zaf.eO!(i%), zaf.Z%(i%), zaf.il%(i%), zaf.TOA!, zaf.eO!(i1%), zaf.Z%(i1%), i2%, rela_line_wts2!(i%, i1%, i2%), flu_yield_emitter!, flu_yield_matrix!, zaf)
+            'Call ZAFFLULoadLineWeightsPenepma(i%, i1%, zaf.tak!(i%), zaf.eO!(i%), zaf.Z%(i%), zaf.il%(i%), zaf.tak(i1%)!, zaf.eO!(i1%), zaf.Z%(i1%), i2%, rela_line_wts2!(i%, i1%, i2%), flu_yield_emitter!, flu_yield_matrix!, zaf)
             'If ierror Then Exit Sub
             
             End If
