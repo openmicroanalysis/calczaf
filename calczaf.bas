@@ -1130,10 +1130,9 @@ Dim i As Integer
 Dim tmsg As String
 
 ' Load the frame caption
-tmsg$ = "Element List (click element row to edit),"
-tmsg$ = tmsg$ & " calculations based on "
-tmsg$ = tmsg$ & Str$(CalcZAFOldSample(1).takeoff!) & " degrees (TO)"
+tmsg$ = "Element List (click element row to edit)"
 If Not CalcZAFOldSample(1).CombinedConditionsFlag Then
+tmsg$ = tmsg$ & ", calculations based on " & Str$(CalcZAFOldSample(1).takeoff!) & " degrees (TO)"
 tmsg$ = tmsg$ & " and " & Str$(CalcZAFOldSample(1).kilovolts!) & " KeV"
 End If
 FormZAF.FrameElementList.Caption = tmsg$
