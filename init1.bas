@@ -4232,8 +4232,8 @@ nDefault& = 300           ' EIKS (8x30, iSP100, iHP200F) needs 300 msec delay, 8
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 JEOLMoveStageMilliSecDelayAfter& = valid&
-If JEOLMoveStageMilliSecDelayAfter& < 30 Or JEOLMoveStageMilliSecDelayAfter& > 3000 Then
-msg$ = "JEOLMoveStageMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$
+If JEOLMoveStageMilliSecDelayAfter& < 30 Or JEOLMoveStageMilliSecDelayAfter& > 5000 Then
+msg$ = "JEOLMoveStageMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$ & " (must be between 30 and 5000 msec)."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 JEOLMoveStageMilliSecDelayAfter& = nDefault&
 End If
