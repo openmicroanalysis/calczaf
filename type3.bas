@@ -576,10 +576,14 @@ Call IOWriteLog(msg$)
 
 msg$ = "MODE: "
 For i% = ii% To jj%
+If sample(1).CrystalNames$(i%) <> EDS_CRYSTAL$ Then
 If sample(1).InteDiffModes%(i%) = 0 Then
 msg$ = msg$ & Format$("INTE", a80$)
 Else
 msg$ = msg$ & Format$("DIFF", a80$)
+End If
+Else
+msg$ = msg$ & Format$("----", a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)

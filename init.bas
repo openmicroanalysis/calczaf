@@ -2288,11 +2288,12 @@ ElseIf EDSSpectraInterfaceType% = 1 Then
 MaxEnergyArraySize% = 1
 MaxEnergyArrayValue!(1) = 40#       ' JEOL MEC EDS is always 40 keV
 
-MaxThroughputArraySize% = 4         ' 4 time constants (T1, T2, T3, T4) (see JeolMECSpectraGetMaxEnergyThroughput)
+MaxThroughputArraySize% = 5         ' 4 time constants (T1, T2, T3, T4) plus T0 = Count_Rate_Mode (see JeolMECSpectraGetMaxEnergyThroughput)
 MaxThroughputArrayValue!(1) = 1#
 MaxThroughputArrayValue!(2) = 2#
 MaxThroughputArrayValue!(3) = 3#
 MaxThroughputArrayValue!(4) = 4#
+MaxThroughputArrayValue!(5) = 0#
 
 ' Bruker
 ElseIf EDSSpectraInterfaceType% = 2 Then

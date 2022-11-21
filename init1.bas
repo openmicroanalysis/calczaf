@@ -2420,6 +2420,7 @@ Else
 EDSSpectraInterfacePresent% = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+tempEDSSpectraInterfacePresent = EDSSpectraInterfacePresent               ' temporary flag for disabling EDS interface
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "EDSSpectraInterfaceType"

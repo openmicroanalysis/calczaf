@@ -2,6 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/20/22	Minor tweak to EDS data output. Modify Cameca PHA read to handle zero millisec returned.
+
+11/18/22	Small tweak for setting JEOL MEC process time to Use_Count_Rate_Monitor mode. Requires latest MECWrapper.dll.
+		Add warning for JEOL MEC T0 or Thermo (auto) mode when starting EDS quant. Work on tactis USB image read.
+
+11/17/22	Tweak JEOL MEC EDS interface for process time calls.
+v.13.2.2
+
+11/09/22	Modify EDS code to allow user to temporarily skip enabling Thermo EDS interface if desired when loading Acquisition Options dialog.
+
 11/09/22	OK *now* the JEOL MEC EDS interface is working (Kemp).
 
 11/02/22	OK *now* the JEOL MEC EDS interface is working (Ma).
