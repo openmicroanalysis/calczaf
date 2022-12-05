@@ -648,7 +648,7 @@ If astring$ = vbNullString Then GoTo InitParseStringToStringCount2Empty
 ' Dimension for single string to begin with
 ReDim stringarray(1 To 1) As String
 
-' Parse out sub-strings based on comma placement
+' Parse out sub-strings based on tab placement
 n% = 1
 For i% = 1 To Len(astring$)
 If Mid$(astring, i%, 1) <> vbTab$ Then
