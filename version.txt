@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/13/22	Add warning if stoichiometric oxygen image is output and stoichiometric oxygen is not being calculated (Buse).
+
+12/12/22	Fix automated image acquisition time calculation (Goemann).
+
 12/10/22	Fix specified concentrations loading in CalcImage when using calibration curve analysis method (Boro and Neill).
 
 12/08/22	Minor changes to code to check if sample is still combined after editing elements and conditions (Jiang).
