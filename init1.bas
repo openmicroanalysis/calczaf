@@ -4131,7 +4131,11 @@ End If
 ' Unfreeze flag for JEOL 8x30 and iSP100/iHP200 EPMA instruments
 lpAppName$ = "Hardware"
 lpKeyName$ = "JEOLUnfreezeAfterFlag"
-nDefault& = False                           ' assume non JEOL instrument
+If JeolEOSInterfaceType& = 3 Then                ' default true if 8230/8530 or iSP100/iHP200F
+nDefault& = True
+Else
+nDefault& = False
+End If
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 If valid& <> 0 Then
