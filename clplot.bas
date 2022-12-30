@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeCLPlot"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 Dim TotalEnergyRange As Single
@@ -22,7 +22,7 @@ Dim temp1 As Single, temp2 As Single
 ' Define #subset and #points
 tForm.Pesgo1.Subsets = 1
 tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int(255))                      ' blue
-tForm.Pesgo1.Points = sample(1).CLSpectraNumberofChannels%(datarow%)
+tForm.Pesgo1.points = sample(1).CLSpectraNumberofChannels%(datarow%)
 
 ' Display options for Y axis label
 If CLIntensityOption% = 0 Then

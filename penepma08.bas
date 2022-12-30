@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePENEPMA08"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 ' Changed to 3 materials 03/21/2019 to allow three materials to be read without errors, but not saved (controls for third material are not visible)
@@ -5010,18 +5010,18 @@ ierror = False
 On Error GoTo Penepma08PlotSpectraError
 
 Dim tFlag As Boolean
-Dim tpath As String, tstring As String, tFolder As String, tfilename As String
+Dim tpath As String, tstring As String, tfolder As String, tfilename As String
 
 ' Ask user for Penepma.dat
 tFlag = False
 tpath$ = PENEPMA_Path$
 tstring$ = "Browse Folder For Penepma Files"
-tFolder$ = IOBrowseForFolderByPath(tFlag, tpath$, tstring$, FormPENEPMA08_PE)
+tfolder$ = IOBrowseForFolderByPath(tFlag, tpath$, tstring$, FormPENEPMA08_PE)
 If ierror Then Exit Sub
-If Trim$(tFolder$) = vbNullString Then Exit Sub
+If Trim$(tfolder$) = vbNullString Then Exit Sub
 
 ' Load filename and delete dump file
-PENEPMA_Path$ = tFolder$
+PENEPMA_Path$ = tfolder$
 
 ' Load Penepma output (display) files
 PENEPMA_DAT_File$ = PENEPMA_Path$ & "\PENEPMA.DAT"
@@ -5081,7 +5081,7 @@ Exit Sub
 
 Penepma08PlotSpectraNotFound:
 Screen.MousePointer = vbDefault
-msg$ = "The Penepma.dat file was not found in folder " & tFolder$
+msg$ = "The Penepma.dat file was not found in folder " & tfolder$
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08PlotSpectra"
 ierror = True
 Exit Sub

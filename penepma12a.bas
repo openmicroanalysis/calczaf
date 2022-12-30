@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma12A"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 Const MAXTRIES% = 10

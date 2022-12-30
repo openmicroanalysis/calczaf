@@ -391,7 +391,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 Dim TextChanged As Boolean
@@ -421,7 +421,7 @@ End Sub
 
 Private Sub CommandOK_Click()
 If Not DebugMode Then On Error Resume Next
-If TextChanged Then FormGETPTC.CheckUsePTC.Value = vbChecked
+If TextChanged Then FormGETPTC.CheckUsePTC.value = vbChecked
 Call GetPTCSave
 If ierror Then Exit Sub
 Unload FormGETPTC

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMISC5"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -34,7 +34,7 @@ Exit Function
 
 End Function
 
-Function MiscContainsInteger(lchan As Integer, narray() As Integer, tinteger As Integer) As Boolean
+Function MiscContainsInteger(lchan As Integer, narray() As Integer, tInteger As Integer) As Boolean
 ' Check if integer array contains the passed integer
 
 ierror = False
@@ -44,7 +44,7 @@ Dim i As Integer
 
 MiscContainsInteger = False
 For i% = 1 To lchan%
-If narray%(i%) = tinteger% Then MiscContainsInteger = True
+If narray%(i%) = tInteger% Then MiscContainsInteger = True
 Next i%
 
 Exit Function
@@ -660,14 +660,14 @@ Exit Function
 
 End Function
 
-Function MiscConvertLog10(x As Double) As Double
+Function MiscConvertLog10(X As Double) As Double
 ' Calculate a Base 10 log
 
 ierror = False
 On Error GoTo MiscConvertLog10Error
 
-If x# <= 0 Then Exit Function
-MiscConvertLog10# = Log(x#) / Log(10#)
+If X# <= 0 Then Exit Function
+MiscConvertLog10# = Log(X#) / Log(10#)
 Exit Function
 
 ' Errors
@@ -678,16 +678,16 @@ Exit Function
 
 End Function
 
-Function MiscMin(x As Variant, y As Variant) As Variant
+Function MiscMin(X As Variant, Y As Variant) As Variant
 ' Finds the minimum of two values passed
 
 ierror = False
 If ierror Then GoTo MiscMinError
 
-If x > y Then
-      MiscMin = y
+If X > Y Then
+      MiscMin = Y
  Else
-      MiscMin = x
+      MiscMin = X
 End If
 
 Exit Function
@@ -700,16 +700,16 @@ Exit Function
 
 End Function
 
-Function MiscMax(x As Variant, y As Variant) As Variant
+Function MiscMax(X As Variant, Y As Variant) As Variant
 ' Finds the maximum of two values passed
 
 ierror = False
 If ierror Then GoTo MiscMaxError
 
-If x < y Then
-    MiscMax = y
+If X < Y Then
+    MiscMax = Y
  Else
-    MiscMax = x
+    MiscMax = X
 End If
 
 Exit Function
@@ -742,7 +742,7 @@ Exit Function
 
 End Function
 
-Sub MiscFindClosestMatch(target As Single, np As Long, sarray() As Single, index As Long)
+Sub MiscFindClosestMatch(target As Single, np As Long, sarray() As Single, Index As Long)
 ' Returns the array index to the closest value in an array to the passed target
 
 ierror = False
@@ -751,14 +751,14 @@ On Error GoTo MiscFindClosestMatchError
 Dim n As Long
 Dim diff As Single
 
-index& = 0
+Index& = 0
 diff! = MAXSINGLE!
 
 ' Find closest match to target in array
 For n& = 1 To np&
   If Abs(target! - sarray!(n&)) < diff! Then
     diff! = Abs(target! - sarray(n&))
-    index& = n&
+    Index& = n&
   End If
 Next
 

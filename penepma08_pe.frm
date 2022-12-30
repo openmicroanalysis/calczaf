@@ -1707,7 +1707,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 Dim ProductionIndex As Integer
@@ -1948,12 +1948,12 @@ If ierror Then Exit Sub
 
 End Sub
 
-Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
 Dim fX As Double, fY As Double      ' last mouse position
 
 ' Get mouse position in data units
-Call MiscPlotTrack(Int(1), x!, y!, fX#, fY#, FormPENEPMA08_PE.Pesgo1)
+Call MiscPlotTrack(Int(1), X!, Y!, fX#, fY#, FormPENEPMA08_PE.Pesgo1)
 If ierror Then Exit Sub
    
 ' Format graph mouse position

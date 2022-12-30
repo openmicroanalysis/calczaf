@@ -83,7 +83,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 Private Sub CommandClose_Click()
@@ -136,13 +136,13 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
 Dim astring As String
 Dim fX As Double, fY As Double      ' last mouse position
 
 ' Get mouse position in data units
-Call MiscPlotTrack(Int(1), x!, y!, fX#, fY#, FormCLDISPLAY.Pesgo1)
+Call MiscPlotTrack(Int(1), X!, Y!, fX#, fY#, FormCLDISPLAY.Pesgo1)
 If ierror Then Exit Sub
    
 ' Format graph mouse position

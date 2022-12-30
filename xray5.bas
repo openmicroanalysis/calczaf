@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeXray5"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -70,9 +70,9 @@ FormXRAY.TextKev.Text = Str$(keV!)
 
 ' Load absorption edges checkbox
 If DefaultAbsorptionEdgeDisplay% = 1 Then
-FormXRAY.CheckAbsorptionEdges.Value = vbChecked
+FormXRAY.CheckAbsorptionEdges.value = vbChecked
 Else
-FormXRAY.CheckAbsorptionEdges.Value = vbUnchecked
+FormXRAY.CheckAbsorptionEdges.value = vbUnchecked
 End If
 
 ' Set "Graph Selected" button ebale
@@ -327,7 +327,7 @@ xstop! = Val(FormXRAY.TextStop.Text)
 End If
 
 ' Load x-ray absorption edges flag
-If FormXRAY.CheckAbsorptionEdges.Value = vbChecked Then
+If FormXRAY.CheckAbsorptionEdges.value = vbChecked Then
 method% = 1
 Else
 method% = 0

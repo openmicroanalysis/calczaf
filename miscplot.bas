@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscPlot"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 Sub MiscPlotGetSymbols_PE(nsets As Integer, tPesgo As Pesgo)
@@ -62,7 +62,7 @@ Exit Sub
 
 End Sub
 
-Sub MiscPlotTrack(mode As Integer, x As Single, y As Single, fX As Double, fY As Double, tGraph As Pesgo)
+Sub MiscPlotTrack(mode As Integer, X As Single, Y As Single, fX As Double, fY As Double, tGraph As Pesgo)
 ' Convert track data for Pro Essentials
 '  mode = 0 for entire graph control
 '  mode = 1 for just the plot area
@@ -141,7 +141,7 @@ tGraph.XAxisLabel = vbNullString
 tGraph.YAxisLabel = vbNullString
 
 tGraph.Subsets = 1
-tGraph.Points = 1
+tGraph.points = 1
 tGraph.xdata(0, 0) = 0                          ' for empty subset
 tGraph.ydata(0, 0) = 0
 

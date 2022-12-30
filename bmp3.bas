@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeBMP3"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -15,7 +15,7 @@ Private Const SRCCOPY& = &HCC0020 ' (DWORD) dest = source
 Private Const CF_BITMAP& = 2
 
 ' GDI functions
-Private Declare Function BitBlt Lib "gdi32.dll" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
+Private Declare Function BitBlt Lib "gdi32.dll" (ByVal hDestDC As Long, ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
 
 ' Creates a memory DC
 Private Declare Function CreateCompatibleDC Lib "gdi32.dll" (ByVal hDC As Long) As Long
@@ -266,8 +266,8 @@ lhDC = CreateCompatibleDC(objFrom.hDC)
     
 ' Create a bitmap compatible with the object we are copying from
 If (lhDC <> 0) Then
-lWidthPixels = objFrom.ScaleX(objFrom.ScaleWidth, objFrom.ScaleMode, vbPixels)
-lHeightPixels = objFrom.ScaleY(objFrom.ScaleHeight, objFrom.ScaleMode, vbPixels)
+lWidthPixels = objFrom.scaleX(objFrom.ScaleWidth, objFrom.ScaleMode, vbPixels)
+lHeightPixels = objFrom.scaleY(objFrom.ScaleHeight, objFrom.ScaleMode, vbPixels)
 lhBMP = CreateCompatibleBitmap(objFrom.hDC, lWidthPixels, lHeightPixels)
     
     ' Select the bitmap into the DC we have created, and store the old bitmap that was there

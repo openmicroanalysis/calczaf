@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeADDSTD"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -461,7 +461,7 @@ Dim tMaterialTypes() As String
 ' Load material types that are checked
 tt% = 0
 For n% = 1 To MAXMATERIALTYPES%
-If FormADDSTD.CheckMaterialType(n% - 1).Value = vbChecked Then
+If FormADDSTD.CheckMaterialType(n% - 1).value = vbChecked Then
 tt% = tt% + 1
 ReDim Preserve tMaterialTypes(1 To tt%) As String
 tMaterialTypes$(tt%) = FormADDSTD.CheckMaterialType(n% - 1).Caption

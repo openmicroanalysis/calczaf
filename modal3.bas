@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMODAL3"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 Dim ModalAnalysis As TypeAnalysis

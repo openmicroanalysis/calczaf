@@ -141,7 +141,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 Private Const clrLinkActive& = vbBlue
@@ -167,7 +167,7 @@ End If
 tmsg$ = tmsg$ & "For Windows XP/Vista/Win7/Win8/Win10" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "Written by John J. Donovan, Probe Software, Inc." & vbCrLf
-tmsg$ = tmsg$ & "(c) Copyright 1995-2022, All Rights Reserved" & vbCrLf & vbCrLf
+tmsg$ = tmsg$ & "(c) Copyright 1995-2023, All Rights Reserved" & vbCrLf & vbCrLf
 tmsg$ = tmsg$ & "Special thanks to Paul Carpenter for his tireless testing and many helpful discussions"
 FormABOUT.LabelAboutTitle.Caption = tmsg$
 
@@ -241,7 +241,7 @@ Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Label1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Label1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
 ' When the label is clicked, change the color to indicate it is hot
 If FormABOUT.Label1.ForeColor = clrLinkActive& Then
@@ -250,7 +250,7 @@ FormABOUT.Label1.Refresh
 End If
 End Sub
 
-Private Sub Label1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Label1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Not DebugMode Then On Error Resume Next
 ' Mouse released, so restore the label to clrLinkActive&
 If FormABOUT.Label1.ForeColor = clrLinkHot& Then

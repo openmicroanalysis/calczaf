@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeLEAST"
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -561,14 +561,14 @@ Exit Sub
 
 End Sub
 
-Sub LeastSplineInterpolate(npts%, axdata() As Single, aydata() As Single, ycoeff() As Double, x As Single, y As Single)
+Sub LeastSplineInterpolate(npts%, axdata() As Single, aydata() As Single, ycoeff() As Double, X As Single, Y As Single)
 ' Return the y-value for the passed x value
 
 ierror = False
 On Error GoTo LeastSplineInterpolateError
 
 ' Return the interpolated value
-Call SplineInterpolate(axdata!(), aydata!(), ycoeff#(), CLng(npts%), x!, y!)
+Call SplineInterpolate(axdata!(), aydata!(), ycoeff#(), CLng(npts%), X!, Y!)
 If ierror Then Exit Sub
 
 Exit Sub
@@ -946,7 +946,7 @@ Exit Sub
 
 End Sub
 
-Sub LeastGauss(kmax As Integer, x() As Double, y() As Double, a() As Double)
+Sub LeastGauss(kmax As Integer, X() As Double, Y() As Double, a() As Double)
 ' This routine solves a set of kmax simultaneous algebraic equations of the form A*x = y.
 ' The method used is gaussian elimination with back row substitution.  A full search for
 ' pivot elements is done and row and column interchange is done.
@@ -968,7 +968,7 @@ ReDim c(1 To MAXCOEFF9%) As Double
 
 ' Zero the returned coefficients array
 For i% = 1 To MAXCOEFF9%
-x#(i%) = 0#
+X#(i%) = 0#
 Next i%
 
 ' Variable "ktemp%(i%)" keeps track of column interchanges
@@ -1002,9 +1002,9 @@ a#(i%, ii%) = a#(ipiv%, ii%)
 a#(ipiv%, ii%) = temp#
 Next ii%
 
-temp# = y#(i%)
-y#(i%) = y#(ipiv%)
-y#(ipiv%) = temp#
+temp# = Y#(i%)
+Y#(i%) = Y#(ipiv%)
+Y#(ipiv%) = temp#
 End If
 
 If jpiv% <> i% Then
@@ -1024,7 +1024,7 @@ For ii% = i% + 1 To kmax%
 'If Abs(a#(i%, i%)) < 1E-100 Then GoTo LeastGaussSingularMatrix
 If Abs(a#(i%, i%)) < TOOSMALL# Then GoTo LeastGaussSingularMatrix
 fac# = a#(ii%, i%) / a#(i%, i%)
-y#(ii%) = y#(ii%) - fac# * y#(i%)
+Y#(ii%) = Y#(ii%) - fac# * Y#(i%)
 a#(ii%, i%) = 0#
 
 For jj% = i% + 1 To kmax%
@@ -1039,12 +1039,12 @@ Next ii%
 ' Check for bad matrix
 'If Abs(a#(i%, i%)) < 1E-100 Then GoTo LeastGaussSingularMatrix
 If Abs(a#(i%, i%)) < TOOSMALL# Then GoTo LeastGaussSingularMatrix
-y#(i%) = y#(i%) / a#(i%, i%)
+Y#(i%) = Y#(i%) / a#(i%, i%)
 a#(i%, i%) = 1#
 Next i%
 
 ' Do the back substitution
-c#(kmax%) = y#(kmax%)
+c#(kmax%) = Y#(kmax%)
 For i% = 1 To kmax% - 1
 j% = kmax% - i%
 temp# = 0#
@@ -1053,13 +1053,13 @@ For ii% = j% + 1 To kmax%
 temp# = temp# + a#(j%, ii%) * c#(ii%)
 Next ii%
 
-c#(j%) = y#(j%) - temp#
+c#(j%) = Y#(j%) - temp#
 Next i%
 
 ' Put everything back in the correct order
 For i% = 1 To kmax%
 ii% = ktemp%(i%)
-x#(ii%) = c#(i%)
+X#(ii%) = c#(i%)
 Next i%
 
 Exit Sub

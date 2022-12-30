@@ -217,7 +217,7 @@ Begin VB.Form FormXRAY
       End
       Begin VB.Label Label10 
          Alignment       =   2  'Center
-         Caption         =   $"XRAY2.frx":0000
+         Caption         =   $"Xray2.frx":0000
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -394,7 +394,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2022 by John J. Donovan
+' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
 Private Sub ComboElement_Change()
