@@ -699,7 +699,8 @@ End If
 
 ' Calculate matrix correction for unknown interference counts (use Z, A and F since F for K-alpha lines for beta-alpha fluorescence will be correct)
 If CorrectionFlag% = 0 Then
-If analysis.UnkZAFCors!(4, chan%) <> 0# Then temp! = analysis.StdZAFCors!(4, intfstd%, chan%) / analysis.UnkZAFCors!(4, chan%)
+If analysis.UnkZAFCors!(4, chan%) <> 0# Then temp! = analysis.StdZAFCors!(4, intfstd%, chan%) / analysis.UnkZAFCors!(4, chan%)     ' use full matrix correction
+'If analysis.UnkZAFCors!(1, chan%) <> 0# Then temp! = analysis.StdZAFCors!(1, intfstd%, chan%) / analysis.UnkZAFCors!(1, chan%)     ' use only absorption correction
 ElseIf CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
 If analysis.UnkBetas!(chan%) <> 0# Then temp! = analysis.StdBetas!(intfstd%, chan%) / analysis.UnkBetas!(chan%)
 ElseIf CorrectionFlag% = MAXCORRECTION% Then

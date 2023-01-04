@@ -895,12 +895,12 @@ End If
 ' Calculate matrix correction for standard interference drift counts (use full correction since fluorescence is same for Ka lines)
 If CorrectionFlag% = 0 Then
 If analysis.StdZAFCors!(4, assignstd%, chan%) <= 0# Then GoTo UpdateStdInterferencesBadStdCor
-temp! = analysis.StdZAFCors!(4, intfstd%, chan%) / analysis.StdZAFCors!(4, assignstd%, chan%)
-End If
-        
-If CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
+temp! = analysis.StdZAFCors!(4, intfstd%, chan%) / analysis.StdZAFCors!(4, assignstd%, chan%)       ' using full matrix correction
+'temp! = analysis.StdZAFCors!(1, intfstd%, chan%) / analysis.StdZAFCors!(1, assignstd%, chan%)       ' use only absorption correction
+ElseIf CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
 If analysis.StdBetas!(assignstd%, chan%) <= 0# Then GoTo UpdateStdInterferencesBadStdCor
 temp! = analysis.StdBetas!(intfstd%, chan%) / analysis.StdBetas!(assignstd%, chan%)
+ElseIf CorrectionFlag% = MAXCORRECTION% Then
 End If
 
 ' Correct interfering counts on standard for matrix correction

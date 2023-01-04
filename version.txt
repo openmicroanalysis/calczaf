@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/01/23	Add PHA bias/gain values to PHA plot.
+
 12/28/22	Tweak combine sample codes to force combined conditions even if conditions are the same, since even
 v. 13.2.3	if the specified beam currents are the same, the actual measured beam currents might be slightly 
 		different which will affect the beam drift normalization (Boroughs).
