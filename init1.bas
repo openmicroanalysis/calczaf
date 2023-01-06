@@ -2084,6 +2084,44 @@ SpecifiedAPFMaximumLineEnergy! = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+lpAppName$ = "Software"
+lpKeyName$ = "VolatileSelfCalibrationAcquisitionFlag"
+nDefault& = 0        ' self TDI acquisition off
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+VolatileSelfCalibrationAcquisitionFlag = CInt(valid&)
+If VolatileSelfCalibrationAcquisitionFlag% < 0 Or VolatileSelfCalibrationAcquisitionFlag% > 1 Then
+msg$ = "VolatileSelfCalibrationAcquisitionFlag keyword value is invalid in " & ProbeWinINIFile$ & ", (must be 0 or 1)"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
+VolatileSelfCalibrationAcquisitionFlag% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Software"
+lpKeyName$ = "AcquireVolatileSelfStandardIntensitiesFlag"
+nDefault& = False   ' acquire TDI on standards off
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+AcquireVolatileSelfStandardIntensitiesFlag = True
+Else
+AcquireVolatileSelfStandardIntensitiesFlag = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Software"
+lpKeyName$ = "VolatileCountIntervals"
+nDefault& = DEFAULTVOLATILEINTERVALS%
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+VolatileCountIntervals% = CInt(valid&)
+If VolatileCountIntervals% < 2 Or VolatileCountIntervals% > MAXVOLATILE% Then
+msg$ = "VolatileCountIntervals keyword value is invalid in " & ProbeWinINIFile$ & ", (must be between 2 and " & Format$(MAXVOLATILE%) & ")"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
+VolatileCountIntervals% = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors
@@ -5709,12 +5747,12 @@ nSize& = Len(lpReturnString$)
 ' Standards section
 lpAppName$ = "Standards"
 lpKeyName$ = "IncrementXForAdditionalPoints"
-nDefault& = 0
+nDefault& = 5
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 IncrementXForAdditionalPoints% = valid&
-If Abs(IncrementXForAdditionalPoints%) < 0 Or Abs(IncrementXForAdditionalPoints%) > 100 Then
-msg$ = "IncrementXForAdditionalPoints keyword value is out of range in " & ProbeWinINIFile$
+If Abs(IncrementXForAdditionalPoints%) > 100 Then
+msg$ = "IncrementXForAdditionalPoints keyword value is out of range in " & ProbeWinINIFile$ & ", (must be between -100 and 100 microns)"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIStandards"
 IncrementXForAdditionalPoints% = nDefault&
 End If
@@ -5722,12 +5760,12 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Standards"
 lpKeyName$ = "IncrementYForReStandardizations"
-nDefault& = 0
+nDefault& = 6
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 IncrementYForReStandardizations% = valid&
-If Abs(IncrementYForReStandardizations%) < 0 Or Abs(IncrementYForReStandardizations%) > 100 Then
-msg$ = "IncrementYForReStandardizations keyword value is out of range in " & ProbeWinINIFile$
+If Abs(IncrementYForReStandardizations%) > 100 Then
+msg$ = "IncrementYForReStandardizations keyword value is out of range in " & ProbeWinINIFile$ & ", (must be between -100 and 100 microns)"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIStandards"
 IncrementYForReStandardizations% = nDefault&
 End If

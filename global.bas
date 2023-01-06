@@ -3066,4 +3066,3 @@ Global DisableLightControl As Boolean       ' false = normal light control, true
 Global tempEDSSpectraInterfacePresent As Integer   ' temporary flag for EDSSpectraInterfacePresent
 
 Global JEOLCountSpectroMilliSecDelayAfter As Long
-

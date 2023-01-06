@@ -3231,9 +3231,11 @@ If InterfaceType% = 5 Then LimitToLimit2! = 10   ' SX100/SXFive (use SX100Veloci
 AutomationReStandardizationInterval = 0.25     ' in days (6 hours)
 
 ' Force TDI acquisition and quickscan flags to off
-VolatileSelfCalibrationAcquisitionFlag = False
+'VolatileSelfCalibrationAcquisitionFlag% = 0                ' do not initialize here (only in INI)
+'AcquireVolatileSelfStandardIntensitiesFlag = False         ' do not initialize here (only in INI)
+'VolatileCountIntervals% = DEFAULTVOLATILEINTERVALS%        ' do not initialize here (only in INI)
+
 VolatileAssignedCalibrationAcquisitionFlag = False
-VolatileCountIntervals% = DEFAULTVOLATILEINTERVALS%
 QuickWaveScanAcquisitionFlag = False
 If QuickscanSpeed! = 0# Then QuickscanSpeed! = 10#          ' assume 10% default
 
