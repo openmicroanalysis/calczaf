@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/15/23	New compile under Win 10.
+
+01/10/23	Improve time estimates for acquisition/automation.
+
+01/04/23	Small tweak to scan plot titles again.  Fix error if TDI flag is on in demo mode for PHA scans.
+
 01/05/23	Add some TDI parameters to Probewin.ini file (Boroughs).
 
 01/04/23	Small tweak to scan plot titles.
