@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/18/23	Tweak acquisition time estimates for simulation mode. Modify tool tip help.
+
 01/15/23	New compile under Win 10.
 
 01/10/23	Improve time estimates for acquisition/automation.

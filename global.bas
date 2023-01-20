@@ -29,7 +29,7 @@ Global Const BEAMMODE_SET_TIME! = 1#
 
 Global Const PENEPMA_MATERIAL_TIME# = 4#         ' in seconds to init Penepma for demo EDS (running material.exe, per compositional element)
 Global Const PENEPMA_STARTUP_TIME# = 15#         ' in seconds to init Penepma for demo EDS (starting penepma.exe)
-Global Const PENEPMA_WDS_SYNTHESIS_TIME# = 25#   ' in seconds for demo WDS spectrum synthesis (per analyzed element)
+Global Const PENEPMA_WDS_SYNTHESIS_TIME# = 6#    ' in seconds for demo WDS spectrum synthesis (per analyzed element wo polygonization modeling)
 Global Const BOUNDARYNUMBEROFPOINTS& = 100       ' number of boaundary points for cluster digitize
 
 ' Special folders for system
@@ -3066,3 +3066,6 @@ Global DisableLightControl As Boolean       ' false = normal light control, true
 Global tempEDSSpectraInterfacePresent As Integer   ' temporary flag for EDSSpectraInterfacePresent
 
 Global JEOLCountSpectroMilliSecDelayAfter As Long
+
+Global SkipPolygonizationModeling As Boolean
+
