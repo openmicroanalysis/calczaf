@@ -2605,11 +2605,11 @@ zaf.coating_absorbs_std!(row%, i%) = 1#
 If StandardCoatingFlag%(row%) = 1 Then
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 
-' Load input parameters for coating calculations
+' Load input parameters for coating calculations for standard samples
 stdsample(1).CoatingDensity! = StandardCoatingDensity!(row%)
 stdsample(1).CoatingElement% = StandardCoatingElement%(row%)
 stdsample(1).CoatingThickness! = StandardCoatingThickness!(row%)
-stdsample(1).CoatingSinThickness! = MathCalculateSinThickness(StandardCoatingThickness!(row%), DefaultTakeOff!)
+stdsample(1).CoatingSinThickness! = MathCalculateSinThickness(StandardCoatingThickness!(row%), stdsample(1).TakeoffArray!(i%))
 
 ' Calculate coating correction for x-ray transmission
 If UseConductiveCoatingCorrectionForXrayTransmission Then
@@ -3299,12 +3299,12 @@ Exit Sub
 End Sub
 
 Sub ZAFSetZAF(sample() As TypeSample)
-' This routine initializes and sets up ZAF correction parameters, and loads elemental data for the (unknown) sample.
+' This routine initializes and sets up ZAF correction parameters for primary intensity calculations, and loads elemental data for the (unknown) sample.
 
 ierror = False
 On Error GoTo ZAFSetZAFError
 
-Dim i As Integer
+Dim i As Integer, ip As Integer
 Dim tt As Single, m9 As Single
 
 ReDim p2(1 To MAXCHAN1%) As Single
@@ -3406,6 +3406,15 @@ zaf.coating_trans_smp!(i%) = 1#
 zaf.coating_absorbs_smp!(i%) = 1#
 If sample(1).CoatingFlag% = 1 Then
 If zaf.il%(i%) <= MAXRAY% - 1 Then
+
+' Load input parameters for coating calculations for passed sample if it is a standard (coating parameters for standards are not saved to Sample database table!!!!)
+If sample(1).Type% = 1 Then
+ip% = IPOS2(NumberofStandards%, sample(1).StdAssigns%(i%), StandardNumbers%())
+sample(1).CoatingDensity! = StandardCoatingDensity!(ip%)
+sample(1).CoatingElement% = StandardCoatingElement%(ip%)
+sample(1).CoatingThickness! = StandardCoatingThickness!(ip%)
+sample(1).CoatingSinThickness! = MathCalculateSinThickness(StandardCoatingThickness!(ip%), sample(1).TakeoffArray!(i%))
+End If
 
 If UseConductiveCoatingCorrectionForXrayTransmission Then
 Call ConvertCalculateCoatingXrayTransmission(zaf.coating_trans_smp!(i%), i%, sample())

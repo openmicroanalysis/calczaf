@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/23/23	Modify update dead time code (again!).  Disable Integrate button in Model Backgrounds if more than one wavescan 
+		is loaded.
+		
+		Fix coating thickness bug in ZAFSetZAF if passed sample is a standard (Starykh).
+
 01/22/23	Modify Model Background form and code to allow user to select different wavescans
 		for background fit, if more than one wavescan loaded.
 		
