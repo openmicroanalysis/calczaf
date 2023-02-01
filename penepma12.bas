@@ -2741,6 +2741,11 @@ sample(1).Datarows% = 1   ' always a single data point
 sample(1).GoodDataRows% = 1
 sample(1).LineStatus(1) = True      ' force status flag always true (good data point)
 sample(1).AtomicPercentFlag% = True
+sample(1).OxideOrElemental% = 2     ' assume elemental
+
+' Load dummy standard number into standard array (for ZAFSetZAF)
+NumberofStandards% = 1
+StandardNumbers%(1) = sample(1).number%
 
 ' Set sample standard assignments so that ZAF and K-factors get loaded
 For i% = 1 To sample(1).LastElm%

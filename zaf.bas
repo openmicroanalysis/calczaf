@@ -3410,6 +3410,7 @@ If zaf.il%(i%) <= MAXRAY% - 1 Then
 ' Load input parameters for coating calculations for passed sample if it is a standard (coating parameters for standards are not saved to Sample database table!!!!)
 If sample(1).Type% = 1 Then
 ip% = IPOS2(NumberofStandards%, sample(1).StdAssigns%(i%), StandardNumbers%())
+If ip% = 0 Then GoTo ZAFSetZAFStandardNotFound
 sample(1).CoatingDensity! = StandardCoatingDensity!(ip%)
 sample(1).CoatingElement% = StandardCoatingElement%(ip%)
 sample(1).CoatingThickness! = StandardCoatingThickness!(ip%)
@@ -3519,6 +3520,12 @@ Exit Sub
 
 ZAFSetZAFBadAtomicWeight:
 msg$ = "Element " & sample(1).Elsyms$(i%) & " has no atomic weight"
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
+ierror = True
+Exit Sub
+
+ZAFSetZAFStandardNotFound:
+msg$ = "Sample is a standard, but standard " & Format$(sample(1).number%) & ", " & sample(1).Name$ & " was not found in the standard arrays.  Please add this standard to the standard list and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
 ierror = True
 Exit Sub
