@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/03/23	Bump version to force update to CalcZAF for changes in ZAFSetZAF code.
+v. 13.2.5
+
 01/30/23	Minor improvements to EDS OEM export features (von der Handt).
 
 01/23/23	Modify update dead time code (again!).  Disable Integrate button in Model Backgrounds if more than one wavescan 
