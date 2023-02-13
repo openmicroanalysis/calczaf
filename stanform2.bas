@@ -3,7 +3,7 @@ Attribute VB_Name = "CodeSTANFORM2"
 Option Explicit
 
 Const MAXCONTINUUM% = 5
-Const MAXZBAR% = 30
+Const MAXZBAR% = 10
 
 Sub StanFormCalculateZbars(maszbar As Single, zedzbar As Single, sample() As TypeSample)
 ' Calculate alternative z-bars
@@ -57,9 +57,9 @@ atmfrac!(i%) = AtPercents!(i%) / 100#
 atmzbar! = atmzbar! + atmfrac!(i%) * sample(1).AtomicNums%(i%)
 Next i%
 
-' Calculate various mass and zed fractions with range of exponents
+' Calculate various mass and zed fractions with range of exponents (0.5 to 1.5)
 For j% = 1 To MAXZBAR%
-aexp! = 1.5 + 0.1 * ((j% - 1) - MAXZBAR% / 2#)
+aexp! = 0.5 + 0.1 * (j% - 1)
 
 ' Mass fractions
 Call StanFormCalculateZbarFrac(Int(1), sample(1).LastChan%, atmfrac!(), sample(1).AtomicNums%(), atemp1%(), sample(1).AtomicWts!(), aexp!, masfrac!(), maszbar!)
@@ -77,7 +77,7 @@ For i% = 1 To sample(1).LastChan%
 zedfracs!(j%, i%) = zedfrac!(i%)
 Next i%
 
-' Z-bars
+' Z-bars (exponent 0.7 is index 3)
 masaexps!(j%) = aexp!
 zedzexps!(j%) = aexp!
 masabars!(j%) = maszbar!
@@ -165,25 +165,25 @@ Call TypeGetRange(Int(2), n%, ii%, jj%, sample())
 If ierror Then Exit Sub
 If ii% > sample(1).LastChan% Then Exit Do
 
-msg$ = vbCrLf & "ELEM: "
+msg$ = vbCrLf & "ELEMENT:  "
 For i% = ii% To jj%
 msg$ = msg$ & Format$(sample(1).Elsyup$(i%), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = "CONC: "
+msg$ = "CONC FRAC:"
 For i% = ii% To jj%
 msg$ = msg$ & Format$(Format$(sample(1).ElmPercents!(i%) / 100#, f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = "ELEC: "
+msg$ = vbCrLf & "ZFRAC 1.0:"
 For i% = ii% To jj%
 msg$ = msg$ & Format$(Format$(zedfrac!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = "%DIF: "
+msg$ = "C/Z %DIF: "
 For i% = ii% To jj%
 temp! = 0#
 If sample(1).ElmPercents!(i%) <> 0# Then
@@ -193,19 +193,35 @@ msg$ = msg$ & Format$(Format$(temp!, f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = "ATOM: "
+msg$ = vbCrLf & "ZFRAC 0.7:"
+For i% = ii% To jj%
+msg$ = msg$ & Format$(Format$(zedfracs!(3, i%), f84$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "C/Z %DIF: "
+For i% = ii% To jj%
+temp! = 0#
+If sample(1).ElmPercents!(i%) <> 0# Then
+temp! = 100# * (zedfracs!(3, i%) - (sample(1).ElmPercents!(i%) / 100#)) / (sample(1).ElmPercents!(i%) / 100#)
+End If
+msg$ = msg$ & Format$(Format$(temp!, f84$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = vbCrLf & "ATOM FRAC:"
 For i% = ii% To jj%
 msg$ = msg$ & Format$(Format$(atmfrac!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = "ELAS: "
+msg$ = "ELAS FRAC:"
 For i% = ii% To jj%
 msg$ = msg$ & Format$(Format$(elafrac!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = "A/Z : "
+msg$ = "A/Z Ratio:"
 For i% = ii% To jj%
 msg$ = msg$ & Format$(Format$(sample(1).AtomicWts!(i%) / sample(1).AtomicNums%(i%), f84$), a80$)
 Next i%
@@ -214,9 +230,15 @@ Call IOWriteLog(msg$)
 Loop
 
 Call IOWriteLog(vbNullString)
-Call IOWriteLog("Zbar (Mass/Electron fraction Zbar % difference) = " & MiscAutoFormat$((maszbar! - zedzbar) / maszbar! * 100#))
 Call IOWriteLog("Zbar (Mass fraction) = " & MiscAutoFormat$(maszbar!))
-Call IOWriteLog("Zbar (Electron fraction) = " & MiscAutoFormat$(zedzbar!))
+Call IOWriteLog("Zbar (Electron (Z^1.0) fraction) = " & MiscAutoFormat$(zedzbar!))
+Call IOWriteLog("Zbar (Mass/Electron (Z^1.0) fraction Zbar % difference) = " & MiscAutoFormat$((maszbar! - zedzbar!) / maszbar! * 100#))
+
+Call IOWriteLog(vbNullString)
+Call IOWriteLog("Zbar (Electron (Z^0.7) fraction) = " & MiscAutoFormat$(zedzbars!(3)))
+Call IOWriteLog("Zbar (Mass/Electron (Z^0.7) fraction Zbar % difference) = " & MiscAutoFormat$((maszbar! - zedzbars!(3)) / maszbar! * 100#))
+
+Call IOWriteLog(vbNullString)
 Call IOWriteLog("Zbar (Elastic fraction) = " & MiscAutoFormat$(elazbar!))
 Call IOWriteLog("Zbar (Atomic fraction) = " & MiscAutoFormat$(atmzbar!))
 
@@ -224,6 +246,7 @@ Call IOWriteLog(vbNullString)
 Call IOWriteLog("Zbar (Saldick and Allen, for backscatter) = " & MiscAutoFormat$(salzbar!))
 Call IOWriteLog("Zbar (Joyet et al.) = " & MiscAutoFormat$(joyzbar!))
 Call IOWriteLog("Zbar (Everhart) = " & MiscAutoFormat$(evezbar!))
+
 Call IOWriteLog(vbNullString)
 Call IOWriteLog("Zbar (Donovan Z^0.5) = " & MiscAutoFormat$(donozbar!))
 Call IOWriteLog("Zbar (Donovan Z^0.667, Yukawa Potential, Z^2/3) = " & MiscAutoFormat$(donob667zbar!))
