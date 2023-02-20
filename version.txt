@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/17/23	Modify Thermo code to add 2nd attempt for socket time out errors (Boroughs).
+
 02/11/23	Fix bug in Locock amphibole and garnet output if using duplicate elements in aggregate mode (Locock).
 v. 13.2.6
 		Modify Alternative Zbar output in Standard.
