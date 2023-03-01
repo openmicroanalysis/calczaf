@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/25/23	Modify JEOL MEC EDS code to warn user about closing EDS center window when acquiring EDS data
+		in Probe for EPMA (Hatton and Ma).
+		
+		Add output of 2nd beam currents and stats in Analyze! windows for raw data output (Ruth).
+
 02/17/23	Modify Thermo code to add 2nd attempt for socket time out errors (Boroughs).
 
 02/11/23	Fix bug in Locock amphibole and garnet output if using duplicate elements in aggregate mode (Locock).
