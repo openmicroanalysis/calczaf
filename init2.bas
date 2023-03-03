@@ -238,8 +238,11 @@ analysis.CalculatedOxygen! = 0#
 analysis.ExcessOxygen! = 0#
 analysis.zbar! = 0#
 analysis.AtomicWeight! = 0#
+
 analysis.OxygenFromHalogens! = 0#
 analysis.HalogenCorrectedOxygen! = 0#
+analysis.OxygenFromSulfur! = 0#
+analysis.SulfurCorrectedOxygen! = 0#
 analysis.ChargeBalance! = 0#
 analysis.FeCharge! = 0#
 

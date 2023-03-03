@@ -3001,6 +3001,9 @@ FaradayCurrentFormat$ = f83$
 ' Default halogen correction flag
 UseOxygenFromHalogensCorrectionFlag = False
 
+' Default sulfur correction flag
+UseOxygenFromSulfurCorrectionFlag = False
+
 ' Process synchronization interval
 ProcessInterval! = 1#   ' seconds
 RealTimePauseAutomation = False

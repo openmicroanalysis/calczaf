@@ -282,6 +282,24 @@ Begin VB.Form FormZAFOPT
       TabIndex        =   0
       Top             =   120
       Width           =   8415
+      Begin VB.CheckBox CheckUseOxygenFromSulfurCorrection 
+         Caption         =   "Use Oxygen From Sulfur Correction"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   3360
+         TabIndex        =   62
+         ToolTipText     =   "Subtract oxygen equivalent of sulfur from oxygen (must be negative charge valence)"
+         Top             =   960
+         Width           =   3255
+      End
       Begin VB.Frame Frame7 
          BorderStyle     =   0  'None
          Height          =   615
@@ -400,7 +418,7 @@ Begin VB.Form FormZAFOPT
             Index           =   1
             Left            =   1200
             TabIndex        =   55
-            ToolTipText     =   $"Zafopt.frx":0000
+            ToolTipText     =   $"ZAFOPT.frx":0000
             Top             =   120
             Width           =   1575
          End
@@ -489,7 +507,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"Zafopt.frx":0093
+         ToolTipText     =   $"ZAFOPT.frx":0093
          Top             =   3120
          Width           =   4095
       End
@@ -564,7 +582,7 @@ Begin VB.Form FormZAFOPT
          TabIndex        =   19
          ToolTipText     =   "Subtract oxygen equivalent of halogens from oxygen"
          Top             =   960
-         Width           =   3855
+         Width           =   3375
       End
       Begin VB.CheckBox CheckCalculateElectronandXrayRanges 
          Caption         =   "Calculate Electron and Xray Ranges"
@@ -839,8 +857,8 @@ Option Explicit
 
 Private Sub CheckFerrousFerricCalculation_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckFerrousFerricCalculation.value = vbChecked Then
-If FormZAFOPT.OptionFerrousFerricOption(0).value = True Then
+If FormZAFOPT.CheckFerrousFerricCalculation.Value = vbChecked Then
+If FormZAFOPT.OptionFerrousFerricOption(0).Value = True Then
 FormZAFOPT.TextFerrousFerricTotalCations.Enabled = True
 FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
 Else
@@ -855,7 +873,7 @@ End Sub
 
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub
@@ -886,7 +904,7 @@ End Sub
 
 Private Sub OptionFerrousFerricOption_Click(Index As Integer)
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.OptionFerrousFerricOption(0).value = True Then
+If FormZAFOPT.OptionFerrousFerricOption(0).Value = True Then
 FormZAFOPT.TextFerrousFerricTotalCations.Enabled = True
 FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
 Else

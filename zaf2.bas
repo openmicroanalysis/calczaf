@@ -40,6 +40,8 @@ analysis.zbar! = 0#
 analysis.AtomicWeight! = 0#
 analysis.OxygenFromHalogens! = 0#
 analysis.HalogenCorrectedOxygen! = 0#
+analysis.OxygenFromSulfur! = 0#
+analysis.SulfurCorrectedOxygen! = 0#
 analysis.ChargeBalance! = 0#
 analysis.FeCharge! = 0#
 
@@ -154,6 +156,16 @@ If Not UseOxygenFromHalogensCorrectionFlag And sample(1).OxygenChannel% > sample
 analysis.HalogenCorrectedOxygen! = analysis.totaloxygen! - analysis.OxygenFromHalogens!
 Else
 analysis.HalogenCorrectedOxygen! = analysis.totaloxygen!
+End If
+
+' Calculate oxygen equivalent of sulfur
+analysis.OxygenFromSulfur! = ConvertSulfurToOxygen!(sample(1).LastChan%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), analysis.WtPercents!(), sample(1).AtomicCharges!())
+
+' Calculate sulfur corrected oxygen (do not perform if oxygen is measured)
+If Not UseOxygenFromSulfurCorrectionFlag And sample(1).OxygenChannel% > sample(1).LastElm% And sample(1).OxideOrElemental% = 1 Then
+analysis.SulfurCorrectedOxygen! = analysis.totaloxygen! - analysis.OxygenFromSulfur!
+Else
+analysis.SulfurCorrectedOxygen! = analysis.totaloxygen!
 End If
 
 ' Calculate charge balance

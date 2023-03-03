@@ -1314,6 +1314,9 @@ End If
 ' Calculate equivalent oxygen from halogens and subtract from calculated oxygen if flagged
 If UseOxygenFromHalogensCorrectionFlag Then temp1! = temp1! - ConvertHalogensToOxygen(sample(1).LastChan%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), unkwts!())
 
+' Calculate equivalent oxygen from sulfur and subtract from calculated oxygen if flagged
+If UseOxygenFromSulfurCorrectionFlag Then temp1! = temp1! - ConvertSulfurToOxygen(sample(1).LastChan%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), unkwts!(), sample(1).AtomicCharges!())
+
 ' Save oxygen calculated by stoichiometry for calculations below
 oxygen! = temp1!
 End If

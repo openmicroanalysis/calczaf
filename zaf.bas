@@ -1976,6 +1976,12 @@ r1!(zaf.in0%) = r1!(zaf.in0%) - ConvertHalogensToOxygen(zaf.in1%, sample(1).Elsy
 If ierror Then Exit Sub
 End If
 
+' Calculate equivalent oxygen from sulfur and subtract from calculated oxygen if flagged (for standards note deficit oxygen is zeroed out in AnalyzeWeightCalculate and AnalyzeWeightCalculateCurve)
+If UseOxygenFromSulfurCorrectionFlag Then
+r1!(zaf.in0%) = r1!(zaf.in0%) - ConvertSulfurToOxygen(zaf.in1%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), r1!(), sample(1).AtomicCharges!())
+If ierror Then Exit Sub
+End If
+
 ' Calculate excess oxygen from ferric Fe (from Droop, 1987 and Locock spreadsheet) (version 2 and 3 modified by Aurelien Moy)
 If sample(1).FerrousFerricCalculationFlag Then
 If sample(1).FerrousFerricOption% = 0 Then
@@ -2353,6 +2359,9 @@ msg$ = "MANITER " & Format$(Format$(analysis.MANIter!, f82$), a80$)
 Call IOWriteLog(msg$)
 
 msg$ = "HAL->O2 " & Format$(Format$(analysis.OxygenFromHalogens!, f83$), a80$)
+Call IOWriteLog(msg$)
+
+msg$ = "SUL->O2 " & Format$(Format$(analysis.OxygenFromSulfur!, f83$), a80$)
 Call IOWriteLog(msg$)
 
 msg$ = vbCrLf & "ELEMENT "
@@ -2750,7 +2759,12 @@ Next i%
 ' Calculate equivalent oxygen from halogens and subtract from calculated oxygen if flagged
 analysis.OxygenFromHalogens! = ConvertHalogensToOxygen(zaf.in1%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), zaf.krat!())
 If UseOxygenFromHalogensCorrectionFlag Then zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) - analysis.OxygenFromHalogens!
-analysis.OxygenFromHalogens! = analysis.OxygenFromHalogens! * 100#  ' convert to weight %
+analysis.OxygenFromHalogens! = analysis.OxygenFromHalogens! * 100#      ' convert to weight %
+
+' Calculate equivalent oxygen from sulfur and subtract from calculated oxygen if flagged
+analysis.OxygenFromSulfur! = ConvertSulfurToOxygen(zaf.in1%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), zaf.krat!(), sample(1).AtomicCharges!())
+If UseOxygenFromSulfurCorrectionFlag Then zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) - analysis.OxygenFromSulfur!
+analysis.OxygenFromSulfur! = analysis.OxygenFromSulfur! * 100#          ' convert to weight %
 
 zaf.ksum! = zaf.ksum! + zaf.krat!(zaf.in0%)
 End If

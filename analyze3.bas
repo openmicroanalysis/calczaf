@@ -18,8 +18,11 @@ Dim RowUnkCalculatedOxygens(1 To MAXROW%) As Single
 Dim RowUnkExcessOxygens(1 To MAXROW%) As Single
 Dim RowUnkZbars(1 To MAXROW%)  As Single
 Dim RowUnkAtomicWeights(1 To MAXROW%)  As Single
+
 Dim RowUnkOxygenFromHalogens(1 To MAXROW%) As Single
 Dim RowUnkHalogenCorrectedOxygen(1 To MAXROW%) As Single
+Dim RowUnkOxygenFromSulfur(1 To MAXROW%) As Single
+Dim RowUnkSulfurCorrectedOxygen(1 To MAXROW%) As Single
 Dim RowUnkChargeBalance(1 To MAXROW%)  As Single
 Dim RowUnkFeChargeBalance(1 To MAXROW%)  As Single
 
@@ -344,6 +347,10 @@ analysis.WtPercents!(chan%) = ConvertTotalToExcessOxygen!(Int(1), sample(), stds
 If UseOxygenFromHalogensCorrectionFlag And sample(1).OxideOrElemental% = 1 Then
 If analysis.WtPercents!(chan%) < 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen deficit from standard database
 End If
+If UseOxygenFromSulfurCorrectionFlag And sample(1).OxideOrElemental% = 1 Then
+If analysis.WtPercents!(chan%) < 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen deficit from standard database
+End If
+
 If sample(1).FerrousFerricCalculationFlag And sample(1).OxideOrElemental% = 1 Then
 If analysis.WtPercents!(chan%) > 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen excess from standard database
 End If
@@ -473,8 +480,11 @@ RowUnkCalculatedOxygens!(linerow%) = analysis.CalculatedOxygen!
 RowUnkExcessOxygens!(linerow%) = analysis.ExcessOxygen!
 RowUnkZbars!(linerow%) = analysis.zbar!
 RowUnkAtomicWeights!(linerow%) = analysis.AtomicWeight!
+
 RowUnkOxygenFromHalogens!(linerow%) = analysis.OxygenFromHalogens!
 RowUnkHalogenCorrectedOxygen!(linerow%) = analysis.HalogenCorrectedOxygen!
+RowUnkOxygenFromSulfur!(linerow%) = analysis.OxygenFromSulfur!
+RowUnkSulfurCorrectedOxygen!(linerow%) = analysis.SulfurCorrectedOxygen!
 RowUnkChargeBalance!(linerow%) = analysis.ChargeBalance!
 RowUnkFeChargeBalance!(linerow%) = analysis.FeCharge!
 
@@ -1053,6 +1063,9 @@ analysis.WtPercents!(chan%) = ConvertTotalToExcessOxygen!(Int(1), sample(), stds
 If UseOxygenFromHalogensCorrectionFlag And sample(1).OxideOrElemental% = 1 Then
 If analysis.WtPercents!(chan%) < 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen equivalence of halogen from standard database
 End If
+If UseOxygenFromSulfurCorrectionFlag And sample(1).OxideOrElemental% = 1 Then
+If analysis.WtPercents!(chan%) < 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen equivalence of sulfur from standard database
+End If
 If sample(1).FerrousFerricCalculationFlag And sample(1).OxideOrElemental% = 1 Then
 If analysis.WtPercents!(chan%) > 0# Then analysis.WtPercents!(chan%) = 0#  ' zero out oxygen excess from standard database
 End If
@@ -1138,6 +1151,9 @@ Next chan%
 
 ' Calculate equivalent oxygen from halogens and subtract from calculated oxygen if flagged
 If UseOxygenFromHalogensCorrectionFlag Then stoichoxygen! = stoichoxygen! - ConvertHalogensToOxygen(sample(1).LastChan%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), analysis.WtPercents!())
+
+' Calculate equivalent oxygen from sulfur and subtract from calculated oxygen if flagged
+If UseOxygenFromSulfurCorrectionFlag Then stoichoxygen! = stoichoxygen! - ConvertSulfurToOxygen(sample(1).LastChan%, sample(1).Elsyms$(), sample(1).DisableQuantFlag%(), analysis.WtPercents!(), sample(1).AtomicCharges!())
 End If
 
 ' Element by stoichiometry to stoichiometric oxygen
@@ -1249,8 +1265,11 @@ RowUnkCalculatedOxygens!(linerow%) = analysis.CalculatedOxygen!
 RowUnkExcessOxygens!(linerow%) = analysis.ExcessOxygen!
 RowUnkZbars!(linerow%) = analysis.zbar!
 RowUnkAtomicWeights!(linerow%) = analysis.AtomicWeight!
+
 RowUnkOxygenFromHalogens!(linerow%) = analysis.OxygenFromHalogens!
 RowUnkHalogenCorrectedOxygen!(linerow%) = analysis.HalogenCorrectedOxygen!
+RowUnkOxygenFromSulfur!(linerow%) = analysis.OxygenFromSulfur!
+RowUnkSulfurCorrectedOxygen!(linerow%) = analysis.SulfurCorrectedOxygen!
 RowUnkChargeBalance!(linerow%) = analysis.ChargeBalance!
 RowUnkFeChargeBalance!(linerow%) = analysis.FeCharge!
 
@@ -1318,8 +1337,11 @@ RowUnkCalculatedOxygens!(j%) = 0#
 RowUnkExcessOxygens!(j%) = 0#
 RowUnkZbars!(j%) = 0#
 RowUnkAtomicWeights!(j%) = 0#
+
 RowUnkOxygenFromHalogens!(j%) = 0#
 RowUnkHalogenCorrectedOxygen!(j%) = 0#
+RowUnkOxygenFromSulfur!(j%) = 0#
+RowUnkSulfurCorrectedOxygen!(j%) = 0#
 RowUnkChargeBalance!(j%) = 0#
 RowUnkFeChargeBalance!(j%) = 0#
 
@@ -1424,6 +1446,14 @@ analysis.OxygenFromHalogens! = average.averags!(1)
 Call MathAverage(average, RowUnkHalogenCorrectedOxygen!(), sample(1).Datarows%, sample())
 If ierror Then Exit Sub
 analysis.HalogenCorrectedOxygen! = average.averags!(1)
+
+Call MathAverage(average, RowUnkOxygenFromSulfur!(), sample(1).Datarows%, sample())
+If ierror Then Exit Sub
+analysis.OxygenFromSulfur! = average.averags!(1)
+
+Call MathAverage(average, RowUnkSulfurCorrectedOxygen!(), sample(1).Datarows%, sample())
+If ierror Then Exit Sub
+analysis.SulfurCorrectedOxygen! = average.averags!(1)
 
 Call MathAverage(average, RowUnkChargeBalance!(), sample(1).Datarows%, sample())
 If ierror Then Exit Sub
@@ -2812,6 +2842,8 @@ Sub AnalyzeReturnAnalysisFactors3(mode As Integer, row As Integer, tvalue As Sin
 ' mode = 14 return RowUnkFerrousFerricFeO
 ' mode = 15 return RowUnkFerrousFerricFe2O3
 ' mode = 16 return RowUnkFerricOxygen
+' mode = 17 return RowUnkOxygenFromSulfur
+' mode = 18 return RowUnkSulfurCorrectedOxygen
 
 ierror = False
 On Error GoTo AnalyzeReturnAnalysisFactors3Error
@@ -2832,6 +2864,8 @@ If mode% = 13 Then tvalue! = RowUnkFerricToTotalIronRatio!(row%)
 If mode% = 14 Then tvalue! = RowUnkFerrousFerricFeO!(row%)
 If mode% = 15 Then tvalue! = RowUnkFerrousFerricFe2O3!(row%)
 If mode% = 16 Then tvalue! = RowUnkFerricOxygen(row%)
+If mode% = 17 Then tvalue! = RowUnkOxygenFromSulfur!(row%)
+If mode% = 18 Then tvalue! = RowUnkSulfurCorrectedOxygen!(row%)
 
 Exit Sub
 

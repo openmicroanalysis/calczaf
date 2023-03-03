@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/01/23	Add oxygen equivalent of sulfur (negative valences) calculations and output (Allaz).
+
 02/25/23	Modify JEOL MEC EDS code to warn user about closing EDS center window when acquiring EDS data
 		in Probe for EPMA (Hatton and Ma).
 		

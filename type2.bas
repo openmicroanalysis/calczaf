@@ -185,6 +185,15 @@ End If
 Call IOWriteLog(msg$)
 End If
 
+' Sulfur analysis
+If analysis.OxygenFromSulfur! > 0# Then
+msg$ = "Oxygen Equiv. from Sulfur: " & Format$(Format$(analysis.OxygenFromSulfur!, f83$), a70$)
+If mode% = 1 Then
+msg$ = msg$ & "  " & "Sulfur Corrected Oxygen:  " & Format$(Format$(analysis.SulfurCorrectedOxygen!, f83$), a80$)
+End If
+Call IOWriteLog(msg$)
+End If
+
 ' Charge balance analysis
 If UseChargeBalanceCalculationFlag Then
 msg$ = "Average Charge Balance:   " & Format$(Format$(analysis.ChargeBalance!, f83$), a80$)
@@ -375,7 +384,21 @@ msg$ = "Oxygen Equivalent from Halogens (F/Cl/Br/I) was not Subtracted in the Ma
 Call IOWriteLog(msg$)
 End If
 ElseIf analysis.OxygenFromHalogens! > 0# Then
-msg$ = "Oxygen Equivalent from Halogens (F/Cl/Br/I), was not Subtracted in the Matrix Correction"
+msg$ = "Oxygen Equivalent from Halogens (F/Cl/Br/I), was not Subtracted in the Matrix Correction (because oxygen from halogens was greater than zero)"
+Call IOWriteLog(msg$)
+End If
+
+' Output sulfur correction settings
+If UseOxygenFromSulfurCorrectionFlag Then
+If sample(1).OxideOrElemental% = 1 Then
+msg$ = "Oxygen Equivalent from Sulfur (negative valences only) was Subtracted in the Matrix Correction"
+Call IOWriteLog(msg$)
+Else
+msg$ = "Oxygen Equivalent from Sulfur (negative valences only)) was not Subtracted in the Matrix Correction (because oxygen was not calculated by cation stoichiometry)"
+Call IOWriteLog(msg$)
+End If
+ElseIf analysis.OxygenFromSulfur! > 0# Then
+msg$ = "Oxygen Equivalent from Sulfur (negative valences only), was not Subtracted in the Matrix Correction (because oxygen from sulfur was greater than zero)"
 Call IOWriteLog(msg$)
 End If
 

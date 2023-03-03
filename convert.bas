@@ -746,6 +746,60 @@ Exit Function
 
 End Function
 
+Function ConvertSulfurToOxygen(lchan As Integer, syms() As String, dqs() As Integer, conc() As Single, charges() As Single) As Single
+' Calculate the equivalent oxygen based on the sulfur concentration and charge valence
+'  lchan = number of channels
+'  syms() = symbol (element) array
+'  dqs() = disable quant flag array
+'  conc() = concentration of element array
+'  charges() = charge valences of element array
+
+ierror = False
+On Error GoTo ConvertSulfurToOxygenError
+
+Dim StoO As Single
+
+Dim ips As Integer, ipo As Integer
+Dim temp As Single
+
+ConvertSulfurToOxygen! = 0#
+
+' Find index for sulfur and oxygen
+ips% = IPOS1DQ(lchan%, Symlo$(ATOMIC_NUM_SULFUR%), syms$(), dqs%())
+ipo% = IPOS1DQ(lchan%, Symlo$(ATOMIC_NUM_OXYGEN%), syms$(), dqs%())
+If ips% = 0 Then Exit Function
+
+' Calculate stoiometric correction factor
+If ipo% <> 0 Then
+StoO! = AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / AllAtomicWts!(ATOMIC_NUM_SULFUR%) * charges!(ipo%) / charges!(ips%)
+Else
+StoO! = AllAtomicWts!(ATOMIC_NUM_OXYGEN%) / AllAtomicWts!(ATOMIC_NUM_SULFUR%) * -2# / charges!(ips%)
+End If
+
+' Check for sulfur charge valence less than zero (negative charge valence replaces oxygen equivalent)
+If charges!(ips%) < 0# Then
+temp! = 0#
+If ips% > 0 Then
+temp! = conc!(ips%) * StoO!
+End If
+
+' Sulfur valence is positive
+Else
+temp! = 0#
+End If
+
+ConvertSulfurToOxygen! = temp!
+
+Exit Function
+
+' Errors
+ConvertSulfurToOxygenError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertSulfurToOxygen"
+ierror = True
+Exit Function
+
+End Function
+
 Function ConvertOxygenFromCations(sample() As TypeSample) As Single
 ' Calculate oxygen from cations for sample
 

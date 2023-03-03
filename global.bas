@@ -486,6 +486,7 @@ Global Const ATOMIC_NUM_MAGNESIUM% = 12
 Global Const ATOMIC_NUM_ALUMINUM% = 13
 Global Const ATOMIC_NUM_SILICON% = 14
 Global Const ATOMIC_NUM_PHOSPHORUS% = 15
+Global Const ATOMIC_NUM_SULFUR% = 16
 Global Const ATOMIC_NUM_CHLORINE% = 17
 Global Const ATOMIC_NUM_ARGON% = 18
 Global Const ATOMIC_NUM_POTASSIUM% = 19
@@ -691,6 +692,9 @@ Type TypeAnalysis
     HalogenCorrectedOxygen As Single   ' variable loaded from routine ZAFCalZbar
     ChargeBalance As Single            ' variable loaded from routine ZAFCalZbar
     FeCharge As Single                 ' variable loaded from routine ZAFCalZbar
+    
+    OxygenFromSulfur As Single         ' variable loaded from routine ZAFCalZbar
+    SulfurCorrectedOxygen As Single    ' variable loaded from routine ZAFCalZbar
     
     ZAFIter As Single
     MANIter As Single
@@ -3068,4 +3072,8 @@ Global tempEDSSpectraInterfacePresent As Integer   ' temporary flag for EDSSpect
 Global JEOLCountSpectroMilliSecDelayAfter As Long
 
 Global SkipPolygonizationModeling As Boolean
+
+Global UseOxygenFromSulfurCorrectionFlag As Integer
+Global UserSpecifiedOutputOxygenFromSulfurFlag As Boolean
+Global UserSpecifiedOutputSulfurCorrectedOxygenFlag As Boolean
 
