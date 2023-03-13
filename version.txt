@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/12/23	Add check for combining subsequent samples if TDI data is present (Boroughs).
+
 03/01/23	Add oxygen equivalent of sulfur (negative valences) calculations and output (Allaz).
 
 02/25/23	Modify JEOL MEC EDS code to warn user about closing EDS center window when acquiring EDS data
@@ -65,7 +67,7 @@ v. 13.2.3	if the specified beam currents are the same, the actual measured beam 
 		Improve updating of Automate! ListDigitize display when deleting points and adding duplicate position samples.
 
 11/21/22	Fix bug when analyzing oxygen, then disabling it for quant, then adding oxygen as an 
-		unanalyzed element, then calculating fomula based on the stoichiometric oxygen (Nachlas).
+		unanalyzed element, then calculating formula based on the stoichiometric oxygen (Nachlas).
 
 11/20/22	Minor tweak to EDS data output. Modify Cameca PHA read to handle zero millisec returned.
 
@@ -104,7 +106,7 @@ v. 13.2.0	Only enabled in CalcZAF for now .
 
 09/08/22	Add exponential dead time correction. Increase mag delay for JEOL instruments (von der Handt).
 
-09/04/22	Add dead time correction%  (DTC%) in count outout. Use new raw data arrays. Add trap for "_WD" and "_SP" in 
+09/04/22	Add dead time correction%  (DTC%) in count output. Use new raw data arrays. Add trap for "_WD" and "_SP" in 
 v. 13.1.9	CalcImage create project code (Raia).
 
 		Add raw (cps) counts to Output STandard and Unknown XY Plots dialog.  Add raw cps arrays for samples.
@@ -168,7 +170,7 @@ v. 13.1.6
 
 06/09/22	Minor tweaks to PicturSnapApp, INI files and documentation.
 
-06/07/22	Adjust JEOL spectrometer orienattion values. Work on JEOL MEC EDS interface.
+06/07/22	Adjust JEOL spectrometer orientation values. Work on JEOL MEC EDS interface.
 
 06/06/22	Fix calculated oxygen output if oxygen was analyzed, then disabled for quant, then calculate stoichiometric oxygen 
 		was selected by the user (Poeml).
@@ -286,7 +288,7 @@ v. 13.1.0
 
 01/29/22	Fix TePortal DLL calls for new functions (Seddio).
 
-01/27/22	Add additional time constant fields for Thermo Pathfinder 2.10 and hiogher.
+01/27/22	Add additional time constant fields for Thermo Pathfinder 2.10 and higher.
 v. 13.0.9	
 		Fix Read Conditions button code in Automate! Conditions dialog (Collins).
 
