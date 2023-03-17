@@ -2,9 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/15/23	Fix minor display issue in Automate window when deleting selected points (Neill).
+
 03/12/23	Add check for combining subsequent samples if TDI data is present (Boroughs).
 
 03/01/23	Add oxygen equivalent of sulfur (negative valences) calculations and output (Allaz).
+v. 13.2.7
 
 02/25/23	Modify JEOL MEC EDS code to warn user about closing EDS center window when acquiring EDS data
 		in Probe for EPMA (Hatton and Ma).
