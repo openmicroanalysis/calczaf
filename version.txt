@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/29/23	Fix sulfer-oxygen bug for Fanal code.
+v. 13.2.8
+
+03/28/23	Modify JEOL EDS MEC interface to close then re-start EDS interface if error in starting spectrum.
+		Thanks to Chi Ma for help with testing.
+
 03/15/23	Fix minor display issue in Automate window when deleting selected points (Neill).
 
 03/12/23	Add check for combining subsequent samples if TDI data is present (Boroughs).

@@ -768,6 +768,7 @@ ConvertSulfurToOxygen! = 0#
 ips% = IPOS1DQ(lchan%, Symlo$(ATOMIC_NUM_SULFUR%), syms$(), dqs%())
 ipo% = IPOS1DQ(lchan%, Symlo$(ATOMIC_NUM_OXYGEN%), syms$(), dqs%())
 If ips% = 0 Then Exit Function
+If charges!(ips%) = 0# Then Exit Function
 
 ' Calculate stoiometric correction factor
 If ipo% <> 0 Then
