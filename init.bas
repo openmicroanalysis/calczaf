@@ -3412,7 +3412,20 @@ FerricFerrousMethodStrings$(4) = "Locock/Moy Fe-Mg-Mn amphibole"
 FerricFerrousMethodStrings$(5) = "Locock/Moy Li amphibole"
 FerricFerrousMethodStrings$(6) = "Locock/Moy Oxo amphibole"
 
-UseZfractionForBackscatterCorrection% = False
+UserSpecifiedOutputFerrousFerricFlag = False
+UserSpecifiedOutputMachineReadableFlag = False
+UseEDSStoredNetIntensitiesFlag = False
+UseInterpolatedIntensitiesEvenIfElementIsPresentFlag = False
+
+InstrumentAcknowledgementString$ = vbNullString
+
+UserSpecifiedOutputOxygenFromSulfurFlag = False
+UserSpecifiedOutputSulfurCorrectedOxygenFlag = False
+
+MeasureAbsorbedFaradayCurrentOnlyOncePerSampleFlag = False
+
+
+UseZfractionForBackscatterCorrection% = False       ' in testing with Moy
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

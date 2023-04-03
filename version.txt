@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/01/23	Add new feature to only measure faraday and absorbed currents on first point of sample (Boroughs).
+v. 13.2.9
+
+03/31/23	Modify JEOL MEC EDS interface to close/re-open interface if closed because user switched to the 
+		JEOL Imaging window.
+
 03/29/23	Fix sulfer-oxygen bug for Fanal code.
 v. 13.2.8
 

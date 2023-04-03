@@ -3077,3 +3077,4 @@ Global UseOxygenFromSulfurCorrectionFlag As Integer
 Global UserSpecifiedOutputOxygenFromSulfurFlag As Boolean
 Global UserSpecifiedOutputSulfurCorrectedOxygenFlag As Boolean
 
+Global MeasureAbsorbedFaradayCurrentOnlyOncePerSampleFlag As Boolean
