@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/04/23	Add code to handle histogram display when image has no image Z range (Boroughs).
+
+		Modify ConvertToPrbImg.exe to handle JEOL maps up to 5120 pixels (was 4096) (von der Handt).
+
 04/01/23	Add new feature to only measure faraday and absorbed currents on first point of sample (Boroughs).
 v. 13.2.9
 
