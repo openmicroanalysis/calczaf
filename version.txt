@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/19/23	Modify CalcImage manual image load to warn user to enter beam currents and pixel dwell times 
+		manually (Boroughs).
+		
+04/12/23	Add extra error info to automation code to try and track down modal dialog display issue.
+
 04/04/23	Add code to handle histogram display when image has no image Z range (Boroughs).
 
 		Modify ConvertToPrbImg.exe to handle JEOL maps up to 5120 pixels (was 4096) (von der Handt).
