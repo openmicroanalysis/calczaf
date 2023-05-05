@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/03/23	Finish implementing Cameca SXFive tactis USB image reading.
+v. 13.3.0
+		Add units for Output XY Plots window (Seward).
+
 04/19/23	Modify CalcImage manual image load to warn user to enter beam currents and pixel dwell times 
 		manually (Boroughs).
 		

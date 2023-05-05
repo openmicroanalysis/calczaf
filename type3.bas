@@ -111,7 +111,7 @@ ierror = True
 Exit Sub
 End If
 
-If UseBeamDriftCorrectionFlag Then
+If UseBeamDriftCorrectionFlag And NominalBeam! <> 0# Then
 msg$ = vbCrLf & "Off-Peak Corrected or MAN On-Peak X-ray Counts (cps/" & Format$(NominalBeam!) & FaradayCurrentUnits$ & ") (and Faraday/Absorbed Currents):"
 Else
 msg$ = vbCrLf & "Off-Peak Corrected or MAN On-Peak X-ray Counts (cps):"
