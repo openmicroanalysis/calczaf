@@ -3423,7 +3423,7 @@ UserSpecifiedOutputOxygenFromSulfurFlag = False
 UserSpecifiedOutputSulfurCorrectedOxygenFlag = False
 
 MeasureAbsorbedFaradayCurrentOnlyOncePerSampleFlag = False
-
+DoNotMeasure2ndFaradayAbsorbedCurrentsFlag = False
 
 UseZfractionForBackscatterCorrection% = False       ' in testing with Moy
 

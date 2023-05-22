@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/20/23	Add display of faraday cup wait in and out times in FormGETTIM.
+
+05/19/23	Add INI flag DoNotMeasure2ndFaradayAbsorbedCurrentsFlag for JEOL instruments with failing faraday cup
+		to avoid bad second faraday cup measures (Ruth).
+
+05/17/23 	Fix minor bug in separate samples into lines code (Lowers). Update matrix.mdb binary k-ratio database to 860K binaries.
+v. 13.3.1
+
 05/11/23	Small tweak to Analyze! create new sample from selected lines.
 
 05/08/23	Add new button for separating samples into single line samples and button for extracting selected 

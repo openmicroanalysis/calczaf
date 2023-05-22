@@ -5321,6 +5321,18 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then FaradayStagePositions!(3) = Val(Left$(lpReturnString$, valid&))
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+lpAppName$ = "Faraday"
+lpKeyName$ = "DoNotMeasure2ndFaradayAbsorbedCurrentsFlag"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+DoNotMeasure2ndFaradayAbsorbedCurrentsFlag = True
+Else
+DoNotMeasure2ndFaradayAbsorbedCurrentsFlag = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors
