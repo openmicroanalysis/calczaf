@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/25/23	Add calls to save standard parameters whenever a standard is acquired. This is because if a standard is added 
+		from the DIGITIZE form (Add Standards button) the parameters are not saved to the current probe run because
+		the DIGITIZE form is also called from the Stage app which cannot have these calls. This was only a problem
+		if a user copied a probe run database to another computer for re-processing without first closing it.
+
 05/20/23	Add display of faraday cup wait in and out times in FormGETTIM.
 
 05/19/23	Add INI flag DoNotMeasure2ndFaradayAbsorbedCurrentsFlag for JEOL instruments with failing faraday cup
