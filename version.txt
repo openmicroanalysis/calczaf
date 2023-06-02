@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/31/23	Modify InitScalers to allows dead time values as low as 0.0001 us for SXES spectrometer intensities (Fellowes).
+
 05/25/23	Add calls to save standard parameters whenever a standard is acquired. This is because if a standard is added 
 		from the DIGITIZE form (Add Standards button) the parameters are not saved to the current probe run because
 		the DIGITIZE form is also called from the Stage app which cannot have these calls. This was only a problem

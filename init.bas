@@ -784,7 +784,7 @@ msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs%
 Input #Temp1FileNumber%, tScalDeadtimes!(i%)
 msg$ = msg$ & Format$(tScalDeadtimes!(i%), a80$)
-If tScalDeadtimes!(i%) < 0.1 Then GoTo InitScalersInvalidData
+If tScalDeadtimes!(i%) < 0.0001 Then GoTo InitScalersInvalidData    ' change for Jon Fellowes (SXES spectrometer intensities)
 If tScalDeadtimes!(i%) > 10# Then GoTo InitScalersInvalidData
 Next i%
 Input #Temp1FileNumber%, comment$
@@ -1211,7 +1211,7 @@ For i% = 1 To NumberOfTunableSpecs%
 Input #Temp1FileNumber%, ScalDeadTimes!(j%, i%)
 If j% <= ScalNumberOfCrystals%(i%) Then
 If ScalDeadTimes!(j%, i%) <= 0# Then ScalDeadTimes!(j%, i%) = tScalDeadtimes!(i%)      ' for backward compatibility
-If ScalDeadTimes!(j%, i%) < 0.1 Then GoTo InitScalersInvalidData
+If ScalDeadTimes!(j%, i%) < 0.0001 Then GoTo InitScalersInvalidData    ' change for Jon Fellowes (SXES spectrometer intensities)
 If ScalDeadTimes!(j%, i%) > 10# Then GoTo InitScalersInvalidData
 End If
 msg$ = msg$ & Format$(ScalDeadTimes!(j%, i%), a80$)
