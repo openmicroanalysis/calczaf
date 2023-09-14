@@ -1236,6 +1236,23 @@ Input #Temp1FileNumber%, comment$
 If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
 Next j%
 
+' Load spectrometer effective takeoff angles (degrees) (default is takeoff angle from probewin.ini file)
+For j% = 1 To MAXCRYS%
+linecount% = linecount% + 1
+msg$ = vbNullString
+For i% = 1 To NumberOfTunableSpecs%
+Input #Temp1FileNumber%, ScalEffectiveTakeOffs!(j%, i%)
+If j% <= ScalNumberOfCrystals%(i%) Then
+If ScalEffectiveTakeOffs!(j%, i%) <= 0# Then ScalEffectiveTakeOffs!(j%, i%) = DefaultTakeOff!      ' for backward compatibility
+If ScalEffectiveTakeOffs!(j%, i%) < 30# Then GoTo InitScalersInvalidData
+If ScalEffectiveTakeOffs!(j%, i%) > 60# Then GoTo InitScalersInvalidData
+End If
+msg$ = msg$ & Format$(ScalEffectiveTakeOffs!(j%, i%), a80$)
+Next i%
+Input #Temp1FileNumber%, comment$
+If DebugMode Then Call IOWriteLog(msg$ & Space$(2) & comment$)
+Next j%
+
 Exit Sub
 
 ' Errors
@@ -2461,28 +2478,30 @@ EmpiricalAlphaFlag% = 1 ' do not use empirical alpha factors
 iflu% = 1
 
 zafstring$(0) = "Select Individual Corrections"
-zafstring$(1) = "Armstrong/Love Scott (default)"
+zafstring$(1) = "Armstrong/Love Scott prZ (default)"
 zafstring$(2) = "Conventional Philibert/Duncumb-Reed"
 zafstring$(3) = "Heinrich/Duncumb-Reed"
 zafstring$(4) = "Love-Scott I"
 zafstring$(5) = "Love-Scott II"
-zafstring$(6) = "Packwood Phi(pz) (EPQ-91)"
-zafstring$(7) = "Bastin (original) Phi(pz)"
-zafstring$(8) = "Bastin PROZA Phi(pz) (EPQ-91)"
+zafstring$(6) = "Packwood Phi(prZ) (EPQ-91)"
+zafstring$(7) = "Bastin (original) Phi(prZ)"
+zafstring$(8) = "Bastin PROZA Phi(prZ) (EPQ-91)"
 zafstring$(9) = "Pouchou and Pichoir-Full (PAP)"
 zafstring$(10) = "Pouchou and Pichoir-Simplified (XPP)"
+zafstring$(11) = "Donovan and Moy BSC/BKS (modified PAP)"
 
 zafstring2$(0) = "Individual"
-zafstring2$(1) = "Armstrong"
+zafstring2$(1) = "Armstrong prZ"
 zafstring2$(2) = "Philibert"
 zafstring2$(3) = "Heinrich"
 zafstring2$(4) = "Love-Scott I"
 zafstring2$(5) = "Love-Scott II"
-zafstring2$(6) = "Packwood"
-zafstring2$(7) = "Bastin"
+zafstring2$(6) = "Packwood prZ"
+zafstring2$(7) = "Bastin prZ"
 zafstring2$(8) = "Bastin PROZA"
 zafstring2$(9) = "PAP Full"
 zafstring2$(10) = "PAP XPP"
+zafstring2$(11) = "DM BSC/BKS"
 
 ' Define ZAF selection strings
 mipstring$(1) = "Mean Ionization of Berger-Seltzer"
@@ -2499,6 +2518,7 @@ bscstring$(1) = "Backscatter Coefficient of Heinrich"
 bscstring$(2) = "Backscatter Coefficient of Love-Scott"
 bscstring$(3) = "Backscatter Coefficient of Pouchou and Pichoir"
 bscstring$(4) = "Backscatter Coefficient of Hungler-Kuchler (A-W Mod.)"
+bscstring$(5) = "Backscatter Coefficient of Donovan and Moy"
 
 phistring$(1) = "Phi(pz) Equation of Reuter"
 phistring$(2) = "Phi(pz) Equation of Love-Scott"
@@ -2525,6 +2545,7 @@ bksstring$(6) = "Backscatter of Myklebust and Fiori (not implemented)"
 bksstring$(7) = "Backscatter of Pouchou and Pichoir"
 bksstring$(8) = "Backscatter of August, Razka and Wernisch"
 bksstring$(9) = "Backscatter of Springer"
+bksstring$(10) = "Backscatter of Donovan and Moy"
 
 absstring$(1) = "Absorption of Philibert (FRAME)"
 absstring$(2) = "Absorption of Heinrich (Quadratic Anal. Chem.)"
@@ -3391,8 +3412,8 @@ ModelPeakingFitType% = 0                                           ' model bgds 
 SkipOutputEDSIntensitiesDuringAutomation = False                   ' allow output of EDS net intensities during automated acquisition
 
 UseZFractionZbarCalculationsFlag = False
-UseContinuumAbsCalculationsFlag = False                            ' if true use Hienrich/Myklebust continuum absorption correction
-ZFractionZbarCalculationsExponent! = 0.7
+UseContinuumAbsCalculationsFlag = False                            ' if true use Heinrich/Myklebust continuum absorption correction
+ZFractionZbarCalculationsExponent! = 0.7                           ' if zero, calculate Zbar exponent based on emission line energies
 
 ' MPB fit types
 MultiPointBackgroundFitTypeStrings$(0) = "Linear"
@@ -3424,8 +3445,14 @@ UserSpecifiedOutputSulfurCorrectedOxygenFlag = False
 
 MeasureAbsorbedFaradayCurrentOnlyOncePerSampleFlag = False
 DoNotMeasure2ndFaradayAbsorbedCurrentsFlag = False
+UseEffectiveTakeOffAnglesFlag = False
 
-UseZfractionForBackscatterCorrection% = False       ' in testing with Moy
+ZFractionBackscatterExponent! = 0.7       ' if zero, then calculate variable exponent
+
+SecondaryDistanceMethodString$(0) = "Specified Distance"
+SecondaryDistanceMethodString$(1) = "Single Point and Angle"
+SecondaryDistanceMethodString$(2) = "Two Points"
+SecondaryDistanceMethodString$(3) = "Graphical Image"
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

@@ -37,13 +37,13 @@ tList.Clear
 For samplerow% = 1 To NumberofSamples%
 
 ' Load standards or unknowns or all
-If tForm.OptionStandard.value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
-If tForm.OptionUnknown.value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
-If tForm.OptionWavescan.value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
+If tForm.OptionStandard.Value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
+If tForm.OptionUnknown.Value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
+If tForm.OptionWavescan.Value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
 
 ' Check for FormANALYZE and if so, check display only samples with data checkbox
 If tForm.Name = "FormANALYZE" Or tForm.Name = "FormPLOT_WAVE" Or tForm.Name = "FormPLOT" Then
-If tForm.CheckOnlyDisplaySamplesWithData.value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
+If tForm.CheckOnlyDisplaySamplesWithData.Value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
 End If
 
 ' Load number set and name
@@ -125,7 +125,9 @@ sample(1).Xrsyms$(sample(1).LastElm%) = tmpsample(1).Xrsyms$(i%)
 sample(1).numcat%(sample(1).LastElm%) = tmpsample(1).numcat%(i%)
 sample(1).numoxd%(sample(1).LastElm%) = tmpsample(1).numoxd%(i%)
 sample(1).ElmPercents!(sample(1).LastElm%) = tmpsample(1).ElmPercents!(i%)
+
 sample(1).AtomicCharges!(sample(1).LastElm%) = tmpsample(1).AtomicCharges!(i%)
+sample(1).AtomicWts!(sample(1).LastElm%) = tmpsample(1).AtomicWts!(i%)
 
 ' 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point
 sample(1).OffPeakCorrectionTypes%(sample(1).LastElm%) = tmpsample(1).OffPeakCorrectionTypes%(i%)
@@ -283,8 +285,6 @@ Next m%
 sample(1).UnknownCountTimeForInterferenceStandardChanFlag(sample(1).LastElm%) = tmpsample(1).UnknownCountTimeForInterferenceStandardChanFlag(i%)
 
 sample(1).SecondaryFluorescenceBoundaryFlag(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryFlag(i%)
-sample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(i%)
-
 sample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(i%)
 sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(i%)
 sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(i%)
@@ -294,10 +294,8 @@ sample(1).SecondaryFluorescenceBoundaryMatA_String$(sample(1).LastElm%) = tmpsam
 sample(1).SecondaryFluorescenceBoundaryMatB_String$(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryMatB_String$(i%)
 sample(1).SecondaryFluorescenceBoundaryMatBStd_String$(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryMatBStd_String$(i%)
 
-'sample(1).SecondaryFluorescenceBoundaryMaterialB_Elsyms$(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryMaterialB_Elsyms$(i%)
-'sample(1).SecondaryFluorescenceBoundaryMaterialB_WtPercents!(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryMaterialB_WtPercents!(i%)
-
 sample(1).ConditionNumbers%(sample(1).LastElm%) = tmpsample(1).ConditionNumbers%(i%)    ' list order
+sample(1).EffectiveTakeOffs!(sample(1).LastElm%) = tmpsample(1).EffectiveTakeOffs!(i%)
 'End If
 End If
 4000: Next i%
@@ -325,7 +323,10 @@ sample(1).Xrsyms$(sample(1).LastChan%) = vbNullString
 ' Make sure cations are loaded
 sample(1).numcat%(sample(1).LastChan%) = tmpsample(1).numcat%(i%)
 sample(1).numoxd%(sample(1).LastChan%) = tmpsample(1).numoxd%(i%)
+
 sample(1).AtomicCharges!(sample(1).LastChan%) = tmpsample(1).AtomicCharges!(i%)
+sample(1).AtomicWts!(sample(1).LastChan%) = tmpsample(1).AtomicWts!(i%)
+
 sample(1).ElmPercents!(sample(1).LastChan%) = tmpsample(1).ElmPercents!(i%)
 6000: Next i%
 

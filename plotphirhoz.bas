@@ -204,6 +204,22 @@ FormPlotPhiRhoZ.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
 FormPlotPhiRhoZ.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
 FormPlotPhiRhoZ.Pesgo1.GraphAnnotationColor(acounter%) = FormPlotPhiRhoZ.Pesgo1.PEargb(225, 0, 0, 0)       ' black
 FormPlotPhiRhoZ.Pesgo1.GraphAnnotationText(acounter%) = absstring$(iabs%)
+
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationColor(acounter%) = FormPlotPhiRhoZ.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationText(acounter%) = bscstring$(ibsc%)
+
+acounter% = acounter% + 1
+yannotation! = yannotation! - ydecrement!
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationColor(acounter%) = FormPlotPhiRhoZ.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationText(acounter%) = bksstring$(ibks%)
 End If
 
 ' Calculate percent areas for emitted intensities and output a table to the log window

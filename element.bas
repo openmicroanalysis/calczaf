@@ -389,14 +389,18 @@ If VerboseMode Then Call IOWriteLog(vbCrLf & "Loading element arrays...")
 For chan% = 1 To sample(1).LastChan%
 sample(1).Oxsyup$(chan%) = vbNullString
 sample(1).Elsyup$(chan%) = vbNullString
-sample(1).AtomicWts!(chan%) = 0#
 sample(1).AtomicNums%(chan%) = 0
+'sample(1).AtomicCharges!(chan%) = 0#           ' use passed atomic charges if non-zero
+'sample(1).AtomicWts!(chan%) = 0#               ' use passed atomic weights if non-zero
 
 ' Load default conditions
 If sample(1).takeoff! = 0# Then sample(1).takeoff! = DefaultTakeOff!
 If sample(1).kilovolts! = 0# Then sample(1).kilovolts! = DefaultKiloVolts!
 If sample(1).TakeoffArray!(chan%) = 0# Then sample(1).TakeoffArray!(chan%) = sample(1).takeoff!
 If sample(1).KilovoltsArray!(chan%) = 0# Then sample(1).KilovoltsArray!(chan%) = sample(1).kilovolts!
+
+' Load default effective take offs
+If sample(1).EffectiveTakeOffs!(chan%) = 0# Then sample(1).EffectiveTakeOffs!(chan%) = sample(1).takeoff!
 
 ' Get the element number and formula symbols
 sym$ = sample(1).Elsyms$(chan%)
@@ -410,7 +414,10 @@ If num% > 0 Then
 sample(1).Oxsyup$(chan%) = oxup$
 sample(1).Elsyup$(chan%) = elup$
 sample(1).AtomicNums%(chan%) = AllAtomicNums%(num%)
-sample(1).AtomicWts!(chan%) = AllAtomicWts!(num%)
+
+' Only load default atomic charges and weights if passed values are zero
+If sample(1).AtomicCharges!(chan%) = 0# Then sample(1).AtomicCharges!(chan%) = AllAtomicCharges!(num%)
+If sample(1).AtomicWts!(chan%) = 0# Then sample(1).AtomicWts!(chan%) = AllAtomicWts!(num%)
 End If
 
 Next chan%

@@ -1,6 +1,84 @@
-PROBE for EPMA XP/Vista/Win7/Win8/Win10 Xtreme Edition Version Software Changes
+PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Changes
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
+
+09/22/23	Fix bug in secondary boundary fluorescence correction in PFE for elements with no SF correction. 
+		Add interactive Help button for SF dialog in PFE.
+
+09/09/23	Small tweak to secondary boundary fluorescence GUI. Small tweak to effective k-ratio output (CalcZAF).
+v. 13.5.3
+
+09/06/23	Fix bug if no standards loaded in run and closing file.
+
+09/04/23	Update Nachlas cell # in About dialog. Fix problem when oxygen is analyzed, then diabled, then 
+v. 13.5.2	specified oxygen is added for formula calculations (Nachlas).
+
+		Modify Calculation Options dialog to fit on screen better (Nachlas).
+
+08/29/23	Moved source code to NewSource computer (Win 11).
+
+		Modify MoveSpin code (Move.bas) to call MoveUpdatePositions instead of MoveUpdateForm.
+
+08/25/23	Add code to just log motion timeout errors in JEOL instruments (just write warning to log window).
+		Modify FormMOVE code to not call PeriodicLoad if FormMOVE is not visible (to prevent possible out of 
+		memory issues during automation) (Boro).
+
+08/22/23	Add call to DataStandards(2) to save standard compositions before starting automation.
+
+08/21/23	Tweak save element setup to database code to display new record number).
+
+		Update literature references (APA format) in report output (von der Handt)
+
+08/19/23	Work more on ConvertToPrbImg code for converting JEOL linescans (von der Handt).
+
+08/18/23	Fix minor display issue in MAN dialog (Neill).
+
+08/17/23	Lost of changes for new continuum and BSE Z fraction code (Moy).
+v. 13.5.0
+
+08/16/23	Add JEOLCrystalFlipMillisecDelayAfter keyword to [hardware] for possible
+		crystal flip hardware issues (Jiang).
+		
+		Various modifications to MAN and About dialogs (Neill).
+
+08/09/23	Modify Analyze! button Combine Selected Samples into a New Sample button to
+v. 13.4.9	allow user to combine sample elements or combine sample data lines into a new 
+		sample (Lowers).
+
+08/05/23	Tweak CalcZAF effective takeoff angle estimation code.
+v. 13.4.8
+
+08/03/23	Finish CalcZAF effective takeoff angle estimation code.
+v. 13.4.7
+
+08/02/23	Work on effective takeoff angle estimation code.
+v. 13.4.6
+
+07/31/23	Add output of variable Z fraction exponent for MAN parameters. Add two more references to AnalyzeTypeReport.
+v. 13.4.5	Add variable exponent to Z fraction backscatter exponent code. Add new 
+		Z fraction backscatter parameter to GetZAF form and code.
+
+07/30/23	Modify MAN Z fraction zbar calculation to accept a zero for dynamically calculated
+v. 13.4.4	Zbar exponents based on emission line energy.
+
+07/29/23	Add new matrix correction code for Donovan and Moy BSC/BKS corrections (copied from PAP).
+
+07/17/23	Enable secondary fluorescence from boundary code in PFE. Needs testing.
+v. 13.4.3
+
+07/14/23	Add code to read "effective takeoff angles" from SCALERS.DAT file and save to MDB database based on 
+v. 13.4.2	spectrometer/crystal combination.
+
+07/13/23	Fix problem with loading standard parameters on first standard in run.
+
+07/10/23	Small modifications to check for acquisition in progress, rather then RealTimeMode for combining 
+v. 13.4.1	or separating samples. Also load net intensities after combining or separating samples  (Boroughs).
+
+06/21/23	Modify Standard and Probe for EPMA to handle different atomic weights for standards
+v. 13.3.2	and unknowns. Lots of code changes- needs to be tested. Note: Isotopes of the same
+		element should always produce the same x-ray intensities, but the concentrations and 
+		stoichiometries will be different if the atomic weights are different. 
+		E.g. Si28 vs. Si29.
 
 06/05/23	Fix Cameca integer dead time issue (Fellowes).
 

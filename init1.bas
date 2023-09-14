@@ -2082,8 +2082,8 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then SpecifiedAPFMaximumLineEnergy! = Val(Left$(lpReturnString$, valid&))
-If SpecifiedAPFMaximumLineEnergy! > 2500# Then
-msg$ = "SpecifiedAPFMaximumLineEnergy keyword value is out of range in " & ProbeWinINIFile$ & ", (must be less than or equal to 2500 eV)"
+If SpecifiedAPFMaximumLineEnergy! > 7000# Then
+msg$ = "SpecifiedAPFMaximumLineEnergy keyword value is out of range in " & ProbeWinINIFile$ & ", (must be less than or equal to 7000 eV)"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
 SpecifiedAPFMaximumLineEnergy! = Val(lpDefault$)
 End If
@@ -4297,6 +4297,20 @@ If JEOLCountSpectroMilliSecDelayAfter& < 0 Or JEOLCountSpectroMilliSecDelayAfter
 msg$ = "JEOLCountSpectroMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 JEOLCountSpectroMilliSecDelayAfter& = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+' May be necessary for JEOL 8x30 failing crystal flip hardware
+lpAppName$ = "Hardware"
+lpKeyName$ = "JEOLFlipCrystalMilliSecDelayAfter"
+nDefault& = 100
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+JEOLFlipCrystalMilliSecDelayAfter& = valid&
+If JEOLFlipCrystalMilliSecDelayAfter& < 0 Or JEOLFlipCrystalMilliSecDelayAfter& > 1000 Then
+msg$ = "JEOLFlipCrystalMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+JEOLFlipCrystalMilliSecDelayAfter& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 

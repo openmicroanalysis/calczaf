@@ -10,10 +10,9 @@ Dim bmsg As String
 
 ' Form level variables for a single element
 Dim SecondaryFluorescenceFlag As Boolean
-Dim SecondaryFluorescenceCorrectionMethod As Integer ' 0 = PAR couple, 1 = binary compositions
 Dim SecondaryFluorescenceDistanceMethod As Integer   ' 0 = specified distance, 1 = calculated from boundary (specified using several methods but stored as two X,Y pairs)
 
-' Specified distance (CalcZAF only?)
+' Specified distance
 Dim SpecifiedDistance As Single
 
 ' Point and angle
@@ -65,7 +64,7 @@ Static initialized As Boolean
 If Not initialized Then
 ImageHFW! = 400#             ' assume 400 um HFW
 
-SpecifiedDistance! = 25#    ' assume 25 microns for first point of Wark test data file
+If SpecifiedDistance! = 0# Then SpecifiedDistance! = 25#    ' assume 25 microns for first point of Wark test data file
 
 ' Assume vertical boundary at current position (0 degrees equals vertical and 180 equals horizontal)
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
@@ -133,16 +132,11 @@ If ierror Then Exit Sub
 End If
 End If
 
-' Display current Mat B sample
-tmsg$ = TypeWeight$(Int(2), SecondaryMatBSample())
-FormSECONDARY.TextMaterialBComposition.Text = tmsg$
-
-' Load options
-FormSECONDARY.OptionCorrectionMethod(SecondaryFluorescenceCorrectionMethod%).value = True
+' Load distance option
 FormSECONDARY.OptionDistanceMethod(SecondaryFluorescenceDistanceMethod%).value = True
 
 ' Load k-ratio file if already specified
-If SecondaryFluorescenceCorrectionMethod% = 0 And BoundaryKratiosDATFile$ <> vbNullString Then
+If BoundaryKratiosDATFile$ <> vbNullString Then
 FormSECONDARY.LabelKratiosDATFile.Caption = BoundaryKratiosDATFile$
 End If
 
@@ -180,7 +174,7 @@ Dim radians As Single
 
 If FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbChecked Then    ' this control is invisible in CalcZAF
 SecondaryFluorescenceFlag = True                            ' module level flag
-UseSecondaryBoundaryFluorescenceCorrectionFlag = True       ' set global flag if any element is true (PFE only)
+UseSecondaryBoundaryFluorescenceCorrectionFlag = True       ' set global flag if any element boundary fluorescence flag is true (PFE only)
 Else
 SecondaryFluorescenceFlag = False
 End If
@@ -288,13 +282,6 @@ End If
 
 ' Graphical method is saved during mouse up/mouse down events (just check for inbounds below)
 
-' Save correction option
-If FormSECONDARY.OptionCorrectionMethod(0).value = True Then
-SecondaryFluorescenceCorrectionMethod% = 0
-Else
-SecondaryFluorescenceCorrectionMethod% = 1
-End If
-
 ' Now calculate the 2 point boundary coordinates for distance calculation
 If SecondaryFluorescenceDistanceMethod% = 0 Then
 ' Specified distance is calculated based on sample coordinate in SecondaryInitLine which is called by CalcZAFCalculate or other analysis code
@@ -347,65 +334,6 @@ Exit Sub
 SecondarySaveBadGraphicalBoundary:
 msg$ = "One or more graphical boundary coordinates are out of stage X or Y limits! Be sure that you have properly specified a boundary by clicking and dragging the mouse on the loaded image."
 MsgBox msg$, vbOKOnly + vbExclamation, "SecondarySave"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub SecondaryGetComposition(mode As Integer)
-' Get a composition for phase 2
-' mode = 1 get formula
-' mode = 2 get weight
-' mode = 3 get standard composition
-
-ierror = False
-On Error GoTo SecondaryGetCompositionError
-
-Dim tmsg As String
-
-' Write space to log window for new composition
-Call IOWriteLog(vbNullString)
-
-' Get formula or weight from user
-If mode% = 1 Then FormFORMULA.Show vbModal
-If mode% = 2 Then FormWEIGHT.Show vbModal
-If mode% = 3 Then FormSTDCOMP.Show vbModal
-
-' If error, just clear and exit
-If ierror Or icancel Then
-Call InitSample(SecondaryMatBSample())
-Exit Sub
-End If
-
-' Init sample
-Call InitSample(SecondaryMatBSample())
-If ierror Then Exit Sub
-
-' Return modified sample
-Call FormulaReturnSample(SecondaryMatBSample())
-If ierror Then Exit Sub
-
-' Load sample name
-If mode% = 3 Then
-SecondaryMatBSample(1).Type% = 2       ' standard
-SecondaryMatBSample(1).Name$ = "Mat. B (std #" & Format$(SecondaryMatBSample(1).number%) & ")"
-Else
-SecondaryMatBSample(1).Type% = 2       ' unknown
-SecondaryMatBSample(1).Name$ = "Mat. B"
-End If
-
-' Load element data
-Call ElementGetData(SecondaryMatBSample())
-If ierror Then Exit Sub
-
-' Get sample string to display
-tmsg$ = TypeWeight$(Int(2), SecondaryMatBSample())
-FormSECONDARY.TextMaterialBComposition.Text = tmsg$
-Exit Sub
-
-' Errors
-SecondaryGetCompositionError:
-MsgBox Error$, vbOKOnly + vbCritical, "SecondaryGetComposition"
 ierror = True
 Exit Sub
 
@@ -565,21 +493,6 @@ On Error GoTo SecondaryInitError
 Call SecondaryInit2
 If ierror Then Exit Sub
 
-' Using k-ratio data file method
-If SecondaryFluorescenceCorrectionMethod% = 0 Then
-
-End If
-
-' Using binary composition method
-If SecondaryFluorescenceCorrectionMethod% = 1 Then
-
-msg$ = vbCrLf & "Feature not implemented yet"
-MsgBox msg$, vbOKOnly + vbInformation, "SecondaryInit"
-ierror = True
-Exit Sub
-
-End If
-
 Exit Sub
 
 ' Errors
@@ -625,30 +538,16 @@ Sub SecondaryInitChan(chan As Integer, sample() As TypeSample)
 ierror = False
 On Error GoTo SecondaryInitChanError
 
-' Read k-ratio values (and set sample flags) (CalcZAF only works with a single Kratio file for one element)
-If SecondaryFluorescenceCorrectionMethod% = 0 Then
-
 ' Check for valid k-ratio file
 If Trim$(BoundaryKratiosDATFile$) = vbNullString Then GoTo SecondaryInitChanNoFilename
 
-' Load the k-ratios.dat data file
+' Read k-ratio values (and set sample flags) (CalcZAF only works with a single Kratio file for one element)
 Call SecondaryReadKratiosDATFile(BoundaryKratiosDATFile$, sample())
 If ierror Then Exit Sub
 
 ' Process the k-ratio values just read in
 Call SecondaryProcessKratiosDAT(chan%)
 If ierror Then Exit Sub
-End If
-
-' Load matrix and boundary database binary compositional k-ratios
-If SecondaryFluorescenceCorrectionMethod% = 1 Then
-
-msg$ = vbCrLf & "Feature not implemented yet"
-MsgBox msg$, vbOKOnly + vbInformation, "SecondaryInitChan"
-ierror = True
-Exit Sub
-
-End If
 
 Exit Sub
 
@@ -1221,13 +1120,13 @@ Dim fractionx As Single, fractiony As Single
 Dim radius As Single
 
 Dim n As Long
-Dim X() As Single, Y() As Single, Z() As Single
+Dim x() As Single, y() As Single, Z() As Single
 
 ' Check if a calibration is loaded
 If Not PictureSnapCalibrated Then Exit Sub
 
 ' Get coordinate points
-Call SecondaryGetCoordinates(n&, X!(), Y!(), Z!())
+Call SecondaryGetCoordinates(n&, x!(), y!(), Z!())
 If ierror Then Exit Sub
 
 ' Check for valid points to plot
@@ -1235,8 +1134,8 @@ If n& < 1 Then Exit Sub
 
 ' Loop on all points
 For i& = 1 To n&
-stx! = X!(i&)
-sty! = Y!(i&)
+stx! = x!(i&)
+sty! = y!(i&)
 stz! = Z!(i&)
 
 ' Convert stage to image (form) coordinates and obtain fractional position
@@ -1419,7 +1318,7 @@ Exit Sub
 End Sub
 
 Sub SecondarySampleLoadFrom(chan As Integer, sample() As TypeSample)
-' Load the FormSECONDARY from the passed sample
+' Load the module parameters from the passed sample
 
 ierror = False
 On Error GoTo SecondarySampleLoadFromError
@@ -1429,10 +1328,8 @@ If sample(1).SecondaryFluorescenceBoundaryFlag(chan%) Then
 SecondaryFluorescenceFlag = True
 Else
 SecondaryFluorescenceFlag = False
+Exit Sub                                ' no secondary boundary fluorescence correction defined for this element
 End If
-
-' Load correction method for this channel
-SecondaryFluorescenceCorrectionMethod% = sample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(chan%)
 
 ' Material A and B (and B std) could be swapped for some elements
 MatA_String$ = sample(1).SecondaryFluorescenceBoundaryMatA_String$(chan%)
@@ -1451,6 +1348,7 @@ BoundaryImageNumber% = sample(1).SecondaryFluorescenceBoundaryImageNumber%
 
 ' Load distance method (same for all elements)
 SecondaryFluorescenceDistanceMethod% = sample(1).SecondaryFluorescenceBoundaryDistanceMethod%
+SpecifiedDistance! = sample(1).SecondaryFluorescenceBoundarySpecifiedDistance!
 
 ' Load 2 point boundary coordinates (same for all elements)
 Boundary_X_Pos1! = sample(1).SecondaryFluorescenceBoundaryCoordinateX1!
@@ -1486,9 +1384,6 @@ Else
 sample(1).SecondaryFluorescenceBoundaryFlag(chan%) = False
 End If
 
-' Save correction method for this channel
-sample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(chan%) = SecondaryFluorescenceCorrectionMethod%
-
 ' Material A and B (and B std) could be swapped for some elements
 sample(1).SecondaryFluorescenceBoundaryMatA_String$(chan%) = MatA_String$
 sample(1).SecondaryFluorescenceBoundaryMatB_String$(chan%) = MatB_String$
@@ -1506,6 +1401,7 @@ sample(1).SecondaryFluorescenceBoundaryImageNumber% = BoundaryImageNumber%
 
 ' Save distance method (same for all elements)
 sample(1).SecondaryFluorescenceBoundaryDistanceMethod% = SecondaryFluorescenceDistanceMethod%
+sample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = SpecifiedDistance!
 
 ' Save boundary (all distance methods save two points)
 sample(1).SecondaryFluorescenceBoundaryCoordinateX1! = Boundary_X_Pos1!

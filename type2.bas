@@ -168,7 +168,11 @@ msg$ = "Average Calculated Oxygen:" & Format$(Format$(analysis.CalculatedOxygen!
 If Not UseZFractionZbarCalculationsFlag Then
 msg$ = msg$ & "     " & "Average Atomic Number: " & Format$(Format$(analysis.zbar!, f83$), a80$)
 Else
+If ZFractionZbarCalculationsExponent! <> 0# Then
 msg$ = msg$ & "     " & "Z-Bar (Z Fraction^" & Format$(ZFractionZbarCalculationsExponent!, "0.0") & "): " & Format$(Format$(analysis.zbar!, f83$), a70$)
+Else
+msg$ = msg$ & "     " & "Z-Bar (Z Fraction^var): " & Format$(Format$(analysis.zbar!, f83$), a70$)
+End If
 End If
 Call IOWriteLog(msg$)
 

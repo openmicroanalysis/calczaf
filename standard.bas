@@ -207,6 +207,9 @@ Dim MemoTextIndex As New Index      ' text memo index (to sample row numbers)
 
 Dim StdMountNames As New Field
 
+Dim ElmAtomicChargesStd As New Field
+Dim ElmAtomicWtsStd As New Field
+
 ImportDataFile$ = vbNullString
 ExportDataFile$ = vbNullString
 
@@ -291,6 +294,14 @@ elm.Fields.Append ElmNumCat
 ElmNumOxd.Name = "NumOxd"
 ElmNumOxd.Type = dbInteger
 elm.Fields.Append ElmNumOxd
+
+ElmAtomicChargesStd.Name = "AtomicChargesStd"       ' v. 13.2.2
+ElmAtomicChargesStd.Type = dbSingle
+elm.Fields.Append ElmAtomicChargesStd
+
+ElmAtomicWtsStd.Name = "AtomicWtsStd"       ' v. 13.2.2
+ElmAtomicWtsStd.Type = dbSingle
+elm.Fields.Append ElmAtomicWtsStd
 
 ' Specify the pointer to standard number index
 ElmIndex.Name = "Element Numbers"

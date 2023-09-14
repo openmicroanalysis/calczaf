@@ -1008,6 +1008,12 @@ If n% <> 1 Then
 Call IOWriteLog(vbNullString)
 End If
 
+msg$ = "TAKOFF"
+For i% = ii% To jj%
+msg$ = msg$ & Format$(Format$(sample(1).EffectiveTakeOffs!(i%), f82$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+
 msg$ = "KILO: "
 For i% = ii% To jj%
 msg$ = msg$ & Format$(Format$(sample(1).KilovoltsArray!(i%), f82$), a80$)
@@ -1031,6 +1037,12 @@ For i% = ii% To jj%
 temp! = 0#
 If sample(1).LineEdge!(i%) <> 0# Then temp! = EVPERKEV# * sample(1).KilovoltsArray!(i%) / sample(1).LineEdge!(i%)
 msg$ = msg$ & MiscAutoFormatN$(temp!, Int(2))
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "ATWT: "
+For i% = ii% To jj%
+msg$ = msg$ & Format$(Format$(sample(1).AtomicWts!(i%), f83$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 

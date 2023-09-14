@@ -646,7 +646,7 @@ zedzbars!(j%) = zedzbar!
 Next j%
 
 ' Calculate electron fractions (exponent = 1.0)
-Call ConvertWeightToElectron(filmnumberofelements%, tatomicnumber!(), AtomicWeight!(), concentration!(), electron!())
+Call ConvertWeightToZFraction(filmnumberofelements%, tatomicnumber!(), AtomicWeight!(), concentration!(), electron!())
 If ierror Then Exit Sub
 
 ' Calculate compound backscatter (property averaged)

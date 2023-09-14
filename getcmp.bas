@@ -152,7 +152,7 @@ ierror = True
 Exit Sub
 End If
 
-' Load the element, xray, cation, oxygen and wtpercents lists into the GetCmpOldSample array to remove possible blank spaces
+' Load the element, xray, cation, oxygen and wt percents lists into the GetCmpOldSample array to remove possible blank spaces
 Call InitSample(GetCmpOldSample())
 If ierror Then Exit Sub
 
@@ -175,7 +175,9 @@ If ip% > 0 And ipp% > 0 Then
     End If
     GetCmpOldSample(1).numcat%(GetCmpOldSample(1).LastElm%) = GetCmpTmpSample(1).numcat%(i%)
     GetCmpOldSample(1).numoxd%(GetCmpOldSample(1).LastElm%) = GetCmpTmpSample(1).numoxd%(i%)
+    
     GetCmpOldSample(1).AtomicCharges!(GetCmpOldSample(1).LastElm%) = GetCmpTmpSample(1).AtomicCharges!(i%)
+    GetCmpOldSample(1).AtomicWts!(GetCmpOldSample(1).LastElm%) = GetCmpTmpSample(1).AtomicWts!(i%)
 
     ' Load elemental compositions
     GetCmpOldSample(1).ElmPercents!(GetCmpOldSample(1).LastElm%) = GetCmpTmpSample(1).ElmPercents!(i%)
@@ -358,7 +360,9 @@ FormSETCMP.ComboCations.Text = vbNullString
 FormSETCMP.ComboOxygens.Text = vbNullString
 FormSETCMP.TextComposition.Text = vbNullString
 
-FormSETCMP.TextCharge.Text = vbNullString
+FormSETCMP.TextAtomicChargesStd.Text = vbNullString
+FormSETCMP.TextAtomicWtsStd.Text = vbNullString
+
 FormSETCMP.ComboCrystal.Text = vbNullString
 
 Exit Sub
@@ -423,6 +427,7 @@ For i% = 0 To MAXCATION% - 1    ' 0 to 99
 FormSETCMP.ComboOxygens.AddItem Format$(i%)
 Next i%
 
+' Load available crystals  (not saved to standard database, only updates global default in GetCmpSetCmpSave)
 FormSETCMP.ComboCrystal.Clear
 For i% = 1 To MAXCRYSTYPE%
 If Trim$(AllCrystalNames$(i%)) <> vbNullString Then
@@ -455,8 +460,12 @@ If FormGETCMP.OptionEnterOxide.Value Then
 temp! = ConvertElmToOxd(temp!, GetCmpTmpSample(1).Elsyms$(GetCmpRow%), GetCmpTmpSample(1).numcat%(GetCmpRow%), GetCmpTmpSample(1).numoxd%(GetCmpRow%))
 End If
 
+' Laod weight percent
 FormSETCMP.TextComposition.Text = Format$(temp!, f83$)
-FormSETCMP.TextCharge.Text = Format$(GetCmpTmpSample(1).AtomicCharges!(GetCmpRow%), f83$)
+
+' Load atomic charges and atomic weights for standard
+FormSETCMP.TextAtomicChargesStd.Text = Format$(GetCmpTmpSample(1).AtomicCharges!(GetCmpRow%), f83$)
+FormSETCMP.TextAtomicWtsStd.Text = Format$(GetCmpTmpSample(1).AtomicWts!(GetCmpRow%), f83$)
 
 Exit Sub
 
@@ -573,13 +582,6 @@ If GetCmpTmpSample(1).OxideOrElemental% = 1 Or GetCmpTmpSample(1).DisplayAsOxide
 AllOxd%(ipp%) = GetCmpTmpSample(1).numoxd%(GetCmpRow%)
 End If
 
-' Save crystal as default for this session
-sym$ = Trim$(FormSETCMP.ComboCrystal.Text)
-ip% = IPOS1%(MAXCRYSTYPE%, sym$, AllCrystalNames$())
-If ip% = 0 Then GoTo GetCmpSetCmpBadCrystal
-GetCmpTmpSample(1).CrystalNames$(GetCmpRow%) = AllCrystalNames$(ip%)
-Defcry$(ipp%) = GetCmpTmpSample(1).CrystalNames$(GetCmpRow%)
-
 ' Load weight percent values
 temp! = Val(FormSETCMP.TextComposition.Text)
 
@@ -590,10 +592,20 @@ End If
 
 GetCmpTmpSample(1).ElmPercents!(GetCmpRow%) = temp!
 
-' Save charge and save as default
-If Val(FormSETCMP.TextCharge.Text) < -10 Or Val(FormSETCMP.TextCharge.Text) > 10 Then GoTo GetCmpSetCmpSaveBadCharge
-GetCmpTmpSample(1).AtomicCharges!(GetCmpRow%) = Val(FormSETCMP.TextCharge.Text)
-AllAtomicCharges!(ipp%) = GetCmpTmpSample(1).AtomicCharges!(GetCmpRow%)
+' Save atomic charge for standards
+If Val(FormSETCMP.TextAtomicChargesStd.Text) < -10 Or Val(FormSETCMP.TextAtomicChargesStd.Text) > 10 Then GoTo GetCmpSetCmpSaveBadCharge
+GetCmpTmpSample(1).AtomicCharges!(GetCmpRow%) = Val(FormSETCMP.TextAtomicChargesStd.Text)
+
+' Save atomic weight for natural/isotope enriched standards
+If Not MiscDifferenceIsSmall(Val(FormSETCMP.TextAtomicWtsStd.Text), AllAtomicWts!(ipp%), 0.2) Then GoTo GetCmpSetCmpSaveBadWeight
+GetCmpTmpSample(1).AtomicWts!(GetCmpRow%) = Val(FormSETCMP.TextAtomicWtsStd.Text)
+
+' Save crystal as default for this session (not saved to standard database)
+sym$ = Trim$(FormSETCMP.ComboCrystal.Text)
+ip% = IPOS1%(MAXCRYSTYPE%, sym$, AllCrystalNames$())
+If ip% = 0 Then GoTo GetCmpSetCmpBadCrystal
+GetCmpTmpSample(1).CrystalNames$(GetCmpRow%) = AllCrystalNames$(ip%)
+Defcry$(ipp%) = GetCmpTmpSample(1).CrystalNames$(GetCmpRow%)
 
 Exit Sub
 
@@ -640,7 +652,13 @@ ierror = True
 Exit Sub
 
 GetCmpSetCmpSaveBadCharge:
-msg$ = "Invalid charge"
+msg$ = "Invalid atomic charge"
+MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSetCmpSave"
+ierror = True
+Exit Sub
+
+GetCmpSetCmpSaveBadWeight:
+msg$ = "Invalid atomic weight"
 MsgBox msg$, vbOKOnly + vbExclamation, "GetCmpSetCmpSave"
 ierror = True
 Exit Sub
@@ -669,10 +687,15 @@ If sym$ <> GetCmpTmpSample(1).Elsyms$(GetCmpRow%) Then FormSETCMP.ComboCations.T
 If FormSETCMP.ComboOxygens.Text = vbNullString Then FormSETCMP.ComboOxygens.Text = AllOxd%(ip%)
 If sym$ <> GetCmpTmpSample(1).Elsyms$(GetCmpRow%) Then FormSETCMP.ComboOxygens.Text = AllOxd%(ip%)
 
-If Val(FormSETCMP.TextCharge.Text) = 0 Then FormSETCMP.TextCharge.Text = Str$(AllAtomicCharges!(ip%))
-If sym$ <> GetCmpTmpSample(1).Elsyms$(GetCmpRow%) Then FormSETCMP.TextCharge.Text = Str$(AllAtomicCharges!(ip%))
+' Load default atomic charge for standard
+If Val(FormSETCMP.TextAtomicChargesStd.Text) = 0 Then FormSETCMP.TextAtomicChargesStd.Text = Str$(AllAtomicCharges!(ip%))
+If sym$ <> GetCmpTmpSample(1).Elsyms$(GetCmpRow%) Then FormSETCMP.TextAtomicChargesStd.Text = Str$(AllAtomicCharges!(ip%))
 
-' Select the default crystal
+' Load default atomic weight for standard (natural/isotope enriched)
+If Val(FormSETCMP.TextAtomicWtsStd.Text) = 0 Then FormSETCMP.TextAtomicWtsStd.Text = Str$(AllAtomicWts!(ip%))
+If sym$ <> GetCmpTmpSample(1).Elsyms$(GetCmpRow%) Then FormSETCMP.TextAtomicWtsStd.Text = Str$(AllAtomicWts!(ip%))
+
+' Select the default crystal (not saved to standard database, only updates global default in GetCmpSetCmpSave)
 ipp% = IPOS1(MAXCRYSTYPE%, Defcry$(ip%), AllCrystalNames$())
 If ipp% > 0 Then FormSETCMP.ComboCrystal.Text = AllCrystalNames$(ipp%)
 
@@ -1016,6 +1039,10 @@ If ierror Then Exit Sub
 
 ' Remove blank rows
 Call GetCmpSave
+If ierror Then Exit Sub
+
+' Load defaults
+Call ElementGetData(GetCmpTmpSample())
 If ierror Then Exit Sub
 
 ' Reload the entire grid

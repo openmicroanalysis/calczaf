@@ -688,7 +688,7 @@ astring$ = astring$ & vbTab & MiscAutoFormat$(sample(1).StagePositions!(sampleli
 astring$ = astring$ & vbTab & MiscAutoFormat$(sample(1).StagePositions!(sampleline%, 3))
 
 ' Convert to atomic percents
-Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWeights!(), analysis.WtPercents!(), analysis.AtPercents!())
+Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWts!(), analysis.WtPercents!(), analysis.AtPercents!())
 If ierror Then Exit Sub
 
 ' Atomic percents

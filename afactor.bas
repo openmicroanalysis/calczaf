@@ -1492,7 +1492,7 @@ If ierror Then Exit Sub
 
 ' Calculate atomic percents
 If sample(1).AtomicPercentFlag Then
-Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWeights!(), analysis.WtPercents!(), analysis.AtPercents!())
+Call ConvertWeightToAtomic(sample(1).LastChan%, analysis.AtomicWts!(), analysis.WtPercents!(), analysis.AtPercents!())
 If ierror Then Exit Sub
 For chan% = 1 To sample(1).LastChan%
 analysis.AtPercents!(chan%) = 100# * analysis.AtPercents!(chan%)
@@ -1501,7 +1501,7 @@ End If
 
 ' Calculate oxide percents
 If sample(1).DisplayAsOxideFlag Then
-Call ConvertWeightToOxide(sample(1).LastChan%, analysis.AtomicWeights!(), sample(1).numcat%(), sample(1).numoxd%(), analysis.WtPercents!(), excess!, analysis.OxPercents!())
+Call ConvertWeightToOxide(sample(1).LastChan%, analysis.AtomicWts!(), sample(1).numcat%(), sample(1).numoxd%(), analysis.WtPercents!(), excess!, analysis.OxPercents!())
 If ierror Then Exit Sub
 End If
 

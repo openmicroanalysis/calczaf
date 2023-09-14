@@ -111,7 +111,10 @@ If ip% > 0 Then
 sample(1).Xrsyms$(i%) = Deflin$(ip%)
 sample(1).numcat%(i%) = AllCat%(ip%)
 sample(1).numoxd%(i%) = AllOxd%(ip%)
+
 sample(1).AtomicCharges!(i%) = AllAtomicCharges!(ip%)
+sample(1).AtomicWts!(i%) = AllAtomicWts!(ip%)
+
 sample(1).CrystalNames$(i%) = Defcry$(ip%)
 End If
 
@@ -156,7 +159,9 @@ If ip% > 0 Then
 sample(1).Xrsyms$(i%) = Deflin$(ip%)
 sample(1).numcat%(i%) = AllCat%(ip%)
 sample(1).numoxd%(i%) = AllOxd%(ip%)
+
 sample(1).AtomicCharges!(i%) = AllAtomicCharges!(ip%)
+sample(1).AtomicWts!(i%) = AllAtomicWts!(ip%)
 End If
 
 sample(1).ElmPercents!(i%) = ConvertAtomToWeight(sample(1).LastChan%, i%, subs!(), elms$())

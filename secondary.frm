@@ -5,12 +5,12 @@ Begin VB.Form FormSECONDARY
    ClientHeight    =   9270
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   13440
+   ClientWidth     =   13320
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   9270
-   ScaleWidth      =   13440
+   ScaleWidth      =   13320
    StartUpPosition =   3  'Windows Default
    Begin VB.Frame FrameUpdateBoundary 
       Caption         =   "Update Boundary Position"
@@ -26,7 +26,7 @@ Begin VB.Form FormSECONDARY
       ForeColor       =   &H00FF0000&
       Height          =   1455
       Left            =   9600
-      TabIndex        =   53
+      TabIndex        =   46
       Top             =   720
       Visible         =   0   'False
       Width           =   9375
@@ -34,7 +34,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Update Position of Boundary Coordinate (and angle)"
          Height          =   735
          Left            =   240
-         TabIndex        =   56
+         TabIndex        =   49
          Top             =   480
          Width           =   2175
       End
@@ -42,7 +42,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Update Positions of Boundary Coordinate (first pair)"
          Height          =   735
          Left            =   2880
-         TabIndex        =   55
+         TabIndex        =   48
          Top             =   480
          Width           =   2175
       End
@@ -50,7 +50,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Update Positions of Boundary Coordinate (second pair)"
          Height          =   735
          Left            =   5160
-         TabIndex        =   54
+         TabIndex        =   47
          Top             =   480
          Width           =   2175
       End
@@ -59,7 +59,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Adjust the stage for the boundary position and click one of the update position buttons"
          Height          =   855
          Left            =   7560
-         TabIndex        =   57
+         TabIndex        =   4
          Top             =   360
          Width           =   1695
       End
@@ -71,7 +71,7 @@ Begin VB.Form FormSECONDARY
       Left            =   7440
       ScaleHeight     =   675
       ScaleWidth      =   795
-      TabIndex        =   52
+      TabIndex        =   45
       Top             =   6000
       Visible         =   0   'False
       Width           =   855
@@ -83,7 +83,7 @@ Begin VB.Form FormSECONDARY
       Left            =   6000
       ScaleHeight     =   675
       ScaleWidth      =   795
-      TabIndex        =   51
+      TabIndex        =   44
       Top             =   6000
       Visible         =   0   'False
       Width           =   855
@@ -92,7 +92,7 @@ Begin VB.Form FormSECONDARY
       Caption         =   "Print Image"
       Height          =   375
       Left            =   4800
-      TabIndex        =   50
+      TabIndex        =   43
       Top             =   8400
       Width           =   2175
    End
@@ -111,7 +111,7 @@ Begin VB.Form FormSECONDARY
       Height          =   375
       Left            =   9840
       Style           =   1  'Graphical
-      TabIndex        =   49
+      TabIndex        =   42
       ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
       Top             =   120
       Width           =   1455
@@ -120,7 +120,7 @@ Begin VB.Form FormSECONDARY
       Caption         =   "Perform Boundary Correction (invisible)"
       Height          =   255
       Left            =   9960
-      TabIndex        =   47
+      TabIndex        =   40
       Top             =   480
       Value           =   1  'Checked
       Visible         =   0   'False
@@ -133,7 +133,7 @@ Begin VB.Form FormSECONDARY
       Left            =   6720
       ScaleHeight     =   675
       ScaleWidth      =   795
-      TabIndex        =   46
+      TabIndex        =   39
       Top             =   3360
       Visible         =   0   'False
       Width           =   855
@@ -142,7 +142,7 @@ Begin VB.Form FormSECONDARY
       Caption         =   "Copy To Clipboard"
       Height          =   375
       Left            =   7200
-      TabIndex        =   45
+      TabIndex        =   38
       ToolTipText     =   "Copy the above image (with graphics onjects) to the system clipboard"
       Top             =   8400
       Width           =   2175
@@ -159,7 +159,7 @@ Begin VB.Form FormSECONDARY
       EndProperty
       Height          =   285
       Left            =   7320
-      TabIndex        =   44
+      TabIndex        =   37
       Top             =   8880
       Width           =   1095
    End
@@ -169,7 +169,7 @@ Begin VB.Form FormSECONDARY
       Top             =   8760
    End
    Begin VB.Frame Frame4 
-      Caption         =   "Secondary Fluorescence Boundary Correction Method"
+      Caption         =   "Calculate Using K-Ratios From Previously Calculated PAR File Couple"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -182,7 +182,7 @@ Begin VB.Form FormSECONDARY
       ForeColor       =   &H00FF0000&
       Height          =   1455
       Left            =   120
-      TabIndex        =   14
+      TabIndex        =   9
       Top             =   720
       Width           =   9255
       Begin VB.CommandButton CommandBrowseForCouple 
@@ -197,59 +197,21 @@ Begin VB.Form FormSECONDARY
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   375
-         Left            =   6600
+         Height          =   495
+         Left            =   240
          Style           =   1  'Graphical
-         TabIndex        =   20
+         TabIndex        =   13
          ToolTipText     =   $"Secondary.frx":0000
-         Top             =   240
-         Width           =   2295
-      End
-      Begin VB.OptionButton OptionCorrectionMethod 
-         Caption         =   "Calculate Using Binary Composition K-Ratios From Matrix and Boundary Databases"
-         Enabled         =   0   'False
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Index           =   1
-         Left            =   240
-         TabIndex        =   18
-         Top             =   1080
-         Visible         =   0   'False
-         Width           =   8895
-      End
-      Begin VB.OptionButton OptionCorrectionMethod 
-         Caption         =   "Calculate Using K-Ratios From Previously Calculated PAR File Couple"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   255
-         Index           =   0
-         Left            =   240
-         TabIndex        =   17
          Top             =   360
-         Width           =   6615
+         Width           =   2295
       End
       Begin VB.Label LabelKratiosDATFile 
          BorderStyle     =   1  'Fixed Single
          Height          =   255
-         Left            =   480
-         TabIndex        =   19
-         Top             =   720
-         Width           =   8535
+         Left            =   240
+         TabIndex        =   12
+         Top             =   960
+         Width           =   8775
       End
    End
    Begin VB.Frame FrameImage 
@@ -266,7 +228,7 @@ Begin VB.Form FormSECONDARY
       ForeColor       =   &H00FF0000&
       Height          =   6615
       Left            =   120
-      TabIndex        =   11
+      TabIndex        =   6
       Top             =   2520
       Width           =   4455
       Begin VB.TextBox TextY2StageCoordinate 
@@ -281,7 +243,7 @@ Begin VB.Form FormSECONDARY
          EndProperty
          Height          =   285
          Left            =   2880
-         TabIndex        =   38
+         TabIndex        =   31
          Top             =   4680
          Width           =   1095
       End
@@ -297,7 +259,7 @@ Begin VB.Form FormSECONDARY
          EndProperty
          Height          =   285
          Left            =   2880
-         TabIndex        =   36
+         TabIndex        =   29
          Top             =   4320
          Width           =   1095
       End
@@ -313,7 +275,7 @@ Begin VB.Form FormSECONDARY
          EndProperty
          Height          =   285
          Left            =   2880
-         TabIndex        =   34
+         TabIndex        =   27
          Top             =   3840
          Width           =   1095
       End
@@ -329,7 +291,7 @@ Begin VB.Form FormSECONDARY
          EndProperty
          Height          =   285
          Left            =   2880
-         TabIndex        =   32
+         TabIndex        =   25
          Top             =   3480
          Width           =   1095
       End
@@ -345,7 +307,7 @@ Begin VB.Form FormSECONDARY
          EndProperty
          Height          =   285
          Left            =   2880
-         TabIndex        =   30
+         TabIndex        =   23
          Top             =   2520
          Width           =   1095
       End
@@ -361,7 +323,7 @@ Begin VB.Form FormSECONDARY
          EndProperty
          Height          =   285
          Left            =   2880
-         TabIndex        =   28
+         TabIndex        =   21
          Top             =   2160
          Width           =   1095
       End
@@ -377,7 +339,7 @@ Begin VB.Form FormSECONDARY
          EndProperty
          Height          =   285
          Left            =   2880
-         TabIndex        =   26
+         TabIndex        =   19
          Top             =   1800
          Width           =   1095
       End
@@ -396,7 +358,7 @@ Begin VB.Form FormSECONDARY
          Height          =   375
          Left            =   840
          Style           =   1  'Graphical
-         TabIndex        =   24
+         TabIndex        =   17
          Top             =   5400
          Width           =   2535
       End
@@ -414,7 +376,7 @@ Begin VB.Form FormSECONDARY
          Height          =   255
          Index           =   3
          Left            =   360
-         TabIndex        =   23
+         TabIndex        =   16
          ToolTipText     =   "Specify the boundary by drawing a line on a stage calibrated image"
          Top             =   5160
          Width           =   2775
@@ -433,7 +395,7 @@ Begin VB.Form FormSECONDARY
          Height          =   255
          Index           =   2
          Left            =   360
-         TabIndex        =   22
+         TabIndex        =   15
          ToolTipText     =   "Specify boundary as a pair of X,Y coordinates"
          Top             =   3120
          Width           =   3255
@@ -452,7 +414,7 @@ Begin VB.Form FormSECONDARY
          Height          =   255
          Index           =   1
          Left            =   360
-         TabIndex        =   16
+         TabIndex        =   11
          ToolTipText     =   "Specify the boundary as a coordinate and an angle (0 to 180 where 0 degrees equals north-south, 90 degrees equals east-west)"
          Top             =   1320
          Width           =   3615
@@ -471,7 +433,7 @@ Begin VB.Form FormSECONDARY
          Height          =   255
          Index           =   0
          Left            =   360
-         TabIndex        =   15
+         TabIndex        =   10
          ToolTipText     =   "Specify the boundary as a fixed distance for all calculations"
          Top             =   360
          Width           =   3855
@@ -488,7 +450,7 @@ Begin VB.Form FormSECONDARY
          EndProperty
          Height          =   285
          Left            =   2880
-         TabIndex        =   13
+         TabIndex        =   8
          Top             =   720
          Width           =   1095
       End
@@ -496,7 +458,7 @@ Begin VB.Form FormSECONDARY
          BorderStyle     =   1  'Fixed Single
          Height          =   615
          Left            =   120
-         TabIndex        =   25
+         TabIndex        =   18
          Top             =   5880
          Width           =   4215
       End
@@ -504,7 +466,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Y2 Stage Coordinate"
          Height          =   255
          Left            =   600
-         TabIndex        =   39
+         TabIndex        =   32
          Top             =   4680
          Width           =   2295
       End
@@ -512,7 +474,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "X2 Stage Coordinate"
          Height          =   255
          Left            =   600
-         TabIndex        =   37
+         TabIndex        =   30
          Top             =   4320
          Width           =   2295
       End
@@ -520,7 +482,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Y1 Stage Coordinate"
          Height          =   255
          Left            =   600
-         TabIndex        =   35
+         TabIndex        =   28
          Top             =   3840
          Width           =   2295
       End
@@ -528,7 +490,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "X1 Stage Coordinate"
          Height          =   255
          Left            =   600
-         TabIndex        =   33
+         TabIndex        =   26
          Top             =   3480
          Width           =   2295
       End
@@ -536,7 +498,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Boundary Angle (0 to 180)"
          Height          =   255
          Left            =   600
-         TabIndex        =   31
+         TabIndex        =   24
          Top             =   2520
          Width           =   2295
       End
@@ -544,7 +506,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Y Stage Coordinate"
          Height          =   255
          Left            =   600
-         TabIndex        =   29
+         TabIndex        =   22
          Top             =   2160
          Width           =   2295
       End
@@ -552,7 +514,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "X Stage Coordinate"
          Height          =   255
          Left            =   600
-         TabIndex        =   27
+         TabIndex        =   20
          Top             =   1800
          Width           =   2295
       End
@@ -560,7 +522,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Constant Distance (um)"
          Height          =   255
          Left            =   600
-         TabIndex        =   12
+         TabIndex        =   7
          Top             =   720
          Width           =   2295
       End
@@ -580,80 +542,9 @@ Begin VB.Form FormSECONDARY
       Height          =   375
       Left            =   11640
       Style           =   1  'Graphical
-      TabIndex        =   10
+      TabIndex        =   5
       Top             =   120
       Width           =   1455
-   End
-   Begin VB.Frame Frame2 
-      Caption         =   "Boundary Material (Mat. B)"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FF0000&
-      Height          =   4215
-      Left            =   9600
-      TabIndex        =   1
-      Top             =   720
-      Visible         =   0   'False
-      Width           =   3735
-      Begin VB.CommandButton CommandCompositionStandard 
-         Caption         =   "Enter Composition as Standard"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   7
-         Top             =   1680
-         Width           =   3495
-      End
-      Begin VB.CommandButton CommandCompositionWeight 
-         Caption         =   "Enter Composition as Weight String"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   8
-         TabStop         =   0   'False
-         Top             =   1440
-         Width           =   3495
-      End
-      Begin VB.CommandButton CommandCompositionAtom 
-         Caption         =   "Enter Composition as Atom String"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   9
-         TabStop         =   0   'False
-         Top             =   1200
-         Width           =   3495
-      End
-      Begin VB.TextBox TextMaterialBComposition 
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   2055
-         Left            =   240
-         MultiLine       =   -1  'True
-         TabIndex        =   6
-         Top             =   2040
-         Width           =   3255
-      End
-      Begin VB.Label Label3 
-         Alignment       =   2  'Center
-         Caption         =   "Define the composition of Material B by by formula, weight or standard composition."
-         Height          =   615
-         Left            =   600
-         TabIndex        =   5
-         Top             =   360
-         Width           =   2535
-      End
    End
    Begin VB.Frame Frame1 
       Caption         =   "Perform Boundary Correction on Mat A"
@@ -667,10 +558,10 @@ Begin VB.Form FormSECONDARY
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FF0000&
-      Height          =   3855
-      Left            =   9600
+      Height          =   6855
+      Left            =   9480
       TabIndex        =   0
-      Top             =   5280
+      Top             =   2280
       Width           =   3735
       Begin VB.CommandButton CommandCalculateExportAll 
          BackColor       =   &H0080FFFF&
@@ -687,8 +578,8 @@ Begin VB.Form FormSECONDARY
          Height          =   615
          Left            =   360
          Style           =   1  'Graphical
-         TabIndex        =   21
-         Top             =   2880
+         TabIndex        =   14
+         Top             =   4920
          Width           =   3015
       End
       Begin VB.CommandButton CommandCalculateCurrent 
@@ -706,26 +597,26 @@ Begin VB.Form FormSECONDARY
          Height          =   615
          Left            =   360
          Style           =   1  'Graphical
-         TabIndex        =   4
-         Top             =   1320
+         TabIndex        =   3
+         Top             =   1920
          Width           =   3015
       End
       Begin VB.Label Label1 
          Alignment       =   2  'Center
-         Caption         =   "The composition of Material A is defined by the current intensities or k-ratios in the CalcZAF ""Calculate ZAF Corrections"" window."
+         Caption         =   "The composition of Material A is defined by the current intensities or k-ratios in the CalcZAF ""Calculate ZAF Corrections"" window"
          Height          =   855
          Left            =   480
-         TabIndex        =   2
-         Top             =   480
+         TabIndex        =   1
+         Top             =   960
          Width           =   2775
       End
       Begin VB.Label Label13 
          Alignment       =   2  'Center
-         Caption         =   "The composition of Material A is defined by the CalcZAF input data file."
+         Caption         =   "The composition of Material A is defined by the CalcZAF input data file"
          Height          =   495
          Left            =   480
-         TabIndex        =   40
-         Top             =   2400
+         TabIndex        =   33
+         Top             =   4320
          Width           =   2775
       End
    End
@@ -734,7 +625,7 @@ Begin VB.Form FormSECONDARY
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   4800
-      TabIndex        =   48
+      TabIndex        =   41
       Top             =   2400
       Width           =   4575
    End
@@ -742,7 +633,7 @@ Begin VB.Form FormSECONDARY
       Caption         =   "Horizontal Field Width (um)"
       Height          =   255
       Left            =   5280
-      TabIndex        =   43
+      TabIndex        =   36
       Top             =   8880
       Width           =   2055
    End
@@ -759,7 +650,7 @@ Begin VB.Form FormSECONDARY
       Caption         =   "Keep image control square in size"
       Height          =   615
       Left            =   6120
-      TabIndex        =   42
+      TabIndex        =   35
       Top             =   5040
       Visible         =   0   'False
       Width           =   1695
@@ -769,7 +660,7 @@ Begin VB.Form FormSECONDARY
       BorderStyle     =   1  'Fixed Single
       Height          =   255
       Left            =   4800
-      TabIndex        =   41
+      TabIndex        =   34
       Top             =   2640
       Width           =   4575
    End
@@ -778,7 +669,7 @@ Begin VB.Form FormSECONDARY
       Caption         =   $"Secondary.frx":00DC
       Height          =   495
       Left            =   600
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   120
       Width           =   8415
    End
@@ -844,24 +735,6 @@ If ierror Then Exit Sub
 Unload FormSECONDARY
 End Sub
 
-Private Sub CommandCompositionAtom_Click()
-If Not DebugMode Then On Error Resume Next
-Call SecondaryGetComposition(Int(1))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub CommandCompositionStandard_Click()
-If Not DebugMode Then On Error Resume Next
-Call SecondaryGetComposition(Int(3))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub CommandCompositionWeight_Click()
-If Not DebugMode Then On Error Resume Next
-Call SecondaryGetComposition(Int(2))
-If ierror Then Exit Sub
-End Sub
-
 Private Sub CommandCopyToClipboard_Click()
 If Not DebugMode Then On Error Resume Next
 ' Clipboard (use special function to save graphics methods)
@@ -915,23 +788,6 @@ ImageX2! = x!
 ImageY2! = y!
 Call SecondaryGetBoundary(Int(2), ImageX1!, ImageY1!, ImageX2!, ImageY2!, FormSECONDARY)
 If ierror Then Exit Sub
-End Sub
-
-Private Sub OptionCorrectionMethod_Click(Index As Integer)
-If Not DebugMode Then On Error Resume Next
-If Index% = 0 Then
-FormSECONDARY.CommandBrowseForCouple.Enabled = True
-FormSECONDARY.CommandCompositionAtom.Enabled = False
-FormSECONDARY.CommandCompositionWeight.Enabled = False
-FormSECONDARY.CommandCompositionStandard.Enabled = False
-FormSECONDARY.TextMaterialBComposition.Enabled = False
-Else
-FormSECONDARY.CommandBrowseForCouple.Enabled = False
-FormSECONDARY.CommandCompositionAtom.Enabled = True
-FormSECONDARY.CommandCompositionWeight.Enabled = True
-FormSECONDARY.CommandCompositionStandard.Enabled = True
-FormSECONDARY.TextMaterialBComposition.Enabled = True
-End If
 End Sub
 
 Private Sub OptionDistanceMethod_Click(Index As Integer)

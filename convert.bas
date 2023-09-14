@@ -481,11 +481,49 @@ Exit Function
 
 End Function
 
-Sub ConvertWeightToElectron(lchan As Integer, atnums() As Single, atwts() As Single, wts() As Single, elecs() As Single)
-' Convert from weight fraction to electron fraction
+Function ConvertWeightToAtom2(lchan As Integer, chan As Integer, wts() As Single, atwts() As Single, syms() As String) As Single
+' Calculate weight percent to atomic percent for a single element (uses passed atomic weights)
 
 ierror = False
-On Error GoTo ConvertWeightToElectronError
+On Error GoTo ConvertWeightToAtom2Error
+
+Dim i As Integer, ip As Integer
+Dim sum As Single, temp As Single
+
+' Sum the atoms of the elemental weight percents
+sum = 0#
+For i% = 1 To lchan%
+sum! = sum! + wts!(i%) / atwts!(i%)
+Next i%
+
+' Check for bad sum
+If sum! <= 0# Then
+msg$ = "Bad atomic sum = " & Format$(sum!)
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertWeightToAtom2"
+ierror = True
+Exit Function
+End If
+
+' Do weight percent to atomic percent conversion
+ConvertWeightToAtom2! = 0#
+temp! = wts!(chan%) / atwts!(chan%)
+ConvertWeightToAtom2! = 100# * temp! / sum!
+
+Exit Function
+
+' Errors
+ConvertWeightToAtom2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertWeightToAtom2"
+ierror = True
+Exit Function
+
+End Function
+
+Sub ConvertWeightToZFraction(lchan As Integer, atnums() As Single, atwts() As Single, conc() As Single, zfracs() As Single)
+' Convert from weight fraction to Z fraction (assume Z fraction exponent is 1.0) (obsolete function)
+
+ierror = False
+On Error GoTo ConvertWeightToZFractionError
 
 Dim i As Integer
 Dim sum As Single
@@ -493,69 +531,92 @@ Dim sum As Single
 ' Calculate sum
 sum! = 0#
 For i% = 1 To lchan%
-sum! = sum! + atnums!(i%) * wts!(i%) / atwts!(i%)
+sum! = sum! + atnums!(i%) * conc!(i%) / atwts!(i%)
 Next i%
-If sum! = 0# Then GoTo ConvertWeightToElectronZeroSum
+If sum! = 0# Then GoTo ConvertWeightToZFractionZeroSum
 
 For i% = 1 To lchan%
 If sum! <> 0# Then
-elecs!(i%) = atnums!(i%) * (wts!(i%) / atwts!(i%)) / sum!
+zfracs!(i%) = atnums!(i%) * (conc!(i%) / atwts!(i%)) / sum!
 Else
-elecs!(i%) = 0#
+zfracs!(i%) = 0#
 End If
 Next i%
 
 Exit Sub
 
 ' Errors
-ConvertWeightToElectronError:
-MsgBox Error$, vbOKOnly + vbCritical, "ConvertWeightToElectron"
+ConvertWeightToZFractionError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertWeightToZFraction"
 ierror = True
 Exit Sub
 
-ConvertWeightToElectronZeroSum:
+ConvertWeightToZFractionZeroSum:
 msg$ = "Sum of concentrations is zero"
-MsgBox msg$, vbOKOnly + vbExclamation, "ConvertWeightToElectron"
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertWeightToZFraction"
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub ConvertWeightToElectron2(lchan As Integer, exponent As Single, atnums() As Integer, atwts() As Single, wts() As Single, elecs() As Single)
-' Convert from weight fraction to electron fraction (Z to "exponent")
+Sub ConvertWeightToZFractionBSE(lchan As Integer, exponent As Single, atnums() As Integer, atwts() As Single, conc() As Single, keV() As Single, zfracs() As Single)
+' Convert from weight fraction to Z fraction (based on passed exponent) for electron backscatter corrections
 
 ierror = False
-On Error GoTo ConvertWeightToElectron2Error
+On Error GoTo ConvertWeightToZFractionBSEError
 
 Dim i As Integer
 Dim sum As Single
+Dim texponent(1 To MAXCHAN%) As Single
+
+' Load passed exponent or calculate based on electron beam energy if exponent is zero
+For i% = 1 To lchan%
+If exponent! = 0# Then
+If keV!(i%) = 0# Then GoTo ConvertWeightToZFractionBSEZerokeV
+texponent!(i%) = ConvertCalculateZFractionExponentBSE(keV!(i%))
+If ierror Then Exit Sub
+
+Else
+texponent!(i%) = exponent!
+End If
+Next i%
 
 ' Calculate sum
 sum! = 0#
 For i% = 1 To lchan%
-sum! = sum! + (atnums%(i%) ^ exponent!) * wts!(i%) / atwts!(i%)
+sum! = sum! + (atnums%(i%) ^ texponent!(i%)) * conc!(i%) / atwts!(i%)
 Next i%
-If sum! = 0# Then GoTo ConvertWeightToElectron2ZeroSum
+If sum! = 0# Then GoTo ConvertWeightToZFractionBSEZeroSum
 
+' Calculate Z fractions
 For i% = 1 To lchan%
 If sum! <> 0# Then
-elecs!(i%) = (atnums%(i%) ^ exponent!) * (wts!(i%) / atwts!(i%)) / sum!
+zfracs!(i%) = (atnums%(i%) ^ texponent!(i%)) * (conc!(i%) / atwts!(i%)) / sum!
 Else
-elecs!(i%) = 0#
+zfracs!(i%) = 0#
 End If
 Next i%
 
 Exit Sub
 
 ' Errors
-ConvertWeightToElectron2Error:
-MsgBox Error$, vbOKOnly + vbCritical, "ConvertWeightToElectron2"
+ConvertWeightToZFractionBSEError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertWeightToZFractionBSE"
 ierror = True
 Exit Sub
 
-ConvertWeightToElectron2ZeroSum:
+ConvertWeightToZFractionBSEZerokeV:
+Screen.MousePointer = vbDefault
+msg$ = "Variable zbar calculation was passed a zero keV value. This error should not occur, please contact Probe Sofwtare technical support."
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertWeightToZFractionBSE"
+ierror = True
+Exit Sub
+
+ConvertWeightToZFractionBSEZeroSum:
+Screen.MousePointer = vbDefault
 msg$ = "Sum of concentrations is zero"
-MsgBox msg$, vbOKOnly + vbExclamation, "ConvertWeightToElectron2"
+MsgBox msg$, vbOKOnly + vbExclamation, "ConvertWeightToZFractionBSE"
 ierror = True
 Exit Sub
 
@@ -3198,3 +3259,57 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Function ConvertCalculateZFractionExponent(keV As Single) As Single
+' Calculate the Z fraction exponent based on the passed emission line energy in keV (from Moy et al. 2021)
+
+ierror = False
+On Error GoTo ConvertCalculateZFractionExponentError
+
+Dim exponent As Single
+
+ConvertCalculateZFractionExponent! = 0.7    ' default to 0.7
+
+' Calculate Z Fraction exponent
+If keV! > 0.1 And keV! < 30# Then
+exponent! = -0.001209 * keV! ^ 2 + 0.03015 * keV! + 0.5908
+ConvertCalculateZFractionExponent! = exponent!
+End If
+
+Exit Function
+
+' Errors
+ConvertCalculateZFractionExponentError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertCalculateZFractionExponent"
+ierror = True
+Exit Function
+
+End Function
+
+Function ConvertCalculateZFractionExponentBSE(keV As Single) As Single
+' Calculate the Z fraction exponent based on the passed electron beam energy in keV
+
+ierror = False
+On Error GoTo ConvertCalculateZFractionExponentBSEError
+
+Dim exponent As Single
+
+ConvertCalculateZFractionExponentBSE! = 0.7         ' default to 0.7 (e.g., zero keV for unanalyzed elements)
+
+' Calculate Z Fraction exponent (need to fit Penepma BSE data for optimized exponent fit as a function of electron beam energy)
+If keV! > 0.1 And keV! < 30# Then
+exponent! = -0.001209 * keV! ^ 2 + 0.03015 * keV! + 0.5908
+ConvertCalculateZFractionExponentBSE! = exponent!
+End If
+
+Exit Function
+
+' Errors
+ConvertCalculateZFractionExponentBSEError:
+MsgBox Error$, vbOKOnly + vbCritical, "ConvertCalculateZFractionExponentBSE"
+ierror = True
+Exit Function
+
+End Function
+
+

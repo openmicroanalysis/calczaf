@@ -126,7 +126,9 @@ End If
 GetElmOldSample(1).numcat%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).numcat%(i%)
 GetElmOldSample(1).numoxd%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).numoxd%(i%)
 GetElmOldSample(1).ElmPercents!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).ElmPercents!(i%)
+
 GetElmOldSample(1).AtomicCharges!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).AtomicCharges!(i%)
+GetElmOldSample(1).AtomicWts!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).AtomicWts!(i%)
 
 ' Load off peak correction type, 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point
 GetElmOldSample(1).OffPeakCorrectionTypes%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).OffPeakCorrectionTypes%(i%)
@@ -290,8 +292,6 @@ Next m%
 GetElmOldSample(1).UnknownCountTimeForInterferenceStandardChanFlag(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).UnknownCountTimeForInterferenceStandardChanFlag(i%)
 
 GetElmOldSample(1).SecondaryFluorescenceBoundaryFlag(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryFlag(i%)
-GetElmOldSample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(i%)
-
 GetElmOldSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(i%)
 GetElmOldSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(i%)
 GetElmOldSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(i%)
@@ -301,10 +301,8 @@ GetElmOldSample(1).SecondaryFluorescenceBoundaryMatA_String$(GetElmOldSample(1).
 GetElmOldSample(1).SecondaryFluorescenceBoundaryMatB_String$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryMatB_String$(i%)
 GetElmOldSample(1).SecondaryFluorescenceBoundaryMatBStd_String$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryMatBStd_String$(i%)
 
-'GetElmOldSample(1).SecondaryFluorescenceBoundaryMaterialB_Elsyms$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryMaterialB_Elsyms$(i%)
-'GetElmOldSample(1).SecondaryFluorescenceBoundaryMaterialB_WtPercents!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryMaterialB_WtPercents!(i%)
-
 GetElmOldSample(1).ConditionNumbers%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).ConditionNumbers%(i%)    ' list order
+GetElmOldSample(1).EffectiveTakeOffs!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).EffectiveTakeOffs!(i%)
 2000:  Next n%
 
 ' Update number of analyzed elements
@@ -342,7 +340,9 @@ If GetElmTmpSample(1).numcat%(i%) = 0 Then GetElmTmpSample(1).numcat%(i%) = AllC
 GetElmOldSample(1).numcat%(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).numcat%(i%)
 GetElmOldSample(1).numoxd%(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).numoxd%(i%)
 GetElmOldSample(1).ElmPercents!(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).ElmPercents!(i%)
+
 GetElmOldSample(1).AtomicCharges!(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).AtomicCharges!(i%)
+GetElmOldSample(1).AtomicWts!(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).AtomicWts!(i%)
 3000:  Next n%
 
 ' Check assignments if in Probe for EPMA

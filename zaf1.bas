@@ -35,12 +35,12 @@ Type TypeZAF
     genstd(1 To MAXCHAN1%) As Single    ' pure element intensities
     gensmp(1 To MAXCHAN1%) As Single    ' sample intensities
 
-    eng(1 To MAXRAY% - 1, 1 To MAXCHAN1%) As Single     ' emission energies
+    eng(1 To MAXRAY% - 1, 1 To MAXCHAN1%) As Single     ' emission energies in KeV
     flu(1 To MAXRAY% - 1, 1 To MAXCHAN1%) As Single     ' fluorescent yields
-    edg(1 To MAXEDG%, 1 To MAXCHAN1%) As Single         ' edge energies
+    edg(1 To MAXEDG%, 1 To MAXCHAN1%) As Single         ' edge energies in KeV
 
-    eC(1 To MAXCHAN1%) As Single                    ' critical excitation energy
-    v(1 To MAXCHAN1%) As Single                     ' overvoltage
+    eC(1 To MAXCHAN1%) As Single                    ' critical excitation energy in KeV
+    v(1 To MAXCHAN1%) As Single                     ' overvoltage in KeV
     vv(1 To MAXCHAN1%) As Single                    ' fluorescence term (used to be shared with "v")
 
     mup() As Single   ' mass absorption coefficients (allocated in ZAFInitZAF (1 To MAXCHAN1%, 1 To MAXCHAN1%)

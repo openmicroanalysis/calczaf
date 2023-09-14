@@ -217,7 +217,7 @@ Global Const MAXDOUBLE# = 1.79769E+308   ' maximum double precision
 
 Global Const MAXOFFBGDTYPES% = 8         ' maximum off-peak background correction types (0 to 8, 0 = default linear) (***do not change this value***)
 Global Const MAXMINTYPES% = 6            ' maximum mineral end-member types (including zero for none)
-Global Const MAXZAF% = 10                ' maximum number of ZAF correction options
+Global Const MAXZAF% = 11                ' maximum number of ZAF correction options
 Global Const MAXZAFCOR% = 8              ' maximum number of stored ZAF corrections (analysis structure)
 Global Const MAXLISTBOXSIZE% = 3999      ' maximum number of listbox items
 Global Const MAXMACTYPE% = 7             ' maximum number of mass absorption files
@@ -709,7 +709,8 @@ Type TypeAnalysis
     CrystalNames(1 To MAXCHAN%) As String
     
     AtomicNumbers(1 To MAXCHAN%) As Single
-    AtomicWeights(1 To MAXCHAN%) As Single
+    AtomicCharges(1 To MAXCHAN%) As Single
+    AtomicWts(1 To MAXCHAN%) As Single
       
     WtPercents(1 To MAXCHAN%) As Single
     Formulas(1 To MAXCHAN%) As Single
@@ -730,6 +731,9 @@ Type TypeAnalysis
     StdPercents() As Single     ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
     StdZbars(1 To MAXSTD%) As Single
     StdMACs() As Single         ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)
+    
+    StdAtomicCharges() As Single        ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)      ' v. 13.3.2
+    StdAtomicWts() As Single            ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)      ' v. 13.3.2
     
     StdAssignsCounts(1 To MAXCHAN%) As Single
     StdAssignsTimes(1 To MAXCHAN%) As Single
@@ -996,13 +1000,15 @@ Type TypeSample
     LineEnergy(1 To MAXCHAN%) As Single     ' loaded in ElementCheckXray
     LineEdge(1 To MAXCHAN%) As Single       ' loaded in ElementCheckXray
     OxygenChannel As Integer                ' loaded in ZAFSetZAF for oxide calculations
-    AtomicWts(1 To MAXCHAN%) As Single      ' loaded in ElementLoadArrays
+    
+    AtomicCharges(1 To MAXCHAN%) As Single      ' loaded in ElementLoadArrays
+    AtomicWts(1 To MAXCHAN%) As Single          ' loaded in ElementLoadArrays (for natural/isotope enriched unknowns)
+    
     AtomicNums(1 To MAXCHAN%) As Integer    ' loaded in ElementLoadArrays
     XrayNums(1 To MAXCHAN%) As Integer      ' loaded in ElementLoadArrays
     Oxsyup(1 To MAXCHAN%) As String         ' loaded in ElementLoadArrays
     Elsyup(1 To MAXCHAN%) As String         ' loaded in ElementLoadArrays
-    AtomicCharges(1 To MAXCHAN%) As Single  ' loaded in ElementLoadArrays
-
+    
     ' Loaded from MAN database table
     MANStdAssigns() As Integer                  '  allocated in InitSample (1 To MAXMAN%, 1 To MAXCHAN%)
     MANLinearFitOrders() As Integer             '  allocated in InitSample (1 To MAXCHAN%)
@@ -1108,36 +1114,29 @@ Type TypeSample
     SampleDensity As Single   ' sample density in gm/cm3
     
     SecondaryFluorescenceBoundaryFlag(1 To MAXCHAN%) As Integer     ' 0 = do not perform correction, 1 = perform correction (stored)
-    SecondaryFluorescenceBoundaryCorrectionMethod(1 To MAXCHAN%) As Integer        ' 0 = PAR couple, 1 = binary compositions (stored)
     
     SecondaryFluorescenceBoundaryKratiosDATFile() As String          ' allocated in InitSample (1 To MAXCHAN%) (stored) (for PAR couple)
     SecondaryFluorescenceBoundaryKratiosDATFileLine1() As String     ' allocated in InitSample (1 To MAXCHAN%) (stored)
     SecondaryFluorescenceBoundaryKratiosDATFileLine2() As String     ' allocated in InitSample (1 To MAXCHAN%) (stored)
     SecondaryFluorescenceBoundaryKratiosDATFileLine3() As String     ' allocated in InitSample (1 To MAXCHAN%) (stored)
     
-    SecondaryFluorescenceBoundaryDistanceMethod As Integer  ' 0 = specified distance, 1 = calculated from boundary (stored)
-    SecondaryFluorescenceBoundaryCoordinateX1 As Single     ' in stage coordinates (stored)
-    SecondaryFluorescenceBoundaryCoordinateY1 As Single     ' in stage coordinates (stored)
-    SecondaryFluorescenceBoundaryCoordinateX2 As Single     ' in stage coordinates (stored)
-    SecondaryFluorescenceBoundaryCoordinateY2 As Single     ' in stage coordinates (stored)
+    SecondaryFluorescenceBoundaryDistanceMethod As Integer      ' 0 = specified distance, 1 = calculated from boundary (stored)
+    SecondaryFluorescenceBoundarySpecifiedDistance As Single    ' in microns (stored)
+    SecondaryFluorescenceBoundaryCoordinateX1 As Single         ' in stage coordinates (stored)
+    SecondaryFluorescenceBoundaryCoordinateY1 As Single         ' in stage coordinates (stored)
+    SecondaryFluorescenceBoundaryCoordinateX2 As Single         ' in stage coordinates (stored)
+    SecondaryFluorescenceBoundaryCoordinateY2 As Single         ' in stage coordinates (stored)
     
     SecondaryFluorescenceBoundaryImageNumber As Integer     ' image number for BIM file (stored)
     SecondaryFluorescenceBoundaryImageFileName As String    ' original image file name (stored)
        
-    SecondaryFluorescenceBoundaryDistance() As Single                       ' (in um) allocated in InitSample (1 To MAXROW%) (calculated)
+    SecondaryFluorescenceBoundaryDistance() As Single                       ' (calculated in um) allocated in InitSample (1 To MAXROW%) (calculated)
     SecondaryFluorescenceBoundaryKratios() As Single                        ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%) (calculated)
     
     SecondaryFluorescenceBoundaryMatA_String(1 To MAXCHAN%) As String       ' for stored kratio DAT table
     SecondaryFluorescenceBoundaryMatB_String(1 To MAXCHAN%) As String       ' for stored kratio DAT table
     SecondaryFluorescenceBoundaryMatBStd_String(1 To MAXCHAN%) As String    ' for stored kratio DAT table
-    
-    ' Correction using binary corrections (SecondaryFluorescenceBoundaryCorrectionMethod = 1)
-'    SecondaryFluorescenceBoundaryMaterialB_Name As String                       ' material B composition (stored)
-'    SecondaryFluorescenceBoundaryMaterialB_LastChan As Integer                  ' material B composition (stored)
-'    SecondaryFluorescenceBoundaryMaterialB_Density As Single                    ' material B composition (stored)
-'    SecondaryFluorescenceBoundaryMaterialB_Elsyms(1 To MAXCHAN%) As String      ' material B composition (stored)
-'    SecondaryFluorescenceBoundaryMaterialB_WtPercents(1 To MAXCHAN%) As Single  ' material B composition (stored)
-    
+        
     OnPeakTimeFractionFlag As Boolean
     OnPeakTimeFractionValue As Single
     
@@ -1176,6 +1175,8 @@ Type TypeSample
     MountNames As String                              ' for standard database only (comma delimited string containing standard mounts with this standard)
     
     UnknownIsStandardNumber As Integer                ' assume unknown is a standard, 0 = not a standard, non-zero = standard number
+    
+    EffectiveTakeOffs(1 To MAXCHAN%) As Single        ' efective take off angle for each spectrometer/crystal pair (from SCALERS.DAT)
 End Type
 
 Type TypeImage
@@ -1262,7 +1263,7 @@ Type TypeScan
     
     ScanPHAHardwareType As Integer  ' 0 = traditional PHA, 1 = MCA PHA
     
-    ScanCurPeakPos As Single        ' v. 13.11
+    ScanCurPeakPos As Single        ' v. 13.1.1
 End Type
 
 Type TypeMultiPoint
@@ -1792,6 +1793,8 @@ Global ScalDeadTimes(1 To MAXCRYS%, 1 To MAXSPEC%) As Single
 Global ScalInteDeadTimes(1 To MAXSPEC%) As Integer              ' Cameca integer hardware deadtimes only
 Global ScalLargeArea(1 To MAXCRYS%, 1 To MAXSPEC%) As Integer   ' Cameca large area crystal flags only
 
+Global ScalEffectiveTakeOffs(1 To MAXCRYS%, 1 To MAXSPEC%) As Single   ' new parameter for spectrometer/crystals
+
 Global ScalBaseLineScaleFactors(1 To MAXSPEC%) As Single
 Global ScalWindowScaleFactors(1 To MAXSPEC%) As Single
 Global ScalGainScaleFactors(1 To MAXSPEC%) As Single
@@ -1950,10 +1953,10 @@ Global zafstring(0 To MAXZAF%) As String        ' dimension from zero for backwa
 Global zafstring2(0 To MAXZAF%) As String       ' dimension from zero for backward compatibility
 
 Global mipstring(1 To 9) As String
-Global bscstring(1 To 4) As String
+Global bscstring(1 To 5) As String
 Global phistring(1 To 7) As String
 Global stpstring(1 To 6) As String
-Global bksstring(0 To 9) As String
+Global bksstring(0 To 10) As String
 Global absstring(1 To 15) As String
 Global flustring(1 To 5) As String
 
@@ -3021,8 +3024,8 @@ Global UserSpecifiedOutputChemAgeFlag As Boolean
 
 Global SkipOutputEDSIntensitiesDuringAutomation As Boolean
 
-Global UseZFractionZbarCalculationsFlag As Boolean
-Global ZFractionZbarCalculationsExponent As Single
+Global UseZFractionZbarCalculationsFlag As Boolean         ' MAN Zbar calculations for continuum
+Global ZFractionZbarCalculationsExponent As Single         ' MAN Zbar calculations for continuum
 
 Global UseContinuumAbsCalculationsFlag As Boolean
 
@@ -3060,9 +3063,6 @@ Global DoYIncrementOnMultipleSampleSetupsFlag As Integer
 Global DeadTimeCorrectionTypeString(1 To 5) As String
 
 Global JEOLMECLoggingFlag As Integer
-
-Global UseZfractionForBackscatterCorrection As Integer
-
 Global JEOLMoveStageMilliSecDelayAfter As Long
 
 Global DisableLightControl As Boolean       ' false = normal light control, true = disable reflected and transmitted light control
@@ -3079,3 +3079,11 @@ Global UserSpecifiedOutputSulfurCorrectedOxygenFlag As Boolean
 
 Global MeasureAbsorbedFaradayCurrentOnlyOncePerSampleFlag As Boolean
 Global DoNotMeasure2ndFaradayAbsorbedCurrentsFlag As Boolean
+
+Global UseEffectiveTakeOffAnglesFlag  As Boolean
+
+Global ZFractionBackscatterExponent As Single       ' for backscatter calculations (zero for variable exponent)
+
+Global SecondaryDistanceMethodString(0 To 3) As String
+
+Global JEOLFlipCrystalMilliSecDelayAfter As Long

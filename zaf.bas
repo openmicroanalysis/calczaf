@@ -730,6 +730,7 @@ Sub ZAFBsc(zafinit As Integer)
 ' 2 = "Backscatter Coefficient of Love/Scott"
 ' 3 = "Backscatter Coefficient of Pouchou & Pichoir"
 ' 4 = "Backscatter Coefficient of Hungler/Kuchler (August/Wernisch Mod.)"
+' 5 = "Backscatter Coefficient of Donovan and Moy"
 
 ierror = False
 On Error GoTo ZAFBscError
@@ -797,6 +798,14 @@ h2! = 0.0002167 * yy! + 0.9987
 h1! = h1! * h2! * zaf.eO!(i) ^ (0.1382 - 0.9211 / Sqr(yy!))
 hb!(i%) = h1!
 Next i%
+
+' BSC5 / CALCULATION OF Donovan and Moy BACKSCATTER COEFFICIENTS FOR PURE ELEMENTS (modified Pouchou and Pichoir #3)
+ElseIf ibsc% = 5 Then
+For i% = 1 To zaf.in0%
+yy! = zaf.Z%(i%)
+h1! = 0.002415529 * yy! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(yy!))))
+hb!(i%) = h1!
+Next i%
 End If
 
 Exit Sub
@@ -807,11 +816,7 @@ If ibsc% = 1 Or ibsc% = 2 Or ibsc% = 4 Then
 For i% = 1 To zaf.in0%
 eta!(i%) = 0#
 For i1% = 1 To zaf.in0%
-If Not UseZfractionForBackscatterCorrection Then
 eta!(i%) = eta!(i%) + zaf.conc!(i1%) * hb!(i1%)
-Else
-eta!(i%) = eta!(i%) + zaf.zfrac!(i1%) * hb!(i1%)
-End If
 Next i1%
 Next i%
 
@@ -825,6 +830,17 @@ zbar! = zbar! * zbar!
 
 For i% = 1 To zaf.in0%
 eta!(i%) = 0.00175 * zbar! + 0.37 * (1 - Exp(-0.015 * Exp(1.3 * Log(zbar!))))
+Next i%
+
+' BSC5 / SAMPLE CALCULATION OF Donovan and Moy BACKSCATTER (modified Pouchou and Pichoir #3)
+ElseIf ibsc% = 5 Then
+zbar! = 0#
+For i1% = 1 To zaf.in0%
+zbar! = zbar! + zaf.zfrac!(i1%) * zaf.Z%(i1%)
+Next i1%
+
+For i% = 1 To zaf.in0%
+eta!(i%) = 0.002415529 * zbar! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(zbar!))))
 Next i%
 End If
 
@@ -1815,12 +1831,9 @@ Call SecondaryCorrection(row%, zaf.krat!(), sample())
 If ierror Then Exit Sub
 End If
 
-' Calculate as Z fraction also (using Z^2/3) for use with backscatter corrections (see ZAFBsc)
-UseZfractionForBackscatterCorrection% = False           ' just set flag manually here for initial testing with Moy
-If UseZfractionForBackscatterCorrection% Then
-Call ConvertWeightToElectron2(zaf.in0%, 0.666, zaf.Z%(), zaf.atwts!(), zaf.conc!(), zaf.zfrac!())
+' Calculate as Z fraction also (using ~Z^2/3) for use with Donovan and Moy massless backscatter corrections (see ZAFBsc and ZAFBks)
+Call ConvertWeightToZFractionBSE(zaf.in0%, ZFractionBackscatterExponent!, zaf.Z%(), zaf.atwts!(), zaf.conc!(), zaf.eO!(), zaf.zfrac!())
 If ierror Then Exit Sub
-End If
 
 ' ZAF iteration loop
 zaf.iter% = 1
@@ -2153,9 +2166,8 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
-' Calculate as Z fraction also (using Z^2/3) for use with backscatter corrections (see ZAFBsc)
-If UseZfractionForBackscatterCorrection% Then
-Call ConvertWeightToElectron2(zaf.in0%, 0.666, zaf.Z%(), zaf.atwts!(), zaf.conc!(), zaf.zfrac!())
+' Calculate as Z fraction also (using ~Z^2/3) for use with Donovan and Moy massless backscatter corrections (see ZAFBsc and ZAFBks)
+Call ConvertWeightToZFractionBSE(zaf.in0%, ZFractionBackscatterExponent!, zaf.Z%(), zaf.atwts!(), zaf.conc!(), zaf.eO!(), zaf.zfrac!())
 If ierror Then Exit Sub
 
 If DebugMode And VerboseMode Then
@@ -2164,7 +2176,6 @@ For i% = 1 To sample(1).LastElm%
 msg$ = msg$ & Format$(Format$(zaf.zfrac!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
-End If
 End If
 
 ' Check if iteration is complete
@@ -2530,7 +2541,7 @@ Dim astring As String
 ReDim p2(1 To MAXCHAN1%) As Single
 ReDim continuum_correction(1 To MAXCHAN1%) As Single
 
-' Initialize arrays
+' Initialize ZAF arrays
 For i% = 1 To MAXCHAN1%
 zaf.il%(i%) = 0
 zaf.Z%(i%) = 0#
@@ -2559,11 +2570,17 @@ For i% = 1 To stdsample(1).LastChan%
 If i% > stdsample(1).LastElm% Then
 stdsample(1).TakeoffArray!(i%) = sample(1).takeoff!
 stdsample(1).KilovoltsArray!(i%) = sample(1).kilovolts!
+stdsample(1).EffectiveTakeOffs!(i%) = sample(1).takeoff!
 End If
 
 ' Calculate takeoff
 If stdsample(1).TakeoffArray!(i%) = 0# Then GoTo ZAFStd2BadTakeoff
+If stdsample(1).EffectiveTakeOffs!(i%) = 0# Then GoTo ZAFStd2BadTakeoffEffective
+If Not UseEffectiveTakeOffAnglesFlag Then
 zaf.tak!(i%) = stdsample(1).TakeoffArray!(i%)       ' new for effective takeoff angle testing
+Else
+zaf.tak!(i%) = stdsample(1).EffectiveTakeOffs!(i%)       ' new for effective takeoff angle testing
+End If
 tt! = stdsample(1).TakeoffArray!(i%) * PI! / 180#
 zaf.m1!(i%) = 1# / Sin(tt!)
 
@@ -2580,8 +2597,7 @@ If stdsample(1).DisableQuantFlag%(i%) = 1 Then zaf.il%(i%) = 16    ' use for dis
 p2!(i%) = stdsample(1).numoxd%(i%) / CSng(stdsample(1).numcat%(i%))
 Next i%
 
-' If oxide run or element to oxide conversion and oxygen is not being
-' analyzed for, load last element as oxygen by stoichiometry.
+' If oxide run or element to oxide conversion and oxygen is not being analyzed for, load last element as oxygen by stoichiometry
 zaf.in0% = stdsample(1).LastChan%
 zaf.in1% = zaf.in0%
 If stdsample(1).OxideOrElemental% = 1 Then
@@ -2781,11 +2797,23 @@ Call IOWriteLogRichText(msg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int(
 End If
 End If
 
-' Normalize concentrations to 100 % for calculating K-ratios for standards
+' Normalize concentrations to 1.0 for calculating K-ratios for standards
 For i% = 1 To zaf.in0%
 zaf.conc!(i%) = zaf.krat!(i%)
 zaf.conc!(i%) = zaf.conc!(i%) / zaf.ksum!
 Next i%
+
+' Calculate Z fractions for this standard composition based on electron beam energy
+Call ConvertWeightToZFractionBSE(zaf.in0%, ZFractionBackscatterExponent!, zaf.Z%(), zaf.atwts!(), zaf.conc!(), zaf.eO!(), zaf.zfrac!())
+If ierror Then Exit Sub
+
+If DebugMode And VerboseMode Then
+msg$ = "STZFRAC:"
+For i% = 1 To sample(1).LastElm%
+msg$ = msg$ & Format$(Format$(zaf.zfrac!(i%), f84), a80$)
+Next i%
+Call IOWriteLog(msg$)
+End If
 
 ' Load ZAFPtc defaults based on current model and diameter
 If UseParticleCorrectionFlag And iptc% = 1 Then
@@ -2966,13 +2994,19 @@ ierror = True
 Exit Sub
 
 ZAFStd2BadTakeoff:
-msg$ = "Takeoff array is not loaded properly"
+msg$ = "Takeoff array is not loaded properly. Please contact Probe Software technical support."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd2"
+ierror = True
+Exit Sub
+
+ZAFStd2BadTakeoffEffective:
+msg$ = "Effective takeoff array is not loaded properly. Please contact Probe Software technical support."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd2"
 ierror = True
 Exit Sub
 
 ZAFStd2BadKilovolts:
-msg$ = "Kilovolt array is not loaded properly"
+msg$ = "Kilovolt array is not loaded properly. Please contact Probe Software technical support."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFStd2"
 ierror = True
 Exit Sub
@@ -3355,9 +3389,14 @@ zaf.in0% = sample(1).LastChan%
 For i% = 1 To sample(1).LastChan%
 If i% <= sample(1).LastElm% And sample(1).TakeoffArray!(i%) = 0# Then GoTo ZAFSetZAFBadTakeoff
 If i% <= sample(1).LastElm% And sample(1).KilovoltsArray!(i%) = 0# Then GoTo ZAFSetZAFBadKilovolts
+If i% <= sample(1).LastElm% And sample(1).EffectiveTakeOffs!(i%) = 0# Then GoTo ZAFSetZAFBadTakeoffEffective
 
 ' Bulk sample geometry
+If Not UseEffectiveTakeOffAnglesFlag Then
 zaf.tak!(i%) = sample(1).TakeoffArray!(i%)       ' new for effective takeoff angle testing
+Else
+zaf.tak!(i%) = sample(1).EffectiveTakeOffs!(i%)       ' new for effective takeoff angle testing
+End If
 tt! = sample(1).TakeoffArray!(i%) * 3.14159 / 180#
 zaf.m1!(i%) = 1# / Sin(tt!)
 
@@ -3515,31 +3554,38 @@ ierror = True
 Exit Sub
 
 ZAFSetZAFBadTakeoff:
-msg$ = "Takeoff array is not loaded properly"
+msg$ = "Takeoff array is not loaded properly. Please contact Probe Software technical support."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
 ierror = True
 Exit Sub
 
 ZAFSetZAFBadKilovolts:
-msg$ = "Kilovolt array is not loaded properly"
+msg$ = "Kilovolt array is not loaded properly. Please contact Probe Software technical support."
+MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
+ierror = True
+Exit Sub
+
+ZAFSetZAFBadTakeoffEffective:
+msg$ = "Effective takeoff array is not loaded properly. Please contact Probe Software technical support."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
 ierror = True
 Exit Sub
 
 ZAFSetZAFNoCations:
-msg$ = "Element " & sample(1).Elsyms$(i%) & " has no cations specified"
+msg$ = "Element " & sample(1).Elsyms$(i%) & " has no cations specified. Please contact Probe Software technical support."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
 ierror = True
 Exit Sub
 
 ZAFSetZAFBadAtomicWeight:
-msg$ = "Element " & sample(1).Elsyms$(i%) & " has no atomic weight"
+msg$ = "Element " & sample(1).Elsyms$(i%) & " has no atomic weight. Please contact Probe Software technical support."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
 ierror = True
 Exit Sub
 
 ZAFSetZAFStandardNotFound:
-msg$ = "Sample is a standard, but standard " & Format$(sample(1).number%) & ", " & sample(1).Name$ & " was not found in the standard arrays.  Please add this standard to the standard list and try again."
+msg$ = "Standards have not been assigned to sample elements yet." & vbCr & vbCrLf
+msg$ = msg$ & "Please use the Standard Assignments button in Acquire! or Analyze! to assign primary standards for all elements in the selected sample(s) and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "ZAFSetZAF"
 ierror = True
 Exit Sub
@@ -3678,6 +3724,7 @@ Sub ZAFBks(zafinit As Integer)
 ' 7 = "Backscatter of Pouchou & Pichoir"
 ' 8 = "Backscatter of August, Razka & Wernisch"
 ' 9 = "Backscatter of Springer"
+' 10 = "Backscatter of Donovan and Moy"
 
 ierror = False
 On Error GoTo ZAFBksError
@@ -3700,7 +3747,7 @@ ReDim aug(1 To MAXAUG%, 1 To MAXAUG%) As Double
 
 If zafinit% = 1 Then GoTo 2100
 
-' STDBKS1 / DUNCUMB and REED (FRAME) BACKSCATTER CORRECTION FOR STANDARDS
+' STDBKS1 / DUNCUMB and REED (FRAME) BACKSCATTER CORRECTION FOR pure elements
 If ibks% = 1 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
@@ -3716,7 +3763,7 @@ Next i1%
 End If
 Next i%
 
-' STDBKS2 and STDBKS3 / DUNCUMB and REED and HEINRICH BACKSCATTER CORRECTION FOR STANDARDS
+' STDBKS2 and STDBKS3 / DUNCUMB and REED and HEINRICH BACKSCATTER CORRECTION FOR pure elements
 ElseIf ibks% = 2 Or ibks% = 3 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
@@ -3750,7 +3797,7 @@ Next i1%
 End If
 Next i%
 
-' STDBKS4 / LOVE/SCOTT BACKSCATTER CORRECTION FOR STANDARDS
+' STDBKS4 / LOVE/SCOTT BACKSCATTER CORRECTION FOR pure elements
 ElseIf ibks% = 4 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
@@ -3767,7 +3814,7 @@ zaf.r!(i%, i%) = 1# - hb!(i%) * (ju!(i%) + hb!(i%) * gu!(i%)) ^ 1.67
 End If
 Next i%
 
-' STDBKS5 / MYKLEBUST-I BACKSCATTER CORRECTION FOR STANDARDS
+' STDBKS5 / MYKLEBUST-I BACKSCATTER CORRECTION FOR pure elements
 ElseIf ibks% = 5 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
@@ -3778,11 +3825,11 @@ Next i1%
 End If
 Next i%
 
-' STDBKS6 / MYKLEBUST & FIORI BACKSCATTER CORRECTION FOR STANDARDS
+' STDBKS6 / MYKLEBUST & FIORI BACKSCATTER CORRECTION FOR pure elements
 ElseIf ibks% = 6 Then
 ' Not implemented yet
 
-' STDBKS7 / POUCHOU and PICHOIR BACKSCATTER CORRECTION FOR STANDARDS
+' STDBKS7 / POUCHOU and PICHOIR BACKSCATTER CORRECTION FOR pure elements
 ElseIf ibks% = 7 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
@@ -3795,7 +3842,7 @@ zaf.r!(i%, i%) = 1# - hb!(i%) * meanw! * (1# - gu0!)
 End If
 Next i%
 
-' STDBKS8 / AUGUST, RAZKA & WERNISCH BACKSCATTER CORRECTION FOR STANDARDS
+' STDBKS8 / AUGUST, RAZKA & WERNISCH BACKSCATTER CORRECTION FOR pure elements
 ElseIf ibks% = 8 Then
 For i1% = 1 To MAXAUG%
 For i2% = 1 To MAXAUG%
@@ -3833,7 +3880,7 @@ Next i1%
 End If
 Next i%
 
-' STDBKS9 / SPRINGER BACKSCATTER CORRECTION FOR STANDARDS
+' STDBKS9 / SPRINGER BACKSCATTER CORRECTION FOR pure elements
 ElseIf ibks% = 9 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
@@ -3856,17 +3903,16 @@ Next i1%
 End If
 Next i%
 
-' STDBKS10 / DONOVAN (MODIFIED DUNCUMB/REED) BACKSCATTER CORRECTION FOR STANDARDS (same as #1)
+' STDBKS10 / Donovan and Moy BACKSCATTER CORRECTION FOR pure elements (Modified Pouchou and Pichoir #7)
 ElseIf ibks% = 10 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-n2! = 0.00873 * zaf.v!(i%) ^ 3 - 0.1669 * zaf.v!(i%) ^ 2 + 0.9662 * zaf.v!(i%) + 0.4523
-n3! = 0.002703 * zaf.v!(i%) ^ 3 - 0.05182 * zaf.v!(i%) ^ 2 + 0.302 * zaf.v!(i%) - 0.1836
-n4! = 0.887 - 3.44 / zaf.v!(i%) + 9.33 / zaf.v!(i%) ^ 2 - 6.43 / zaf.v!(i%) ^ 3
-
-For i1% = 1 To zaf.in0%
-zaf.r!(i1%, i%) = n2! - n3! * Log(n4! * zaf.Z%(i1%) + 25#)
-Next i1%
+meanw! = 0.595 + hb!(i%) / 3.7 + Exp(4.55 * Log(hb!(i%)))
+u0! = zaf.v!(i%)
+ju0! = 1 + u0! * (Log(u0!) - 1#)
+Alpha! = (2# * meanw! - 1#) / (1# - meanw!)
+gu0! = (u0! - 1# - (1# - Exp((Alpha! + 1#) * Log(1# / u0!))) / (1# + Alpha!)) / (2# + Alpha!) / ju0!
+zaf.r!(i%, i%) = 1# - hb!(i%) * meanw! * (1# - gu0!)
 End If
 Next i%
 End If
@@ -3909,6 +3955,22 @@ If zaf.il%(i%) <= MAXRAY% - 1 Then
 If eta!(i%) <= 0# Then GoTo ZAFBksNegativeEta
 meanw! = 0.595 + eta!(i%) / 3.7 + Exp(4.55 * Log(eta!(i%)))
 u0! = zaf.v!(i%)    ' typo fixed 5-23-2005 (was zaf.z(i%))
+ju0! = 1 + u0! * (Log(u0!) - 1#)
+Alpha! = (2# * meanw! - 1#) / (1# - meanw!)
+If Alpha < 0# Then GoTo ZAFBksNegativeAlpha
+gu0! = (u0! - 1# - (1# - Exp((Alpha! + 1#) * Log(1# / u0!))) / (1# + Alpha!)) / (2# + Alpha!) / ju0!
+zaf.bks!(i%) = 1# - eta!(i%) * meanw! * (1# - gu0!)
+End If
+Next i%
+
+' SMPBKS10 / Donovan and Moy BACKSCATTER CORRECTION FOR SAMPLE (modified Pouchou and Pichoir #7)
+ElseIf ibks% = 10 Then
+For i% = 1 To zaf.in1%
+zaf.bks!(i%) = 1#
+If zaf.il%(i%) <= MAXRAY% - 1 Then
+If eta!(i%) <= 0# Then GoTo ZAFBksNegativeEta
+meanw! = 0.595 + eta!(i%) / 3.7 + Exp(4.55 * Log(eta!(i%)))
+u0! = zaf.v!(i%)
 ju0! = 1 + u0! * (Log(u0!) - 1#)
 Alpha! = (2# * meanw! - 1#) / (1# - meanw!)
 If Alpha < 0# Then GoTo ZAFBksNegativeAlpha

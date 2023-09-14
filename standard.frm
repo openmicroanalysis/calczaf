@@ -27,14 +27,14 @@ Begin VB.Form FormMAIN
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   7545
    ScaleWidth      =   11325
-   Begin MailMessageCtl.MailMessage MailMessage1 
-      Left            =   2280
+   Begin SmtpClientCtl.SmtpClient SmtpClient1 
+      Left            =   1680
       Top             =   0
       _cx             =   741
       _cy             =   741
    End
-   Begin SmtpClientCtl.SmtpClient SmtpClient1 
-      Left            =   1680
+   Begin MailMessageCtl.MailMessage MailMessage1 
+      Left            =   2280
       Top             =   0
       _cx             =   741
       _cy             =   741
@@ -270,7 +270,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   18230
       _ExtentY        =   6376
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"STANDARD.frx":59D8A
    End
@@ -378,7 +377,7 @@ Begin VB.Form FormMAIN
          HelpContextID   =   779
       End
       Begin VB.Menu menuFileImportStandardsFromJEOL8x30TextFile 
-         Caption         =   "Import Standards From JEOL (8230/8530)"
+         Caption         =   "Import Standards From JEOL (8230/8530/iSP100/iHP200F)"
       End
       Begin VB.Menu menuFileSeparator2 
          Caption         =   "-"

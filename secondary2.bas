@@ -98,24 +98,12 @@ Dim chan As Integer
 For chan% = 1 To sample(1).LastElm%
 If sample(1).SecondaryFluorescenceBoundaryFlag(chan%) = True Then
 
-' Mode 0 (use k-ratio .DAT file from fanal calculation)
-If sample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(chan%) = 0 Then
-
 ' Check if k-ratios are loaded for this channel
 If nPoints&(chan%) <= 0 Then GoTo SecondaryCorrectionNoKratios
 
 ' Calculate boundary correction k-ratio for this data line and channel based on MatAB minus MatA
 Call SecondaryCalculateKratio(sampleline%, chan%, sample())
 If ierror Then Exit Sub
-
-' Mode 1 (use binary compositional calculation)
-Else
-
-msg$ = vbCrLf & "Feature not implemented yet"
-MsgBox msg$, vbOKOnly + vbInformation, "SecondaryCorrection"
-ierror = True
-Exit Sub
-End If
 
 ' Correct the measured (elemental) k-ratio for the boundary correction intensity (in k-ratio % units)
 kratios!(chan%) = kratios!(chan%) - sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) / 100#
@@ -524,9 +512,6 @@ ReDim ydata(1 To 1) As Single
 
 ReDim acoeff(1 To MAXCOEFF%) As Single
 
-' Mode 0 (use k-ratio .DAT file from Fanal calculation based on linear distance)
-If sample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(chan%) = 0 Then
-
 ' Interpolate k-ratio values using 1, 2, 3 point fit for the current distance
 dist! = sample(1).SecondaryFluorescenceBoundaryDistance!(sampleline%)
 If dist! = 0# Then GoTo SecondaryCalculateKratioZeroDistance
@@ -592,17 +577,6 @@ If dist! >= xdist#(chan%, nPoints&(chan%)) Then krat! = fluB_k#(chan%, nPoints&(
 End If
 
 Call IOWriteLog("SecondaryCalculateKratio: Interpolated K-ratio % is " & MiscAutoFormat$(krat!) & " at a distance " & Format$(dist!) & " um")
-End If
-
-' Mode 1 (use binary compositional calculation based on mass distance)
-If sample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(chan%) = 1 Then
-
-msg$ = vbCrLf & "Feature not implemented yet"
-MsgBox msg$, vbOKOnly + vbInformation, "SecondaryCalculateKratio"
-ierror = True
-Exit Sub
-
-End If
 
 ' Store in sample arrays (as k-ratio %)
 sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) = krat!
@@ -623,7 +597,7 @@ Exit Sub
 
 End Sub
 
-Sub SecondaryGetCoordinates(n As Long, X() As Single, Y() As Single, Z() As Single)
+Sub SecondaryGetCoordinates(n As Long, x() As Single, y() As Single, Z() As Single)
 ' Get the currently analyzed data point coordinates
 
 ierror = False
@@ -635,13 +609,13 @@ Dim i As Long
 If apoints& < 1 Then Exit Sub
 
 ' Dimension
-ReDim X(1 To apoints&) As Single
-ReDim Y(1 To apoints&) As Single
+ReDim x(1 To apoints&) As Single
+ReDim y(1 To apoints&) As Single
 ReDim Z(1 To apoints&) As Single
 
 For i& = 1 To apoints&
-X!(i&) = xcoord!(i&)
-Y!(i&) = ycoord!(i&)
+x!(i&) = xcoord!(i&)
+y!(i&) = ycoord!(i&)
 Z!(i&) = zcoord!(i&)
 Next i&
 n& = apoints&

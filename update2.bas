@@ -182,9 +182,20 @@ UpdateStdSample(1).MotorNumbers%(UpdateStdSample(1).LastChan%) = 0
 UpdateStdSample(1).CrystalNames$(UpdateStdSample(1).LastChan%) = vbNullString
 UpdateStdSample(1).numcat%(UpdateStdSample(1).LastChan%) = stdsample(1).numcat%(j%)
 UpdateStdSample(1).numoxd%(UpdateStdSample(1).LastChan%) = stdsample(1).numoxd%(j%)
+
 UpdateStdSample(1).AtomicCharges!(UpdateStdSample(1).LastChan%) = stdsample(1).AtomicCharges!(j%)
+UpdateStdSample(1).AtomicWts!(UpdateStdSample(1).LastChan%) = stdsample(1).AtomicWts!(j%)
+
 UpdateStdSample(1).TakeoffArray!(UpdateStdSample(1).LastChan%) = 0#
 UpdateStdSample(1).KilovoltsArray!(UpdateStdSample(1).LastChan%) = 0#
+
+' Do update atomic weights from standard database (in case standard element is enriched) (v. 13.3.2)
+Else
+UpdateStdSample(1).numcat%(ip%) = stdsample(1).numcat%(j%)     ' element is already present, update cations/oxygens from standard database?????
+UpdateStdSample(1).numoxd%(ip%) = stdsample(1).numoxd%(j%)
+
+UpdateStdSample(1).AtomicCharges!(ip%) = stdsample(1).AtomicCharges!(j%)     ' element is already present, update atomic charges from standard database
+UpdateStdSample(1).AtomicWts!(ip%) = stdsample(1).AtomicWts!(j%)             ' element is already present, update atomic weights from standard database
 End If
 Next j%
 
@@ -342,7 +353,7 @@ If ierror Then Exit Sub
 For j% = 1 To stdsample(1).LastChan%
 ip% = IPOS1(sample(1).LastChan%, stdsample(1).Elsyms$(j%), sample(1).Elsyms$())
 
-' Add to sample as specified eleemnt if concentration is greater than MinSpecifiedValue
+' Add to sample as specified element if concentration is greater than MinSpecifiedValue
 If ip% = 0 Then
 If stdsample(1).ElmPercents!(j%) > MinSpecifiedValue! Then
 If sample(1).LastChan% + 1 > MAXCHAN% Then GoTo UpdateStdElementsTooManyElements
@@ -358,7 +369,9 @@ ip% = IPOS1(MAXELM%, sample(1).Elsyms$(sample(1).LastChan%), Symlo$())
 If ip% > 0 Then
 sample(1).numcat%(sample(1).LastChan%) = AllCat%(ip%)
 sample(1).numoxd%(sample(1).LastChan%) = AllOxd%(ip%)
+
 sample(1).AtomicCharges!(sample(1).LastChan%) = AllAtomicCharges!(ip%)
+sample(1).AtomicWts!(sample(1).LastChan%) = AllAtomicWts!(ip%)
 End If
 
 End If
@@ -640,7 +653,17 @@ UpdateStdSample(1).Elsyms$(UpdateStdSample(1).LastChan%) = stdsample(1).Elsyms$(
 UpdateStdSample(1).Xrsyms$(UpdateStdSample(1).LastChan%) = vbNullString
 UpdateStdSample(1).numcat%(UpdateStdSample(1).LastChan%) = stdsample(1).numcat%(j%)
 UpdateStdSample(1).numoxd%(UpdateStdSample(1).LastChan%) = stdsample(1).numoxd%(j%)
+
 UpdateStdSample(1).AtomicCharges!(UpdateStdSample(1).LastChan%) = stdsample(1).AtomicCharges!(j%)
+UpdateStdSample(1).AtomicWts!(UpdateStdSample(1).LastChan%) = stdsample(1).AtomicWts!(j%)
+
+' Do update atomic weights from standard database (in case standard element is enriched) (v. 13.3.2)
+Else
+UpdateStdSample(1).numcat%(ip%) = stdsample(1).numcat%(j%)     ' element is already present, update cations/oxygens from standard database?????
+UpdateStdSample(1).numoxd%(ip%) = stdsample(1).numoxd%(j%)
+
+UpdateStdSample(1).AtomicCharges!(ip%) = stdsample(1).AtomicCharges!(j%)     ' element is already present, update atomic charges from standard database
+UpdateStdSample(1).AtomicWts!(ip%) = stdsample(1).AtomicWts!(j%)             ' element is already present, update atomic weights from standard database
 End If
 Next j%
 

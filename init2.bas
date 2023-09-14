@@ -35,7 +35,10 @@ sample(1).Xrsyms$(chan%) = vbNullString
 sample(1).BraggOrders%(chan%) = 1           ' assume first order as default
 sample(1).numcat%(chan%) = 0
 sample(1).numoxd%(chan%) = 0
+
 sample(1).AtomicCharges!(chan%) = 0#
+sample(1).AtomicWts!(chan%) = 0#
+
 sample(1).ElmPercents!(chan%) = 0#
 
 ' 0=linear, 1=average, 2=high only, 3=low only, 4=exponential, 5=slope hi, 6=slope lo, 7=polynomial, 8=multi-point
@@ -60,8 +63,6 @@ sample(1).Windows!(chan%) = 0#
 sample(1).Gains!(chan%) = 0#
 sample(1).Biases!(chan%) = 0#
 sample(1).InteDiffModes%(chan%) = False ' False = integral / True = differential
-
-sample(1).AtomicCharges!(chan%) = 0#
 
 sample(1).DetectorSlitSizes$(chan%) = vbNullString
 sample(1).DetectorSlitPositions$(chan%) = vbNullString
@@ -169,9 +170,6 @@ Next m%
 ' 12/17/2011
 sample(1).UnknownCountTimeForInterferenceStandardChanFlag(chan%) = False
 
-' 11/3/2012
-sample(1).SecondaryFluorescenceBoundaryCorrectionMethod%(chan%) = 0
-
 sample(1).SecondaryFluorescenceBoundaryFlag(chan%) = False
 sample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%) = vbNullString
 sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(chan%) = vbNullString
@@ -181,9 +179,6 @@ sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3$(chan%) = vbNullStrin
 sample(1).SecondaryFluorescenceBoundaryMatA_String$(chan%) = vbNullString
 sample(1).SecondaryFluorescenceBoundaryMatB_String$(chan%) = vbNullString
 sample(1).SecondaryFluorescenceBoundaryMatBStd_String$(chan%) = vbNullString
-
-'sample(1).SecondaryFluorescenceBoundaryMaterialB_Elsyms$(chan%) = vbNullString
-'sample(1).SecondaryFluorescenceBoundaryMaterialB_WtPercents!(chan%) = 0#
 
 sample(1).ConditionNumbers%(chan%) = 1
 
@@ -381,7 +376,7 @@ ReDim sample(1).MultiPointProcessLastManualFlagLo(1 To MAXCHAN%, 1 To MAXMULTI%)
 
 ' Init boundary secondary fluorescence arrays
 amsg$ = "Dimensioning secondary fluorescence sample arrays..."
-ReDim sample(1).SecondaryFluorescenceBoundaryDistance(1 To MAXROW%) As Single
+ReDim sample(1).SecondaryFluorescenceBoundaryDistance(1 To MAXROW%) As Single       ' calculated for each data line
 
 ReDim sample(1).SecondaryFluorescenceBoundaryKratiosDATFile(1 To MAXCHAN%) As String
 ReDim sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1(1 To MAXCHAN%) As String
@@ -695,6 +690,9 @@ ReDim analysis.StdBetas(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdContinuumCorrections(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdMACs(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdPercents(1 To MAXSTD%, 1 To MAXCHAN%) As Single
+
+ReDim analysis.StdAtomicCharges(1 To MAXSTD%, 1 To MAXCHAN%) As Single
+ReDim analysis.StdAtomicWts(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 
 ReDim analysis.UnkZAFCors(1 To MAXZAFCOR%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdAssignsZAFCors(1 To MAXZAFCOR%, 1 To MAXCHAN%) As Single

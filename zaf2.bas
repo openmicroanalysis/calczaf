@@ -80,8 +80,11 @@ If sample(1).AtomicNums%(chan%) = 0 Then GoTo ZAFCalZbarNoAtomicNumbers
 atoms!(chan%) = analysis.WtPercents!(chan%) / sample(1).AtomicWts!(chan%)
 sum_atoms! = sum_atoms! + atoms!(chan%)
 If sample(1).AtomicCharges!(chan%) > 0# Then sum_cations! = sum_cations! + atoms!(chan%)
+
+' Load analysis arrays with sample data
 analysis.AtomicNumbers!(chan%) = sample(1).AtomicNums%(chan%)
-analysis.AtomicWeights!(chan%) = sample(1).AtomicWts!(chan%)
+analysis.AtomicCharges!(chan%) = sample(1).AtomicCharges!(chan%)
+analysis.AtomicWts!(chan%) = sample(1).AtomicWts!(chan%)
 End If
 Next chan%
 
@@ -132,14 +135,14 @@ analysis.AtomicWeight! = analysis.AtomicWeight! + sample(1).AtomicWts!(chan%) * 
 'End If
 Next chan%
 
-' Calculate mass fraction Zbar
+' Calculate mass fraction Zbar for backscatter
 If Not UseZFractionZbarCalculationsFlag Then
-analysis.zbar! = ConvertWeightsToZBar!(Int(0), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), ZFractionZbarCalculationsExponent!)
+analysis.zbar! = ConvertWeightsToZBarBSE(Int(0), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), sample(1).KilovoltsArray!(), ZFractionBackscatterExponent!)
 If ierror Then Exit Sub
 
-' Calculate Z fraction Zbar
+' Calculate Z fraction Zbar (if Z fraction exponent is zero, then value is based on electron beam energy)
 Else
-analysis.zbar! = ConvertWeightsToZBar!(Int(1), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), ZFractionZbarCalculationsExponent!)
+analysis.zbar! = ConvertWeightsToZBarBSE(Int(1), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), sample(1).KilovoltsArray!(), ZFractionBackscatterExponent!)
 If ierror Then Exit Sub
 End If
 

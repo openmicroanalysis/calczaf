@@ -1655,12 +1655,15 @@ Sub AnalyzeTypeResults(mode As Integer, analysis As TypeAnalysis, sample() As Ty
 ierror = False
 On Error GoTo AnalyzeTypeResultsError
 
+Dim diffwts As Boolean
 Dim linerow As Integer
 Dim i As Integer, j As Integer, ii As Integer, jj As Integer, n As Integer
 Dim ip As Integer
 Dim nthpnt As Long
 Dim sString As String
 Dim temp3 As Single
+
+Dim keV As Single, texponent As Single
 
 Dim npts As Integer, nrows As Integer
 Dim npixels As Long
@@ -1854,6 +1857,21 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
+' Type out Z fraction exponent for continuum if using variable exponent (ZFractionZbarCalculationsExponent! = 0#)
+If UseZFractionZbarCalculationsFlag And ZFractionZbarCalculationsExponent! = 0# Then
+msg$ = "ZEXP: "
+For i% = ii% To jj%
+If i% <= sample(1).LastElm% Then
+keV! = sample(1).LineEnergy!(i%) / EVPERKEV#
+texponent! = ConvertCalculateZFractionExponent(keV!)
+msg$ = msg$ & Format$(Format$(texponent!, f82$), a80$)
+Else
+msg$ = msg$ & Format$(vbNullString, a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+End If
+
 End If
 End If
 
@@ -1918,6 +1936,26 @@ msg$ = msg$ & Format$(DASHED3$, a80$)   ' if quant disabled
 End If
 Next i%
 Call IOWriteLog(msg$)
+End If
+
+' Display unknown and standard atomic weights (if different)
+If UseDetailedFlag Then
+diffwts = False
+msg$ = "ATWT_S"
+For i% = ii% To jj%
+ip% = IPOS2(NumberofStandards%, sample(1).StdAssigns%(i%), StandardNumbers%())
+If ip% <> 0 Then
+msg$ = msg$ & Format$(Format$(analysis.StdAtomicWts!(ip%, i%), f83$), a80$)
+If analysis.AtomicWts!(i%) <> analysis.StdAtomicWts!(ip%, i%) Then diffwts = True
+End If
+Next i%
+If diffwts Then Call IOWriteLog(msg$)
+
+msg$ = "ATWT_U"
+For i% = ii% To jj%
+msg$ = msg$ & Format$(Format$(analysis.AtomicWts!(i%), f83$), a80$)
+Next i%
+If diffwts Then Call IOWriteLog(msg$)
 End If
 
 End If
@@ -2339,6 +2377,29 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
+' Check for Z fraction backscatter variable exponent
+If izaf% = MAXZAF% Then
+msg$ = "BEXP: "
+For i% = ii% To jj%
+If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
+
+keV! = sample(1).KilovoltsArray!(i%)
+texponent! = ConvertCalculateZFractionExponentBSE!(keV!)
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then       ' check for duplicate element
+msg$ = msg$ & Format$(Format$(texponent!, f82$), a80$)
+Else
+msg$ = msg$ & Format$(Format$(0#, f82$), a80$)
+End If
+
+Else
+msg$ = msg$ & Format$(DASHED3$, a80$)   ' if quant disabled
+End If
+Next i%
+Call IOWriteLog(msg$)
+End If
+
+' Output raw k-ratios (corrected for dead time, background and spectral interferences)
 Call MathArrayAverage(average, RowUnkKRaws!(), sample(1).Datarows%, sample(1).LastElm%, sample())
 If ierror Then Exit Sub
 msg$ = "KRAW: "

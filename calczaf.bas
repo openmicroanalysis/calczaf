@@ -506,14 +506,14 @@ For i% = 1 To MAXCATION%
 numbers(i%) = MAXCATION% - i%       ' load in 0 to MAXCATION% - 1 in reverse value order
 Next i%
 
-' Check if adding analyzed oxygen to an oxide calculated sample, if so change to elemental calculation
+' Check for oxide or elemental analysis
 sym$ = FormZAFELM.ComboElement.Text
 ip% = IPOS1(MAXELM%, sym$, Symlo$())
 sym$ = FormZAFELM.ComboXRay.Text
 ipp% = IPOS1(MAXRAY%, sym$, Xraylo$())  ' including unanalyzed elements
 If ip% = AllAtomicNums%(ATOMIC_NUM_OXYGEN%) And ipp% <= MAXRAY% - 1 Then CalcZAFOldSample(1).OxideOrElemental% = 2
 
-' Get the element symbol
+' Clear sample array if no element
 CalcZAFOldSample(1).Elsyms$(CalcZAFRow%) = vbNullString
 sym$ = FormZAFELM.ComboElement.Text
 If sym$ = vbNullString Then           ' deleted element
@@ -1827,7 +1827,7 @@ End If
 
 ' Calculate electron fractions
 If mode% = 1 Or mode% = 2 Or mode% = 3 Then
-Call ConvertWeightToElectron(Int(2), CalcZAFAnalysis.AtomicNumbers!(), CalcZAFAnalysis.AtomicWeights!(), conc!(), temp!())
+Call ConvertWeightToZFraction(Int(2), CalcZAFAnalysis.AtomicNumbers!(), CalcZAFAnalysis.AtomicWts!(), conc!(), temp!())
 If ierror Then
 Close #ImportDataFileNumber2%
 Close #ExportDataFileNumber2%
@@ -2457,7 +2457,7 @@ End If
 
 ' Calculate weight to electron fraction
 If mode% = 3 Then
-Call ConvertWeightToElectron(num%, atnm!(), atwt!(), temp!(), conc!())
+Call ConvertWeightToZFraction(num%, atnm!(), atwt!(), temp!(), conc!())
 If ierror Then Exit Sub
 End If
 End If
@@ -4802,4 +4802,29 @@ Exit Sub
 
 End Sub
 
+Sub CalcZAFSave2(sample() As TypeSample)
+' Load the passed sample, sort it and return it
+
+ierror = False
+On Error GoTo CalcZAFSave2Error
+
+' Load passed sample
+CalcZAFOldSample(1) = sample(1)
+
+' Sort sample for analyzed and specified elements
+Call CalcZAFSave
+If ierror Then Exit Sub
+
+' Return passed sample
+sample(1) = CalcZAFOldSample(1)
+
+Exit Sub
+
+' Errors
+CalcZAFSave2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "CalcZAFSave2"
+ierror = True
+Exit Sub
+
+End Sub
 

@@ -64,10 +64,10 @@ Begin VB.Form FormABOUT
       Begin VB.Label LabelAboutSpecialists 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Height          =   1695
+         Height          =   2055
          Left            =   120
          TabIndex        =   6
-         Top             =   7680
+         Top             =   7320
          Width           =   9015
       End
       Begin VB.Label LabelAboutBeta 
@@ -76,7 +76,7 @@ Begin VB.Form FormABOUT
          Height          =   1095
          Left            =   360
          TabIndex        =   5
-         Top             =   1920
+         Top             =   1800
          Width           =   8535
       End
       Begin VB.Image Image1 
@@ -98,11 +98,11 @@ Begin VB.Form FormABOUT
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   4455
+         Height          =   4215
          Left            =   1320
          TabIndex        =   1
-         Top             =   3120
-         Width           =   6615
+         Top             =   3000
+         Width           =   6855
       End
       Begin VB.Label LabelAboutTitle 
          Alignment       =   2  'Center
@@ -172,12 +172,12 @@ tmsg$ = tmsg$ & "Special thanks to Paul Carpenter for his tireless testing and m
 FormABOUT.LabelAboutTitle.Caption = tmsg$
 
 tmsg$ = "Many thanks to our excellent and hard working beta testing team:" & vbCrLf & vbCrLf
-tmsg$ = tmsg$ & "Anette von der Handt and Karsten Goemann (JEOL 8530), Owen Neill (JEOL 8500), Paul Carpenter (JEOL 8200), "
-tmsg$ = tmsg$ & "David Adams (JEOL 8900), Angus Netting (Cameca SXFIVE), Gareth Seward and Karsten Goemann (Cameca SX100) "
-tmsg$ = tmsg$ & "and Glenn Poirier and Changkun Park (JEOL EDS)"
+tmsg$ = tmsg$ & "Anette von der Handt (JEOL iHP200F), Karsten Goemann (JEOL 8530), Owen Neill (JEOL 8500), Paul Carpenter (JEOL 8200), "
+tmsg$ = tmsg$ & "David Adams (JEOL 8900), Angus Netting (Cameca SXFive), Gareth Seward (Cameca SX100), "
+tmsg$ = tmsg$ & "and Glenn Poirier, Chi Ma and Changkun Park (JEOL EDS)"
 FormABOUT.LabelAboutBeta.Caption = tmsg$
 
-tmsg$ = vbCrLf & "Thanks to Paul Carpenter, Don Snyder and Mark Rivers for their helpful advice and" & vbCrLf
+tmsg$ = "Thanks to Paul Carpenter, Don Snyder and Mark Rivers for their helpful advice and" & vbCrLf
 tmsg$ = tmsg$ & "Thanks also to Tracy Tingle and Dan Kremser for beta testing and suggestions" & vbCrLf
 tmsg$ = tmsg$ & "Special thanks to John Armstrong for the CITZAF quantitative routines and" & vbCrLf
 tmsg$ = tmsg$ & "John Friday and Brian Gaynor for help with the hardware interfacing and" & vbCrLf
@@ -205,7 +205,9 @@ tmsg$ = tmsg$ & "Gareth Seward, 805 637-7265, seward@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Karsten Goemann, +61 407-101-990, goemann@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Owen Neill, 207 653-6331, neill@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Anette von der Handt, 612 222-6711, vonderhandt@probesoftware.com" & vbCrLf
-tmsg$ = tmsg$ & "Will Nachlas, 207 653-6331, nachlas@probesoftware.com"
+tmsg$ = tmsg$ & "Will Nachlas, 717 571-9415, nachlas@probesoftware.com" & vbCrLf
+tmsg$ = tmsg$ & "Scott Boroughs, 509 991-0698, boroughs@probesoftware.com" & vbCrLf
+tmsg$ = tmsg$ & "Mike Matthews, +44(0)118 982 4219, matthews@probesoftware.com"
 
 FormABOUT.LabelAboutSpecialists.Caption = tmsg$
 
@@ -241,7 +243,7 @@ Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Label1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Label1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 ' When the label is clicked, change the color to indicate it is hot
 If FormABOUT.Label1.ForeColor = clrLinkActive& Then
@@ -250,7 +252,7 @@ FormABOUT.Label1.Refresh
 End If
 End Sub
 
-Private Sub Label1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Label1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 ' Mouse released, so restore the label to clrLinkActive&
 If FormABOUT.Label1.ForeColor = clrLinkHot& Then

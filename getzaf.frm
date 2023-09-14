@@ -2,10 +2,10 @@ VERSION 5.00
 Begin VB.Form FormGETZAF 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "ZAF, Phi (pz) and Characteristic Fluorescence Selections"
-   ClientHeight    =   8025
+   ClientHeight    =   8520
    ClientLeft      =   1305
    ClientTop       =   975
-   ClientWidth     =   18330
+   ClientWidth     =   18375
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -21,8 +21,27 @@ Begin VB.Form FormGETZAF
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   8025
-   ScaleWidth      =   18330
+   ScaleHeight     =   8520
+   ScaleWidth      =   18375
+   Begin VB.TextBox TextZFractionBackscatterExponent 
+      Enabled         =   0   'False
+      Height          =   285
+      Left            =   4320
+      TabIndex        =   81
+      ToolTipText     =   $"GETZAF.frx":0000
+      Top             =   3450
+      Width           =   735
+   End
+   Begin VB.OptionButton OptionZaf 
+      Caption         =   "OptionZaf"
+      Height          =   255
+      Index           =   11
+      Left            =   720
+      TabIndex        =   78
+      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      Top             =   3240
+      Width           =   4935
+   End
    Begin VB.OptionButton OptionZaf 
       Caption         =   "OptionZaf"
       Height          =   255
@@ -136,11 +155,20 @@ Begin VB.Form FormGETZAF
    Begin VB.Frame Frame6 
       Caption         =   "BackScatter Coefficients"
       ForeColor       =   &H00FF0000&
-      Height          =   1455
+      Height          =   1695
       Left            =   12360
       TabIndex        =   33
-      Top             =   6480
+      Top             =   6720
       Width           =   5895
+      Begin VB.OptionButton OptionBsc 
+         Caption         =   "OptionBsc"
+         Height          =   255
+         Index           =   4
+         Left            =   120
+         TabIndex        =   79
+         Top             =   1320
+         Width           =   5175
+      End
       Begin VB.OptionButton OptionBsc 
          Caption         =   "OptionBsc"
          Height          =   255
@@ -185,7 +213,7 @@ Begin VB.Form FormGETZAF
       Height          =   2055
       Left            =   6240
       TabIndex        =   29
-      Top             =   5880
+      Top             =   6360
       Width           =   5895
       Begin VB.OptionButton OptionFlu 
          Caption         =   "OptionFlu"
@@ -261,9 +289,9 @@ Begin VB.Form FormGETZAF
       ClipControls    =   0   'False
       ForeColor       =   &H00FF0000&
       Height          =   2175
-      Left            =   6240
+      Left            =   12360
       TabIndex        =   28
-      Top             =   3360
+      Top             =   720
       Width           =   5895
       Begin VB.OptionButton OptionPhi 
          Caption         =   "OptionPhi"
@@ -341,9 +369,9 @@ Begin VB.Form FormGETZAF
       ClipControls    =   0   'False
       ForeColor       =   &H00FF0000&
       Height          =   2655
-      Left            =   12360
+      Left            =   6240
       TabIndex        =   27
-      Top             =   120
+      Top             =   3360
       Width           =   5895
       Begin VB.OptionButton OptionMip 
          Caption         =   "OptionMip"
@@ -440,11 +468,21 @@ Begin VB.Form FormGETZAF
       Caption         =   "BackScatter Corrections"
       ClipControls    =   0   'False
       ForeColor       =   &H00FF0000&
-      Height          =   2895
+      Height          =   3135
       Left            =   12360
       TabIndex        =   26
-      Top             =   3120
+      Top             =   3240
       Width           =   5895
+      Begin VB.OptionButton OptionBks 
+         Caption         =   "OptionBks"
+         Height          =   255
+         Index           =   10
+         Left            =   120
+         TabIndex        =   77
+         TabStop         =   0   'False
+         Top             =   2760
+         Width           =   5295
+      End
       Begin VB.OptionButton OptionBks 
          Caption         =   "OptionBks"
          Height          =   255
@@ -643,9 +681,9 @@ Begin VB.Form FormGETZAF
       ClipControls    =   0   'False
       ForeColor       =   &H00FF0000&
       Height          =   4455
-      Left            =   120
+      Left            =   240
       TabIndex        =   0
-      Top             =   3480
+      Top             =   3960
       Width           =   5895
       Begin VB.OptionButton OptionAbs 
          Caption         =   "OptionAbs"
@@ -798,6 +836,15 @@ Begin VB.Form FormGETZAF
          Width           =   5655
       End
    End
+   Begin VB.Label LabelZFractionBackscatterExponent 
+      Caption         =   "Z Fraction Backscatter Exponent"
+      Enabled         =   0   'False
+      Height          =   255
+      Left            =   1440
+      TabIndex        =   80
+      Top             =   3480
+      Width           =   2895
+   End
 End
 Attribute VB_Name = "FormGETZAF"
 Attribute VB_GlobalNameSpace = False
@@ -850,4 +897,9 @@ Call GetZAFSetZAF
 If ierror Then Exit Sub
 Call GetZAFSetEnables
 If ierror Then Exit Sub
+End Sub
+
+Private Sub TextZFractionBackscatterExponent_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

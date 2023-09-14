@@ -1216,9 +1216,8 @@ If intfstd% = 0 Then GoTo UpdateStdMANBackgroundsBadIntfStandard
 ' Correct interference standard drift arrays for MAN background
 For i% = 1 To kmax%
 
-' Now load the drift corrected background counts for each interference
-' standard set and then calculate the "analysis.MANFitCoefficients" background
-' correction coefficients using least squares fit of MAN background
+' Now load the drift corrected background counts for each interference standard set and then calculate
+' the "analysis.MANFitCoefficients" background correction coefficients using least squares fit of MAN background
 ' counts vs zbar, if this interference standard intensity is MAN corrected.
 If StdAssignsIntfBackgroundTypes%(i%, j%, chan%) = 1 Then
 
@@ -1226,9 +1225,8 @@ If StdAssignsIntfBackgroundTypes%(i%, j%, chan%) = 1 Then
 Call UpdateCalculateMANDrift(Int(2), chan%, Int(0), i%, j%, analysis, sample())
 If ierror Then Exit Sub
 
-' Now fit the drift corrected MAN counts for this standard time. Counts are
-' corrected for continuum absorption in UpdateFitMAN if flagged for this sample
-' and element. Counts are UNcorrected for continuum absorption below before
+' Now fit the drift corrected MAN counts for this standard time. Counts are corrected for continuum absorption
+' in UpdateFitMAN if flagged for this sample and element. Counts are UNcorrected for continuum absorption below before
 ' background correction.
 Call UpdateFitMAN(chan%, analysis, sample())
 If ierror Then Exit Sub
@@ -2000,7 +1998,9 @@ End If
 ' Check for calculation flags
 If sample(1).numcat%(i%) <> UpdateOldSample(1).numcat%(i%) Then UpdateChangedSample = True
 If sample(1).numoxd%(i%) <> UpdateOldSample(1).numoxd%(i%) Then UpdateChangedSample = True
+
 If sample(1).AtomicCharges!(i%) <> UpdateOldSample(1).AtomicCharges!(i%) Then UpdateChangedSample = True
+If sample(1).AtomicWts!(i%) <> UpdateOldSample(1).AtomicWts!(i%) Then UpdateChangedSample = True
 
 If sample(1).BlankCorrectionUnks%(i%) <> UpdateOldSample(1).BlankCorrectionUnks%(i%) Then UpdateChangedSample = True
 If sample(1).BlankCorrectionLevels!(i%) <> UpdateOldSample(1).BlankCorrectionLevels!(i%) Then UpdateChangedSample = True
@@ -2609,9 +2609,12 @@ If ierror Then Exit Sub
 For i% = 1 To sample(1).LastChan%
 ip% = IPOS1(stdsample(1).LastChan%, sample(1).Elsyms$(i%), stdsample(1).Elsyms$())
 
-' Load the standard percents
+' Load the standard percents (and charges and weights)
 If ip% > 0 Then
 analysis.StdPercents!(j%, i%) = stdsample(1).ElmPercents!(ip%)
+
+analysis.StdAtomicCharges!(j%, i%) = stdsample(1).AtomicCharges!(ip%)
+analysis.StdAtomicWts!(j%, i%) = stdsample(1).AtomicWts!(ip%)
 End If
 
 Next i%

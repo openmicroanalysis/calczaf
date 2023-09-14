@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormSETCMP 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Element Properties"
-   ClientHeight    =   2130
+   ClientHeight    =   3480
    ClientLeft      =   1410
    ClientTop       =   1770
    ClientWidth     =   7305
@@ -21,8 +21,42 @@ Begin VB.Form FormSETCMP
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   2130
+   ScaleHeight     =   3480
    ScaleWidth      =   7305
+   Begin VB.Frame Frame2 
+      Caption         =   "Enter Other Element Properties (not saved to standard database)"
+      ForeColor       =   &H00FF0000&
+      Height          =   975
+      Left            =   120
+      TabIndex        =   14
+      Top             =   2400
+      Width           =   5895
+      Begin VB.ComboBox ComboCrystal 
+         Height          =   315
+         Left            =   120
+         TabIndex        =   15
+         Top             =   600
+         Width           =   1335
+      End
+      Begin VB.Label Label4 
+         Alignment       =   2  'Center
+         Caption         =   "Crystal (default)"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   120
+         TabIndex        =   16
+         Top             =   360
+         Width           =   1335
+      End
+   End
    Begin VB.CommandButton CommandClear 
       Caption         =   "Clear"
       BeginProperty Font 
@@ -36,7 +70,7 @@ Begin VB.Form FormSETCMP
       EndProperty
       Height          =   375
       Left            =   6120
-      TabIndex        =   13
+      TabIndex        =   12
       TabStop         =   0   'False
       Top             =   1560
       Width           =   1095
@@ -46,7 +80,7 @@ Begin VB.Form FormSETCMP
       Caption         =   "Cancel"
       Height          =   375
       Left            =   6120
-      TabIndex        =   10
+      TabIndex        =   9
       TabStop         =   0   'False
       Top             =   720
       Width           =   1095
@@ -58,7 +92,7 @@ Begin VB.Form FormSETCMP
       Height          =   495
       Left            =   6120
       Style           =   1  'Graphical
-      TabIndex        =   9
+      TabIndex        =   8
       TabStop         =   0   'False
       Top             =   120
       Width           =   1095
@@ -67,30 +101,32 @@ Begin VB.Form FormSETCMP
       Caption         =   "Enter Element Properties and Weight Percent For"
       ClipControls    =   0   'False
       ForeColor       =   &H00FF0000&
-      Height          =   1935
+      Height          =   2055
       Left            =   120
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   120
       Width           =   5895
-      Begin VB.ComboBox ComboCrystal 
-         Height          =   315
-         Left            =   3000
-         TabIndex        =   16
-         Top             =   1560
-         Width           =   1335
-      End
-      Begin VB.TextBox TextCharge 
+      Begin VB.TextBox TextAtomicWtsStd 
          Height          =   285
          Left            =   4440
-         TabIndex        =   5
-         Top             =   1560
+         TabIndex        =   19
+         ToolTipText     =   "Enter the atomic weight for this element for enriched isotope standards (default is natural abundance)"
+         Top             =   1680
+         Width           =   1335
+      End
+      Begin VB.TextBox TextAtomicChargesStd 
+         Height          =   285
+         Left            =   3000
+         TabIndex        =   17
+         ToolTipText     =   "Enter the ionic charge for charge balance calculations"
+         Top             =   1680
          Width           =   1335
       End
       Begin VB.TextBox TextComposition 
          Height          =   285
          Left            =   120
          TabIndex        =   4
-         Top             =   1560
+         Top             =   1680
          Width           =   2775
       End
       Begin VB.ComboBox ComboOxygens 
@@ -121,9 +157,9 @@ Begin VB.Form FormSETCMP
          Top             =   720
          Width           =   1335
       End
-      Begin VB.Label Label4 
+      Begin VB.Label Label5 
          Alignment       =   2  'Center
-         Caption         =   "Crystal (default)"
+         Caption         =   "Atomic Weight"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -134,10 +170,10 @@ Begin VB.Form FormSETCMP
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   2880
-         TabIndex        =   17
-         Top             =   1320
-         Width           =   1575
+         Left            =   4440
+         TabIndex        =   20
+         Top             =   1440
+         Width           =   1335
       End
       Begin VB.Label Label3 
          Alignment       =   2  'Center
@@ -152,9 +188,9 @@ Begin VB.Form FormSETCMP
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   4440
-         TabIndex        =   15
-         Top             =   1320
+         Left            =   3000
+         TabIndex        =   18
+         Top             =   1440
          Width           =   1335
       End
       Begin VB.Label LabelComposition 
@@ -164,8 +200,8 @@ Begin VB.Form FormSETCMP
          ForeColor       =   &H000000FF&
          Height          =   495
          Left            =   120
-         TabIndex        =   14
-         Top             =   1080
+         TabIndex        =   13
+         Top             =   1200
          Width           =   2775
       End
       Begin VB.Label Label7 
@@ -175,7 +211,7 @@ Begin VB.Form FormSETCMP
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   4440
-         TabIndex        =   11
+         TabIndex        =   10
          Top             =   480
          Width           =   1335
       End
@@ -186,7 +222,7 @@ Begin VB.Form FormSETCMP
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   3000
-         TabIndex        =   12
+         TabIndex        =   11
          Top             =   480
          Width           =   1335
       End
@@ -197,7 +233,7 @@ Begin VB.Form FormSETCMP
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   1560
-         TabIndex        =   8
+         TabIndex        =   7
          Top             =   480
          Width           =   1335
       End
@@ -208,7 +244,7 @@ Begin VB.Form FormSETCMP
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   120
-         TabIndex        =   7
+         TabIndex        =   6
          Top             =   480
          Width           =   1335
       End
@@ -269,7 +305,12 @@ If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(1), MDBUserName$, Me)
 End Sub
 
-Private Sub TextCharge_GotFocus()
+Private Sub TextAtomicChargesStd_GotFocus()
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub TextAtomicWtsStd_GotFocus()
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub

@@ -149,10 +149,12 @@ sample(1).ElmPercents!(sample(1).LastChan%) = stds("Percent")
 sample(1).numcat%(sample(1).LastChan%) = stds("NumCat")
 sample(1).numoxd%(sample(1).LastChan%) = stds("NumOxd")
 
-ip% = IPOS1(MAXELM%, sample(1).Elsyms$(sample(1).LastChan%), Symlo$())
-If ip% > 0 Then
-sample(1).AtomicCharges!(sample(1).LastChan%) = AllAtomicCharges!(ip%)
-End If
+' Load atomic charges for standard elements
+sample(1).AtomicCharges!(sample(1).LastChan%) = stds("AtomicChargesStd")    ' v. 13.3.2
+
+' Load atomic weights for standard elements
+sample(1).AtomicWts!(sample(1).LastChan%) = stds("AtomicWtsStd")            ' v. 13.3.2
+
 stds.MoveNext
 Loop
 
@@ -176,14 +178,13 @@ sample(1).beamsize! = DefaultBeamSize!
 sample(1).ColumnConditionMethod% = DefaultColumnConditionMethod%
 sample(1).ColumnConditionString$ = DefaultColumnConditionString$
 
-' Load x-ray lines from element defaults. These are overwritten
-' in UpdateStdKfacs but used in StanFormCalculate
+' Load x-ray lines from element defaults. These are overwritten in UpdateStdKfacs but used in StanFormCalculate
 For i% = 1 To sample(1).LastChan%
 ip% = IPOS1(MAXELM%, sample(1).Elsyms$(i%), Symlo$())
 If ip% > 0 Then sample(1).Xrsyms$(i%) = Deflin$(ip%)
 Next i%
 
-' Load default crystal types (only used by InterfSave)
+' Load default crystal types (only used by InterfSave) (not saved in standard database)
 For i% = 1 To sample(1).LastChan%
 ip% = IPOS1(MAXELM%, sample(1).Elsyms$(i%), Symlo$())
 If ip% > 0 Then sample(1).CrystalNames$(i%) = Defcry$(ip%)
@@ -192,9 +193,9 @@ Next i%
 ' Load default atomic charge and atomic numbers
 For i% = 1 To sample(1).LastChan%
 ip% = IPOS1(MAXELM%, sample(1).Elsyms$(i%), Symlo$())
-If ip% > 0 Then sample(1).AtomicCharges!(i%) = AllAtomicCharges!(ip%)
 If ip% > 0 Then sample(1).AtomicNums%(i%) = AllAtomicNums%(ip%)
-If ip% > 0 Then sample(1).AtomicWts!(i%) = AllAtomicWts!(ip%)
+'If ip% > 0 Then sample(1).AtomicCharges!(i%) = AllAtomicCharges!(ip%)          ' now loaded from standard database v. 13.3.2 (above)
+'If ip% > 0 Then sample(1).AtomicWts!(i%) = AllAtomicWts!(ip%)                  ' now loaded from standard database v. 13.3.2 (above)
 Next i%
 
 ' Load kilovolts array
@@ -422,6 +423,7 @@ sample(1).Xrsyms$(sample(1).LastChan%) = vbNullString
 sample(1).numcat%(sample(1).LastChan%) = AllCat%(ATOMIC_NUM_OXYGEN%)
 sample(1).numoxd%(sample(1).LastChan%) = AllOxd%(ATOMIC_NUM_OXYGEN%)
 sample(1).AtomicCharges!(sample(1).LastChan%) = AllAtomicCharges!(ATOMIC_NUM_OXYGEN%)
+sample(1).AtomicWts!(sample(1).LastChan%) = AllAtomicWts!(ATOMIC_NUM_OXYGEN%)
 sample(1).ElmPercents!(sample(1).LastChan%) = sum2!
 
 ' Add to elemental sum
@@ -668,7 +670,7 @@ StDt("MountNames") = Left$(sample(1).MountNames$, DbTextDescriptionLength%)
 StDt.Update
 StDt.Close
 
-' Add element symbols and weights to "Element" table
+' Add element symbols, weight%s and atomic charges/weights to "Element" table
 Set StDt = StDb.OpenRecordset("Element", dbOpenTable)
 For i% = 1 To sample(1).LastChan%
 StDt.AddNew
@@ -677,6 +679,9 @@ StDt("Symbol") = Left$(sample(1).Elsyms$(i%), DbTextXrayStringLength%)
 StDt("Percent") = sample(1).ElmPercents!(i%)
 StDt("NumCat") = sample(1).numcat%(i%)
 StDt("NumOxd") = sample(1).numoxd%(i%)
+
+StDt("AtomicChargesStd") = sample(1).AtomicCharges(i%)      ' new field to store atomic charges in standard database
+StDt("AtomicWtsStd") = sample(1).AtomicWts!(i%)             ' new field to store atomic weights in standard database
 StDt.Update
 Next i%
 
@@ -1041,8 +1046,8 @@ Dim StDb As Database
 Dim StRs As Recordset
 
 Dim versionnumber As Single
-Dim updated As Integer
-Dim SQLQ As String
+Dim updated As Integer, ip As Integer
+Dim SQLQ As String, sym As String
 
 Dim StdDensities As New Field
 
@@ -1084,6 +1089,9 @@ Dim MemoTextField As New Field
 Dim MemoTextIndex As New Index      ' text memo index (to sample row numbers)
 
 Dim StdMountNames As New Field
+
+Dim ElmAtomicChargesStd As New Field
+Dim ElmAtomicWtsStd As New Field
 
 ' Check for valid file name
 If Trim$(tfilename$) = vbNullString Then
@@ -1393,6 +1401,36 @@ StdMountNames.Type = dbText
 StdMountNames.Size = DbTextDescriptionLength%
 StdMountNames.AllowZeroLength = True
 StDb.TableDefs("Standard").Fields.Append StdMountNames
+
+updated = True
+End If
+
+' Add charges and atomic weight fields
+If versionnumber! < 13.32 Then
+
+' Modify the standard database "Element" table
+ElmAtomicChargesStd.Name = "AtomicChargesStd"
+ElmAtomicChargesStd.Type = dbSingle
+StDb.TableDefs("Element").Fields.Append ElmAtomicChargesStd
+
+ElmAtomicWtsStd.Name = "AtomicWtsStd"
+ElmAtomicWtsStd.Type = dbSingle
+StDb.TableDefs("Element").Fields.Append ElmAtomicWtsStd
+
+' Open standard table in standard database and add default values
+Set StRs = StDb.OpenRecordset("Element", dbOpenTable)
+Do Until StRs.EOF
+StRs.Edit
+sym$ = Trim$(vbNullString & StRs("Symbol"))
+ip% = IPOS1(MAXELM%, sym$, Symlo$())
+If ip% <> 0 Then
+StRs("AtomicChargesStd") = AllAtomicCharges!(ip%)
+StRs("AtomicWtsStd") = AllAtomicWts!(ip%)
+End If
+StRs.Update
+StRs.MoveNext
+Loop
+StRs.Close
 
 updated = True
 End If

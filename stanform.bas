@@ -700,6 +700,12 @@ msg$ = msg$ & Format$(Format$(sample(1).ElmPercents!(i%), f83$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
+msg$ = "ATWT: "
+For i% = ii% To jj%
+msg$ = msg$ & Format$(Format$(sample(1).AtomicWts!(i%), f83$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+
 msg$ = "KFAC: "
 For i% = ii% To jj%
 msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84$), a80$)
@@ -976,7 +982,7 @@ Exit Sub
 End Sub
 
 Sub StanFormCalculateOxideAtomic(sample() As TypeSample)
-' Calculates oxide and atomic percents
+' Calculates oxide and atomic percents for the passed standard sample
 
 ierror = False
 On Error GoTo StanFormCalculateOxideAtomicError
@@ -988,7 +994,9 @@ For i% = 1 To sample(1).LastChan%
 If sample(1).DisplayAsOxideFlag Then
 OxPercents!(i%) = ConvertElmToOxd(sample(1).ElmPercents!(i%), sample(1).Elsyms$(i%), sample(1).numcat%(i%), sample(1).numoxd%(i%))
 End If
-AtPercents!(i%) = ConvertWeightToAtom(sample(1).LastChan%, i%, sample(1).ElmPercents!(), sample(1).Elsyms$())
+
+'AtPercents!(i%) = ConvertWeightToAtom(sample(1).LastChan%, i%, sample(1).ElmPercents!(), sample(1).Elsyms$())
+AtPercents!(i%) = ConvertWeightToAtom2(sample(1).LastChan%, i%, sample(1).ElmPercents!(), sample(1).AtomicWts!(), sample(1).Elsyms$())
 Next i%
 
 Exit Sub
