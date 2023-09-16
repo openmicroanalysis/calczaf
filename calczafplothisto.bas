@@ -427,7 +427,11 @@ FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
 FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
 FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
 FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
+If ibsc% <> 5 Then
 FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = bscstring$(ibsc%)
+Else
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = bscstring$(ibsc%) & " (x=" & Format$(ZFractionBackscatterExponent!) & ")"
+End If
 
 acounter% = acounter% + 1
 yannotation! = yannotation! - ydecrement!

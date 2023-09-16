@@ -780,7 +780,7 @@ End Type
 
 ' Sample arrays
 Type TypeSample
-    number As Integer
+    Number As Integer
     Set As Integer
     Type As Integer
     Name As String

@@ -38,7 +38,7 @@ Begin VB.Form FormGETZAF
       Index           =   11
       Left            =   720
       TabIndex        =   78
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Donovan and Moy (Armstrong/Love-Scott) BSC/BKS (modified PAP)"
       Top             =   3240
       Width           =   4935
    End
@@ -48,7 +48,7 @@ Begin VB.Form FormGETZAF
       Index           =   10
       Left            =   720
       TabIndex        =   62
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Pouchou and Pichoir-Simplified Phi-Rho-Z (XPP)"
       Top             =   3000
       Width           =   4935
    End
@@ -58,7 +58,7 @@ Begin VB.Form FormGETZAF
       Index           =   9
       Left            =   720
       TabIndex        =   61
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Pouchou and Pichoir-Full Phi-Rho-Z (PAP)"
       Top             =   2760
       Width           =   4935
    End
@@ -68,7 +68,7 @@ Begin VB.Form FormGETZAF
       Index           =   8
       Left            =   720
       TabIndex        =   60
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Bastin PROZA Phi-Rho-Z (EPQ-91)"
       Top             =   2400
       Width           =   4935
    End
@@ -78,7 +78,7 @@ Begin VB.Form FormGETZAF
       Index           =   7
       Left            =   720
       TabIndex        =   59
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Bastin (original) Phi-Rho-Z"
       Top             =   2160
       Width           =   4935
    End
@@ -88,7 +88,7 @@ Begin VB.Form FormGETZAF
       Index           =   6
       Left            =   720
       TabIndex        =   58
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Packwood Phi Phi-Rho-Z (EPQ-91)"
       Top             =   1800
       Width           =   4935
    End
@@ -98,7 +98,7 @@ Begin VB.Form FormGETZAF
       Index           =   5
       Left            =   720
       TabIndex        =   57
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Love-Scott II (Historical ZAF)"
       Top             =   1560
       Width           =   4935
    End
@@ -108,7 +108,7 @@ Begin VB.Form FormGETZAF
       Index           =   4
       Left            =   720
       TabIndex        =   56
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Love-Scott I (Historical ZAF)"
       Top             =   1320
       Width           =   4935
    End
@@ -118,7 +118,7 @@ Begin VB.Form FormGETZAF
       Index           =   3
       Left            =   720
       TabIndex        =   55
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Heinrich/Duncumb-Reed (Historical ZAF)"
       Top             =   1080
       Width           =   4935
    End
@@ -128,7 +128,7 @@ Begin VB.Form FormGETZAF
       Index           =   2
       Left            =   720
       TabIndex        =   54
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Philibert/Duncumb-Reed (Historical ZAF) (FRAME)"
       Top             =   840
       Width           =   4935
    End
@@ -138,7 +138,7 @@ Begin VB.Form FormGETZAF
       Index           =   1
       Left            =   720
       TabIndex        =   53
-      ToolTipText     =   "Select a ZAF or Phi-Rho-Z correction procedure"
+      ToolTipText     =   "Armstrong/Love-Scott Phi-Rho-Z (default)"
       Top             =   600
       Width           =   4935
    End

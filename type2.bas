@@ -69,7 +69,11 @@ Call IOWriteLog(msg$)
 msg$ = stpstring$(istp%)
 Call IOWriteLog(msg$)
 
+If ibsc% <> 5 Then
 msg$ = bscstring$(ibsc%)
+Else
+msg$ = bscstring$(ibsc%) & " (x=" & Format$(ZFractionBackscatterExponent!) & ")"
+End If
 Call IOWriteLog(msg$)
 
 msg$ = bksstring$(ibks%)
