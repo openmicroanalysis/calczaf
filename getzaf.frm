@@ -38,7 +38,7 @@ Begin VB.Form FormGETZAF
       Index           =   11
       Left            =   720
       TabIndex        =   78
-      ToolTipText     =   "Donovan and Moy (Armstrong/Love-Scott) BSC/BKS (modified PAP)"
+      ToolTipText     =   "Donovan and Moy (Armstrong/DAM backscatter) (modified PAP)"
       Top             =   3240
       Width           =   4935
    End
@@ -842,6 +842,7 @@ Begin VB.Form FormGETZAF
       Height          =   255
       Left            =   1440
       TabIndex        =   80
+      ToolTipText     =   "Z fraction exponent (Donovan et al., 2023). Enter zero for exponent based on electron beam energy."
       Top             =   3480
       Width           =   2895
    End

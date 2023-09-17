@@ -2488,7 +2488,7 @@ zafstring$(7) = "Bastin (original) (prZ)"
 zafstring$(8) = "Bastin PROZA Phi (prZ) (EPQ-91)"
 zafstring$(9) = "Pouchou and Pichoir-Full (PAP)"
 zafstring$(10) = "Pouchou and Pichoir-Simplified (XPP)"
-zafstring$(11) = "Donovan and Moy BSC/BKS (modified PAP)"
+zafstring$(11) = "Donovan and Moy BSC/BKS (prZ)"
 
 zafstring2$(0) = "Individual"
 zafstring2$(1) = "Armstrong prZ"
@@ -2501,7 +2501,7 @@ zafstring2$(7) = "Bastin prZ"
 zafstring2$(8) = "Bastin PROZA"
 zafstring2$(9) = "PAP Full"
 zafstring2$(10) = "PAP XPP"
-zafstring2$(11) = "DM BSC/BKS"
+zafstring2$(11) = "DAM BSC/BKS"
 
 ' Define ZAF selection strings
 mipstring$(1) = "Mean Ionization of Berger-Seltzer"
