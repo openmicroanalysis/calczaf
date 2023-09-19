@@ -48,8 +48,16 @@ Sub ConvertWtsToOxMol(sampleline As Integer, analysis As TypeAnalysis, sample() 
 
 On Error GoTo ConvertWtsToOxMolError
 
-Dim i As Integer
-Dim sum As Single, temp As Single
+Dim i As Integer, ip As Integer
+Dim sum As Single, temp As Single, oxygen_atomic_weight As Single
+
+' Determine if oxygen is one of the analyzed or specified elements
+ip% = IPOS2%(sample(1).LastChan%, ATOMIC_NUM_OXYGEN%, sample(1).AtomicNums%())
+If ip% <> 0 Then
+oxygen_atomic_weight! = sample(1).AtomicWts!(ip%)
+Else
+oxygen_atomic_weight! = AllAtomicWts!(ATOMIC_NUM_OXYGEN%)
+End If
 
 ' Calculate oxide weight percents
 Call ConvertWtsToOxide(sampleline%, analysis, sample())
@@ -59,7 +67,7 @@ If ierror Then Exit Sub
 sum! = 0#
 For i% = 1 To sample(1).LastChan%
 If sample(1).AtomicNums%(i%) <> ATOMIC_NUM_OXYGEN% Then
-temp! = sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).numoxd%(i%)
+temp! = sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + oxygen_atomic_weight! * sample(1).numoxd%(i%)
 If temp! > 0# Then
 sum! = sum! + analysis.OxPercents!(i%) / temp!
 End If
@@ -68,7 +76,7 @@ Next i%
 
 For i% = 1 To sample(1).LastChan%
 If sample(1).AtomicNums%(i%) <> ATOMIC_NUM_OXYGEN% Then
-temp! = sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).numoxd%(i%)
+temp! = sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + oxygen_atomic_weight! * sample(1).numoxd%(i%)
 If sum! <> 0# And temp! <> 0# Then
 analysis.OxMolPercents!(i%) = 100# * (analysis.OxPercents!(i%) / temp!) / sum!
 Else
@@ -92,13 +100,21 @@ Sub ConvertWtsToOxide(sampleline As Integer, analysis As TypeAnalysis, sample() 
 
 On Error GoTo ConvertWtsToOxideError
 
-Dim i As Integer
-Dim temp As Single
+Dim i As Integer, ip As Integer
+Dim temp As Single, oxygen_atomic_weight As Single
+
+' Determine if oxygen is one of the analyzed or specified elements
+ip% = IPOS2%(sample(1).LastChan%, ATOMIC_NUM_OXYGEN%, sample(1).AtomicNums%())
+If ip% <> 0 Then
+oxygen_atomic_weight! = sample(1).AtomicWts!(ip%)
+Else
+oxygen_atomic_weight! = AllAtomicWts!(ATOMIC_NUM_OXYGEN%)
+End If
 
 temp! = 0#
 For i% = 1 To sample(1).LastChan%
 analysis.OxPercents!(i%) = 0
-temp! = analysis.WtsData!(sampleline%, i%) * (sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + AllAtomicWts!(ATOMIC_NUM_OXYGEN%) * sample(1).numoxd%(i%))
+temp! = analysis.WtsData!(sampleline%, i%) * (sample(1).AtomicWts!(i%) * sample(1).numcat%(i%) + oxygen_atomic_weight! * sample(1).numoxd%(i%))
 analysis.OxPercents!(i%) = temp! / (sample(1).AtomicWts!(i%) * sample(1).numcat%(i%))
 Next i%
 
