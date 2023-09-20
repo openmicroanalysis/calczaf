@@ -780,7 +780,7 @@ End Type
 
 ' Sample arrays
 Type TypeSample
-    Number As Integer
+    number As Integer
     Set As Integer
     Type As Integer
     Name As String
@@ -3082,7 +3082,7 @@ Global DoNotMeasure2ndFaradayAbsorbedCurrentsFlag As Boolean
 
 Global UseEffectiveTakeOffAnglesFlag  As Boolean
 
-Global ZFractionBackscatterExponent As Single       ' for backscatter calculations (zero for variable exponent)
+Global ZFractionBackscatterExponent As Single       ' for Donovan and Moy backscatter calculations (zero for variable exponent)
 
 Global SecondaryDistanceMethodString(0 To 3) As String
 

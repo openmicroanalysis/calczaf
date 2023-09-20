@@ -3447,7 +3447,7 @@ MeasureAbsorbedFaradayCurrentOnlyOncePerSampleFlag = False
 DoNotMeasure2ndFaradayAbsorbedCurrentsFlag = False
 UseEffectiveTakeOffAnglesFlag = False
 
-ZFractionBackscatterExponent! = 0.7       ' if zero, then calculate variable exponent
+ZFractionBackscatterExponent! = 0.7       ' if zero, then calculate variable exponent for backscatter (Donovan and Moy backscatter)
 
 SecondaryDistanceMethodString$(0) = "Specified Distance"
 SecondaryDistanceMethodString$(1) = "Single Point and Angle"

@@ -2377,8 +2377,8 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
-' Check for Z fraction backscatter variable exponent
-If izaf% = MAXZAF% Then
+' Check for Z fraction backscatter variable exponent is zero
+If (izaf% = MAXZAF% Or ibsc% = 5) And ZFractionBackscatterExponent! = 0# Then
 msg$ = "BEXP: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then

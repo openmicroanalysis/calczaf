@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/19/23	Tweak code for DAM BSE model output.
+v. 13.5.5
+
 09/18/23	Modify User Specified code (CONVERT3.BAS) to handle when oxygen is an isotope for 
 		oxide and mol% calculations.
 
