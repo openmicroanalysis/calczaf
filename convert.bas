@@ -3296,9 +3296,9 @@ Dim exponent As Single
 
 ConvertCalculateZFractionExponentBSE! = 0.7         ' default to 0.7 (e.g., zero keV for unanalyzed elements)
 
-' Calculate Z Fraction exponent (need to fit Penepma BSE data for optimized exponent fit as a function of electron beam energy)
-If keV! > 0.1 And keV! < 30# Then
-exponent! = -0.001209 * keV! ^ 2 + 0.03015 * keV! + 0.5908
+' Calculate Z Fraction exponent (fit Penepma BSE data for optimized exponent fit as a function of electron beam energy by Moy)
+If keV! > 0.1 And keV! < 40# Then
+exponent! = -0.000307143 * keV! ^ 2 + 0.0196071 * keV! + 0.475
 ConvertCalculateZFractionExponentBSE! = exponent!
 End If
 
