@@ -2379,6 +2379,7 @@ End If
 
 ' Check for Z fraction backscatter variable exponent is zero
 If (izaf% = MAXZAF% Or ibsc% = 5) And ZFractionBackscatterExponent! = 0# Then
+If MiscIsDifferent3(sample(1).LastElm%, sample(1).KilovoltsArray!()) Or DebugMode Then
 msg$ = "BEXP: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
@@ -2397,6 +2398,7 @@ msg$ = msg$ & Format$(DASHED3$, a80$)   ' if quant disabled
 End If
 Next i%
 Call IOWriteLog(msg$)
+End If
 End If
 
 ' Output raw k-ratios (corrected for dead time, background and spectral interferences)
