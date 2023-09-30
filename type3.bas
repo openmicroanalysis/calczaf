@@ -1008,7 +1008,7 @@ If n% <> 1 Then
 Call IOWriteLog(vbNullString)
 End If
 
-msg$ = "TAKOFF"
+msg$ = "ETAKOF"
 For i% = ii% To jj%
 msg$ = msg$ & Format$(Format$(sample(1).EffectiveTakeOffs!(i%), f82$), a80$)
 Next i%

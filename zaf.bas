@@ -2581,7 +2581,7 @@ zaf.tak!(i%) = stdsample(1).TakeoffArray!(i%)       ' new for effective takeoff 
 Else
 zaf.tak!(i%) = stdsample(1).EffectiveTakeOffs!(i%)       ' new for effective takeoff angle testing
 End If
-tt! = stdsample(1).TakeoffArray!(i%) * PI! / 180#
+tt! = zaf.tak!(i%) * PI! / 180#
 zaf.m1!(i%) = 1# / Sin(tt!)
 
 ' Check voltage
@@ -3397,7 +3397,7 @@ zaf.tak!(i%) = sample(1).TakeoffArray!(i%)       ' new for effective takeoff ang
 Else
 zaf.tak!(i%) = sample(1).EffectiveTakeOffs!(i%)       ' new for effective takeoff angle testing
 End If
-tt! = sample(1).TakeoffArray!(i%) * 3.14159 / 180#
+tt! = zaf.tak!(i%) * PI! / 180#
 zaf.m1!(i%) = 1# / Sin(tt!)
 
 ' ZAFPtc geometry

@@ -1176,7 +1176,7 @@ Type TypeSample
     
     UnknownIsStandardNumber As Integer                ' assume unknown is a standard, 0 = not a standard, non-zero = standard number
     
-    EffectiveTakeOffs(1 To MAXCHAN%) As Single        ' efective take off angle for each spectrometer/crystal pair (from SCALERS.DAT)
+    EffectiveTakeOffs(1 To MAXCHAN%) As Single        ' effective take off angle for each spectrometer/crystal pair (from SCALERS.DAT lines 84 to 89)
 End Type
 
 Type TypeImage

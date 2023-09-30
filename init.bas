@@ -1244,8 +1244,8 @@ For i% = 1 To NumberOfTunableSpecs%
 Input #Temp1FileNumber%, ScalEffectiveTakeOffs!(j%, i%)
 If j% <= ScalNumberOfCrystals%(i%) Then
 If ScalEffectiveTakeOffs!(j%, i%) <= 0# Then ScalEffectiveTakeOffs!(j%, i%) = DefaultTakeOff!      ' for backward compatibility
-If ScalEffectiveTakeOffs!(j%, i%) < 30# Then GoTo InitScalersInvalidData
-If ScalEffectiveTakeOffs!(j%, i%) > 60# Then GoTo InitScalersInvalidData
+If ScalEffectiveTakeOffs!(j%, i%) < 20# Then GoTo InitScalersInvalidData
+If ScalEffectiveTakeOffs!(j%, i%) > 70# Then GoTo InitScalersInvalidData
 End If
 msg$ = msg$ & Format$(ScalEffectiveTakeOffs!(j%, i%), a80$)
 Next i%
