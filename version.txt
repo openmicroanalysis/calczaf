@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/02/23	Tweak secondary boundary fluorescence correction labels and captions in forms. Fix bug when
+		loading element from setup database because effective takeoff angles are not stored in setup 
+		databases.
+
 09/29/23	Fix bugs in effective takeoff angle code.  Make text control visible.
 v. 13.5.7
 

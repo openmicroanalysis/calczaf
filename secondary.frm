@@ -26,7 +26,7 @@ Begin VB.Form FormSECONDARY
       ForeColor       =   &H00FF0000&
       Height          =   1455
       Left            =   9600
-      TabIndex        =   46
+      TabIndex        =   45
       Top             =   720
       Visible         =   0   'False
       Width           =   9375
@@ -34,7 +34,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Update Position of Boundary Coordinate (and angle)"
          Height          =   735
          Left            =   240
-         TabIndex        =   49
+         TabIndex        =   48
          Top             =   480
          Width           =   2175
       End
@@ -42,7 +42,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Update Positions of Boundary Coordinate (first pair)"
          Height          =   735
          Left            =   2880
-         TabIndex        =   48
+         TabIndex        =   47
          Top             =   480
          Width           =   2175
       End
@@ -50,7 +50,7 @@ Begin VB.Form FormSECONDARY
          Caption         =   "Update Positions of Boundary Coordinate (second pair)"
          Height          =   735
          Left            =   5160
-         TabIndex        =   47
+         TabIndex        =   46
          Top             =   480
          Width           =   2175
       End
@@ -71,7 +71,7 @@ Begin VB.Form FormSECONDARY
       Left            =   7440
       ScaleHeight     =   675
       ScaleWidth      =   795
-      TabIndex        =   45
+      TabIndex        =   44
       Top             =   6000
       Visible         =   0   'False
       Width           =   855
@@ -83,7 +83,7 @@ Begin VB.Form FormSECONDARY
       Left            =   6000
       ScaleHeight     =   675
       ScaleWidth      =   795
-      TabIndex        =   44
+      TabIndex        =   43
       Top             =   6000
       Visible         =   0   'False
       Width           =   855
@@ -92,29 +92,9 @@ Begin VB.Form FormSECONDARY
       Caption         =   "Print Image"
       Height          =   375
       Left            =   4800
-      TabIndex        =   43
+      TabIndex        =   42
       Top             =   8400
       Width           =   2175
-   End
-   Begin VB.CommandButton CommandHelp 
-      BackColor       =   &H00FFC0C0&
-      Caption         =   "Help"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   9840
-      Style           =   1  'Graphical
-      TabIndex        =   42
-      ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
-      Top             =   120
-      Width           =   1455
    End
    Begin VB.CheckBox CheckUseSecondaryFluorescenceCorrection 
       Caption         =   "Perform Boundary Correction (invisible)"
@@ -169,7 +149,7 @@ Begin VB.Form FormSECONDARY
       Top             =   8760
    End
    Begin VB.Frame Frame4 
-      Caption         =   "Calculate Using K-Ratios From Previously Calculated PAR File Couple"
+      Caption         =   "Specify FANAL K-Ratios From Previously Calculated PAR File Couple"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -185,6 +165,26 @@ Begin VB.Form FormSECONDARY
       TabIndex        =   9
       Top             =   720
       Width           =   9255
+      Begin VB.CommandButton CommandHelp 
+         BackColor       =   &H00FFC0C0&
+         Caption         =   "Help"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   7440
+         Style           =   1  'Graphical
+         TabIndex        =   49
+         ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
+         Top             =   480
+         Width           =   1455
+      End
       Begin VB.CommandButton CommandBrowseForCouple 
          BackColor       =   &H0080FFFF&
          Caption         =   "Browse For SF Couple"
@@ -540,14 +540,14 @@ Begin VB.Form FormSECONDARY
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      Left            =   11640
+      Left            =   10320
       Style           =   1  'Graphical
       TabIndex        =   5
       Top             =   120
-      Width           =   1455
+      Width           =   1935
    End
    Begin VB.Frame Frame1 
-      Caption         =   "Perform Boundary Correction on Mat A"
+      Caption         =   "Perform Boundary Correction"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -601,10 +601,28 @@ Begin VB.Form FormSECONDARY
          Top             =   1920
          Width           =   3015
       End
+      Begin VB.Label Label3 
+         Alignment       =   2  'Center
+         Caption         =   "OR"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   1560
+         TabIndex        =   50
+         Top             =   3240
+         Width           =   615
+      End
       Begin VB.Label Label1 
          Alignment       =   2  'Center
-         Caption         =   "The composition of Material A is defined by the current intensities or k-ratios in the CalcZAF ""Calculate ZAF Corrections"" window"
-         Height          =   855
+         Caption         =   $"Secondary.frx":00DC
+         Height          =   975
          Left            =   480
          TabIndex        =   1
          Top             =   960
@@ -612,11 +630,11 @@ Begin VB.Form FormSECONDARY
       End
       Begin VB.Label Label13 
          Alignment       =   2  'Center
-         Caption         =   "The composition of Material A is defined by the CalcZAF input data file"
-         Height          =   495
+         Caption         =   "The composition of the beam incident material is defined by the CalcZAF input data file"
+         Height          =   735
          Left            =   480
          TabIndex        =   33
-         Top             =   4320
+         Top             =   4200
          Width           =   2775
       End
    End
@@ -666,7 +684,7 @@ Begin VB.Form FormSECONDARY
    End
    Begin VB.Label Label2 
       Alignment       =   2  'Center
-      Caption         =   $"Secondary.frx":00DC
+      Caption         =   $"Secondary.frx":016D
       Height          =   495
       Left            =   600
       TabIndex        =   2
@@ -744,7 +762,7 @@ End Sub
 
 Private Sub CommandHelp_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=58.msg223#msg223")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=58.msg214#msg214")
 If ierror Then Exit Sub
 End Sub
 

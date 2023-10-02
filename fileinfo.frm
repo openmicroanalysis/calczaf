@@ -5,7 +5,7 @@ Begin VB.Form FormFILEINFO
    ClientHeight    =   4665
    ClientLeft      =   2340
    ClientTop       =   1620
-   ClientWidth     =   8745
+   ClientWidth     =   9750
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -22,7 +22,7 @@ Begin VB.Form FormFILEINFO
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   4665
-   ScaleWidth      =   8745
+   ScaleWidth      =   9750
    Begin VB.CommandButton CommandAddCR 
       Caption         =   "Add <cr>"
       BeginProperty Font 
@@ -43,7 +43,7 @@ Begin VB.Form FormFILEINFO
    End
    Begin VB.TextBox TextCustom3 
       Height          =   285
-      Left            =   6360
+      Left            =   7320
       TabIndex        =   4
       ToolTipText     =   "User defined custom field #3"
       Top             =   2040
@@ -55,7 +55,7 @@ Begin VB.Form FormFILEINFO
       TabIndex        =   3
       ToolTipText     =   "User defined custom field #2"
       Top             =   2040
-      Width           =   1695
+      Width           =   2655
    End
    Begin VB.TextBox TextCustom1 
       Height          =   285
@@ -63,7 +63,7 @@ Begin VB.Form FormFILEINFO
       TabIndex        =   2
       ToolTipText     =   "User defined custom field #1"
       Top             =   1680
-      Width           =   5175
+      Width           =   7335
    End
    Begin VB.TextBox TextUser 
       Height          =   285
@@ -71,13 +71,13 @@ Begin VB.Form FormFILEINFO
       TabIndex        =   0
       ToolTipText     =   "The user name"
       Top             =   960
-      Width           =   5175
+      Width           =   6135
    End
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
-      Left            =   7560
+      Left            =   8520
       TabIndex        =   11
       TabStop         =   0   'False
       Top             =   1080
@@ -88,7 +88,7 @@ Begin VB.Form FormFILEINFO
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   7560
+      Left            =   8520
       Style           =   1  'Graphical
       TabIndex        =   10
       TabStop         =   0   'False
@@ -103,7 +103,7 @@ Begin VB.Form FormFILEINFO
       TabIndex        =   5
       ToolTipText     =   "Database file description"
       Top             =   2400
-      Width           =   6375
+      Width           =   7335
    End
    Begin VB.TextBox TextTitle 
       Height          =   285
@@ -111,12 +111,12 @@ Begin VB.Form FormFILEINFO
       TabIndex        =   1
       ToolTipText     =   "The title of the probe database run"
       Top             =   1320
-      Width           =   5175
+      Width           =   6135
    End
    Begin VB.Label LabelDateModified 
       BorderStyle     =   1  'Fixed Single
       Height          =   255
-      Left            =   6360
+      Left            =   7320
       TabIndex        =   25
       Top             =   3960
       Width           =   2295
@@ -140,11 +140,11 @@ Begin VB.Form FormFILEINFO
    Begin VB.Label LabelType 
       BorderStyle     =   1  'Fixed Single
       Height          =   255
-      Left            =   5760
+      Left            =   6360
       TabIndex        =   22
       ToolTipText     =   "The type of the database (STANDARD, PROBE, SETUP, USER, POSITION and XRAY)"
       Top             =   480
-      Width           =   1695
+      Width           =   1935
    End
    Begin VB.Label LabelVersion 
       BorderStyle     =   1  'Fixed Single
@@ -153,7 +153,7 @@ Begin VB.Form FormFILEINFO
       TabIndex        =   21
       ToolTipText     =   "The version number of the database when it was created"
       Top             =   480
-      Width           =   1695
+      Width           =   1935
    End
    Begin VB.Label LabelFileName 
       BorderStyle     =   1  'Fixed Single
@@ -162,13 +162,13 @@ Begin VB.Form FormFILEINFO
       TabIndex        =   20
       ToolTipText     =   "The database path and filename "
       Top             =   120
-      Width           =   6375
+      Width           =   7335
    End
    Begin VB.Label LabelCustom3 
       Appearance      =   0  'Flat
       ForeColor       =   &H00FF0000&
       Height          =   255
-      Left            =   4200
+      Left            =   5160
       TabIndex        =   19
       Top             =   2040
       Width           =   2055
@@ -215,7 +215,7 @@ Begin VB.Form FormFILEINFO
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   4920
+      Left            =   5880
       TabIndex        =   15
       Top             =   3960
       Width           =   1335
@@ -293,7 +293,7 @@ Begin VB.Form FormFILEINFO
       Caption         =   "Type"
       ForeColor       =   &H80000008&
       Height          =   255
-      Left            =   5040
+      Left            =   5520
       TabIndex        =   7
       Top             =   480
       Width           =   735
