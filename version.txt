@@ -2,9 +2,22 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/05/23	Modify FormGetElm to add extra column to element grid to display more information (Boroughs).
+
+		If running multiple sample setups and using "Run Multiple Setuips One at a Time", warn user if 
+		selected sample setups are not using the same number of sample setups (Boroughs).
+
+10/03/23	Add spectro # and Bragg crystals to legend when duplicate elements are present to
+		standard and unknown plot output.
+		
+		Add code to check for temporarily disabled EDS interface for image interfaces using EDS interface,
+		e.g., JEOL EDS, JEOL MEC, Bruker or Thermo (von der Handt).
+
 10/02/23	Tweak secondary boundary fluorescence correction labels and captions in forms. Fix bug when
 		loading element from setup database because effective takeoff angles are not stored in setup 
 		databases.
+		
+		Add new wavescan report output from Analyze! Report button (von der Handt).
 
 09/29/23	Fix bugs in effective takeoff angle code.  Make text control visible.
 v. 13.5.7
