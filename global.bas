@@ -3087,3 +3087,5 @@ Global ZFractionBackscatterExponent As Single       ' for Donovan and Moy backsc
 Global SecondaryDistanceMethodString(0 To 3) As String
 
 Global JEOLFlipCrystalMilliSecDelayAfter As Long
+
+Global EDSEffectiveTakeOff As Single

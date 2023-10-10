@@ -2,9 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/09/23	Add (existing) UseEffectiveTakeOffAnglesFlag and (new) EDSEffectiveTakeoff parameters to 
+		probewin.ini file.
+v. 13.5.8
+
 10/05/23	Modify FormGetElm to add extra column to element grid to display more information (Boroughs).
 
-		If running multiple sample setups and using "Run Multiple Setuips One at a Time", warn user if 
+		If running multiple sample setups and using "Run Multiple Setups One at a Time", warn user if 
 		selected sample setups are not using the same number of sample setups (Boroughs).
 
 10/03/23	Add spectro # and Bragg crystals to legend when duplicate elements are present to
@@ -41,7 +45,7 @@ v. 13.5.5
 09/16/23	Modify tooltip help for ZAF GUI.
 
 09/15/23	Modify Donovan and Moy defaults to use Armstrong/Love-Scott absorption options. Tweak MAN code
-v. 13.5.4	to handle click events better and add new Confrim All button.
+v. 13.5.4	to handle click events better and add new Confirm All button.
 
 09/14/23	Fix MAN bug when updating element selected or saving assignments (use direct call to 
 		MANSelectStandardList) (Allaz). Fix bug when entering specified element in Elements/Cations (Allaz)
@@ -54,7 +58,7 @@ v. 13.5.3
 
 09/06/23	Fix bug if no standards loaded in run and closing file.
 
-09/04/23	Update Nachlas cell # in About dialog. Fix problem when oxygen is analyzed, then diabled, then 
+09/04/23	Update Nachlas cell # in About dialog. Fix problem when oxygen is analyzed, then disabled, then 
 v. 13.5.2	specified oxygen is added for formula calculations (Nachlas).
 
 		Modify Calculation Options dialog to fit on screen better (Nachlas).
@@ -167,7 +171,7 @@ v. 13.2.9
 03/31/23	Modify JEOL MEC EDS interface to close/re-open interface if closed because user switched to the 
 		JEOL Imaging window.
 
-03/29/23	Fix sulfer-oxygen bug for Fanal code.
+03/29/23	Fix sulfur-oxygen bug for Fanal code.
 v. 13.2.8
 
 03/28/23	Modify JEOL EDS MEC interface to close then re-start EDS interface if error in starting spectrum.

@@ -4314,6 +4314,34 @@ JEOLFlipCrystalMilliSecDelayAfter& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+lpAppName$ = "Hardware"
+lpKeyName$ = "UseEffectiveTakeOffAnglesFlag"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+UseEffectiveTakeOffAnglesFlag = True
+Else
+UseEffectiveTakeOffAnglesFlag = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Hardware"
+lpKeyName$ = "EDSEffectiveTakeOff"
+lpDefault$ = Format$(DefaultTakeOff!)
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then EDSEffectiveTakeOff! = Val(Left$(lpReturnString$, valid&))
+If EDSEffectiveTakeOff! < MINTAKEOFF! Or EDSEffectiveTakeOff! > MAXTAKEOFF! Then
+msg$ = "EDSEffectiveTakeOff keyword value out of range (must be between " & Format$(MINTAKEOFF!) & " and " & Format$(MAXTAKEOFF!) & " degrees) in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+End
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
+
+
 Exit Sub
 
 ' Errors
