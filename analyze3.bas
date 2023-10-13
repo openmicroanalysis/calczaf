@@ -1834,10 +1834,10 @@ If UseDetailedFlag And UseMANParametersFlag Then
 For j% = 1 To MAXCOEFF%
 msg$ = "MAN" & Format$(j%) & ": "
 For i% = ii% To jj%
-If i% <= sample(1).LastElm% Then
+If i% <= sample(1).LastElm% And sample(1).BackgroundTypes%(i%) = 1 Then
 msg$ = msg$ & MiscAutoFormat$(analysis.MANFitCoefficients!(j%, i%))
 Else
-msg$ = msg$ & Format$(vbNullString, a80$)
+msg$ = msg$ & Format$(Space(8), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
@@ -1848,25 +1848,29 @@ Call MathArrayAverage(average, RowUnkMANAbsCors!(), sample(1).Datarows%, sample(
 If ierror Then Exit Sub
 msg$ = "ABS%: "
 For i% = ii% To jj%
-If i% <= sample(1).LastElm% Then
+If i% <= sample(1).LastElm% And sample(1).BackgroundTypes%(i%) = 1 Then
 msg$ = msg$ & Format$(Format$(average.averags!(i%), f82$), a80$)
 Else
-msg$ = msg$ & Format$(vbNullString, a80$)
+msg$ = msg$ & Format$(Space(8), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
 End If
 
-' Type out Z fraction exponent for continuum if using variable exponent (ZFractionZbarCalculationsExponent! = 0#)
-If UseZFractionZbarCalculationsFlag And ZFractionZbarCalculationsExponent! = 0# Then
+' Type out Z fraction exponent for continuum whether using constant or variable exponent (ZFractionZbarCalculationsExponent! = 0#)
+If UseZFractionZbarCalculationsFlag Then
 msg$ = "ZEXP: "
 For i% = ii% To jj%
-If i% <= sample(1).LastElm% Then
+If i% <= sample(1).LastElm% And sample(1).BackgroundTypes%(i%) = 1 Then
 keV! = sample(1).LineEnergy!(i%) / EVPERKEV#
+If ZFractionZbarCalculationsExponent! = 0# Then
 texponent! = ConvertCalculateZFractionExponent(keV!)
 msg$ = msg$ & Format$(Format$(texponent!, f82$), a80$)
 Else
-msg$ = msg$ & Format$(vbNullString, a80$)
+msg$ = msg$ & Format$(Format$(ZFractionZbarCalculationsExponent!, f82$), a80$)
+End If
+Else
+msg$ = msg$ & Format$(Space(8), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)

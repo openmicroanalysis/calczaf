@@ -2127,6 +2127,19 @@ VolatileCountIntervals% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+' Get secret effective take off angle editing flag
+lpAppName$ = "Software"
+lpKeyName$ = "AllowETOAEditing"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+AllowETOAEditing = True
+Else
+AllowETOAEditing = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors

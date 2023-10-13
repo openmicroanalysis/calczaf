@@ -776,6 +776,8 @@ Type TypeAnalysis
     FerricFerrousFeO As Single           ' total FeO
     FerricFerrousFe2O3 As Single         ' total Fe2O3
     FerricOxygen As Single               ' oxygen from Fe2O3 (not including specified excess oxygen)
+    
+    MANZbars() As Single                 ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)      ' v. 13.5.9
 End Type
 
 ' Sample arrays
@@ -3089,3 +3091,5 @@ Global SecondaryDistanceMethodString(0 To 3) As String
 Global JEOLFlipCrystalMilliSecDelayAfter As Long
 
 Global EDSEffectiveTakeOff As Single
+
+Global AllowETOAEditing As Boolean

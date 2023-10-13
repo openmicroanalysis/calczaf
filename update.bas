@@ -185,6 +185,10 @@ ierror = True
 Exit Sub
 End If
 
+' Load all standard percents (even if not assigned to any element)
+Call UpdateGetStdPercents(analysis, sample(), stdsample())
+If ierror Then Exit Sub
+
 ' Correct the assigned standard count drift arrays for MAN backgrounds
 Call UpdateStdMANBackgrounds(analysis, sample())
 If ierror Then Exit Sub
@@ -200,8 +204,8 @@ Call UpdateStdInterferences(analysis, sample())
 If ierror Then Exit Sub
 
 ' Load all standard percents (even if not assigned to any element)
-Call UpdateGetStdPercents(analysis, sample(), stdsample())
-If ierror Then Exit Sub
+'Call UpdateGetStdPercents(analysis, sample(), stdsample())
+'If ierror Then Exit Sub
 
 ' Re-set update flags
 AllAnalysisUpdateNeeded = False
@@ -2087,7 +2091,8 @@ If ip% = 0 Then GoTo UpdateFitMANBadStandard
 
 ' Load z-bar and counts
 npts% = npts% + 1
-txdata!(npts%) = analysis.StdZbars!(ip%)
+'txdata!(npts%) = analysis.StdZbars!(ip%)
+txdata!(npts%) = analysis.MANZbars!(ip%, chan%)             ' v. 13.5.9
 tydata!(npts%) = analysis.MANAssignsCounts!(i%, chan%)
 
 ' Load matrix correction from standards (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
@@ -2590,13 +2595,14 @@ Exit Sub
 End Sub
 
 Sub UpdateGetStdPercents(analysis As TypeAnalysis, sample() As TypeSample, stdsample() As TypeSample)
-' Load the standard percents for all standards in run
+' Load the standard percents for all standards in run and also calculate the MAN Zbars for each standard for each emission line
 
 ierror = False
 On Error GoTo UpdateGetStdPercentsError
 
 Dim i As Integer, j As Integer
 Dim ip As Integer
+Dim energy As Single, MANZbar As Single
 
 ' Loop on each standard
 For j% = 1 To NumberofStandards%
@@ -2618,6 +2624,26 @@ analysis.StdAtomicWts!(j%, i%) = stdsample(1).AtomicWts!(ip%)
 End If
 
 Next i%
+
+' Calculate MAN Zbars for each emission line for each standard composition
+For i% = 1 To sample(1).LastElm%
+MANZbar! = 0#                                  ' MAN Zbar is different for each emission line for each standard
+energy! = sample(1).LineEnergy!(i%)            ' load emission line energy in eV for variable zbar calculation
+
+' Calculate mass fraction Zbar
+If Not UseZFractionZbarCalculationsFlag Then
+MANZbar! = ConvertWeightsToZBar(Int(0), stdsample(1).LastChan%, stdsample(1).ElmPercents!(), stdsample(1).AtomicNums%(), stdsample(1).AtomicWts!(), energy!, ZFractionZbarCalculationsExponent!)
+If ierror Then Exit Sub
+
+' Calculate Z fraction Zbar (if Z fraction exponent is zero, zbar is based on emission line energy in eV)
+Else
+MANZbar! = ConvertWeightsToZBar(Int(1), stdsample(1).LastChan%, stdsample(1).ElmPercents!(), stdsample(1).AtomicNums%(), stdsample(1).AtomicWts!(), energy!, ZFractionZbarCalculationsExponent!)
+If ierror Then Exit Sub
+End If
+
+analysis.MANZbars!(j%, i%) = MANZbar!
+Next i%
+
 Next j%
 
 Exit Sub

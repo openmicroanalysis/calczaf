@@ -694,6 +694,8 @@ ReDim analysis.StdPercents(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdAtomicCharges(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdAtomicWts(1 To MAXSTD%, 1 To MAXCHAN%) As Single
 
+ReDim analysis.MANZbars(1 To MAXSTD%, 1 To MAXCHAN%) As Single              ' 13.5.9
+
 ReDim analysis.UnkZAFCors(1 To MAXZAFCOR%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdAssignsZAFCors(1 To MAXZAFCOR%, 1 To MAXCHAN%) As Single
 

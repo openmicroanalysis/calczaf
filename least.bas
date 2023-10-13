@@ -561,14 +561,14 @@ Exit Sub
 
 End Sub
 
-Sub LeastSplineInterpolate(npts%, axdata() As Single, aydata() As Single, ycoeff() As Double, X As Single, Y As Single)
+Sub LeastSplineInterpolate(npts%, axdata() As Single, aydata() As Single, ycoeff() As Double, x As Single, y As Single)
 ' Return the y-value for the passed x value
 
 ierror = False
 On Error GoTo LeastSplineInterpolateError
 
 ' Return the interpolated value
-Call SplineInterpolate(axdata!(), aydata!(), ycoeff#(), CLng(npts%), X!, Y!)
+Call SplineInterpolate(axdata!(), aydata!(), ycoeff#(), CLng(npts%), x!, y!)
 If ierror Then Exit Sub
 
 Exit Sub
@@ -946,7 +946,7 @@ Exit Sub
 
 End Sub
 
-Sub LeastGauss(kmax As Integer, X() As Double, Y() As Double, a() As Double)
+Sub LeastGauss(kmax As Integer, x() As Double, y() As Double, a() As Double)
 ' This routine solves a set of kmax simultaneous algebraic equations of the form A*x = y.
 ' The method used is gaussian elimination with back row substitution.  A full search for
 ' pivot elements is done and row and column interchange is done.
@@ -968,7 +968,7 @@ ReDim c(1 To MAXCOEFF9%) As Double
 
 ' Zero the returned coefficients array
 For i% = 1 To MAXCOEFF9%
-X#(i%) = 0#
+x#(i%) = 0#
 Next i%
 
 ' Variable "ktemp%(i%)" keeps track of column interchanges
@@ -1002,9 +1002,9 @@ a#(i%, ii%) = a#(ipiv%, ii%)
 a#(ipiv%, ii%) = temp#
 Next ii%
 
-temp# = Y#(i%)
-Y#(i%) = Y#(ipiv%)
-Y#(ipiv%) = temp#
+temp# = y#(i%)
+y#(i%) = y#(ipiv%)
+y#(ipiv%) = temp#
 End If
 
 If jpiv% <> i% Then
@@ -1024,7 +1024,7 @@ For ii% = i% + 1 To kmax%
 'If Abs(a#(i%, i%)) < 1E-100 Then GoTo LeastGaussSingularMatrix
 If Abs(a#(i%, i%)) < TOOSMALL# Then GoTo LeastGaussSingularMatrix
 fac# = a#(ii%, i%) / a#(i%, i%)
-Y#(ii%) = Y#(ii%) - fac# * Y#(i%)
+y#(ii%) = y#(ii%) - fac# * y#(i%)
 a#(ii%, i%) = 0#
 
 For jj% = i% + 1 To kmax%
@@ -1039,12 +1039,12 @@ Next ii%
 ' Check for bad matrix
 'If Abs(a#(i%, i%)) < 1E-100 Then GoTo LeastGaussSingularMatrix
 If Abs(a#(i%, i%)) < TOOSMALL# Then GoTo LeastGaussSingularMatrix
-Y#(i%) = Y#(i%) / a#(i%, i%)
+y#(i%) = y#(i%) / a#(i%, i%)
 a#(i%, i%) = 1#
 Next i%
 
 ' Do the back substitution
-c#(kmax%) = Y#(kmax%)
+c#(kmax%) = y#(kmax%)
 For i% = 1 To kmax% - 1
 j% = kmax% - i%
 temp# = 0#
@@ -1053,13 +1053,13 @@ For ii% = j% + 1 To kmax%
 temp# = temp# + a#(j%, ii%) * c#(ii%)
 Next ii%
 
-c#(j%) = Y#(j%) - temp#
+c#(j%) = y#(j%) - temp#
 Next i%
 
 ' Put everything back in the correct order
 For i% = 1 To kmax%
 ii% = ktemp%(i%)
-X#(ii%) = c#(i%)
+x#(ii%) = c#(i%)
 Next i%
 
 Exit Sub
