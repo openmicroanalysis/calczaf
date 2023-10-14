@@ -709,7 +709,7 @@ ReDim analysis.MANAssignsBeamCurrents(1 To MAXMAN%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdAssignsIntfCounts(1 To MAXINTF%, 1 To MAXCHAN%) As Single
 ReDim analysis.StdAssignsIntfRows(1 To MAXINTF%, 1 To MAXCHAN%) As Integer
 
-' Initialize Standard arrays
+' Initialize Standard arrays (not really necessry since some arrays are re dimensioned above)
 For i% = 1 To MAXCHAN%
 analysis.StdAssignsPercents!(i%) = 0#
 analysis.StdAssignsKfactors!(i%) = 0#
@@ -721,10 +721,16 @@ analysis.StdAssignsActualOvervoltages(i%) = 0#
 
 analysis.UnkContinuumCorrections!(i%) = 0#
 
+analysis.MANStdDevs!(i%) = 0#
+
 For j% = 1 To MAXSTD%
-analysis.StdPercents!(j%, i%) = 0#
+analysis.StdBetas!(j%, i%) = 1#
 analysis.StdContinuumCorrections!(j%, i%) = 0#
 analysis.StdMACs!(j%, i%) = 0#
+analysis.StdPercents!(j%, i%) = 0#
+analysis.StdAtomicCharges!(j%, i%) = 0#
+analysis.StdAtomicWts!(j%, i%) = 0#
+analysis.MANZbars!(j%, i%) = 0#
 
 For k% = 1 To MAXZAFCOR%
 analysis.StdZAFCors!(k%, j%, i%) = 1#

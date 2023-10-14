@@ -3444,8 +3444,8 @@ UserSpecifiedOutputOxygenFromSulfurFlag = False
 UserSpecifiedOutputSulfurCorrectedOxygenFlag = False
 
 MeasureAbsorbedFaradayCurrentOnlyOncePerSampleFlag = False
-DoNotMeasure2ndFaradayAbsorbedCurrentsFlag = False
-'UseEffectiveTakeOffAnglesFlag = False      ' set in probewin.ini file
+'DoNotMeasure2ndFaradayAbsorbedCurrentsFlag = False         ' set in Probewin.ini file
+'UseEffectiveTakeOffAnglesFlag = False                      ' set in probewin.ini file
 
 ZFractionBackscatterExponent! = 0.7       ' if zero, then calculate variable exponent for backscatter (Donovan and Moy backscatter)
 

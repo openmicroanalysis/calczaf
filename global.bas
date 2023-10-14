@@ -778,6 +778,7 @@ Type TypeAnalysis
     FerricOxygen As Single               ' oxygen from Fe2O3 (not including specified excess oxygen)
     
     MANZbars() As Single                 ' allocated in InitStandards (1 To MAXSTD%, 1 To MAXCHAN%)      ' v. 13.5.9
+    MANStdDevs(1 To MAXCHAN%) As Single
 End Type
 
 ' Sample arrays

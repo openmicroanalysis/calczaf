@@ -2073,6 +2073,7 @@ On Error GoTo UpdateFitMANError
 Dim npts As Integer, i As Integer
 Dim ip As Integer, row As Integer
 Dim norder As Integer
+Dim stddev As Single
 
 Dim continuum_correction(1 To MAXMAN%) As Single   ' continuum correction for MAN standards for a single channel
 
@@ -2091,8 +2092,7 @@ If ip% = 0 Then GoTo UpdateFitMANBadStandard
 
 ' Load z-bar and counts
 npts% = npts% + 1
-'txdata!(npts%) = analysis.StdZbars!(ip%)
-txdata!(npts%) = analysis.MANZbars!(ip%, chan%)             ' v. 13.5.9
+txdata!(npts%) = analysis.MANZbars!(ip%, chan%)             ' v. 13.5.9 loads separate zbars for each standard for each emission line (in case using Z fraction Z bars)
 tydata!(npts%) = analysis.MANAssignsCounts!(i%, chan%)
 
 ' Load matrix correction from standards (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
@@ -2171,9 +2171,15 @@ analysis.MANFitCoefficients!(1, chan%) = acoeff!(1)
 analysis.MANFitCoefficients!(2, chan%) = acoeff!(2)
 analysis.MANFitCoefficients!(3, chan%) = acoeff!(3)
 
+' Calculate % relative deviation
+Call LeastDeviation(Int(1), stddev!, npts%, txdata!(), tydata!(), acoeff!())
+If ierror Then Exit Sub
+
+analysis.MANStdDevs!(chan%) = stddev!
+
 If DebugMode Then
-msg$ = "Coeffs: "
-msg$ = msg$ & MiscAutoFormat$(acoeff!(1)) & MiscAutoFormat$(acoeff!(2)) & MiscAutoFormat$(acoeff!(3))
+msg$ = "Coeffs and std dev %: "
+msg$ = msg$ & MiscAutoFormat$(acoeff!(1)) & ", " & MiscAutoFormat$(acoeff!(2)) & ", " & MiscAutoFormat$(acoeff!(3)) & ": " & MiscAutoFormat$(stddev!)
 Call IOWriteLog(msg$)
 End If
 
@@ -2627,8 +2633,8 @@ Next i%
 
 ' Calculate MAN Zbars for each emission line for each standard composition
 For i% = 1 To sample(1).LastElm%
-MANZbar! = 0#                                  ' MAN Zbar is different for each emission line for each standard
-energy! = sample(1).LineEnergy!(i%)            ' load emission line energy in eV for variable zbar calculation
+MANZbar! = 0#                                  ' MAN (Z fraction variable exponent) Zbar is different for each emission line for each standard
+energy! = sample(1).LineEnergy!(i%)            ' load emission line energy in eV for variable exponent zbar calculation
 
 ' Calculate mass fraction Zbar
 If Not UseZFractionZbarCalculationsFlag Then

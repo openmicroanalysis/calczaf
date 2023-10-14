@@ -1827,7 +1827,7 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
-' Type out MAN absorption correction
+' Type out MAN absorption correction and other parameters
 If sample(1).MANBgdFlag Then
 If UseDetailedFlag And UseMANParametersFlag Then
 
@@ -1842,6 +1842,16 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 Next j%
+
+msg$ = "STDV: "
+For i% = ii% To jj%
+If i% <= sample(1).LastElm% And sample(1).BackgroundTypes%(i%) = 1 Then
+msg$ = msg$ & Format$(Format$(analysis.MANStdDevs!(i%), f82$), a80$)
+Else
+msg$ = msg$ & Format$(Space(8), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
 
 If UseMANAbsFlag Then
 Call MathArrayAverage(average, RowUnkMANAbsCors!(), sample(1).Datarows%, sample(1).LastElm%, sample())
