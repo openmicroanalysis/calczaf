@@ -1843,7 +1843,7 @@ Next i%
 Call IOWriteLog(msg$)
 Next j%
 
-msg$ = "STDV: "
+msg$ = "REDV: "
 For i% = ii% To jj%
 If i% <= sample(1).LastElm% And sample(1).BackgroundTypes%(i%) = 1 Then
 msg$ = msg$ & Format$(Format$(analysis.MANStdDevs!(i%), f82$), a80$)
