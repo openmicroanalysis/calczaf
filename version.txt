@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/16/23	Fix minor bug in CalcZAF (remove unnecessary call to ZAFSetZAF) when calculating intensities
+		from concentrations (Carpenter). 
+
 10/14/23	Fix FormPERIODIC load event issue (Boroughs). Tweak MAN parameters output.
 
 10/13/23	Add output of MAN STD DEV% fit to log window output and also to Report format (Locock). Call calculate

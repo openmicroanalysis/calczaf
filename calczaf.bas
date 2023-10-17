@@ -146,21 +146,12 @@ CalcZAFOldSample(1).GoodDataRows% = 1
 CalcZAFOldSample(1).LineStatus(1) = True      ' force status flag always true (good data point)
 CalcZAFOldSample(1).AtomicPercentFlag% = True
 
-' CALCZAF Calculate intensity from weight
+' CALCZAF Calculate intensities from concentrations!!!!
 If CalcZAFMode% = 0 Then
 
 ' Reload the element arrays
 Call ElementGetData(CalcZAFOldSample())
 If ierror Then Exit Sub
-
-' Initialize calculations (needed for ZAFPTC and coating calculations) (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
-If CorrectionFlag% <> MAXCORRECTION% Then
-Call ZAFSetZAF(CalcZAFOldSample())
-If ierror Then Exit Sub
-Else
-'Call ZAFSetZAF3(CalcZAFOldSample())
-'If ierror Then Exit Sub
-End If
 
 ' Force standard assignment for intensity calculation
 For i% = 1 To CalcZAFOldSample(1).LastElm%
@@ -197,7 +188,7 @@ Call AFactorTypeStandard(CalcZAFAnalysis, CalcZAFOldSample())
 If ierror Then Exit Sub
 End If
 
-' CALCZAF Calculate weight from intensity
+' CALCZAF Calculate concentrations from intensities!!!!
 Else
 AllAFactorUpdateNeeded = True   ' indicate alpha-factor update
 CalcZAFOldSample(1).Type% = 2   ' assume unknown type for all samples
