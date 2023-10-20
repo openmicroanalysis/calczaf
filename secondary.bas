@@ -2,6 +2,10 @@ Attribute VB_Name = "CodeSECONDARY"
 ' (c) Copyright 1995-2023 by John J. Donovan
 Option Explicit
 
+' Browse image file
+Global BoundaryImageFileName As String          ' define as global for code in SecondaryAllLoadImage
+Dim BoundaryImageNumber As Integer
+
 ' Horizontal filed width for non-graphical methods (in microns)
 Dim ImageHFW As Single
 
@@ -32,10 +36,6 @@ Dim BoundaryKratiosDATFile As String
 Dim BoundaryKratiosDATFileLine1 As String    ' characteristic line
 Dim BoundaryKratiosDATFileLine2 As String    ' electron energy
 Dim BoundaryKratiosDATFileLine3 As String    ' column labels (modified k-ratios.dat file from modified Fanal.exe)
-
-' Browse image file
-Dim BoundaryImageFileName As String
-Dim BoundaryImageNumber As Integer
 
 ' Sample conditions
 Dim Boundary_keV As Single, Boundary_mag As Single, Boundary_scanrota As Single

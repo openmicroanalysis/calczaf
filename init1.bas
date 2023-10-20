@@ -4353,6 +4353,23 @@ End
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+lpAppName$ = "Hardware"
+lpKeyName$ = "EDSOrientation"
+If InterfaceType% = 5 Then
+lpDefault$ = Format$(180)       ' Cameca
+Else
+lpDefault$ = Format$(195)       ' JEOL???
+End If
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then EDSOrientation! = Val(Left$(lpReturnString$, valid&))
+If EDSOrientation! < 0 Or EDSOrientation! > 359.9 Then
+msg$ = "EDS Orientation keyword value out of range (must be between " & Format$(0) & " and " & Format$(359.9) & " degrees) in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+End
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 
 Exit Sub

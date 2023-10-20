@@ -3094,3 +3094,5 @@ Global JEOLFlipCrystalMilliSecDelayAfter As Long
 Global EDSEffectiveTakeOff As Single
 
 Global AllowETOAEditing As Boolean
+
+Global EDSOrientation As Single

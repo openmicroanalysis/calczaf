@@ -292,7 +292,7 @@ Sub UpdateGetStandards(sample() As TypeSample)
 ierror = False
 On Error GoTo UpdateGetStandardsError
 
-Dim i As Integer, j As Integer, k As Integer
+Dim i As Integer, j As Integer, k As Integer, ipp As Integer
 Dim samplerow As Integer, ip As Integer, chan As Integer
 Dim jmax As Integer, kmax As Integer
 
@@ -481,12 +481,6 @@ If sample(1).BraggOrders%(i%) <> UpdateTmpSample(1).BraggOrders%(ip%) Then GoTo 
 ' Check for matching integrated intensity flag
 If sample(1).IntegratedIntensitiesUseIntegratedFlags%(i%) <> UpdateTmpSample(1).IntegratedIntensitiesUseIntegratedFlags%(ip%) Then GoTo 7500
 
-' Check for disabled acquisition in standard
-If UpdateTmpSample(1).DisableAcqFlag%(ip%) = 1 Then GoTo 7500
-
-' Check for disabled quantification in standard (do not check standard flags)
-'If UpdateTmpSample(1).DisableQuantFlag%(ip%) = 1 Then GoTo 7500
-
 ' Check for same peak position
 If AnalysisCheckForSamePeakPositions Then
 If Not MiscDifferenceIsSmall(sample(1).OnPeaks!(i%), UpdateTmpSample(1).OnPeaks!(ip%), 0.00005) Then GoTo 7500
@@ -500,6 +494,23 @@ If Not MiscDifferenceIsSmall(sample(1).Gains!(i%), UpdateTmpSample(1).Gains!(ip%
 If Not MiscDifferenceIsSmall(sample(1).Biases!(i%), UpdateTmpSample(1).Biases!(ip%), 0.005) Then GoTo 7500
 If sample(1).InteDiffModes%(i%) <> UpdateTmpSample(1).InteDiffModes%(ip%) Then GoTo 7500
 End If
+
+' If aggregate mode check that disable acq and disable quant flags on primary standards are the same as the sample (new check suggested by Nachlas)
+If UseAggregateIntensitiesFlag Then
+For chan% = 1 To sample(1).LastElm%
+ipp% = IPOS5(Int(0), chan%, sample(), UpdateTmpSample())
+If ipp% <> 0 Then
+If sample(1).DisableAcqFlag(chan%) <> UpdateTmpSample(1).DisableAcqFlag(ipp%) Then GoTo UpdateGetStandardsAggregateDANotMatched
+If sample(1).DisableQuantFlag(chan%) <> UpdateTmpSample(1).DisableQuantFlag(ipp%) Then GoTo UpdateGetStandardsAggregateDQNotMatched
+End If
+Next chan%
+End If
+
+' Check for disabled acquisition in standard
+If UpdateTmpSample(1).DisableAcqFlag%(ip%) = 1 Then GoTo 7500
+
+' Check for disabled quantification in standard (do not check disable quant flags in standard samples for analyzing unknowns!)
+'If UpdateTmpSample(1).DisableQuantFlag%(ip%) = 1 Then GoTo 7500
 
 ' Matching conditions, now increment set counter
 If StdAssignsSets%(i%) + 1 > MAXSET% Then GoTo UpdateGetStandardsTooManyStdSets
@@ -557,12 +568,6 @@ If sample(1).BraggOrders%(i%) <> UpdateTmpSample(1).BraggOrders%(ip%) Then GoTo 
 ' Check for matching integrated intensity flag
 If sample(1).IntegratedIntensitiesUseIntegratedFlags%(i%) <> UpdateTmpSample(1).IntegratedIntensitiesUseIntegratedFlags%(ip%) Then GoTo 7600
 
-' Check for disabled acquisition in standard
-If UpdateTmpSample(1).DisableAcqFlag%(ip%) = 1 Then GoTo 7600
-
-' Check for disabled quant in standard (do not check standard flags)
-'If UpdateTmpSample(1).DisableQuantFlag%(ip%) = 1 Then GoTo 7600
-
 ' Check for same peak position
 If AnalysisCheckForSamePeakPositions Then
 If Not MiscDifferenceIsSmall(sample(1).OnPeaks!(i%), UpdateTmpSample(1).OnPeaks!(ip%), 0.00005) Then GoTo 7600
@@ -576,6 +581,23 @@ If Not MiscDifferenceIsSmall(sample(1).Gains!(i%), UpdateTmpSample(1).Gains!(ip%
 If Not MiscDifferenceIsSmall(sample(1).Biases!(i%), UpdateTmpSample(1).Biases!(ip%), 0.005) Then GoTo 7600
 If sample(1).InteDiffModes%(i%) <> UpdateTmpSample(1).InteDiffModes%(ip%) Then GoTo 7600
 End If
+
+' If aggregate mode check that disable acq and disable quant flags on interference standards are the same as the sample (new check suggested by Nachlas)
+If UseAggregateIntensitiesFlag Then
+For chan% = 1 To sample(1).LastElm%
+ipp% = IPOS5(Int(0), chan%, sample(), UpdateTmpSample())
+If ipp% <> 0 Then
+If sample(1).DisableAcqFlag(chan%) <> UpdateTmpSample(1).DisableAcqFlag(ipp%) Then GoTo UpdateGetStandardsAggregateDANotMatched2
+If sample(1).DisableQuantFlag(chan%) <> UpdateTmpSample(1).DisableQuantFlag(ipp%) Then GoTo UpdateGetStandardsAggregateDQNotMatched2
+End If
+Next chan%
+End If
+
+' Check for disabled acquisition in interference standard
+If UpdateTmpSample(1).DisableAcqFlag%(ip%) = 1 Then GoTo 7600
+
+' Check for disabled quant in interference standard (do not check disable quant flags in standard samples for analyzing unknowns!)
+'If UpdateTmpSample(1).DisableQuantFlag%(ip%) = 1 Then GoTo 7600
 
 ' Matching conditions, now increment set counter
 If StdAssignsIntfSets%(j%, i%) + 1 > MAXSET% Then GoTo UpdateGetStandardsTooManyIntfSets
@@ -610,7 +632,6 @@ If StdAssignsSets%(i%) = 0 Then GoTo UpdateGetStandardsNoSets
 End If
 
 Else
-'ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
 ip% = IPOS8A(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample(1).KilovoltsArray!(i%), sample())
 If ip% = 0 And sample(1).DisableQuantFlag%(i%) = 0 Then
 If StdAssignsSets%(i%) = 0 Then GoTo UpdateGetStandardsNoSets
@@ -796,6 +817,54 @@ msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crys
 msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV for standard interference assignments." & vbCrLf & vbCrLf
 msg$ = msg$ & "Either acquire count data for the indicated element on the indicated standard at the indicated conditions or "
 msg$ = msg$ & "change the standard assignment by clicking on the Analyze! | Standard Assignments buttons."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
+Exit Sub
+
+UpdateGetStandardsAggregateDANotMatched:
+msg$ = "Primary standard " & SampleGetString2$(UpdateTmpSample()) & " for "
+msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
+msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV has different disable acquisition flags from unknown sample " & SampleGetString2$(sample()) & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please make sure that both disable acquisition and disable quant flags are the same for standard and unknown "
+msg$ = msg$ & "samples when utilizing aggregate intensities."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
+Exit Sub
+
+UpdateGetStandardsAggregateDQNotMatched:
+msg$ = "Primary standard " & SampleGetString2$(UpdateTmpSample()) & " for "
+msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
+msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV has different disable quant flags from unknown sample " & SampleGetString2$(sample()) & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please make sure that both disable acquisition and disable quant flags are the same for standard and unknown "
+msg$ = msg$ & "samples when utilizing aggregate intensities."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
+Exit Sub
+
+UpdateGetStandardsAggregateDANotMatched2:
+msg$ = "Interference standard " & SampleGetString2$(UpdateTmpSample()) & " for "
+msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
+msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV has different disable acquisition flags from unknown sample " & SampleGetString2$(sample()) & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please make sure that both disable acquisition and disable quant flags are the same for standard and unknown "
+msg$ = msg$ & "samples when utilizing aggregate intensities."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
+Exit Sub
+
+UpdateGetStandardsAggregateDQNotMatched2:
+msg$ = "Interference standard " & SampleGetString2$(UpdateTmpSample()) & " for "
+msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
+msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV has different disable quant flags from unknown sample " & SampleGetString2$(sample()) & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please make sure that both disable acquisition and disable quant flags are the same for standard and unknown "
+msg$ = msg$ & "samples when utilizing aggregate intensities."
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
 Call AnalyzeStatusAnal(vbNullString)
 ierror = True
@@ -2223,7 +2292,7 @@ ierror = False
 On Error GoTo UpdateGetMANStandardsError
 
 Dim i As Integer, j As Integer, k As Integer, n As Integer, response As Integer
-Dim samplerow As Integer, ip As Integer, chan As Integer
+Dim samplerow As Integer, ip As Integer, chan As Integer, ipp As Integer
 Dim jmax As Integer, kmax As Integer
 Dim astring As String
 Dim alreadyasked As Boolean
@@ -2405,6 +2474,17 @@ If sample(1).BraggOrders%(i%) <> UpdateTmpSample(1).BraggOrders%(ip%) Then GoTo 
 
 ' Check for matching element integrated intensity flag
 If sample(1).IntegratedIntensitiesUseIntegratedFlags%(i%) <> UpdateTmpSample(1).IntegratedIntensitiesUseIntegratedFlags%(ip%) Then GoTo 7400
+
+' If aggregate mode check that disable acq and disable quant flags on MAN standards are the same as the sample (new check suggested by Nachlas)
+If UseAggregateIntensitiesFlag Then
+For chan% = 1 To sample(1).LastElm%
+ipp% = IPOS5(Int(0), chan%, sample(), UpdateTmpSample())
+If ipp% <> 0 Then
+If sample(1).DisableAcqFlag(chan%) <> UpdateTmpSample(1).DisableAcqFlag(ipp%) Then GoTo UpdateGetMANStandardsAggregateDANotMatched
+If sample(1).DisableQuantFlag(chan%) <> UpdateTmpSample(1).DisableQuantFlag(ipp%) Then GoTo UpdateGetMANStandardsAggregateDQNotMatched
+End If
+Next chan%
+End If
 
 ' Check for disabled acquisition in standard
 If UpdateTmpSample(1).DisableAcqFlag%(ip%) = 1 Then GoTo 7400
@@ -2596,6 +2676,30 @@ msg$ = msg$ & "in the MAN Fits window and click Re-Load."
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetMANStandards"
 Call AnalyzeStatusAnal(vbNullString)
 ierror = False  ' do not set error flag for missing elements
+Exit Sub
+
+UpdateGetMANStandardsAggregateDANotMatched:
+msg$ = "MAN standard " & SampleGetString2$(UpdateTmpSample()) & " for "
+msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
+msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV has different disable acquisition flags from unknown sample " & SampleGetString2$(sample()) & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please make sure that both disable acquisition and disable quant flags are the same for standard and unknown "
+msg$ = msg$ & "samples when utilizing aggregate intensities."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetMANStandards"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
+Exit Sub
+
+UpdateGetMANStandardsAggregateDQNotMatched:
+msg$ = "MAN standard " & SampleGetString2$(UpdateTmpSample()) & " for "
+msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
+msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV has different disable quant flags from unknown sample " & SampleGetString2$(sample()) & "." & vbCrLf & vbCrLf
+msg$ = msg$ & "Please make sure that both disable acquisition and disable quant flags are the same for standard and unknown "
+msg$ = msg$ & "samples when utilizing aggregate intensities."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetMANStandards"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
 Exit Sub
 
 End Sub

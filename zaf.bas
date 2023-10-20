@@ -3452,6 +3452,16 @@ If ierror Then Exit Sub
 Call ZAFReadMu(zaf)
 If ierror Then Exit Sub
 
+' Load input parameters for coating calculations for passed sample if it is a standard (coating parameters for standards are not saved to Sample database table!!!!)
+If sample(1).Type% = 1 Then
+ip% = IPOS2(NumberofStandards%, sample(1).number%, StandardNumbers%())      ' use number of passed standard sample
+If ip% = 0 Then GoTo ZAFSetZAFStandardNotFound
+sample(1).CoatingDensity! = StandardCoatingDensity!(ip%)
+sample(1).CoatingElement% = StandardCoatingElement%(ip%)
+sample(1).CoatingThickness! = StandardCoatingThickness!(ip%)
+sample(1).CoatingSinThickness! = MathCalculateSinThickness(StandardCoatingThickness!(ip%), sample(1).TakeoffArray!(i%))
+End If
+
 ' Check for coating absorption correction for each emitting element in the sample
 zaf.coating_flag% = sample(1).CoatingFlag%
 For i% = 1 To zaf.in1%
@@ -3459,16 +3469,6 @@ zaf.coating_trans_smp!(i%) = 1#
 zaf.coating_absorbs_smp!(i%) = 1#
 If sample(1).CoatingFlag% = 1 Then
 If zaf.il%(i%) <= MAXRAY% - 1 Then
-
-' Load input parameters for coating calculations for passed sample if it is a standard (coating parameters for standards are not saved to Sample database table!!!!)
-If sample(1).Type% = 1 Then
-ip% = IPOS2(NumberofStandards%, sample(1).StdAssigns%(i%), StandardNumbers%())
-If ip% = 0 Then GoTo ZAFSetZAFStandardNotFound
-sample(1).CoatingDensity! = StandardCoatingDensity!(ip%)
-sample(1).CoatingElement% = StandardCoatingElement%(ip%)
-sample(1).CoatingThickness! = StandardCoatingThickness!(ip%)
-sample(1).CoatingSinThickness! = MathCalculateSinThickness(StandardCoatingThickness!(ip%), sample(1).TakeoffArray!(i%))
-End If
 
 If UseConductiveCoatingCorrectionForXrayTransmission Then
 Call ConvertCalculateCoatingXrayTransmission(zaf.coating_trans_smp!(i%), i%, sample())
