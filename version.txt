@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/20/23	Fix problems with saving EDS net intensities when combining, or separating samples from Analyze! window.
+v. 13.6.1
+
 10/19/23	Fix a number of small bugs (Allaz, Rom, Nachlas, von der Handt and Seward).  See GitHub history for details.
 
 10/16/23	Fix minor bug in CalcZAF (remove unnecessary call to ZAFSetZAF) when calculating intensities

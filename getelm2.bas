@@ -302,6 +302,10 @@ GetElmOldSample(1).SecondaryFluorescenceBoundaryMatB_String$(GetElmOldSample(1).
 GetElmOldSample(1).SecondaryFluorescenceBoundaryMatBStd_String$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBoundaryMatBStd_String$(i%)
 
 GetElmOldSample(1).ConditionNumbers%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).ConditionNumbers%(i%)    ' list order
+
+GetElmOldSample(1).AtomicCharges!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).AtomicCharges!(i%)
+GetElmOldSample(1).AtomicWts!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).AtomicWts!(i%)
+
 GetElmOldSample(1).EffectiveTakeOffs!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).EffectiveTakeOffs!(i%)
 2000:  Next n%
 

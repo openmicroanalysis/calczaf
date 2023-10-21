@@ -37,13 +37,13 @@ tList.Clear
 For samplerow% = 1 To NumberofSamples%
 
 ' Load standards or unknowns or all
-If tForm.OptionStandard.Value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
-If tForm.OptionUnknown.Value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
-If tForm.OptionWavescan.Value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
+If tForm.OptionStandard.value = True And SampleTyps%(samplerow%) <> 1 Then GoTo 1000
+If tForm.OptionUnknown.value = True And SampleTyps%(samplerow%) <> 2 Then GoTo 1000
+If tForm.OptionWavescan.value = True And SampleTyps%(samplerow%) <> 3 Then GoTo 1000
 
 ' Check for FormANALYZE and if so, check display only samples with data checkbox
 If tForm.Name = "FormANALYZE" Or tForm.Name = "FormPLOT_WAVE" Or tForm.Name = "FormPLOT" Then
-If tForm.CheckOnlyDisplaySamplesWithData.Value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
+If tForm.CheckOnlyDisplaySamplesWithData.value = vbChecked And SampleDels%(samplerow%) = True Then GoTo 1000
 End If
 
 ' Load number set and name
@@ -105,7 +105,6 @@ End If
 End If
 
 ' Increment number of analyzed elements
-'If tmpsample(1).DisableQuantFlag%(i%) = 0 Then
 If sample(1).LastElm% + 1 > MAXCHAN% Then GoTo AnalyzeCombineSamplesTooManyAnalyzedElements
 sample(1).LastElm% = sample(1).LastElm% + 1
 
@@ -280,6 +279,9 @@ sample(1).MultiPointAcquirePositionsHi!(sample(1).LastElm%, m%) = tmpsample(1).M
 sample(1).MultiPointAcquirePositionsLo!(sample(1).LastElm%, m%) = tmpsample(1).MultiPointAcquirePositionsLo!(i%, m%)
 sample(1).MultiPointAcquireLastCountTimesHi(sample(1).LastElm%, m%) = tmpsample(1).MultiPointAcquireLastCountTimesHi(i%, m%)
 sample(1).MultiPointAcquireLastCountTimesLo(sample(1).LastElm%, m%) = tmpsample(1).MultiPointAcquireLastCountTimesLo(i%, m%)
+
+'sample(1).MultiPointProcessManualFlagHi%(sample(1).LastElm%, m%) = tmpsample(1).MultiPointProcessLastManualFlagHi%(i%, m%)
+'sample(1).MultiPointProcessManualFlagLo%(sample(1).LastElm%, m%) = tmpsample(1).MultiPointProcessLastManualFlagLo%(i%, m%)
 Next m%
 
 sample(1).UnknownCountTimeForInterferenceStandardChanFlag(sample(1).LastElm%) = tmpsample(1).UnknownCountTimeForInterferenceStandardChanFlag(i%)
@@ -295,8 +297,10 @@ sample(1).SecondaryFluorescenceBoundaryMatB_String$(sample(1).LastElm%) = tmpsam
 sample(1).SecondaryFluorescenceBoundaryMatBStd_String$(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBoundaryMatBStd_String$(i%)
 
 sample(1).ConditionNumbers%(sample(1).LastElm%) = tmpsample(1).ConditionNumbers%(i%)    ' list order
+
+sample(1).AtomicCharges!(sample(1).LastElm%) = tmpsample(1).AtomicCharges!(i%)
+sample(1).AtomicWts!(sample(1).LastElm%) = tmpsample(1).AtomicWts!(i%)
 sample(1).EffectiveTakeOffs!(sample(1).LastElm%) = tmpsample(1).EffectiveTakeOffs!(i%)
-'End If
 End If
 4000: Next i%
 
