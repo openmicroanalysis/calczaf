@@ -937,7 +937,7 @@ Exit Function
 
 End Function
 
-Sub MathCorrelationPearson(X() As Double, Y() As Double, n As Long, r As Double, prob As Double, Z As Double)
+Sub MathCorrelationPearson(x() As Double, y() As Double, n As Long, r As Double, prob As Double, Z As Double)
 ' Calculate Pearson's linear correlation coefficient
 '  Given two arrays "x()" and "y()", this routine computes their correlation coefficient "r", the significance
 '  level at which the null hypothesis of zero correlation is disproved ("prob" whose small value indicates
@@ -958,8 +958,8 @@ Dim t As Double, xt As Double, yt As Double
 ax# = 0#
 ay# = 0#
 For j& = 1 To n&
-ax# = ax# + X#(j&)
-        ay# = ay# + Y#(j&)
+ax# = ax# + x#(j&)
+        ay# = ay# + y#(j&)
 Next j&
 
 ax# = ax# / n&
@@ -969,8 +969,8 @@ syy# = 0#
 sxy# = 0#
       
 For j& = 1 To n&
-xt# = X#(j&) - ax#
-        yt# = Y#(j&) - ay#
+xt# = x#(j&) - ax#
+        yt# = y#(j&) - ay#
         sxx# = sxx# + xt# ^ 2
         syy# = syy# + yt# ^ 2
         sxy# = sxy# + xt# * yt#
@@ -997,7 +997,7 @@ Exit Sub
 
 End Sub
 
-Function MathERFCC(X As Double) As Double
+Function MathERFCC(x As Double) As Double
 ' Calculates error function (produces "expression too complex" error)
 
 ierror = False
@@ -1006,14 +1006,14 @@ On Error GoTo MathERFCCError
 Dim t As Double, Z As Double
 Dim temp As Double
 
-Z# = Abs(X#)
+Z# = Abs(x#)
 t# = 1# / (1# + 0.5 * Z#)
 
 MathERFCC# = t# * Exp(-Z# * Z# - 1.26551223 + t# * (1.00002368 + t# * (0.37409196 + t# * _
      (0.09678418 + t# * (-0.18628806 + t# * (0.27886807 + t# * (-1.13520398 + t# * _
      (1.48851587 + t# * (-0.82215223 + t# * 0.17087277)))))))))
       
-If X# < 0# Then MathERFCC# = 2# - MathERFCC#
+If x# < 0# Then MathERFCC# = 2# - MathERFCC#
 
 Exit Function
     
@@ -1109,7 +1109,7 @@ Exit Sub
 
 End Sub
 
-Function MathRootN(X As Single, n As Integer) As Single
+Function MathRootN(x As Single, n As Integer) As Single
 ' Function to find the nth root of a number x
 
 ierror = False
@@ -1119,7 +1119,7 @@ Dim temp As Single
 
 ' Find the nth root of x
 If n% < 1 Then GoTo MathRootNBadRoot
-temp! = X! ^ (1# / n%)
+temp! = x! ^ (1# / n%)
 MathRootN! = temp!
 Exit Function
 

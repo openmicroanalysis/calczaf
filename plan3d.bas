@@ -475,27 +475,63 @@ Exit Sub
 
 End Sub
 
-Function Plan3DCalculateEffectiveTakeOff(tSpectrometerOrientation As Single, stg_orientation As Integer, acoeff() As Single, tEffectiveTakeOff As Single) As Single
+Function Plan3DCalculateEffectiveTakeOff(tSpectrometerOrientation As Single, acoeff() As Single, tEffectiveTakeOff As Single) As Single
 ' Function to calculate a modified effective take off angle based on the passed
 '  spectrometer orientation (0 degrees = north and going clockwise looking down on the top of the instrument)
 '  stage orientation (0 = cartesian, -1 = anti-cartesian)
 '  sample tilt coefficients based on fit to stage X/Y/Z point coordinates
 '
 '  returns the modified effective takeoff angle
+'  zpos  =  acoeff(1) + xpos * acoeff(2) + ypos * acoeff(3)
+        
+    ierror = False
+    On Error GoTo Plan3DCalculateEffectiveTakeOffError
+    
+    Dim v_x As Single, v_y As Single, v_z As Single 'direction vector of the line (v) sustained by the spectrometer
+    Dim n_x As Single, n_y As Single, n_z As Single 'normal vector of the plane (n)
+    Dim phi_in_deg As Single
+    Dim theta_in_rad As Single
+    Dim phi_in_rad As Single
+    Dim v_norm As Single
+    Dim n_norm As Single
+    Dim v_dot_n As Single
+    Dim alpha_in_rad As Single ' alpha is the angle between n and v.
+    Const PI As Single = 3.14159274
+    
+    ' Return unmodified takeoff angle as default
+    Plan3DCalculateEffectiveTakeOff! = tEffectiveTakeOff!
 
-ierror = False
-On Error GoTo Plan3DCalculateEffectiveTakeOffError
+    ' Calculate modified effective take off angle based on sample tilt
+    n_x! = -acoeff(2)
+    n_y! = -acoeff(3)
+    n_z! = 1#
 
-Dim temp As Single
+    ' For testing only
+    'n_x = 1
+    'n_y = 0
+    'n_z = 1
+    'tEffectiveTakeOff = 40
+    'tSpectrometerOrientation = 90
+    
+    phi_in_rad! = (90# - tSpectrometerOrientation!) * PI / 180#
+    theta_in_rad! = (90# - tEffectiveTakeOff!) * PI / 180#
 
-' Return unmodified takeoff angle as default
-Plan3DCalculateEffectiveTakeOff! = tEffectiveTakeOff!
+    v_x! = Sin(theta_in_rad!) * Cos(phi_in_rad!)
+    v_y! = Sin(theta_in_rad!) * Sin(phi_in_rad!)
+    v_z! = Cos(theta_in_rad!)
 
-' Calculate modified effective take off angle based on sample tilt
+    v_norm! = Sqr(v_x! * v_x! + v_y! * v_y! + v_z! * v_z!) 'calculates the norm  of v. It should always be 1.
+    
+    n_norm! = Sqr(n_x! * n_x! + n_y! * n_y! + n_z! * n_z!) 'calculates the norm  of n.
+    
+    v_dot_n! = v_x! * n_x! + v_y! * n_y! + v_z! * n_z! 'calculates the dot product of v and n.
 
+    If v_norm! = 0 Or v_norm! = 0 Then GoTo Plan3DCalculateEffectiveTakeOffError 'Check to not divide by 0.
+    
+    alpha_in_rad! = MathArcCos2(v_dot_n! / (v_norm! * n_norm!))
 
+    Plan3DCalculateEffectiveTakeOff! = 90# - (alpha_in_rad! * 180# / PI)
 
-'Plan3DCalculateEffectiveTakeOff! = temp!
 Exit Function
 
 ' Errors

@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/25/23	Changes to analytical sensitivity calculations (Buse). Add new plane fit code from Moy to calculate
+		sample tilt and modify effective takeoff angles.
+
+10/22/23	Modify aggregate code check for different bgds to allow mixing off-peak channels with MPB channels 
+		that have switched MPB channels to use off-peak bgds (Buse).
+
 10/21/23	Fix code for separating or combining samples for TDI and CL data.
 
 10/20/23	Fix problems with saving EDS net intensities when combining, or separating samples from Analyze! window.

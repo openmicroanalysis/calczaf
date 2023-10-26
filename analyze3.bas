@@ -2836,6 +2836,8 @@ Sub AnalyzeReturnAnalysisFactors(mode As Integer, tarray() As Single, sample() A
 ' mode = 11 return UnkVolElCors
 ' mode = 12 return UnkVolElDevs
 
+' mode = 13 return RowUnkPeakToBgds
+
 ierror = False
 On Error GoTo AnalyzeReturnAnalysisFactorsError
 
@@ -2856,6 +2858,8 @@ If mode% = 9 Then tarray!(j%, i%) = RowUnkMANAbsCors!(j%, i%)
 If mode% = 10 Then tarray!(j%, i%) = RowUnkAPFCors!(j%, i%)
 If mode% = 11 Then tarray!(j%, i%) = RowUnkVolElCors!(j%, i%)
 If mode% = 12 Then tarray!(j%, i%) = RowUnkVolElDevs!(j%, i%)
+
+If mode% = 13 Then tarray!(j%, i%) = RowUnkPeakToBgds!(j%, i%)
 
 Next i%
 Next j%

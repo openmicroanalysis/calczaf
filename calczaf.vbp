@@ -180,6 +180,7 @@ Form=WEIGHT.FRM
 Form=Effecttive.frm
 Module=CodeEffective; Effective.bas
 ResFile32="CalcZAF.RES"
+Module=CodeMATH2; MATH2.bas
 IconForm="FormMAIN"
 Startup="Sub Main"
 HelpFile="ProbeWin.chm"

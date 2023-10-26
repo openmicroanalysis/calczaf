@@ -139,14 +139,14 @@ ierror = True
 Exit Sub
 
 Plan3dLUDCMPSingularMatrix:
-msg$ = "Singular matrix"
+msg$ = "Singular matrix found, points are in a line."
 MsgBox msg$, vbOKOnly + vbExclamation, "Plan3dLUDCMP"
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub Plan3dInvertMatrix(a() As Double, n As Integer, np As Integer, Y() As Double, d As Double)
+Sub Plan3dInvertMatrix(a() As Double, n As Integer, np As Integer, y() As Double, d As Double)
 ' This routine calls routines Plan3dLUDCMP and Plan3dLUBKSB. Modified From Numerical Recipes.
 '  n = the size of the n x n matrix a with a physical dimension np
 '  a is the matrix input (destroyed), y is the inverted output
@@ -162,9 +162,9 @@ ReDim temp(1 To n%) As Double   ' because VB gives type mismatch otherwise
 ' Initialize
 For i% = 1 To n%
 For j% = 1 To n%
-Y#(i%, j%) = 0#
+y#(i%, j%) = 0#
 Next j%
-Y#(i%, i%) = 1#
+y#(i%, i%) = 1#
 Next i%
 
 Call Plan3dLUDCMP(a#(), n%, np%, indx%(), d#)
@@ -179,11 +179,11 @@ If Abs(d#) < 0.0000000001 Then GoTo Plan3dInvertMatrixBadDeterminant
 
 For j% = 1 To n%
 For i% = 1 To n%
-temp#(i%) = Y#(i%, j%)  ' y#(1, j%)
+temp#(i%) = y#(i%, j%)  ' y#(1, j%)
 Next i%
 Call Plan3dLUBKSB(a#(), n%, np%, indx%(), temp#())
 For i% = 1 To n%
-Y#(i%, j%) = temp#(i%)
+y#(i%, j%) = temp#(i%)
 Next i%
 Next j%
 
