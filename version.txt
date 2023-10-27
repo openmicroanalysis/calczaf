@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/26/23	Add "doevents" line in NewMakeNewSample code to ensure sample setups get loaded properly (timing issue).
+v. 13.6.2	Modify JEOL standard import to skip standards without element data (Neill).
+
+		Enable sample tilt and optional effective angle recalculation button in FormGetElm (Moy).
+		
+		Add code to check for no EDS elements (Chouinard).
+
 10/25/23	Changes to analytical sensitivity calculations (Buse). Add new plane fit code from Moy to calculate
 		sample tilt and modify effective takeoff angles.
 
@@ -2614,7 +2621,7 @@ v. 11.0.9
 10/26/15	Tweak minor tick marks on EDS plots (Seward).
 
 10/24/15	Work on new dynamic loading of KLM marker x-ray text.
-
+ 
 10/23/15	Fix raw intensity Surfer label (Carpenter).
 
 		Replace all old Spin controls with new UpDown controls.

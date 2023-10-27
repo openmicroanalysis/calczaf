@@ -1157,7 +1157,6 @@ Call StandardAddRecord(StandardTmpSample())
 If ierror Then
 Close #ImportDataFileNumber%
 Exit Sub
-End If
 
 ' Update available standard list
 If NumberOfAvailableStandards% + 1 > MAXINDEX% Then GoTo StandardImportJEOL8x30TooMany
@@ -1172,8 +1171,9 @@ End If
 
 ' Close the import file
 Close #ImportDataFileNumber%
+End If
 
-' Now write a small text file with the standard number and stage positions
+' Now write a small text file with the standard number and stage positions (even for standards that have no elements)
 tfilename2$ = MiscGetFileNameNoExtension(tfilename$) & ".txt"
 Open tfilename2$ For Output As #ExportDataFileNumber%
 Write #ExportDataFileNumber%, StandardTmpSample(1).number%, StandardTmpSample(1).Name$, StandardTmpSample(1).StagePositions!(1, 1), StandardTmpSample(1).StagePositions!(1, 2), StandardTmpSample(1).StagePositions!(1, 3)
@@ -1282,16 +1282,34 @@ sample(1).OxideOrElemental% = 2         ' standards are always stored as element
 tparameter$ = "$XM_CMP_RATIO_TYPE"
 Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
 If ierror Then Exit Sub
-
 ratioflag% = Val(astring$)
+
+' Get stage positions for subsequent saving in .POS files (See StagForm.bas in Stage app)
+tparameter$ = "$XM_CMP_STAGE_POS"
+Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
+If ierror Then Exit Sub
+
+' Parse stage data
+Call MiscParseStringToString(astring$, bstring$)    ' get X position
+sample(1).StagePositions!(1, 1) = Val(bstring$)
+Call MiscParseStringToString(astring$, bstring$)    ' get Y position
+sample(1).StagePositions!(1, 2) = Val(bstring$)
+Call MiscParseStringToString(astring$, bstring$)    ' get Z position
+sample(1).StagePositions!(1, 3) = Val(bstring$)
 
 ' Number of elements
 tparameter$ = "$XM_CMP_NUMBER_OF_DATA"
 Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
 If ierror Then Exit Sub
 
+' Check for a valid number of elements
 sample(1).LastChan% = Val(astring$)
-If sample(1).LastChan% = 0 Then GoTo StandardImportJEOL8x30ParseFileNoElements
+If sample(1).LastChan% = 0 Then
+msg$ = "No elements defined for standard " & sample(1).Name$ & " in " & tfilename$ & vbCrLf & vbCrLf
+msg$ = msg$ & "The standard will not be imported into the standard database."
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30ParseFile"
+Exit Sub
+End If
 If sample(1).LastChan% > MAXCHAN% Then GoTo StandardImportJEOL8x30ParseFileTooManyElements
 
 ' Loop on elements
@@ -1374,32 +1392,12 @@ sample(1).ElmPercents!(sample(1).OxygenChannel%) = ConvertOxygenFromCations!(sam
 If ierror Then Exit Sub
 End If
 
-' Finally get stage positions for subsequent saving in .POS files (See StagForm.bas in Stage app)
-tparameter$ = "$XM_CMP_STAGE_POS"
-Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
-If ierror Then Exit Sub
-
-' Parse stage data
-Call MiscParseStringToString(astring$, bstring$)    ' get X position
-sample(1).StagePositions!(1, 1) = Val(bstring$)
-Call MiscParseStringToString(astring$, bstring$)    ' get Y position
-sample(1).StagePositions!(1, 2) = Val(bstring$)
-Call MiscParseStringToString(astring$, bstring$)    ' get Z position
-sample(1).StagePositions!(1, 3) = Val(bstring$)
-
 Exit Sub
 
 ' Errors
 StandardImportJEOL8x30ParseFileError:
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "StandardImportJEOL8x30ParseFile"
-ierror = True
-Exit Sub
-
-StandardImportJEOL8x30ParseFileNoElements:
-Screen.MousePointer = vbDefault
-msg$ = "No elements defined in " & tfilename$
-MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30ParseFile"
 ierror = True
 Exit Sub
 
