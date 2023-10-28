@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/27/23	Add spectrometer orientations to MDB file. Work on effective TO code with Moy. More work on effective
+v. 13.6.3	take off angle code for sample tilt calculations.
+
 10/26/23	Add "doevents" line in NewMakeNewSample code to ensure sample setups get loaded properly (timing issue).
 v. 13.6.2	Modify JEOL standard import to skip standards without element data (Neill).
 
