@@ -93,6 +93,7 @@ ierror = False
 On Error GoTo SecondaryCorrectionError
 
 Dim chan As Integer
+Dim astring1 As String, astring2 As String, astring3 As String, astring4 As String
 
 ' Calculate the k-ratio for the interpolated distance for each element
 For chan% = 1 To sample(1).LastElm%
@@ -105,11 +106,28 @@ If nPoints&(chan%) <= 0 Then GoTo SecondaryCorrectionNoKratios
 Call SecondaryCalculateKratio(sampleline%, chan%, sample())
 If ierror Then Exit Sub
 
+' Save string info
+astring1$ = astring1$ & Format$(sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%), a80$)
+astring2$ = astring2$ & MiscAutoFormat$(kratios!(chan%) * 100#)
+
 ' Correct the measured (elemental) k-ratio for the boundary correction intensity (in k-ratio % units)
 kratios!(chan%) = kratios!(chan%) - sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) / 100#
 
+' Save string info
+astring3$ = astring3$ & MiscAutoFormat$(sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) / 100# * 100#)
+astring4$ = astring4$ & MiscAutoFormat$(kratios!(chan%) * 100#)
+
 End If
 Next chan%
+
+' Debug output
+'If DebugMode Then
+Call IOWriteLog(vbCrLf & "SecondaryCorrection: SF k-ratios * 100, Line: " & Format$(sample(1).Linenumber&(sampleline%)) & ", Dist: " & sample(1).SecondaryFluorescenceBoundaryDistance!(sampleline%))
+Call IOWriteLog(Format$("Element:", a80$) & astring1$)
+Call IOWriteLog(Format$("Elm. Kr:", a80$) & astring2$)
+Call IOWriteLog(Format$("Cal. Kr:", a80$) & astring3$)
+Call IOWriteLog(Format$("Cor. Kr:", a80$) & astring4$)
+'End If
 
 ' Load data point coordinate to module level arrays (for display)
 curpnt& = curpnt& + 1
@@ -576,7 +594,9 @@ If dist! <= xdist#(chan%, 1) Then krat! = fluB_k#(chan%, 1)
 If dist! >= xdist#(chan%, nPoints&(chan%)) Then krat! = fluB_k#(chan%, nPoints&(chan%))
 End If
 
+If DebugMode Then
 Call IOWriteLog("SecondaryCalculateKratio: Interpolated K-ratio % is " & MiscAutoFormat$(krat!) & " at a distance " & Format$(dist!) & " um")
+End If
 
 ' Store in sample arrays (as k-ratio %)
 sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) = krat!
