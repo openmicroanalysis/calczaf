@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/31/23	Modufy RealTimeROIMStartScan code to adjust start scan position if JEOL instrument
+v. 13.6.5	to account for JEOL backlash size.
+
+		Make copy of standard.mdb for distibution (standard_UofO.mdb)
+
 10/29/23	Disable Effective angle calculations for older MDB files.
 
 		Modify effective angle code to rotate spectrometer orientations if JEOL instrument (for anti 
