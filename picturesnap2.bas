@@ -954,6 +954,10 @@ On Error GoTo PictureSnapLoadPositionsError
 Dim i As Long, imode As Integer, samplerow As Integer, npts As Integer
 
 ImagePoints& = 0
+If FormAUTOMATE.ListDigitize.ListCount < 1 Then
+FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked = vbUnchecked
+GoTo PictureSnapLoadPositionsNoPositionSamples
+End If
 
 ' Check if only loading data for selected sample
 If FormPICTURESNAP.Visible And FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked Then
@@ -1014,9 +1018,15 @@ MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapLoadPositions"
 ierror = True
 Exit Sub
 
+PictureSnapLoadPositionsNoPositionSamples:
+msg$ = "The Display Digitized Positions For Selected Position Sample Only menu was checked but no position samples are displayed in the Automate! window"
+MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapLoad"
+ierror = True
+Exit Sub
+
 PictureSnapLoadPositionsNotSelected:
 msg$ = "The Display Digitized Positions For Selected Position Sample Only menu was checked but no position sample is currently selected in the Automate! window"
-MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapLoadPositionsNotSelected"
+MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapLoadPositions"
 ierror = True
 Exit Sub
 

@@ -659,13 +659,6 @@ On Error GoTo CalcZAFGetModeError
 ' Save default correction type
 CalcZAFMode% = Index%
 
-' Disable All Matrix Corrections if k-ratio mode
-If CalcZAFMode% = 0 Then
-FormZAF.CheckUseAllMatrixCorrections.Enabled = False
-Else
-FormZAF.CheckUseAllMatrixCorrections.Enabled = True
-End If
-
 Exit Sub
 
 ' Errors
@@ -4517,9 +4510,13 @@ Sub CalcZAFCalculateAll(tForm As Form)
 ierror = False
 On Error GoTo CalcZAFCalculateAllError
 
-Dim nstring As String
+Dim nstring As String, astring As String
 Dim i As Integer, tzaf As Integer, j As Integer
 Dim sum1 As Single, sum2 As Single
+
+Dim averagekratios(1 To MAXCHAN%, 1 To MAXZAF%) As Single
+
+Dim average As TypeAverage
 
 icancelanal = False
 
@@ -4551,7 +4548,29 @@ Exit Sub
 End If
 Call AnalyzeStatusAnal(vbNullString)
 
+' Load k-ratio intensities
+If CalcZAFMode% = 0 Then
+Call IOWriteLog(vbCrLf & CalcZAFOldSample(1).Name$)
+msg$ = zafstring$(izaf%) & ", " & macstring$(MACTypeFlag%)
+
+' Elemental labels
+If j% = 1 Then
+For i% = 1 To CalcZAFOldSample(1).LastChan%
+astring$ = astring$ & vbTab & VbDquote$ & Format$(CalcZAFOldSample(1).Elsyup$(i%) & " K-RAW%", a80$) & VbDquote$
+Next i%
+astring$ = astring$ & vbCrLf
+End If
+
+' Elemental data
+astring$ = astring$ & Format$(j%, a40$)
+For i% = 1 To CalcZAFOldSample(1).LastChan%
+astring$ = astring$ & vbTab & MiscAutoFormat$(CalcZAFAnalysis.StdAssignsKfactors(i%))
+averagekratios!(i%, j%) = CalcZAFAnalysis.StdAssignsKfactors(i%)            ' save for averaging below
+Next i%
+astring$ = astring$ & vbTab & msg$ & vbCrLf
+
 ' Load WtsData arrays with analysis data (assume single data row)
+Else
 sum1! = 0#
 sum2! = 0#
 For i% = 1 To CalcZAFOldSample(1).LastChan%
@@ -4576,6 +4595,7 @@ Call InitGetZAFSetZAF2(izaf%)
 ierror = True
 Exit Sub
 End If
+End If
 
 Next j%     ' calculate all matrix corrections loop
 
@@ -4585,11 +4605,35 @@ Call InitGetZAFSetZAF2(izaf%)
 If ierror Then Exit Sub
 AllAFactorUpdateNeeded = True
 
-' Enable Excel button
+' Output k-ratios only
+If CalcZAFMode% = 0 Then
+Call IOWriteLog(astring$)
+
+' Calculate k-ratio averages
+Call MathArrayAverage4(average, averagekratios!(), CLng(MAXZAF%), CLng(MAXZAF%))
+
+' Output k-ratio averages
+astring$ = "AVER"
+For i% = 1 To CalcZAFOldSample(1).LastChan%
+astring$ = astring$ & vbTab$ & MiscAutoFormat$(average.averags!(i%))
+Next i%
+astring$ = astring & vbCrLf
+
+astring$ = astring$ & "STDV"
+For i% = 1 To CalcZAFOldSample(1).LastChan%
+astring$ = astring$ & vbTab$ & MiscAutoFormat$(average.Stddevs!(i%))
+Next i%
+astring$ = astring & vbCrLf
+
+Call IOWriteLog(astring$)
+
+' Enable Excel button if outputting concentrations
+Else
 If ExcelSheetIsOpen() Then
 FormZAF.CommandExcel.Enabled = True
 Else
 FormZAF.CommandExcel.Enabled = False
+End If
 End If
 
 Call AnalyzeStatusAnal(vbNullString)
