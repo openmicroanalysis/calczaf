@@ -4550,8 +4550,7 @@ Call AnalyzeStatusAnal(vbNullString)
 
 ' Load k-ratio intensities
 If CalcZAFMode% = 0 Then
-Call IOWriteLog(vbCrLf & CalcZAFOldSample(1).Name$)
-msg$ = zafstring$(izaf%) & ", " & macstring$(MACTypeFlag%)
+msg$ = zafstring$(izaf%)
 
 ' Elemental labels
 If j% = 1 Then
@@ -4607,6 +4606,8 @@ AllAFactorUpdateNeeded = True
 
 ' Output k-ratios only
 If CalcZAFMode% = 0 Then
+Call IOWriteLog(vbCrLf & CalcZAFOldSample(1).Name$)
+Call IOWriteLog(macstring$(MACTypeFlag%))
 Call IOWriteLog(astring$)
 
 ' Calculate k-ratio averages

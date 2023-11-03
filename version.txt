@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/02/23	Tweak CalcZAF Use All Matrix Corrections output.
+v. 13.6.6
+
 11/01/23	Modify CalcZAF to calculate intensities from concentrations for all matrix corrections.
 
 		Fix PictureSnap bug when loading positions for selected sample and no samples are displayed 
@@ -17,7 +20,7 @@ v. 13.6.5	to account for JEOL backlash size.
 		Modify effective angle code to rotate spectrometer orientations if JEOL instrument (for anti 
 		cartesian stage coodinates) (Moy).
 		
-		Comment out JEOL specific code for ETOA spectrometer orienattion rotation (not needed?).
+		Comment out JEOL specific code for ETOA spectrometer orientation rotation (not needed?).
 
 10/28/23	Add scaler effective takeoffs to MDB file. Fix FormGETELM update if user removes all TDI 
 v. 13.6.4	parameters (von der Handt).  Add debug output for secondary boundary correction.
