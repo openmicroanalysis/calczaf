@@ -2,8 +2,8 @@ VERSION 5.00
 Begin VB.Form FormPICTURESNAP 
    Caption         =   "PictureSnap"
    ClientHeight    =   8370
-   ClientLeft      =   225
-   ClientTop       =   855
+   ClientLeft      =   165
+   ClientTop       =   810
    ClientWidth     =   12030
    LinkTopic       =   "Form1"
    ScaleHeight     =   8370
@@ -140,6 +140,9 @@ Begin VB.Form FormPICTURESNAP
       Begin VB.Menu menuDisplayWavescans 
          Caption         =   "Digitized Wavescan Position Samples"
       End
+      Begin VB.Menu menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly 
+         Caption         =   "Digitized Positions For Selected Position Sample Only"
+      End
       Begin VB.Menu menuDisplaySeparator2 
          Caption         =   "-"
       End
@@ -154,12 +157,6 @@ Begin VB.Form FormPICTURESNAP
       End
       Begin VB.Menu menuDisplayUseBlackScaleBar 
          Caption         =   "Use Black Scaler Bar"
-      End
-      Begin VB.Menu menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly 
-         Caption         =   "Display Digitized Positions For Selected Position Sample Only"
-      End
-      Begin VB.Menu menuDisplaySeparator4 
-         Caption         =   "-"
       End
       Begin VB.Menu menuDisplayDisplayImageFOVs 
          Caption         =   "Display Acquired Image FOVs"
@@ -481,16 +478,16 @@ If ierror Then Exit Sub
 End If
 End Sub
 
-Private Sub Picture2_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Picture2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 BitMapButton% = Button%
-BitMapX! = X!
-BitMapY! = Y!   ' store for double-click and map calibrate
+BitMapX! = x!
+BitMapY! = y!   ' store for double-click and map calibrate
 End Sub
 
-Private Sub Picture2_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Picture2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
-Call PictureSnapUpdateCursor(Int(0), X!, Y!)
+Call PictureSnapUpdateCursor(Int(0), x!, y!)
 If ierror Then Exit Sub
 If WaitingForCalibrationClick Then
 FormPICTURESNAP.Picture2.MousePointer = vbArrowQuestion

@@ -123,7 +123,11 @@ End If
 
 ' Load default name and print
 If Trim$(CalcZAFOldSample(1).Name$) = vbNullString Then
+If Not CalcZAFOldSample(1).CombinedConditionsFlag Then
 msg$ = "CalcZAF Sample (" & CalcZAFOldSample(1).Description$ & ") at " & Format$(CalcZAFOldSample(1).takeoff!) & " degrees and " & Format$(CalcZAFOldSample(1).kilovolts!) & " keV"
+Else
+msg$ = "CalcZAF Sample (" & CalcZAFOldSample(1).Description$ & ")"
+End If
 Call IOWriteLogRichText(vbCrLf & vbCrLf & msg$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD% Or FONT_UNDERLINE%), Int(0))
 Else
 Call IOWriteLogRichText(vbCrLf & vbCrLf & CalcZAFOldSample(1).Name$, vbNullString, Int(LogWindowFontSize% + 2), vbBlue, Int(FONT_BOLD% Or FONT_UNDERLINE%), Int(0))
@@ -4607,6 +4611,10 @@ AllAFactorUpdateNeeded = True
 ' Output k-ratios only
 If CalcZAFMode% = 0 Then
 Call IOWriteLog(vbCrLf & CalcZAFOldSample(1).Name$)
+If Not CalcZAFOldSample(1).CombinedConditionsFlag Then
+msg$ = Format$(CalcZAFOldSample(1).takeoff!) & " degrees and " & Format$(CalcZAFOldSample(1).kilovolts!) & " keV"
+Call IOWriteLog(msg$)
+End If
 Call IOWriteLog(macstring$(MACTypeFlag%))
 Call IOWriteLog(astring$)
 
