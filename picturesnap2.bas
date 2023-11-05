@@ -942,8 +942,8 @@ Exit Sub
 End Sub
 
 Sub PictureSnapLoadPositions(mode As Integer)
-' Load the positions for the specified samples type (called from PictureSnap Display menu for digitized positions)
-'   mode = 0 just reload for labels
+' Load the positions for the specified samples type from the Automate! window (called from PictureSnap Display menu for digitized positions)
+'   mode = 0 just reload for labels (or selected position sample)
 '   mode = 1 load standards
 '   mode = 2 load unknowns
 '   mode = 3 load wavescans
