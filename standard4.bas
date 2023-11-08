@@ -1100,12 +1100,14 @@ ierror = False
 On Error GoTo StandardImportJEOL8x30Error
 
 Dim response As Integer
-Dim tpath As String, tstring As String
+Dim tstring As String
 Dim tfilename As String, tfilename2 As String
 
 Dim nCount As Long, n As Long, m As Long
 Dim sAllFiles() As String
 Dim arrayfilenames(1 To 1) As String
+
+Static tpath As String
 
 ' Initialize the Tmp sample
 Call InitSample(StandardTmpSample())
@@ -1124,7 +1126,8 @@ If ierror Then Exit Sub
 If nCount& < 1 Then GoTo StandardImportJEOL8x30NoFiles
 
 ' Ask user whether to include block/mount folder in standard name
-msg$ = "Would you like to include the block/mount folder name in the standard name?"
+msg$ = "Would you like to include the block/mount folder name in the standard name?" & vbCrLf & vbCrLf
+msg$ = msg$ & "Click Yes to include the mount name in the standard name, click No to specify the mount name as the mount name parameter."
 response% = MsgBox(msg$, vbYesNoCancel + vbQuestion + vbDefaultButton2, "StandardImportJEOL8x30")
 If response% = vbCancel Then Exit Sub
 
@@ -1157,6 +1160,7 @@ Call StandardAddRecord(StandardTmpSample())
 If ierror Then
 Close #ImportDataFileNumber%
 Exit Sub
+End If
 
 ' Update available standard list
 If NumberOfAvailableStandards% + 1 > MAXINDEX% Then GoTo StandardImportJEOL8x30TooMany
@@ -1171,7 +1175,6 @@ End If
 
 ' Close the import file
 Close #ImportDataFileNumber%
-End If
 
 ' Now write a small text file with the standard number and stage positions (even for standards that have no elements)
 tfilename2$ = MiscGetFileNameNoExtension(tfilename$) & ".txt"
@@ -1182,7 +1185,9 @@ Close #ExportDataFileNumber%
 Next n&
 
 Screen.MousePointer = vbDefault
-MsgBox "All JEOL standard compositions saved to current standard composition database", vbOKOnly + vbInformation, "StandardImportJEOL8x30"
+msg$ = "All JEOL standard compositions saved to the current standard composition database (" & StandardDataFile$ & ")." & vbCrLf & vbCrLf
+msg$ = msg$ & "Next, (optionally) use the Stage application to import the JEOL stage positions for each mount and save to .POS files."
+MsgBox msg$, vbOKOnly + vbInformation, "StandardImportJEOL8x30"
 Exit Sub
 
 ' Errors
@@ -1226,11 +1231,9 @@ ReDim temp1(1 To MAXCHAN%) As Single
 ReDim temp2(1 To MAXCHAN%) As Single
 
 ' Parse out the folder name
-If response% = vbYes Then
 tfolder$ = MiscGetPathOnly$(tfilename$)
 tfolder$ = MiscGetLastFolderName$(tfolder$)
 If ierror Then Exit Sub
-End If
 
 ' Read standard name
 tparameter$ = "$XM_CMP_STD_SAMPLE_NAME"
@@ -1260,6 +1263,7 @@ sample(1).Name$ = Trim(sample(1).Name$ & "_" & sample(1).Description$)
 Else
 sample(1).Name$ = Trim(sample(1).Name$)
 End If
+sample(1).MountNames$ = tfolder$
 End If
 
 ' Make sure that sample name does not contain any embedded double quotes

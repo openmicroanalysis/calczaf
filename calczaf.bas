@@ -4558,6 +4558,7 @@ msg$ = zafstring$(izaf%)
 
 ' Elemental labels
 If j% = 1 Then
+astring$ = Space$(4) & vbTab
 For i% = 1 To CalcZAFOldSample(1).LastChan%
 astring$ = astring$ & vbTab & VbDquote$ & Format$(CalcZAFOldSample(1).Elsyup$(i%) & " K-RAW%", a80$) & VbDquote$
 Next i%
@@ -4565,7 +4566,7 @@ astring$ = astring$ & vbCrLf
 End If
 
 ' Elemental data
-astring$ = astring$ & Format$(j%, a40$)
+astring$ = astring$ & Format$(j%, a60$)
 For i% = 1 To CalcZAFOldSample(1).LastChan%
 astring$ = astring$ & vbTab & MiscAutoFormat$(CalcZAFAnalysis.StdAssignsKfactors(i%))
 averagekratios!(i%, j%) = CalcZAFAnalysis.StdAssignsKfactors(i%)            ' save for averaging below
@@ -4622,15 +4623,33 @@ Call IOWriteLog(astring$)
 Call MathArrayAverage4(average, averagekratios!(), CLng(MAXZAF%), CLng(MAXZAF%))
 
 ' Output k-ratio averages
-astring$ = "AVER"
+astring$ = "AVER: "
 For i% = 1 To CalcZAFOldSample(1).LastChan%
 astring$ = astring$ & vbTab$ & MiscAutoFormat$(average.averags!(i%))
 Next i%
 astring$ = astring & vbCrLf
 
-astring$ = astring$ & "STDV"
+astring$ = astring$ & "SDEV: "
 For i% = 1 To CalcZAFOldSample(1).LastChan%
 astring$ = astring$ & vbTab$ & MiscAutoFormat$(average.Stddevs!(i%))
+Next i%
+astring$ = astring & vbCrLf
+
+astring$ = astring$ & "SERR: "
+For i% = 1 To CalcZAFOldSample(1).LastChan%
+astring$ = astring$ & vbTab$ & MiscAutoFormat$(average.Stderrs!(i%))
+Next i%
+astring$ = astring & vbCrLf & vbCrLf
+
+astring$ = astring$ & "MIN:  "
+For i% = 1 To CalcZAFOldSample(1).LastChan%
+astring$ = astring$ & vbTab$ & MiscAutoFormat$(average.Minimums!(i%))
+Next i%
+astring$ = astring & vbCrLf
+
+astring$ = astring$ & "MAX:  "
+For i% = 1 To CalcZAFOldSample(1).LastChan%
+astring$ = astring$ & vbTab$ & MiscAutoFormat$(average.Maximums!(i%))
 Next i%
 astring$ = astring & vbCrLf
 

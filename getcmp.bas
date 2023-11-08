@@ -727,6 +727,10 @@ sym$ = "o"
 ip% = IPOS1(GetCmpTmpSample(1).LastChan%, sym$, GetCmpTmpSample(1).Elsyms$())
 GetCmpTmpSample(1).OxygenChannel% = ip%
 
+' Get default atomic weights
+Call ElementGetData(GetCmpTmpSample())
+If ierror Then Exit Sub
+
 ' Calculate oxides and atomic percents
 Call StanFormCalculateOxideAtomic(GetCmpTmpSample())
 If ierror Then Exit Sub
