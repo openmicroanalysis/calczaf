@@ -842,6 +842,9 @@ Dim SQLQ As String, tfilename As String
 Call InitSample(StandardTmpSample())
 If ierror Then Exit Sub
 
+msg$ = "Browse to the folder containing the Cameca standard sx.mdb file"
+MsgBox msg$, vbOKOnly + vbInformation, "StandardImportCameca"
+
 ' Get path to sx.mdb (using DAO 3.6 supports Access 2000 database format which is required for Cameca PeakSight)
 tfilename$ = "sx.mdb"
 Call IOGetMDBFileName(Int(8), tfilename$, tForm)
@@ -915,7 +918,8 @@ StDb.Close
 
 Screen.MousePointer = vbDefault
 
-msg$ = "Standard compositions imported from Cameca PeakSight standard database " & tfilename$
+msg$ = "Standard compositions imported from Cameca PeakSight standard database " & tfilename$ & vbCrLf & vbCrLf
+msg$ = msg$ & "Next, (optionally) use the Stage application to import the Cameca stage positions for each mount and save to .POS files."
 MsgBox msg$, vbOKOnly + vbInformation, "StandardImportCameca"
 Exit Sub
 
@@ -1115,7 +1119,7 @@ If ierror Then Exit Sub
 
 ' Get path to standard folder (each sub folder is a standard block/mount)
 tpath$ = "C:\"
-tstring$ = "Browse to Folder Containing JEOL 8230/8530 Standard Block/Mount Folders"
+tstring$ = "Browse to the folder containing the JEOL 8230/8530/iSP/iHP200F standard block/mount folders (usually StdCmp)"
 tpath$ = IOBrowseForFolderByPath(False, tpath$, tstring$, tForm)
 If ierror Then Exit Sub
 If Trim$(tpath$) = vbNullString Then Exit Sub
@@ -1310,7 +1314,7 @@ If ierror Then Exit Sub
 sample(1).LastChan% = Val(astring$)
 If sample(1).LastChan% = 0 Then
 msg$ = "No elements defined for standard " & sample(1).Name$ & " in " & tfilename$ & vbCrLf & vbCrLf
-msg$ = msg$ & "The standard will not be imported into the standard database."
+msg$ = msg$ & "The standard will not be imported into the standard composition database."
 MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30ParseFile"
 Exit Sub
 End If

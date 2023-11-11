@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/10/23	Minor tweaks to standard compositions import from JEOL/Cameca.
+
 11/09/23	Modify GetName code to not update standard name. Comment out code for
 		checking Surfer startup folder in registry.
 
