@@ -842,7 +842,7 @@ Dim SQLQ As String, tfilename As String
 Call InitSample(StandardTmpSample())
 If ierror Then Exit Sub
 
-msg$ = "Browse to the folder containing the Cameca standard sx.mdb file"
+msg$ = "Browse to the Cameca standard sx.mdb file"
 MsgBox msg$, vbOKOnly + vbInformation, "StandardImportCameca"
 
 ' Get path to sx.mdb (using DAO 3.6 supports Access 2000 database format which is required for Cameca PeakSight)
