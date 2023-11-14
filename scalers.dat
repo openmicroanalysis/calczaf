@@ -19,7 +19,7 @@
  0.08     0.08     0.08     0.08     0.08  "LiF peaking start size"
  0.004    0.004    0.004    0.004    0.004 "LiF peaking stop size"
  30       30       30       30       30    "maximum peaking cycles"
- 5.       5.       5.       5.       5.    "minimum peak to background"
+ 3.       3.       3.       3.       3.    "minimum peak to background"
  10.      10.      10.      10.      10.   "minimum peak intensity"
  1.       1.       1.       1.       1.    "default PHA baseline voltages"
  9.       9.       9.       9.       9.    "default PHA window voltages"

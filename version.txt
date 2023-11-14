@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/13/23	Fix PHA MCA display output bug to FormSCAN.  Fix output of duplicate elements in
+		STRATAGem ouitput (Matthews).
+
 11/12/23	Modify FormSetupRun to make filename label control longer for long folder strings.
 
 		Work on code to update FormSCAN if it is visible when running manual PHA scans.
