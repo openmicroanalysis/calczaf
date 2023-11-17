@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/16/23	Tweak STRATAGem/BadgerFilm output GUI to skip duplicate aggregated elements and also display x-ray
+		lines in case of multiple emission lines for an elements (Matthews).
+
 11/13/23	Fix PHA MCA display output bug to FormSCAN.  Fix output of duplicate elements in
 		STRATAGem ouitput (Matthews).
 
