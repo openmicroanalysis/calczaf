@@ -423,8 +423,8 @@ Next i%
 
 ' Calculate change per degree
 If temp1! <> 0# And temp2! <> 0# Then
-temp! = (temp2! - temp1!) / 2# * 100#
-msg$ = "Percent (absolute) k-ratio change per degree at 40 degrees: " & MiscAutoFormat$(temp!)
+temp! = (temp2! - temp1!) / 2#
+msg$ = "Absolute k-ratio change per degree at 40 degrees: " & MiscAutoFormat$(temp!)
 Call IOWriteLog(msg$)
 temp! = (temp2! - temp1!) / (2# * temp2!) * 100#
 msg$ = "Percent (relative) k-ratio change per degree at 40 degrees: " & MiscAutoFormat$(temp!)
