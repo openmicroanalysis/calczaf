@@ -329,6 +329,13 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 
+' Type out crystal
+msg$ = "CRYST:"
+For i% = ii% To jj%
+msg$ = msg$ & Format$(sample(1).CrystalNames$(i%), a80$)
+Next i%
+Call IOWriteLog(msg$)
+
 msg$ = "ONPEAK"
 For i% = ii% To jj%
 msg$ = msg$ & MiscAutoFormat$(sample(1).OnPeaks!(i%))

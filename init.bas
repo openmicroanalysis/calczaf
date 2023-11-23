@@ -275,10 +275,10 @@ linecount% = linecount% + 1
 msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs% + NumberOfStageMotors%
 Input #Temp1FileNumber%, JEOLBacklash&(i%)      ' allow zero JEOLBacklash values (P. Carpenter)
-'If JEOLBacklash&(i%) = 0 And i% <= NumberOfTunableSpecs% Then JEOLBacklash&(i%) = 50000     ' 500 um
-'If JEOLBacklash&(i%) = 0 And i% = XMotor% Then JEOLBacklash&(i%) = -5000   ' -50 um
-'If JEOLBacklash&(i%) = 0 And i% = YMotor% Then JEOLBacklash&(i%) = -5000   ' -50 um
-'If JEOLBacklash&(i%) = 0 And i% = ZMotor% Then JEOLBacklash&(i%) = 5000    '  50 um
+'If JEOLBacklash&(i%) = 0 And i% <= NumberOfTunableSpecs% Then JEOLBacklash&(i%) = 50000     ' 500 um or 0.5 mm
+'If JEOLBacklash&(i%) = 0 And i% = XMotor% Then JEOLBacklash&(i%) = -5000   ' -50 um or 0.05 mm
+'If JEOLBacklash&(i%) = 0 And i% = YMotor% Then JEOLBacklash&(i%) = -5000   ' -50 um or 0.05 mm
+'If JEOLBacklash&(i%) = 0 And i% = ZMotor% Then JEOLBacklash&(i%) = 5000    '  50 um or 0.05 mm
 msg$ = msg$ & Format$(JEOLBacklash&(i%), a80$)
 If i% <= NumberOfTunableSpecs% And JEOLBacklash&(i%) < 0 Then GoTo InitMotorsInvalidData
 If i% = XMotor% And JEOLBacklash&(i%) > 0 Then GoTo InitMotorsInvalidData
@@ -564,10 +564,10 @@ linecount% = linecount% + 1
 msg$ = vbNullString
 For i% = 1 To NumberOfTunableSpecs% + NumberOfStageMotors%
 Input #Temp1FileNumber%, JEOLBacklash&(i%)      ' allow zero JEOLBacklash values (P. Carpenter)
-'If JEOLBacklash&(i%) = 0 And i% <= NumberOfTunableSpecs% Then JEOLBacklash&(i%) = 50000     ' 500 um
-'If JEOLBacklash&(i%) = 0 And i% = XMotor% Then JEOLBacklash&(i%) = -5000   ' -50 um
-'If JEOLBacklash&(i%) = 0 And i% = YMotor% Then JEOLBacklash&(i%) = -5000   ' -50 um
-'If JEOLBacklash&(i%) = 0 And i% = ZMotor% Then JEOLBacklash&(i%) = 5000    '  50 um
+'If JEOLBacklash&(i%) = 0 And i% <= NumberOfTunableSpecs% Then JEOLBacklash&(i%) = 50000     ' 500 um or 0.5 mm
+'If JEOLBacklash&(i%) = 0 And i% = XMotor% Then JEOLBacklash&(i%) = -5000   ' -50 um or 0.05 mm
+'If JEOLBacklash&(i%) = 0 And i% = YMotor% Then JEOLBacklash&(i%) = -5000   ' -50 um or 0.05 mm
+'If JEOLBacklash&(i%) = 0 And i% = ZMotor% Then JEOLBacklash&(i%) = 5000    '  50 um or 0.05 mm
 msg$ = msg$ & Format$(JEOLBacklash&(i%), a80$)
 If i% <= NumberOfTunableSpecs% And JEOLBacklash&(i%) < 0 Then GoTo InitMotors2InvalidData
 If i% = XMotor% And JEOLBacklash&(i%) > 0 Then GoTo InitMotors2InvalidData
@@ -3453,6 +3453,11 @@ SecondaryDistanceMethodString$(0) = "Specified Distance"
 SecondaryDistanceMethodString$(1) = "Single Point and Angle"
 SecondaryDistanceMethodString$(2) = "Two Points"
 SecondaryDistanceMethodString$(3) = "Graphical Image"
+
+' Load JEOL spectro jog values from MOTORS.DAT JEOL backlash values (v. 13.6.9)
+For i% = 1 To NumberOfTunableSpecs%
+JEOLSpectroJogSize!(i%) = JEOLBacklash&(i%) / (MICRONSPERMM& * 100#)      ' JEOL backlash is in 1/100th micrometer units
+Next i%
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData

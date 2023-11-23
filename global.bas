@@ -325,7 +325,6 @@ Global Const SMALLAMOUNTFRACTIONx10! = 0.01         ' small amount fraction for 
 Global Const MAXROMPEAKTYPES% = 6                   ' maximum number of ROM scan peaking types
 Global Const DEFAULTVOLATILEINTERVALS% = 5          ' default number of volatile intervals
 
-Global Const JEOL_SPECTRO_JOG_SIZE# = 0.5           ' additional room for JEOL spectro low limit jog (in mm)
 Global Const JEOL_IMAGE_SHIFT_FACTOR! = 163.8       ' image_shift = um_shift * 163.8
 
 Global Const MAXKLMORDER% = 20           ' maximum number of KLM higher order lines to display
@@ -3094,3 +3093,6 @@ Global JEOLFlipCrystalMilliSecDelayAfter As Long
 Global EDSEffectiveTakeOff As Single
 
 Global AllowETOAEditing As Boolean
+
+Global JEOLSpectroJogSize(1 To MAXSPEC%) As Single   ' load from MOTORS.DAT backlash for additional room for JEOL spectro low limit jog (in mm)
+

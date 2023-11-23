@@ -18,7 +18,7 @@
     .002     .002     .002     .002     .002      .002      .002      .002    "backlash tolerance"
    180.0    180.0    180.0    180.0    180.0        12        12        10    "park positions"
   500000   500000   500000   500000   500000    400000    400000     40000    "JEOL velocities"
-   50000    50000    50000    50000    50000     -5000     -5000      5000    "Jeol Backlash"
+   50000    50000    50000    50000    50000     -5000     -5000      5000    "Jeol Backlash (1/100th micrometer units)"
        0        0        0        0        0         0         0         0    "SX100 velocities"
        0        0        0        0        0         0         0         0    "SX100 minimum speeds"
        0        0        0        0        0         0         0         0    "unused"

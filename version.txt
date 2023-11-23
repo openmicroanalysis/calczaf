@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/22/23	Modify GetElmSetElmSave to include code to check for JEOL spectro jog for saving low multi-point 
+		positions (Boroughs). Also fix bug where defaulted multi-point positions were not getting saved!
+		
+		Also fix MPB index label controls.
+
+11/21/23	Modify JEOL spectro backlash code to check backlash defined in the MOTORS.DAT (Boroughs).
+v. 13.6.9
+
 11/21/23	Minor tweak to text explanation in multiple setups dialog (Matthews).
 
 11/19/23	Minor change in effective takeoff angle output in CalcZAF.
@@ -46,7 +54,7 @@ v. 13.6.6
 		Fix PictureSnap bug when loading positions for selected sample and no samples are displayed 
 		in the Automate! window and fix DataCorrectDeadTime2 overflow. (Chouinard). 
 
-10/31/23	Modufy RealTimeROMStartScan code to adjust start scan position if JEOL instrument
+10/31/23	Modify RealTimeROMStartScan code to adjust start scan position if JEOL instrument
 v. 13.6.5	to account for JEOL backlash size.
 
 		Make copy of standard.mdb for distibution (standard_UofO.mdb)

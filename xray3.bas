@@ -76,7 +76,7 @@ If mode% = 2 Then
 pos! = onpos! - temp!
 If Not MiscMotorInBounds(motor%, pos!) Then
 smallamount! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!     ' to place it inside the limits
-If (InterfaceType% = 0 And MiscIsInstrumentStage("JEOL")) Or InterfaceType% = 2 Then smallamount! = smallamount! + JEOL_SPECTRO_JOG_SIZE#   ' add for JEOL low limit spectro jog
+If (InterfaceType% = 0 And MiscIsInstrumentStage("JEOL")) Or InterfaceType% = 2 Then smallamount! = smallamount! + JEOLSpectroJogSize!(motor%)   ' add for JEOL low limit spectro jog
 pos! = MotLoLimits!(motor%) + smallamount!
 End If
 XrayCalculatePositions! = pos!
@@ -105,7 +105,7 @@ If mode% = 4 Then
 pos! = onpos! - temp!
 If Not MiscMotorInBounds(motor%, pos!) Then
 smallamount! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!     ' to place it inside the limits
-If (InterfaceType% = 0 And MiscIsInstrumentStage("JEOL")) Or InterfaceType% = 2 Then smallamount! = smallamount! + JEOL_SPECTRO_JOG_SIZE#    ' add for JEOL low limit spectro jog
+If (InterfaceType% = 0 And MiscIsInstrumentStage("JEOL")) Or InterfaceType% = 2 Then smallamount! = smallamount! + JEOLSpectroJogSize!(motor%)    ' add for JEOL low limit spectro jog
 pos! = MotLoLimits!(motor%) + smallamount!
 End If
 XrayCalculatePositions! = pos!
@@ -138,7 +138,7 @@ If mode% = 6 Then
 pos! = onpos! - temp!
 If Not MiscMotorInBounds(motor%, pos!) Then
 smallamount! = Abs(MotHiLimits!(motor%) - MotLoLimits!(motor%)) * SMALLAMOUNTFRACTION!
-If (InterfaceType% = 0 And MiscIsInstrumentStage("JEOL")) Or InterfaceType% = 2 Then smallamount! = smallamount! + JEOL_SPECTRO_JOG_SIZE#   ' add for JEOL low limit spectro jog
+If (InterfaceType% = 0 And MiscIsInstrumentStage("JEOL")) Or InterfaceType% = 2 Then smallamount! = smallamount! + JEOLSpectroJogSize!(motor%)   ' add for JEOL low limit spectro jog
 pos! = MotLoLimits!(motor%) + smallamount!
 End If
 XrayCalculatePositions! = pos!
