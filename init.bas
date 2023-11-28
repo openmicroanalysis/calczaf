@@ -2578,8 +2578,8 @@ macstring2$(2) = "CITZMU"
 macstring2$(3) = "MCMASTER"
 macstring2$(4) = "MAC30"
 macstring2$(5) = "MACJTA"
-macstring2$(6) = "FFAST"
-macstring2$(7) = "USERMAC"
+macstring2$(6) = "FFAST"            ' FFAST2.DAT contains MACs for Ln, Lg, Lv, Ll, Mg, Mz lines
+macstring2$(7) = "USERMAC"          ' USERMAC2.DAT contains MACs for Ln, Lg, Lv, Ll, Mg, Mz lines
 'macstring2$(8) = "PENEPMAMAC"       ' from Philipp Poeml
 'macstring2$(9) = "POUCHOUMAC"       ' from Philipp Poeml
 

@@ -5,7 +5,7 @@ Begin VB.Form FormMAC
    ClientHeight    =   2520
    ClientLeft      =   1575
    ClientTop       =   1800
-   ClientWidth     =   7215
+   ClientWidth     =   7455
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -22,15 +22,15 @@ Begin VB.Form FormMAC
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   2520
-   ScaleWidth      =   7215
+   ScaleWidth      =   7455
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   375
-      Left            =   5880
+      Left            =   6000
       TabIndex        =   4
       TabStop         =   0   'False
-      Top             =   720
+      Top             =   840
       Width           =   1215
    End
    Begin VB.CommandButton CommandOK 
@@ -38,11 +38,11 @@ Begin VB.Form FormMAC
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   5880
+      Left            =   6000
       Style           =   1  'Graphical
       TabIndex        =   3
       TabStop         =   0   'False
-      Top             =   120
+      Top             =   240
       Width           =   1215
    End
    Begin VB.Frame Frame6 
@@ -61,6 +61,7 @@ Begin VB.Form FormMAC
          Left            =   120
          TabIndex        =   9
          TabStop         =   0   'False
+         ToolTipText     =   "Default USERMAC/USERMAC2 files contain actinide MACs from Poeml/Wright"
          Top             =   1920
          Width           =   5415
       End
@@ -71,6 +72,7 @@ Begin VB.Form FormMAC
          Left            =   120
          TabIndex        =   8
          TabStop         =   0   'False
+         ToolTipText     =   "Contains MACs for additional lines Ln, Lg, Lv, Ll, Mg, Mz "
          Top             =   1560
          Width           =   5415
       End
