@@ -246,16 +246,8 @@ Sub ElementGetData(sample() As TypeSample)
 ierror = False
 On Error GoTo ElementGetDataError
 
-If sample(1).LastElm% < 1 Then Exit Sub
-
-' Check for at least one analyzed element (causes a problem in Standard when adding a new standard)
-'If sample(1).LastElm% < 1 And Not sample(1).EDSSpectraFlag And Not sample(1).CLSpectraFlag Then
-'msg$ = TypeLoadString$(sample())
-'msg$ = "No WDS (or EDS) analyzed elements have been specified, nor EDS or CL spectrum acquisition for sample " & msg$
-'MsgBox msg$, vbOKOnly + vbExclamation, "ElementGetData"
-'ierror = True
-'Exit Sub
-'End If
+' Skip if no elements present
+If sample(1).LastChan% < 1 Then Exit Sub
 
 ' Check for valid element symbols
 Call ElementCheckElement(sample())
