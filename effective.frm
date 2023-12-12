@@ -1,12 +1,11 @@
 VERSION 5.00
 Begin VB.Form FormEffective 
-   BorderStyle     =   3  'Fixed Dialog
+   BorderStyle     =   1  'Fixed Single
    Caption         =   "Calculate K-ratios for a Range of Effective Takeoff Angles"
    ClientHeight    =   5265
    ClientLeft      =   750
    ClientTop       =   4290
    ClientWidth     =   12225
-   ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
       Size            =   8.25
@@ -19,7 +18,6 @@ Begin VB.Form FormEffective
    ForeColor       =   &H80000008&
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   5265
    ScaleWidth      =   12225

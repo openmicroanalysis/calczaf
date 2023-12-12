@@ -520,7 +520,7 @@ Exit Function
 End Function
 
 Function MiscIsElementDuplicated(sample() As TypeSample) As Integer
-' Check for duplicated element
+' Check for one or more duplicated elements in a sample
 
 ierror = False
 On Error GoTo MiscIsElementDuplicatedError
@@ -660,14 +660,52 @@ Exit Function
 
 End Function
 
-Function MiscConvertLog10(X As Double) As Double
+Function MiscIsElementNOTDuplicated(chan As Integer, sample() As TypeSample) As Boolean
+' Check if the element is NOT duplicated using the element, x-ray, takeoff and keV in the element list (do NOT check disable quant flag)
+
+ierror = False
+On Error GoTo MiscIsElementNOTDuplicatedError
+
+Dim j As Integer
+
+' True if NOT duplicated
+MiscIsElementNOTDuplicated = True
+
+' Search sample for match
+For j% = 1 To sample(1).LastChan%
+If chan% <> j% Then
+If Trim$(UCase$(sample(1).Elsyms$(chan%))) = Trim$(UCase$(sample(1).Elsyms$(j%))) Then
+If Trim$(UCase$(sample(1).Xrsyms$(chan%))) = Trim$(UCase$(sample(1).Xrsyms$(j%))) Then
+If sample(1).TakeoffArray!(chan%) = sample(1).TakeoffArray!(j%) Then
+If sample(1).KilovoltsArray!(chan%) = sample(1).KilovoltsArray!(j%) Then
+MiscIsElementNOTDuplicated = False
+Exit Function
+End If
+End If
+End If
+End If
+End If
+
+Next j%
+
+Exit Function
+
+' Errors
+MiscIsElementNOTDuplicatedError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscIsElementNOTDuplicated"
+ierror = True
+Exit Function
+
+End Function
+
+Function MiscConvertLog10(x As Double) As Double
 ' Calculate a Base 10 log
 
 ierror = False
 On Error GoTo MiscConvertLog10Error
 
-If X# <= 0 Then Exit Function
-MiscConvertLog10# = Log(X#) / Log(10#)
+If x# <= 0 Then Exit Function
+MiscConvertLog10# = Log(x#) / Log(10#)
 Exit Function
 
 ' Errors
@@ -678,16 +716,16 @@ Exit Function
 
 End Function
 
-Function MiscMin(X As Variant, Y As Variant) As Variant
+Function MiscMin(x As Variant, y As Variant) As Variant
 ' Finds the minimum of two values passed
 
 ierror = False
 If ierror Then GoTo MiscMinError
 
-If X > Y Then
-      MiscMin = Y
+If x > y Then
+      MiscMin = y
  Else
-      MiscMin = X
+      MiscMin = x
 End If
 
 Exit Function
@@ -700,16 +738,16 @@ Exit Function
 
 End Function
 
-Function MiscMax(X As Variant, Y As Variant) As Variant
+Function MiscMax(x As Variant, y As Variant) As Variant
 ' Finds the maximum of two values passed
 
 ierror = False
 If ierror Then GoTo MiscMaxError
 
-If X < Y Then
-    MiscMax = Y
+If x < y Then
+    MiscMax = y
  Else
-    MiscMax = X
+    MiscMax = x
 End If
 
 Exit Function

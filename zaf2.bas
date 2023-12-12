@@ -74,17 +74,19 @@ Next chan%
 
 ' Sum total atoms, total cations
 For chan% = 1 To sample(1).LastChan%
+
+' Load analysis arrays with sample data
+analysis.AtomicNumbers!(chan%) = sample(1).AtomicNums%(chan%)
+analysis.AtomicCharges!(chan%) = sample(1).AtomicCharges!(chan%)
+analysis.AtomicWts!(chan%) = sample(1).AtomicWts!(chan%)
+
+' Load atomic charges if not disabled or disabled and oxygen...
 If sample(1).DisableQuantFlag%(chan%) = 0 Or (sample(1).DisableQuantFlag%(chan%) = 1 And sample(1).OxideOrElemental% = 1 And sample(1).OxygenChannel% = chan%) Then
 If sample(1).AtomicWts!(chan%) = 0# Then GoTo ZAFCalZbarNoAtomicWeights
 If sample(1).AtomicNums%(chan%) = 0 Then GoTo ZAFCalZbarNoAtomicNumbers
 atoms!(chan%) = analysis.WtPercents!(chan%) / sample(1).AtomicWts!(chan%)
 sum_atoms! = sum_atoms! + atoms!(chan%)
 If sample(1).AtomicCharges!(chan%) > 0# Then sum_cations! = sum_cations! + atoms!(chan%)
-
-' Load analysis arrays with sample data
-analysis.AtomicNumbers!(chan%) = sample(1).AtomicNums%(chan%)
-analysis.AtomicCharges!(chan%) = sample(1).AtomicCharges!(chan%)
-analysis.AtomicWts!(chan%) = sample(1).AtomicWts!(chan%)
 End If
 Next chan%
 

@@ -2,12 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/11/23	Fix subtle bug when checking for duplicate elements and disable flags (Buse).
+
+12/10/23	Tweak Effective.frm.
+
 11/29/23	Modify Load File Setup code to save standard numbers/names/parameters more 
-		systematically (Buse, von der handt, Goemann).
+		systematically (Buse, von der Handt, Goemann).
 
 11/28/23	Improve error handling in ElementGetData. Rename Effective.frm,frx.
 
-11/27/23	Fix bug in ElementGetData when loading new standardv in Standard app (von der Handt).
+11/27/23	Fix bug in ElementGetData when loading new standards in Standard app (von der Handt).
 v. 13.7.1
 
 11/27/23	Add usermac.dat and usermac2.dat (actinide) MAC files to CalcZAF distribution. 
@@ -32,7 +36,7 @@ v. 13.6.8
 		lines in case of multiple emission lines for an elements (Matthews).
 
 11/13/23	Fix PHA MCA display output bug to FormSCAN.  Fix output of duplicate elements in
-		STRATAGem ouitput (Matthews).
+		STRATAGem output (Matthews).
 
 11/12/23	Modify FormSetupRun to make filename label control longer for long folder strings.
 
@@ -55,7 +59,7 @@ v. 13.6.7
 
 		Add Run | Display Acquired Selected Positions on PictureSnap menu (Chouinard).
 		
-		Add Kev to CalcZAF Use All Matrix Corrections output.
+		Add keV to CalcZAF Use All Matrix Corrections output.
 
 11/02/23	Tweak CalcZAF Use All Matrix Corrections output.
 v. 13.6.6
@@ -68,12 +72,12 @@ v. 13.6.6
 10/31/23	Modify RealTimeROMStartScan code to adjust start scan position if JEOL instrument
 v. 13.6.5	to account for JEOL backlash size.
 
-		Make copy of standard.mdb for distibution (standard_UofO.mdb)
+		Make copy of standard.mdb for distribution (standard_UofO.mdb)
 
 10/29/23	Disable Effective angle calculations for older MDB files.
 
 		Modify effective angle code to rotate spectrometer orientations if JEOL instrument (for anti 
-		cartesian stage coodinates) (Moy).
+		Cartesian stage coordinates) (Moy).
 		
 		Comment out JEOL specific code for ETOA spectrometer orientation rotation (not needed?).
 

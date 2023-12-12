@@ -498,10 +498,12 @@ End If
 ' If aggregate mode check that disable acq and disable quant flags on primary standards are the same as the sample (new check suggested by Nachlas)
 If UseAggregateIntensitiesFlag Then
 For chan% = 1 To sample(1).LastElm%
+If Not MiscIsElementNOTDuplicated(chan%, sample()) Then     ' only check elements which are duplicated (disable quant or not)!
 ipp% = IPOS5(Int(0), chan%, sample(), UpdateTmpSample())
 If ipp% <> 0 Then
 If sample(1).DisableAcqFlag(chan%) <> UpdateTmpSample(1).DisableAcqFlag(ipp%) Then GoTo UpdateGetStandardsAggregateDANotMatched
 If sample(1).DisableQuantFlag(chan%) <> UpdateTmpSample(1).DisableQuantFlag(ipp%) Then GoTo UpdateGetStandardsAggregateDQNotMatched
+End If
 End If
 Next chan%
 End If
@@ -585,10 +587,12 @@ End If
 ' If aggregate mode check that disable acq and disable quant flags on interference standards are the same as the sample (new check suggested by Nachlas)
 If UseAggregateIntensitiesFlag Then
 For chan% = 1 To sample(1).LastElm%
+If Not MiscIsElementNOTDuplicated(chan%, sample()) Then     ' only check elements which are duplicated (disable quant or not)!
 ipp% = IPOS5(Int(0), chan%, sample(), UpdateTmpSample())
 If ipp% <> 0 Then
 If sample(1).DisableAcqFlag(chan%) <> UpdateTmpSample(1).DisableAcqFlag(ipp%) Then GoTo UpdateGetStandardsAggregateDANotMatched2
 If sample(1).DisableQuantFlag(chan%) <> UpdateTmpSample(1).DisableQuantFlag(ipp%) Then GoTo UpdateGetStandardsAggregateDQNotMatched2
+End If
 End If
 Next chan%
 End If
@@ -2478,10 +2482,12 @@ If sample(1).IntegratedIntensitiesUseIntegratedFlags%(i%) <> UpdateTmpSample(1).
 ' If aggregate mode check that disable acq and disable quant flags on MAN standards are the same as the sample (new check suggested by Nachlas)
 If UseAggregateIntensitiesFlag Then
 For chan% = 1 To sample(1).LastElm%
+If Not MiscIsElementNOTDuplicated(chan%, sample()) Then     ' only check elements which are duplicated (disable quant or not)!
 ipp% = IPOS5(Int(0), chan%, sample(), UpdateTmpSample())
 If ipp% <> 0 Then
 If sample(1).DisableAcqFlag(chan%) <> UpdateTmpSample(1).DisableAcqFlag(ipp%) Then GoTo UpdateGetMANStandardsAggregateDANotMatched
 If sample(1).DisableQuantFlag(chan%) <> UpdateTmpSample(1).DisableQuantFlag(ipp%) Then GoTo UpdateGetMANStandardsAggregateDQNotMatched
+End If
 End If
 Next chan%
 End If
