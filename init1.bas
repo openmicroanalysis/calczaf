@@ -2091,20 +2091,20 @@ If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivatePro
 
 lpAppName$ = "Software"
 lpKeyName$ = "VolatileSelfCalibrationAcquisitionFlag"
-nDefault& = 0        ' self TDI acquisition off
+nDefault& = False        ' self TDI acquisition off
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-VolatileSelfCalibrationAcquisitionFlag = CInt(valid&)
-If VolatileSelfCalibrationAcquisitionFlag% < 0 Or VolatileSelfCalibrationAcquisitionFlag% > 1 Then
-msg$ = "VolatileSelfCalibrationAcquisitionFlag keyword value is invalid in " & ProbeWinINIFile$ & ", (must be 0 or 1)"
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
-VolatileSelfCalibrationAcquisitionFlag% = nDefault&
+If valid& <> 0 Then
+VolatileSelfCalibrationAcquisitionFlag% = True
+Else
+VolatileSelfCalibrationAcquisitionFlag% = False
 End If
+If VolatileSelfCalibrationAcquisitionFlag% Then UseVolElFlag = True     ' set this flag also as in procedure SpecialSave (Boroughs)
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 lpAppName$ = "Software"
 lpKeyName$ = "AcquireVolatileSelfStandardIntensitiesFlag"
-nDefault& = False   ' acquire TDI on standards off
+nDefault& = False       ' acquire TDI on standards off
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 If valid& <> 0 Then

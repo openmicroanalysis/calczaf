@@ -2934,7 +2934,7 @@ UseMACFlag = False      ' don't use empirical MACs as default
 UseAPFFlag = False      ' don't use empirical APFs as default
 
 UseInterfFlag = False       ' don't use interference correction as default
-UseVolElFlag = False        ' don't use volatile element correction as default
+'UseVolElFlag = False        ' don't use volatile element correction as default (see in INI file by VolatileSelfCalibrationAcquisitionFlag)
 UseVolElType% = 0           ' use linear as default
 UseMANAbsFlag = True        ' use MAN continuum absorption as default
 UseDetailedFlag = True      ' use extra printout as default

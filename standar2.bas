@@ -155,6 +155,9 @@ sample(1).AtomicCharges!(sample(1).LastChan%) = stds("AtomicChargesStd")    ' v.
 ' Load atomic weights for standard elements
 sample(1).AtomicWts!(sample(1).LastChan%) = stds("AtomicWtsStd")            ' v. 13.3.2
 
+' Check for zero atomic weights (Neill)
+If sample(1).AtomicWts!(sample(1).LastChan%) = 0# Then GoTo StandardGetMDBStandardZeroAtomicWeight
+
 stds.MoveNext
 Loop
 
@@ -240,6 +243,16 @@ Exit Sub
 StandardGetMDBStandardTooManyElements:
 Screen.MousePointer = vbDefault
 msg$ = "Too many elements in standard number " & Format$(sample(1).number%) & " in " & StandardDataFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "StandardGetMDBStandard"
+ierror = True
+Exit Sub
+
+StandardGetMDBStandardZeroAtomicWeight:
+Screen.MousePointer = vbDefault
+msg$ = "A zero atomic weight was found in the standard composition for standard number " & Format$(sample(1).number%) & " in " & StandardDataFile$ & vbCrLf & vbCrLf
+msg$ = msg$ & "Please close this probe database, then run the Standard application, open the indicated standard database, select the indicated standard number "
+msg$ = msg$ & "and click the Standard | Modify menu to update the standard by clicking the OK button and Yes to Replace/Modify the standard composition." & vbCrLf & vbCrLf
+msg$ = msg$ = "Note this error should not occur, please also contact Probe Software technical support if you see this error."
 MsgBox msg$, vbOKOnly + vbExclamation, "StandardGetMDBStandard"
 ierror = True
 Exit Sub

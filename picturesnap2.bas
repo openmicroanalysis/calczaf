@@ -966,13 +966,13 @@ samplerow% = FormAUTOMATE.ListDigitize.ItemData(FormAUTOMATE.ListDigitize.ListIn
 Call PositionGetSampleDataOnly(samplerow%, npts%, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageIdata%())
 If ierror Then Exit Sub
 
-' Dimension unused arrays
-ImagePoints& = npts%
-If ImagePoints& > 0 Then
-ReDim ImageNData(1 To ImagePoints&) As Integer
-ReDim ImageSData(1 To ImagePoints&) As Integer
-ReDim ImageSNdata(1 To ImagePoints&) As String
-End If
+' Load returned points and zero out sample and line numbers (not returned by above get selected position sample call)
+ImagePoints& = CLng(npts%)
+For i& = 1 To ImagePoints&
+ImageNData%(i&) = 0     ' line numbers
+ImageSData%(i&) = 0     ' sample numbers
+ImageSNdata$(i&) = vbNullString     ' sample number
+Next i&
 
 ' Load data for selected position sample type
 ElseIf FormPICTURESNAP.menuDisplayStandards.Checked Or FormPICTURESNAP.menuDisplayUnknowns.Checked Or FormPICTURESNAP.menuDisplayWavescans.Checked Then

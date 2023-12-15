@@ -884,6 +884,8 @@ StandardTmpSample(1).Elsyms$(StandardTmpSample(1).LastChan%) = Symlo$(StDs2("Ato
 StandardTmpSample(1).ElmPercents!(StandardTmpSample(1).LastChan%) = StDs2("Weight") * 100#
 StandardTmpSample(1).numcat%(StandardTmpSample(1).LastChan%) = AllCat%(StDs2("AtomNum"))
 StandardTmpSample(1).numoxd%(StandardTmpSample(1).LastChan%) = AllOxd%(StDs2("AtomNum"))
+StandardTmpSample(1).AtomicCharges!(StandardTmpSample(1).LastChan%) = AllAtomicCharges!(StDs2("AtomNum"))
+StandardTmpSample(1).AtomicWts!(StandardTmpSample(1).LastChan%) = AllAtomicWts!(StDs2("AtomNum"))
 If StDs2("AtomNum") = 8 And StDs2("Weight") > 0.05 Then StandardTmpSample(1).DisplayAsOxideFlag% = True    ' assume oxide display if oxygen > 5%
 End If
 
@@ -1343,6 +1345,8 @@ temp1!(chan%) = Val(bstring$)
 sample(1).numcat%(chan%) = AllCat%(ielm%)
 sample(1).numoxd%(chan%) = AllOxd%(ielm%)
 
+sample(1).AtomicCharges!(chan%) = AllAtomicCharges!(ielm%)
+sample(1).AtomicWts!(chan%) = AllAtomicWts!(ielm%)
 Next chan%
 
 ' Load default density
