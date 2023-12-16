@@ -14,6 +14,19 @@ Sub StandardOpenDATFile(mode As Integer, tfilename As String, tForm As Form)
 ierror = False
 On Error GoTo StandardOpenDATFileError
 
+Dim response As Integer
+
+' Confirm with user if exporting
+If mode% = 1 Or mode% = 3 Then
+msg$ = "Please note that not all data fields in the standard composition database are exported to the .DAT ASCII file." & vbCrLf & vbCrLf
+msg$ = msg$ & "Do you still want to continue the file export?"
+response% = MsgBox(msg$, vbOKCancel + vbInformation, "StandardOpenDATFile")
+If response% = vbCancel Then
+ierror = True
+Exit Sub
+End If
+End If
+
 ' Make sure that a .MDB standard database is already open to import into
 If StandardDataFile$ = vbNullString Then
 Call StandardOpenMDBFile(tfilename$, tForm)
@@ -813,7 +826,7 @@ Next i%
 dstring$ = dstring$ & tmsg$ & vbTab
 Next n%
 
-' Write material type, flormula flags, etc
+' Write material type, formula flags, etc
 estring$ = VbDquote$ & sample(1).MaterialType$ & VbDquote$ & vbTab & sample(1).FormulaElementFlag & vbTab & sample(1).FormulaRatio! & vbTab & VbDquote$ & sample(1).FormulaElement$ & VbDquote$ & vbTab & VbDquote$ & sample(1).MountNames$ & VbDquote & vbTab
 
 ' Write the line to the file
