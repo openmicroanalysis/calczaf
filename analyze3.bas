@@ -2007,6 +2007,7 @@ End If
 For linerow% = 1 To sample(1).Datarows
 If sample(1).LineStatus(linerow%) Then
 msg$ = Format$(Format$(sample(1).Linenumber&(linerow%), i50$), a60$)
+'msg$ = Format$(Format$(sample(1).Linenumber&(linerow%), i50$), a60$ & "!")         ' left justified
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
 

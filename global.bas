@@ -2489,9 +2489,9 @@ Global AutomationProgressReportTime As Variant
 'Global Const AutomationProgressReportInterval As Variant = 0.001    ' in days (86 seconds, for testing only)
 Global Const AutomationProgressReportInterval As Variant = 0.333   ' in days (8 hours)
 
-Global ImportIncrementXIncrement As Single, ImportIncrementYIncrement As Single   ' in microns
-Global ImportIncrementXFactor As Integer, ImportIncrementYFactor As Integer
-Global ImportIncrementXTotal As Single, ImportIncrementYTotal As Single
+Global ImportIncrementXIncrement As Single, ImportIncrementYIncrement As Single, ImportIncrementZIncrement As Single   ' in microns
+Global ImportIncrementXFactor As Integer, ImportIncrementYFactor As Integer, ImportIncrementZFactor As Integer
+Global ImportIncrementXTotal As Single, ImportIncrementYTotal As Single, ImportIncrementZTotal As Single
 
 Global AutoIncrementDelimiterString As String
 
