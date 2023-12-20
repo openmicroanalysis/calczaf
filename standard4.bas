@@ -1242,12 +1242,18 @@ ierror = False
 On Error GoTo StandardImportJEOL8x30ParseFileError
 
 Dim materialflag As Integer, ratioflag As Integer, ivalence As Integer
-Dim chan As Integer, ielm As Integer
+Dim chan As Integer, ielm As Integer, response2 As Integer, ipp As Integer
 Dim astring As String, bstring As String
 Dim tparameter As String, tfolder As String
 
 ReDim temp1(1 To MAXCHAN%) As Single
 ReDim temp2(1 To MAXCHAN%) As Single
+
+Static SkipErrors As Boolean
+
+' Init sample
+Call InitSample(sample())
+If ierror Then Exit Sub
 
 ' Parse out the folder name
 tfolder$ = MiscGetPathOnly$(tfilename$)
@@ -1289,7 +1295,7 @@ End If
 sample(1).Name$ = Replace$(sample(1).Name$, VbDquote$, VbSquote$)
 If ierror Then Exit Sub
 
-' Read material type flag (0 = elemental, 1 = oxide)
+' Read material type flag (0 = elemental, 1 = oxide) (standard compositions in Standard.mdb are always stored in elemental composition)
 tparameter$ = "$XM_CMP_MATERIAL"
 Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
 If ierror Then Exit Sub
@@ -1299,7 +1305,6 @@ materialflag% = 0               ' elemental data
 Else
 materialflag% = 1               ' oxide data
 End If
-sample(1).OxideOrElemental% = 2         ' standards are always stored as elemental compositions
 
 ' Get ratio type flag (0 = elemental or oxide percents, 1 = formula atoms)?
 tparameter$ = "$XM_CMP_RATIO_TYPE"
@@ -1328,9 +1333,14 @@ If ierror Then Exit Sub
 ' Check for a valid number of elements
 sample(1).LastChan% = Val(astring$)
 If sample(1).LastChan% = 0 Then
-msg$ = "No elements defined for standard " & sample(1).Name$ & " in " & tfilename$ & vbCrLf & vbCrLf
-msg$ = msg$ & "The standard will not be imported into the standard composition database."
-MsgBox msg$, vbOKOnly + vbExclamation, "StandardImportJEOL8x30ParseFile"
+If Not SkipErrors Then
+msg$ = "No elements defined for standard " & sample(1).Name$ & " in " & tfilename$
+msg$ = msg$ & ". The standard will not be imported into the standard composition database." & vbCrLf & vbCrLf
+msg$ = msg$ & "Would you like to see all errors of this type during the standard import or not?"
+response2% = MsgBox(msg$, vbYesNo + vbExclamation, "StandardImportJEOL8x30ParseFile")
+If response2% = vbYes Then Exit Sub
+End If
+SkipErrors = True
 Exit Sub
 End If
 If sample(1).LastChan% > MAXCHAN% Then GoTo StandardImportJEOL8x30ParseFileTooManyElements
@@ -1366,7 +1376,7 @@ Next chan%
 sample(1).SampleDensity! = DEFAULTDENSITY!
 
 ' If oxide data, add oxygen to elements
-If materialflag% = 1 Then
+If materialflag% = 1 And ratioflag = 0 Then                 ' do not add oxygen by stoichiometry if formula basis
 sample(1).LastChan% = sample(1).LastChan% + 1
 sample(1).Elsyms$(sample(1).LastChan%) = Symlo$(ATOMIC_NUM_OXYGEN%)
 ivalence% = -2                                      ' not utilized yet!
@@ -1374,6 +1384,9 @@ ivalence% = -2                                      ' not utilized yet!
 ' Load other parameters
 sample(1).numcat%(sample(1).LastChan%) = AllCat%(ATOMIC_NUM_OXYGEN%)
 sample(1).numoxd%(sample(1).LastChan%) = AllOxd%(ATOMIC_NUM_OXYGEN%)
+
+sample(1).AtomicCharges!(sample(1).LastChan%) = AllAtomicCharges!(ATOMIC_NUM_OXYGEN%)
+sample(1).AtomicWts!(sample(1).LastChan%) = AllAtomicWts!(ATOMIC_NUM_OXYGEN%)
 End If
 
 ' Convert atoms to elemental concentrations
@@ -1394,8 +1407,8 @@ End If
 ' Convert all to elemental concentrations
 For chan% = 1 To sample(1).LastChan%
 
-' Elemental material, just load concentrations
-If materialflag% = 0 Then
+' Elemental (or formula) material, just load elemental concentrations
+If materialflag% = 0 Or ratioflag% = 1 Then
 temp2!(chan%) = temp1!(chan%)
 
 ' Oxide material, convert to elemental
@@ -1405,16 +1418,37 @@ End If
 
 ' Load elemental concentrations
 sample(1).ElmPercents!(chan%) = temp2!(chan%)
-
-' Assume oxide display if oxygen > 5%
-If UCase$(Trim$(sample(1).Elsyms$(chan%))) = UCase$(Trim$(Symlo$(ATOMIC_NUM_OXYGEN%))) And sample(1).ElmPercents!(chan%) > 5# Then sample(1).DisplayAsOxideFlag% = True
 Next chan%
 
-' Now that oxides are converted to elemental concentrations, if oxide material, calculate oxygen from cations
+' Now check for duplicate elements and add together if necessary
+For chan% = 1 To sample(1).LastChan%
+If MiscIsElementDuplicatedSubsequent(chan%, sample(1).LastChan%, sample(1).Elsyms$(), ipp%) Then
+
+' Combine concentrations
+sample(1).ElmPercents!(chan%) = sample(1).ElmPercents!(chan%) + sample(1).ElmPercents!(ipp%)
+
+' Zero out the duplicate element
+sample(1).Elsyms$(ipp%) = vbNullString
+sample(1).Xrsyms$(ipp%) = vbNullString
+
+End If
+Next chan%
+
+' Re-load sample to remove deleted elements (if any)
+Call GetElmSaveSampleOnly(Int(0), sample(), Int(0), Int(0))
+If ierror Then Exit Sub
+
+' If oxide material, calculate oxygen from cations
 If materialflag% = 1 Then
 sample(1).OxygenChannel% = sample(1).LastChan%
 sample(1).ElmPercents!(sample(1).OxygenChannel%) = ConvertOxygenFromCations!(sample())
 If ierror Then Exit Sub
+
+' Set display as oxide flag
+sample(1).DisplayAsOxideFlag% = True
+
+Else
+sample(1).DisplayAsOxideFlag% = False
 End If
 
 Exit Sub
