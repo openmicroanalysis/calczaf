@@ -1174,6 +1174,8 @@ Close #ImportDataFileNumber%
 Exit Sub
 End If
 
+Call IOStatusAuto("Importing standard " & Format$(StandardTmpSample(1).number%) & ", " & StandardTmpSample(1).Name$)
+
 ' Add the standard to the database
 Call StandardAddRecord(StandardTmpSample())
 If ierror Then
@@ -1203,10 +1205,13 @@ Close #ExportDataFileNumber%
 
 Next n&
 
+Call IOStatusAuto(vbNullString)
+
 Screen.MousePointer = vbDefault
 msg$ = "All JEOL standard compositions saved to the current standard composition database (" & StandardDataFile$ & ")." & vbCrLf & vbCrLf
 msg$ = msg$ & "Next, (optionally) use the Stage application to import the JEOL stage positions for each mount and save to .POS files."
 MsgBox msg$, vbOKOnly + vbInformation, "StandardImportJEOL8x30"
+
 Exit Sub
 
 ' Errors
@@ -1274,20 +1279,11 @@ If ierror Then Exit Sub
 
 sample(1).Description$ = Trim$(astring$)
 
-' Create name from name and comment and block/mount folder (if specified)
+' Create name from folder and name if user specified mount name in standard name
 If response% = vbYes Then
-If sample(1).Description$ <> vbNullString Then
-sample(1).Name$ = tfolder$ & "_" & Trim(sample(1).Name$ & "_" & sample(1).Description$)
-Else
 sample(1).Name$ = tfolder$ & "_" & Trim(sample(1).Name$)
-End If
 
 Else
-If sample(1).Description$ <> vbNullString Then
-sample(1).Name$ = Trim(sample(1).Name$ & "_" & sample(1).Description$)
-Else
-sample(1).Name$ = Trim(sample(1).Name$)
-End If
 sample(1).MountNames$ = tfolder$
 End If
 
@@ -1306,7 +1302,7 @@ Else
 materialflag% = 1               ' oxide data
 End If
 
-' Get ratio type flag (0 = elemental or oxide percents, 1 = formula atoms)?
+' Get ratio type flag (0 = elemental or oxide percents, 1 or 2 = formula atoms)?
 tparameter$ = "$XM_CMP_RATIO_TYPE"
 Call StandardImportJEOL8x30ParseFile2(tfilename$, tparameter$, astring$)
 If ierror Then Exit Sub
@@ -1390,7 +1386,7 @@ sample(1).AtomicWts!(sample(1).LastChan%) = AllAtomicWts!(ATOMIC_NUM_OXYGEN%)
 End If
 
 ' Convert atoms to elemental concentrations
-If ratioflag% = 1 Then
+If ratioflag% = 1 Or ratioflag% = 2 Then
 
 ' Load temp array for atom to elemental conversion
 For chan% = 1 To sample(1).LastChan%
