@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeINTERF2"
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
 Dim Interf2Sample(1 To 1) As TypeSample

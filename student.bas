@@ -1,8 +1,8 @@
 Attribute VB_Name = "CodeSTUDENT"
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
-Function StudentBetacf(a As Single, b As Single, X As Single) As Single
+Function StudentBetacf(a As Single, b As Single, x As Single) As Single
 ' From Numerical Receipes
 
 ierror = False
@@ -22,15 +22,15 @@ az! = 1#
 qab! = a! + b!
 qap! = a! + 1#
 qam! = a! - 1#
-bz! = 1# - qab! * X! / qap!
+bz! = 1# - qab! * x! / qap!
 
 For m% = 1 To ITMAX%
 em! = m%
 tem! = em! + em!
-d! = em! * (b! - m%) * X! / ((qam! + tem!) * (a! + tem!))
+d! = em! * (b! - m%) * x! / ((qam! + tem!) * (a! + tem!))
 AP! = az! + d! * am!
 bp! = bz! + d! * bm!
-d! = -(a! + em!) * (qab! + em!) * X! / ((a! + tem!) * (qap! + tem!))
+d! = -(a! + em!) * (qab! + em!) * x! / ((a! + tem!) * (qap! + tem!))
 app! = AP! + d! * az!
 bpp! = bp! + d! * bz!
 aold! = az!
@@ -61,7 +61,7 @@ Exit Function
 
 End Function
 
-Function StudentBetai(a As Single, b As Single, X As Single) As Single
+Function StudentBetai(a As Single, b As Single, x As Single) As Single
 ' From Numerical Receipes
 
 ierror = False
@@ -69,19 +69,19 @@ On Error GoTo StudentBetaiError
 
 Dim bt As Single
 
-If X! < 0# Or X! > 1# Then GoTo StudentBetaiBadX
+If x! < 0# Or x! > 1# Then GoTo StudentBetaiBadX
 
-If X! = 0# Or X! = 1# Then
+If x! = 0# Or x! = 1# Then
 bt! = 0#
 Else
-bt! = Exp(StudentGammln!(a! + b!) - StudentGammln!(a!) - StudentGammln!(b!) + a! * Log(X!) + b! * Log(1# - X!))
+bt! = Exp(StudentGammln!(a! + b!) - StudentGammln!(a!) - StudentGammln!(b!) + a! * Log(x!) + b! * Log(1# - x!))
 End If
 
-If X < (a! + 1#) / (a! + b! + 2#) Then
-StudentBetai! = bt! * StudentBetacf!(a!, b!, X!) / a!
+If x < (a! + 1#) / (a! + b! + 2#) Then
+StudentBetai! = bt! * StudentBetacf!(a!, b!, x!) / a!
 Exit Function
 Else
-StudentBetai! = 1# - bt! * StudentBetacf!(b!, a!, 1# - X!) / b!
+StudentBetai! = 1# - bt! * StudentBetacf!(b!, a!, 1# - x!) / b!
 Exit Function
 End If
 
@@ -166,7 +166,7 @@ ierror = False
 On Error GoTo StudentGammlnError
 
 Dim stp As Double, half As Double
-Dim one As Double, fpf As Double, X As Double
+Dim one As Double, fpf As Double, x As Double
 Dim tmp As Double, ser As Double
 Dim j As Integer
 
@@ -184,14 +184,14 @@ half# = 0.5
 one# = 1#
 fpf# = 5.5
 
-X# = xx! - one#
-tmp# = X# + fpf#
-tmp# = (X# + half#) * Log(tmp#) - tmp#
+x# = xx! - one#
+tmp# = x# + fpf#
+tmp# = (x# + half#) * Log(tmp#) - tmp#
 ser# = one#
 
 For j% = 1 To 6
-X# = X# + one#
-ser# = ser# + cof#(j%) / X#
+x# = x# + one#
+ser# = ser# + cof#(j%) / x#
 Next j%
 
 StudentGammln! = tmp# + Log(stp# * ser#)

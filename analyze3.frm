@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.4#0"; "comctl32.Ocx"
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "msflxgrd.ocx"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
 Begin VB.Form FormANALYZE 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Analyze!"
@@ -267,7 +267,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
 Private Sub CommandNext_Click()
@@ -275,9 +275,13 @@ If Not DebugMode Then On Error Resume Next
 ' Nothing to do here
 End Sub
 
+Private Sub Form_Load()
+
+End Sub
+
 Private Sub StatusBarAnal_PanelClick(ByVal Panel As ComctlLib.Panel)
 If Not DebugMode Then On Error Resume Next
-Select Case Panel.key
+Select Case Panel.Key
 Case "status"
     Exit Sub
 Case "cancel"

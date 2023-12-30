@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePictureSnapStageMove"
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
 Dim DrawLineRectanglePositions1(1 To 2) As Single
@@ -146,9 +146,9 @@ stagez! = RealTimeMotorPositions!(ZMotor%)
 End If
 
 ' Move scroll bars on main window to this position
-temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.min
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.mIn
 FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
-temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.min
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.mIn
 FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
 
 ' Move to position clicked by user
@@ -189,11 +189,11 @@ Call PictureSnapConvert(Int(2), formx!, formy!, CSng(0#), stagex!, stagey!, stag
 If ierror Then Exit Sub
 
 ' Move scroll bars on main window to this position
-temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.min
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.mIn
 If fractionx! >= 0# And fractionx! <= 1# Then
 FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
 End If
-temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.min
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.mIn
 If fractiony! >= 0# And fractiony! <= 1# Then
 FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
 End If

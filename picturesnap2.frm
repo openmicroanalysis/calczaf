@@ -835,7 +835,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
 Private Sub CommandCalibratePicture_Click()
@@ -995,7 +995,7 @@ HelpContextID = IOGetHelpContextID("FormPICTURESNAP2")
 PictureSnapCalibratedPreviously = PictureSnapCalibrated
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 If WaitingForCalibrationClick Then
 FormPICTURESNAP2.MousePointer = vbDefault

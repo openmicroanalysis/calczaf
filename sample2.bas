@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSAMPLE2"
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
 Sub SampleCheckSampleList(tList As ListBox, nsams As Integer, samplerow As Integer)

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeFILEINFO2"
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -444,7 +444,7 @@ Exit Sub
 
 End Sub
 
-Sub FileInfoSaveData(filename As String)
+Sub FileInfoSaveData(Filename As String)
 ' Save data to MDB "File" table
 
 ierror = False
@@ -455,7 +455,7 @@ Dim FiDt As Recordset
 
 ' Open the specified database file
 Screen.MousePointer = vbHourglass
-Set FiDb = OpenDatabase(filename$, DatabaseExclusiveAccess%, False)
+Set FiDb = OpenDatabase(Filename$, DatabaseExclusiveAccess%, False)
 
 ' Open file table
 Set FiDt = FiDb.OpenRecordset("File", dbOpenTable)

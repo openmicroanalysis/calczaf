@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{6E5043E8-C452-4A6A-B011-9B5687112610}#1.0#0"; "Pesgo32f.ocx"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
 Begin VB.Form FormEDSDISPLAY3 
    AutoRedraw      =   -1  'True
    Caption         =   "EDS Spectrum Display"
@@ -240,7 +240,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
 Private Sub ComboSpecificElement_Change()
@@ -326,13 +326,13 @@ Call EDSSaveKLM(FormEDSDISPLAY3)
 If ierror Then Exit Sub
 End Sub
 
-Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Pesgo1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
 If Not DebugMode Then On Error Resume Next
 Dim astring As String
 Dim fX As Double, fY As Double      ' last mouse position
 
 ' Get mouse position in data units
-Call MiscPlotTrack(Int(1), X!, Y!, fX#, fY#, FormEDSDISPLAY3.Pesgo1)
+Call MiscPlotTrack(Int(1), x!, y!, fX#, fY#, FormEDSDISPLAY3.Pesgo1)
 If ierror Then Exit Sub
    
 ' Format graph mouse position

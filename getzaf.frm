@@ -28,7 +28,7 @@ Begin VB.Form FormGETZAF
       Height          =   285
       Left            =   4320
       TabIndex        =   81
-      ToolTipText     =   $"GETZAF.frx":0000
+      ToolTipText     =   $"Getzaf.frx":0000
       Top             =   3450
       Width           =   735
    End
@@ -852,7 +852,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
 Private Sub CommandCancel_Click()

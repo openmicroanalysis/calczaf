@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePENEPMA12"
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
 Global Const MICROGRAMSPERGRAM& = 1000000            ' micrograms per gram

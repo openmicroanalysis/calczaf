@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMATH2"
-' (c) Copyright 1995-2023 by John J. Donovan
+' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
 Function MathArcSin(x As Double) As Double
