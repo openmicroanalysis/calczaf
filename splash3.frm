@@ -118,7 +118,7 @@ Begin VB.Form FormSPLASH
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
-      Caption         =   "Copyright (c) 1995-2023 by John J. Donovan"
+      Caption         =   "Copyright (c) 1995-2024 by John J. Donovan"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   12
