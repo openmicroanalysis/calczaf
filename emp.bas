@@ -54,7 +54,7 @@ If ierror Then Exit Sub
 
 ' Renormalize if loading APF factors (analyze O ka in MgO using SiO2 as standard with MgO referenced APFs)
 If EmpTypeFlag% = 2 Then
-empval! = empval! * empfactor!   ' changed from division to multiplication (01/08/2024) (see Oxygen measured and stoichiometric_11-20-2202.MDB)
+empval! = empval! / empfactor!
 End If
 
 ' Load module array

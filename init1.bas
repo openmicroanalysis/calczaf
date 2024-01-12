@@ -865,7 +865,7 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
 Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then NominalBeam! = Val(Left$(lpReturnString$, valid&))
-If NominalBeam! < MINBEAMCURRENT! * 10# Or NominalBeam! > MAXBEAMSIZE! Then
+If NominalBeam! < MINBEAMCURRENT! * 10# Or NominalBeam! > MAXBEAMCURRENT! Then
 msg$ = "NominalBeam keyword value out of range in " & ProbeWinINIFile$ & " (must be between " & Format$(MINBEAMCURRENT! * 10) & " and " & Format$(MAXBEAMCURRENT!) & ")"
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIGeneral"
 NominalBeam! = Val(lpDefault$)
@@ -2451,15 +2451,19 @@ msg$ = "FilamentStandbyExternalScript (or PCC filename) keyword is blank in " & 
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
-If (FilamentStandbyType% = 3 Or FilamentStandbyType% = 4) And MiscGetPathOnly2$(FilamentStandbyExternalScript$) = vbNullString Then    ' check that full path is specified
+If (FilamentStandbyType% = 3 Or FilamentStandbyType% = 4) Then
+If MiscGetPathOnly2$(FilamentStandbyExternalScript$) = vbNullString Then     ' check that full path is specified
 msg$ = "FilamentStandbyExternalScript keyword file (" & FilamentStandbyExternalScript$ & ") does not contain the full path as specified in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
-If (FilamentStandbyType% = 3 Or FilamentStandbyType% = 4) And Dir$(FilamentStandbyExternalScript$) = vbNullString Then    ' check that file actually exists
+End If
+If (FilamentStandbyType% = 3 Or FilamentStandbyType% = 4) Then
+If Dir$(FilamentStandbyExternalScript$) = vbNullString Then    ' check that file actually exists
 msg$ = "FilamentStandbyExternalScript keyword file (" & FilamentStandbyExternalScript$ & ") was not found as specified in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
+End If
 End If
 lpDefault$ = Trim$(FilamentStandbyExternalScript$)
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
