@@ -2,8 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/12/24	Add option to load project flags from an existing project when creating a new project 
+		using the CalcImage project wizard (Boroughs).
+		
+		Better handle output if Surfer app is not installed.
+
 01/11/24	Fix bug where pre-peaking option was not getting the correct starting peak position if the
 		element was not the first element in the spectrometer (Williams).
+		
+		Check for Surfer app installed before running app for output (Boroughs).
 
 01/08/24	Add tooltip help to CalcImage for analytical total min/max (Boroughs). 
 

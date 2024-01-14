@@ -275,13 +275,9 @@ If Not DebugMode Then On Error Resume Next
 ' Nothing to do here
 End Sub
 
-Private Sub Form_Load()
-
-End Sub
-
 Private Sub StatusBarAnal_PanelClick(ByVal Panel As ComctlLib.Panel)
 If Not DebugMode Then On Error Resume Next
-Select Case Panel.Key
+Select Case Panel.key
 Case "status"
     Exit Sub
 Case "cancel"
