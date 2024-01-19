@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/18/24	Fix bug in Standard that prevented H and He from being saved to the standard composition (von der Handt).
+v. 13.7.6
+		Add Brian Joy as contributor to excess oxygen from ferrous/ferric calculations.
+
 01/12/24	Add option to load project flags from an existing project when creating a new project 
 		using the CalcImage project wizard (Boroughs).
 		

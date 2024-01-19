@@ -161,7 +161,8 @@ sym$ = GetCmpTmpSample(1).Elsyms$(i%)
 ip% = IPOS1(MAXELM%, sym$, Symlo$())
 
 sym$ = GetCmpTmpSample(1).Xrsyms$(i%)
-ipp% = IPOS1(MAXRAY% - 1, sym$, Xraylo$())
+'ipp% = IPOS1(MAXRAY% - 1, sym$, Xraylo$())
+ipp% = IPOS1(MAXRAY%, sym$, Xraylo$())     ' to allow H and He in the standard matrix
 
 If ip% > 0 And ipp% > 0 Then
     GetCmpOldSample(1).LastElm% = GetCmpOldSample(1).LastElm% + 1
@@ -547,7 +548,8 @@ GetCmpTmpSample(1).Elsyms$(GetCmpRow%) = sym$
 
 ' Check for a valid x-ray symbol
 sym$ = FormSETCMP.ComboXray.Text
-ip% = IPOS1(MAXRAY% - 1, sym$, Xraylo$())
+'ip% = IPOS1(MAXRAY% - 1, sym$, Xraylo$())
+ip% = IPOS1(MAXRAY%, sym$, Xraylo$())     ' to allow H and He in the standard matrix
 If ip% = 0 Then GoTo GetCmpSetCmpBadXray
 GetCmpTmpSample(1).Xrsyms$(GetCmpRow%) = sym$
 

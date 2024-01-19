@@ -49,7 +49,8 @@ End If
 For i% = 1 To sample(1).LastElm%
 chan% = i%
 sym$ = sample(1).Xrsyms$(chan%)
-ip% = IPOS1(MAXRAY% - 1, sym$, Xraylo$())
+'ip% = IPOS1(MAXRAY% - 1, sym$, Xraylo$())
+ip% = IPOS1(MAXRAY%, sym$, Xraylo$())     ' to allow H and He in the standard matrix (will get sorted in PFE properly)
 If ip% = 0 Then
 msg$ = TypeLoadString$(sample())
 msg$ = "Error in ElementCheckElement: X-ray " & sym$ & " is not a legal xray line on channel " & Format$(chan%) & " for sample " & msg$
