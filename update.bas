@@ -185,7 +185,7 @@ ierror = True
 Exit Sub
 End If
 
-' Load all standard percents (even if not assigned to any element)
+' Load all standard percents and calculate Zbars (even if not assigned to any element)
 Call UpdateGetStdPercents(analysis, sample(), stdsample())
 If ierror Then Exit Sub
 

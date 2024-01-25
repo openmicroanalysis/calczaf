@@ -962,6 +962,15 @@ iphi% = 4
 iabs% = 13
 istp% = 5
 ibks% = 7   ' note ibks is indexed from zero
+
+' Donovan and Moy backscatter
+ElseIf itemp% = 11 Then
+ibsc% = 5
+imip% = 1
+iphi% = 2
+iabs% = 9
+istp% = 4
+ibks% = 10   ' note ibks is indexed from zero
 End If
 
 Exit Sub

@@ -88,6 +88,9 @@ If InStr(astring$, "Oxide Totals") > 0 Then PlotGetSelectedType% = 2
 If InStr(astring$, "Atomic Totals") > 0 Then PlotGetSelectedType% = 3
 If InStr(astring$, "Formula Totals") > 0 Then PlotGetSelectedType% = 4
 
+If InStr(astring$, "On Counts (P+B)") > 0 Then PlotGetSelectedType% = 1     ' calculate MAN background intensities
+If InStr(astring$, "On Counts (P-B)") > 0 Then PlotGetSelectedType% = 1     ' calculate MAN background intensities
+
 Exit Function
 
 ' Errors

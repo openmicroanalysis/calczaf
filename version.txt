@@ -2,6 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/24/24	Fix bug when using All Matrix Corrections because DAM was still using XPP parameters (von der Handt).
+v. 13.7.7		
+		Fix bug when using Output | TDI Intensities menu when samples have different numbers of elements (Qi).
+		Modify output TDI code to improve performance for absorbed current data output with TDI.
+		
+		Mention linear equation fit form in MAN tooltip help (Locock).  Add count time for peaking scans to 
+		Run menu display.
+
+01/23/24	Fix plot display issues for stds/unkns (Boroughs).
+
 01/18/24	Fix bug in Standard that prevented H and He from being saved to the standard composition (von der Handt).
 v. 13.7.6
 		Add Brian Joy as contributor to excess oxygen from ferrous/ferric calculations.
