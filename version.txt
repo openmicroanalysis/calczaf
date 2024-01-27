@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/26/24	Fix bug when using quick stds where correct count time for unknowns does not get loaded (Buse and vonder Handt). 
+		
+		Temporarily comment out error trap in AcquireStartAutomate to check for using quick stds with digitized sample 
+		setups (it seems to work?).
+		
+		Add right click menu to Analyze! to export wavescan data for selected samples (Boroughs).
+
 01/24/24	Fix bug when using All Matrix Corrections because DAM was still using XPP parameters (von der Handt).
 v. 13.7.7		
 		Fix bug when using Output | TDI Intensities menu when samples have different numbers of elements (Qi).
