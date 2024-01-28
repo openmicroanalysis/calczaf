@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/27/24	Fix array dimensioning in TDI output (Qi).
+
+		Fixed KLM output for wavescans (Boroughs).
+
 01/26/24	Fix bug when using quick stds where correct count time for unknowns does not get loaded (Buse and vonder Handt). 
 		
 		Temporarily comment out error trap in AcquireStartAutomate to check for using quick stds with digitized sample 
