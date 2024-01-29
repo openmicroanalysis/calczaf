@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/28/24	Minor tweaks to TDI output to handle disable quant flags (Qi). 
+
+		Minor tweaks to wavescan output to handle "continued" samples.
+
 01/27/24	Fix array dimensioning in TDI output (Qi).
 
 		Fixed KLM output for wavescans (Boroughs).
