@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/06/24	Tweak TDI simulation code for better accuracy.
+
 02/02/24	Fix bug when closing database preventing loading of same setup in new database (Williams).
 
 01/30/24	Add Zbar calculations to MAN custom output (Locock).
