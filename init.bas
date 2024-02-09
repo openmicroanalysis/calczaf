@@ -3395,7 +3395,7 @@ Penepma12UseKeVRoundingFlag = True
 ' Load nominal Bragg crystal flip time
 If InterfaceType% = 0 And MiscIsInstrumentStage("JEOL") Then XtalFlipDuration! = 5#                  ' Demo (JEOL)
 If InterfaceType% = 0 And MiscIsInstrumentStage("CAMECA") Then XtalFlipDuration! = 20#                  ' Demo (Cameca)
-'If InterfaceType% = 1 Then XtalFlipDuration! = 10#
+'If InterfaceType% = 1 Then XtalFlipDuration! = 10#               ' interface not defined
 If InterfaceType% = 2 Then
 If JeolEOSInterfaceType& = 0 Then XtalFlipDuration! = 5#          ' JEOL 8900
 If JeolEOSInterfaceType& = 1 Then XtalFlipDuration! = 5#          ' JEOL 8200/8500

@@ -3719,7 +3719,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "AutomationOverheadPerAnalysis"
-If InterfaceType% = 0 Then lpDefault$ = "5.0"             ' Demo
+If InterfaceType% = 0 Then lpDefault$ = "10.0"             ' Demo
 If InterfaceType% = 1 Then lpDefault$ = "10.0"            ' Unused
 If InterfaceType% = 2 Then lpDefault$ = "10.0"            ' JEOL 8900/8200/8500/8230/8530
 If InterfaceType% = 3 Then lpDefault$ = "10.0"            ' Unused
