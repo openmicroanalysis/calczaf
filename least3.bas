@@ -476,3 +476,72 @@ Exit Sub
 
 End Sub
 
+Sub LeastCoefficientOfDetermination(coeffdeter As Single, adjustrsqr As Single, meansqrres As Single, npts As Integer, txdata() As Single, tydata() As Single, acoeff() As Single)
+' Calculate coefficient of determination, adjusted re-squared and mean squared error of residuals for fit using quadratic expression
+
+ierror = False
+On Error GoTo LeastCoefficientOfDeterminationError
+
+Dim i As Integer, k As Integer
+Dim temp As Single, meany As Single, totsumsqr As Single, residsumsqr As Single
+Dim regresumsqr As Single, temp1 As Single, temp2 As Single
+Dim meansqrreg As Single
+
+coeffdeter! = 0#
+adjustrsqr! = 0#
+meansqrres! = 0#
+
+' No points or one point
+If npts% <= 1 Then Exit Sub
+
+' Calculate average
+For i% = 1 To npts%
+meany! = meany! + tydata!(i%)
+Next i%
+meany! = meany! / npts%
+
+' Calculate total sum of squares
+For i% = 1 To npts%
+totsumsqr! = totsumsqr! + (tydata!(i%) - meany!) ^ 2
+Next i%
+
+' Calculate residual sum of squares
+For i% = 1 To npts%
+temp! = acoeff!(1) + acoeff!(2) * txdata!(i%) + acoeff!(3) * txdata!(i%) ^ 2
+residsumsqr! = residsumsqr! + (tydata!(i%) - temp!) ^ 2
+Next i%
+
+' Calculate regression sun of squares
+regresumsqr! = totsumsqr! - residsumsqr!
+
+' Calculate coefficient of determination from fit
+If totsumsqr! <> 0# Then
+coeffdeter! = regresumsqr! / totsumsqr!
+End If
+
+' Calculate adjusted r-squared
+k = 2                       ' assume quadratic expression
+temp1! = (1 - coeffdeter!) * (npts% - 1)
+temp2! = npts% - k% - 1
+If temp2! <> 0# Then
+adjustrsqr! = 1# - temp1! / temp2!
+End If
+
+' Calculate mean squared error of regression
+meansqrreg! = regresumsqr! / (k% - 1)
+
+' Calculate mean squared error of residuals
+If npts% - k% > 0# Then
+meansqrres! = residsumsqr! / (npts% - k%)
+End If
+
+Exit Sub
+
+' Errors
+LeastCoefficientOfDeterminationError:
+MsgBox Error$, vbOKOnly + vbCritical, "LeastCoefficientOfDetermination"
+ierror = True
+Exit Sub
+
+End Sub
+

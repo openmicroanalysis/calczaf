@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/09/24	Add additional fit statistics to MAN plot window (Locock).
+
 02/08/24	Adjust demo mode time estimation code (fix code for TDI overhead).
 
 02/06/24	Tweak TDI simulation code for better accuracy.
