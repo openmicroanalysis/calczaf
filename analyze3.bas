@@ -1736,7 +1736,13 @@ End If
 ' Write data type to log window
 If mode% = 1 Then msg$ = sString$ & ", Results in Elemental Weight Percents"
 If mode% = 2 Then msg$ = sString$ & ", Results in Oxide Weight Percents"
-If mode% = 3 Then msg$ = sString$ & ", Results in Atomic Percents"
+If mode% = 3 Then
+If sample(1).AtomicOrMoleOxideFlag% = 0 Then
+msg$ = sString$ & ", Results in Atomic Percents"
+Else
+msg$ = sString$ & ", Results in Mole Oxide Percents"
+End If
+End If
 If mode% = 4 Then
 If sample(1).FormulaElement$ <> vbNullString Then msg$ = sString$ & ", Results Based on " & sample(1).FormulaRatio! & " Atoms of " & sample(1).FormulaElement$
 If sample(1).FormulaElement$ = vbNullString Then msg$ = sString$ & ", Results Based on Sum of " & sample(1).FormulaRatio! & " Cations"
@@ -1978,7 +1984,7 @@ End If
 ' Type out weight percents and sum for each data line. Note, "analysis.WtsData!(linerow%,MAXCHAN+1)" contains the total weight percents.
 msg$ = vbCrLf & "ELEM: "
 For i% = ii% To jj%
-If mode% = 2 Or mode% = 6 Then
+If mode% = 2 Or (mode% = 3 And sample(1).AtomicOrMoleOxideFlag = 1) Or mode% = 6 Then
 If sample(1).DisableQuantFlag%(i%) = 1 Then
 msg$ = msg$ & Format$(sample(1).Oxsyup$(i%) & "-D", a80$)
 Else

@@ -738,6 +738,9 @@ On Error GoTo ZAFBscError
 Dim i As Integer, i1 As Integer
 Dim yy As Single, h1 As Single, h2 As Single
 Dim zbar As Single
+
+' Declaration of 4 variables for the calculation of the backscatter coefficient eta using the Donovan and Moy (DAM) method
+Dim eta_a As Single, eta_b As Single, eta_c As Single, eta_d As Single
         
 If zafinit% = 1 Then GoTo 6900
 
@@ -803,7 +806,14 @@ Next i%
 ElseIf ibsc% = 5 Then
 For i% = 1 To zaf.in0%
 yy! = zaf.Z%(i%)
-h1! = 0.002415529 * yy! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(yy!))))
+
+eta_a! = 0.0000077543 * zaf.eO!(i%) + 0.0020685
+eta_b! = 0.0011783 * zaf.eO!(i%) + 0.28521
+eta_c! = -0.000083371 * zaf.eO!(i%) + 0.016321
+eta_d! = -0.0038 * zaf.eO!(i%) + 1.4983
+
+h1! = eta_a! * yy! + eta_b! * (1# - Exp(-eta_c! * Exp(eta_d! * Log(yy!))))
+'h1! = 0.002415529 * yy! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(yy!))))
 hb!(i%) = h1!
 Next i%
 End If
@@ -840,7 +850,13 @@ zbar! = zbar! + zaf.zfrac!(i1%) * zaf.Z%(i1%)
 Next i1%
 
 For i% = 1 To zaf.in0%
-eta!(i%) = 0.002415529 * zbar! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(zbar!))))
+eta_a! = 0.0000077543 * zaf.eO!(i%) + 0.0020685
+eta_b! = 0.0011783 * zaf.eO!(i%) + 0.28521
+eta_c! = -0.000083371 * zaf.eO!(i%) + 0.016321
+eta_d! = -0.0038 * zaf.eO!(i%) + 1.4983
+
+eta!(i%) = eta_a! * zbar! + eta_b! * (1# - Exp(-eta_c! * Exp(eta_d! * Log(zbar!))))
+'eta!(i%) = 0.002415529 * zbar! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(zbar!))))
 Next i%
 End If
 

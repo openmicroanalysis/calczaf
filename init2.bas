@@ -604,6 +604,8 @@ sample(1).LastCLDarkSpectraCountTimeFraction! = CLDarkSpectraCountTimeFraction!
 
 sample(1).MaterialType$ = vbNullString
 
+sample(1).AtomicOrMoleOxideFlag% = 0    ' 0 = atomic percents, 1 = mole oxide percents
+
 Exit Sub
 
 InitSampleError:
