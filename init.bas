@@ -3459,6 +3459,8 @@ For i% = 1 To NumberOfTunableSpecs%
 JEOLSpectroJogSize!(i%) = JEOLBacklash&(i%) / (MICRONSPERMM& * 100#)      ' JEOL backlash is in 1/100th micrometer units
 Next i%
 
+UserSpecifiedOutputBlankCorrectionParametersFlag = False
+
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
 If ierror Then Exit Sub

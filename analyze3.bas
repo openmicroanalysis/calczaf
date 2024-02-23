@@ -2918,18 +2918,22 @@ Sub AnalyzeReturnAnalysisFactors3(mode As Integer, row As Integer, tvalue As Sin
 ' mode = 2 return RowUnkTotalOxygens
 ' mode = 3 return RowUnkTotalCations
 ' mode = 4 return RowUnkCalculatedOxygens
+
 ' mode = 5 return RowUnkExcessOxygens
 ' mode = 6 return RowUnkZbars
 ' mode = 7 return RowUnkAtomicWeights
 ' mode = 8 return RowUnkOxygenFromHalogens
 ' mode = 9 return RowUnkHalogenCorrectedOxygen
+
 ' mode = 10 return RowUnkChargeBalance
 ' mode = 11 return RowUnkFeChargeBalance
 ' mode = 12 return RowUnkTotalAtoms
+
 ' mode = 13 return RowUnkFerricToTotalIronRatio
 ' mode = 14 return RowUnkFerrousFerricFeO
 ' mode = 15 return RowUnkFerrousFerricFe2O3
 ' mode = 16 return RowUnkFerricOxygen
+
 ' mode = 17 return RowUnkOxygenFromSulfur
 ' mode = 18 return RowUnkSulfurCorrectedOxygen
 

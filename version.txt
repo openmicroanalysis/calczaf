@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/22/24	Fix bugs when opening total and stoich. oxygen formula GRD files (CalcImageLoadQuantImages).
+
+02/21/24	Add difference wavescan plot option to Plot! window for "Flank" method.
+v. 13.7.9	Add blank paramaters output to user specified and report table output (von der Handt).
+
+
 02/16/24	Modify atomic percent output to output atomic or mole oxide percents using new AtomicOrMoleOxideFlag 
 v. 13.7.8	parameter (Starykh).
 		
