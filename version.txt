@@ -2,7 +2,18 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-02/23/24	Fix normalize bug when plotting difference wavescans.
+02/29/24	Add Maximum Total checkbox and text field to Plot stds/unkns dialog (Ruth/Lowers).
+
+		Fix MPB shared bgd bug when using combined conditions and not measuring beam currents (Ruth/Lowers).
+		
+		Add extra warning for not measuring beam currents when using combined conditions with different 
+		beam currents and also in FormGETOPT
+		
+		Fix sensitivity calculations in CalcImage to load the raw data arrays (forgot to do this 
+		last year!) (von der Handt).
+
+02/23/24	Fix normalize bug when plotting difference wavescans.  Modify batch files to compile/sign only 
+		Probewin.exe/ProbeForEPMA.msi when no version change.
 
 02/22/24	Fix bugs when opening total and stoich. oxygen formula GRD files (CalcImageLoadQuantImages).
 
