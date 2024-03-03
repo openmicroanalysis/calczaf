@@ -807,13 +807,13 @@ ElseIf ibsc% = 5 Then
 For i% = 1 To zaf.in0%
 yy! = zaf.Z%(i%)
 
-eta_a! = 0.0000077543 * zaf.eO!(i%) + 0.0020685
-eta_b! = 0.0011783 * zaf.eO!(i%) + 0.28521
-eta_c! = -0.000083371 * zaf.eO!(i%) + 0.016321
-eta_d! = -0.0038 * zaf.eO!(i%) + 1.4983
+'eta_a! = 0.0000077543 * zaf.eO!(i%) + 0.0020685
+'eta_b! = 0.0011783 * zaf.eO!(i%) + 0.28521
+'eta_c! = -0.000083371 * zaf.eO!(i%) + 0.016321
+'eta_d! = -0.0038 * zaf.eO!(i%) + 1.4983
+'h1! = eta_a! * yy! + eta_b! * (1# - Exp(-eta_c! * Exp(eta_d! * Log(yy!))))
 
-h1! = eta_a! * yy! + eta_b! * (1# - Exp(-eta_c! * Exp(eta_d! * Log(yy!))))
-'h1! = 0.002415529 * yy! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(yy!))))
+h1! = 0.002415529 * yy! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(yy!))))
 hb!(i%) = h1!
 Next i%
 End If
@@ -850,13 +850,13 @@ zbar! = zbar! + zaf.zfrac!(i1%) * zaf.Z%(i1%)
 Next i1%
 
 For i% = 1 To zaf.in0%
-eta_a! = 0.0000077543 * zaf.eO!(i%) + 0.0020685
-eta_b! = 0.0011783 * zaf.eO!(i%) + 0.28521
-eta_c! = -0.000083371 * zaf.eO!(i%) + 0.016321
-eta_d! = -0.0038 * zaf.eO!(i%) + 1.4983
+'eta_a! = 0.0000077543 * zaf.eO!(i%) + 0.0020685
+'eta_b! = 0.0011783 * zaf.eO!(i%) + 0.28521
+'eta_c! = -0.000083371 * zaf.eO!(i%) + 0.016321
+'eta_d! = -0.0038 * zaf.eO!(i%) + 1.4983
+'eta!(i%) = eta_a! * zbar! + eta_b! * (1# - Exp(-eta_c! * Exp(eta_d! * Log(zbar!))))
 
-eta!(i%) = eta_a! * zbar! + eta_b! * (1# - Exp(-eta_c! * Exp(eta_d! * Log(zbar!))))
-'eta!(i%) = 0.002415529 * zbar! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(zbar!))))
+eta!(i%) = 0.002415529 * zbar! + 0.290281095 * (1# - Exp(-0.0196309 * Exp(1.333873234 * Log(zbar!))))
 Next i%
 End If
 
