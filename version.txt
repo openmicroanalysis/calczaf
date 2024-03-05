@@ -2,8 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/04/24	Fix bugs in plot wavscan when displaying angstroms or keV wavscan plots with EDS spoectrum. Also
+		fix issues with Load Xray Database and User Selected Lines when not plotting in spectrometer units.
+		
+		Minor tweak to Automate confirm dialog. Trap "File table not found" error because SX.MDB.
+
 03/02/24	Comment out Moy BSC code as it doesn't work as well as original code (need to 
-v. 13.8.0		modify r correction coefficients).
+v. 13.8.0	modify r correction coefficients).
 
 02/29/24	Add Maximum Total checkbox and text field to Plot stds/unkns dialog (Ruth/Lowers).
 
