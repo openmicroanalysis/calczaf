@@ -74,7 +74,7 @@ Sub StandardReadDATFile(mode As Integer)
 ' The routine imports standard composition data from an ASCII file to the standard database
 ' mode = 1 read normal ASCII
 ' mode = 2 read single row format
-' mode = 3 read all_weights-modified.txt
+' mode = 3 read all_weights-modified.txt (AMCSD.MDB)
 
 ierror = False
 On Error GoTo StandardReadDATFileError
@@ -229,6 +229,10 @@ ip% = IPOS1(MAXELM%, sample(1).Elsyms$(i%), Symlo$())
 If ip% = 0 Then GoTo StandardReadDATSampleInvalidElement
 sample(1).Xrsyms$(i%) = Deflin$(ip%)
 msg$ = msg$ & Format$(sample(1).Elsyms$(i%), a80$)
+
+' Load default atomic weights and atomic charges
+sample(1).AtomicCharges!(i%) = AllAtomicCharges!(ip%)
+sample(1).AtomicWts!(i%) = AllAtomicWts!(ip%)
 Next i%
 If DebugMode Then Call IOWriteLog(msg$)
 
@@ -375,6 +379,10 @@ If sample(1).LastChan% > MAXCHAN% Then GoTo StandardReadDATSample2TooManyElement
 sample(1).Elsyms$(sample(1).LastChan%) = Symlo$(n%)
 sample(1).Xrsyms$(sample(1).LastChan%) = Deflin$(n%)
 sample(1).ElmPercents!(sample(1).LastChan%) = Val(tmsg$)
+
+' Load default atomic weights and atomic charges
+sample(1).AtomicCharges!(sample(1).LastChan%) = AllAtomicCharges!(n%)
+sample(1).AtomicWts!(sample(1).LastChan%) = AllAtomicWts!(n%)
 End If
 Next n%
 
@@ -459,7 +467,7 @@ Exit Sub
 End Sub
 
 Sub StandardReadDATSample3(standardcount As Long, linecount As Long, sample() As TypeSample)
-' Read standard compositions from all_weights-modified.txt file. Called by StandardReadDATFile.
+' Read standard compositions from all_weights-modified.txt file (AMCSD.MDB) Called by StandardReadDATFile.
 
 ierror = False
 On Error GoTo StandardReadDATSample3Error
@@ -540,9 +548,14 @@ sample(1).ElmPercents!(sample(1).LastChan%) = Val(Trim$(astring$))
 sample(1).numcat%(sample(1).LastChan%) = AllCat%(ip%)
 sample(1).numoxd%(sample(1).LastChan%) = AllOxd%(ip%)
 
-If ip% = 8 And sample(1).ElmPercents!(sample(1).LastChan%) > 5# Then    ' display as oxide if oxygen is present
+' Display as oxide if oxygen is present at > 5 wt%
+If ip% = 8 And sample(1).ElmPercents!(sample(1).LastChan%) > 5# Then
 sample(1).DisplayAsOxideFlag% = True
 End If
+
+' Load default atomic weights and atomic charges
+sample(1).AtomicCharges!(sample(1).LastChan%) = AllAtomicCharges!(ip%)
+sample(1).AtomicWts!(sample(1).LastChan%) = AllAtomicWts!(ip%)
 Next n%
 
 sample(1).LastElm% = sample(1).LastChan%

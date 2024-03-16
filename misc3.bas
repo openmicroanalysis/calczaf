@@ -533,6 +533,53 @@ Exit Function
 
 End Function
 
+Function IPOS13C(ByVal mode As Integer, ByVal syme As String, ByVal symx As String, ByVal imot As Integer, ByVal crys As String, sample() As TypeSample) As Integer
+' Same as IPOS13B but does not check for KilovoltsArray.
+' mode = 0 check only the analyzed elements
+' mode = 1 check both analyzed and specified elements
+
+ierror = False
+On Error GoTo IPOS13CError
+
+Dim i As Integer, k As Integer
+
+' Fail if not specified
+IPOS13C = 0
+
+If mode% = 0 Then
+k% = sample(1).LastElm%
+Else
+k% = sample(1).LastChan%
+End If
+
+' Search sample for match (element, x-ray, motor, crystal and keV)
+For i% = 1 To k%
+If sample(1).DisableQuantFlag%(i%) = 0 Then
+
+If Trim$(UCase$(syme$)) = Trim$(UCase$(sample(1).Elsyms$(i%))) Then
+If Trim$(UCase$(symx$)) = Trim$(UCase$(sample(1).Xrsyms$(i%))) Then
+If imot% = sample(1).MotorNumbers%(i%) Then
+If Trim$(UCase$(crys$)) = Trim$(UCase$(sample(1).CrystalNames$(i%))) Then
+IPOS13C = i%
+Exit Function
+End If
+End If
+End If
+End If
+
+End If
+Next i%
+
+Exit Function
+
+' Errors
+IPOS13CError:
+MsgBox Error$, vbOKOnly + vbCritical, "IPOS13C"
+ierror = True
+Exit Function
+
+End Function
+
 Function IPOS14(ByVal chan As Integer, sample1() As TypeSample, sample2() As TypeSample) As Integer
 ' Check for first occurance of element, x-ray, takeoff and keV in the sample2 element list (not disabled)
 

@@ -108,7 +108,7 @@ If ip% = 0 Then GoTo AbsorberOnly
 sample(1).XrayNums%(chan%) = ip
 
 ' Check for disable quant (don't force absorber only)
-If sample(1).DisableQuantFlag%(chan%) = 1 Then GoTo DisableQuant
+If sample(1).DisableQuantFlag%(chan%) = 1 Then GoTo 3000
 
 ' Check for hydrogen or helium
 If sample(1).AtomicNums%(chan%) = ATOMIC_NUM_HYDROGEN% Or sample(1).AtomicNums%(chan%) = ATOMIC_NUM_HELIUM% Then GoTo AbsorberOnly

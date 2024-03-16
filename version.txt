@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/15/24	Fix atomic weight bugs in Import From ASCII codes in Standard.exe.
+v. 13.8.1
+		Modify set mag and beam deflect code to make direct TCP/IP calls to 8x30/iHP200F instruments (Boroughs).
+
+03/14/24	Modify Plot std/unk code to handle samples with different kilovolts (for overvoltage plotting)
+
+03/09/24	Add DoEvents statement in Acquire! MakeNewSample code to prevent file errors in ElementCheckXray.
+
 03/04/24	Fix bugs in plot wavscan when displaying angstroms or keV wavscan plots with EDS spoectrum. Also
 		fix issues with Load Xray Database and User Selected Lines when not plotting in spectrometer units.
 		
@@ -87,9 +95,6 @@ v. 13.7.6
 
 		Modify MAN get sample elements code in DataLoadAllMAN to prevent elements from being loaded 
 		out of order which can cause a problem if aggregate mode is utilized (Locock).
-		
-		Modify empirical APF re-normalization code when using different primary standard to multiply
-		rather than divide (see file Oxygen measured and stoichiometric_11-20-2202.MDB).
 		
 		Save FormCalcImage form position and size before performing quant (Boroughs).
 

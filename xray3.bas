@@ -522,6 +522,7 @@ If iray% <= MAXRAY_OLD% Then
 
 ' Read original x-ray line file
 nrec% = ielm% + 2
+Close #XLineFileNumber%
 Open XLineFile$ For Random Access Read As #XLineFileNumber% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber%, nrec%, engrow
 Close #XLineFileNumber%
@@ -532,6 +533,7 @@ Else
 nrec% = ielm% + 2
 If Dir$(XLineFile2$) = vbNullString Then GoTo XrayGetKevLambdaNotFoundXLINE2DAT
 If FileLen(XLineFile2$) = 0 Then GoTo XrayGetKevLambdaZeroSizeXLINE2DAT
+Close #XLineFileNumber2%
 Open XLineFile2$ For Random Access Read As #XLineFileNumber2% Len = XRAY_FILE_RECORD_LENGTH%
 Get #XLineFileNumber2%, nrec%, engrow
 Close #XLineFileNumber2%

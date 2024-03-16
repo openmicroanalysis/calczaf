@@ -3345,7 +3345,7 @@ Else
 MoveAllStageMotorsHardwarePresent% = False
 End If
 If Not MoveAllStageMotorsHardwarePresent% And InterfaceType% = 2 Then
-msg$ = "JEOL 8900/8200/8500/8230/8530 interface requires the MoveAllStageMotorsHardwarePresent  keyword value to be non-zero in file " & ProbeWinINIFile$
+msg$ = "JEOL 8900/8200/8500/8230/8530 and iSP100/iHP200F interface requires the MoveAllStageMotorsHardwarePresent keyword value to be non-zero in file " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 End
 End If
