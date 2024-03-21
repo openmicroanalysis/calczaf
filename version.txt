@@ -2,6 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/20/24	Fix output of specified APFs in AnalyzeTypeResults and when aggregate mode is on for borth compound 
+		and specified.
+
+03/19/24	Work more on JEOL MEC EDS interface.
+
+		Modify JEOLSetProbeScan (not called by PFE, only by Monitor.exe and TestType.exe) to use 
+		direct TCP/IP calls to 8x30/iHP200F instrument instead of EIKS. Modify JEOLGetMagnification to 
+		use direct TCP/IP call.
+
 03/17/24	Temporarily modify JEOL MEC EDS code to handle new stage move behavior in v. 1.0.7 of JEOL 
 		SEMCenter software (Boroughs).
 		

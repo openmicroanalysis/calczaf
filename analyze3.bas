@@ -2499,7 +2499,12 @@ If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString
 
 ' Check if channel is not using integrated intensities and is using compound APF factors
 If Not sample(1).IntegratedIntensitiesUseIntegratedFlags(i%) And EmpCheckAPF(sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%)) Then
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then       ' check for duplicate element
 msg$ = msg$ & Format$(Format$(average.averags!(i%), f83$), a80$)
+Else
+msg$ = msg$ & Format$(Format$(0#, f83$), a80$)
+End If
 Else
 msg$ = msg$ & Format$(DASHED4$, a80$)
 End If
@@ -2509,6 +2514,7 @@ msg$ = msg$ & Format$(DASHED3$, a80$)   ' if quant disabled
 End If
 Next i%
 Call IOWriteLog(msg$)
+End If
 End If
 
 ' Type specified APF factors (unless calibration curve)
@@ -2519,7 +2525,12 @@ For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
 
 If average.averags!(i%) <> 1# Then
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then       ' check for duplicate element
 msg$ = msg$ & Format$(Format$(sample(1).SpecifiedAreaPeakFactors!(i%), f83$), a80$)
+Else
+msg$ = msg$ & Format$(Format$(0#, f83$), a80$)
+End If
 Else
 msg$ = msg$ & Format$(DASHED4$, a80$)
 End If
@@ -2530,8 +2541,6 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 End If
-End If
-
 End If
 
 ' Type Volatile element correction percent change
