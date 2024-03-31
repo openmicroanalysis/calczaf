@@ -364,3 +364,86 @@ Exit Sub
 
 End Sub
 
+Sub ScanDataPlotPHABiasGain_PE(mode As Integer, tGraph As Pesgo, linecount As Long, bias As Single, gain As Single, tScanCurrentBiasGainOnPeak As Single, tBold As Boolean)
+' Display the PHA window on the graph (Pro Essentials code)
+
+ierror = False
+On Error GoTo ScanDataPlotPHABiasGain_PEError
+
+Dim xmin As Single, xmax As Single, ymin As Single, ymax As Single
+Dim sxmin As Single, sxmax As Single, symin As Single, symax As Single
+
+tGraph.PEactions = REINITIALIZE_RESETIMAGE                   ' generate new plot
+
+' Determine min and max of graph
+xmin! = tGraph.ManualMinX
+xmax! = tGraph.ManualMaxX
+
+ymin! = tGraph.ManualMinY
+ymax! = tGraph.ManualMaxY
+
+' Calculate scan data bias position (original)
+If mode% = 2 Then
+sxmin! = bias!
+sxmax! = bias
+End If
+
+' Calculate scan data gain position (original)
+If mode% = 3 Then
+sxmin! = gain!
+sxmax! = gain
+End If
+
+symin! = ymin!
+symax! = ymax!
+
+' Plot original PHA bias
+If mode% = 2 Then
+Call ScanDataPlotLine(tGraph, linecount&, sxmin!, symin!, sxmax!, symax!, False, tBold, Int(255), Int(255), Int(0), Int(0))     ' red
+If ierror Then Exit Sub
+End If
+
+' Plot original PHA gain
+If mode% = 3 Then
+Call ScanDataPlotLine(tGraph, linecount&, sxmin!, symin!, sxmax!, symax!, False, tBold, Int(255), Int(255), Int(0), Int(255))     ' red
+If ierror Then Exit Sub
+End If
+
+' Calculate scan data bias position (new)
+If mode% = 2 Then
+sxmin! = tScanCurrentBiasGainOnPeak!
+sxmax! = tScanCurrentBiasGainOnPeak!
+End If
+
+' Calculate scan data gain position (new)
+If mode% = 3 Then
+sxmin! = tScanCurrentBiasGainOnPeak!
+sxmax! = tScanCurrentBiasGainOnPeak!
+End If
+
+symin! = ymin!
+symax! = ymax!
+
+' Plot new PHA bias
+If mode% = 2 Then
+Call ScanDataPlotLine(tGraph, linecount&, sxmin!, symin!, sxmax!, symax!, False, tBold, Int(255), Int(0), Int(255), Int(0))     ' green
+If ierror Then Exit Sub
+End If
+
+' Plot new PHA gain
+If mode% = 3 Then
+Call ScanDataPlotLine(tGraph, linecount&, sxmin!, symin!, sxmax!, symax!, False, tBold, Int(255), Int(0), Int(255), Int(0))     ' green
+If ierror Then Exit Sub
+End If
+
+Exit Sub
+
+' Errors
+ScanDataPlotPHABiasGain_PEError:
+MsgBox Error$, vbOKOnly + vbCritical, "ScanDataPlotPHABiasGain_PE"
+ierror = True
+Exit Sub
+
+End Sub
+
+

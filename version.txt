@@ -2,10 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-03/21/24	Fix JEOL MEC EDS interface to handle stage position updating (unfreeze JEOL imaging), and add point 
-v. 13.8.2	reservations (freeze JEOL imagimng). Thanks to Scott Boroughs, Ying Yu, Chi Ma and Radek Michallik.
+03/30/24	Add "KiloVolts" array to plot std/unk output and also to Analyze! window right click.
 
-03/20/24	Fix output of specified APFs in AnalyzeTypeResults and when aggregate mode is on for borth compound 
+03/29/24	Modify ScanData code to allow user to modify bias and gain values using right mouse 
+		click (von der Handt).
+
+03/21/24	Fix JEOL MEC EDS interface to handle stage position updating (unfreeze JEOL imaging), and add point 
+v. 13.8.2	reservations (freeze JEOL imaging). Thanks to Scott Boroughs, Ying Yu, Chi Ma and Radek Michallik.
+
+03/20/24	Fix output of specified APFs in AnalyzeTypeResults and when aggregate mode is on for both compound 
 		and specified.
 
 03/19/24	Work more on JEOL MEC EDS interface.
@@ -17,7 +22,7 @@ v. 13.8.2	reservations (freeze JEOL imagimng). Thanks to Scott Boroughs, Ying Yu
 03/17/24	Temporarily modify JEOL MEC EDS code to handle new stage move behavior in v. 1.0.7 of JEOL 
 		SEMCenter software (Boroughs).
 		
-		Add check for mixed bgds for aggegate in AcquireAutomateStart. Allow EDS and WDS aggregate elements.
+		Add check for mixed bgds for aggregate in AcquireAutomateStart. Allow EDS and WDS aggregate elements.
 
 03/15/24	Fix atomic weight bugs in Import From ASCII codes in Standard.exe.
 v. 13.8.1
@@ -27,7 +32,7 @@ v. 13.8.1
 
 03/09/24	Add DoEvents statement in Acquire! MakeNewSample code to prevent file errors in ElementCheckXray.
 
-03/04/24	Fix bugs in plot wavscan when displaying angstroms or keV wavscan plots with EDS spoectrum. Also
+03/04/24	Fix bugs in plot wavescan when displaying angstroms or keV wavescan plots with EDS spectrum. Also
 		fix issues with Load Xray Database and User Selected Lines when not plotting in spectrometer units.
 		
 		Minor tweak to Automate confirm dialog. Trap "File table not found" error because SX.MDB.
