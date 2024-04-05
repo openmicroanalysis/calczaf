@@ -2,10 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/04/24	Modify labels in CalcZAF from K-Value to K-Ratio and for "Use All Matrix Corrections".
+v. 13.8.3
+
+04/02/24	Add export of positions for selected samples in Analyze! window right click menu (von der Handt).
+
 03/30/24	Add "KiloVolts" array to plot std/unk output and also to Analyze! window right click.
 
 03/29/24	Modify ScanData code to allow user to modify bias and gain values using right mouse 
-		click (von der Handt).
+		click (Michallik).
 
 03/21/24	Fix JEOL MEC EDS interface to handle stage position updating (unfreeze JEOL imaging), and add point 
 v. 13.8.2	reservations (freeze JEOL imaging). Thanks to Scott Boroughs, Ying Yu, Chi Ma and Radek Michallik.

@@ -2553,8 +2553,9 @@ Global DefaultMultiPointNumberofPointsAcquireLo As Integer
 Global DefaultMultiPointNumberofPointsIterateHi As Integer
 Global DefaultMultiPointNumberofPointsIterateLo As Integer
 
+Global a07 As String
 Global a08 As String
-Global A10 As String
+Global a10 As String
 Global a12 As String
 Global a14 As String
 Global a16 As String

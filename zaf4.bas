@@ -283,7 +283,7 @@ Call IOWriteLog(msg$)
 End If
 Next i%
 
-msg$ = vbCrLf & " ELEMENT   K-RAW K-VALUE ELEMWT% OXIDWT% ATOMIC% FORMULA TAKEOFF KILOVOL"
+msg$ = vbCrLf & " ELEMENT   K-RAW K-RATIO ELEMWT% OXIDWT% ATOMIC% FORMULA TAKEOFF KILOVOL"
 If UseParticleCorrectionFlag And iptc% = 1 Then msg$ = msg$ & " NORMEL% NORMOX%"
 If UseConductiveCoatingCorrectionForXrayTransmission Then
 msg$ = msg$ & " COATTRN COATU/S"

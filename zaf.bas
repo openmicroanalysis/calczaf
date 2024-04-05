@@ -4146,8 +4146,8 @@ Dim delta As Double, rc As Double, zip As Double
 Dim a1 As Double, a2 As Double, b1 As Double
 Dim ff As Double, gamma As Double, exx As Double
 Dim rbar As Double, gg As Double, pee As Double
-Dim A10 As Double, B10 As Double, etas As Double
-Dim A11 As Double, B11 As Double
+Dim a10 As Double, b10 As Double, etas As Double
+Dim a11 As Double, b11 As Double
 
 Dim fp1 As Double, fp2 As Double, fp3 As Double
 Dim fff As Double
@@ -4242,19 +4242,19 @@ hh! = 1# - 10# * (1# - 1# / (1# + u0# / 10#)) / (meanz! * meanz!)
 pee# = gg# * hh! * hh! * hh! * hh! * ff# / (rbar# * rbar#)
 
 If 1# - rbar# * phi0# / ff# <= 0 Then GoTo ZAFStpInvalidSqrt
-B10# = Sqr(2#) * (1# + Sqr(1# - rbar# * phi0# / ff#)) / rbar#
-A10# = (pee# + B10# * (2# * phi0# - B10# * ff#)) / (B10# * ff# * (2# - B10# * rbar#) - phi0#)
-etas# = (A10# - B10#) / B10#
-If etas# < 0.000001 Then A10# = B10# * (1# + etas#)
+b10# = Sqr(2#) * (1# + Sqr(1# - rbar# * phi0# / ff#)) / rbar#
+a10# = (pee# + b10# * (2# * phi0# - b10# * ff#)) / (b10# * ff# * (2# - b10# * rbar#) - phi0#)
+etas# = (a10# - b10#) / b10#
+If etas# < 0.000001 Then a10# = b10# * (1# + etas#)
 
-B11# = (B10# * B10# * ff# * (1# + etas#) - pee# - phi0# * B10# * (2# + etas#)) / etas#
-A11# = (B11# / B10# + phi0# - B10# * ff#) * (1# + etas#) / etas#
-FP! = (phi0# + B11# / (B10# + xi!) - A11# * B10# * etas# / (B10# * (1# + etas#) + xi!)) / (B10# + xi!)
+b11# = (b10# * b10# * ff# * (1# + etas#) - pee# - phi0# * b10# * (2# + etas#)) / etas#
+a11# = (b11# / b10# + phi0# - b10# * ff#) * (1# + etas#) / etas#
+FP! = (phi0# + b11# / (b10# + xi!) - a11# * b10# * etas# / (b10# * (1# + etas#) + xi!)) / (b10# + xi!)
 FP! = FP! / ff#
 
 ' Calculate phi-rho-z curves for plotting (CalcZAF only)
 If zafinit% = 1 And CalculatePhiRhoZPlotCurves Then
-Call ZAFCalculatePhiRhoZCurvesXPP(ii%, A11#, B11#, A10#, B10#, phi0#, ff#, xi!, zaf)
+Call ZAFCalculatePhiRhoZCurvesXPP(ii%, a11#, b11#, a10#, b10#, phi0#, ff#, xi!, zaf)
 End If
 End If
 

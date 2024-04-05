@@ -2452,8 +2452,9 @@ SampleMags!(i%) = 0#
 Next i%
 
 ' Special string formats (need to be variables)
+a07$ = String$(7, 64) & "!"
 a08$ = String$(8, 64) & "!"
-A10$ = String$(10, 64) & "!"
+a10$ = String$(10, 64) & "!"
 a12$ = String$(12, 64) & "!"
 a14$ = String$(14, 64) & "!"
 a16$ = String$(16, 64) & "!"

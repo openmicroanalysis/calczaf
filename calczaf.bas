@@ -4560,7 +4560,7 @@ msg$ = zafstring$(izaf%)
 If j% = 1 Then
 astring$ = Space$(4) & vbTab
 For i% = 1 To CalcZAFOldSample(1).LastChan%
-astring$ = astring$ & vbTab & VbDquote$ & Format$(CalcZAFOldSample(1).Elsyup$(i%) & " K-RAW%", a80$) & VbDquote$
+astring$ = astring$ & vbTab & VbDquote$ & Format$(CalcZAFOldSample(1).Elsyup$(i%) & " K-RAT", a08$) & VbDquote$
 Next i%
 astring$ = astring$ & vbCrLf
 End If
