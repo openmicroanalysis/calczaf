@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/10/24	Fix minor bug when adding new elements where beamsize was getting re-set to zero (Boroughs).
+
+04/05/24	Fix subtle bug when combining data lines in Analyze! window with EDS (Allaz).
+
 04/04/24	Modify labels in CalcZAF from K-Value to K-Ratio and for "Use All Matrix Corrections".
 v. 13.8.3
 

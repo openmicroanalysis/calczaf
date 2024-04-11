@@ -239,7 +239,8 @@ GetElmOldSample(1).LastQuickCountTimes!(GetElmOldSample(1).LastElm%) = GetElmTmp
 GetElmOldSample(1).LastCountFactors!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).LastCountFactors!(i%)
 GetElmOldSample(1).LastMaxCounts&(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).LastMaxCounts&(i%)
 
-' Load conditions
+' Load combined conditions
+If GetElmTmpSample(1).CombinedConditionsFlag Then
 GetElmOldSample(1).TakeoffArray!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).TakeoffArray!(i%)
 GetElmOldSample(1).KilovoltsArray!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).KilovoltsArray!(i%)
 GetElmOldSample(1).BeamCurrentArray!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).BeamCurrentArray!(i%)
@@ -248,11 +249,22 @@ GetElmOldSample(1).BeamSizeArray!(GetElmOldSample(1).LastElm%) = GetElmTmpSample
 GetElmOldSample(1).ColumnConditionMethodArray%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).ColumnConditionMethodArray%(i%)
 GetElmOldSample(1).ColumnConditionStringArray$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).ColumnConditionStringArray$(i%)
 
-' If conditions are zero or blank use sample level parameters
+' If any combined conditions are zero or blank, use sample level parameters
 If GetElmOldSample(1).TakeoffArray!(GetElmOldSample(1).LastElm%) = 0# Then GetElmOldSample(1).TakeoffArray!(GetElmOldSample(1).LastElm%) = GetElmOldSample(1).takeoff!
 If GetElmOldSample(1).KilovoltsArray!(GetElmOldSample(1).LastElm%) = 0# Then GetElmOldSample(1).KilovoltsArray!(GetElmOldSample(1).LastElm%) = GetElmOldSample(1).kilovolts!
 If GetElmOldSample(1).BeamCurrentArray!(GetElmOldSample(1).LastElm%) = 0# Then GetElmOldSample(1).BeamCurrentArray!(GetElmOldSample(1).LastElm%) = GetElmOldSample(1).beamcurrent!
-'If GetElmOldSample(1).BeamSizeArray!(GetElmOldSample(1).LastElm%) = 0# Then GetElmOldSample(1).BeamSizeArray!(GetElmOldSample(1).LastElm%) = GetElmOldSample(1).beamsize!
+If GetElmOldSample(1).BeamSizeArray!(GetElmOldSample(1).LastElm%) = 0# Then GetElmOldSample(1).BeamSizeArray!(GetElmOldSample(1).LastElm%) = GetElmOldSample(1).beamsize!
+
+' Load analytical conditions
+Else
+GetElmOldSample(1).TakeoffArray!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).takeoff!
+GetElmOldSample(1).KilovoltsArray!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).kilovolts!
+GetElmOldSample(1).BeamCurrentArray!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).beamcurrent!
+GetElmOldSample(1).BeamSizeArray!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).beamsize!
+
+GetElmOldSample(1).ColumnConditionMethodArray%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).ColumnConditionMethod%
+GetElmOldSample(1).ColumnConditionStringArray$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).ColumnConditionString$
+End If
 
 ' Load std assignments and element disable flags
 GetElmOldSample(1).StdAssignsFlag%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).StdAssignsFlag%(i%)

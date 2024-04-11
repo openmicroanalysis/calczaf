@@ -386,7 +386,7 @@ If UpdateTmpSample(1).kilovolts! <> sample(1).kilovolts! Then GoTo 9100
 End If
 
 ' Obtain EDS net intensities for this standard
-If sample(1).EDSSpectraFlag And sample(1).EDSSpectraUseFlag Then
+If UpdateTmpSample(1).EDSSpectraFlag And UpdateTmpSample(1).EDSSpectraUseFlag Then      ' bug fixed 04/05/2024
 If UpdateEDSCheckForEDSElements(Int(1), sample()) Then
 If UpdateTmpSample(1).EDSSpectraFlag Then
 If UpdateEDSCheckForEDSElements(Int(1), UpdateTmpSample()) Then
@@ -515,6 +515,7 @@ If UpdateTmpSample(1).DisableAcqFlag%(ip%) = 1 Then GoTo 7500
 'If UpdateTmpSample(1).DisableQuantFlag%(ip%) = 1 Then GoTo 7500
 
 ' Matching conditions, now increment set counter
+If average.averags!(ip%) = 0# Then GoTo UpdateGetStandardsNoCounts
 If StdAssignsSets%(i%) + 1 > MAXSET% Then GoTo UpdateGetStandardsTooManyStdSets
 StdAssignsSets%(i%) = StdAssignsSets%(i%) + 1
 
@@ -777,6 +778,22 @@ UpdateGetStandardsMissingAssignment:
 msg$ = "Element " & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " has not been assigned a standard. "
 msg$ = msg$ & "Click the Analyze! | Standard Assignments buttons "
 msg$ = msg$ & "to assign standards to the analyzed elements first and try again."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
+Exit Sub
+
+UpdateGetStandardsNoCounts:
+msg$ = "No standard intensity data found for assigned standard number " & Format$(sample(1).StdAssigns%(i%)) & " set " & Format$(UpdateTmpSample(1).Set%) & " for "
+msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
+msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV." & vbCrLf & vbCrLf
+msg$ = msg$ & "Either acquire count data for the indicated element on the indicated standard at the indicated conditions or "
+msg$ = msg$ & "change the standard assignment by clicking on the Analyze! | Standard Assignments buttons." & vbCrLf & vbCrLf
+msg$ = msg$ & "Also, make sure that the Use Automatic Analysis flag in the Acquisition Options window is not checked, at "
+msg$ = msg$ & "least until all standards have been acquired." & vbCrLf & vbCrLf
+msg$ = msg$ & "In addition, if the Check For Same Peak Positions or Check For Same PHA Settings options are checked in the Analytical Options dialog, "
+msg$ = msg$ & "make sure the on-peak and PHA settings are the same for standard and unknown."
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
 Call AnalyzeStatusAnal(vbNullString)
 ierror = True
@@ -1904,6 +1921,7 @@ Next j%
 If sample(1).StdAssignsFlag%(chan%) = 0 Then
 
 ' Load first (last actually) set standard counts as default
+If StdAssignsDriftCounts!(std1%, chan%) = 0# Then GoTo UpdateCalculateStdDriftNoCounts1
 analysis.StdAssignsCounts!(chan%) = StdAssignsDriftCounts!(std1%, chan%)
 analysis.StdAssignsTimes!(chan%) = StdAssignsDriftTimes!(std1%, chan%)
 analysis.StdAssignsBeams!(chan%) = StdAssignsDriftBeams!(std1%, chan%)
@@ -1912,6 +1930,7 @@ analysis.StdAssignsBgdCounts!(chan%) = StdAssignsDriftBgdCounts!(std1%, chan%)
 
 ' If a subsequent set was found, then calculate drift based on elasped time from passed date/time for this sample row
 If UseDriftFlag And std2% <> 0 Then
+If StdAssignsDriftCounts!(std2%, chan%) = 0# Then GoTo UpdateCalculateStdDriftNoCounts2
 deltacounts! = StdAssignsDriftCounts!(std2%, chan%) - StdAssignsDriftCounts!(std1%, chan%)
 deltatimes! = StdAssignsDriftTimes!(std2%, chan%) - StdAssignsDriftTimes!(std1%, chan%)
 deltabeams! = StdAssignsDriftBeams!(std2%, chan%) - StdAssignsDriftBeams!(std1%, chan%)
@@ -1979,6 +1998,40 @@ Exit Sub
 
 UpdateCalculateStdDriftVirtualInvalidForEDS:
 msg$ = "Virtual standards are not valid for element " & Format$(sample(1).Elsyms$(chan%)) & " by EDS. Please uncheck the Use Virtual Standard for Standard Intensity Calculation checkbox in Standard Assignments."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateCalculateStdDrift"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
+Exit Sub
+
+UpdateCalculateStdDriftNoCounts1:
+msg$ = "Insufficient standard counts on standard " & Format$(sample(1).StdAssigns%(chan%)) & " set " & Format$(SampleSets%(StdAssignsSampleRows%(StdAssignsSets%(chan%), chan%))) & " for "
+msg$ = msg$ & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " on spectrometer "
+msg$ = msg$ & Format$(sample(1).MotorNumbers%(chan%)) & " using crystal " & sample(1).CrystalNames$(chan%) & ". "
+msg$ = msg$ & "Make sure that valid data for the indicated standard has been acquired at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(chan%)) & " kilovolts and " & Format$(sample(1).TakeoffArray!(chan%)) & " takeoff angle."
+
+If sample(1).CrystalNames$(chan%) = EDS_CRYSTAL$ And Not sample(1).EDSSpectraUseFlag Then
+msg$ = msg$ & vbCrLf & vbCrLf & "Also please note that the Use EDS Element Data option needs to be selected from the Analyze! window, Calculation Options dialog, "
+msg$ = msg$ & "for obtaining EDS net intensities."
+End If
+
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateCalculateStdDrift"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
+Exit Sub
+
+UpdateCalculateStdDriftNoCounts2:
+msg$ = "Insufficient standard counts on standard " & Format$(sample(1).StdAssigns%(chan%)) & " set " & Format$(SampleSets%(StdAssignsSampleRows%(StdAssignsSets%(chan%), chan%))) & " for "
+msg$ = msg$ & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " on spectrometer "
+msg$ = msg$ & Format$(sample(1).MotorNumbers%(chan%)) & " using crystal " & sample(1).CrystalNames$(chan%) & ". "
+msg$ = msg$ & "Make sure that valid data for the indicated standard has been acquired at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(chan%)) & " kilovolts and " & Format$(sample(1).TakeoffArray!(chan%)) & " takeoff angle."
+
+If sample(1).CrystalNames$(chan%) = EDS_CRYSTAL$ And Not sample(1).EDSSpectraUseFlag Then
+msg$ = msg$ & vbCrLf & vbCrLf & "Also please note that the Use EDS Element Data option needs to be selected from the Analyze! window, Calculation Options dialog, "
+msg$ = msg$ & "for obtaining EDS net intensities."
+End If
+
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateCalculateStdDrift"
 Call AnalyzeStatusAnal(vbNullString)
 ierror = True
