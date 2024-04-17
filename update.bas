@@ -514,6 +514,10 @@ If UpdateTmpSample(1).DisableAcqFlag%(ip%) = 1 Then GoTo 7500
 ' Check for disabled quantification in standard (do not check disable quant flags in standard samples for analyzing unknowns!)
 'If UpdateTmpSample(1).DisableQuantFlag%(ip%) = 1 Then GoTo 7500
 
+' Check if aggregate mode and skip loading if duplicated element (to avoid loading zero counts into drift arrays for zero intensity check)
+ipp% = IPOS8A(ip%, UpdateTmpSample(1).Elsyms$(ip%), UpdateTmpSample(1).Xrsyms$(ip%), UpdateTmpSample(1).KilovoltsArray!(ip%), UpdateTmpSample())
+If UseAggregateIntensitiesFlag And ipp% > 0 Then GoTo 7500
+
 ' Matching conditions, now increment set counter
 If average.averags!(ip%) = 0# Then GoTo UpdateGetStandardsNoCounts
 If StdAssignsSets%(i%) + 1 > MAXSET% Then GoTo UpdateGetStandardsTooManyStdSets
@@ -604,7 +608,12 @@ If UpdateTmpSample(1).DisableAcqFlag%(ip%) = 1 Then GoTo 7600
 ' Check for disabled quant in interference standard (do not check disable quant flags in standard samples for analyzing unknowns!)
 'If UpdateTmpSample(1).DisableQuantFlag%(ip%) = 1 Then GoTo 7600
 
-' Matching conditions, now increment set counter
+' Check if aggregate mode and skip loading if duplicated element (to avoid loading zero counts into drift arrays for zero intensity check)
+ipp% = IPOS8A(ip%, UpdateTmpSample(1).Elsyms$(ip%), UpdateTmpSample(1).Xrsyms$(ip%), UpdateTmpSample(1).KilovoltsArray!(ip%), UpdateTmpSample())
+If UseAggregateIntensitiesFlag And ipp% > 0 Then GoTo 7600
+
+' Matching conditions, now increment set counter for interference standards
+If average.averags!(ip%) = 0# Then GoTo UpdateGetStandardsNoCountsInterf
 If StdAssignsIntfSets%(j%, i%) + 1 > MAXSET% Then GoTo UpdateGetStandardsTooManyIntfSets
 StdAssignsIntfSets%(j, i%) = StdAssignsIntfSets%(j, i%) + 1
 
@@ -802,6 +811,22 @@ Exit Sub
 UpdateGetStandardsTooManyStdSets:
 msg$ = "Too many assigned standard data sets for standard number " & Format$(UpdateTmpSample(1).number%) & ". "
 msg$ = msg$ & "Delete some standard sets for this standard number and try again."
+MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
+Call AnalyzeStatusAnal(vbNullString)
+ierror = True
+Exit Sub
+
+UpdateGetStandardsNoCountsInterf:
+msg$ = "No standard intensity data found for assigned interference standard number " & Format$(sample(1).StdAssignsIntfStds%(j%, i%)) & " set " & Format$(UpdateTmpSample(1).Set%) & " for "
+msg$ = msg$ & MiscAutoUcase$(sample(1).Elsyms$(i%)) & " " & sample(1).Xrsyms$(i%) & " "
+msg$ = msg$ & "on spectrometer " & Format$(sample(1).MotorNumbers%(i%)) & " crystal " & sample(1).CrystalNames$(i%) & " at "
+msg$ = msg$ & Format$(sample(1).KilovoltsArray!(i%)) & " KeV." & vbCrLf & vbCrLf
+msg$ = msg$ & "Either acquire count data for the indicated element on the indicated standard at the indicated conditions or "
+msg$ = msg$ & "change the standard assignment by clicking on the Analyze! | Standard Assignments buttons." & vbCrLf & vbCrLf
+msg$ = msg$ & "Also, make sure that the Use Automatic Analysis flag in the Acquisition Options window is not checked, at "
+msg$ = msg$ & "least until all standards have been acquired." & vbCrLf & vbCrLf
+msg$ = msg$ & "In addition, if the Check For Same Peak Positions or Check For Same PHA Settings options are checked in the Analytical Options dialog, "
+msg$ = msg$ & "make sure the on-peak and PHA settings are the same for standard and unknown."
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
 Call AnalyzeStatusAnal(vbNullString)
 ierror = True
