@@ -210,9 +210,12 @@ FormZAFOPT.TextCoatingThickness.Text = Format$(ZAFOptionSample(1).CoatingThickne
 If ZAFOptionSample(1).SampleDensity! = 0# Then ZAFOptionSample(1).SampleDensity! = 5#
 FormZAFOPT.TextDensity.Text = Format$(ZAFOptionSample(1).SampleDensity!)
 
-' Disable ferric/ferrous if calculating intensities from concentrations
+' Disable ferric/ferrous if calculating intensities from concentrations from CalcZAF (allow if CalcImage)
+If UCase$(app.EXEName) = UCase$("CalcZAF") Then
 If CalcZAFMode% = 0 Then
 FormZAFOPT.CheckFerrousFerricCalculation.Enabled = False
+FormZAFOPT.TextFerrousFerricTotalCations.Enabled = False
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = False
 FormZAFOPT.OptionFerrousFerricOption(0).Enabled = False
 FormZAFOPT.OptionFerrousFerricOption(1).Enabled = False
 FormZAFOPT.OptionFerrousFerricOption(2).Enabled = False
@@ -222,6 +225,8 @@ FormZAFOPT.OptionFerrousFerricOption(5).Enabled = False
 FormZAFOPT.OptionFerrousFerricOption(6).Enabled = False
 Else
 FormZAFOPT.CheckFerrousFerricCalculation.Enabled = True
+FormZAFOPT.TextFerrousFerricTotalCations.Enabled = True
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
 FormZAFOPT.OptionFerrousFerricOption(0).Enabled = True
 FormZAFOPT.OptionFerrousFerricOption(1).Enabled = True
 FormZAFOPT.OptionFerrousFerricOption(2).Enabled = True
@@ -229,6 +234,24 @@ FormZAFOPT.OptionFerrousFerricOption(3).Enabled = True
 FormZAFOPT.OptionFerrousFerricOption(4).Enabled = True
 FormZAFOPT.OptionFerrousFerricOption(5).Enabled = True
 FormZAFOPT.OptionFerrousFerricOption(6).Enabled = True
+End If
+
+' Check for data file version if CalcImage
+Else
+If ProbeDataFileVersionNumber! < 12.7 Then
+FormZAFOPT.CheckFerrousFerricCalculation.Enabled = False
+FormZAFOPT.TextFerrousFerricTotalCations.Enabled = False
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = False
+End If
+If ProbeDataFileVersionNumber! < 12.97 Then
+FormZAFOPT.OptionFerrousFerricOption(0).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(1).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(2).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(3).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(4).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(5).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(6).Enabled = False
+End If
 End If
 
 Exit Sub

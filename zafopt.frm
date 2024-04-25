@@ -418,7 +418,7 @@ Begin VB.Form FormZAFOPT
             Index           =   1
             Left            =   1200
             TabIndex        =   55
-            ToolTipText     =   $"ZAFOPT.frx":0000
+            ToolTipText     =   $"Zafopt.frx":0000
             Top             =   120
             Width           =   1575
          End
@@ -507,7 +507,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"ZAFOPT.frx":0093
+         ToolTipText     =   $"Zafopt.frx":0093
          Top             =   3120
          Width           =   4095
       End
@@ -857,23 +857,45 @@ Option Explicit
 
 Private Sub CheckFerrousFerricCalculation_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckFerrousFerricCalculation.Value = vbChecked Then
-If FormZAFOPT.OptionFerrousFerricOption(0).Value = True Then
+If FormZAFOPT.CheckFerrousFerricCalculation.value = vbChecked Then
+If FormZAFOPT.OptionFerrousFerricOption(0).value = True Then
 FormZAFOPT.TextFerrousFerricTotalCations.Enabled = True
 FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
+FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(0).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(1).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(2).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(3).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(4).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(5).Enabled = True
+FormZAFOPT.OptionFerrousFerricOption(6).Enabled = True
 Else
 FormZAFOPT.TextFerrousFerricTotalCations.Enabled = False
 FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(0).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(1).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(2).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(3).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(4).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(5).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(6).Enabled = False
 End If
 Else
 FormZAFOPT.TextFerrousFerricTotalCations.Enabled = False
 FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(0).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(1).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(2).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(3).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(4).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(5).Enabled = False
+FormZAFOPT.OptionFerrousFerricOption(6).Enabled = False
 End If
 End Sub
 
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub
@@ -904,7 +926,7 @@ End Sub
 
 Private Sub OptionFerrousFerricOption_Click(Index As Integer)
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.OptionFerrousFerricOption(0).Value = True Then
+If FormZAFOPT.OptionFerrousFerricOption(0).value = True Then
 FormZAFOPT.TextFerrousFerricTotalCations.Enabled = True
 FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
 Else

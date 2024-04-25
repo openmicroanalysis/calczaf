@@ -341,7 +341,7 @@ On Error GoTo BMPUnRGBError
 
 ' RGBcolor = Format(Hex(redvalue&) & Hex(greenvalue&) & Hex(bluevalue&), "000000")
 redvalue& = (RGBColor& And &HFF&)
-greenvalue& = (RGBColor& And &HFF00&) \ 256     ' this is correct appraently
+greenvalue& = (RGBColor& And &HFF00&) \ 256     ' this is correct apparently
 bluevalue& = (RGBColor& And &HFF0000) \ 65536   ' this is correct apparently
    
 Exit Sub
