@@ -2655,7 +2655,7 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 
-' Print volatile fit intercepts (log)
+' Print volatile fit intercepts (linear scale)
 msg$ = "TDII: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
@@ -2673,7 +2673,7 @@ End If
 Next i%
 Call IOWriteLog(msg$)
 
-' Print volatile fit intercepts (linear)
+' Print volatile fit intercepts (log scale)
 msg$ = "TDIL: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then

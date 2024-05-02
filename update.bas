@@ -656,8 +656,16 @@ End If
 
 ' Check for empty interference standard sets (virtual intensity not allowed)
 For j% = 1 To MAXINTF%
+If Not UseAggregateIntensitiesFlag Then
 If sample(1).DisableQuantFlag%(i%) = 0 Then
 If sample(1).StdAssignsIntfStds%(j%, i%) > 0 And StdAssignsIntfSets%(j%, i%) = 0 Then GoTo UpdateGetStandardsNoIntfSets
+End If
+
+Else
+ip% = IPOS8A(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample(1).KilovoltsArray!(i%), sample())
+If ip% = 0 And sample(1).DisableQuantFlag%(i%) = 0 Then
+If sample(1).StdAssignsIntfStds%(j%, i%) > 0 And StdAssignsIntfSets%(j%, i%) = 0 Then GoTo UpdateGetStandardsNoIntfSets
+End If
 End If
 Next j%
 
