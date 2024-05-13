@@ -181,6 +181,7 @@ Form=Effective.frm
 Module=CodeEffective; Effective.bas
 Module=CodeMATH2; MATH2.bas
 ResFile32="CalcZAF.RES"
+Module=CodeCOND2ConditionOrder; COND2ConditionOrder.bas
 IconForm="FormMAIN"
 Startup="Sub Main"
 HelpFile="ProbeWin.chm"

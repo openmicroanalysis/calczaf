@@ -361,6 +361,10 @@ GetElmOldSample(1).AtomicCharges!(GetElmOldSample(1).LastChan%) = GetElmTmpSampl
 GetElmOldSample(1).AtomicWts!(GetElmOldSample(1).LastChan%) = GetElmTmpSample(1).AtomicWts!(i%)
 3000:  Next n%
 
+' Re-sort condition orders just in case
+Call Cond2ConditionDefaultOrder(GetElmOldSample())
+If ierror Then Exit Sub
+
 ' Check assignments if in Probe for EPMA
 Call GetElmCheckAssignments(GetElmOldSample())
 If ierror Then Exit Sub

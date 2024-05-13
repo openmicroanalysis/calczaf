@@ -166,3 +166,4 @@ FormWEIGHT = 0, 0, 0, 0, C, 52, 52, 898, 542, C
 FormEffective = 78, 78, 924, 568, C, 52, 52, 898, 542, C
 CodeEffective = 104, 104, 950, 594, C
 CodeMATH2 = 0, 0, 0, 0, C
+CodeCOND2ConditionOrder = 0, 0, 0, 0, C
