@@ -810,7 +810,8 @@ msg$ = msg$ & "change the standard assignment by clicking on the Analyze! | Stan
 msg$ = msg$ & "Also, make sure that the Use Automatic Analysis flag in the Acquisition Options window is not checked, at "
 msg$ = msg$ & "least until all standards have been acquired." & vbCrLf & vbCrLf
 msg$ = msg$ & "In addition, if the Check For Same Peak Positions or Check For Same PHA Settings options are checked in the Analytical Options dialog, "
-msg$ = msg$ & "make sure the on-peak and PHA settings are the same for standard and unknown."
+msg$ = msg$ & "make sure the on-peak and PHA settings are the same for standard and unknown." & vbCrLf & vbCrLf
+msg$ = msg$ & "Finaly, if the element is an EDS element, make sure that the Use EDS Spectra for Quant checkbox is checked in the Calculation Options dialog in the Analyze! window."
 MsgBox msg$, vbOKOnly + vbExclamation, "UpdateGetStandards"
 Call AnalyzeStatusAnal(vbNullString)
 ierror = True

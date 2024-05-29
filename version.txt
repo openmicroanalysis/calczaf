@@ -2,6 +2,17 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/28/24	Modify DataRun (save Run table) to only update beam calibrations if running in real time.
+
+		Modify AutomateConfirmSelected to only set UseQuickStandardsFlag = False if unknown position sample
+
+05/18/24	Fix EMSA EDS file import bugs for Oxford, Thermo and JEOL file import (used in Standard).
+v. 13.8.4
+
+05/15/24	Add export options for PictureSnapApp annotation export from Analyze! right click menu (von der Handt)..
+
+		Work on importing Oxford EMSA file into Standard (Adams).
+
 05/12/24	Fix time estimation bugs in Automate! time estimate (Boroughs).
 
 		Fix two places where sample condition orders could get out of order when deleting elements from a combined 

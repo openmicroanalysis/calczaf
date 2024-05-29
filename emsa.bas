@@ -611,7 +611,7 @@ Sub EMSAReadSpectrum(mode As Integer, datarow As Integer, sample() As TypeSample
 ierror = False
 On Error GoTo EMSAReadSpectrumError
 
-Dim n As Integer, nc As Integer
+Dim n As Integer, nc As Integer, xunits As Integer, ntype As Integer
 Dim astring As String, bstring As String
 Dim ystring As String
 Dim temp As Single
@@ -646,10 +646,11 @@ End If
 
 ' EDS spectra
 If mode% = 0 Then
-If InStr(astring$, "#NCOLUMNS    :") > 0 Then
-nc% = Val(Mid$(astring$, Len("#NCOLUMNS    :") + 1))
-If nc% <> 1 Then GoTo EMSAReadSpectrumNotSingleColumn           ' EDS is one spectrum (raw) one column of Y values only
-End If
+
+' Ignore because various EDS vendors are not consistent!
+'If InStr(astring$, "#NCOLUMNS    :") > 0 Then
+'nc% = Val(Mid$(astring$, Len("#NCOLUMNS    :") + 1))
+'End If
 
 ' Load number of points
 If InStr(astring$, "#NPOINTS     :") > 0 Then
@@ -657,19 +658,43 @@ sample(1).EDSSpectraNumberofChannels%(datarow%) = Val(Mid$(astring$, Len("#NPOIN
 End If
 
 ' Load x axis parameters
+If InStr(astring$, "#XUNITS      :") > 0 Then
+If Trim$(Mid$(astring$, Len("#XUNITS      :") + 1)) = "eV" Then
+xunits% = 0             ' eV
+Else
+xunits% = 1             ' keV
+End If
+End If
+
+' Get start energy (always load in keV)
 If InStr(astring$, "#OFFSET      :") > 0 Then
-sample(1).EDSSpectraStartEnergy!(datarow%) = Val(Mid$(astring$, Len("#OFFSET      :") + 1)) / EVPERKEV#
+If xunits% = 0 Then
+sample(1).EDSSpectraStartEnergy!(datarow%) = Val(Mid$(astring$, Len("#OFFSET      :") + 1)) / EVPERKEV#   ' Thermo (and sometimes Bruker!) are in eV
+Else
+sample(1).EDSSpectraStartEnergy!(datarow%) = Val(Mid$(astring$, Len("#OFFSET      :") + 1))               ' Oxford, JEOL and Bruker are in keV
+End If
 End If
 
 If InStr(astring$, "#XPERCHAN    :") > 0 Then
-sample(1).EDSSpectraEVPerChannel!(datarow%) = Val(Mid$(astring$, Len("#XPERCHAN    :") + 1))
+If xunits% = 0 Then
+sample(1).EDSSpectraEVPerChannel!(datarow%) = Val(Mid$(astring$, Len("#XPERCHAN    :") + 1))                ' Thermo (and sometimes Bruker!)
+Else
+sample(1).EDSSpectraEVPerChannel!(datarow%) = Val(Mid$(astring$, Len("#XPERCHAN    :") + 1)) * EVPERKEV#    ' Oxford
+End If
 End If
 
 If InStr(astring$, "#XUNITS      :") > 0 Then
 End If
 If InStr(astring$, "#YUNITS      :") > 0 Then
 End If
+
+' Intensity data type (Y or XY)
 If InStr(astring$, "#DATATYPE    :") > 0 Then
+If Trim$(Mid$(astring$, Len("#DATATYPE    :") + 1)) = "Y" Then
+ntype% = 0       ' Y data only (Thermo and Bruker)
+Else
+ntype% = 1       ' XY data (Oxford and JEOL)
+End If
 End If
 
 ' Check for proper spectral type
@@ -704,9 +729,6 @@ temp! = Val(Mid$(astring$, Len("#XPERCHAN    :") + 1))
 sample(1).CLSpectraEndEnergy!(datarow%) = sample(1).CLSpectraStartEnergy!(datarow%) + temp! * (sample(1).CLSpectraNumberofChannels(datarow%) - 1)
 End If
 
-If InStr(astring$, "#XUNITS      :") > 0 Then
-End If
-
 ' Determine y units (assume raw counts)
 If InStr(astring$, "#YUNITS      :") > 0 Then
 ystring$ = Mid$(astring$, Len("#YUNITS      :") + 1)
@@ -717,6 +739,7 @@ tIntensityOption% = 0
 End If
 End If
 
+' Not used for xCLent CL data
 If InStr(astring$, "#DATATYPE    :") > 0 Then
 End If
 
@@ -731,8 +754,14 @@ If InStr(astring$, "#YLABEL      :") > 0 Then
 End If
 End If
 
-' Load beam conditions
+' Load beam conditions  (with -kV)
 If InStr(astring$, "#BEAMKV   -kV:") > 0 Then
+If mode% = 0 Then sample(1).EDSSpectraAcceleratingVoltage!(datarow%) = Val(Mid$(astring$, Len("#BEAMKV   -kV:") + 1))
+If mode% = 1 Then sample(1).CLSpectraKilovolts!(datarow%) = Val(Mid$(astring$, Len("#BEAMKV   -kV:") + 1))
+End If
+
+' Load beam conditions  (without -kV)
+If InStr(astring$, "#BEAMKV      :") > 0 Then
 If mode% = 0 Then sample(1).EDSSpectraAcceleratingVoltage!(datarow%) = Val(Mid$(astring$, Len("#BEAMKV   -kV:") + 1))
 If mode% = 1 Then sample(1).CLSpectraKilovolts!(datarow%) = Val(Mid$(astring$, Len("#BEAMKV   -kV:") + 1))
 End If
@@ -743,7 +772,10 @@ End If
 
 ' EDS INFORMATION
 If mode% = 0 Then
-If InStr(astring$, "#LIVETIME  -s:") > 0 Then
+If InStr(astring$, "#LIVETIME  -s:") > 0 Then   ' Thermo
+sample(1).EDSSpectraLiveTime!(datarow%) = Val(Mid$(astring$, Len("#LIVETIME  -s:") + 1))
+End If
+If InStr(astring$, "#LIVETIME    :") > 0 Then   ' Oxford
 sample(1).EDSSpectraLiveTime!(datarow%) = Val(Mid$(astring$, Len("#LIVETIME  -s:") + 1))
 End If
 If InStr(astring$, "#REALTIME  -s:") > 0 Then
@@ -762,7 +794,7 @@ End If
 If InStr(astring$, "#SPECTRUM    : ") > 0 Then Exit Do
 Loop
 
-' Specify other parameter as needed
+' Specify other EDS parameters as needed
 If mode% = 0 Then
 sample(1).EDSSpectraEndEnergy!(datarow%) = sample(1).EDSSpectraStartEnergy!(datarow%) + sample(1).EDSSpectraEVPerChannel!(datarow%) / EVPERKEV# * (sample(1).EDSSpectraNumberofChannels(datarow%) - 1)
 End If
@@ -773,17 +805,30 @@ If InStr(astring$, "#SPECTRUM    : ") = 0 Then GoTo EMSAReadSpectrumNotFound
 ' Loop on spectrum intensity lines
 n% = 0
 Do Until EOF(EMSASpectrumFileNumber%)
+
+' Input each intensity (ntype% = 0 or Y data only) or eV/intensity (ntype% = 1 or XY data) values ONE AT A TIME!
+Input #EMSASpectrumFileNumber%, astring$
+If InStr(astring$, "#ENDOFDATA") > 0 Then Exit Do
+If Trim$(astring$) <> vbNullString Then                 ' skip blank values read from Bruker 4 column MSA files
 n% = n% + 1
 
-' Input each intensity
-Line Input #EMSASpectrumFileNumber%, astring$
-If InStr(astring$, "#ENDOFDATA   : ") > 0 Then Exit Do
-
-' Read EDS spectrum data (one column of Y data)
+' Read EDS spectrum data (one column of Y data or one column of X/Y data)
 If mode% = 0 Then
+
+' Y only (Thermo or Bruker)
+If ntype% = 0 Then
 temp! = Val(astring$)
 If tIntensityOption% > 0 Then temp! = temp! * sample(1).EDSSpectraLiveTime!(datarow%)           ' de-normalize to actual counts
 sample(1).EDSSpectraIntensities&(datarow%, n%) = temp!
+
+' XY (Oxford or JEOL)
+Else
+Input #EMSASpectrumFileNumber%, bstring$    ' skip X column and just read Y value
+If InStr(astring$, "#ENDOFDATA") > 0 Then Exit Do
+temp1! = Val(bstring$)
+If tIntensityOption% > 0 Then temp! = temp! * sample(1).EDSSpectraLiveTime!(datarow%)           ' de-normalize to actual counts
+sample(1).EDSSpectraIntensities&(datarow%, n%) = temp1!
+End If
 End If
 
 ' Read CL spectrum data (one column of X/Y data, comma delimited)
@@ -798,15 +843,16 @@ temp1! = Val(bstring$)                                          ' CL spectra int
 If tIntensityOption% > 0 Then temp1! = temp1! * sample(1).CLAcquisitionCountTime!(datarow%)     ' de-normalize to actual counts
 
 sample(1).CLSpectraIntensities&(datarow%, n%) = temp1!
-sample(1).CLSpectraDarkIntensities&(datarow%, n%) = 0#      ' dark corrected
+sample(1).CLSpectraDarkIntensities&(datarow%, n%) = 0#          ' dark corrected
 sample(1).CLSpectraNanometers!(datarow%, n%) = temp3!
 End If
 
+End If
 Loop
 
-' Check for correct number of data points
+' Check for correct number of data points  (skip for EDS because Bruker!)
 If mode% = 0 Then
-If sample(1).EDSSpectraNumberofChannels%(datarow%) <> n% - 1 Then GoTo EMSAReadSpectrumWrongNumberOfPoints
+'If sample(1).EDSSpectraNumberofChannels%(datarow%) <> n% - 1 Then GoTo EMSAReadSpectrumWrongNumberOfPoints
 End If
 If mode% = 1 Then
 If sample(1).CLSpectraNumberofChannels%(datarow%) <> n% - 1 Then GoTo EMSAReadSpectrumWrongNumberOfPoints
@@ -831,8 +877,8 @@ ierror = True
 Exit Sub
 
 EMSAReadSpectrumNotSingleColumn:
-msg$ = "More than one data column found in " & tfilename$ & vbCrLf & vbCrLf
-msg$ = msg$ & "Multiple data columns are not supported in EMSA EDS files at this time."
+msg$ = "More than one Y data column found in " & tfilename$ & vbCrLf & vbCrLf
+msg$ = msg$ & "Multiple Y data columns are not supported in EMSA EDS files at this time."
 MsgBox msg$, vbOKOnly + vbExclamation, "EMSAReadSpectrum"
 ierror = True
 Exit Sub

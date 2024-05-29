@@ -229,7 +229,8 @@ End If
 
 ' Thermo spectrum files
 ElseIf UCase$(ioextension$) = "EMSA" Then
-FormMAIN.CMDialog1.Filter = "EMSA (Thermo) Spectrum Files (*.EMSA)|*.EMSA|All Files (*.*)|*.*|"
+'FormMAIN.CMDialog1.Filter = "EMSA (Thermo) Spectrum Files (*.EMSA)|*.EMSA|All Files (*.*)|*.*|"
+FormMAIN.CMDialog1.Filter = "EMSA/MSA) Spectrum Files (*.EMSA;*.MSA)|*.EMSA;*.MSA|All Files (*.*)|*.*|"
 If mode% < 2 Then
 If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.emsa"
 End If

@@ -1185,14 +1185,15 @@ Exit Sub
 End Sub
 
 Sub StandardImportEDSSpectrum(stdnum As Integer, tForm As Form, sample() As TypeSample)
-' Import an EDS spectrum to the current standard
+' Import an EDS EMSA spectrum to the current standard
 
 ierror = False
 On Error GoTo StandardImportEDSSpectrumError
 
 Dim specnum As Integer, chan As Integer
-Dim tfilename As String
 Dim response As Integer
+
+Static tfilename As String
 
 ' Get new filename
 Call IOGetFileName(Int(2), "EMSA", tfilename$, tForm)
