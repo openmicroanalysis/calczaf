@@ -1219,7 +1219,8 @@ response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton1, "PictureSna
 If response% = vbCancel Then Exit Sub
 End If
 
-' Browse for existing ACQ
+' Browse for existing ACQ using current image as starting directory
+tfilename$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".acq"
 Call IOGetFileName(Int(2), "ACQ", tfilename$, FormPICTURESNAP2)
 If ierror Then Exit Sub
 
@@ -1258,13 +1259,24 @@ Screen.MousePointer = vbDefault
 Exit Sub
 End If
 
-' Now copy the file to the current image name
+' Load new calibration filename based on current image file
 tfilename2$ = MiscGetFileNameNoExtension$(PictureSnapFilename$) & ".acq"
 If tfilename$ = tfilename2$ Then GoTo PictureSnapLoadACQSameACQ
-FileCopy tfilename$, tfilename2$
 
-' Now load the calibration (new or again)
-Call PictureSnapLoadCalibration
+' Read the .ACQ file calibration
+Call PictureSnapReadCalibration(tfilename$)
+If ierror Then Exit Sub
+
+' Load PictureSnap mode here to avoid re-setting PictureSnapCalibrated flag in form click event!!!!
+FormPICTURESNAP2.OptionPictureSnapMode(PictureSnapMode%).value = True
+
+' Save the .ACQ file calibration
+PictureSnapCalibrated = True
+Call PictureSnapSaveCalibration(Int(0), PictureSnapFilename$, PictureSnapCalibrationSaved)
+If ierror Then Exit Sub
+
+' Load calibration dialog if open
+Call PictureSnapCalibrateLoad(Int(0))
 If ierror Then Exit Sub
 
 ' Calculate the image rotation relative to the stage
@@ -1276,7 +1288,8 @@ Call PictureSnapCalibrateCheck
 If ierror Then Exit Sub
 
 ' Confirm to user
-msg$ = "Calibration file " & tfilename$ & " was loaded to the current image. You may want to confirm the accuracy of the calibration by using the Move To buttons."
+msg$ = "Calibration file " & tfilename$ & " was loaded to the current image file: " & PictureSnapFilename$ & ". " & vbCrLf & vbCrLf
+msg$ = msg$ & "You may want to confirm the accuracy of the image calibration by using the Move Stage buttons to confirm each calibration point."
 MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapLoadACQ"
 
 Exit Sub
@@ -1288,7 +1301,7 @@ ierror = True
 Exit Sub
 
 PictureSnapLoadACQSameACQ:
-msg$ = "The specified ACQ file " & tfilename$ & " is the same as the current ACQ file. Please try again with a different ACQ file."
+msg$ = "The specified ACQ file " & tfilename$ & " is the same as the current ACQ file. Why load the same calibration file? Please try again with a different ACQ file."
 MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapFileLoadACQ"
 ierror = True
 Exit Sub

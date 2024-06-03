@@ -2,9 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/02/24	Modify PictureSnap "Load ACQ File for Image Calibration" code Sub PictureSnapLoadACQ to fix bugs.
+
 05/28/24	Modify DataRun (save Run table) to only update beam calibrations if running in real time.
 
 		Modify AutomateConfirmSelected to only set UseQuickStandardsFlag = False if unknown position sample
+		
+		Add call to Cond2ConditionDefaultOrder from AutomateConfirmSelected3 if quick standard (just in case?).
 
 05/18/24	Fix EMSA EDS file import bugs for Oxford, Thermo and JEOL file import (used in Standard).
 v. 13.8.4
