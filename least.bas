@@ -274,6 +274,7 @@ On Error GoTo LeastExponentialError
 Dim c As Double, a As Double, n As Double
 Dim temp1 As Double, temp2 As Double
 Dim temp As Double
+Dim tmsg As String
 
 ' Init "bcoeff()"
 bcoeff#(1) = 0#
@@ -296,10 +297,33 @@ temp1# = temp1# + n# * txdata!(1) * Log(txdata!(2)) - n# * txdata!(2) * Log(txda
 temp2# = txdata!(1) - txdata!(2)
 If temp2# = 0# Then Exit Sub
 temp# = temp1# / temp2#
+
+' New test to prevent exponential from blowing up
+If temp# < MAXLOGEXPD! Then
 c# = Exp(temp#)
 
+' New test for C# <= 0
+If c# <= 0 Then
+If DebugMode Then
+tmsg$ = "Invalid exponentiation for value of c (" & Format$(c#) & ")" & vbCrLf
+tmsg$ = tmsg$ & "Txdata!(1) = " & Format$(txdata(1)) & vbCrLf
+tmsg$ = tmsg$ & "Txdata!(2) = " & Format$(txdata(2)) & vbCrLf
+tmsg$ = tmsg$ & "Tydata!(1) = " & Format$(tydata(1)) & vbCrLf
+tmsg$ = tmsg$ & "Tydata!(2) = " & Format$(tydata(2))
+Call IOWriteLog(tmsg$)
+End If
+Exit Sub
+End If
+
+Else
+If DebugMode Then
+tmsg$ = "LeastExponential: out of bounds for value of c (" & Format$(c#) & ")"
+Call IOWriteLog(tmsg$)
+End If
+Exit Sub
+End If
+
 ' Calculate a
-If c# <= 0# Then GoTo LeastExponentialBadExponentiation
 temp1# = (Log(tydata!(1)) + Log(tydata!(2)) + n# * (Log(txdata!(2)) + Log(txdata!(1))) - 2 * Log(c#))
 temp2# = txdata!(1) + txdata!(2)
 If temp2# = 0# Then Exit Sub
@@ -319,16 +343,6 @@ Exit Sub
 
 LeastExponentialBadExponent:
 msg$ = "Exponent must be greater than -8 and less than 8"
-MsgBox msg$, vbOKOnly + vbExclamation, "LeastExponential"
-ierror = True
-Exit Sub
-
-LeastExponentialBadExponentiation:
-msg$ = "Invalid exponentiation for value of c (" & Format$(c#) & ")" & vbCrLf & vbCrLf
-msg$ = msg$ & "Txdata!(1) = " & Format$(txdata(1)) & vbCrLf
-msg$ = msg$ & "Txdata!(2) = " & Format$(txdata(2)) & vbCrLf
-msg$ = msg$ & "Tydata!(1) = " & Format$(tydata(1)) & vbCrLf
-msg$ = msg$ & "Tydata!(2) = " & Format$(tydata(2))
 MsgBox msg$, vbOKOnly + vbExclamation, "LeastExponential"
 ierror = True
 Exit Sub
