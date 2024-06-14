@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/07/24	Modify CalcImage to handle shared MPB off-peak files (Poeml).
+v. 13.8.5
+
 06/03/24	Fix rare exponentiation bug in LeastExponential when calculatiung bad pixels in CalcImage (Poeml).
 
 06/02/24	Modify PictureSnap "Load ACQ File for Image Calibration" code Sub PictureSnapLoadACQ to fix bugs.

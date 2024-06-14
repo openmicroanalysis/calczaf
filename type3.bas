@@ -387,6 +387,7 @@ Next i%
 Call IOWriteLog(msg$)
 
 ' Multi-point parameters and positions
+If Not MiscStringsAreSame(app.EXEName, "CalcImage") Then        ' skip if CalcImge app since MPB points might be modified for available off-peak images
 If ProbeDataFileVersionNumber! > 8.31 Then
 If MiscIsEqualTo(sample(1).LastElm%, sample(1).BackgroundTypes%(), Int(2)) Or MiscIsEqualTo(sample(1).LastElm%, sample(1).OffPeakCorrectionTypes%(), Int(MAXOFFBGDTYPES%)) Or DebugMode Then
 
@@ -532,7 +533,7 @@ Call IOWriteLog(msg$)
 
 End If
 End If
-
+End If
 Loop
 End If
 

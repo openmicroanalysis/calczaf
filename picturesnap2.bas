@@ -1131,6 +1131,7 @@ Dim ix As Integer, iy As Integer
 Dim xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double
 
 Dim gfilename As String, bfilename$
+Dim onpos As Single, hioff As Single, looff As Single
 
 Static tfilename As String
 
@@ -1149,7 +1150,7 @@ Screen.MousePointer = vbHourglass
 ' Extract data from PrbImg
 Call IOStatusAuto("Reading PrbImg file " & tfilename$ & "...")
 DoEvents
-Call Base64ReaderInput(tfilename$, keV!, counttime!, beamcurrent1!, beamcurrent2!, timeofacq1#, timeofacq2#, ix%, iy%, sarray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#, mag#, scanrota#, scanflag%, orientationflag%, astring$)
+Call Base64ReaderInput(tfilename$, keV!, counttime!, beamcurrent1!, beamcurrent2!, timeofacq1#, timeofacq2#, ix%, iy%, sarray!(), xmin#, xmax#, ymin#, ymax#, zmin#, zmax#, mag#, scanrota#, scanflag%, orientationflag%, astring$, onpos!, hioff!, looff!)
 If ierror Then Exit Sub
 
 ' Create GRD file from extracted data and save to folder

@@ -19,7 +19,7 @@ Private Type TypeByt4
 strval(1 To 4) As Byte
 End Type
 
-Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scanrota As Double, scanflag As Integer, orientationflag As Integer, tIntegrateEDSSpectrumImagingFilename As String)
+Sub Base64ReaderInput(lpFileName As String, keV As Single, counttime As Single, beamcurrent1 As Single, beamcurrent2 As Single, timeofacq1 As Double, timeofacq2 As Double, ix As Integer, iy As Integer, sarray() As Single, xmin As Double, xmax As Double, ymin As Double, ymax As Double, zmin As Double, zmax As Double, mag As Double, scanrota As Double, scanflag As Integer, orientationflag As Integer, tIntegrateEDSSpectrumImagingFilename As String, onpos As Single, hioff As Single, looff As Single)
 ' Open prbimg and read in some parameters
 ' scanflag% = 0 beam scan, scanflag% = 1 stage scan
 ' orientationflag% = 0 starts/ends upper left/lower right (Cameca stage or beam scan or JEOL beam scan), orientationflag% = 1 starts/ends upper right/lower left (JEOL stage scan)
@@ -254,6 +254,11 @@ xmax# = xmax# * MICRONSPERMM&
 ymin# = ymin# * MICRONSPERMM&
 ymax# = ymax# * MICRONSPERMM&
 End If
+
+' Read in spectrometer position and hi and lo off-peak offsets
+onpos! = Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "Position", vbNullString$)
+hioff! = Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "PosOffset", vbNullString$)
+looff! = Base64ReaderGetINIString$(lpFileName$, "ColumnConditions", "NegOffset", vbNullString$)
 
 ' Read in raw data (32 bit floats encoded as Base64 string) (note reversed dimensions)
 Screen.MousePointer = vbHourglass
