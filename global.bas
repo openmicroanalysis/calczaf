@@ -339,6 +339,8 @@ Global Const FeO_OXIDE_PROPORTION! = 0.286497     ' Fe to FeO stoichiometry (see
 
 Global Const MAX_EXCEL_2003_COLS% = 256  ' maximum number of columns supported by Excel 2003 (version 11)
 
+Global Const MAXCRITERIA% = 3            ' dynamic element criteria for CalcImage pixel calculations
+
 Global Const LOTSOFGRIDPOINTS% = 1000    ' lots of polygon points (hide FormAUTOMATE)
 Global Const TOOMANYGRIDSTEPS% = 2000    ' too many grid steps
 Global Const MAXTITLELENGTH% = 80        ' maximum graph title length
@@ -3100,4 +3102,39 @@ Global AllowETOAEditing As Boolean
 Global JEOLSpectroJogSize(1 To MAXSPEC%) As Single   ' load from MOTORS.DAT backlash for additional room for JEOL spectro low limit jog (in mm)
 
 Global UserSpecifiedOutputBlankCorrectionParametersFlag As Boolean
+
+Global DynamicSpecifiedElementByDifferenceFlag As Integer
+Global DynamicSpecifiedElementByDifferenceElement(1 To MAXCRITERIA%) As Integer        ' element channel number (1 to sample(1).LastElm)
+Global DynamicSpecifiedElementByDifferenceValue(1 To MAXCRITERIA%) As Single           ' k-ratio value
+Global DynamicSpecifiedElementByDifferenceGreaterLess(1 To MAXCRITERIA%) As Integer    ' 0 = greater than, 1 = less than
+Global DynamicSpecifiedElementByDifferenceOperator1 As Integer                         ' 0 = AND, 1 = OR
+Global DynamicSpecifiedElementByDifferenceOperator2 As Integer
+
+Global DynamicSpecifiedElementByDifferenceFormulaFlag As Integer
+Global DynamicSpecifiedElementByDifferenceFormulaElement(1 To MAXCRITERIA%) As Integer
+Global DynamicSpecifiedElementByDifferenceFormulaValue(1 To MAXCRITERIA%) As Single
+Global DynamicSpecifiedElementByDifferenceFormulaGreaterLess(1 To MAXCRITERIA%) As Integer
+Global DynamicSpecifiedElementByDifferenceFormulaOperator1 As Integer
+Global DynamicSpecifiedElementByDifferenceFormulaOperator2 As Integer
+
+Global DynamicSpecifiedElementByStoichiometryToOxygenFlag As Integer
+Global DynamicSpecifiedElementByStoichiometryToOxygenElement(1 To MAXCRITERIA%) As Integer
+Global DynamicSpecifiedElementByStoichiometryToOxygenValue(1 To MAXCRITERIA%) As Single
+Global DynamicSpecifiedElementByStoichiometryToOxygenGreaterLess(1 To MAXCRITERIA%) As Integer
+Global DynamicSpecifiedElementByStoichiometryToOxygenOperator1 As Integer
+Global DynamicSpecifiedElementByStoichiometryToOxygenOperator2 As Integer
+
+Global DynamicSpecifiedElementByStoichiometryToAnotherFlag As Integer
+Global DynamicSpecifiedElementByStoichiometryToAnotherElement(1 To MAXCRITERIA%) As Integer
+Global DynamicSpecifiedElementByStoichiometryToAnotherValue(1 To MAXCRITERIA%) As Single
+Global DynamicSpecifiedElementByStoichiometryToAnotherGreaterLess(1 To MAXCRITERIA%) As Integer
+Global DynamicSpecifiedElementByStoichiometryToAnotherOperator1 As Integer
+Global DynamicSpecifiedElementByStoichiometryToAnotherOperator2 As Integer
+
+Global DynamicSpecifiedElementExcessOxygenByDroopFlag As Integer
+Global DynamicSpecifiedElementExcessOxygenByDroopElement(1 To MAXCRITERIA%) As Integer
+Global DynamicSpecifiedElementExcessOxygenByDroopValue(1 To MAXCRITERIA%) As Single
+Global DynamicSpecifiedElementExcessOxygenByDroopGreaterLess(1 To MAXCRITERIA%) As Integer
+Global DynamicSpecifiedElementExcessOxygenByDroopOperator1 As Integer
+Global DynamicSpecifiedElementExcessOxygenByDroopOperator2 As Integer
 

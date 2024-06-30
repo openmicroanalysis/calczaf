@@ -2,10 +2,25 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/29/24	Modify DataStandardUpdateCompositions to ask user whether to create a temporary standard database
+		if ProbeDatabase is 10.2.3 or newer (von der Handt).
+
+06/25/24	Add video tutorial buttons for Basic EPMA, MAN and Fiducial windows.
+
+		Add elements and concentrations to DataStandardUpdateCompositions warning dialog (von der Handt).
+		
+		Fix excess oxygen bug from ferric oxygen not being initialized to zero in CalcImage.
+
+06/17/24	Work on new dynamic specified elements for CalcImage based on user specified criteria (Allaz). Improved
+v. 13.8.6	behavior in CalcZAF for Calculation Options also. Also improved output of elements by stoichiometry
+		to oxygen and to another elements in Classify .DAT files including formula by difference elements!
+		
+		Fix several overflow errors in ZAFStp/ZAFPap when map pixels have very low totals (Jiang).
+
 06/07/24	Modify CalcImage to handle shared MPB off-peak files (Poeml).
 v. 13.8.5
 
-06/03/24	Fix rare exponentiation bug in LeastExponential when calculatiung bad pixels in CalcImage (Poeml).
+06/03/24	Fix rare exponentiation bug in LeastExponential when calculating bad pixels in CalcImage (Poeml).
 
 06/02/24	Modify PictureSnap "Load ACQ File for Image Calibration" code Sub PictureSnapLoadACQ to fix bugs.
 

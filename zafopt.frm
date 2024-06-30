@@ -24,6 +24,15 @@ Begin VB.Form FormZAFOPT
    ScaleHeight     =   6030
    ScaleWidth      =   13155
    ShowInTaskbar   =   0   'False
+   Begin VB.CommandButton CommandDynamicElements 
+      Caption         =   "Dynamically Calculate Calculation Options"
+      Height          =   975
+      Left            =   9960
+      TabIndex        =   63
+      ToolTipText     =   "Calculate elements by difference and/or by stocihiometry dynamically based on pixel k-ratio values"
+      Top             =   840
+      Width           =   1695
+   End
    Begin VB.Frame Frame3 
       Caption         =   "EDS Spectral Data And Quant Calculations"
       ForeColor       =   &H00FF0000&
@@ -903,6 +912,11 @@ End Sub
 Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormZAFOPT
+End Sub
+
+Private Sub CommandDynamicElements_Click()
+Call ZAFOptionLoadDynamicElements
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandOK_Click()

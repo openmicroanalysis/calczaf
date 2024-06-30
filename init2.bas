@@ -240,6 +240,10 @@ analysis.OxygenFromSulfur! = 0#
 analysis.SulfurCorrectedOxygen! = 0#
 analysis.ChargeBalance! = 0#
 analysis.FeCharge! = 0#
+analysis.FerricFerrousFe2O3! = 0#
+analysis.FerricFerrousFeO! = 0#
+analysis.FerricOxygen! = 0#
+analysis.FerricToTotalIronRatio! = 0#
 
 For i% = 1 To MAXCHAN%
 analysis.UnkZAFCors!(1, i%) = 1#

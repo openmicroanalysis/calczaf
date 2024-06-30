@@ -917,3 +917,26 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub GridCheckGRD(tfilename As String, findex As Integer, iData() As TypeImageData)
+' Peform a GRD orientation check without saving to GRD file
+
+ierror = False
+On Error GoTo GridCheckGRDError
+
+' Check passed image data for orientation
+Call GridCheckGRDInfo(tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$)
+If ierror Then Exit Sub
+Call GridCheckGRDConvert(Int(2), tfilename$, gX_Polarity%, gY_Polarity%, gStage_Units$, findex%, iData())
+If ierror Then Exit Sub
+
+Exit Sub
+
+' Errors
+GridCheckGRDError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "GridCheckGRD"
+ierror = True
+Exit Sub
+
+End Sub
