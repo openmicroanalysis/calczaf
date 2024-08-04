@@ -2,6 +2,20 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/03/24	Fix pixel selection/plot for Y axis in TDI and MPB Display Plot Image Data.
+
+		Output Classify totals data column last and get rid of trailing tab character (Carpenter).
+		
+		Add video tutorial buttons in Basic EPMA for analysis and output for results and images (Matthews).
+
+07/25/24	Add spectro orientation form for displaying current spectrometer orientations (from MDB)
+v. 13.8.8
+
+07/18/24	Add MPB (shared) intensity display for CalcImage (see Run menu).
+
+07/08/24	Work on new TDI fit display window for CalcImage (von der Handt).
+v. 13.8.7
+
 06/29/24	Modify DataStandardUpdateCompositions to ask user whether to create a temporary standard database
 		if ProbeDatabase is 10.2.3 or newer (von der Handt).
 

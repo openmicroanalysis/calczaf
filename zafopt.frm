@@ -25,7 +25,7 @@ Begin VB.Form FormZAFOPT
    ScaleWidth      =   13155
    ShowInTaskbar   =   0   'False
    Begin VB.CommandButton CommandDynamicElements 
-      Caption         =   "Dynamically Calculate Calculation Options"
+      Caption         =   "Calculate UnAnalyzed Elements Dynamically"
       Height          =   975
       Left            =   9960
       TabIndex        =   63

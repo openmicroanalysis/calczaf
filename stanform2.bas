@@ -795,7 +795,6 @@ Exit Sub
 
 End Sub
 
-
 Sub StanFormCalculateElastic(elastic() As Single, sample() As TypeSample)
 ' Calculate elastic scattering for this sample
 

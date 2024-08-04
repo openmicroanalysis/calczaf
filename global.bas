@@ -305,6 +305,7 @@ Global Const MINREPLICATES% = 1          ' minimum number of replicate samples
 Global Const MAXREPLICATES% = 500        ' maximum number of replicates samples
 
 Global Const MAXBEAMCALIBRATIONS% = 32   ' maximum number of beam scan calibration array members
+Global Const MAX_TDI_PLOT_PIXELS% = 300  ' only used by CalcImage
 
 ' Integrated intensity constants
 Global Const MININTEGRATEDINTENSITYINITIALSTEP! = 800#
