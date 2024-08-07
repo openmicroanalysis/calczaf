@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/05/24	Get Assign Fits button working in CalcImage Run | Display TDI menu window.
+
 08/04/24	Tweak Display TDI plot in CalcImage, set minimum TDI points to 3 in PFE.
 
 08/03/24	Fix pixel selection/plot for Y axis in TDI and MPB Display Plot Image Data.
