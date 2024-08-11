@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/10/24	Fix BraggOrders bug in NewUpdateSample code (Seward).
+
 08/07/24	Work om implemnting "Flank" intensity output for Buse, Kearns and Hughes.  Output will not require
 		standard intensities.
 
