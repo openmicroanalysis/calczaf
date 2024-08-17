@@ -2,9 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/16/24	Modify BasicEPMA window Start Wavescan button color based on current sample. Add new menu to
+		CalcImage Project menu for New Project Based on Existing Project (Neill and Harris).
+
+08/14/24	Finish Flank outpout method (Buse).
+
 08/10/24	Fix BraggOrders bug in NewUpdateSample code (Seward).
 
-08/07/24	Work om implemnting "Flank" intensity output for Buse, Kearns and Hughes.  Output will not require
+08/07/24	Work om implementing "Flank" intensity output for Buse, Kearns and Hughes.  Output will not require
 		standard intensities.
 
 08/05/24	Get Assign Fits button working in CalcImage Run | Display TDI menu window.
