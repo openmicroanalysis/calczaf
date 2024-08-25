@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/24/24	Work on formula by difference code to handle oxygen by stocihiometry (fix atomic weight bug 
+		in OptionsGetAll2).
+
+08/23/24	Modify combined selected samples into new sample code to allow for a single selected sample to be
+		duplicated (Boroughs).
+
 08/21/24	Fix minor bug in TDI display (Boroughs).
 
 08/17/24	Tweak BasicEPMA form button color behavior (Neill).

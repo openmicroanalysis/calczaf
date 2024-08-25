@@ -22,6 +22,7 @@ Dim i As Integer
 Dim AtomName As String, AtomNum As Integer
 Dim AtomWeight As Single, NumAtoms As Single
 Dim MolFormula As String, MolWeight As Single
+Dim tmsg As String
 
 Dim BlockOn As Integer, BlockWeight As Single
 Dim NumBlocks As Integer
@@ -161,11 +162,11 @@ weight! = MolWeight!
 
 ' DebugMode results
 If DebugMode Then
-msg$ = MolFormula$ & " = "
-msg$ = msg$ & ElemFormula$ & " = "
-msg$ = msg$ & Str$(MolWeight!) & "g/mol, "
-msg$ = msg$ & MolPercent$
-Call IOWriteLog(msg$)
+tmsg$ = MolFormula$ & " = "
+tmsg$ = tmsg$ & ElemFormula$ & " = "
+tmsg$ = tmsg$ & Str$(MolWeight!) & "g/mol, "
+tmsg$ = tmsg$ & MolPercent$
+Call IOWriteLog(tmsg$)
 End If
     
 Exit Sub
