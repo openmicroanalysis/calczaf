@@ -1822,21 +1822,15 @@ End If
 End If
 Next i%
 
-' Add in formula elements by difference
+' Add in formula elements by difference (always load formula by difference concentrations exactly as specified, regardless of OxideOrElemental flag!!!!)
 If sample(1).DifferenceFormulaFlag Then
-Call FormulaFormulaToSample(sample(1).DifferenceFormula$, FormulaTmpSample())
+Call FormulaFormulaToSample(sample(1).DifferenceFormula$, FormulaTmpSample())       ' parse formula into concentrations
 If ierror Then Exit Sub
 
 ' Calculate sum of composition skipping formula by difference elements
 zaf.ksum! = 0#
 For i% = 1 To zaf.in0%              ' need to include oxygen by stoichiometry for summation
 If zaf.il%(i%) <> 19 Then
-
-If zaf.il%(zaf.in0%) = 0 Then       ' if calculating oxygen by stoichiometry
-zaf.krat!(i%) = zaf.krat!(i%) / (1# + zaf.p1!(i%))
-zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) + zaf.krat!(i%) * zaf.p1!(i%)
-End If
-
 zaf.ksum! = zaf.ksum! + zaf.krat!(i%)
 End If
 Next i%
@@ -1846,18 +1840,12 @@ temp! = 1# - zaf.ksum!
 If temp! < 0# Then temp! = 1#
 
 ' Add in formula by difference elements (search from 1 to LastChan in FormulaTmpSample())
-For i% = 1 To zaf.in1%                  ' need to include oxygen by stoichiometry for summation!
+For i% = 1 To zaf.in1%
 If zaf.il%(i%) = 19 Then
 If zaf.ksum! < 1# Then
 ip% = IPOS1B(Int(1), FormulaTmpSample(1).LastChan%, sample(1).Elsyms$(i%), FormulaTmpSample(1).Elsyms$())
 If ip% > 0 Then
 zaf.krat!(i%) = FormulaTmpSample(1).ElmPercents!(ip%) / 100# * temp!
-
-If zaf.il%(zaf.in0%) = 0 Then       ' if calculating oxygen by stoichiometry
-zaf.krat!(i%) = zaf.krat!(i%) / (1# + zaf.p1!(i%))
-zaf.krat!(zaf.in0%) = zaf.krat!(zaf.in0%) + zaf.krat!(i%) * zaf.p1!(i%)
-End If
-
 End If
 End If
 End If
@@ -2082,14 +2070,8 @@ If sample(1).DifferenceFormulaFlag Then
 
 ' Calculate sum of composition skipping formula by difference elements
 zaf.ksum! = 0#
-For i% = 1 To zaf.in0%              ' need to include oxygen by stoichiometry for summation!
+For i% = 1 To zaf.in0%                  ' need to include oxygen by stoichiometry for summation!
 If zaf.il%(i%) <> 19 Then
-
-If zaf.il%(zaf.in0%) = 0 Then       ' if calculating oxygen by stoichiometry
-r1!(i%) = r1!(i%) / (1# + zaf.p1!(i%))
-r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
-End If
-
 zaf.ksum! = zaf.ksum! + r1!(i%)
 End If
 Next i%
@@ -2104,12 +2086,6 @@ If zaf.ksum! < 1# Or (zaf.ksum! >= 1# And Not ForceNegativeKratiosToZeroFlag) Th
 ip% = IPOS1B(Int(1), FormulaTmpSample(1).LastChan%, sample(1).Elsyms$(i%), FormulaTmpSample(1).Elsyms$())
 If ip% > 0 Then
 r1!(i%) = FormulaTmpSample(1).ElmPercents!(ip%) / 100# * temp!
-
-If zaf.il%(zaf.in0%) = 0 Then       ' if calculating oxygen by stoichiometry
-r1!(i%) = r1!(i%) / (1# + zaf.p1!(i%))
-r1!(zaf.in0%) = r1!(zaf.in0%) + r1!(i%) * zaf.p1!(i%)
-End If
-
 zaf.krat!(i%) = r1!(i%)
 End If
 End If
