@@ -2479,7 +2479,7 @@ EmpiricalAlphaFlag% = 1 ' do not use empirical alpha factors
 iflu% = 1
 
 zafstring$(0) = "Select Individual Corrections"
-zafstring$(1) = "Armstrong/Love Scott prZ (default)"
+zafstring$(1) = "Armstrong/Brown/Scott-Love (prZ)"
 zafstring$(2) = "Philibert/Duncumb-Reed"
 zafstring$(3) = "Heinrich/Duncumb-Reed"
 zafstring$(4) = "Love-Scott I"
@@ -2489,7 +2489,7 @@ zafstring$(7) = "Bastin (original) (prZ)"
 zafstring$(8) = "Bastin PROZA Phi (prZ) (EPQ-91)"
 zafstring$(9) = "Pouchou and Pichoir-Full (PAP)"
 zafstring$(10) = "Pouchou and Pichoir-Simplified (XPP)"
-zafstring$(11) = "Donovan and Moy BSC/BKS (prZ)"
+zafstring$(11) = "PAP/Donovan and Moy BSC/BKS (prZ)"
 
 zafstring2$(0) = "Individual"
 zafstring2$(1) = "Armstrong prZ"
