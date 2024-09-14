@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/13/24	Add JEOLEDSMilliSecDelayBefore keyword to probewin.ini [hardare] section to prevent JEOL software 
+v. 13.8.9	popups when starting EDS if stage is taking longer to settle (Liu and Fellowes).
+
 09/12/24	Minor tweak to automation estimate message (Yu).
 
 09/09/24	Tweak GetTim minute formattig (Boroughs).

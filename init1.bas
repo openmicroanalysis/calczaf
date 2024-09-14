@@ -4361,6 +4361,19 @@ End
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+lpAppName$ = "Hardware"
+lpKeyName$ = "JEOLEDSMilliSecDelayBefore"
+nDefault& = 300           ' need some delay for older JEOL stage to settle before starting JEOL EDS acquisition to avoid JEOL popup message?
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+JEOLEDSMilliSecDelayBefore& = valid&
+If JEOLEDSMilliSecDelayBefore& < 30 Or JEOLEDSMilliSecDelayBefore& > 5000 Then
+msg$ = "JEOLEDSMilliSecDelayBefore keyword value is out of range in " & ProbeWinINIFile$ & " (must be between 30 and 5000 msec)."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+JEOLEDSMilliSecDelayBefore& = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors

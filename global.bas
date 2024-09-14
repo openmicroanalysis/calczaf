@@ -3139,3 +3139,4 @@ Global DynamicSpecifiedElementExcessOxygenByDroopGreaterLess(1 To MAXCRITERIA%) 
 Global DynamicSpecifiedElementExcessOxygenByDroopOperator1 As Integer
 Global DynamicSpecifiedElementExcessOxygenByDroopOperator2 As Integer
 
+Global JEOLEDSMilliSecDelayBefore As Long
