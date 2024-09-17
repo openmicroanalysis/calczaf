@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form FormABOUT 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "About This Program"
-   ClientHeight    =   11385
+   ClientHeight    =   11670
    ClientLeft      =   2400
    ClientTop       =   1545
    ClientWidth     =   9495
@@ -21,7 +21,7 @@ Begin VB.Form FormABOUT
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   11385
+   ScaleHeight     =   11670
    ScaleWidth      =   9495
    Begin VB.CommandButton CommandOK 
       BackColor       =   &H00C0FFC0&
@@ -32,12 +32,12 @@ Begin VB.Form FormABOUT
       Style           =   1  'Graphical
       TabIndex        =   2
       TabStop         =   0   'False
-      Top             =   10800
+      Top             =   11040
       Width           =   1575
    End
    Begin VB.Frame Frame1 
       ClipControls    =   0   'False
-      Height          =   10575
+      Height          =   10815
       Left            =   120
       TabIndex        =   0
       Top             =   120
@@ -58,13 +58,13 @@ Begin VB.Form FormABOUT
          MultiLine       =   -1  'True
          ScrollBars      =   2  'Vertical
          TabIndex        =   7
-         Top             =   9480
+         Top             =   9720
          Width           =   6375
       End
       Begin VB.Label LabelAboutSpecialists 
          Alignment       =   2  'Center
          BorderStyle     =   1  'Fixed Single
-         Height          =   2055
+         Height          =   2295
          Left            =   120
          TabIndex        =   6
          Top             =   7320
@@ -132,7 +132,7 @@ Begin VB.Form FormABOUT
       MousePointer    =   99  'Custom
       TabIndex        =   3
       ToolTipText     =   "Click here to visit the Probe Software web site"
-      Top             =   10920
+      Top             =   11160
       Width           =   2775
    End
 End
@@ -207,7 +207,8 @@ tmsg$ = tmsg$ & "Owen Neill, 207 653-6331, neill@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Anette von der Handt, 612 222-6711, vonderhandt@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Will Nachlas, 717 571-9415, nachlas@probesoftware.com" & vbCrLf
 tmsg$ = tmsg$ & "Scott Boroughs, 509 991-0698, boroughs@probesoftware.com" & vbCrLf
-tmsg$ = tmsg$ & "Mike Matthews, +44(0)118 982 4219, matthews@probesoftware.com"
+tmsg$ = tmsg$ & "Mike Matthews, +44(0)118 982 4219, matthews@probesoftware.com" & vbCrLf
+tmsg$ = tmsg$ & "Dave Adams, +64 22 392 0634, adams@probesoftware.com"
 
 FormABOUT.LabelAboutSpecialists.Caption = tmsg$
 
