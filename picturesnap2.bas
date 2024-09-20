@@ -963,16 +963,11 @@ End If
 If FormPICTURESNAP.Visible And FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked Then
 If FormAUTOMATE.ListDigitize.ListIndex < 0 Then GoTo PictureSnapLoadPositionsNotSelected
 samplerow% = FormAUTOMATE.ListDigitize.ItemData(FormAUTOMATE.ListDigitize.ListIndex)
-Call PositionGetSampleDataOnly(samplerow%, npts%, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageIdata%())
+Call PositionGetSampleDataOnly2(samplerow%, npts%, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageIdata%(), ImageNData%(), ImageSData%(), ImageSNdata$())
 If ierror Then Exit Sub
 
-' Load returned points and zero out sample and line numbers (not returned by above get selected position sample call)
+' Load returned points from selected sample
 ImagePoints& = CLng(npts%)
-For i& = 1 To ImagePoints&
-ImageNData%(i&) = 0     ' line numbers
-ImageSData%(i&) = 0     ' sample numbers
-ImageSNdata$(i&) = vbNullString     ' sample number
-Next i&
 
 ' Load data for selected position sample type
 ElseIf FormPICTURESNAP.menuDisplayStandards.Checked Or FormPICTURESNAP.menuDisplayUnknowns.Checked Or FormPICTURESNAP.menuDisplayWavescans.Checked Then

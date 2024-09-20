@@ -159,3 +159,80 @@ Exit Sub
 
 End Sub
 
+Sub PositionGetSampleDataOnly2(samplerow As Integer, npts As Integer, xdata() As Single, ydata() As Single, zdata() As Single, iData() As Integer, ndata() As Integer, sdata() As Integer, sndata() As String)
+' Routine to load position data and label data from the POSITION.MDB database
+
+ierror = False
+On Error GoTo PositionGetSampleDataOnly2Error
+
+Dim i As Integer
+Dim SQLQ As String
+
+Dim position As TypePosition
+
+Dim PoDb As Database
+Dim PoRs As Recordset
+
+' Open the database
+Screen.MousePointer = vbHourglass
+If PositionDataFile$ = vbNullString Then PositionDataFile$ = ApplicationCommonAppData$ & "POSITION.MDB"
+Set PoDb = OpenDatabase(PositionDataFile$, PositionDatabaseNonExclusiveAccess%, dbReadOnly)
+
+' Get position data from "Position" table
+SQLQ$ = "SELECT DISTINCT Position.*, Sample.* from Position, Sample WHERE PosToRow = " & Str$(samplerow%) & " "
+SQLQ$ = SQLQ$ & "AND Position.PosToRow = Sample.RowOrder "
+SQLQ$ = SQLQ$ & "ORDER by  Types, Numbers, PosOrder"
+Set PoRs = PoDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
+
+' Update grid for new number of rows
+If PoRs.BOF And PoRs.EOF Then GoTo PositionGetSampleDataOnly2NoPositions
+
+' Load number of points
+PoRs.MoveLast
+npts% = PoRs.RecordCount
+PoRs.MoveFirst
+
+ReDim xdata(1 To npts%) As Single
+ReDim ydata(1 To npts%) As Single
+ReDim zdata(1 To npts%) As Single
+ReDim iData(1 To npts%) As Integer  ' types
+ReDim ndata(1 To npts%) As Integer  ' line (row) numbers
+ReDim sdata(1 To npts%) As Integer  ' sample numbers
+ReDim sndata(1 To npts%) As String  ' sample names
+
+' Load position data
+i% = 0
+Do Until PoRs.EOF
+i% = i% + 1
+xdata!(i%) = PoRs("StageX")
+ydata!(i%) = PoRs("StageY")
+zdata!(i%) = PoRs("StageZ")
+iData%(i%) = PoRs("Types")
+ndata%(i%) = PoRs("PosOrder")
+sdata%(i%) = PoRs("Numbers")
+sndata$(i%) = Trim$(vbNullString & PoRs("Names"))
+PoRs.MoveNext
+Loop
+
+PoRs.Close
+PoDb.Close
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+PositionGetSampleDataOnly2Error:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "PositionGetSampleDataOnly2"
+ierror = True
+Exit Sub
+
+PositionGetSampleDataOnly2NoPositions:
+Screen.MousePointer = vbDefault
+msg$ = "No position data for position sample " & Str$(position.samplenumber%) & " in " & PositionDataFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "PositionGetSampleDataOnly2"
+ierror = True
+Exit Sub
+
+End Sub
+

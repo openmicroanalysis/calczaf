@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/19/24	Modify Run | PictureSnap menu code to allow user to select multiple samples from the
+		Analyze! window for display of stage coordinates.
+
 09/16/24	Work on Time.bas code to improve time estimate accuracy unk vs wav.
 
 09/13/24	Add JEOLEDSMilliSecDelayBefore keyword to probewin.ini [hardare] section to prevent JEOL software 
