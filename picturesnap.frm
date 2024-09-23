@@ -141,7 +141,7 @@ Begin VB.Form FormPICTURESNAP
          Caption         =   "Digitized Wavescan Position Samples"
       End
       Begin VB.Menu menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly 
-         Caption         =   "Digitized Positions For Selected Position Sample Only"
+         Caption         =   "Digitized Positions For Selected Position Sample(s) Only"
       End
       Begin VB.Menu menuDisplaySeparator2 
          Caption         =   "-"

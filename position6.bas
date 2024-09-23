@@ -168,8 +168,6 @@ On Error GoTo PositionGetSampleDataOnly2Error
 Dim i As Integer
 Dim SQLQ As String
 
-Dim position As TypePosition
-
 Dim PoDb As Database
 Dim PoRs As Recordset
 
@@ -229,10 +227,84 @@ Exit Sub
 
 PositionGetSampleDataOnly2NoPositions:
 Screen.MousePointer = vbDefault
-msg$ = "No position data for position sample " & Str$(position.samplenumber%) & " in " & PositionDataFile$
+msg$ = "No position data for position sample row " & Str$(samplerow%) & " in " & PositionDataFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "PositionGetSampleDataOnly2"
 ierror = True
 Exit Sub
 
 End Sub
+
+Sub PositionGetSampleDataOnly3(samplerows() As Integer, npts As Long, xdata() As Single, ydata() As Single, zdata() As Single, iData() As Integer, ndata() As Integer, sdata() As Integer, sndata() As String)
+' Routine to load position data and label data from the POSITION.MDB database for passed sample rows
+
+ierror = False
+On Error GoTo PositionGetSampleDataOnly3Error
+
+Dim n As Long
+Dim SQLQ As String
+
+Dim PoDb As Database
+Dim PoRs As Recordset
+
+' Open the database
+Screen.MousePointer = vbHourglass
+If PositionDataFile$ = vbNullString Then PositionDataFile$ = ApplicationCommonAppData$ & "POSITION.MDB"
+Set PoDb = OpenDatabase(PositionDataFile$, PositionDatabaseNonExclusiveAccess%, dbReadOnly)
+
+' Get position data from "Position" table
+For n& = 1 To UBound(samplerows)
+If samplerows%(n&) > 0 Then
+SQLQ$ = "SELECT DISTINCT Position.*, Sample.* from Position, Sample WHERE PosToRow = " & Str$(samplerows%(n&)) & " "
+SQLQ$ = SQLQ$ & "AND Position.PosToRow = Sample.RowOrder "
+SQLQ$ = SQLQ$ & "ORDER by  Types, Numbers, PosOrder"
+Set PoRs = PoDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
+
+' Update grid for new number of rows
+If PoRs.BOF And PoRs.EOF Then GoTo PositionGetSampleDataOnly3NoPositions
+
+npts& = npts& + 1
+ReDim Preserve xdata(1 To npts&) As Single
+ReDim Preserve ydata(1 To npts&) As Single
+ReDim Preserve zdata(1 To npts&) As Single
+ReDim Preserve iData(1 To npts&) As Integer  ' types
+ReDim Preserve ndata(1 To npts&) As Integer  ' line (row) numbers
+ReDim Preserve sdata(1 To npts&) As Integer  ' sample numbers
+ReDim Preserve sndata(1 To npts&) As String  ' sample names
+
+' Load position data
+Do Until PoRs.EOF
+xdata!(npts&) = PoRs("StageX")
+ydata!(npts&) = PoRs("StageY")
+zdata!(npts&) = PoRs("StageZ")
+iData%(npts&) = PoRs("Types")
+ndata%(npts&) = PoRs("PosOrder")
+sdata%(npts&) = PoRs("Numbers")
+sndata$(npts&) = Trim$(vbNullString & PoRs("Names"))
+PoRs.MoveNext
+Loop
+
+End If
+Next n&
+PoRs.Close
+PoDb.Close
+
+Screen.MousePointer = vbDefault
+Exit Sub
+
+' Errors
+PositionGetSampleDataOnly3Error:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "PositionGetSampleDataOnly3"
+ierror = True
+Exit Sub
+
+PositionGetSampleDataOnly3NoPositions:
+Screen.MousePointer = vbDefault
+msg$ = "No position data for position sample row " & Str$(samplerows%(n&)) & " in " & PositionDataFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "PositionGetSampleDataOnly3"
+ierror = True
+Exit Sub
+
+End Sub
+
 

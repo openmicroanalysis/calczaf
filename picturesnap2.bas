@@ -943,7 +943,7 @@ End Sub
 
 Sub PictureSnapLoadPositions(mode As Integer)
 ' Load the positions for the specified samples type from the Automate! window (called from PictureSnap Display menu for digitized positions)
-'   mode = 0 just reload for labels (or selected position sample)
+'   mode = 0 just reload for labels (or selected position sample(s))
 '   mode = 1 load standards
 '   mode = 2 load unknowns
 '   mode = 3 load wavescans
@@ -951,23 +951,35 @@ Sub PictureSnapLoadPositions(mode As Integer)
 ierror = False
 On Error GoTo PictureSnapLoadPositionsError
 
-Dim i As Long, imode As Integer, samplerow As Integer, npts As Integer
+Dim n As Integer
+Dim i As Long, imode As Integer, npts As Integer
 
+Dim samplerows() As Integer
+
+' Check for selected sample(s) in Automate! window
 ImagePoints& = 0
 If FormAUTOMATE.ListDigitize.ListCount < 1 Then
 FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked = vbUnchecked
 GoTo PictureSnapLoadPositionsNoPositionSamples
 End If
 
-' Check if only loading data for selected sample
+' Check if only loading data for selected sample(s)
 If FormPICTURESNAP.Visible And FormPICTURESNAP.menuDisplayDisplayDigitizedPositionsForSelectedPositionSampleOnly.Checked Then
 If FormAUTOMATE.ListDigitize.ListIndex < 0 Then GoTo PictureSnapLoadPositionsNotSelected
-samplerow% = FormAUTOMATE.ListDigitize.ItemData(FormAUTOMATE.ListDigitize.ListIndex)
-Call PositionGetSampleDataOnly2(samplerow%, npts%, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageIdata%(), ImageNData%(), ImageSData%(), ImageSNdata$())
-If ierror Then Exit Sub
 
-' Load returned points from selected sample
-ImagePoints& = CLng(npts%)
+' Load array of sample rows for selected samples in Automate! window
+i& = 0
+For n% = 0 To FormAUTOMATE.ListDigitize.ListCount - 1
+If FormAUTOMATE.ListDigitize.Selected(n%) Then
+i& = i& + 1
+ReDim Preserve samplerows(1 To i&) As Integer
+samplerows%(i&) = FormAUTOMATE.ListDigitize.ItemData(n%)
+End If
+Next n%
+
+' Load digitized stage positions
+Call PositionGetSampleDataOnly3(samplerows%(), ImagePoints&, ImageXdata!(), ImageYdata!(), ImageZdata!(), ImageIdata%(), ImageNData%(), ImageSData%(), ImageSNdata$())
+If ierror Then Exit Sub
 
 ' Load data for selected position sample type
 ElseIf FormPICTURESNAP.menuDisplayStandards.Checked Or FormPICTURESNAP.menuDisplayUnknowns.Checked Or FormPICTURESNAP.menuDisplayWavescans.Checked Then
