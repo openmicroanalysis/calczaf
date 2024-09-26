@@ -300,7 +300,7 @@ def main():
     # noinspection SpellCheckingInspection
     parser.add_argument('-w', '--workdir', help='Working directory')
     parser.add_argument('-u', '--url',
-                        default='http://probesoftware.com/download/CALCZAF_SOURCE-E2.ZIP',
+                        default='https://probesoftware.com/download/CALCZAF_SOURCE-E2.ZIP',
                         help='Url to CalcZAF source zip file')
     parser.add_argument('--reposurl', default='git@github.com:openmicroanalysis/calczaf.git')
     parser.add_argument('--no-pull', action='store_true', default=False,
