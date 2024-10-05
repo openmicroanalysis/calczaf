@@ -42,8 +42,8 @@ def parse_version(fp):
     changes = {}
     tags = {}
 
-    change_pattern = re.compile('^\d{1,2}/\d{1,2}/\d{1,2}\t')
-    tag_pattern = re.compile('v. \d+')
+    change_pattern = re.compile(r'^\d{1,2}/\d{1,2}/\d{1,2}' + '\t')
+    tag_pattern = re.compile(r'v. \d+')
 
     lines = []
     for line in fp:
