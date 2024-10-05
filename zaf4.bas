@@ -461,12 +461,13 @@ msg$ = Format$(Symup$(zaf.Z%(i%)) & " " & Xraylo$(Int(zaf.il%(i%))), a80$)
 msg$ = msg$ & Format$(Format$(zaf.genstd!(i%), f84), a80$)
 
 ' Atomic number
-msg$ = msg$ & Format$(Format$(zaf.r!(i%, i%) / zaf.s!(i%, i%), f84), a80$)
+msg$ = msg$ & MiscAutoFormatA$(zaf.r!(i%, i%) / zaf.s!(i%, i%))
 
-msg$ = msg$ & Format$(Format$(zaf.genstd!(i%) * zaf.r!(i%, i%) / zaf.s!(i%, i%), f84), a80$)
+' Atomic number (FINFAC)
+msg$ = msg$ & MiscAutoFormatA$(zaf.genstd!(i%) * zaf.r!(i%, i%) / zaf.s!(i%, i%))
 
 ' Stopping power
-msg$ = msg$ & Format$(Format$(zaf.s!(i%, i%), f84), a80$)
+msg$ = msg$ & MiscAutoFormatA$(zaf.s!(i%, i%))
 
 ' Backscatter loss
 msg$ = msg$ & Format$(Format$(zaf.r!(i%, i%), f84), a80$)

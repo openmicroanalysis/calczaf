@@ -2,6 +2,17 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/03/24	Work on new update code/form for only https. Fix formatting output in CalcZAF (Buse).
+
+10/02/24	More work on CalcImage TDI display from Run menu.
+
+09/30/24	Fix TDI assign volatile type bug in CalcImage if sample setup has no TDI data (Chouinard).
+
+09/27/24	Fix minor bugs in oxide display in GetSpec (Boroughs). FIx dead time overflow in 
+		DataCorrectDeadTime2 due to negative cps (Seward).
+
+09/24/24	Include ImageInterfaceImageIxIy parameter in check for new config in DataRun (Rose/Corrigan).
+
 09/22/24	Minor improvements to secondary fluorescence code and forms.
 
 09/19/24	Modify Run | PictureSnap menu code to allow user to select multiple samples from the

@@ -17,7 +17,6 @@ import sys
 import urllib.request
 import urllib.parse
 import urllib.error
-import tempfile
 import zipfile
 import argparse
 import shutil
@@ -25,8 +24,11 @@ import subprocess
 import re
 import datetime
 import io
+import tempfile
+from pathlib import Path
 
 # Third party modules.
+import requests
 
 # Local modules.
 
@@ -141,8 +143,10 @@ def compare(filepath, work_dir):
 
     logger.info('Reading current version... DONE')
 
+    temp_zip_file = download_zip_file(filepath)
+
     logger.info('Reading zip version...')
-    with zipfile.ZipFile(filepath, 'r') as z:
+    with zipfile.ZipFile(temp_zip_file, 'r') as z:
         with io.TextIOWrapper(z.open(VERSION_FILENAME), errors='ignore') as fp:
             new_changes, new_tags = parse_version(fp)
     logger.info('Reading zip version... DONE')
@@ -167,8 +171,10 @@ def compare(filepath, work_dir):
 def compare_remove_files(filepath, work_dir, no_commit):
     logger.info('Comparing files %s...', filepath)
 
+    temp_zip_filename = download_zip_file(filepath)
+
     zipfile_list = set()
-    with zipfile.ZipFile(filepath, 'r') as z:
+    with zipfile.ZipFile(temp_zip_filename, 'r') as z:
         for info in z.infolist():
             # Always use lower case
             filename = info.filename.lower()
@@ -207,13 +213,37 @@ def compare_remove_files(filepath, work_dir, no_commit):
             message = "Remove files not in the CalcZAF source zip file."
             logger.info('Running git commit...')
             args = ['git', 'commit', '-m', message]
-            subprocess.check_call(args, cwd=work_dir)
+            try:
+                subprocess.check_call(args, cwd=work_dir)
+            except subprocess.CalledProcessError as message:
+                logging.warning(message)
             logger.info('Running git commit... DONE')
 
 
+def download_zip_file(filepath):
+    logger.info('Downloading %s...', filepath)
+
+    temp_zip_filename = "CALCZAF_SOURCE-E2.ZIP"
+    temp_zip_filepath = Path(temp_zip_filename)
+
+    if not temp_zip_filepath.is_file():
+        response = requests.get(filepath)
+        logger.info('Downloading url %s...', response.url)
+        logger.info('Downloading OK %s...', response.ok)
+        logger.info('Downloading status code %s...', response.status_code)
+
+        with open(temp_zip_filename, mode="wb") as file:
+            file.write(response.content)
+
+    logger.info('Downloading %s... DONE', filepath)
+    return temp_zip_filename
+
 def extract(filepath, work_dir):
     logger.info('Extracting %s...', filepath)
-    with zipfile.ZipFile(filepath, 'r') as z:
+
+    temp_zip_filename = download_zip_file(filepath)
+
+    with zipfile.ZipFile(temp_zip_filename, 'r') as z:
         for info in z.infolist():
             # Always use lower case
             filename = info.filename.lower()

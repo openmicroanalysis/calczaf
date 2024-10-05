@@ -97,8 +97,8 @@ End Sub
 
 Sub IOUpdateGetUpdate(mode As Integer)
 ' Get the latest update for Probe for EPMA
-'   mode = 1 use FTP
-'   mode = 2 use HTTP
+'   mode = 1 use FTP (Explicit FTP over TLS)
+'   mode = 2 use HTTPS
 '   mode = 3 use alternative FTP
 
 ierror = False
@@ -255,13 +255,13 @@ ierror = True
 Exit Sub
 
 IOUpdateGetUpdateOldVersion:
-msg$ = "The current version of this program (" & ProgramVersionString$ & ") is too old to update automatically. The program will have to be re-installed. Please contact Probe Software for more update information."
+msg$ = "The current version of this program (" & ProgramVersionString$ & ") is too old to update automatically. The program will have to be re-installed. Please contact Probe Software for more information."
 MsgBox msg$, vbOKOnly + vbExclamation, "IOUpdateGetUpdate"
 ierror = True
 Exit Sub
 
 IOUpdateGetUpdateNotAvailable:
-msg$ = "This download site is not currently available for CalcZAF, please try a different download option or download using your browser at https://probesoftware.com/Technical.htm."
+msg$ = "This download site is not currently available for CalcZAF, please try a different download option or download using your browser at https://www.probesoftware.com/resources/."
 MsgBox msg$, vbOKOnly + vbExclamation, "IOUpdateGetUpdate"
 ierror = True
 Exit Sub
