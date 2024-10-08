@@ -770,7 +770,7 @@ Dim temp As Long
 MiscIsLongArrayInitalized = False
 temp& = UBound(larray&)
 
-' We reach this point only if arr is initalized, i.e. no error occured
+' We reach this point only if arr is initalized, i.e. no error occurred
 If temp& > -1 Then MiscIsLongArrayInitalized = True  ' UBound is greater then -1
 Exit Function
 

@@ -1927,7 +1927,7 @@ Exit Sub
 
 ' Errors
 EditOutputUserMACFileError:
-msg$ = Error$ & ", occured outputing file " & tfilename$
+msg$ = Error$ & ", occurred outputting file " & tfilename$
 MsgBox msg$, vbOKOnly + vbCritical, "EditOutputUserMACFile"
 Call IOStatusAuto(vbNullString)
 ierror = True

@@ -452,7 +452,7 @@ Dim temp As Long
 GridIsArrayInitalized = False
 temp& = UBound(arr)
 
-' We reach this point only if arr is initalized, i.e. no error occured
+' We reach this point only if arr is initalized, i.e. no error occurred
 If temp& > -1 Then GridIsArrayInitalized = True  ' UBound is greater then -1
 Exit Function
 

@@ -188,9 +188,9 @@ End If
 
 ' Construct message
 If mode% = 0 Then
-tmsg$ = "An error occured during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
+tmsg$ = "An error occurred during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
 Else
-tmsg$ = "A message occured during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
+tmsg$ = "A message occurred during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
 End If
 tmsg$ = tmsg$ & "Time: " & Now & vbCrLf
 tmsg$ = tmsg$ & "File: " & ProbeDataFile$ & vbCrLf
