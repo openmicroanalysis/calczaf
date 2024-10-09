@@ -28,12 +28,6 @@ On Error GoTo IOMsgBoxError
 
 Dim tmsg As String
 
-' If automation is running and e-mail notification flag is set, send e-mail error message
-If EmailNotificationOfErrorsFlag And AcquisitionOnAutomate Then
-Call IOSendEMail(Int(0), errstring$, procstring$)
-If ierror Then Exit Sub
-End If
-
 ' Write error to log file
 Call IOWriteError(errstring$, procstring$)
 If ierror Then Exit Sub
@@ -67,12 +61,6 @@ ierror = False
 On Error GoTo IOMsgBox2Error
 
 Dim tmsg As String
-
-' If automation is running and e-mail notification flag is set, send e-mail error message
-If EmailNotificationOfErrorsFlag And AcquisitionOnAutomate Then
-Call IOSendEMail(Int(0), errstring$, procstring$)
-If ierror Then Exit Sub
-End If
 
 ' Write error to log file
 Call IOWriteError(errstring$, procstring$)
@@ -114,168 +102,6 @@ MsgBox Error$, vbOKOnly + vbCritical, "IOWriteLogError"
 ierror = True
 Exit Sub
 
-End Sub
-
-Sub IOSendEMail(mode As Integer, errstring As String, procstring As String)
-' Send e-mail message to specified address (in INI file)
-' mode = 0 error message
-' mode = 1 normal message
-
-ierror = False
-On Error GoTo IOSendEMailError
-
-Dim itest As Long
-
-Static tmsg As String
-
-' Check for valid addresses
-If Trim$(SMTPServerAddress$) = vbNullString Then GoTo IOSendEMailBadSMTPServerAddress
-If Trim$(SMTPAddressFrom$) = vbNullString Then GoTo IOSendEMailBadSMTPAddressFrom
-If Trim$(SMTPAddressTo$) = vbNullString Then GoTo IOSendEMailBadSMTPAddressTo
-If Trim$(SMTPUserName$) = vbNullString Then GoTo IOSendEMailBadSMTPUserName
-
-If InStr(SMTPAddressFrom$, "@") = 0 Then GoTo IOSendEMailBadSMTPAddressFrom
-If InStr(SMTPAddressTo$, "@") = 0 Then GoTo IOSendEMailBadSMTPAddressTo
-  
-' If first time, ask user for password and check again
-If Trim$(SMTPUserPassword$) = vbNullString Then
-Call PasswordLoad(SMTPUserPassword$, "Enter SMTP Password", "Enter the SMTP password for the specified username (" & SMTPUserName$ & "). This password will be retained until the probe run is closed.")
-If ierror Then Exit Sub
-End If
-
-' Check password again
-If Trim$(SMTPUserPassword$) = vbNullString Then GoTo IOSendEMailBadSMTPUserPassword
-  
-' Load SMTP control
-FormMAIN.SmtpClient1.HostName = Trim$(SMTPServerAddress$)
-FormMAIN.SmtpClient1.RemotePort = smtpPortSecure    ' smtpPortStandard or smtpPortSecure
-FormMAIN.SmtpClient1.Timeout = 20                   ' assume 20 seconds
-FormMAIN.SmtpClient1.UserName = Trim$(SMTPUserName$)
-FormMAIN.SmtpClient1.password = Trim$(SMTPUserPassword$)
-FormMAIN.SmtpClient1.Options = smtpOptionNone
-FormMAIN.SmtpClient1.Extended = True
-    
-If DebugMode Then
-FormMAIN.SmtpClient1.TraceFile = ApplicationCommonAppData$ & "SmtpTest.log"
-FormMAIN.SmtpClient1.TraceFlags = 4
-FormMAIN.SmtpClient1.Trace = True
-Else
-FormMAIN.SmtpClient1.Trace = False
-End If
-    
-' Set securce connection (explicit SSL/TLS)
-FormMAIN.SmtpClient1.Secure = True
-FormMAIN.SmtpClient1.Options = &H2000 ' Implicit SSL/TLS on port 465
-        
-' Make SMTP connection
-itest& = FormMAIN.SmtpClient1.Connect()
-If itest& > 0 Then GoTo IOSendEMailBadConnection
-    
-itest& = FormMAIN.SmtpClient1.Authenticate()
-If itest& > 0 Then GoTo IOSendEMailBadAuthentication
-
-' Build message
-FormMAIN.MailMessage1.Reset
-FormMAIN.MailMessage1.From = Trim$(SMTPAddressFrom$)
-FormMAIN.MailMessage1.To = Trim$(SMTPAddressTo$)
-FormMAIN.MailMessage1.date = FormMAIN.SmtpClient1.CurrentDate
-
-If mode% = 0 Then
-FormMAIN.MailMessage1.Subject = "Automation error from Probe for EPMA, at " & Now
-Else
-FormMAIN.MailMessage1.Subject = "Automation message from Probe for EPMA, at " & Now
-End If
-
-' Construct message
-If mode% = 0 Then
-tmsg$ = "An error occurred during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
-Else
-tmsg$ = "A message occurred during a Probe for EPMA automation procedure!" & vbCrLf & vbCrLf
-End If
-tmsg$ = tmsg$ & "Time: " & Now & vbCrLf
-tmsg$ = tmsg$ & "File: " & ProbeDataFile$ & vbCrLf
-tmsg$ = tmsg$ & "Version: " & Str$(DataFileVersionNumber!) & vbCrLf
-tmsg$ = tmsg$ & "File Type: " & MDBFileType$ & vbCrLf
-tmsg$ = tmsg$ & "File Title: " & MDBFileTitle$ & vbCrLf
-tmsg$ = tmsg$ & "User: " & MDBUserName$ & vbCrLf
-tmsg$ = tmsg$ & "File Description : " & MDBFileDescription$ & vbCrLf & vbCrLf
-
-' Send additional info
-If mode% = 0 Then
-tmsg$ = tmsg$ & "Procedure : " & procstring$ & vbCrLf
-tmsg$ = tmsg$ & "Error : " & errstring$ & vbCrLf
-Else
-If NumberofSamples% > 0 Then
-tmsg$ = tmsg$ & "Sample : " & SampleNams$(NumberofSamples%) & vbCrLf
-tmsg$ = tmsg$ & "Line : " & NumberofLines& & vbCrLf
-End If
-tmsg$ = tmsg$ & "Message : " & errstring$ & vbCrLf
-End If
-FormMAIN.MailMessage1.Text = tmsg$
-    
-' Send message
-itest& = FormMAIN.SmtpClient1.SendMessage(FormMAIN.MailMessage1.From, FormMAIN.MailMessage1.To, FormMAIN.MailMessage1.Message)
-If itest& > 0 Then GoTo IOSendEMailBadSendMessage
-    
-FormMAIN.SmtpClient1.Disconnect
-Exit Sub
-
-' Errors
-IOSendEMailError:
-MsgBox Error$, vbOKOnly + vbCritical, "IOSendEMail"
-ierror = True
-Exit Sub
-
-IOSendEMailBadSMTPServerAddress:
-msg$ = "Not a valid SMTP Server Address. Make sure the keyword SMTPServerAddress is properly specified in the [general] section of file " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "IOSendEMail"
-ierror = True
-Exit Sub
-
-IOSendEMailBadSMTPAddressFrom:
-msg$ = "Not a valid SMTP Address From. Make sure the keyword SMTPAddressFrom is properly specified in the [general] section of file " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "IOSendEMail"
-ierror = True
-Exit Sub
-
-IOSendEMailBadSMTPAddressTo:
-msg$ = "Not a valid SMTP Address To. Make sure the keyword SMTPAddressTo is properly specified in the [general] section of file " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "IOSendEMail"
-ierror = True
-Exit Sub
-
-IOSendEMailBadSMTPUserName:
-msg$ = "Not a valid user name. Make sure the keyword SMTPUserName is properly specified in the [general] section of file " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "IOSendEMail"
-ierror = True
-Exit Sub
-
-IOSendEMailBadSMTPUserPassword:
-msg$ = "Not a valid user password"
-MsgBox msg$, vbOKOnly + vbExclamation, "IOSendEMail"
-ierror = True
-Exit Sub
-
-IOSendEMailBadConnection:
-msg$ = "Could not establish an SMTP connection to " & SMTPServerAddress$ & ", Error: " & FormMAIN.SmtpClient1.LastErrorString
-MsgBox msg$, vbOKOnly + vbExclamation, "IOSendEMail"
-ierror = True
-Exit Sub
-
-IOSendEMailBadAuthentication:
-msg$ = "Bad authentication for SMTP username " & SMTPUserName$ & ", Error: " & FormMAIN.SmtpClient1.LastErrorString
-MsgBox msg$, vbOKOnly + vbExclamation, "IOSendEMail"
-FormMAIN.SmtpClient1.Disconnect
-ierror = True
-Exit Sub
-
-IOSendEMailBadSendMessage:
-msg$ = "Bad message send for SMTP username " & SMTPUserName$ & ", Error: " & FormMAIN.SmtpClient1.LastErrorString
-MsgBox msg$, vbOKOnly + vbExclamation, "IOSendEMail"
-FormMAIN.SmtpClient1.Disconnect
-ierror = True
-Exit Sub
-        
 End Sub
 
 Sub IOPlayWavFile(wavfile As String)

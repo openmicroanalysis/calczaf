@@ -2,8 +2,6 @@ VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "ComDlg32.OCX"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.4#0"; "comctl32.Ocx"
-Object = "{7E3BE1D3-4850-438D-ADDC-3836293DC484}#1.0#0"; "csmtpx11.ocx"
-Object = "{B8C35BE4-26F9-4F2A-ABE5-9D6AFD633863}#1.0#0"; "csmsgx11.ocx"
 Begin VB.Form FormMAIN 
    Caption         =   "CalcZAF (Calculate ZAF and Phi-Rho-Z Corrections)"
    ClientHeight    =   4920
@@ -25,18 +23,6 @@ Begin VB.Form FormMAIN
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   4920
    ScaleWidth      =   10605
-   Begin MailMessageCtl.MailMessage MailMessage1 
-      Left            =   2040
-      Top             =   0
-      _cx             =   741
-      _cy             =   741
-   End
-   Begin SmtpClientCtl.SmtpClient SmtpClient1 
-      Left            =   1320
-      Top             =   0
-      _cx             =   741
-      _cy             =   741
-   End
    Begin ComctlLib.StatusBar StatusBarAuto 
       Align           =   2  'Align Bottom
       Height          =   255
@@ -53,7 +39,6 @@ Begin VB.Form FormMAIN
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
             Object.Width           =   14579
-            TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""
             Object.ToolTipText     =   "Automation status"
@@ -104,7 +89,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   7858
       _ExtentY        =   7646
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"CALCZAF.frx":59D8A
    End

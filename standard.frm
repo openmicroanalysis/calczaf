@@ -2,8 +2,6 @@ VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "ComDlg32.OCX"
 Object = "{3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0"; "richtx32.ocx"
 Object = "{6B7E6392-850A-101B-AFC0-4210102A8DA7}#1.4#0"; "comctl32.Ocx"
-Object = "{7ED47906-67D7-4D60-ABCD-66C3BA9E3452}#1.0#0"; "csmtpctl.ocx"
-Object = "{959AC9FE-B2CE-4117-9CE6-56B273C5848F}#1.0#0"; "csmsgctl.ocx"
 Object = "{6FBA474E-43AC-11CE-9A0E-00AA0062BB4C}#1.0#0"; "sysinfo.Ocx"
 Begin VB.Form FormMAIN 
    Caption         =   "Standard (Compositional Database)"
@@ -27,18 +25,6 @@ Begin VB.Form FormMAIN
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   7545
    ScaleWidth      =   11325
-   Begin MailMessageCtl.MailMessage MailMessage1 
-      Left            =   2280
-      Top             =   0
-      _cx             =   741
-      _cy             =   741
-   End
-   Begin SmtpClientCtl.SmtpClient SmtpClient1 
-      Left            =   1680
-      Top             =   0
-      _cx             =   741
-      _cy             =   741
-   End
    Begin VB.Frame Frame2 
       Caption         =   "Standard Information"
       ForeColor       =   &H00FF0000&
@@ -270,7 +256,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   18230
       _ExtentY        =   6376
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"STANDARD.frx":59D8A
    End

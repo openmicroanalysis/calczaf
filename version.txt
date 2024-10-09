@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+10/08/24	Replace remaining v 4.5 catalyst controls with v 11 Catalyst controls.
+
 10/06/24	Update Catalyst socket tools controls for https and email to v 11. Change download sites to
 v. 13.9.0	new download folders using only https.
 
