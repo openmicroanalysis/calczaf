@@ -592,7 +592,7 @@ FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.Filename = iofilename$
+FormMAIN.CMDialog1.filename = iofilename$
 
 If mode% < 2 Then
 'FormMAIN.CMDialog1.ShowSave
@@ -743,9 +743,9 @@ FormMAIN.CMDialog1.DefaultExt = "MDB"
 
 ' Specify default if not blank
 If mdbfilename$ <> vbNullString Then
-FormMAIN.CMDialog1.Filename = mdbfilename$
+FormMAIN.CMDialog1.filename = mdbfilename$
 Else
-FormMAIN.CMDialog1.Filename = "*.mdb"
+FormMAIN.CMDialog1.filename = "*.mdb"
 End If
 
 ' Get COMMON DIALOG Filename
@@ -1582,7 +1582,7 @@ Sub IOBrowseHTTP(method As Integer, sURL As String)
 '  method% = 0  Use WWW
 '  method% = 1  Use DVD
 '  Probe Software web:     file:///F:/Probe%20Software%20Web%20Site/probesoftware.com/index.html
-'  Probe Software Forum:   file:///F:/Probe%20Software%20Web%20Site/probesoftware.com/smf/index.html
+'  Probe Software Forum:   file:///F:/Probe%20Software%20Web%20Site/smf.probesoftware.com/index.html
 
 ierror = False
 On Error GoTo IOBrowseHTTPError
@@ -1641,18 +1641,18 @@ aURL$ = Replace$(aURL$, "index.php", "index.html")
 n% = InStr(aURL$, "/smf/")
 If n% > 0 Then
 sDVD$ = Left$(sDVD$, 2) & "/"   ' replace backslash with forward slash
-If aURL$ <> "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index.html" Then
-If InStr(UCase$(app.EXEName), UCase$("CalcZAF")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index8b25.html?board=7.0"
-If InStr(UCase$(app.EXEName), UCase$("Standard")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index8b25.html?board=7.0"
-If InStr(UCase$(app.EXEName), UCase$("Probewin")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/index9c2d.html?board=2.0"
-If InStr(UCase$(app.EXEName), UCase$("CalcImage")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/probesoftware.com/smf/indexfc47.html?board=4.0"
+If aURL$ <> "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/smf.probesoftware.com/index.html" Then
+If InStr(UCase$(app.EXEName), UCase$("CalcZAF")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/smf.probesoftware.com/index8b25.html?board=7.0"
+If InStr(UCase$(app.EXEName), UCase$("Standard")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/smf.probesoftware.com/index8b25.html?board=7.0"
+If InStr(UCase$(app.EXEName), UCase$("Probewin")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/smf.probesoftware.com/index9c2d.html?board=2.0"
+If InStr(UCase$(app.EXEName), UCase$("CalcImage")) > 0 Then aURL$ = "file:///" & sDVD$ & "Probe%20Software%20Web%20Site/smf.probesoftware.com/indexfc47.html?board=4.0"
 End If
 End If
 
 ' Actual local file URLs in browser for How To Do Quant Mapping Part I, II and III
-'aURL$ = "file:///F:/Probe%20Software%20Web%20Site/probesoftware.com/smf/index782e.html?topic=106.0"
-'aURL$ = "file:///F:/Probe%20Software%20Web%20Site/probesoftware.com/smf/indexe8c6.html?topic=141.0"
-'aURL$ = "file:///F:/Probe%20Software%20Web%20Site/probesoftware.com/smf/index5c04.html?topic=146.0"
+'aURL$ = "file:///F:/Probe%20Software%20Web%20Site/smf.probesoftware.com/index782e.html?topic=106.0"
+'aURL$ = "file:///F:/Probe%20Software%20Web%20Site/smf.probesoftware.com/indexe8c6.html?topic=141.0"
+'aURL$ = "file:///F:/Probe%20Software%20Web%20Site/smf.probesoftware.com/index5c04.html?topic=146.0"
 End If
 
 ' Default is use Internet

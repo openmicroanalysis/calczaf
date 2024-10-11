@@ -89,6 +89,7 @@ Begin VB.Form FormMAIN
       _ExtentX        =   7858
       _ExtentY        =   7646
       _Version        =   393217
+      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"CALCZAF.frx":59D8A
    End
@@ -1238,7 +1239,7 @@ End Sub
 
 Private Sub menuHelpGettingStartedWithCalcZAF_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=81.0")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://smf.probesoftware.com/index.php?topic=81.0")
 If ierror Then Exit Sub
 End Sub
 
@@ -1256,7 +1257,7 @@ End Sub
 
 Private Sub menuHelpProbeSoftwareUserForum_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://smf.probesoftware.com/index.php")
 If ierror Then Exit Sub
 End Sub
 

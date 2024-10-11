@@ -242,7 +242,7 @@ Begin VB.Form FormGETPTC
          Height          =   255
          Left            =   3840
          TabIndex        =   15
-         ToolTipText     =   $"getptc.frx":0000
+         ToolTipText     =   $"GETPTC.frx":0000
          Top             =   2760
          Width           =   6495
       End
@@ -285,7 +285,7 @@ Begin VB.Form FormGETPTC
          Height          =   255
          Left            =   3840
          TabIndex        =   11
-         ToolTipText     =   $"getptc.frx":009D
+         ToolTipText     =   $"GETPTC.frx":009D
          Top             =   1320
          Width           =   6495
       End
@@ -409,13 +409,13 @@ End Sub
 
 Private Sub CommandHelpOnParticles_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=281.0")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://smf.probesoftware.com/index.php?topic=281.0")
 If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandHelpOnThinFilms_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=111.0")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://smf.probesoftware.com/index.php?topic=111.0")
 If ierror Then Exit Sub
 End Sub
 

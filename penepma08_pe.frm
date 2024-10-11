@@ -1801,7 +1801,7 @@ End Sub
 
 Private Sub CommandHelp_Click()
 If Not DebugMode Then On Error Resume Next
-Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://probesoftware.com/smf/index.php?topic=59.msg221#msg221")
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://smf.probesoftware.com/index.php?topic=59.msg221#msg221")
 If ierror Then Exit Sub
 End Sub
 
