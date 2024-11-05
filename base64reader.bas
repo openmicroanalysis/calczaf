@@ -203,10 +203,10 @@ ReDim sarray(1 To ix%, 1 To iy%) As Single
 beamcurrent1! = beamcurrent1! * NAPA#
 beamcurrent2! = beamcurrent2! * NAPA#
 
-' Convert from msec to secsonds
+' Convert from msec to seconds
 counttime! = counttime! / MSECPERSEC#
 
-' Special code to determine if the PrbImg file is JEOL or Cameca orientation
+' Special code to determine if the PrbImg file is JEOL or Cameca orientation (this is so the GRD files get written correctly!)
 gX_Polarity% = -1   ' assume JEOL PrbImg
 gY_Polarity% = -1   ' assume JEOL PrbImg
 If RegXmin& < RegXmax& Then ' Cameca minimum x pixels are 32 so this will work (min/max can be 0 for y axis if 1 pixel high)
@@ -545,7 +545,7 @@ Exit Sub
 End Sub
 
 Sub Base64ReaderCheck(tCalcImageNumberofImageFiles As Integer, tCalcImageImageFiles() As String, sample() As TypeSample)
-' Open prbimg and check in some parameters
+' Open prbimg and check some parameters
 
 ierror = False
 On Error GoTo Base64ReaderCheckError
@@ -646,3 +646,95 @@ Exit Sub
 
 End Sub
 
+Function Base64ReaderIsPrbImgJEOL(tfilename As String) As Boolean
+' Checks to see if passed PrbImg file is from a JEOL instrument
+' Returns true if JEOL, false if Cameca
+
+ierror = False
+On Error GoTo Base64ReaderIsPrbImgJEOLError
+
+Dim RegXmin As Long
+Dim RegXmax As Long
+
+' Read image orientation
+RegXmin& = Val(Base64ReaderGetINIString$(tfilename$, "Registration", "X1Pixel", vbNullString$))
+If ierror Then Exit Function
+RegXmax& = Val(Base64ReaderGetINIString$(tfilename$, "Registration", "X2Pixel", vbNullString$))
+If ierror Then Exit Function
+
+' Special code to determine if the PrbImg file is JEOL or Cameca orientation (this is so the GRD files get written correctly!)
+Base64ReaderIsPrbImgJEOL = True   ' assume JEOL PrbImg
+If RegXmin& < RegXmax& Then ' Cameca minimum x pixels are 32 so this will work (min/max can be 0 for y axis if 1 pixel high)
+Base64ReaderIsPrbImgJEOL = False
+End If
+
+Exit Function
+
+' Errors
+Base64ReaderIsPrbImgJEOLError:
+Screen.MousePointer = vbDefault
+MsgBox Error$, vbOKOnly + vbCritical, "Base64ReaderIsPrbImgJEOL"
+ierror = True
+Exit Function
+
+End Function
+
+Sub Base64ReaderCheckElement(tfilename$, nelm As Integer, nray As Integer, nspec As Integer, acrys As String)
+' Check that the passed element, x-ray, spectro and crystal match the passed PrbImg file
+
+ierror = False
+On Error GoTo Base64ReaderCheckElementError
+
+Dim ielm As Integer, iray As Integer, ispec As Integer
+Dim crys As String
+
+' Read element, x-ray, spectrometer and crystal to match to file
+ielm% = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "Element", vbNullString))
+If ierror Then Exit Sub
+If ielm% <> nelm% Then GoTo Base64ReaderCheckElementWrongElement
+
+iray% = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "Line", vbNullString))
+If ierror Then Exit Sub
+If iray% <> nray% Then GoTo Base64ReaderCheckElementWrongXray
+
+ispec% = Val(Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "ChannelNumber", vbNullString))
+If ierror Then Exit Sub
+If ispec% <> nspec% Then GoTo Base64ReaderCheckElementWrongSpectrometer
+
+crys$ = Base64ReaderGetINIString$(tfilename$, "ColumnConditions", "CrystalName", vbNullString)
+If ierror Then Exit Sub
+If UCase$(crys$) <> UCase$(acrys$) Then GoTo Base64ReaderCheckElementWrongCrystal
+
+Exit Sub
+
+' Errors
+Base64ReaderCheckElementError:
+MsgBox Error$, vbOKOnly + vbCritical, "Base64ReaderCheckElement"
+ierror = True
+Exit Sub
+
+Base64ReaderCheckElementWrongElement:
+msg$ = "PrbImg file (" & tfilename$ & "), does not match the specified element (" & Symlo$(nelm%) & ")"
+MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderCheckElement"
+ierror = True
+Exit Sub
+
+Base64ReaderCheckElementWrongXray:
+msg$ = "PrbImg file (" & tfilename$ & "), does not match the specified xray (" & Xraylo$(nray%) & ")"
+MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderCheckElement"
+ierror = True
+Exit Sub
+
+Base64ReaderCheckElementWrongSpectrometer:
+msg$ = "PrbImg file (" & tfilename$ & "), does not match the specified spectrometer (" & Format$(nspec%) & ")"
+MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderCheckElement"
+ierror = True
+Exit Sub
+
+Base64ReaderCheckElementWrongCrystal:
+msg$ = "PrbImg file (" & tfilename$ & "), does not match the specified crystal (" & acrys$ & ")"
+MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderCheckElement"
+ierror = True
+Exit Sub
+
+End Sub

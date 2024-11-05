@@ -319,6 +319,10 @@ GetElmOldSample(1).AtomicCharges!(GetElmOldSample(1).LastElm%) = GetElmTmpSample
 GetElmOldSample(1).AtomicWts!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).AtomicWts!(i%)
 
 GetElmOldSample(1).EffectiveTakeOffs!(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).EffectiveTakeOffs!(i%)
+
+GetElmOldSample(1).SecondaryFluorescenceBraggFlag%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBraggFlag(i%)
+GetElmOldSample(1).SecondaryFluorescenceBraggImageNumber%(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBraggImageNumber%(i%)
+GetElmOldSample(1).SecondaryFluorescenceBraggImageFileName$(GetElmOldSample(1).LastElm%) = GetElmTmpSample(1).SecondaryFluorescenceBraggImageFileName$(i%)
 2000:  Next n%
 
 ' Update number of analyzed elements

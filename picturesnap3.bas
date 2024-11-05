@@ -1022,7 +1022,7 @@ End Sub
 
 Sub PictureSnapReturnXYMinMax(txmin As Single, txmax As Single, tymin As Single, tymax As Single, tz1 As Single, tz2 As Single, tz3 As Single, tz4 As Single)
 ' Returns the stage X/Y min/max for the currently loaded ACQ file (NOTE: assumes that loaded calibration represents the full image
-' width- not always true for manually calibrated images).
+' width- not always true for manually calibrated images). Only called by SecondaryAllSaveImage0.
 '  txmin = x stage min
 '  txmax = x stage min
 '  tymin = y stage min
@@ -1032,10 +1032,21 @@ Sub PictureSnapReturnXYMinMax(txmin As Single, txmax As Single, tymin As Single,
 ierror = False
 On Error GoTo PictureSnapReturnXYMinMaxError
 
+If apoint1x! < apoint2x! Then
 txmin! = apoint1x!
 txmax! = apoint2x!
+Else
+txmin! = apoint2x!
+txmax! = apoint1x!
+End If
+
+If apoint1y! < apoint2y! Then
 tymin! = apoint1y!
 tymax! = apoint2y!
+Else
+tymin! = apoint2y!
+tymax! = apoint1y!
+End If
 
 tz1! = apoint1z!
 tz2! = apoint2z!

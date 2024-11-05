@@ -453,7 +453,7 @@ sample(1).SecondaryFluorescenceBoundaryDistance!(sampleline%) = linear_dist!
 Exit Sub
 End If
 
-' First get equation for line using two points
+' Boundary is not a vertical or horizontal line. First get equation for line using two points
 kmax% = 1   ' linear fit
 nmax% = 2   ' 2 points
 

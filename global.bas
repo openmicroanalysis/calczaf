@@ -1132,7 +1132,7 @@ Type TypeSample
     SecondaryFluorescenceBoundaryCoordinateX2 As Single         ' in stage coordinates (stored)
     SecondaryFluorescenceBoundaryCoordinateY2 As Single         ' in stage coordinates (stored)
     
-    SecondaryFluorescenceBoundaryImageNumber As Integer     ' image number for BIM file (stored)
+    SecondaryFluorescenceBoundaryImageNumber As Integer     ' image number in BIM file (stored)
     SecondaryFluorescenceBoundaryImageFileName As String    ' original image file name (stored)
        
     SecondaryFluorescenceBoundaryDistance() As Single                       ' (calculated in um) allocated in InitSample (1 To MAXROW%) (calculated)
@@ -1141,6 +1141,10 @@ Type TypeSample
     SecondaryFluorescenceBoundaryMatA_String(1 To MAXCHAN%) As String       ' for stored kratio DAT table
     SecondaryFluorescenceBoundaryMatB_String(1 To MAXCHAN%) As String       ' for stored kratio DAT table
     SecondaryFluorescenceBoundaryMatBStd_String(1 To MAXCHAN%) As String    ' for stored kratio DAT table
+    
+    SecondaryFluorescenceBraggFlag(1 To MAXCHAN%) As Integer                ' 0 = do not perform correction, 1 = perform correction (stored)
+    SecondaryFluorescenceBraggImageNumber(1 To MAXCHAN%) As Integer         ' Bragg PrbImg image number in BIM file (stored)
+    SecondaryFluorescenceBraggImageFileName(1 To MAXCHAN%) As String        ' original Bragg PrbImg file name (stored)
         
     OnPeakTimeFractionFlag As Boolean
     OnPeakTimeFractionValue As Single

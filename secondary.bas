@@ -1328,7 +1328,6 @@ If sample(1).SecondaryFluorescenceBoundaryFlag(chan%) Then
 SecondaryFluorescenceFlag = True
 Else
 SecondaryFluorescenceFlag = False
-Exit Sub                                ' no secondary boundary fluorescence correction defined for this element
 End If
 
 ' Material A and B (and B std) could be swapped for some elements

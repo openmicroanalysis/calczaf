@@ -13,6 +13,17 @@ Begin VB.Form FormDynamicElements
    ScaleWidth      =   15615
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton CommandHelp 
+      BackColor       =   &H00FFC0C0&
+      Caption         =   "Help"
+      Height          =   375
+      Left            =   14160
+      Style           =   1  'Graphical
+      TabIndex        =   66
+      ToolTipText     =   "Click this button to get detailed help from our on-line user forum"
+      Top             =   480
+      Width           =   1215
+   End
    Begin VB.ComboBox ComboExcessOxygenByDroopOperator2 
       BeginProperty Font 
          Name            =   "MS Sans Serif"
@@ -1136,7 +1147,7 @@ Begin VB.Form FormDynamicElements
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   495
-      Left            =   13200
+      Left            =   12720
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   720
@@ -1147,7 +1158,7 @@ Begin VB.Form FormDynamicElements
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   495
-      Left            =   13200
+      Left            =   12720
       Style           =   1  'Graphical
       TabIndex        =   0
       TabStop         =   0   'False
@@ -1231,6 +1242,12 @@ Option Explicit
 Private Sub CommandCancel_Click()
 If Not DebugMode Then On Error Resume Next
 Unload FormDynamicElements
+End Sub
+
+Private Sub CommandHelp_Click()
+If Not DebugMode Then On Error Resume Next
+Call IOBrowseHTTP(ProbeSoftwareInternetBrowseMethod%, "https://smf.probesoftware.com/index.php?topic=1647.0")
+If ierror Then Exit Sub
 End Sub
 
 Private Sub CommandOK_Click()

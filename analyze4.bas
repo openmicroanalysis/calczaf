@@ -301,6 +301,10 @@ sample(1).ConditionNumbers%(sample(1).LastElm%) = tmpsample(1).ConditionNumbers%
 sample(1).AtomicCharges!(sample(1).LastElm%) = tmpsample(1).AtomicCharges!(i%)
 sample(1).AtomicWts!(sample(1).LastElm%) = tmpsample(1).AtomicWts!(i%)
 sample(1).EffectiveTakeOffs!(sample(1).LastElm%) = tmpsample(1).EffectiveTakeOffs!(i%)
+
+sample(1).SecondaryFluorescenceBraggFlag%(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBraggFlag%(i%)
+sample(1).SecondaryFluorescenceBraggImageNumber%(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBraggImageNumber%(i%)
+sample(1).SecondaryFluorescenceBraggImageFileName$(sample(1).LastElm%) = tmpsample(1).SecondaryFluorescenceBraggImageFileName$(i%)
 End If
 4000: Next i%
 
