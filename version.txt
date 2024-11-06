@@ -2,15 +2,18 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/05/24	Improve speed of DataGetStagePositions and DataGetStagePositions3 (for PictureSnap) 
+		for loading beam sizes for overlay on images when there are lots of samples.
+
 11/04/24	Modify DataGetStagePositions to run faster for large numbes of points (Nachlas)
 
-		More work on BRagg defocus correction (and boundary correction).
+		More work on Bragg defocus correction (and boundary correction).
 
 10/31/24	Add magnification calculation to Cameca beam scans in ConvertToPrbImg.
 
 		Implement boundary secondary fluorescence code in CalcImage (not tested yet).
 
-10/26/24	Add Bragg defocus for SF boundary correction paramneters per element.
+10/26/24	Add Bragg defocus for SF boundary correction parameters per element.
 v. 13.9.2
 
 10/15/24	Add missing source files to MAKCalcZAF.BAT for Github.
