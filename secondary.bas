@@ -1120,13 +1120,13 @@ Dim fractionx As Single, fractiony As Single
 Dim radius As Single
 
 Dim n As Long
-Dim x() As Single, y() As Single, Z() As Single
+Dim X() As Single, Y() As Single, Z() As Single
 
 ' Check if a calibration is loaded
 If Not PictureSnapCalibrated Then Exit Sub
 
 ' Get coordinate points
-Call SecondaryGetCoordinates(n&, x!(), y!(), Z!())
+Call SecondaryGetCoordinates(n&, X!(), Y!(), Z!())
 If ierror Then Exit Sub
 
 ' Check for valid points to plot
@@ -1134,8 +1134,8 @@ If n& < 1 Then Exit Sub
 
 ' Loop on all points
 For i& = 1 To n&
-stx! = x!(i&)
-sty! = y!(i&)
+stx! = X!(i&)
+sty! = Y!(i&)
 stz! = Z!(i&)
 
 ' Convert stage to image (form) coordinates and obtain fractional position
@@ -1370,7 +1370,7 @@ Exit Sub
 
 End Sub
 
-Sub SecondarySampleSaveTo(chan As Integer, sample() As TypeSample)
+Sub SecondarySampleSaveTo(chan As Integer, tImageHFW As Single, sample() As TypeSample)
 ' Saves the FormSECONDARY to the passed sample
 
 ierror = False
@@ -1407,6 +1407,9 @@ sample(1).SecondaryFluorescenceBoundaryCoordinateX1! = Boundary_X_Pos1!
 sample(1).SecondaryFluorescenceBoundaryCoordinateY1! = Boundary_Y_Pos1!
 sample(1).SecondaryFluorescenceBoundaryCoordinateX2! = Boundary_X_Pos2!
 sample(1).SecondaryFluorescenceBoundaryCoordinateY2! = Boundary_Y_Pos2!
+
+' In case user changed ImageHFW in FormSECONDARY
+tImageHFW! = ImageHFW!
 
 Exit Sub
 
