@@ -2,22 +2,11 @@ Attribute VB_Name = "CodeSECONDARY"
 ' (c) Copyright 1995-2024 by John J. Donovan
 Option Explicit
 
-' Browse image file
-Global BoundaryImageFileName As String          ' define as global for code in SecondaryAllLoadImage
-Dim BoundaryImageNumber As Integer
-
-' Horizontal filed width for non-graphical methods (in microns)
+' Horizontal field width for non-graphical methods (in microns)
 Dim ImageHFW As Single
 
 ' Graphical boundary string
 Dim bmsg As String
-
-' Form level variables for a single element
-Dim SecondaryFluorescenceFlag As Boolean
-Dim SecondaryFluorescenceDistanceMethod As Integer   ' 0 = specified distance, 1 = calculated from boundary (specified using several methods but stored as two X,Y pairs)
-
-' Specified distance
-Dim SpecifiedDistance As Single
 
 ' Point and angle
 Dim XStageCoordinate As Single, YStageCoordinate As Single
@@ -31,26 +20,13 @@ Dim X2StageCoordinate As Single, Y2StageCoordinate As Single
 Dim XX1StageCoordinate As Single, YY1StageCoordinate As Single
 Dim XX2StageCoordinate As Single, YY2StageCoordinate As Single
 
-' Browse k-ratio DAT file
-Dim BoundaryKratiosDATFile As String
-Dim BoundaryKratiosDATFileLine1 As String    ' characteristic line
-Dim BoundaryKratiosDATFileLine2 As String    ' electron energy
-Dim BoundaryKratiosDATFileLine3 As String    ' column labels (modified k-ratios.dat file from modified Fanal.exe)
+'Dim SecondaryMatBSample(1 To 1) As TypeSample      ' used for CalcZAF????
 
-' Sample conditions
-Dim Boundary_keV As Single, Boundary_mag As Single, Boundary_scanrota As Single
+Dim SecElmRow As Integer  ' current channel number
+Dim SecondarySample(1 To 1) As TypeSample
 
-' Parameters to pass to secondary2.bas
-Dim Boundary_X_Pos1 As Single, Boundary_Y_Pos1 As Single    ' start boundary line coordinates (stage units)
-Dim Boundary_X_Pos2 As Single, Boundary_Y_Pos2 As Single    ' end boundary line coordinates (stage units)
-
-Dim MatA_String As String, MatB_String As String, MatBStd_String As String
-
-Dim SecondaryMatASample(1 To 1) As TypeSample
-Dim SecondaryMatBSample(1 To 1) As TypeSample
-
-Sub SecondaryLoad()
-' Load FormSECONDARY
+Sub SecondaryLoad(sample() As TypeSample)
+' Load FormSECONDARY to define boundary parameters
 
 ierror = False
 On Error GoTo SecondaryLoadError
@@ -60,11 +36,14 @@ Dim tmsg As String
 
 Static initialized As Boolean
 
+' Load passed sample
+SecondarySample(1) = sample(1)
+
 ' Initialze module level variables
 If Not initialized Then
 ImageHFW! = 400#             ' assume 400 um HFW
 
-If SpecifiedDistance! = 0# Then SpecifiedDistance! = 25#    ' assume 25 microns for first point of Wark test data file
+If SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = 0# Then SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = 25#    ' assume 25 microns for first point of Wark test data file
 
 ' Assume vertical boundary at current position (0 degrees equals vertical and 180 equals horizontal)
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
@@ -72,7 +51,7 @@ If Not MiscMotorInBounds(XMotor%, RealTimeMotorPositions!(XMotor%)) Then RealTim
 If Not MiscMotorInBounds(YMotor%, RealTimeMotorPositions!(YMotor%)) Then RealTimeMotorPositions!(YMotor%) = MotLoLimits!(YMotor%) + (MotHiLimits!(YMotor%) - MotLoLimits!(YMotor%)) / 2#
 XStageCoordinate! = RealTimeMotorPositions!(XMotor%)
 YStageCoordinate! = RealTimeMotorPositions!(XMotor%)
-BoundaryAngle! = 0#
+BoundaryAngle! = 45#
 
 ' Assume vertical boundary at stage center (Y points at +/- 0.8 of HFW
 X1StageCoordinate! = XStageCoordinate!
@@ -81,20 +60,11 @@ X2StageCoordinate! = XStageCoordinate!
 Y2StageCoordinate! = YStageCoordinate! - (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
 End If
 
-SecondaryFluorescenceFlag = True    ' always true for CalcZAF (single element)
-
 initialized = True
 End If
 
-' Load form
-If SecondaryFluorescenceFlag Then
-FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbChecked     ' this control is invisible in CalcZAF
-Else
-FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbUnchecked
-End If
-
-FormSECONDARY.TextHFW.Text = Format$(ImageHFW!)                        ' in um
-FormSECONDARY.TextSpecifiedDistance.Text = Format$(SpecifiedDistance!)  ' in um
+FormSECONDARY.TextHFW.Text = Format$(ImageHFW!)                         ' in um
+FormSECONDARY.TextSpecifiedDistance.Text = Format$(SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance!)  ' in um
 
 FormSECONDARY.TextXStageCoordinate.Text = Format$(XStageCoordinate!)
 FormSECONDARY.TextYStageCoordinate.Text = Format$(YStageCoordinate!)
@@ -106,44 +76,39 @@ FormSECONDARY.TextX2StageCoordinate.Text = Format$(X2StageCoordinate!)
 FormSECONDARY.TextY2StageCoordinate.Text = Format$(Y2StageCoordinate!)
 
 ' Load default material B
-Call StandardGetMDBIndex
-If ierror Then Exit Sub
+'Call StandardGetMDBIndex
+'If ierror Then Exit Sub
 
 ' Check for standard
-If NumberOfAvailableStandards% <= 0 Then GoTo SecondaryLoadNoStandards
+'If NumberOfAvailableStandards% <= 0 Then GoTo SecondaryLoadNoStandards
 
 ' Load default Mat B composition
-If SecondaryMatBSample(1).LastChan% = 0 Then
-ip% = 0
-For i% = 1 To NumberOfAvailableStandards%
-If MiscStringsAreSimilar("TiO2", StandardIndexNames$(i%)) Then  ' search for TiO2
-ip% = StandardIndexNumbers%(i%)
-Exit For
-End If
-Next i%
+'If SecondaryMatBSample(1).LastChan% = 0 Then
+'ip% = 0
+'For i% = 1 To NumberOfAvailableStandards%
+'If MiscStringsAreSimilar("TiO2", StandardIndexNames$(i%)) Then  ' search for TiO2
+'ip% = StandardIndexNumbers%(i%)
+'Exit For
+'End If
+'Next i%
 
 ' Load the current Mat B
-If ip% > 0 Then
-Call StandardGetMDBStandard(ip%, SecondaryMatBSample())   ' load TiO2
-If ierror Then Exit Sub
-Else
-Call StandardGetMDBStandard(StandardIndexNumbers%(1), SecondaryMatBSample())   ' just load first standard
-If ierror Then Exit Sub
-End If
-End If
+'If ip% > 0 Then
+'Call StandardGetMDBStandard(ip%, SecondaryMatBSample())   ' load TiO2
+'If ierror Then Exit Sub
+'Else
+'Call StandardGetMDBStandard(StandardIndexNumbers%(1), SecondaryMatBSample())   ' just load first standard
+'If ierror Then Exit Sub
+'End If
+'End If
 
 ' Load distance option
-FormSECONDARY.OptionDistanceMethod(SecondaryFluorescenceDistanceMethod%).value = True
-
-' Load k-ratio file if already specified
-If BoundaryKratiosDATFile$ <> vbNullString Then
-FormSECONDARY.LabelKratiosDATFile.Caption = BoundaryKratiosDATFile$
-End If
+FormSECONDARY.OptionDistanceMethod(SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod%).value = True
 
 ' If image is specified, go ahead and reload
-If SecondaryFluorescenceDistanceMethod% = 3 And BoundaryImageFileName$ <> vbNullString Then
-FormSECONDARY.LabelImageBMPFile.Caption = BoundaryImageFileName$
-Call SecondaryLoadImage(BoundaryImageFileName$)
+If SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 3 And SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$ <> vbNullString Then
+FormSECONDARY.LabelImageBMPFile.Caption = SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$
+Call SecondaryLoadImage(SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$)
 If ierror Then Exit Sub
 End If
 
@@ -165,19 +130,12 @@ Exit Sub
 End Sub
 
 Sub SecondarySave()
-' Save options
+' Save boundary options (applies to all elements)
 
 ierror = False
 On Error GoTo SecondarySaveError
 
 Dim radians As Single
-
-If FormSECONDARY.CheckUseSecondaryFluorescenceCorrection.value = vbChecked Then    ' this control is invisible in CalcZAF
-SecondaryFluorescenceFlag = True                            ' module level flag
-UseSecondaryBoundaryFluorescenceCorrectionFlag = True       ' set global flag if any element boundary fluorescence flag is true (PFE only)
-Else
-SecondaryFluorescenceFlag = False
-End If
 
 ' Save parameters
 If Val(FormSECONDARY.TextHFW.Text) <= 0# Or Val(FormSECONDARY.TextHFW.Text) > 10000# Then
@@ -190,29 +148,29 @@ ImageHFW! = Val(FormSECONDARY.TextHFW.Text)
 End If
 
 ' Save distance option
-SecondaryFluorescenceDistanceMethod% = 0
+SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 0
 If FormSECONDARY.OptionDistanceMethod(1).value = True Then
-SecondaryFluorescenceDistanceMethod% = 1
+SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 1
 ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
-SecondaryFluorescenceDistanceMethod% = 2
+SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 2
 ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
-SecondaryFluorescenceDistanceMethod% = 3
+SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 3
 End If
 
 ' Specified distance
-If SecondaryFluorescenceDistanceMethod% = 0 Then
+If SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 0 Then
 If Val(FormSECONDARY.TextSpecifiedDistance.Text) <= 0# Or Val(FormSECONDARY.TextSpecifiedDistance.Text) > 10000# Then
 msg$ = "Specified distance of " & FormSECONDARY.TextSpecifiedDistance.Text & " microns is out of range! (must be greater than 0 and less than 10,000)"
 MsgBox msg$, vbOKOnly + vbExclamation, "SecondarySave"
 ierror = True
 Exit Sub
 Else
-SpecifiedDistance! = Val(FormSECONDARY.TextSpecifiedDistance.Text)
+SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = Val(FormSECONDARY.TextSpecifiedDistance.Text)
 End If
 End If
 
 ' One point and angle
-If SecondaryFluorescenceDistanceMethod% = 1 Then
+If SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 1 Then
 If Val(FormSECONDARY.TextXStageCoordinate.Text) < MotLoLimits!(XMotor%) Or Val(FormSECONDARY.TextXStageCoordinate.Text) > MotHiLimits!(XMotor%) Then
 msg$ = "Stage X coordinate of " & FormSECONDARY.TextXStageCoordinate.Text & " is out of range! (must be greater than " & Format$(MotLoLimits!(XMotor%)) & " and less than " & Format$(MotHiLimits!(XMotor%)) & ")"
 MsgBox msg$, vbOKOnly + vbExclamation, "SecondarySave"
@@ -242,7 +200,7 @@ End If
 End If
 
 ' Two points
-If SecondaryFluorescenceDistanceMethod% = 2 Then
+If SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 2 Then
 If Val(FormSECONDARY.TextX1StageCoordinate.Text) < MotLoLimits!(XMotor%) Or Val(FormSECONDARY.TextX1StageCoordinate.Text) > MotHiLimits!(XMotor%) Then
 msg$ = "Stage X1 coordinate of " & FormSECONDARY.TextX1StageCoordinate.Text & " is out of range! (must be greater than " & Format$(MotLoLimits!(XMotor%)) & " and less than " & Format$(MotHiLimits!(XMotor%)) & ")"
 MsgBox msg$, vbOKOnly + vbExclamation, "SecondarySave"
@@ -280,54 +238,59 @@ Y2StageCoordinate! = Val(FormSECONDARY.TextY2StageCoordinate.Text)
 End If
 End If
 
-' Graphical method is saved during mouse up/mouse down events (just check for inbounds below)
+' Graphical method is saved during mouse up/mouse down events (check for non-zero values in case user forgot to draw boundary)
+If XX1StageCoordinate! = 0# And YY1StageCoordinate! = 0# And XX2StageCoordinate! = 0 And YY2StageCoordinate! = 0# Then GoTo SecondarySaveNoBoundaryDrawn
 
 ' Now calculate the 2 point boundary coordinates for distance calculation
-If SecondaryFluorescenceDistanceMethod% = 0 Then
-' Specified distance is calculated based on sample coordinate in SecondaryInitLine which is called by CalcZAFCalculate or other analysis code
+If SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 0 Then
+' Boundary (dummy) distance is calculated based on sample coordinate and specified distance in SecondaryInitLine
+' which is called by CalcZAFCalculate or other analysis code
 
 ' 1 point and angle (assume +/- 50 um)
-ElseIf SecondaryFluorescenceDistanceMethod% = 1 Then
+ElseIf SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 1 Then
 radians! = BoundaryAngle! * PI! / 180#
-Boundary_X_Pos1! = XStageCoordinate! + Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%)
-Boundary_Y_Pos1! = YStageCoordinate! + Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! = XStageCoordinate! + Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! = YStageCoordinate! + Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
 
-Boundary_X_Pos2! = XStageCoordinate! - Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%)
-Boundary_Y_Pos2! = YStageCoordinate! - Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! = XStageCoordinate! - Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! = YStageCoordinate! - Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%)
 
-' 2 points (just load form coordinates)
-ElseIf SecondaryFluorescenceDistanceMethod% = 2 Then
-Boundary_X_Pos1! = X1StageCoordinate!
-Boundary_Y_Pos1! = Y1StageCoordinate!
+' 2 points (just load stage coordinates from form)
+ElseIf SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 2 Then
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! = X1StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! = Y1StageCoordinate!
 
-Boundary_X_Pos2! = X2StageCoordinate!
-Boundary_Y_Pos2! = Y2StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! = X2StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! = Y2StageCoordinate!
 
 ' Graphical
-ElseIf SecondaryFluorescenceDistanceMethod% = 3 Then
+ElseIf SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 3 Then
 If XX1StageCoordinate! < MotLoLimits!(XMotor%) Or XX1StageCoordinate! > MotHiLimits!(XMotor%) Then GoTo SecondarySaveBadGraphicalBoundary
 If YY1StageCoordinate! < MotLoLimits!(YMotor%) Or YY1StageCoordinate! > MotHiLimits!(YMotor%) Then GoTo SecondarySaveBadGraphicalBoundary
 If XX2StageCoordinate! < MotLoLimits!(XMotor%) Or XX2StageCoordinate! > MotHiLimits!(XMotor%) Then GoTo SecondarySaveBadGraphicalBoundary
 If YY2StageCoordinate! < MotLoLimits!(YMotor%) Or YY2StageCoordinate! > MotHiLimits!(YMotor%) Then GoTo SecondarySaveBadGraphicalBoundary
 
-Boundary_X_Pos1! = XX1StageCoordinate!
-Boundary_Y_Pos1! = YY1StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! = XX1StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! = YY1StageCoordinate!
 
-Boundary_X_Pos2! = XX2StageCoordinate!
-Boundary_Y_Pos2! = YY2StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! = XX2StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! = YY2StageCoordinate!
 End If
 
-' Save k-ratio file
-BoundaryKratiosDATFile$ = Trim$(FormSECONDARY.LabelKratiosDATFile.Caption)
-
 ' Save image file name
-BoundaryImageFileName$ = Trim$(FormSECONDARY.LabelImageBMPFile.Caption)
+SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$ = Trim$(FormSECONDARY.LabelImageBMPFile.Caption)
 
 Exit Sub
 
 ' Errors
 SecondarySaveError:
 MsgBox Error$, vbOKOnly + vbCritical, "SecondarySave"
+ierror = True
+Exit Sub
+
+SecondarySaveNoBoundaryDrawn:
+msg$ = "All boundary coordinates are zero. Be sure that you have properly specified a boundary by clicking and dragging the mouse on the loaded image."
+MsgBox msg$, vbOKOnly + vbExclamation, "SecondarySave"
 ierror = True
 Exit Sub
 
@@ -355,8 +318,8 @@ Dim esym As String, xsym As String
 
 ' K-ratio file
 If mode% = 0 Then
-If Trim$(BoundaryKratiosDATFile$) = vbNullString Then BoundaryKratiosDATFile$ = PENEPMA_Root$ & "\Fanal\Couple\" & "k-ratios.dat"
-tfilename$ = BoundaryKratiosDATFile$
+If Trim$(SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(SecElmRow%)) = vbNullString Then SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(SecElmRow%) = PENEPMA_Root$ & "\Fanal\Couple\" & "k-ratios.dat"
+tfilename$ = SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(SecElmRow%)
 ioextension$ = "DAT"
 Call IOGetFileName(Int(2), ioextension$, tfilename$, tForm)
 If ierror Then Exit Sub
@@ -370,9 +333,9 @@ tfilename2$ = tfolder$ & "fanal.txt"
 If Dir$(tfilename2$) = vbNullString Then GoTo SecondaryBrowseFileFANALTXTNotFound
 
 Open tfilename2$ For Input As Temp2FileNumber%
-Input #Temp2FileNumber%, MatA_String$
-Input #Temp2FileNumber%, MatB_String$
-Input #Temp2FileNumber%, MatBStd_String$
+Input #Temp2FileNumber%, SecondarySample(1).SecondaryFluorescenceBoundaryMatA_String$(SecElmRow%)
+Input #Temp2FileNumber%, SecondarySample(1).SecondaryFluorescenceBoundaryMatB_String$(SecElmRow%)
+Input #Temp2FileNumber%, SecondarySample(1).SecondaryFluorescenceBoundaryMatBStd_String$(SecElmRow%)
 Input #Temp2FileNumber%, takeoff!
 Input #Temp2FileNumber%, keV!
 
@@ -391,13 +354,13 @@ DoEvents
 Open tfilename$ For Input As #Temp2FileNumber%
 
 ' Read characteristic line
-Line Input #Temp2FileNumber%, BoundaryKratiosDATFileLine1$
+Line Input #Temp2FileNumber%, SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(SecElmRow%)
 
 ' Read electron energy line
-Line Input #Temp2FileNumber%, BoundaryKratiosDATFileLine2$
+Line Input #Temp2FileNumber%, SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(SecElmRow%)
 
 ' Read column labels line
-Line Input #Temp2FileNumber%, BoundaryKratiosDATFileLine3$
+Line Input #Temp2FileNumber%, SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3$(SecElmRow%)
 
 ' Now determine last distance value
 Do Until EOF(Temp2FileNumber%)
@@ -413,17 +376,23 @@ Call MiscParseStringToStringA(astring$, " ", bstring$)
 If ierror Then Exit Sub
 dval! = Val(bstring$)
 
-msg$ = "K-ratio boundary fluorescence data was found for " & esym$ & " " & xsym$ & " in " & MatA_String$ & " adjacent to " & MatB_String$ & " at " & Format$(takeoff!) & " deg, " & Format$(keV!) & " keV, using " & MatBStd_String$ & " as the primary standard." & vbCrLf & vbCrLf
+msg$ = "K-ratio boundary fluorescence data was found for " & esym$ & " " & xsym$ & " in "
+msg$ = msg$ & SecondarySample(1).SecondaryFluorescenceBoundaryMatA_String$(SecElmRow%) & " adjacent to "
+msg$ = msg$ & SecondarySample(1).SecondaryFluorescenceBoundaryMatB_String$(SecElmRow%) & " at "
+msg$ = msg$ & Format$(takeoff!) & " deg, " & Format$(keV!) & " keV, using "
+msg$ = msg$ & SecondarySample(1).SecondaryFluorescenceBoundaryMatBStd_String$(SecElmRow%) & " as the primary standard." & vbCrLf & vbCrLf
 msg$ = msg$ & "The total secondary fluorescence distance modeled was " & Format$(dval!) & " microns."
 MsgBox msg$, vbOKOnly + vbInformation, "SecondaryBrowseFile"
 
-BoundaryKratiosDATFile$ = tfilename$
-FormSECONDARY.LabelKratiosDATFile.Caption = BoundaryKratiosDATFile$
+SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(SecElmRow%) = tfilename$
+
+FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.value = vbChecked     ' set true if user selected k-ratio file
+FormSECONDARYKratios.LabelKratiosDATFile.Caption = SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(SecElmRow%)
 End If
 
 ' Image file
 If mode% = 1 Then
-tfilename$ = BoundaryImageFileName$
+tfilename$ = SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$
 ioextension$ = "IMG"
 tfilename$ = MiscGetFileNameNoExtension$(tfilename$)    ' remove extension so all image files are visible
 Call IOGetFileName(Int(2), ioextension$, tfilename$, tForm)
@@ -436,9 +405,10 @@ If Dir$(MiscGetFileNameNoExtension$(tfilename$) & ".acq") = vbNullString Then Go
 Call SecondaryLoadImage(tfilename$)
 If ierror Then Exit Sub
 
-BoundaryImageNumber% = 0        ' re-set boundary image number to idicate that user changed boundary image file
-BoundaryImageFileName$ = tfilename$
-FormSECONDARY.LabelImageBMPFile.Caption = BoundaryImageFileName$
+SecondarySample(1).SecondaryFluorescenceBoundaryImageNumber% = 0                ' re-set boundary image number to idicate that user changed boundary image file
+SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$ = tfilename$
+
+FormSECONDARY.LabelImageBMPFile.Caption = SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$
 End If
 
 Exit Sub
@@ -510,16 +480,16 @@ ierror = False
 On Error GoTo SecondaryInitLineError
 
 ' Fixed specified distance (generate boundary coordinates based on fixed distance)
-If SecondaryFluorescenceDistanceMethod% = 0 Then
-Boundary_X_Pos1! = sample(1).StagePositions!(sampleline%, 1) + SpecifiedDistance! / MotUnitsToAngstromMicrons!(XMotor%)
-Boundary_Y_Pos1! = sample(1).StagePositions!(sampleline%, 2) + SpecifiedDistance! / MotUnitsToAngstromMicrons!(YMotor%)
+If SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 0 Then
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! = sample(1).StagePositions!(sampleline%, 1) + SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! / MotUnitsToAngstromMicrons!(XMotor%)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! = sample(1).StagePositions!(sampleline%, 2) + SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! / MotUnitsToAngstromMicrons!(YMotor%)
 
-Boundary_X_Pos2! = sample(1).StagePositions!(sampleline%, 1) + SpecifiedDistance! / MotUnitsToAngstromMicrons!(XMotor%)
-Boundary_Y_Pos2! = sample(1).StagePositions!(sampleline%, 2) - SpecifiedDistance! / MotUnitsToAngstromMicrons!(YMotor%)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! = sample(1).StagePositions!(sampleline%, 1) + SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! / MotUnitsToAngstromMicrons!(XMotor%)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! = sample(1).StagePositions!(sampleline%, 2) - SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! / MotUnitsToAngstromMicrons!(YMotor%)
 End If
 
 ' Calculate distance from boundary line for this stage coordinate
-Call SecondaryCalculateDistance(Boundary_X_Pos1!, Boundary_Y_Pos1!, Boundary_X_Pos2, Boundary_Y_Pos2, sampleline%, sample())
+Call SecondaryCalculateDistance(SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!, SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!, SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2, SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2, sampleline%, sample())
 If ierror Then Exit Sub
 
 Exit Sub
@@ -538,11 +508,14 @@ Sub SecondaryInitChan(chan As Integer, sample() As TypeSample)
 ierror = False
 On Error GoTo SecondaryInitChanError
 
+' Check for element flag
+If Not sample(1).SecondaryFluorescenceBoundaryFlag(chan%) Then Exit Sub
+
 ' Check for valid k-ratio file
-If Trim$(BoundaryKratiosDATFile$) = vbNullString Then GoTo SecondaryInitChanNoFilename
+If Trim$(SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%)) = vbNullString Then GoTo SecondaryInitChanNoFilename
 
 ' Read k-ratio values (and set sample flags) (CalcZAF only works with a single Kratio file for one element)
-Call SecondaryReadKratiosDATFile(BoundaryKratiosDATFile$, sample())
+Call SecondaryReadKratiosDATFile(SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%), sample())
 If ierror Then Exit Sub
 
 ' Process the k-ratio values just read in
@@ -573,6 +546,7 @@ ierror = False
 On Error GoTo SecondaryLoadImageError
 
 Dim hfw As Single, mag As Single
+Dim tRealTimeMode As Boolean
 
 Static OriginalImageHeight As Single
 
@@ -597,7 +571,10 @@ End If
 End If
 
 ' Load the image in PictureSnap for proper form calibration
+tRealTimeMode = RealTimeMode
+RealTimeMode = False                ' suppress moving to image location if in RealTimeMode
 Call PictureSnapFileOpen(Int(0), tfilename$, FormSECONDARY)
+RealTimeMode = tRealTimeMode
 If ierror Then Exit Sub
 
 ' Load the text field for horizontal field width
@@ -607,6 +584,7 @@ FormSECONDARY.TextHFW.Text = Format$(hfw!)
 
 PictureSnapFilename$ = tfilename$
 PictureSnapCalibrated = True
+
 Exit Sub
 
 ' Errors
@@ -639,8 +617,8 @@ Dim radians As Double
 Dim tadjacent As Double, topposite As Double
 
 ' Calculate opposite and adjacent lengths
-tadjacent# = Boundary_X_Pos2! - Boundary_X_Pos1!
-topposite# = Boundary_Y_Pos2! - Boundary_Y_Pos1!
+tadjacent# = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!
+topposite# = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!
 
 ' Check for vertical boundary
 If tadjacent# <> 0# Then
@@ -654,22 +632,22 @@ Else
 BoundaryAngle! = 0#
 End If
 
-XStageCoordinate! = Boundary_X_Pos1! + (Boundary_X_Pos2! - Boundary_X_Pos1!) / 2#
-YStageCoordinate! = Boundary_Y_Pos1! + (Boundary_Y_Pos2! - Boundary_Y_Pos1!) / 2#
+XStageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!) / 2#
+YStageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!) / 2#
 
 ' 2 points (just load form coordinates)
-X1StageCoordinate! = Boundary_X_Pos1!
-Y1StageCoordinate! = Boundary_Y_Pos1!
+X1StageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!
+Y1StageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!
 
-X2StageCoordinate! = Boundary_X_Pos2!
-Y2StageCoordinate! = Boundary_Y_Pos2!
+X2StageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2!
+Y2StageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2!
 
 ' Graphical
-XX1StageCoordinate! = Boundary_X_Pos1!
-YY1StageCoordinate! = Boundary_Y_Pos1!
+XX1StageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!
+YY1StageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!
 
-XX2StageCoordinate! = Boundary_X_Pos2!
-YY2StageCoordinate! = Boundary_Y_Pos2!
+XX2StageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2!
+YY2StageCoordinate! = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2!
 
 Exit Sub
 
@@ -703,7 +681,7 @@ End If
 
 ' Check for proper mode
 If mode% = 0 Then Exit Sub
-If mode% = 3 And Trim$(BoundaryImageFileName$) = vbNullString Then Exit Sub
+If mode% = 3 And Trim$(SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$) = vbNullString Then Exit Sub
 
 ' If not calibrated just calculate pixels and exit
 If Not PictureSnapCalibrated Then
@@ -761,7 +739,7 @@ ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
 dmode% = 3
 End If
 
-If dmode% <> 3 Or Trim$(BoundaryImageFileName$) = vbNullString Then Exit Sub
+If dmode% <> 3 Or Trim$(SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$) = vbNullString Then Exit Sub
 
 ' Store
 If mode% = 1 Then
@@ -977,11 +955,11 @@ radians! = Val(FormSECONDARY.TextBoundaryAngle.Text) * PI! / 180#
 
 If Val(FormSECONDARY.TextXStageCoordinate.Text) >= MotLoLimits!(XMotor%) And Val(FormSECONDARY.TextXStageCoordinate.Text) <= MotHiLimits!(XMotor%) Then
 If Val(FormSECONDARY.TextYStageCoordinate.Text) >= MotLoLimits!(YMotor%) And Val(FormSECONDARY.TextYStageCoordinate.Text) <= MotHiLimits!(YMotor%) Then
-Boundary_X_Pos1! = Val(FormSECONDARY.TextXStageCoordinate.Text) + (Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%))
-Boundary_Y_Pos1! = Val(FormSECONDARY.TextYStageCoordinate.Text) + (Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%))
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! = Val(FormSECONDARY.TextXStageCoordinate.Text) + (Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%))
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! = Val(FormSECONDARY.TextYStageCoordinate.Text) + (Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%))
 
-Boundary_X_Pos2! = Val(FormSECONDARY.TextXStageCoordinate.Text) - (Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%))
-Boundary_Y_Pos2! = Val(FormSECONDARY.TextYStageCoordinate.Text) - (Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%))
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! = Val(FormSECONDARY.TextXStageCoordinate.Text) - (Sin(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(XMotor%))
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! = Val(FormSECONDARY.TextYStageCoordinate.Text) - (Cos(radians!) * (ImageHFW! / 2# * 0.8) / MotUnitsToAngstromMicrons!(YMotor%))
 
 ' Now load (fake) image coordinates (using 2 point mode)
 cpoint1!(1) = FormSECONDARY.Image1.Width
@@ -1007,7 +985,7 @@ apoint2!(1) = Val(FormSECONDARY.TextXStageCoordinate.Text) + (ImageHFW! / 2#) / 
 apoint2!(2) = Val(FormSECONDARY.TextYStageCoordinate.Text) - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
 End If
 
-Call PictureSnapSendCalibration(Int(0), cpoint1!(), cpoint2!(), cpoint3!(), apoint1!(), apoint2!(), apoint3!(), Boundary_keV!, Boundary_mag!, Boundary_scanrota!)
+Call PictureSnapSendCalibration(Int(0), cpoint1!(), cpoint2!(), cpoint3!(), apoint1!(), apoint2!(), apoint3!(), SecondarySample(1).kilovolts!, SecondarySample(1).magnificationimaging!, DefaultScanRotation!)
 If ierror Then Exit Sub
 End If
 End If
@@ -1019,10 +997,10 @@ If Val(FormSECONDARY.TextX1StageCoordinate.Text) >= MotLoLimits!(XMotor%) And Va
 If Val(FormSECONDARY.TextY1StageCoordinate.Text) >= MotLoLimits!(YMotor%) And Val(FormSECONDARY.TextY1StageCoordinate.Text) <= MotHiLimits!(YMotor%) Then
 If Val(FormSECONDARY.TextX2StageCoordinate.Text) >= MotLoLimits!(XMotor%) And Val(FormSECONDARY.TextX2StageCoordinate.Text) <= MotHiLimits!(XMotor%) Then
 If Val(FormSECONDARY.TextY2StageCoordinate.Text) >= MotLoLimits!(YMotor%) And Val(FormSECONDARY.TextY2StageCoordinate.Text) <= MotHiLimits!(YMotor%) Then
-Boundary_X_Pos1! = Val(FormSECONDARY.TextX1StageCoordinate.Text)
-Boundary_Y_Pos1! = Val(FormSECONDARY.TextY1StageCoordinate.Text)
-Boundary_X_Pos2! = Val(FormSECONDARY.TextX2StageCoordinate.Text)
-Boundary_Y_Pos2! = Val(FormSECONDARY.TextY2StageCoordinate.Text)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! = Val(FormSECONDARY.TextX1StageCoordinate.Text)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! = Val(FormSECONDARY.TextY1StageCoordinate.Text)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! = Val(FormSECONDARY.TextX2StageCoordinate.Text)
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! = Val(FormSECONDARY.TextY2StageCoordinate.Text)
 
 ' Now load (fake) image coordinates (using 2 point mode)
 cpoint1!(1) = FormSECONDARY.Image1.Width
@@ -1037,41 +1015,41 @@ Call PictureSnapUnStretch(Int(0), cpoint2!(1), cpoint2!(2), FormSECONDARY.Image1
 If ierror Then Exit Sub
 
 If MiscIsInstrumentStage("CAMECA") Then
-If Boundary_X_Pos1! < Boundary_X_Pos2! Then
-apoint1!(1) = Boundary_X_Pos1! + (Boundary_X_Pos2! - Boundary_X_Pos1!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
-apoint2!(1) = Boundary_X_Pos1! + (Boundary_X_Pos2! - Boundary_X_Pos1!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
+If SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! < SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! Then
+apoint1!(1) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
+apoint2!(1) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
 Else
-apoint1!(1) = Boundary_X_Pos2! + (Boundary_X_Pos1! - Boundary_X_Pos2!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
-apoint2!(1) = Boundary_X_Pos2! + (Boundary_X_Pos1! - Boundary_X_Pos2!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
+apoint1!(1) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
+apoint2!(1) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
 End If
 
 If Val(FormSECONDARY.TextY1StageCoordinate.Text) < Val(FormSECONDARY.TextY2StageCoordinate.Text) Then
-apoint1!(2) = Boundary_Y_Pos1! + (Boundary_Y_Pos2! - Boundary_Y_Pos1!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
-apoint2!(2) = Boundary_Y_Pos1! + (Boundary_Y_Pos2! - Boundary_Y_Pos1!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
+apoint1!(2) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
+apoint2!(2) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
 Else
-apoint1!(2) = Boundary_Y_Pos2! + (Boundary_Y_Pos1! - Boundary_Y_Pos2!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
-apoint2!(2) = Boundary_Y_Pos2! + (Boundary_Y_Pos1! - Boundary_Y_Pos2!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
+apoint1!(2) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
+apoint2!(2) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
 End If
 
 Else
-If Boundary_X_Pos1! < Boundary_X_Pos2! Then
-apoint1!(1) = Boundary_X_Pos1! + (Boundary_X_Pos2! - Boundary_X_Pos1!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
-apoint2!(1) = Boundary_X_Pos1! + (Boundary_X_Pos2! - Boundary_X_Pos1!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
+If SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! < SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! Then
+apoint1!(1) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
+apoint2!(1) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
 Else
-apoint1!(1) = Boundary_X_Pos2! + (Boundary_X_Pos1! - Boundary_X_Pos2!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
-apoint2!(1) = Boundary_X_Pos2! + (Boundary_X_Pos1! - Boundary_X_Pos2!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
+apoint1!(1) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
+apoint2!(1) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(XMotor%)
 End If
 
 If Val(FormSECONDARY.TextY1StageCoordinate.Text) < Val(FormSECONDARY.TextY2StageCoordinate.Text) Then
-apoint1!(2) = Boundary_Y_Pos1! + (Boundary_Y_Pos2! - Boundary_Y_Pos1!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
-apoint2!(2) = Boundary_Y_Pos1! + (Boundary_Y_Pos2! - Boundary_Y_Pos1!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
+apoint1!(2) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
+apoint2!(2) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
 Else
-apoint1!(2) = Boundary_Y_Pos2! + (Boundary_Y_Pos1! - Boundary_Y_Pos2!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
-apoint2!(2) = Boundary_Y_Pos2! + (Boundary_Y_Pos1! - Boundary_Y_Pos2!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
+apoint1!(2) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2!) / 2# + (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
+apoint2!(2) = SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! + (SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! - SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2!) / 2# - (ImageHFW! / 2#) / MotUnitsToAngstromMicrons!(YMotor%)
 End If
 End If
 
-Call PictureSnapSendCalibration(Int(0), cpoint1!(), cpoint2!(), cpoint3!(), apoint1!(), apoint2!(), apoint3!(), Boundary_keV!, Boundary_mag!, Boundary_scanrota!)
+Call PictureSnapSendCalibration(Int(0), cpoint1!(), cpoint2!(), cpoint3!(), apoint1!(), apoint2!(), apoint3!(), SecondarySample(1).kilovolts!, SecondarySample(1).magnificationimaging!, DefaultScanRotation!)
 If ierror Then Exit Sub
 End If
 End If
@@ -1080,19 +1058,19 @@ End If
 
 ' Graphical method (calibration already loaded from ACQ file)
 ElseIf dmode% = 3 Then
-If BoundaryImageFileName$ <> vbNullString Then
-Boundary_X_Pos1! = XX1StageCoordinate!
-Boundary_Y_Pos1! = YY1StageCoordinate!
-Boundary_X_Pos2! = XX2StageCoordinate!
-Boundary_Y_Pos2! = YY2StageCoordinate!
+If SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$ <> vbNullString Then
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1! = XX1StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! = YY1StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! = XX2StageCoordinate!
+SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! = YY2StageCoordinate!
 Else
 FormSECONDARY.LabelCursorPosition.Caption = vbNullString
 End If
 End If
 
 ' Draw boundary on form
-If (dmode% > 0 And dmode% < 3) Or (dmode% = 3 And Trim$(BoundaryImageFileName$) <> vbNullString) Then
-Call SecondaryDrawBoundary(Boundary_X_Pos1!, Boundary_Y_Pos1!, Boundary_X_Pos2!, Boundary_Y_Pos2!, FormSECONDARY)
+If (dmode% > 0 And dmode% < 3) Or (dmode% = 3 And Trim$(SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$) <> vbNullString) Then
+Call SecondaryDrawBoundary(SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX1!, SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1!, SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2!, SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2!, FormSECONDARY)
 If ierror Then Exit Sub
 End If
 
@@ -1250,8 +1228,8 @@ FormSECONDARY.TextHFW.Enabled = False
 FormSECONDARY.CommandCopyToClipboard.Enabled = True
 FormSECONDARY.CommandPrintImage.Enabled = True
 FormSECONDARY.Image1.Enabled = True
-If BoundaryImageFileName$ <> vbNullString Then
-Call SecondaryLoadImage(BoundaryImageFileName$)
+If SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$ <> vbNullString Then
+Call SecondaryLoadImage(SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$)
 If ierror Then Exit Sub
 FormSECONDARY.LabelBoundaryCoordinates.Caption = bmsg$
 End If
@@ -1274,7 +1252,7 @@ ierror = False
 On Error GoTo SecondaryCopyToClipboardError
 
 ' Load again
-Call SecondaryLoadImage(BoundaryImageFileName$)
+Call SecondaryLoadImage(SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$)
 If ierror Then Exit Sub
 
 ' Redraw graphics objects
@@ -1318,47 +1296,13 @@ Exit Sub
 End Sub
 
 Sub SecondarySampleLoadFrom(chan As Integer, sample() As TypeSample)
-' Load the module parameters from the passed sample
+' Loads the module level parameters from the passed sample
 
 ierror = False
 On Error GoTo SecondarySampleLoadFromError
 
-' Load the module level parameters from the passed sample
-If sample(1).SecondaryFluorescenceBoundaryFlag(chan%) Then
-SecondaryFluorescenceFlag = True
-Else
-SecondaryFluorescenceFlag = False
-End If
-
-' Material A and B (and B std) could be swapped for some elements
-MatA_String$ = sample(1).SecondaryFluorescenceBoundaryMatA_String$(chan%)
-MatB_String$ = sample(1).SecondaryFluorescenceBoundaryMatB_String$(chan%)
-MatBStd_String$ = sample(1).SecondaryFluorescenceBoundaryMatBStd_String$(chan%)
-
-' Load selected k-ratio DAT file parameters
-BoundaryKratiosDATFile$ = sample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%)
-BoundaryKratiosDATFileLine1$ = sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(chan%)
-BoundaryKratiosDATFileLine2$ = sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(chan%)
-BoundaryKratiosDATFileLine3$ = sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3$(chan%)
-
-' Load image parameters (same for all elements)
-BoundaryImageFileName$ = sample(1).SecondaryFluorescenceBoundaryImageFileName$
-BoundaryImageNumber% = sample(1).SecondaryFluorescenceBoundaryImageNumber%
-
-' Load distance method (same for all elements)
-SecondaryFluorescenceDistanceMethod% = sample(1).SecondaryFluorescenceBoundaryDistanceMethod%
-SpecifiedDistance! = sample(1).SecondaryFluorescenceBoundarySpecifiedDistance!
-
-' Load 2 point boundary coordinates (same for all elements)
-Boundary_X_Pos1! = sample(1).SecondaryFluorescenceBoundaryCoordinateX1!
-Boundary_X_Pos2! = sample(1).SecondaryFluorescenceBoundaryCoordinateX2!
-Boundary_Y_Pos1! = sample(1).SecondaryFluorescenceBoundaryCoordinateY1!
-Boundary_Y_Pos2! = sample(1).SecondaryFluorescenceBoundaryCoordinateY2!
-
-' Load conditions
-Boundary_keV! = sample(1).kilovolts!
-Boundary_mag! = sample(1).magnificationimaging!
-Boundary_scanrota! = DefaultScanRotation!
+' Load the passed sample for changes in FormSECONDARY
+SecondarySample(1) = sample(1)
 
 Exit Sub
 
@@ -1371,42 +1315,16 @@ Exit Sub
 End Sub
 
 Sub SecondarySampleSaveTo(chan As Integer, tImageHFW As Single, sample() As TypeSample)
-' Saves the FormSECONDARY to the passed sample
+' Saves the FormSECONDARY module level sample to the passed sample
 
 ierror = False
 On Error GoTo SecondarySampleSaveToError
 
-' Save the module level parameters to the passed sample
-If SecondaryFluorescenceFlag = True Then
-sample(1).SecondaryFluorescenceBoundaryFlag(chan%) = True
-Else
-sample(1).SecondaryFluorescenceBoundaryFlag(chan%) = False
-End If
+' Save to passed sample
+sample(1) = SecondarySample(1)
 
-' Material A and B (and B std) could be swapped for some elements
-sample(1).SecondaryFluorescenceBoundaryMatA_String$(chan%) = MatA_String$
-sample(1).SecondaryFluorescenceBoundaryMatB_String$(chan%) = MatB_String$
-sample(1).SecondaryFluorescenceBoundaryMatBStd_String$(chan%) = MatBStd_String$
-
-' Save selected k-ratio DAT file parameters
-sample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%) = BoundaryKratiosDATFile$
-sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(chan%) = BoundaryKratiosDATFileLine1$
-sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(chan%) = BoundaryKratiosDATFileLine2$
-sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3$(chan%) = BoundaryKratiosDATFileLine3$
-
-' Save selected image file (same for all elements)
-sample(1).SecondaryFluorescenceBoundaryImageFileName$ = BoundaryImageFileName$
-sample(1).SecondaryFluorescenceBoundaryImageNumber% = BoundaryImageNumber%
-
-' Save distance method (same for all elements)
-sample(1).SecondaryFluorescenceBoundaryDistanceMethod% = SecondaryFluorescenceDistanceMethod%
-sample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = SpecifiedDistance!
-
-' Save boundary (all distance methods save two points)
-sample(1).SecondaryFluorescenceBoundaryCoordinateX1! = Boundary_X_Pos1!
-sample(1).SecondaryFluorescenceBoundaryCoordinateY1! = Boundary_Y_Pos1!
-sample(1).SecondaryFluorescenceBoundaryCoordinateX2! = Boundary_X_Pos2!
-sample(1).SecondaryFluorescenceBoundaryCoordinateY2! = Boundary_Y_Pos2!
+' Strip selected image file to just file name
+sample(1).SecondaryFluorescenceBoundaryImageFileName$ = MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$))
 
 ' In case user changed ImageHFW in FormSECONDARY
 tImageHFW! = ImageHFW!
@@ -1465,3 +1383,65 @@ Exit Sub
 
 End Sub
 
+Sub SecondaryKratiosLoad(chan As Integer, sample() As TypeSample)
+' Load the FormSecondaryKratios
+
+ierror = False
+On Error GoTo SecondaryKratiosLoadError
+
+Dim tmsg As String
+
+' Load passed sample
+SecondarySample(1) = sample(1)
+SecElmRow% = chan%
+
+' Load form caption
+tmsg$ = SecondarySample(1).Elsyms$(chan%) & " " & SecondarySample(1).Xrsyms$(chan%)
+FormSECONDARYKratios.Caption = "Specify K-Ratios.DAT file for Secondary Fluorescence From Boundary for " & tmsg$
+
+' Load flag
+If SecondarySample(1).SecondaryFluorescenceBoundaryFlag(chan%) Then
+FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.value = vbChecked
+Else
+FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.value = vbUnchecked
+End If
+
+' Load k-ratio file if already specified
+If Trim$(SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%)) <> vbNullString Then
+FormSECONDARYKratios.LabelKratiosDATFile.Caption = SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%)
+End If
+
+Exit Sub
+
+' Errors
+SecondaryKratiosLoadError:
+MsgBox Error$, vbOKOnly + vbCritical, "SecondaryKratiosLoad"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub SecondaryKratiosSave()
+' Save the FormSecondaryKratiosLoad form parameters
+
+ierror = False
+On Error GoTo SecondaryKratiosSaveError
+
+If FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.value = vbChecked Then
+SecondarySample(1).SecondaryFluorescenceBoundaryFlag(SecElmRow%) = True
+Else
+SecondarySample(1).SecondaryFluorescenceBoundaryFlag(SecElmRow%) = False
+End If
+
+' Save k-ratio file
+SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(SecElmRow%) = Trim$(FormSECONDARYKratios.LabelKratiosDATFile.Caption)
+
+Exit Sub
+
+' Errors
+SecondaryKratiosSaveError:
+MsgBox Error$, vbOKOnly + vbCritical, "SecondaryKratiosSave"
+ierror = True
+Exit Sub
+
+End Sub

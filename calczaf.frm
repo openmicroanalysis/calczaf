@@ -39,6 +39,7 @@ Begin VB.Form FormMAIN
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
             Object.Width           =   14579
+            TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""
             Object.ToolTipText     =   "Automation status"
@@ -1091,14 +1092,8 @@ End Sub
 
 Private Sub menuAnalyticalSecondary_Click()
 If Not DebugMode Then On Error Resume Next
-If Penepma08CheckPenepmaVersion%() = 12 Then
-Call SecondaryLoad
+Call CalcZAFSecondaryLoad
 If ierror Then Exit Sub
-FormSECONDARY.Show vbModeless
-Else
-msg$ = "Penepma12 application files were not found. Please download the PENEPMA12.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "menuAnayticalSecondary"
-End If
 End Sub
 
 Private Sub menuAnalyticalUseConductiveCoatingCorrectionForXrayTransmission_Click()

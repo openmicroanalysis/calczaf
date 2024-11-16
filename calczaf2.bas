@@ -11,6 +11,9 @@ Option Explicit
 ' FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+' Horizontal field width for non-graphical methods (in microns)
+Dim ImageHFW As Single
+
 ' Array of filenames for output
 Dim arraysize As Integer
 Dim filenamearray() As String
@@ -490,7 +493,7 @@ icancelauto = False
 Call CalcZAFImportOpen(tForm)
 If ierror Then Exit Sub
 
-' Open the export file
+' Open the export file (loads first data point)
 ExportDataFile$ = MiscGetFileNameNoExtension(ImportDataFile$) & "_Export.dat"
 Call CalcZAFExportOpen(tForm)
 If ierror Then Exit Sub
@@ -561,7 +564,6 @@ filenamearray$(arraysize%) = ExportDataFile$
 Call ExcelSendFileListToExcel(arraysize%, filenamearray$(), tForm)
 If ierror Then Exit Sub
 End If
-
 
 Call IOStatusAuto(vbNullString)
 Exit Sub
@@ -899,6 +901,335 @@ Close #ExportDataFileNumber2%
 msg$ = "No K-exp data on line " & Str$(InputLineCount%) & " in " & ImportDataFile2$
 MsgBox msg$, vbOKOnly + vbExclamation, "CalcZAFConvertPouchouCSV"
 Call IOStatusAuto(vbNullString)
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub CalcZAFSecondaryLoad()
+' Load FormSECONDARY for secondary boundary fluorescence corrections
+
+ierror = False
+On Error GoTo CalcZAFSecondaryLoadError
+
+' Get the current sample
+Call CalcZAFReturnSample(CalcZAFTmpSample())
+If ierror Then Exit Sub
+
+' Load sample to FormSECONDARY
+Call SecondarySampleLoadFrom(Int(1), CalcZAFTmpSample())
+If ierror Then Exit Sub
+
+' Load the element grid
+Call CalcZAFSecondaryLoadList(CalcZAFTmpSample())
+If ierror Then Exit Sub
+
+' Load the boundary parameters in FormSECONDARY
+If Penepma08CheckPenepmaVersion%() = 12 Then
+Call SecondaryLoad(CalcZAFTmpSample())
+If ierror Then Exit Sub
+FormSECONDARY.Show vbModeless
+Else
+msg$ = "Penepma12 application files were not found. Please download the PENEPMA12.ZIP file and extract the files to the " & UserDataDirectory$ & " folder and check that the PENEPMA_Path, PENDBASE_Path and PENEPMA_Root strings are properly specified in the " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "CalcZAFSecondaryLoad"
+End If
+
+Exit Sub
+
+' Errors
+CalcZAFSecondaryLoadError:
+MsgBox Error$, vbOKOnly + vbCritical, "CalcZAFSecondaryLoad"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub CalcZAFSecondaryLoadList(sample() As TypeSample)
+' Load the FormSECONDARY element grid (CalcZAF only)
+
+ierror = False
+On Error GoTo CalcZAFSecondaryLoadListError
+
+Dim i As Integer, itemp As Integer
+Dim tWidth As Single
+
+' Blank the element grid
+FormSECONDARY.GridElementList.Clear
+
+' Set fixed columns
+FormSECONDARY.GridElementList.FixedCols = 5
+
+' Load the Grid Column labels
+FormSECONDARY.GridElementList.row = 0
+FormSECONDARY.GridElementList.col = 0
+FormSECONDARY.GridElementList.Text = "Channel"
+FormSECONDARY.GridElementList.col = 1
+FormSECONDARY.GridElementList.Text = "Element"
+FormSECONDARY.GridElementList.col = 2
+FormSECONDARY.GridElementList.Text = "X-Ray"
+
+' Load motor/crystal assignments
+FormSECONDARY.GridElementList.col = 3
+FormSECONDARY.GridElementList.Text = "Spectro"
+FormSECONDARY.GridElementList.col = 4
+FormSECONDARY.GridElementList.Text = "Crystal"
+
+' Load enabled flag
+FormSECONDARY.GridElementList.col = 5
+FormSECONDARY.GridElementList.Text = "Enabled"
+
+' Load Kratio DAT file or method
+FormSECONDARY.GridElementList.col = 6
+FormSECONDARY.GridElementList.Text = "PENFLUOR/FANAL Method/File"
+
+FormSECONDARY.GridElementList.rows = MAXCHAN% + 1
+
+' Initialize the Element List Grid Width
+If FormSECONDARY.GridElementList.rows > 14 Then
+itemp% = SCROLLBARWIDTH%
+Else
+itemp% = 0
+End If
+
+' Do not scale last col
+tWidth! = 0#
+For i% = 0 To FormSECONDARY.GridElementList.cols - 2
+FormSECONDARY.GridElementList.ColWidth(i%) = (FormSECONDARY.GridElementList.Width - itemp%) / 15#
+tWidth! = tWidth! + FormSECONDARY.GridElementList.ColWidth(i%)
+Next i%
+
+' Size last column
+i% = FormSECONDARY.GridElementList.cols - 1
+FormSECONDARY.GridElementList.ColWidth(i%) = (FormSECONDARY.GridElementList.Width - tWidth!)
+
+' Load the element data into the grid
+For i% = 1 To CalcZAFTmpSample(1).LastElm%
+Call CalcZAFSecondaryUpdateList(i%)
+If ierror Then Exit Sub
+Next i%
+
+Exit Sub
+
+' Errors
+CalcZAFSecondaryLoadListError:
+MsgBox Error$, vbOKOnly + vbCritical, "CalcZAFSecondaryLoadList"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub CalcZAFSecondaryUpdateList(elementrow As Integer)
+' This routine updates the element list grid based on the sample arrays (CalcZAF only)
+
+ierror = False
+On Error GoTo CalcZAFSecondaryUpdateListError
+
+' Save sample from FormSECONDARY
+Call SecondarySampleSaveTo(elementrow%, ImageHFW!, CalcZAFTmpSample())
+If ierror Then Exit Sub
+
+FormSECONDARY.GridElementList.row = elementrow%
+FormSECONDARY.GridElementList.col = 0
+FormSECONDARY.GridElementList.Text = Format$(elementrow%)
+
+FormSECONDARY.GridElementList.col = 1
+FormSECONDARY.GridElementList.Text = CalcZAFTmpSample(1).Elsyms$(elementrow%)
+FormSECONDARY.GridElementList.col = 2
+FormSECONDARY.GridElementList.Text = CalcZAFTmpSample(1).Xrsyms$(elementrow%)
+
+' Motor/crystal assignments
+FormSECONDARY.GridElementList.col = 3
+FormSECONDARY.GridElementList.Text = Format$(CalcZAFTmpSample(1).MotorNumbers%(elementrow%))
+FormSECONDARY.GridElementList.col = 4
+FormSECONDARY.GridElementList.Text = CalcZAFTmpSample(1).CrystalNames$(elementrow%)
+
+' Load secondary fluorescence flag
+FormSECONDARY.GridElementList.col = 5
+If CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryFlag(elementrow%) Then
+FormSECONDARY.GridElementList.Text = "Yes"
+Else
+FormSECONDARY.GridElementList.Text = "No"
+End If
+
+' Load method ("Boundary.mdb" or K-ratio DAT filename)
+FormSECONDARY.GridElementList.col = 6
+If CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(elementrow%) = MiscGetFileNameOnly$(BoundaryMDBFile$) Then
+FormSECONDARY.GridElementList.Text = MiscGetFileNameOnly$(BoundaryMDBFile$)
+Else
+FormSECONDARY.GridElementList.Text = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(elementrow%)
+End If
+
+Exit Sub
+
+' Errors
+CalcZAFSecondaryUpdateListError:
+MsgBox Error$, vbOKOnly + vbCritical, "CalcZAFSecondaryUpdateList"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub CalcZAFSecondaryKratiosLoadForm(chan%)
+' Load FormSecondaryKratios
+
+ierror = False
+On Error GoTo CalcZAFSecondaryKratiosLoadFormError
+
+Dim tak As Single, keV As Single
+Dim esym As String, xsym As String, tMatA As String, tMatB As String, tMatBStd As String
+
+Dim t_npts As Long
+Dim t_string1 As String, t_string2 As String, t_string3 As String
+Dim t_eV() As Double, t_dist() As Double
+Dim t_total() As Double, t_fluor() As Double
+Dim t_flach() As Double, t_flabr() As Double
+Dim t_flbch() As Double, t_flbbr() As Double
+Dim t_pri_int() As Double, t_std_int() As Double
+
+' Write K-ratio data (if specified) to disk file
+'If Trim$(CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%)) <> vbNullString Then
+
+' Load parameters for reading from probe database
+'tak! = CalcZAFTmpSample(1).TakeoffArray!(chan%)
+'keV! = CalcZAFTmpSample(1).KilovoltsArray!(chan%)
+'esym$ = CalcZAFTmpSample(1).Elsyms$(chan%)
+'xsym$ = CalcZAFTmpSample(1).Xrsyms$(chan%)
+'tMatA$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryMatA_String$(chan%)
+'tMatB$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryMatB_String$(chan%)
+'tMatBStd$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryMatBStd_String$(chan%)
+'t_string1$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(chan%)
+'t_string2$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(chan%)
+'t_string3$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3$(chan%)
+
+' Read raw data from probe database
+'Call DataBoundaryGetDATKratios(tak!, keV!, esym$, xsym$, tMatA$, tMatB$, tMatBStd$, t_string1$, t_string2$, t_string3$, t_eV#(), t_dist#(), t_total#(), t_fluor#(), t_flach#(), t_flabr#(), t_flbch#(), t_flbbr#(), t_pri_int#(), t_std_int#(), t_npts&)
+'If ierror Then Exit Sub
+
+' Write raw data to disk file if not present (original kratios.DAT file was deleted or probe MDB file was moved to another computer?)
+'If Dir$(CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%)) = vbNullString Then
+
+' Restore raw data values from probe database to module level
+'Call SecondaryRestoreKratiosDAT(t_string1$, t_string2$, t_string3$, t_eV#(), t_dist#(), t_total#(), t_fluor#(), t_flach#(), t_flabr#(), t_flbch#(), t_flbbr#(), t_pri_int#(), t_std_int#(), t_npts&)
+'If ierror Then Exit Sub
+
+' Write the k-ratios.dat data file using module level variables
+'Call SecondaryWriteKratiosDATFile(CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%))
+'If ierror Then Exit Sub
+'End If
+'End If
+
+' Load form with current sample parameters
+Call SecondaryKratiosLoad(chan%, CalcZAFTmpSample())
+If ierror Then Exit Sub '
+
+' Load form
+FormSECONDARYKratios.Show vbModal
+
+' Save the saved form parameters to CalcZAFTmpSample
+Call SecondarySampleSaveTo(chan%, ImageHFW!, CalcZAFTmpSample)
+If ierror Then Exit Sub
+
+' Save K-ratio data (if specified) to probe database
+If Trim$(CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%)) <> vbNullString Then
+
+' Read the k-ratios.dat data file and load into module level variables (in case user updated the kratios.dat file on disk)
+Call SecondaryReadKratiosDATFile(CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%), CalcZAFTmpSample())
+If ierror Then Exit Sub
+
+' Load parameters for saving to probe database
+tak! = CalcZAFTmpSample(1).TakeoffArray!(chan%)
+keV! = CalcZAFTmpSample(1).KilovoltsArray!(chan%)
+esym$ = CalcZAFTmpSample(1).Elsyms$(chan%)
+xsym$ = CalcZAFTmpSample(1).Xrsyms$(chan%)
+tMatA$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryMatA_String$(chan%)
+tMatB$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryMatB_String$(chan%)
+tMatBStd$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryMatBStd_String$(chan%)
+t_string1$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(chan%)
+t_string2$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(chan%)
+t_string3$ = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3$(chan%)
+
+' Return raw data k-ratios from module level
+Call SecondaryReturnKratiosDAT(t_string1$, t_string2$, t_string3$, t_eV#(), t_dist#(), t_total#(), t_fluor#(), t_flach#(), t_flabr#(), t_flbch#(), t_flbbr#(), t_pri_int#(), t_std_int#(), t_npts&)
+If ierror Then Exit Sub
+
+' Perform sanity check
+If t_string1$ <> CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(chan%) Then GoTo CalcZAFSecondaryKratiosLoadFormLinesDifferent1
+If t_string2$ <> CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(chan%) Then GoTo CalcZAFSecondaryKratiosLoadFormLinesDifferent2
+If t_string3$ <> CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3$(chan%) Then GoTo CalcZAFSecondaryKratiosLoadFormLinesDifferent3
+End If
+
+' Load element grid
+Call CalcZAFSecondaryLoadList(CalcZAFTmpSample())
+If ierror Then Exit Sub
+
+Exit Sub
+
+' Errors
+CalcZAFSecondaryKratiosLoadFormError:
+MsgBox Error$, vbOKOnly + vbCritical, "CalcZAFSecondaryKratiosLoadForm"
+ierror = True
+Exit Sub
+
+CalcZAFSecondaryKratiosLoadFormLinesDifferent1:
+msg$ = "First line of Kratios.DAT file does not match saved string. This error should not occur, please contact probe Software technical support."
+MsgBox msg$, vbOKOnly + vbExclamation, "CalcZAFSecondaryKratiosLoadForm"
+ierror = True
+Exit Sub
+
+CalcZAFSecondaryKratiosLoadFormLinesDifferent2:
+msg$ = "Second line of Kratios.DAT file does not match saved string. This error should not occur, please contact probe Software technical support."
+MsgBox msg$, vbOKOnly + vbExclamation, "CalcZAFSecondaryKratiosLoadForm"
+ierror = True
+Exit Sub
+
+CalcZAFSecondaryKratiosLoadFormLinesDifferent3:
+msg$ = "Third line of Kratios.DAT file does not match saved string. This error should not occur, please contact probe Software technical support."
+MsgBox msg$, vbOKOnly + vbExclamation, "CalcZAFSecondaryKratiosLoadForm"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub CalcZAFSecondaryUpdateSample(sample() As TypeSample)
+' Updates the paased sample with the secondary boundary parameters
+
+ierror = False
+On Error GoTo CalcZAFSecondaryUpdateSampleError
+
+Dim chan As Integer
+
+' Update the passed sample for the secondary boundary parameters
+For chan% = 1 To sample(1).LastElm%
+sample(1).SecondaryFluorescenceBoundaryFlag%(chan%) = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryFlag%(chan%)
+    
+sample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%) = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%)
+sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(chan%) = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine1$(chan%)
+sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(chan%) = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine2$(chan%)
+sample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3$(chan%) = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryKratiosDATFileLine3$(chan%)
+    
+sample(1).SecondaryFluorescenceBoundaryMatA_String$(chan%) = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryMatA_String$(chan%)
+sample(1).SecondaryFluorescenceBoundaryMatB_String$(chan%) = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryMatB_String$(chan%)
+sample(1).SecondaryFluorescenceBoundaryMatBStd_String$(chan%) = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryMatBStd_String$(chan%)
+Next chan%
+    
+sample(1).SecondaryFluorescenceBoundaryDistanceMethod% = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryDistanceMethod%
+sample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = CalcZAFTmpSample(1).SecondaryFluorescenceBoundarySpecifiedDistance!
+sample(1).SecondaryFluorescenceBoundaryCoordinateX1! = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryCoordinateX1!
+sample(1).SecondaryFluorescenceBoundaryCoordinateY1! = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryCoordinateY1!
+sample(1).SecondaryFluorescenceBoundaryCoordinateX2! = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryCoordinateX2!
+sample(1).SecondaryFluorescenceBoundaryCoordinateY2! = CalcZAFTmpSample(1).SecondaryFluorescenceBoundaryCoordinateY2!
+    
+'    SecondaryFluorescenceBoundaryImageNumber As Integer     ' image number in BIM file (not used in matrix corrections)
+'    SecondaryFluorescenceBoundaryImageFileName As String    ' original image file name (not used in matrix corrections)
+       
+'    SecondaryFluorescenceBoundaryDistance() As Single       ' (calculated in um) allocated in InitSample (1 To MAXROW%) (calculated)
+'    SecondaryFluorescenceBoundaryKratios() As Single        ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%) (calculated)
+
+Exit Sub
+
+' Errors
+CalcZAFSecondaryUpdateSampleError:
+MsgBox Error$, vbOKOnly + vbCritical, "CalcZAFSecondaryUpdateSample"
 ierror = True
 Exit Sub
 

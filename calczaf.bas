@@ -78,7 +78,7 @@ FormMAIN.Show
 End Sub
 
 Sub CalcZAFCalculate()
-' Calculate ZAF parameters based on the current ZAF element setup
+' Calculate ZAF parameters based on the current element setup
 
 ierror = False
 On Error GoTo CalcZAFCalculateError
@@ -108,8 +108,11 @@ If ierror Then Exit Sub
 ' Check for valid data
 If CalcZAFOldSample(1).LastElm% < 1 Then GoTo CalcZAFCalculateNoElements
 
-' Perform secondary fluorescence init (CalcZAF only calculates the first data line)
+' Perform secondary fluorescence init (CalcZAF only calculates the current data line, use Load Next Dataset from Input File for subsequent data lines)
 If UseSecondaryBoundaryFluorescenceCorrectionFlag Then
+Call CalcZAFSecondaryUpdateSample(CalcZAFOldSample())       ' only called by CalcZAF
+If ierror Then Exit Sub
+
 Call SecondaryInit(CalcZAFOldSample())
 If ierror Then Exit Sub
 Call SecondaryInitLine(Int(1), CalcZAFOldSample())
