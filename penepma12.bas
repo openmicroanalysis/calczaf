@@ -2012,7 +2012,8 @@ Exit Sub
 
 ' Errors
 Penepma12CreatePenfluorInputError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma12CreatePenfluorInput"
+msg$ = "note that input file " & PenfluorInputFile$ & " may be missing from the PENFLUOR folder, and if so, PENEPMA12 should be re-installed using the Help | Update CalcZAF menu."
+MsgBox Error$ & ", " & msg$, vbOKOnly + vbCritical, "Penepma12CreatePenfluorInput"
 Close #Temp1FileNumber%
 Close #Temp2FileNumber%
 ierror = True

@@ -20,8 +20,6 @@ Dim X2StageCoordinate As Single, Y2StageCoordinate As Single
 Dim XX1StageCoordinate As Single, YY1StageCoordinate As Single
 Dim XX2StageCoordinate As Single, YY2StageCoordinate As Single
 
-'Dim SecondaryMatBSample(1 To 1) As TypeSample      ' used for CalcZAF????
-
 Dim SecElmRow As Integer  ' current channel number
 Dim SecondarySample(1 To 1) As TypeSample
 
@@ -39,16 +37,17 @@ Static initialized As Boolean
 ' Load passed sample
 SecondarySample(1) = sample(1)
 
+' Always check if zero (assume 25 microns for first point of Wark SiO2/TiO2 test data file)
+If SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = 0# Then SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = 25#
+
 ' Initialze module level variables
 If Not initialized Then
-ImageHFW! = 400#             ' assume 400 um HFW
-
-If SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = 0# Then SecondarySample(1).SecondaryFluorescenceBoundarySpecifiedDistance! = 25#    ' assume 25 microns for first point of Wark test data file
+ImageHFW! = 400#             ' assume 400 um HFW tomstart with
 
 ' Assume vertical boundary at current position (0 degrees equals vertical and 180 equals horizontal)
 If UCase$(app.EXEName) = UCase$("CalcZAF") Then
-If Not MiscMotorInBounds(XMotor%, RealTimeMotorPositions!(XMotor%)) Then RealTimeMotorPositions!(XMotor%) = MotLoLimits!(XMotor%) + (MotHiLimits!(XMotor%) - MotLoLimits!(XMotor%)) / 2#
-If Not MiscMotorInBounds(YMotor%, RealTimeMotorPositions!(YMotor%)) Then RealTimeMotorPositions!(YMotor%) = MotLoLimits!(YMotor%) + (MotHiLimits!(YMotor%) - MotLoLimits!(YMotor%)) / 2#
+RealTimeMotorPositions!(XMotor%) = MotLoLimits!(XMotor%) + (MotHiLimits!(XMotor%) - MotLoLimits!(XMotor%)) / 2#
+RealTimeMotorPositions!(YMotor%) = MotLoLimits!(YMotor%) + (MotHiLimits!(YMotor%) - MotLoLimits!(YMotor%)) / 2#
 XStageCoordinate! = RealTimeMotorPositions!(XMotor%)
 YStageCoordinate! = RealTimeMotorPositions!(XMotor%)
 BoundaryAngle! = 45#
@@ -75,35 +74,8 @@ FormSECONDARY.TextY1StageCoordinate.Text = Format$(Y1StageCoordinate!)
 FormSECONDARY.TextX2StageCoordinate.Text = Format$(X2StageCoordinate!)
 FormSECONDARY.TextY2StageCoordinate.Text = Format$(Y2StageCoordinate!)
 
-' Load default material B
-'Call StandardGetMDBIndex
-'If ierror Then Exit Sub
-
-' Check for standard
-'If NumberOfAvailableStandards% <= 0 Then GoTo SecondaryLoadNoStandards
-
-' Load default Mat B composition
-'If SecondaryMatBSample(1).LastChan% = 0 Then
-'ip% = 0
-'For i% = 1 To NumberOfAvailableStandards%
-'If MiscStringsAreSimilar("TiO2", StandardIndexNames$(i%)) Then  ' search for TiO2
-'ip% = StandardIndexNumbers%(i%)
-'Exit For
-'End If
-'Next i%
-
-' Load the current Mat B
-'If ip% > 0 Then
-'Call StandardGetMDBStandard(ip%, SecondaryMatBSample())   ' load TiO2
-'If ierror Then Exit Sub
-'Else
-'Call StandardGetMDBStandard(StandardIndexNumbers%(1), SecondaryMatBSample())   ' just load first standard
-'If ierror Then Exit Sub
-'End If
-'End If
-
 ' Load distance option
-FormSECONDARY.OptionDistanceMethod(SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod%).value = True
+FormSECONDARY.OptionDistanceMethod(SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod%).Value = True
 
 ' If image is specified, go ahead and reload
 If SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 3 And SecondarySample(1).SecondaryFluorescenceBoundaryImageFileName$ <> vbNullString Then
@@ -149,11 +121,11 @@ End If
 
 ' Save distance option
 SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 3
 End If
 
@@ -238,8 +210,7 @@ Y2StageCoordinate! = Val(FormSECONDARY.TextY2StageCoordinate.Text)
 End If
 End If
 
-' Graphical method is saved during mouse up/mouse down events (check for non-zero values in case user forgot to draw boundary)
-If XX1StageCoordinate! = 0# And YY1StageCoordinate! = 0# And XX2StageCoordinate! = 0 And YY2StageCoordinate! = 0# Then GoTo SecondarySaveNoBoundaryDrawn
+' Graphical method is saved during mouse up/mouse down events and loaded to sample below
 
 ' Now calculate the 2 point boundary coordinates for distance calculation
 If SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 0 Then
@@ -263,8 +234,13 @@ SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY1! = Y1StageCoordinat
 SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateX2! = X2StageCoordinate!
 SecondarySample(1).SecondaryFluorescenceBoundaryCoordinateY2! = Y2StageCoordinate!
 
-' Graphical
+' Graphical boundary method
 ElseIf SecondarySample(1).SecondaryFluorescenceBoundaryDistanceMethod% = 3 Then
+
+' Check for non-zero values in case user forgot to draw boundary
+If XX1StageCoordinate! = 0# And YY1StageCoordinate! = 0# And XX2StageCoordinate! = 0 And YY2StageCoordinate! = 0# Then GoTo SecondarySaveNoBoundaryDrawn
+
+' Sanity check for if inbounds
 If XX1StageCoordinate! < MotLoLimits!(XMotor%) Or XX1StageCoordinate! > MotHiLimits!(XMotor%) Then GoTo SecondarySaveBadGraphicalBoundary
 If YY1StageCoordinate! < MotLoLimits!(YMotor%) Or YY1StageCoordinate! > MotHiLimits!(YMotor%) Then GoTo SecondarySaveBadGraphicalBoundary
 If XX2StageCoordinate! < MotLoLimits!(XMotor%) Or XX2StageCoordinate! > MotHiLimits!(XMotor%) Then GoTo SecondarySaveBadGraphicalBoundary
@@ -386,7 +362,7 @@ MsgBox msg$, vbOKOnly + vbInformation, "SecondaryBrowseFile"
 
 SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(SecElmRow%) = tfilename$
 
-FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.value = vbChecked     ' set true if user selected k-ratio file
+FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.Value = vbChecked     ' set true if user selected k-ratio file
 FormSECONDARYKratios.LabelKratiosDATFile.Caption = SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(SecElmRow%)
 End If
 
@@ -671,11 +647,11 @@ Dim fractionx As Single, fractiony As Single
 
 ' Get current distance mode
 mode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 mode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 mode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 mode% = 3
 End If
 
@@ -731,11 +707,11 @@ Dim fractionx2 As Single, fractiony2 As Single
 
 ' Check if proper mode and image is loaded
 dmode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 dmode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 dmode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 dmode% = 3
 End If
 
@@ -930,11 +906,11 @@ Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Sin
 
 ' Get current distance mode
 dmode% = 0
-If FormSECONDARY.OptionDistanceMethod(1).value = True Then
+If FormSECONDARY.OptionDistanceMethod(1).Value = True Then
 dmode% = 1
-ElseIf FormSECONDARY.OptionDistanceMethod(2).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(2).Value = True Then
 dmode% = 2
-ElseIf FormSECONDARY.OptionDistanceMethod(3).value = True Then
+ElseIf FormSECONDARY.OptionDistanceMethod(3).Value = True Then
 dmode% = 3
 End If
 
@@ -1098,13 +1074,13 @@ Dim fractionx As Single, fractiony As Single
 Dim radius As Single
 
 Dim n As Long
-Dim X() As Single, Y() As Single, Z() As Single
+Dim x() As Single, y() As Single, Z() As Single
 
 ' Check if a calibration is loaded
 If Not PictureSnapCalibrated Then Exit Sub
 
 ' Get coordinate points
-Call SecondaryGetCoordinates(n&, X!(), Y!(), Z!())
+Call SecondaryGetCoordinates(n&, x!(), y!(), Z!())
 If ierror Then Exit Sub
 
 ' Check for valid points to plot
@@ -1112,8 +1088,8 @@ If n& < 1 Then Exit Sub
 
 ' Loop on all points
 For i& = 1 To n&
-stx! = X!(i&)
-sty! = Y!(i&)
+stx! = x!(i&)
+sty! = y!(i&)
 stz! = Z!(i&)
 
 ' Convert stage to image (form) coordinates and obtain fractional position
@@ -1354,17 +1330,17 @@ If Not RealTimeMode Then GoTo SecondaryUpdatePositionsNotRealTime
 If mode% = 0 Then
 FormSECONDARY.TextXStageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(XMotor%))
 FormSECONDARY.TextYStageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(YMotor%))
-FormSECONDARY.OptionDistanceMethod(1).value = True
+FormSECONDARY.OptionDistanceMethod(1).Value = True
 
 ElseIf mode% = 1 Then
 FormSECONDARY.TextX1StageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(XMotor%))
 FormSECONDARY.TextY1StageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(YMotor%))
-FormSECONDARY.OptionDistanceMethod(2).value = True
+FormSECONDARY.OptionDistanceMethod(2).Value = True
 
 ElseIf mode% = 2 Then
 FormSECONDARY.TextX2StageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(XMotor%))
 FormSECONDARY.TextY2StageCoordinate.Text = MiscAutoFormat$(RealTimeMotorPositions!(YMotor%))
-FormSECONDARY.OptionDistanceMethod(2).value = True
+FormSECONDARY.OptionDistanceMethod(2).Value = True
 End If
 
 Exit Sub
@@ -1401,9 +1377,9 @@ FormSECONDARYKratios.Caption = "Specify K-Ratios.DAT file for Secondary Fluoresc
 
 ' Load flag
 If SecondarySample(1).SecondaryFluorescenceBoundaryFlag(chan%) Then
-FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.value = vbChecked
+FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.Value = vbChecked
 Else
-FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.value = vbUnchecked
+FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.Value = vbUnchecked
 End If
 
 ' Load k-ratio file if already specified
@@ -1427,7 +1403,7 @@ Sub SecondaryKratiosSave()
 ierror = False
 On Error GoTo SecondaryKratiosSaveError
 
-If FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.value = vbChecked Then
+If FormSECONDARYKratios.CheckUseSecondaryFluorescenceCorrection.Value = vbChecked Then
 SecondarySample(1).SecondaryFluorescenceBoundaryFlag(SecElmRow%) = True
 Else
 SecondarySample(1).SecondaryFluorescenceBoundaryFlag(SecElmRow%) = False

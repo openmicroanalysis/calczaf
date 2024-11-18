@@ -3145,3 +3145,5 @@ Global DynamicSpecifiedElementExcessOxygenByDroopOperator2 As Integer
 
 Global JEOLEDSMilliSecDelayBefore As Long
 
+Global UseSecondaryBraggDefocusCorrectionFlag As Boolean
+

@@ -522,8 +522,9 @@ Begin VB.Form FormSECONDARY
          Left            =   480
          TabIndex        =   44
          TabStop         =   0   'False
-         ToolTipText     =   "Use the secondary fluorescence correction for boundary effects (see Analyze! window Boundary Corrections button)"
+         ToolTipText     =   "Use the secondary fluorescence correction for boundary effects"
          Top             =   480
+         Value           =   1  'Checked
          Width           =   2655
       End
       Begin VB.CommandButton CommandCalculateExportAll 
@@ -542,7 +543,7 @@ Begin VB.Form FormSECONDARY
          Left            =   360
          Style           =   1  'Graphical
          TabIndex        =   10
-         Top             =   4920
+         Top             =   5280
          Width           =   3015
       End
       Begin VB.CommandButton CommandCalculateCurrent 
@@ -579,7 +580,7 @@ Begin VB.Form FormSECONDARY
          Height          =   375
          Left            =   1560
          TabIndex        =   40
-         Top             =   3360
+         Top             =   3600
          Width           =   615
       End
       Begin VB.Label Label1 
@@ -593,11 +594,11 @@ Begin VB.Form FormSECONDARY
       End
       Begin VB.Label Label13 
          Alignment       =   2  'Center
-         Caption         =   "The composition of the beam incident material is defined by the CalcZAF input data file"
-         Height          =   735
+         Caption         =   "The composition of the beam incident material (and optionally stage coordinates) are defined by the CalcZAF input data file"
+         Height          =   855
          Left            =   480
          TabIndex        =   29
-         Top             =   4080
+         Top             =   4320
          Width           =   2775
       End
    End

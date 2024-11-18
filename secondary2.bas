@@ -106,6 +106,12 @@ If nPoints&(chan%) <= 0 Then GoTo SecondaryCorrectionNoKratios
 Call SecondaryCalculateKratio(sampleline%, chan%, sample())
 If ierror Then Exit Sub
 
+' Apply the Bragg defocus correction to the boundary correction k-ratios for this analysis line (not tested yet!!!!)
+If UseSecondaryBraggDefocusCorrectionFlag Then
+Call SecondaryBraggDefocusCalculateFraction(sampleline%, chan%, sample())
+If ierror Then Exit Sub
+End If
+
 ' Save string info
 astring1$ = astring1$ & Format$(sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%), a80$)
 astring2$ = astring2$ & MiscAutoFormat$(kratios!(chan%) * 100#)
@@ -121,13 +127,13 @@ End If
 Next chan%
 
 ' Debug output
-'If DebugMode Then
+If DebugMode Then
 Call IOWriteLog(vbCrLf & "SecondaryCorrection: SF k-ratios * 100, Line: " & Format$(sample(1).Linenumber&(sampleline%)) & ", Dist: " & sample(1).SecondaryFluorescenceBoundaryDistance!(sampleline%))
 Call IOWriteLog(Format$("Element:", a80$) & astring1$)
 Call IOWriteLog(Format$("Elm. Kr:", a80$) & astring2$)
 Call IOWriteLog(Format$("Cal. Kr:", a80$) & astring3$)
 Call IOWriteLog(Format$("Cor. Kr:", a80$) & astring4$)
-'End If
+End If
 
 ' Load data point coordinate to module level arrays (for display)
 curpnt& = curpnt& + 1
@@ -617,7 +623,7 @@ Exit Sub
 
 End Sub
 
-Sub SecondaryGetCoordinates(n As Long, x() As Single, y() As Single, Z() As Single)
+Sub SecondaryGetCoordinates(n As Long, X() As Single, Y() As Single, Z() As Single)
 ' Get the currently analyzed data point coordinates
 
 ierror = False
@@ -629,13 +635,13 @@ Dim i As Long
 If apoints& < 1 Then Exit Sub
 
 ' Dimension
-ReDim x(1 To apoints&) As Single
-ReDim y(1 To apoints&) As Single
+ReDim X(1 To apoints&) As Single
+ReDim Y(1 To apoints&) As Single
 ReDim Z(1 To apoints&) As Single
 
 For i& = 1 To apoints&
-x!(i&) = xcoord!(i&)
-y!(i&) = ycoord!(i&)
+X!(i&) = xcoord!(i&)
+Y!(i&) = ycoord!(i&)
 Z!(i&) = zcoord!(i&)
 Next i&
 n& = apoints&

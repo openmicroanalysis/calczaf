@@ -608,7 +608,7 @@ Exit Sub
 
 ConvertWeightToZFractionBSEZerokeV:
 Screen.MousePointer = vbDefault
-msg$ = "Variable zbar calculation was passed a zero keV value. This error should not occur, please contact Probe Sofwtare technical support."
+msg$ = "Variable zbar calculation was passed a zero keV value. This error should not occur, please contact Probe Software technical support."
 MsgBox msg$, vbOKOnly + vbExclamation, "ConvertWeightToZFractionBSE"
 ierror = True
 Exit Sub
