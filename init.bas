@@ -3434,15 +3434,10 @@ FerricFerrousMethodStrings$(4) = "Locock/Moy Fe-Mg-Mn amphibole"
 FerricFerrousMethodStrings$(5) = "Locock/Moy Li amphibole"
 FerricFerrousMethodStrings$(6) = "Locock/Moy Oxo amphibole"
 
-UserSpecifiedOutputFerrousFerricFlag = False
-UserSpecifiedOutputMachineReadableFlag = False
 UseEDSStoredNetIntensitiesFlag = False
 UseInterpolatedIntensitiesEvenIfElementIsPresentFlag = False
 
 InstrumentAcknowledgementString$ = vbNullString
-
-UserSpecifiedOutputOxygenFromSulfurFlag = False
-UserSpecifiedOutputSulfurCorrectedOxygenFlag = False
 
 MeasureAbsorbedFaradayCurrentOnlyOncePerSampleFlag = False
 'DoNotMeasure2ndFaradayAbsorbedCurrentsFlag = False         ' set in Probewin.ini file
@@ -3460,7 +3455,10 @@ For i% = 1 To NumberOfTunableSpecs%
 JEOLSpectroJogSize!(i%) = JEOLBacklash&(i%) / (MICRONSPERMM& * 100#)      ' JEOL backlash is in 1/100th micrometer units
 Next i%
 
-UserSpecifiedOutputBlankCorrectionParametersFlag = False
+UseSecondaryBoundaryFluorescenceCorrectionFlag = False
+UseSecondaryBraggDefocusCorrectionFlag = False
+
+' Note that all UserSpecifiedOutput flags are initialized in probewin.ini file so do not initialize here!!!!!
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
 Call InitFilesUserData
