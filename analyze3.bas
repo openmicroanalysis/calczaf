@@ -367,10 +367,11 @@ End If
 End If
 Next chan%
 
-' Iterate on the MAN, interference, volatile and APF corrections
-MaxMANIter% = 10            ' change from 100 to 10 (12-18-2019)
-analysis.MANIter! = 1#
-analysis.zbar! = 10.8    ' assume quartz z-bar for first MAN iteration
+' Iterate on the MAN, interference, volatile (TDI) and APF corrections
+'MaxMANIter% = 10             ' change from 100 to 10 (12-18-2019)
+MaxMANIter% = 100            ' change back to 100 for pathological interferences (e.g., Pb La and As Ka) (11/21/2024)
+analysis.MANIter! = 1#       ' initialize number of MAN, interference, TDI and APF iterations
+analysis.zbar! = 10.8        ' assume quartz z-bar for first MAN iteration
 alldone = False
 
 ' Iterate on matrix and other compositionally dependent corrections
@@ -414,7 +415,7 @@ If alldone Then Exit Do
 ' Increment iterations, check for too many
 analysis.MANIter! = analysis.MANIter! + 1#
 If analysis.MANIter! > MaxMANIter% Then
-msg$ = vbCrLf & "Warning in AnalyzeWeightCalculate- Too many MAN/Interf/APF/Vol iterations on line " & Str$(sample(1).Linenumber&(linerow%)) & ": " & Str$(analysis.MANIter)
+msg$ = vbCrLf & "Warning in AnalyzeWeightCalculate- Too many MAN/Interf/APF/TDI iterations on line " & Str$(sample(1).Linenumber&(linerow%)) & ": " & Str$(analysis.MANIter)
 Call IOWriteLog(msg$)
 
 msg$ = "Convergence Difference Counts:" & vbCrLf

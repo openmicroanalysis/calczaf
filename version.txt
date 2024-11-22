@@ -2,11 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/21/24	Change maxmimum number of MAN/Interf/TDI/APF iterations to handle pathological
+		"self interfering" overlaps, e.g., Pb La and As Ka (Locock).
+
 11/20/24	Add display of Faraday wait and wait out times to Faraday.exe app.
 
 11/18/24	Add more "interactive" Help buttons that connect to relevant topics on our EPMA user forum.
 
-11/17/24	Work more on BRagg defocus correction.
+11/17/24	Work more on Bragg defocus correction.
 v. 13.9.4
 		Add more Run table globals to InitData.
 

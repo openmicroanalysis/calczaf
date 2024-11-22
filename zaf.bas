@@ -1460,9 +1460,11 @@ ReDim atomfracs(1 To MAXCHAN%) As Single
 ReDim continuum_correction(1 To MAXCHAN1%) As Single    ' for MAN continuum absorption corrections
 
 MaxZAFIter% = 100
-ZAFMinTotal! = 0.001    ' in weight fraction
-ZAFMinToler! = 0.0001   ' in weight fraction
-ZAFToler! = 1000#       ' in inverted relative weight fraction
+ZAFMinTotal! = 0.001      ' in weight fraction
+'ZAFMinTotal! = 0.0001     ' in weight fraction (previous value)
+ZAFMinToler! = 0.0001     ' in weight fraction
+'ZAFMinToler! = 0.00001    ' in weight fraction (previous value)
+ZAFToler! = 1000#         ' in inverted relative weight fraction
 
 ' Check if an element is calculated relative to stoichiometric oxygen or calculated relative to another element
 If IPOS2%(zaf.in1%, Int(15), zaf.il%()) > 0 Or IPOS2%(zaf.in1%, Int(17), zaf.il%()) > 0 Then
