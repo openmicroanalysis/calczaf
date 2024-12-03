@@ -23,7 +23,8 @@ Next i%
 
 ' If no sample selected then, give error message
 If nsams% = 0 Then
-msg$ = "No sample(s) was selected"
+msg$ = "No sample(s) was selected" & vbCrLf & vbCrLf
+msg$ = msg$ & "Make sure the Analyze! window is open and one or more samples are selected."
 MsgBox msg$, vbOKOnly + vbExclamation, "SampleCheckSampleList"
 ierror = True
 End If
@@ -59,7 +60,8 @@ Next i%
 
 ' If no sample selected then, give error message
 If nsams% = 0 Then
-msg$ = "No sample(s) was selected"
+msg$ = "No sample(s) was selected" & vbCrLf & vbCrLf
+msg$ = msg$ & "Make sure the Analyze! window is open and one or more samples are selected."
 MsgBox msg$, vbOKOnly + vbExclamation, "SampleCheckSampleList2"
 ierror = True
 End If
