@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/04/24	Work (again) on std assign bug (Neill).
+
 12/03/24	Modify check std assignments code in Acquire2.bas! Work on AdvancedEPMA dialog.
 
 12/02/24	Enable AdvancedEPMA floating window. Add more Help buttons.
