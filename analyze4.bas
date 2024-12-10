@@ -14,7 +14,7 @@ Option Explicit
 Global TimerToggle As Integer
 
 Sub AnalyzeUpdateList(mode As Integer, tForm As Form, tList As ListBox)
-' Updates the sample list box for FormANALYZE and FormPLOT, FormLOCATE and FormIMAGEEDIT
+' Updates the sample list box for FormANALYZE and FormPLOT, FormLOCATE and FormIMAGEEDIT and FormACQUIRE
 ' mode = 0 select last item in list
 ' mode = 1 select previously selected items in list
 
