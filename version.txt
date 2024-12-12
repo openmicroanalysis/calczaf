@@ -2,7 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-12/10/24	Teak to GetElmAll2 code for updating MPB off peak background type if no data present.
+12/11/24	Tweak acquisition time estimates again (Mitchell).
+
+		Modify JEOL MEC EDS interface code to not get spectrum until acquisition is complete. Getting the 
+		spectrum before the EDS acquisition is complete seems to cause various problems, either 
+		an Error 5 is returned from the MECW_EDSLoadEdsAnalysisData call and/or one gets an error message 
+		in the JEOL control PC: "communication error, reboot OPE and control software".
+
+12/10/24	Tweak to GetElmAll2 code for updating MPB off peak background type if no data present.
 
 		Fix GetElm bug for setting enables in FormSETUP and FormSETUPSAM. Tweak time 
 		estimates (Mitchell).
