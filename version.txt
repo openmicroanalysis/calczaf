@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/16/24	Improbe debug logging for EDS and Faraday cup (McAleer).
+
 12/14/24	Minor tweak for Output menu enables.
 
 12/12/24	Fix blank output code for user specified output (Buse).
