@@ -37,18 +37,6 @@ Call IOStatusAuto(vbNullString)
 ierror = True
 Exit Sub
 
-CLDisplaySpectraZeroAcqTime:
-msg$ = "CL acquisition time is zero for datarow " & Format$(datarow%)
-IOMsgBox msg$, vbOKOnly + vbExclamation, "CLDisplaySpectra"
-ierror = True
-Exit Sub
-
-CLDisplaySpectraZeroFraction:
-msg$ = "CL dark spectra fraction time is zero for datarow " & Format$(datarow%)
-IOMsgBox msg$, vbOKOnly + vbExclamation, "CLDisplaySpectra"
-ierror = True
-Exit Sub
-
 End Sub
 
 Sub CLInitDisplay(tForm As Form, tCaption As String, datarow As Integer, sample() As TypeSample)

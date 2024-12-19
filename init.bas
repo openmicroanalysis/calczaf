@@ -2349,7 +2349,7 @@ MaxThroughputArrayValue!(9) = 4000#
 MaxThroughputArrayValue!(10) = 6400#
 MaxThroughputArrayValue!(11) = 0#
 
-' JEOL OEM
+' JEOL OEM (8x30)
 ElseIf EDSSpectraInterfaceType% = 6 Then
 MaxEnergyArraySize% = 1
 MaxEnergyArrayValue!(1) = 20#       ' JEOL OEM EDS is always 20 keV
@@ -2358,7 +2358,7 @@ MaxThroughputArraySize% = 4         ' older systems use 3 time constants, newer 
 MaxThroughputArrayValue!(1) = 1#
 MaxThroughputArrayValue!(2) = 2#
 MaxThroughputArrayValue!(3) = 3#
-MaxThroughputArrayValue!(4) = 4#
+MaxThroughputArrayValue!(4) = 4#    ' only used by newer JEOL EDS (8x30) systems
 End If
 End If
 

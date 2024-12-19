@@ -313,12 +313,6 @@ MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapFileOpen"
 ierror = True
 Exit Sub
 
-PictureSnapFileOpenUnknownType:
-msg$ = "The specified image file " & tfilename$ & ", is an unknown image type. Please try again with a different image."
-MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapFileOpen"
-ierror = True
-Exit Sub
-
 End Sub
 
 Sub PictureSnapFileOpenGrid(tfilename As String)
