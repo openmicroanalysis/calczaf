@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeTRANS3D"
-' (c) Copyright 1995-2024 by John J. Donovan
+' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -189,7 +189,7 @@ Exit Sub
 
 End Sub
 
-Sub Trans3dMultiplyMatrix(n As Integer, y() As Double, b() As Double, row() As Double)
+Sub Trans3dMultiplyMatrix(n As Integer, Y() As Double, b() As Double, row() As Double)
 ' Multiply a matrix times a vector. That is y#() (n% x n%), by b#() (n% x 1), to get row#() (n% x 1).
 
 ierror = False
@@ -205,7 +205,7 @@ Next i%
 ' Multiply
 For i% = 1 To n%
 For j% = 1 To n%
-row#(i%) = row#(i%) + y#(i%, j%) * b#(j%)
+row#(i%) = row#(i%) + Y#(i%, j%) * b#(j%)
 Next j%
 Next i%
 

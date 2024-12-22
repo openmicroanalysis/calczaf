@@ -2,7 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-12/18/24	Remove check for beam scan mode for JEOL MEC EDS interface in Acquire.
+12/21/24	Add counting time out check to demo code (for testing purposes only).
+v. 13.9.7
+
+12/20/24	Modify motor complete status code for JEOL.  Add counting complete timeout for JEOL (Allaz).
+		Add code to remind user to uncheck Insert PCD for JEOL MEC EDS interface.
+		
+		Modify estimated automation code at completion.
+
+12/18/24	Remove check for beam scan mode for JEOL MEC EDS interface in Acquire (McAleer).
 
 12/16/24	Improve debug logging for EDS and Faraday cup (McAleer).
 
@@ -35,7 +43,7 @@ v.13.9.6	in Acquire2.bas to use main GetElm and GetStd code.
 
 12/02/24	Enable AdvancedEPMA floating window. Add more Help buttons.
 
-		FIx GetStd standard assignments bug when user just clicks OK (Neill).
+		Fix GetStd standard assignments bug when user just clicks OK (Neill).
 
 12/01/24	Improve GetStd code, update Help context IDs.
 

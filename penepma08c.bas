@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma08c"
-' (c) Copyright 1995-2024 by John J. Donovan
+' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 
 Const COL7% = 7
@@ -34,7 +34,7 @@ If InStr(astring$, "TITLE") > 0 Then bstring$ = Left$(astring, COL7%) & Left$(sa
 
 ' Beam energy
 If InStr(astring$, "SENERG") > 0 Then
-cstring$ = Format$(Format$(sample(1).kilovolts! * EVPERKEV#, "Scientific"), A10$)
+cstring$ = Format$(Format$(sample(1).kilovolts! * EVPERKEV#, "Scientific"), a10$)
 Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 End If

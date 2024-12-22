@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePENEPMA08"
-' (c) Copyright 1995-2024 by John J. Donovan
+' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 
 ' Changed to 3 materials 03/21/2019 to allow three materials to be read without errors, but not saved (controls for third material are not visible)
@@ -585,7 +585,7 @@ bstring$ = astring$
 
 If InStr(astring$, "TITLE") > 0 Then bstring$ = Left$(astring, COL7%) & Left$(BeamTitle$, 120)
 
-cstring$ = Format$(Format$(BeamEnergy#, "Scientific"), A10$)
+cstring$ = Format$(Format$(BeamEnergy#, "Scientific"), a10$)
 If InStr(astring$, "SENERG") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 

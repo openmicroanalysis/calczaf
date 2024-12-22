@@ -87,7 +87,7 @@ Begin VB.Form FormREGISTER
       Begin VB.Label Label3 
          Alignment       =   2  'Center
          Appearance      =   0  'Flat
-         Caption         =   $"Register.frx":0000
+         Caption         =   $"REGISTER.frx":0000
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -138,7 +138,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2024 by John J. Donovan
+' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 
 Private Sub CommandCancel_Click()

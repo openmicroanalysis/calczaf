@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeSTANFORM"
-' (c) Copyright 1995-2024 by John J. Donovan
+' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 
 ' Used by Stanform and GetCmp routines

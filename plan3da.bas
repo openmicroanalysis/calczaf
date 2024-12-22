@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePLAN3Da"
-' (c) Copyright 1995-2024 by John J. Donovan
+' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 
 Sub Plan3dLUBKSB(a() As Double, n As Integer, np As Integer, indx() As Integer, b() As Double)
@@ -146,7 +146,7 @@ Exit Sub
 
 End Sub
 
-Sub Plan3dInvertMatrix(a() As Double, n As Integer, np As Integer, y() As Double, d As Double)
+Sub Plan3dInvertMatrix(a() As Double, n As Integer, np As Integer, Y() As Double, d As Double)
 ' This routine calls routines Plan3dLUDCMP and Plan3dLUBKSB. Modified From Numerical Recipes.
 '  n = the size of the n x n matrix a with a physical dimension np
 '  a is the matrix input (destroyed), y is the inverted output
@@ -162,9 +162,9 @@ ReDim temp(1 To n%) As Double   ' because VB gives type mismatch otherwise
 ' Initialize
 For i% = 1 To n%
 For j% = 1 To n%
-y#(i%, j%) = 0#
+Y#(i%, j%) = 0#
 Next j%
-y#(i%, i%) = 1#
+Y#(i%, i%) = 1#
 Next i%
 
 Call Plan3dLUDCMP(a#(), n%, np%, indx%(), d#)
@@ -179,11 +179,11 @@ If Abs(d#) < 0.0000000001 Then GoTo Plan3dInvertMatrixBadDeterminant
 
 For j% = 1 To n%
 For i% = 1 To n%
-temp#(i%) = y#(i%, j%)  ' y#(1, j%)
+temp#(i%) = Y#(i%, j%)  ' y#(1, j%)
 Next i%
 Call Plan3dLUBKSB(a#(), n%, np%, indx%(), temp#())
 For i% = 1 To n%
-y#(i%, j%) = temp#(i%)
+Y#(i%, j%) = temp#(i%)
 Next i%
 Next j%
 

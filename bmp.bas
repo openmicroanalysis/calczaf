@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeBMP"
-' (c) Copyright 1995-2024 by John J. Donovan
+' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -811,8 +811,8 @@ On Error GoTo BMPMakeGrayError
 Dim bitmap_info As BITMAPINFO
 Dim bytes_per_scanLine As Long
 Dim pad_per_scanLine As Long
-Dim x As Integer
-Dim y As Integer
+Dim X As Integer
+Dim Y As Integer
 Dim ave_color As Byte
 Dim nBytes As Long
 
@@ -843,14 +843,14 @@ If CSng(picColor.ScaleWidth) * CSng(picColor.ScaleHeight) * 4# > MAXLONG& Then E
     GetDIBits picColor.hDC, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
 
     ' Modify the pixels
-    For y = 1 To picColor.ScaleHeight
-        For x = 1 To picColor.ScaleWidth
-            ave_color = CByte((CInt(pixels(pixR, x, y)) + pixels(pixG, x, y) + pixels(pixB, x, y)) \ 3)
-            pixels(pixR, x, y) = ave_color
-            pixels(pixG, x, y) = ave_color
-            pixels(pixB, x, y) = ave_color
-        Next x
-    Next y
+    For Y = 1 To picColor.ScaleHeight
+        For X = 1 To picColor.ScaleWidth
+            ave_color = CByte((CInt(pixels(pixR, X, Y)) + pixels(pixG, X, Y) + pixels(pixB, X, Y)) \ 3)
+            pixels(pixR, X, Y) = ave_color
+            pixels(pixG, X, Y) = ave_color
+            pixels(pixB, X, Y) = ave_color
+        Next X
+    Next Y
 
     ' Display the result
     SetDIBits picColor.hDC, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
@@ -875,8 +875,8 @@ On Error GoTo BMPMakeColoredError
 Dim bitmap_info As BITMAPINFO
 Dim bytes_per_scanLine As Long
 Dim pad_per_scanLine As Long
-Dim x As Integer
-Dim y As Integer
+Dim X As Integer
+Dim Y As Integer
 Dim tR As Long
 Dim tG As Long
 Dim tB As Long
@@ -904,16 +904,16 @@ Const pixB& = 3
     GetDIBits picColor.hDC, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS
 
     ' Modify the non black pixels
-    For y% = 1 To picColor.ScaleHeight
-        For x% = 1 To picColor.ScaleWidth
-        If pixels(pixR, x, y) <> 0 And pixels(pixG, x, y) <> 0 And pixels(pixB, x, y) <> 0 Then
+    For Y% = 1 To picColor.ScaleHeight
+        For X% = 1 To picColor.ScaleWidth
+        If pixels(pixR, X, Y) <> 0 And pixels(pixG, X, Y) <> 0 And pixels(pixB, X, Y) <> 0 Then
             Call BMPUnRGB(tRGB&, tR&, tG&, tB&)
-            pixels(pixR, x, y) = CByte(tR)
-            pixels(pixG, x, y) = CByte(tG)
-            pixels(pixB, x, y) = CByte(tB)
+            pixels(pixR, X, Y) = CByte(tR)
+            pixels(pixG, X, Y) = CByte(tG)
+            pixels(pixB, X, Y) = CByte(tB)
         End If
-        Next x%
-    Next y%
+        Next X%
+    Next Y%
 
     ' Display the result
     SetDIBits picColor.hDC, picColor.Image, 0, picColor.ScaleHeight, pixels(1, 1, 1), bitmap_info, DIB_RGB_COLORS

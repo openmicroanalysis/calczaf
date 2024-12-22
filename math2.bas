@@ -1,16 +1,16 @@
 Attribute VB_Name = "CodeMATH2"
-' (c) Copyright 1995-2024 by John J. Donovan
+' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 
-Function MathArcSin(x As Double) As Double
+Function MathArcSin(X As Double) As Double
     
 ierror = False
 On Error GoTo MathArcsinError
     
-    If x# = 1 Then
+    If X# = 1 Then
         MathArcSin# = PID# / 2
     Else
-        MathArcSin# = Atn(x# / Sqr(-x# * x# + 1))
+        MathArcSin# = Atn(X# / Sqr(-X# * X# + 1))
     End If
 
 Exit Function
@@ -23,15 +23,15 @@ Exit Function
 
 End Function
 
-Function MathArcCos(x As Double) As Double
+Function MathArcCos(X As Double) As Double
     
 ierror = False
 On Error GoTo MathArcCosError
     
-    If x# = 1 Then
+    If X# = 1 Then
         MathArcCos# = 0
     Else
-        MathArcCos# = Atn(-x# / Sqr(-x# * x# + 1)) + 2 * Atn(1)
+        MathArcCos# = Atn(-X# / Sqr(-X# * X# + 1)) + 2 * Atn(1)
     End If
 
 Exit Function
@@ -44,7 +44,7 @@ Exit Function
 
 End Function
 
-Function MathTruncate(x As Double, Optional digit As Integer) As Double
+Function MathTruncate(X As Double, Optional digit As Integer) As Double
 ' Return truncated number up to decimal digit
 
 ierror = False
@@ -55,7 +55,7 @@ Dim q As Double
     If IsMissing(digit%) Then digit% = 2
     q# = 10 ^ digit%
     
-    MathTruncate# = (Int(x# * q#)) / q#
+    MathTruncate# = (Int(X# * q#)) / q#
     
 Exit Function
 
@@ -103,13 +103,13 @@ Exit Function
 
 End Function
 
-Public Function MathArcCos2(x As Variant) As Variant
+Public Function MathArcCos2(X As Variant) As Variant
 ' Calculate the arc cosine in radians
 
 ierror = False
 On Error GoTo MathArcCos2Error
     
-    Select Case x
+    Select Case X
         Case -1
             MathArcCos2 = 4 * Atn(1)
              
@@ -120,7 +120,7 @@ On Error GoTo MathArcCos2Error
             MathArcCos2 = 0
              
         Case Else:
-            MathArcCos2 = Atn(-x / Sqr(-x * x + 1)) + 2 * Atn(1)
+            MathArcCos2 = Atn(-X / Sqr(-X * X + 1)) + 2 * Atn(1)
     End Select
 
 Exit Function

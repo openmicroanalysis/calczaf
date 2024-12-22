@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeDynamicElements"
-' (c) Copyright 1995-2024 by John J. Donovan
+' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 
 Sub DynamicElementsLoad(sample() As TypeSample)
@@ -23,33 +23,33 @@ If ierror Then Exit Sub
 
 ' Load dynamic element flags
 If DynamicSpecifiedElementByDifferenceFlag% = True Then
-FormDynamicElements.CheckDifference.value = vbChecked
+FormDynamicElements.CheckDifference.Value = vbChecked
 Else
-FormDynamicElements.CheckDifference.value = vbUnchecked
+FormDynamicElements.CheckDifference.Value = vbUnchecked
 End If
 
 If DynamicSpecifiedElementByDifferenceFormulaFlag% = True Then
-FormDynamicElements.CheckDifferenceFormula.value = vbChecked
+FormDynamicElements.CheckDifferenceFormula.Value = vbChecked
 Else
-FormDynamicElements.CheckDifferenceFormula.value = vbUnchecked
+FormDynamicElements.CheckDifferenceFormula.Value = vbUnchecked
 End If
 
 If DynamicSpecifiedElementByStoichiometryToOxygenFlag% = True Then
-FormDynamicElements.CheckStoichiometry.value = vbChecked
+FormDynamicElements.CheckStoichiometry.Value = vbChecked
 Else
-FormDynamicElements.CheckStoichiometry.value = vbUnchecked
+FormDynamicElements.CheckStoichiometry.Value = vbUnchecked
 End If
 
 If DynamicSpecifiedElementByStoichiometryToAnotherFlag% = True Then
-FormDynamicElements.CheckRelative.value = vbChecked
+FormDynamicElements.CheckRelative.Value = vbChecked
 Else
-FormDynamicElements.CheckRelative.value = vbUnchecked
+FormDynamicElements.CheckRelative.Value = vbUnchecked
 End If
 
 If DynamicSpecifiedElementExcessOxygenByDroopFlag% = True Then
-FormDynamicElements.CheckExcessOxygenByDroop.value = vbChecked
+FormDynamicElements.CheckExcessOxygenByDroop.Value = vbChecked
 Else
-FormDynamicElements.CheckExcessOxygenByDroop.value = vbUnchecked
+FormDynamicElements.CheckExcessOxygenByDroop.Value = vbUnchecked
 End If
 If ProbeDataFileVersionNumber! < 12.7 Then FormDynamicElements.CheckExcessOxygenByDroop.Enabled = False
 
@@ -151,7 +151,7 @@ Dim nonzero As Boolean
 Dim j As Integer
 
 ' Save difference selections
-If FormDynamicElements.CheckDifference.value = vbChecked Then
+If FormDynamicElements.CheckDifference.Value = vbChecked Then
 DynamicSpecifiedElementByDifferenceFlag% = True
 Else
 DynamicSpecifiedElementByDifferenceFlag% = False
@@ -173,10 +173,10 @@ DynamicSpecifiedElementByDifferenceValue!(j%) = Val(FormDynamicElements.TextDiff
 DynamicSpecifiedElementByDifferenceOperator1% = FormDynamicElements.ComboDifferenceOperator1.ListIndex
 DynamicSpecifiedElementByDifferenceOperator2% = FormDynamicElements.ComboDifferenceOperator2.ListIndex
 Next j%
-If DynamicSpecifiedElementByDifferenceFlag% = True Then FormZAFOPT.CheckDifference.value = vbChecked        ' to force parameter check in FormZAFOPT
+If DynamicSpecifiedElementByDifferenceFlag% = True Then FormZAFOPT.CheckDifference.Value = vbChecked        ' to force parameter check in FormZAFOPT
 
 ' Save difference by formula selections
-If FormDynamicElements.CheckDifferenceFormula.value = vbChecked Then
+If FormDynamicElements.CheckDifferenceFormula.Value = vbChecked Then
 DynamicSpecifiedElementByDifferenceFormulaFlag% = True
 Else
 DynamicSpecifiedElementByDifferenceFormulaFlag% = False
@@ -198,10 +198,10 @@ DynamicSpecifiedElementByDifferenceFormulaValue!(j%) = Val(FormDynamicElements.T
 DynamicSpecifiedElementByDifferenceFormulaOperator1% = FormDynamicElements.ComboDifferenceFormulaOperator1.ListIndex
 DynamicSpecifiedElementByDifferenceFormulaOperator2% = FormDynamicElements.ComboDifferenceFormulaOperator2.ListIndex
 Next j%
-If DynamicSpecifiedElementByDifferenceFormulaFlag% = True Then FormZAFOPT.CheckDifferenceFormula.value = vbChecked        ' to force parameter check in FormZAFOPT
+If DynamicSpecifiedElementByDifferenceFormulaFlag% = True Then FormZAFOPT.CheckDifferenceFormula.Value = vbChecked        ' to force parameter check in FormZAFOPT
 
 ' Save stoichiometry to oxygen selections
-If FormDynamicElements.CheckStoichiometry.value = vbChecked Then
+If FormDynamicElements.CheckStoichiometry.Value = vbChecked Then
 DynamicSpecifiedElementByStoichiometryToOxygenFlag% = True
 Else
 DynamicSpecifiedElementByStoichiometryToOxygenFlag% = False
@@ -223,10 +223,10 @@ DynamicSpecifiedElementByStoichiometryToOxygenValue!(j%) = Val(FormDynamicElemen
 DynamicSpecifiedElementByStoichiometryToOxygenOperator1% = FormDynamicElements.ComboStoichiometryOperator1.ListIndex
 DynamicSpecifiedElementByStoichiometryToOxygenOperator2% = FormDynamicElements.ComboStoichiometryOperator2.ListIndex
 Next j%
-If DynamicSpecifiedElementByStoichiometryToOxygenFlag% = True Then FormZAFOPT.CheckStoichiometry.value = vbChecked        ' to force parameter check in FormZAFOPT
+If DynamicSpecifiedElementByStoichiometryToOxygenFlag% = True Then FormZAFOPT.CheckStoichiometry.Value = vbChecked        ' to force parameter check in FormZAFOPT
 
 ' Save stoichiometry to another element selections
-If FormDynamicElements.CheckRelative.value = vbChecked Then
+If FormDynamicElements.CheckRelative.Value = vbChecked Then
 DynamicSpecifiedElementByStoichiometryToAnotherFlag% = True
 Else
 DynamicSpecifiedElementByStoichiometryToAnotherFlag% = False
@@ -248,10 +248,10 @@ DynamicSpecifiedElementByStoichiometryToAnotherValue!(j%) = Val(FormDynamicEleme
 DynamicSpecifiedElementByStoichiometryToAnotherOperator1% = FormDynamicElements.ComboRelativeOperator1.ListIndex
 DynamicSpecifiedElementByStoichiometryToAnotherOperator2% = FormDynamicElements.ComboRelativeOperator2.ListIndex
 Next j%
-If DynamicSpecifiedElementByStoichiometryToAnotherFlag% = True Then FormZAFOPT.CheckRelative.value = vbChecked        ' to force parameter check in FormZAFOPT
+If DynamicSpecifiedElementByStoichiometryToAnotherFlag% = True Then FormZAFOPT.CheckRelative.Value = vbChecked        ' to force parameter check in FormZAFOPT
 
 ' Save excess oxygen by Droop selections
-If FormDynamicElements.CheckExcessOxygenByDroop.value = vbChecked Then
+If FormDynamicElements.CheckExcessOxygenByDroop.Value = vbChecked Then
 DynamicSpecifiedElementExcessOxygenByDroopFlag% = True
 Else
 DynamicSpecifiedElementExcessOxygenByDroopFlag% = False
@@ -273,7 +273,7 @@ DynamicSpecifiedElementExcessOxygenByDroopValue!(j%) = Val(FormDynamicElements.T
 DynamicSpecifiedElementExcessOxygenByDroopOperator1% = FormDynamicElements.ComboExcessOxygenByDroopOperator1.ListIndex
 DynamicSpecifiedElementExcessOxygenByDroopOperator2% = FormDynamicElements.ComboExcessOxygenByDroopOperator2.ListIndex
 Next j%
-If DynamicSpecifiedElementExcessOxygenByDroopFlag% = True Then FormZAFOPT.CheckFerrousFerricCalculation.value = vbChecked        ' to force parameter check in FormZAFOPT
+If DynamicSpecifiedElementExcessOxygenByDroopFlag% = True Then FormZAFOPT.CheckFerrousFerricCalculation.Value = vbChecked        ' to force parameter check in FormZAFOPT
 
 Exit Sub
 
