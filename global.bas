@@ -3147,3 +3147,4 @@ Global JEOLEDSMilliSecDelayBefore As Long
 
 Global UseSecondaryBraggDefocusCorrectionFlag As Boolean
 
+Global StartAcquireBatchFile As Boolean

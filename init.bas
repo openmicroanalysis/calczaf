@@ -3458,6 +3458,8 @@ Next i%
 UseSecondaryBoundaryFluorescenceCorrectionFlag = False
 UseSecondaryBraggDefocusCorrectionFlag = False
 
+StartAcquireBatchFile = False
+
 ' Note that all UserSpecifiedOutput flags are initialized in probewin.ini file so do not initialize here!!!!!
 
 ' Make sure sample data files are up to date (use root path as of 3-20-2007)
