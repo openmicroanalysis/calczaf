@@ -1666,6 +1666,23 @@ End If
 End If
 Next i%
 
+'  Crude test of dynamic stoichiometric oxygen flag using Glenn's quartz-pyrite maps
+'If UCase$(app.EXEName) = UCase$("CalcImage") Then
+'If unkcnts!(2) / stdcnts!(2) > 0.1 And unkcnts!(3) / stdcnts!(3) < 0.1 Then
+'If sample(1).OxideOrElemental% <> 1 Then
+'sample(1).OxideOrElemental% = 1                 ' re-set as oxide calculation
+'Call ZAFSetZAF(sample())
+'If ierror Then Exit Sub
+'End If
+'Else
+'If sample(1).OxideOrElemental% <> 2 Then
+'sample(1).OxideOrElemental% = 2                 ' re-set as elemental calculation
+'Call ZAFSetZAF(sample())
+'If ierror Then Exit Sub
+'End If
+'End If
+'End If
+
 ' Calculate unknown K-ratios. Use intensities modified by coating correction (if specified)
 For i% = 1 To sample(1).LastElm%
 
