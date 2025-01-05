@@ -409,7 +409,7 @@ Exit Sub
 End Sub
 
 Sub SecondaryCalculateDistance(X_Pos1 As Single, Y_Pos1 As Single, X_Pos2 As Single, Y_Pos2 As Single, sampleline As Integer, sample() As TypeSample)
-' Calculate the boundary distance (in um) for the specified data line based on passed line and X, Y stage positions
+' Calculate the boundary distance (in um) for the specified data line based on passed boundary line and X, Y analysis stage positions
 
 ierror = False
 On Error GoTo SecondaryCalculateDistanceError
@@ -472,8 +472,12 @@ Call LeastSquares(kmax%, nmax%, xdata!(), ydata!(), acoeff!())
 If ierror Then Exit Sub
 
 ' Save slope and intercept
-m! = acoeff!(2)
-b! = acoeff!(1)
+m! = acoeff!(2)             ' slope
+b! = acoeff!(1)             ' intercept
+
+' Store boundary intercept and slope for Bragg defocus correction
+sample(1).SecondaryFluorescenceBoundaryRegressionIntercept! = b!
+sample(1).SecondaryFluorescenceBoundaryRegressionSlope! = m!
 
 ' Calculate from specified boundary (specified using several methods but stored as X,Y pair)
 ' Given that y = mx + b and point (x1, y1)... see http://math.ucsd.edu/~wgarner/math4c/derivations/distance/pdf/distptline.pdf

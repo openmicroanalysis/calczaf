@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/04/25	Finish dynamic oxygen by stoichiometry code. Add boundary fit coeffients for Bragg defocus 
+		correction (Moy).
+
 12/31/24	Add crude test of dynamic stoichiometric oxygen (Poirier).  Need to implement in GUI now.
 		
 		Fix Classify DAT output bug where extra tab was being added after "NK" column label!

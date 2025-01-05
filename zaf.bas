@@ -1666,22 +1666,13 @@ End If
 End If
 Next i%
 
-'  Crude test of dynamic stoichiometric oxygen flag using Glenn's quartz-pyrite maps
-'If UCase$(app.EXEName) = UCase$("CalcImage") Then
-'If unkcnts!(2) / stdcnts!(2) > 0.1 And unkcnts!(3) / stdcnts!(3) < 0.1 Then
-'If sample(1).OxideOrElemental% <> 1 Then
-'sample(1).OxideOrElemental% = 1                 ' re-set as oxide calculation
-'Call ZAFSetZAF(sample())
-'If ierror Then Exit Sub
-'End If
-'Else
-'If sample(1).OxideOrElemental% <> 2 Then
-'sample(1).OxideOrElemental% = 2                 ' re-set as elemental calculation
-'Call ZAFSetZAF(sample())
-'If ierror Then Exit Sub
-'End If
-'End If
-'End If
+' Code to check dynamic oxygen by stoichiometry (for CalcImage pixel calculations only)
+If UCase$(app.EXEName) = UCase$("CalcImage") Then
+If DynamicOxygenByStoichiometryFlag% Then                           ' do not call unless using dynamic oxygen by stoichiometry (to avoid re-setting to elemental calculation)
+Call DynamicElementsCriteria2(unkcnts!(), stdcnts!(), sample())
+If ierror Then Exit Sub
+End If
+End If
 
 ' Calculate unknown K-ratios. Use intensities modified by coating correction (if specified)
 For i% = 1 To sample(1).LastElm%
@@ -1718,8 +1709,11 @@ Next i%
 
 ' Check for dynamic elements criteria for elements by difference and/or stoichiometry (for CalcImage pixel calculations only)
 If UCase$(app.EXEName) = UCase$("CalcImage") Then
-Call DynamicElementsCriteria(zaf, sample())
-If ierror Then Exit Sub
+If DynamicSpecifiedElementByDifferenceFlag Or DynamicSpecifiedElementByDifferenceFormulaFlag Or DynamicSpecifiedElementByStoichiometryToOxygenFlag Or _
+    DynamicSpecifiedElementByStoichiometryToAnotherFlag Or DynamicSpecifiedElementExcessOxygenByDroopFlag Then
+    Call DynamicElementsCriteria(zaf, sample())
+    If ierror Then Exit Sub
+End If
 End If
 
 ' Input specified elemental weight percents into ZAF array, and check for element by difference, element by stoichiometry and element to oxide

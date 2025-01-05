@@ -1137,6 +1137,8 @@ Type TypeSample
        
     SecondaryFluorescenceBoundaryDistance() As Single                       ' (calculated in um) allocated in InitSample (1 To MAXROW%) (calculated)
     SecondaryFluorescenceBoundaryKratios() As Single                        ' allocated in InitSample (1 To MAXROW%, 1 To MAXCHAN%) (calculated)
+    SecondaryFluorescenceBoundaryRegressionSlope As Single                  ' in stage coordinates (calculated) for Bragg defocus correction
+    SecondaryFluorescenceBoundaryRegressionIntercept As Single              ' in stage coordinates (calculated) for Bragg defocus correction
     
     SecondaryFluorescenceBoundaryMatA_String(1 To MAXCHAN%) As String       ' for stored kratio DAT table
     SecondaryFluorescenceBoundaryMatB_String(1 To MAXCHAN%) As String       ' for stored kratio DAT table
@@ -3148,3 +3150,11 @@ Global JEOLEDSMilliSecDelayBefore As Long
 Global UseSecondaryBraggDefocusCorrectionFlag As Boolean
 
 Global StartAcquireBatchFile As Boolean
+
+Global DynamicOxygenByStoichiometryFlag As Integer
+Global DynamicOxygenByStoichiometryElement(1 To MAXCRITERIA%) As Integer
+Global DynamicOxygenByStoichiometryValue(1 To MAXCRITERIA%) As Single
+Global DynamicOxygenByStoichiometryGreaterLess(1 To MAXCRITERIA%) As Integer
+Global DynamicOxygenByStoichiometryOperator1 As Integer
+Global DynamicOxygenByStoichiometryOperator2 As Integer
+

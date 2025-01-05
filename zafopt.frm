@@ -427,7 +427,7 @@ Begin VB.Form FormZAFOPT
             Index           =   1
             Left            =   1200
             TabIndex        =   55
-            ToolTipText     =   $"ZAFOPT.frx":0000
+            ToolTipText     =   $"Zafopt.frx":0000
             Top             =   120
             Width           =   1575
          End
@@ -516,7 +516,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   38
          TabStop         =   0   'False
-         ToolTipText     =   $"ZAFOPT.frx":0093
+         ToolTipText     =   $"Zafopt.frx":0093
          Top             =   3120
          Width           =   4095
       End
@@ -552,7 +552,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   36
          TabStop         =   0   'False
-         ToolTipText     =   "Specify a formula by difference in the sample analysis"
+         ToolTipText     =   "Calculate formula by difference in the sample analysis"
          Top             =   1800
          Width           =   3375
       End
@@ -571,7 +571,7 @@ Begin VB.Form FormZAFOPT
          Height          =   255
          Left            =   120
          TabIndex        =   25
-         ToolTipText     =   "Display the results in oxides formulas"
+         ToolTipText     =   "Display the results in oxide formulas"
          Top             =   360
          Width           =   3855
       End
@@ -627,6 +627,7 @@ Begin VB.Form FormZAFOPT
          Left            =   120
          TabIndex        =   2
          TabStop         =   0   'False
+         ToolTipText     =   "Calculate an element by stoichiometry to stoichiometric oxygen"
          Top             =   2280
          Width           =   3255
       End
@@ -700,7 +701,7 @@ Begin VB.Form FormZAFOPT
          Left            =   4320
          TabIndex        =   9
          TabStop         =   0   'False
-         ToolTipText     =   "Calculate the composition as elemental (with stoichiometric oxygen)"
+         ToolTipText     =   "Calculate the composition as elemental (without stoichiometric oxygen)"
          Top             =   600
          Width           =   3255
       End
@@ -866,8 +867,8 @@ Option Explicit
 
 Private Sub CheckFerrousFerricCalculation_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckFerrousFerricCalculation.Value = vbChecked Then
-If FormZAFOPT.OptionFerrousFerricOption(0).Value = True Then
+If FormZAFOPT.CheckFerrousFerricCalculation.value = vbChecked Then
+If FormZAFOPT.OptionFerrousFerricOption(0).value = True Then
 FormZAFOPT.TextFerrousFerricTotalCations.Enabled = True
 FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
 FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
@@ -904,7 +905,7 @@ End Sub
 
 Private Sub CheckHydrogenStoichiometry_Click()
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.CheckHydrogenStoichiometry.Value = vbChecked Then
+If FormZAFOPT.CheckHydrogenStoichiometry.value = vbChecked Then
 Call ZAFOptionCheckForExcessOxygen
 End If
 End Sub
@@ -940,7 +941,7 @@ End Sub
 
 Private Sub OptionFerrousFerricOption_Click(Index As Integer)
 If Not DebugMode Then On Error Resume Next
-If FormZAFOPT.OptionFerrousFerricOption(0).Value = True Then
+If FormZAFOPT.OptionFerrousFerricOption(0).value = True Then
 FormZAFOPT.TextFerrousFerricTotalCations.Enabled = True
 FormZAFOPT.TextFerrousFerricTotalOxygens.Enabled = True
 Else

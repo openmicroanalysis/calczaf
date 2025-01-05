@@ -212,6 +212,15 @@ If DynamicSpecifiedElementExcessOxygenByDroopElement%(j%) > sample(1).LastElm% T
 DynamicSpecifiedElementExcessOxygenByDroopElement%(j%) = sample(1).LastElm%
 If mode% = 1 Then GoTo DynamicElementsCheckSelectionsDifference
 End If
+
+If DynamicOxygenByStoichiometryElement%(j%) < 1 Then
+DynamicOxygenByStoichiometryElement%(j%) = 1
+If mode% = 1 Then GoTo DynamicElementsCheckSelectionsDroop
+End If
+If DynamicOxygenByStoichiometryElement%(j%) > sample(1).LastElm% Then
+DynamicOxygenByStoichiometryElement%(j%) = sample(1).LastElm%
+If mode% = 1 Then GoTo DynamicElementsCheckSelectionsDifference
+End If
 Next j%
 
 Exit Sub
@@ -258,3 +267,67 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub DynamicElementsCriteria2(unkcnts() As Single, stdcnts() As Single, sample() As TypeSample)
+' Check dynamic stoichiometric oxygen criteria parameters against unk and std counts (k-ratios) (only used by CalcImage for pixel calculations)
+
+ierror = False
+On Error GoTo DynamicElementsCriteria2Error
+
+Dim j As Integer
+Dim oxdorelm(1 To MAXCRITERIA%) As Integer
+Dim tOxideOrElemental As Integer
+
+' Oxygen by stoichiometry
+If DynamicOxygenByStoichiometryFlag% Then
+tOxideOrElemental% = 2                         ' assume elemental
+For j% = 1 To MAXCRITERIA%
+oxdorelm%(j%) = 2                              ' assume elemental
+If DynamicOxygenByStoichiometryValue!(j%) <> 0# Then
+If DynamicOxygenByStoichiometryGreaterLess%(j%) = 0 Then
+If unkcnts!(DynamicOxygenByStoichiometryElement%(j%)) / stdcnts!(DynamicOxygenByStoichiometryElement%(j%)) > DynamicOxygenByStoichiometryValue!(j%) Then oxdorelm%(j%) = 1
+Else
+If unkcnts!(DynamicOxygenByStoichiometryElement%(j%)) / stdcnts!(DynamicOxygenByStoichiometryElement%(j%)) < DynamicOxygenByStoichiometryValue!(j%) Then oxdorelm%(j%) = 1
+End If
+Else
+oxdorelm%(j%) = 1                               ' k-ratio is zero, so set to oxide
+End If
+Next j%
+
+If DynamicOxygenByStoichiometryOperator1% = 0 And DynamicOxygenByStoichiometryOperator2% = 0 Then
+If oxdorelm%(1) = 1 And oxdorelm%(2) = 1 And oxdorelm%(3) = 1 Then tOxideOrElemental% = 1
+ElseIf DynamicOxygenByStoichiometryOperator1% = 1 And DynamicOxygenByStoichiometryOperator2% = 0 Then
+If oxdorelm%(1) = 1 Or oxdorelm%(2) = 1 And oxdorelm%(3) = 1 Then tOxideOrElemental% = 1
+ElseIf DynamicOxygenByStoichiometryOperator1% = 0 And DynamicOxygenByStoichiometryOperator2% = 1 Then
+If oxdorelm%(1) = 1 And oxdorelm%(2) = 1 Or oxdorelm%(3) = 1 Then tOxideOrElemental% = 1
+ElseIf DynamicOxygenByStoichiometryOperator1% = 1 And DynamicOxygenByStoichiometryOperator2% = 1 Then
+If oxdorelm%(1) = 1 Or oxdorelm%(2) = 1 Or oxdorelm%(3) = 1 Then tOxideOrElemental% = 1
+End If
+End If
+
+' Call ZafSetZAF if necessary
+If tOxideOrElemental% = 1 Then
+If sample(1).OxideOrElemental% <> 1 Then
+sample(1).OxideOrElemental% = 1                 ' re-set as oxide calculation
+Call ZAFSetZAF(sample())
+If ierror Then Exit Sub
+End If
+
+Else
+If sample(1).OxideOrElemental% <> 2 Then
+sample(1).OxideOrElemental% = 2                 ' re-set as elemental calculation
+Call ZAFSetZAF(sample())
+If ierror Then Exit Sub
+End If
+End If
+
+Exit Sub
+
+' Errors
+DynamicElementsCriteria2Error:
+MsgBox Error$, vbOKOnly + vbCritical, "DynamicElementsCriteria2"
+ierror = True
+Exit Sub
+
+End Sub
+

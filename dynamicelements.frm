@@ -2,20 +2,250 @@ VERSION 5.00
 Begin VB.Form FormDynamicElements 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Calculate Specified Elements Dynamically Based on K-Ratio Limits"
-   ClientHeight    =   4065
+   ClientHeight    =   4575
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   15615
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4065
+   ScaleHeight     =   4575
    ScaleWidth      =   15615
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
+   Begin VB.ComboBox ComboOxygenByStoichiometryOperator2 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Left            =   12120
+      Style           =   2  'Dropdown List
+      TabIndex        =   78
+      Top             =   4200
+      Width           =   735
+   End
+   Begin VB.ComboBox ComboOxygenByStoichiometryOperator1 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Left            =   8520
+      Style           =   2  'Dropdown List
+      TabIndex        =   77
+      Top             =   4200
+      Width           =   735
+   End
+   Begin VB.TextBox TextOxygenByStoichiometryValue 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   285
+      Index           =   2
+      Left            =   14640
+      TabIndex        =   76
+      Top             =   4200
+      Width           =   855
+   End
+   Begin VB.TextBox TextOxygenByStoichiometryValue 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   285
+      Index           =   1
+      Left            =   11040
+      TabIndex        =   75
+      Top             =   4200
+      Width           =   855
+   End
+   Begin VB.TextBox TextOxygenByStoichiometryValue 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   285
+      Index           =   0
+      Left            =   7440
+      TabIndex        =   74
+      Top             =   4200
+      Width           =   855
+   End
+   Begin VB.ComboBox ComboOxygenByStoichiometryGreaterLess 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Index           =   2
+      Left            =   13920
+      Style           =   2  'Dropdown List
+      TabIndex        =   73
+      TabStop         =   0   'False
+      Top             =   4200
+      Width           =   615
+   End
+   Begin VB.ComboBox ComboOxygenByStoichiometryGreaterLess 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Index           =   1
+      Left            =   10320
+      Style           =   2  'Dropdown List
+      TabIndex        =   72
+      TabStop         =   0   'False
+      Top             =   4200
+      Width           =   615
+   End
+   Begin VB.ComboBox ComboOxygenByStoichiometryGreaterLess 
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Index           =   0
+      Left            =   6720
+      Style           =   2  'Dropdown List
+      TabIndex        =   71
+      TabStop         =   0   'False
+      Top             =   4200
+      Width           =   615
+   End
+   Begin VB.ComboBox ComboOxygenByStoichiometryElement 
+      Appearance      =   0  'Flat
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Index           =   2
+      Left            =   13080
+      Style           =   2  'Dropdown List
+      TabIndex        =   70
+      TabStop         =   0   'False
+      Top             =   4200
+      Width           =   735
+   End
+   Begin VB.ComboBox ComboOxygenByStoichiometryElement 
+      Appearance      =   0  'Flat
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Index           =   1
+      Left            =   9480
+      Style           =   2  'Dropdown List
+      TabIndex        =   69
+      TabStop         =   0   'False
+      Top             =   4200
+      Width           =   735
+   End
+   Begin VB.ComboBox ComboOxygenByStoichiometryElement 
+      Appearance      =   0  'Flat
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   315
+      Index           =   0
+      Left            =   5880
+      Style           =   2  'Dropdown List
+      TabIndex        =   68
+      TabStop         =   0   'False
+      Top             =   4200
+      Width           =   735
+   End
+   Begin VB.CheckBox CheckOxygenByStoichiometry 
+      Caption         =   "Dynamically Calculate Oxygen by Stoichiometry"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   240
+      TabIndex        =   67
+      TabStop         =   0   'False
+      ToolTipText     =   "Calculate oxygen by stoichiometry dynamically based on the specified k-ratio criteria"
+      Top             =   4200
+      Width           =   4815
+   End
    Begin VB.CommandButton CommandHelp 
       BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   375
       Left            =   14160
       Style           =   1  'Graphical
@@ -237,6 +467,7 @@ Begin VB.Form FormDynamicElements
       Height          =   495
       Left            =   240
       TabIndex        =   54
+      ToolTipText     =   "Calculate excess oxygen by charge balance (Droop, 1987) dynamically based on the specified k-ratio criteria"
       Top             =   3480
       Width           =   5175
    End
@@ -1083,7 +1314,7 @@ Begin VB.Form FormDynamicElements
       Left            =   240
       TabIndex        =   6
       TabStop         =   0   'False
-      ToolTipText     =   "Calculate an element by stoichiometry to another element"
+      ToolTipText     =   "Calculate an element by stoichiometry to another element dynamically based on the specified k-ratio criteria"
       Top             =   3120
       Width           =   5175
    End
@@ -1102,6 +1333,7 @@ Begin VB.Form FormDynamicElements
       Left            =   240
       TabIndex        =   5
       TabStop         =   0   'False
+      ToolTipText     =   "Calculate an element by stoichiometry to stoichiometric oxygen dynamically based on the specified k-ratio criteria"
       Top             =   2640
       Width           =   4815
    End
@@ -1120,7 +1352,7 @@ Begin VB.Form FormDynamicElements
       Left            =   240
       TabIndex        =   4
       TabStop         =   0   'False
-      ToolTipText     =   "Specify a formula by difference in the sample analysis"
+      ToolTipText     =   "Calculate formula by difference dynamically based on the specified k-ratio criteria"
       Top             =   2160
       Width           =   4815
    End
@@ -1139,13 +1371,22 @@ Begin VB.Form FormDynamicElements
       Left            =   240
       TabIndex        =   2
       TabStop         =   0   'False
-      ToolTipText     =   "Calculate an element by difference from 100%"
+      ToolTipText     =   "Calculate an element by difference from 100% dynamically based on the specified k-ratio criteria"
       Top             =   1680
       Width           =   4815
    End
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   12720
       TabIndex        =   1
@@ -1157,6 +1398,15 @@ Begin VB.Form FormDynamicElements
       BackColor       =   &H00C0FFC0&
       Caption         =   "OK"
       Default         =   -1  'True
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   495
       Left            =   12720
       Style           =   1  'Graphical
@@ -1281,6 +1531,11 @@ Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
 Private Sub TextExcessOxygenByDroopValue_GotFocus(Index As Integer)
+If Not DebugMode Then On Error Resume Next
+Call MiscSelectText(Screen.ActiveForm.ActiveControl)
+End Sub
+
+Private Sub TextOxygenByStoichiometryValue_GotFocus(Index As Integer)
 If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
