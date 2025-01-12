@@ -566,7 +566,7 @@ Call IOWriteLog(msg$)
 
 msg$ = "DEAD: "
 For i% = ii% To jj%
-msg$ = msg$ & Format$(Format$(sample(1).DeadTimes!(i%) * MSPS!, f82$), a80$)
+msg$ = msg$ & Format$(Format$(sample(1).DeadTimes!(i%) * MSPS!, f83$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 

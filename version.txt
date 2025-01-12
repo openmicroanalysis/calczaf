@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/11/25	Modify dead time value format from 2 to to 3 decimal places (Boesenberg).
+		
+		Add Bragg defocus parameters to TypeCounts.
+
+01-09-25	Update Probewin pdf and Helpfile.
+
 01/08/25	Update Remote.pdf.
 
 01/04/25	Finish dynamic oxygen by stoichiometry code. Add boundary fit coeffients for Bragg defocus 
