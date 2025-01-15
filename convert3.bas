@@ -408,6 +408,8 @@ Exit Function
 ConvertWeightsToZBarBSEZeroTotal:
 msg$ = "Zero (or negative) total sum for passed concentrations"
 MsgBox msg$, vbOKOnly + vbExclamation, "ConvertWeightsToZBarBSE"
+'msg$ = "ConvertWeightsToZBarBSE: zero (or negative) total sum for passed concentrations"
+'Call IOWriteLog(msg$)
 ierror = True
 Exit Function
 
