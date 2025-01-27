@@ -2284,50 +2284,63 @@ If CLSpectraInterfaceType% = 3 Then InterfaceStringCLUnitsX$(3) = "nm"
 If CLSpectraInterfaceType% = 4 Then InterfaceStringCLUnitsX$(4) = "nm"
 
 ' Load values for max energy (keV limits) and throughput (time constants)
-If MaxEnergyArraySize% = 0 Or MaxThroughputArraySize% = 0 Then
+If EDSInterfaceMaxEnergyThroughputPresent Then
 
 ' Demo (Bruker style config)
 If EDSSpectraInterfaceType% = 0 Then
+If MaxEnergyArraySize% = 0 Then
 MaxEnergyArraySize% = 4
 MaxEnergyArrayValue!(1) = 10#
 MaxEnergyArrayValue!(2) = 20#
 MaxEnergyArrayValue!(3) = 40#
 MaxEnergyArrayValue!(4) = 80#
+End If
 
+If MaxThroughputArraySize% = 0 Then
 MaxThroughputArraySize% = 4
 MaxThroughputArrayValue!(1) = 275#
 MaxThroughputArrayValue!(2) = 130#
 MaxThroughputArrayValue!(3) = 90#
 MaxThroughputArrayValue!(4) = 60#
+End If
 
 ' JEOL MEC
 ElseIf EDSSpectraInterfaceType% = 1 Then
+If MaxEnergyArraySize% = 0 Then
 MaxEnergyArraySize% = 1
 MaxEnergyArrayValue!(1) = 40#       ' JEOL MEC EDS is always 40 keV
+End If
 
+If MaxThroughputArraySize% = 0 Then
 MaxThroughputArraySize% = 5         ' 4 time constants (T1, T2, T3, T4) plus T0 = Count_Rate_Mode (see JeolMECSpectraGetMaxEnergyThroughput)
 MaxThroughputArrayValue!(1) = 1#
 MaxThroughputArrayValue!(2) = 2#
 MaxThroughputArrayValue!(3) = 3#
 MaxThroughputArrayValue!(4) = 4#
 MaxThroughputArrayValue!(5) = 0#
+End If
 
 ' Bruker
 ElseIf EDSSpectraInterfaceType% = 2 Then
+If MaxEnergyArraySize% = 0 Then
 MaxEnergyArraySize% = 4
 MaxEnergyArrayValue!(1) = 10#
 MaxEnergyArrayValue!(2) = 20#
 MaxEnergyArrayValue!(3) = 40#
 MaxEnergyArrayValue!(4) = 80#
+End If
 
+If MaxThroughputArraySize% = 0 Then
 MaxThroughputArraySize% = 4
 MaxThroughputArrayValue!(1) = 275#
 MaxThroughputArrayValue!(2) = 130#
 MaxThroughputArrayValue!(3) = 90#
 MaxThroughputArrayValue!(4) = 60#
+End If
 
 ' Thermo
 ElseIf EDSSpectraInterfaceType% = 5 Then
+If MaxEnergyArraySize% = 0 Then
 MaxEnergyArraySize% = 6
 MaxEnergyArrayValue!(1) = 5#
 MaxEnergyArrayValue!(2) = 10#
@@ -2335,7 +2348,9 @@ MaxEnergyArrayValue!(3) = 20#
 MaxEnergyArrayValue!(4) = 40#
 MaxEnergyArrayValue!(5) = 80#
 MaxEnergyArrayValue!(6) = 0#    ' 0 = auto max keV (Pathfinder)
+End If
 
+If MaxThroughputArraySize% = 0 Then
 MaxThroughputArraySize% = 11    ' (0 (AUTO), 6400, 4000, 3200, 2000, 1600, 1000, 800, 600, 400, 200 nano-secs)
 MaxThroughputArrayValue!(1) = 200#
 MaxThroughputArrayValue!(2) = 400#
@@ -2348,17 +2363,22 @@ MaxThroughputArrayValue!(8) = 3200#
 MaxThroughputArrayValue!(9) = 4000#
 MaxThroughputArrayValue!(10) = 6400#
 MaxThroughputArrayValue!(11) = 0#
+End If
 
 ' JEOL OEM (8x30)
 ElseIf EDSSpectraInterfaceType% = 6 Then
+If MaxEnergyArraySize% = 0 Then
 MaxEnergyArraySize% = 1
 MaxEnergyArrayValue!(1) = 20#       ' JEOL OEM EDS is always 20 keV
+End If
 
+If MaxThroughputArraySize% = 0 Then
 MaxThroughputArraySize% = 4         ' older systems use 3 time constants, newer systems use 4 time constants (T1, T2, T3, T4) (see JEOLEDSSpectraGetMaxEnergyThroughput)
 MaxThroughputArrayValue!(1) = 1#
 MaxThroughputArrayValue!(2) = 2#
 MaxThroughputArrayValue!(3) = 3#
 MaxThroughputArrayValue!(4) = 4#    ' only used by newer JEOL EDS (8x30) systems
+End If
 End If
 End If
 

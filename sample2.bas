@@ -264,3 +264,32 @@ ierror = True
 Exit Function
 
 End Function
+
+Function SampleFormatXrayLine(chan As Integer, sample() As TypeSample) As String
+' Returns a string containing the x-ray line and Bragg order if greater than 1
+
+ierror = False
+On Error GoTo SampleFormatXrayLineError
+
+Dim tmsg As String
+
+SampleFormatXrayLine$ = vbNullString
+
+' Load string based on Bragg order
+If sample(1).BraggOrders%(chan%) = 1 Then
+tmsg$ = sample(1).Xrsyms$(chan%)
+Else
+tmsg$ = sample(1).Xrsyms$(chan%) & " (" & Trim$(RomanNum$(sample(1).BraggOrders%(chan%))) & ") "
+End If
+
+SampleFormatXrayLine$ = tmsg$
+Exit Function
+
+' Errors
+SampleFormatXrayLineError:
+MsgBox Error$, vbOKOnly + vbCritical, "SampleFormatXrayLine"
+ierror = True
+Exit Function
+
+End Function
+
