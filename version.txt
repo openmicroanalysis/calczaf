@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/30/25	Fix Flank output code if no TDI data is available (Buse).
+
+		Work on Bruker get/set max energy and throughput parameters (with von der Handt).
+
 01/26/25	Add Bragg order (in Roman numerals) to on/off/net count labels in user speciied 
 v.13.9.8	output (Ruth).
 
