@@ -490,7 +490,7 @@ If Not sample(1).SecondaryFluorescenceBoundaryFlag(chan%) Then Exit Sub
 ' Check for valid k-ratio file
 If Trim$(SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%)) = vbNullString Then GoTo SecondaryInitChanNoFilename
 
-' Read k-ratio values (and set sample flags) (CalcZAF only works with a single Kratio file for one element)
+' Read k-ratio values (and set sample flag for CalcZAF)
 Call SecondaryReadKratiosDATFile(SecondarySample(1).SecondaryFluorescenceBoundaryKratiosDATFile$(chan%), sample())
 If ierror Then Exit Sub
 

@@ -2,6 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/07/25	More work on Bragg defocus correction (Moy).
+v. 14.0.1
+		Fix Bruker throughput parameter order (needs to be low to high, e.g., 60, 
+		90, 130, 275, 400, 600, 1000, etc) (Boesenberg)
+
+02/04/25	Update additional standard databases (dhz, dana, srm, etc.) and .dat export example files (Buse).
+
+		Work on Bragg defocus correction code (Moy).
+
 01/30/25	Fix Flank output code if no TDI data is available (Buse).
 
 		Work on Bruker get/set max energy and throughput parameters (with von der Handt).

@@ -653,18 +653,18 @@ Function Base64ReaderIsPrbImgJEOL(tfilename As String) As Boolean
 ierror = False
 On Error GoTo Base64ReaderIsPrbImgJEOLError
 
-Dim RegXmin As Long
-Dim RegXmax As Long
+Dim RegXmin As Single
+Dim RegXmax As Single
 
 ' Read image orientation
-RegXmin& = Val(Base64ReaderGetINIString$(tfilename$, "Registration", "X1Pixel", vbNullString$))
+RegXmin! = Val(Base64ReaderGetINIString$(tfilename$, "Registration", "X1Real", vbNullString$))
 If ierror Then Exit Function
-RegXmax& = Val(Base64ReaderGetINIString$(tfilename$, "Registration", "X2Pixel", vbNullString$))
+RegXmax! = Val(Base64ReaderGetINIString$(tfilename$, "Registration", "X2Real", vbNullString$))
 If ierror Then Exit Function
 
 ' Special code to determine if the PrbImg file is JEOL or Cameca orientation (this is so the GRD files get written correctly!)
 Base64ReaderIsPrbImgJEOL = True   ' assume JEOL PrbImg
-If RegXmin& < RegXmax& Then ' Cameca minimum x pixels are 32 so this will work (min/max can be 0 for y axis if 1 pixel high)
+If RegXmin! < RegXmax! Then ' Cameca minimum x pixels are 32 so this will work (min/max can be 0 for y axis if 1 pixel high)
 Base64ReaderIsPrbImgJEOL = False
 End If
 

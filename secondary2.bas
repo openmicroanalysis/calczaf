@@ -97,7 +97,7 @@ Dim astring1 As String, astring2 As String, astring3 As String, astring4 As Stri
 
 ' Calculate the k-ratio for the interpolated distance for each element
 For chan% = 1 To sample(1).LastElm%
-If sample(1).SecondaryFluorescenceBoundaryFlag(chan%) = True Then
+If sample(1).SecondaryFluorescenceBoundaryFlag(chan%) Then
 
 ' Check if k-ratios are loaded for this channel
 If nPoints&(chan%) <= 0 Then GoTo SecondaryCorrectionNoKratios
@@ -438,12 +438,12 @@ If X_Pos1! = X_Pos2! Or Y_Pos1! = Y_Pos2! Then
 If X_Pos1! = X_Pos2! And X_Pos1! = X1! Then GoTo SecondaryCalculateDistanceX_PosOnBoundary
 If Y_Pos1! = Y_Pos2! And Y_Pos1! = Y1! Then GoTo SecondaryCalculateDistanceY_PosOnBoundary
 
-' Vertical boundary
+' Vertical boundary (see also SecondaryBraggDefocusCalculateFraction)
 If X_Pos1! = X_Pos2! Then
 linear_dist! = Abs(X1! - X_Pos1!)
 End If
 
-' Horizontal boundary
+' Horizontal boundary (see also SecondaryBraggDefocusCalculateFraction)
 If Y_Pos1! = Y_Pos2! Then
 linear_dist! = Abs(Y1! - Y_Pos1!)
 End If
@@ -456,6 +456,7 @@ linear_dist! = linear_dist! * MotUnitsToAngstromMicrons!(XMotor%)
 
 ' Store micron linear distance in sample arrays
 sample(1).SecondaryFluorescenceBoundaryDistance!(sampleline%) = linear_dist!
+
 Exit Sub
 End If
 
@@ -475,7 +476,7 @@ If ierror Then Exit Sub
 m! = acoeff!(2)             ' slope
 b! = acoeff!(1)             ' intercept
 
-' Store boundary intercept and slope for Bragg defocus correction
+' Store boundary intercept and slope for Bragg defocus correction (see SecondaryBraggDefocusCalculateFraction)
 sample(1).SecondaryFluorescenceBoundaryRegressionIntercept! = b!
 sample(1).SecondaryFluorescenceBoundaryRegressionSlope! = m!
 
@@ -589,8 +590,8 @@ Next n&
 End If
 
 ' Now fit the data depending on the number of points found
-kmax% = 2
-If npts% < 3 Then kmax% = 1   ' linear fit or parabolic fit
+kmax% = 2                     ' parabolic fit
+If npts% < 3 Then kmax% = 1   ' linear fit
 nmax% = npts%
 Call LeastSquares(kmax%, nmax%, xdata!(), ydata!(), acoeff!())
 If ierror Then Exit Sub
@@ -605,7 +606,7 @@ If dist! >= xdist#(chan%, nPoints&(chan%)) Then krat! = fluB_k#(chan%, nPoints&(
 End If
 
 If DebugMode Then
-Call IOWriteLog("SecondaryCalculateKratio: Interpolated K-ratio % is " & MiscAutoFormat$(krat!) & " at a distance " & Format$(dist!) & " um")
+Call IOWriteLog("SecondaryCalculateKratio: Interpolated K-ratio % for datarow " & Format$(sampleline%) & ", chan " & Format$(chan%) & ", is " & MiscAutoFormat$(krat!) & " at a distance " & Format$(dist!) & " um")
 End If
 
 ' Store in sample arrays (as k-ratio %)

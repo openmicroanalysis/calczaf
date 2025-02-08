@@ -2298,10 +2298,10 @@ End If
 
 If MaxThroughputArraySize% = 0 Then
 MaxThroughputArraySize% = 4
-MaxThroughputArrayValue!(1) = 275#
-MaxThroughputArrayValue!(2) = 130#
-MaxThroughputArrayValue!(3) = 90#
-MaxThroughputArrayValue!(4) = 60#
+MaxThroughputArrayValue!(1) = 60#
+MaxThroughputArrayValue!(2) = 90#
+MaxThroughputArrayValue!(3) = 130#
+MaxThroughputArrayValue!(4) = 275#
 End If
 
 ' JEOL MEC
@@ -2332,10 +2332,10 @@ End If
 
 If MaxThroughputArraySize% = 0 Then
 MaxThroughputArraySize% = 4
-MaxThroughputArrayValue!(1) = 275#
-MaxThroughputArrayValue!(2) = 130#
-MaxThroughputArrayValue!(3) = 90#
-MaxThroughputArrayValue!(4) = 60#
+MaxThroughputArrayValue!(1) = 60#
+MaxThroughputArrayValue!(2) = 90#
+MaxThroughputArrayValue!(3) = 130#
+MaxThroughputArrayValue!(4) = 275#
 End If
 
 ' Thermo
