@@ -577,69 +577,6 @@ Exit Sub
 
 End Sub
 
-Function StandardIsDemoStandardDatabaseLoaded() As Boolean
-' Check whether demo standard database is loaded
-
-ierror = False
-On Error GoTo StandardIsDemoStandardDatabaseLoadedError
-
-Dim ip As Integer
-
-StandardIsDemoStandardDatabaseLoaded = True
-
-Call InitSample(stdtmpsample())
-If ierror Then Exit Function
-
-' Check for Co std
-Call StandardGetMDBStandard(Int(527), stdtmpsample())
-If ierror Then Exit Function
-
-ip% = IPOS1%(stdtmpsample(1).LastChan%, "co", stdtmpsample(1).Elsyms$())
-If ip% = 0 Then
-StandardIsDemoStandardDatabaseLoaded = False
-Exit Function
-End If
-
-' Check for Cu std
-Call StandardGetMDBStandard(Int(529), stdtmpsample())
-If ierror Then Exit Function
-
-ip% = IPOS1%(stdtmpsample(1).LastChan%, "cu", stdtmpsample(1).Elsyms$())
-If ip% = 0 Then
-StandardIsDemoStandardDatabaseLoaded = False
-Exit Function
-End If
-
-' Check for TiO2 std
-Call StandardGetMDBStandard(Int(22), stdtmpsample())
-If ierror Then Exit Function
-
-ip% = IPOS1%(stdtmpsample(1).LastChan%, "ti", stdtmpsample(1).Elsyms$())
-If ip% = 0 Then
-StandardIsDemoStandardDatabaseLoaded = False
-Exit Function
-End If
-
-' Check for SiO2 std
-Call StandardGetMDBStandard(Int(14), stdtmpsample())
-If ierror Then Exit Function
-
-ip% = IPOS1%(stdtmpsample(1).LastChan%, "si", stdtmpsample(1).Elsyms$())
-If ip% = 0 Then
-StandardIsDemoStandardDatabaseLoaded = False
-Exit Function
-End If
-
-Exit Function
-
-' Errors
-StandardIsDemoStandardDatabaseLoadedError:
-MsgBox Error$, vbOKOnly + vbCritical, "StandardIsDemoStandardDatabaseLoaded"
-ierror = True
-Exit Function
-
-End Function
-
 Sub StandardAddRecord(sample() As TypeSample)
 ' Routine to append a standard to the standard database
 ' Called by StandardReadDATFile and StandardReplaceRecord

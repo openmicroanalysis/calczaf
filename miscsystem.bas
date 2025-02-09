@@ -282,8 +282,8 @@ Private Const STANDARD_RIGHTS_REQUIRED              As Long = &HF0000
 Private Const SYNCHRONIZE                           As Long = &H100000
 Private Const MUTANT_QUERY_STATE                    As Long = &H1
 Private Const MUTANT_ALL_ACCESS                     As Long = (STANDARD_RIGHTS_REQUIRED& Or SYNCHRONIZE& Or MUTANT_QUERY_STATE&)
-Private Const SECURITY_DESCRIPTOR_REVISION          As Long = 1
-Private Const DACL_SECURITY_INFORMATION             As Long = 4
+'Private Const SECURITY_DESCRIPTOR_REVISION          As Long = 1
+'Private Const DACL_SECURITY_INFORMATION             As Long = 4
 
 Public Declare Function OpenMutex Lib "kernel32.dll" Alias "OpenMutexA" (ByVal dwDesiredAccess As Long, ByVal bInheritHandle As Boolean, ByVal lpName As String) As Long
 Public Declare Function ReleaseMutex Lib "kernel32.dll" (ByVal hMutex As Long) As Long

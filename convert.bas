@@ -1182,8 +1182,6 @@ Sub ConvertFerrousFerricRatioFromComposition(nelements As Integer, AtomicNumbers
 ierror = False
 On Error GoTo ConvertFerrousFerricRatioFromCompositionError
 
-Const FeO_to_Fe2O3! = 1.11134
-
 Dim ip As Integer
 Dim n As Integer
 
@@ -1361,8 +1359,6 @@ Sub ConvertFerrousFerricRatioFromComposition2(nelements As Integer, AtomicNumber
 
 ierror = False
 On Error GoTo ConvertFerrousFerricRatioFromComposition2Error
-
-Const FeO_to_Fe2O3! = 1.11134
 
 Dim ip As Integer
 Dim n As Integer

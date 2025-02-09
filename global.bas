@@ -151,7 +151,7 @@ Global Const MICRONSPERCM& = 10000       ' microns per centimeter
 Global Const MICRONSPERMM& = 1000        ' microns per millimeter
 
 Global Const ANGPERNM& = 10              ' angstroms per nanometer
-Global Const NMPERANG# = 0.1             ' nanometers per angstrom
+'Global Const NMPERANG# = 0.1             ' nanometers per angstrom
 
 Global Const CMPERANGSTROM# = 0.00000001 ' centi-meters per angstrom
 
@@ -163,14 +163,14 @@ Global Const NAPA# = 1000000000#         ' nano-amps per amp
 Global Const APNA# = 0.000000001         ' amps per nano-amps
 Global Const PAPA# = 1000000000000#      ' pico-amps per amp
 Global Const PAPERNA# = 1000#            ' pico-amps per nano-amp
-Global Const NAPERMA# = 1000#            ' nano-amps per milli-amp
+Global Const NAPERMA# = 1000#            ' nano-amps per micro-amp
 
 Global Const ANGKEV! = 12.39854          ' angstrom per KeV (and visa versa)
 Global Const ANGEV! = 12398.54           ' angstrom per eV (and visa versa)
 Global Const EVPERKEV# = 1000#           ' eV per keV
 Global Const MILLIVOLTPERVOLT# = 1000#   ' millivolt per volt
 
-Global Const MICROSECPERMILLSEC& = 1000# ' micro-secs per milli-sec
+'Global Const MICROSECPERMILLSEC& = 1000# ' micro-secs per milli-sec
 Global Const MSPS! = 1000000#            ' micro-secs per second
 Global Const TENTHMSECPERSEC# = 10000#   ' 1/10th millsecs per second
 Global Const MSECPERSEC# = 1000#         ' milli-seconds per second
@@ -249,22 +249,22 @@ Global Const BIT3& = 7                   ' maximum 3 bit depth 0-7
 Global Const BIT2& = 3                   ' maximum 2 bit depth 0-3
 Global Const BIT1& = 1                   ' maximum 1 bit depth 0-1
 
-Global Const SIZE_65536_BYTES& = 65536   ' 65536 byte constant
-Global Const SIZE_32768_BYTES& = 32768   ' 32768 byte constant
-Global Const SIZE_16384_BYTES& = 16384   ' 16384 byte constant
-Global Const SIZE_8192_BYTES& = 8192     ' 8192 byte constant
-Global Const SIZE_4096_BYTES& = 4096     ' 4096 byte constant
-Global Const SIZE_2048_BYTES& = 2048     ' 2048 byte constant
-Global Const SIZE_1024_BYTES& = 1024     ' 1024 byte constant
-Global Const SIZE_512_BYTES& = 512       ' 512 byte constant
-Global Const SIZE_256_BYTES& = 256       ' 256 byte constant
-Global Const SIZE_128_BYTES& = 128       ' 128 byte constant
-Global Const SIZE_64_BYTES& = 64         ' 64 byte constant
-Global Const SIZE_32_BYTES& = 32         ' 32 byte constant
-Global Const SIZE_16_BYTES& = 16         ' 16 byte constant
-Global Const SIZE_8_BYTES& = 8           ' 8 byte constant
-Global Const SIZE_4_BYTES& = 4           ' 4 byte constant
-Global Const SIZE_2_BYTES& = 2           ' 2 byte constant
+'Global Const SIZE_65536_BYTES& = 65536   ' 65536 byte constant
+'Global Const SIZE_32768_BYTES& = 32768   ' 32768 byte constant
+'Global Const SIZE_16384_BYTES& = 16384   ' 16384 byte constant
+'Global Const SIZE_8192_BYTES& = 8192     ' 8192 byte constant
+'Global Const SIZE_4096_BYTES& = 4096     ' 4096 byte constant
+'Global Const SIZE_2048_BYTES& = 2048     ' 2048 byte constant
+'Global Const SIZE_1024_BYTES& = 1024     ' 1024 byte constant
+'Global Const SIZE_512_BYTES& = 512       ' 512 byte constant
+'Global Const SIZE_256_BYTES& = 256       ' 256 byte constant
+'Global Const SIZE_128_BYTES& = 128       ' 128 byte constant
+'Global Const SIZE_64_BYTES& = 64         ' 64 byte constant
+'Global Const SIZE_32_BYTES& = 32         ' 32 byte constant
+'Global Const SIZE_16_BYTES& = 16         ' 16 byte constant
+'Global Const SIZE_8_BYTES& = 8           ' 8 byte constant
+'Global Const SIZE_4_BYTES& = 4           ' 4 byte constant
+'Global Const SIZE_2_BYTES& = 2           ' 2 byte constant
 
 Global Const IMAGESIZE128& = 128         ' image size 128 x 128 (96 @ 4/3)
 Global Const IMAGESIZE256& = 256         ' image size 256 x 256 (192 @ 4/3)
@@ -345,13 +345,12 @@ Global Const MAXCRITERIA% = 3            ' dynamic element criteria for CalcImag
 Global Const LOTSOFGRIDPOINTS% = 1000    ' lots of polygon points (hide FormAUTOMATE)
 Global Const TOOMANYGRIDSTEPS% = 2000    ' too many grid steps
 Global Const MAXTITLELENGTH% = 80        ' maximum graph title length
-Global Const MAX_PATH% = 259             ' maximum file and path length for Dir$ command
 
 Global Const FONT_REGULAR% = 0           ' regular format
 Global Const FONT_BOLD% = 1              ' bold
 Global Const FONT_ITALIC% = 2            ' italic
 Global Const FONT_UNDERLINE% = 4         ' underline
-Global Const FONT_STRIKETHRU% = 8        ' strikethru
+'Global Const FONT_STRIKETHRU% = 8        ' strikethru
 
 ' Database Field lengths
 Global Const DbTextDescriptionLength% = 255
@@ -1405,7 +1404,6 @@ Global Const OutputDataFileNumber% = 124            ' OutputDataFile$ (*.OUT)
 
 Global Const Temp1FileNumber% = 125                 ' temporary file I/O
 Global Const Temp2FileNumber% = 126                 ' temporary file I/O
-Global Const CustomOutputFileNumber% = 200          ' #200-255 Custom format analysis output files
 
 ' Database access flags
 Global DatabaseExclusiveAccess As Integer        ' for generic exclusive access
