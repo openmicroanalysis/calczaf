@@ -1080,7 +1080,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   2
          Left            =   5880
          TabIndex        =   11
-         ToolTipText     =   "Enter beam position z in cm units (working distance)"
+         ToolTipText     =   "Enter beam position z in um units (working distance)"
          Top             =   1080
          Width           =   1215
       End
@@ -1098,7 +1098,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   1
          Left            =   4440
          TabIndex        =   10
-         ToolTipText     =   "Enter beam position y in cm units"
+         ToolTipText     =   "Enter beam position y in um units"
          Top             =   1080
          Width           =   1095
       End
@@ -1116,7 +1116,7 @@ Begin VB.Form FormPENEPMA08_PE
          Index           =   0
          Left            =   3120
          TabIndex        =   9
-         ToolTipText     =   "Enter beam position x in cm units (1e-3 cm = 10 um)"
+         ToolTipText     =   "Enter beam position x in um units (written as cm units to .in file, 0.001 cm = 10 um)"
          Top             =   1080
          Width           =   1095
       End
