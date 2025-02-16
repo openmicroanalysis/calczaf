@@ -318,6 +318,10 @@ ElseIf CorrectionFlag% = MAXCORRECTION% Then
 End If
 End If
 
+' Load stage coordinates of point for display on FormSECONDARY in case using SFD boundary correction
+Call SecondarySetCoordinates(Int(1), CalcZAFOldSample())
+If ierror Then Exit Sub
+
 ' Re-load grid
 Call CalcZAFLoadList
 If ierror Then Exit Sub

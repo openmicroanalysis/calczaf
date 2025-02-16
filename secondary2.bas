@@ -30,11 +30,11 @@ Dim fluA_k() As Double        ' Mat A total fluorescence k-ratio %
 Dim fluB_k() As Double        ' Mat B total fluorescence k-ratio %
 Dim prix_k() As Double        ' Primary x-ray k-ratio %
 
-Sub SecondaryInit1()
-' Initialize module level variables for x, y coordinates
+Sub SecondaryInitDisplayPoints()
+' Initialize module level variables for x, y coordinates (FormSECONDARY)
 
 ierror = False
-On Error GoTo SecondaryInit1Error
+On Error GoTo SecondaryInitDisplayPointsError
 
 ' Init module level data point coordinate arrays
 curpnt& = 0
@@ -46,18 +46,18 @@ ReDim zcoord(1 To apoints&) As Single
 Exit Sub
 
 ' Errors
-SecondaryInit1Error:
-MsgBox Error$, vbOKOnly + vbCritical, "SecondaryInit1"
+SecondaryInitDisplayPointsError:
+MsgBox Error$, vbOKOnly + vbCritical, "SecondaryInitDisplayPoints"
 ierror = True
 Exit Sub
 
 End Sub
 
-Sub SecondaryInit2()
+Sub SecondaryInitKRatios()
 ' Initialize module level variables for kratio data points
 
 ierror = False
-On Error GoTo SecondaryInit2Error
+On Error GoTo SecondaryInitKRatiosError
 
 Dim n As Long
 
@@ -79,8 +79,8 @@ ReDim prix_k(1 To MAXCHAN%, 1 To maxpoints&) As Double
 Exit Sub
 
 ' Errors
-SecondaryInit2Error:
-MsgBox Error$, vbOKOnly + vbCritical, "SecondaryInit2"
+SecondaryInitKRatiosError:
+MsgBox Error$, vbOKOnly + vbCritical, "SecondaryInitKRatios"
 ierror = True
 Exit Sub
 
@@ -93,7 +93,7 @@ ierror = False
 On Error GoTo SecondaryCorrectionError
 
 Dim chan As Integer
-Dim astring1 As String, astring2 As String, astring3 As String, astring4 As String
+Dim astring1 As String, astring2 As String, astring3 As String, astring4 As String, astring5 As String
 
 ' Calculate the k-ratio for the interpolated distance for each element
 For chan% = 1 To sample(1).LastElm%
@@ -114,41 +114,28 @@ End If
 
 ' Save string info
 astring1$ = astring1$ & Format$(sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%), a80$)
-astring2$ = astring2$ & MiscAutoFormat$(kratios!(chan%) * 100#)
+astring2$ = astring2$ & Format$(Format$(sample(1).MotorNumbers%(chan%)) & ", " & sample(1).CrystalNames$(chan%), a80$)
+astring3$ = astring3$ & MiscAutoFormat$(kratios!(chan%) * 100#)
 
 ' Correct the measured (elemental) k-ratio for the boundary correction intensity (in k-ratio % units)
 kratios!(chan%) = kratios!(chan%) - sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) / 100#
 
 ' Save string info
-astring3$ = astring3$ & MiscAutoFormat$(sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) / 100# * 100#)
-astring4$ = astring4$ & MiscAutoFormat$(kratios!(chan%) * 100#)
+astring4$ = astring4$ & MiscAutoFormat$(sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) / 100# * 100#)
+astring5$ = astring5$ & MiscAutoFormat$(kratios!(chan%) * 100#)
 
 End If
 Next chan%
 
 ' Debug output
-If DebugMode Then
+'If DebugMode Then
 Call IOWriteLog(vbCrLf & "SecondaryCorrection: SF k-ratios * 100, Line: " & Format$(sample(1).Linenumber&(sampleline%)) & ", Dist: " & sample(1).SecondaryFluorescenceBoundaryDistance!(sampleline%))
 Call IOWriteLog(Format$("Element:", a80$) & astring1$)
-Call IOWriteLog(Format$("Elm. Kr:", a80$) & astring2$)
-Call IOWriteLog(Format$("Cal. Kr:", a80$) & astring3$)
-Call IOWriteLog(Format$("Cor. Kr:", a80$) & astring4$)
-End If
-
-' Load data point coordinate to module level arrays (for display)
-curpnt& = curpnt& + 1
-
-If curpnt& > apoints& Then
-ReDim Preserve xcoord(1 To curpnt&) As Single
-ReDim Preserve ycoord(1 To curpnt&) As Single
-ReDim Preserve zcoord(1 To curpnt&) As Single
-apoints& = curpnt&
-End If
-
-' Add current data point to arrays
-xcoord!(curpnt&) = sample(1).StagePositions!(sampleline%, 1)
-ycoord!(curpnt&) = sample(1).StagePositions!(sampleline%, 2)
-zcoord!(curpnt&) = sample(1).StagePositions!(sampleline%, 3)
+Call IOWriteLog(Format$("Ch, Cry:", a80$) & astring2$)
+Call IOWriteLog(Format$("Elm. Kr:", a80$) & astring3$)
+Call IOWriteLog(Format$("Cal. Kr:", a80$) & astring4$)
+Call IOWriteLog(Format$("Cor. Kr:", a80$) & astring5$)
+'End If
 
 Exit Sub
 
@@ -585,7 +572,7 @@ End If
 If DebugMode Then
 Call IOWriteLog(vbNullString)
 For n& = 1 To npts%
-Call IOWriteLog("SecondaryCalculateKratio: Point " & Format$(n&) & ", X= " & Format$(xdata!(n&)) & ", Y= " & Format$(ydata!(n&)))
+Call IOWriteLog("SecondaryCalculateKratio: Point " & Format$(n&) & ", X (dist in um): " & MiscAutoFormat$(xdata!(n&)) & ", Y (k-ratio): " & MiscAutoFormat$(ydata!(n&)))
 Next n&
 End If
 
@@ -629,7 +616,7 @@ Exit Sub
 End Sub
 
 Sub SecondaryGetCoordinates(n As Long, X() As Single, Y() As Single, Z() As Single)
-' Get the currently analyzed data point coordinates
+' Get the currently analyzed data point coordinates for display
 
 ierror = False
 On Error GoTo SecondaryGetCoordinatesError
@@ -918,6 +905,37 @@ SecondaryWriteKratiosDATFileNoPoints:
 msg$ = "The number of k-ratio intensities in the specified k-ratio data file are zero, so something went wrong with the Fanal calculation (try typing Fanal < Fanal.in from the Fanal prompt and see what happens)"
 MsgBox msg$, vbOKOnly + vbExclamation, "SecondaryWriteKratiosDATFile"
 Close #Temp2FileNumber%
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub SecondarySetCoordinates(sampleline As Integer, sample() As TypeSample)
+' Called from SecondaryAllLoadSecondary only to load stage positions to display points on images
+
+ierror = False
+On Error GoTo SecondarySetCoordinatesError
+
+' Load data point coordinate to module level arrays (for display)
+curpnt& = curpnt& + 1
+
+If curpnt& > apoints& Then
+ReDim Preserve xcoord(1 To curpnt&) As Single
+ReDim Preserve ycoord(1 To curpnt&) As Single
+ReDim Preserve zcoord(1 To curpnt&) As Single
+apoints& = curpnt&
+End If
+
+' Add current data point to arrays
+xcoord!(curpnt&) = sample(1).StagePositions!(sampleline%, 1)
+ycoord!(curpnt&) = sample(1).StagePositions!(sampleline%, 2)
+zcoord!(curpnt&) = sample(1).StagePositions!(sampleline%, 3)
+
+Exit Sub
+
+' Errors
+SecondarySetCoordinatesError:
+MsgBox Error$, vbOKOnly + vbCritical, "SecondarySetCoordinates"
 ierror = True
 Exit Sub
 

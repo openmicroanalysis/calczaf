@@ -680,7 +680,7 @@ Call SecondarySave
 If ierror Then Exit Sub
 If FormSECONDARY.CheckUseSecondaryBoundaryFluorescenceCorrection.Value = vbChecked Then
 UseSecondaryBoundaryFluorescenceCorrectionFlag = True
-Call SecondaryInit1
+Call SecondaryInitDisplayPoints
 If ierror Then Exit Sub
 Else
 UseSecondaryBoundaryFluorescenceCorrectionFlag = False
@@ -696,7 +696,7 @@ Call SecondarySave
 If ierror Then Exit Sub
 If FormSECONDARY.CheckUseSecondaryBoundaryFluorescenceCorrection.Value = vbChecked Then
 UseSecondaryBoundaryFluorescenceCorrectionFlag = True
-Call SecondaryInit1
+Call SecondaryInitDisplayPoints
 If ierror Then Exit Sub
 Else
 UseSecondaryBoundaryFluorescenceCorrectionFlag = False

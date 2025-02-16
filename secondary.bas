@@ -436,7 +436,7 @@ ierror = False
 On Error GoTo SecondaryInitError
 
 ' Make sure k-ratio variables are initialized
-Call SecondaryInit2
+Call SecondaryInitKRatios
 If ierror Then Exit Sub
 
 Exit Sub
@@ -1110,7 +1110,7 @@ radius! = tForm.Image1.Width / 150#
 
 ' Display two calibration points
 tForm.DrawWidth = 2
-tcolor& = RGB(255, 0, 0)
+tcolor& = RGB(0, 255, 0)
 tForm.Circle (scx!, scy!), radius!, tcolor&
 
 ' Draw also on FormSECONDARY.Picture1 for clipboard
