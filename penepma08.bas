@@ -575,6 +575,8 @@ On Error GoTo Penepma08CreateInputError
 Dim k As Integer
 Dim astring As String, bstring As String, cstring As String, dstring As String
 
+Const MAXINPUTFILECHARS% = 20
+
 ' Loop through sample production file and copy to new file with modified parameters
 Open BeamProductionFilename$(BeamProductionIndex&) For Input As #Temp1FileNumber%
 Open PENEPMA_Path$ & "\" & InputFile$ For Output As #Temp2FileNumber%
@@ -619,6 +621,7 @@ If ierror Then Exit Sub
 If InStr(astring$, "MFNAME") > 0 Then
 k% = k% + 1
 cstring$ = MiscGetFileNameOnly$(MaterialFiles$(k%))
+If Len(cstring$) > MAXINPUTFILECHARS% Then GoTo Penepma08CreateInputFileNameTooLong
 Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 End If
@@ -650,6 +653,7 @@ If ierror Then Exit Sub
 
 ' Load geometry file
 cstring$ = MiscGetFileNameOnly$(GeometryFile$)
+If Len(cstring$) > MAXINPUTFILECHARS% Then GoTo Penepma08CreateInputFileNameTooLong
 If InStr(astring$, "GEOMFN") > 0 Then Call Penepma08CreateInputFile2(astring$, bstring$, cstring$, dstring$)
 If ierror Then Exit Sub
 
@@ -684,6 +688,14 @@ Exit Sub
 ' Errors
 Penepma08CreateInputError:
 MsgBox Error$, vbOKOnly + vbCritical, "Penepma08CreateInput"
+Close #Temp1FileNumber%
+Close #Temp2FileNumber%
+ierror = True
+Exit Sub
+
+Penepma08CreateInputFileNameTooLong:
+msg$ = "The specified file name: " & cstring$ & ", is too long. Maximum file name length in a PENEPMA input file is " & Format$(MAXINPUTFILECHARS%) & " characters."
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08Init"
 Close #Temp1FileNumber%
 Close #Temp2FileNumber%
 ierror = True

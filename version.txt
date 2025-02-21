@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/20/25	Add string selection control to FormPOSITION (Ruth).
+v. 14.0.4
+
+02/19/25	Add check for material and geometry file names that are too long in PENEPMA create
+		input file code.
+		
+		Add check for EDS element in Bragg defocus correction dialog.
+
 02/15/25	Improve display of points in secondary boundary fluporescence correction forms.
 v. 14.0.3
 
