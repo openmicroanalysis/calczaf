@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/21/25	Remove "dead" procedures and code. Fix problem in GridCheckGRD when no image 
+v. 14.0.5	assigned to element by adding filename and also setting disable quant flag in 
+		CalcImageAnalysisImage to avoid over correction by MAN on zero intensities (Carpenter).
+
 02/20/25	Add string selection control to FormPOSITION (Ruth).
 v. 14.0.4
 

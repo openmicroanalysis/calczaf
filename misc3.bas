@@ -58,49 +58,6 @@ Exit Function
 
 End Function
 
-Function IPOS6(ByVal mode As Integer, ByVal n As Integer, sample1() As TypeSample, sample2() As TypeSample) As Integer
-' This routine returns as its value a pointer to the first occurance in "sample2()" of the element in "sample1()" specified by channel "n".
-' If a match does not occur, IPOS6 = 0.
-' mode = 0 check only the analyzed elements
-' mode = 1 check both analyzed and specified elements
-
-ierror = False
-On Error GoTo IPOS6Error
-
-Dim i As Integer, k As Integer
-
-' Fail if not specified
-IPOS6 = 0
-If n% <= 0 Then Exit Function
-
-If mode% = 0 Then
-k% = sample2(1).LastElm%
-Else
-k% = sample2(1).LastChan%
-End If
-
-' Search sample for match (element, x-ray only)
-For i% = 1 To k%
-
-If Trim$(UCase$(sample1(1).Elsyms$(n%))) = Trim$(UCase$(sample2(1).Elsyms$(i%))) Then
-If Trim$(UCase$(sample1(1).Xrsyms$(n%))) = Trim$(UCase$(sample2(1).Xrsyms$(i%))) Then
-IPOS6 = i%
-Exit Function
-End If
-End If
-
-Next i%
-
-Exit Function
-
-' Errors
-IPOS6Error:
-MsgBox Error$, vbOKOnly + vbCritical, "IPOS6"
-ierror = True
-Exit Function
-
-End Function
-
 Function IPOS7(ByVal n As Integer, ByVal syme As String, ByVal symx As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the
 ' element and x-ray in "sample1()" starting at channel "n%". Checks disable flag.
@@ -283,37 +240,6 @@ Exit Function
 
 End Function
 
-Function IPOS9a(ByVal syme As String, sample() As TypeSample) As Integer
-' This routine returns as its value a pointer to the first occurance of the
-' element in "sample1()". Does NOT check the DisableQuant flag! (see IPOS9)
-' If no match, IPOS9a = 0.
-
-ierror = False
-On Error GoTo IPOS9aError
-
-Dim i As Integer
-
-' Fail if not specified
-IPOS9a = 0
-
-' Search sample for match (element only)
-For i% = 1 To sample(1).LastChan%
-If Trim$(UCase$(syme$)) = Trim$(UCase$(sample(1).Elsyms$(i%))) Then
-IPOS9a = i%
-Exit Function
-End If
-Next i%
-
-Exit Function
-
-' Errors
-IPOS9aError:
-MsgBox Error$, vbOKOnly + vbCritical, "IPOS9a"
-ierror = True
-Exit Function
-
-End Function
-
 Function IPOS11(ByVal syme As String, sample() As TypeSample) As Integer
 ' This routine returns as its value a pointer to the first occurance of the specified element in "sample1()".
 ' If a match does not occur, IPOS11 = 0.
@@ -351,59 +277,6 @@ Exit Function
 ' Errors
 IPOS11Error:
 MsgBox Error$, vbOKOnly + vbCritical, "IPOS11"
-ierror = True
-Exit Function
-
-End Function
-
-Function IPOS12(ByVal syme As String, ByVal iray As Integer, ByVal imot As Integer, ByVal icry As Integer, sample() As TypeSample) As Integer
-' This routine returns as its value a pointer to the first occurance
-' in "sample()" of the matching element, xray, motor and crystal index.
-' If a match does not occur, IPOS12 = 0.
-
-ierror = False
-On Error GoTo IPOS12Error
-
-Dim i As Integer
-Dim symx As String, crys As String
-
-' Fail if not specified
-IPOS12 = 0
-
-' Load xray symbol
-If iray% < 1 Then GoTo IPOS12BadRay
-symx$ = Xraylo$(iray%)
-
-' Load crystal name for tunable spectrometer
-crys$ = ScalCrystalNames$(icry%, imot%)
-
-' Search sample for match (element, x-ray, motor, crystal)
-For i% = 1 To sample(1).LastChan%
-
-If Trim$(UCase$(syme$)) = Trim$(UCase$(sample(1).Elsyms$(i%))) Then
-If Trim$(UCase$(symx$)) = Trim$(UCase$(sample(1).Xrsyms$(i%))) Then
-If imot% = sample(1).MotorNumbers%(i%) Then
-If Trim$(UCase$(crys$)) = Trim$(UCase$(sample(1).CrystalNames$(i%))) Then
-IPOS12 = i%
-Exit Function
-End If
-End If
-End If
-End If
-
-Next i%
-
-Exit Function
-
-' Errors
-IPOS12Error:
-MsgBox Error$, vbOKOnly + vbCritical, "IPOS12"
-ierror = True
-Exit Function
-
-IPOS12BadRay:
-msg$ = "Invalid xray (" & symx$ & ")"
-MsgBox msg$, vbOKOnly + vbExclamation, "IPOS12"
 ierror = True
 Exit Function
 

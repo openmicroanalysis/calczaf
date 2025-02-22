@@ -612,7 +612,7 @@ Exit Sub
 End Sub
 
 Sub ZAFAFactorOxide(wout() As Single, rout() As Single, eout() As String, xout() As String, zout() As Integer, analysis As TypeAnalysis, sample() As TypeSample)
-' Calculate the k-ratios for the passed oxide end-member concentrations for oxide alpha-factor calculations
+' Calculate the k-ratios for the passed oxide end-member concentrations for oxide alpha-factor calculations (CalcZAF only)
 
 ierror = False
 On Error GoTo ZAFAFactorOxideError
@@ -4254,15 +4254,6 @@ fff# = a1# / 3# * ((rc# - rm#) * (rc# - rm#) * (rc# - rm#) + rm# * rm# * rm#) + 
 fff# = fff# + a2# / 3# * (rx# - rc#) * (rx# - rc#) * (rx# - rc#)
 FP# = (fp1# + fp2# + fp3#) / fff#
 
-' Code commented out by JTA
-'FP4=(A1/XI)*((RC-RM)*(RX-RC-2/XI)-2/XI/XI)*EXP(-XI*RC)
-'FP4=FP4-(RC-RM)*RX+RM*(RC-2/XI)+2/XI/XI
-'FP5=(A2/XI)*((RX-RC)*(RX-RC-2/XI)-2/XI/XI)*EXP(-XI*RC)
-'FP5=FP5-(2/XI/XI)*EXP(-XI*RX)
-'FFFF=(FP4+FP5)/FFF
-'Call ZAFPap2   ' numerical integration of PAP phi(pz)
-'If ierror Then Exit Sub
-
 ' Calculate phi-rho-z curves for plotting (CalcZAF only)
 If zafinit% = 1 And CalculatePhiRhoZPlotCurves Then
 Call ZAFCalculatePhiRhoZCurvesPAP(ii%, rm#, rc#, rx#, a1#, a2#, b1#, xi!, zaf)
@@ -4395,53 +4386,6 @@ Call IOWriteLog(msg$)
 Exit Sub
 
 End Sub
-
-Function ZAFPap2(rc As Single, rm As Single, rx As Single, a1 As Single, a2 As Single, b1 As Single, xi As Single) As Single
-' PAP numerical integration
-
-ierror = False
-On Error GoTo ZAFPap2Error
-
-Dim i1 As Integer, nrsteps As Integer
-
-Dim xint1 As Single, xint2 As Single, xint3 As Single, xint4 As Single
-Dim step1 As Single, step2 As Single, depth As Single
-Dim phi1 As Single, phi2 As Single
-
-ZAFPap2! = 0#
-
-nrsteps% = 40
-xint1! = 0#
-xint2! = 0#
-xint3! = 0#
-xint4! = 0#
-
-step1! = rc! / nrsteps%
-step2! = (rx! - rc!) / nrsteps%
-For i1% = 1 To nrsteps%
-depth! = step1! * (i1% - 0.5)
-phi1! = a1! * (depth! - rm!) * (depth! - rm!) + b1!
-xint1! = xint1! + phi1! * step1!
-xint2! = xint2! + phi1! * Exp(-xi! * depth!) * step1!
-Next i1%
-
-For i1% = 1 To nrsteps%
-depth! = rc! + step2! * (i1% - 0.5)
-phi2! = a2! * (depth! - rx!) * (depth! - rx!)
-xint3! = xint3! + phi2! * step2!
-xint4! = xint4! + phi2! * Exp(-xi! * depth!) * step2!
-Next i1%
-
-ZAFPap2! = (xint2! + xint4!) / (xint1! + xint3!)
-Exit Function
-
-' Errors
-ZAFPap2Error:
-MsgBox Error$, vbOKOnly + vbCritical, "ZAFPap2"
-ierror = True
-Exit Function
-
-End Function
 
 Sub ZAFPtc(ii As Integer, aa As Single, v0 As Single, zz As Single, er1 As Single, er2 As Single, er3 As Single, a1 As Single, a2 As Single, xx As Single, x2 As Single, x3 As Single, x4 As Single, x5 As Single)
 ' Subroutine for calculation of numerical integration of thin film and

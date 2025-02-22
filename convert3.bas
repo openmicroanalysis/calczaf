@@ -266,43 +266,6 @@ Exit Function
 
 End Function
 
-Function ConvertIsDifferenceFormulaElementsSpecified(tformula As String, sample() As TypeSample) As Boolean
-' Returns true if all elements in the formula by difference are already specified elements
-
-ierror = False
-On Error GoTo ConvertIsDifferenceFormulaElementsSpecifiedError
-
-Dim n As Integer, ip As Integer
-
-Dim numelms As Integer
-Dim weight As Single
-
-Dim elems(1 To MAXCHAN%) As String
-Dim fatoms(1 To MAXCHAN%) As Single
-
-ConvertIsDifferenceFormulaElementsSpecified = True
-If tformula$ = vbNullString Then Exit Function
-
-' Parse formula
-Call MWCalculate(tformula$, numelms%, elems$(), fatoms!(), weight!)
-If ierror Then Exit Function
-
-' Check if all elements in formula are already specified in sample
-For n% = 1 To numelms%
-ip% = IPOS1B(sample(1).LastElm + 1, sample(1).LastChan%, elems$(n%), sample(1).Elsyms$())
-If ip% = 0 Then ConvertIsDifferenceFormulaElementsSpecified = False
-Next n%
-
-Exit Function
-
-' Errors
-ConvertIsDifferenceFormulaElementsSpecifiedError:
-MsgBox Error$, vbOKOnly + vbCritical, "ConvertIsDifferenceFormulaElementsSpecified"
-ierror = True
-Exit Function
-
-End Function
-
 Function ConvertWeightsToZBar(mode As Integer, lchan As Integer, wtpts() As Single, atnums() As Integer, atwts() As Single, energy As Single, exponent As Single) As Single
 ' Convert the passed weight percents, atomic numbers and atomic weights to average Z
 '   mode = 0 calculate mass fraction Zbar

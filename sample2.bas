@@ -293,3 +293,38 @@ Exit Function
 
 End Function
 
+Sub SampleStringSearch(astring As String, tList As ListBox)
+' Search the passed list and select all samples that match the passed string
+
+ierror = False
+On Error GoTo SampleStringSearchError
+
+Dim i As Integer
+Dim bstring As String
+
+If Trim$(astring$) = vbNullString Then Exit Sub
+
+' Unselect all
+For i% = 0 To tList.ListCount - 1
+tList.Selected(i%) = False
+Next i%
+
+' Loop on string and see if there is a match and select it
+For i% = 0 To tList.ListCount - 1
+bstring$ = tList.List(i%)
+If InStr(UCase$(bstring$), UCase$(astring$)) > 0 Then
+tList.Selected(i%) = True
+End If
+Next i%
+
+Exit Sub
+
+' Errors
+SampleStringSearchError:
+MsgBox Error$, vbOKOnly + vbCritical, "SampleStringSearch"
+ierror = True
+Exit Sub
+
+End Sub
+
+

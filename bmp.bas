@@ -867,7 +867,7 @@ Exit Sub
 End Sub
 
 Sub BMPMakeColored(ByVal picColor As PictureBox, tRGB As Long)
-' Convert everything except black colors to passed color (does not work on non RGB BMPs?)
+' Convert everything except black colors to passed color for CalcImage Quantmeter feature (does not work on non RGB BMPs?)
 
 ierror = False
 On Error GoTo BMPMakeColoredError
