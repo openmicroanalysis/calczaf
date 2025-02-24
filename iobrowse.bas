@@ -12,10 +12,10 @@ Option Explicit
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ' AppData folders
-Const SpecialFolder_AppData = &H1A        ' for the current Windows user (roaming), on any computer on the network [Windows 98 or later]
-Const SpecialFolder_CommonAppData = &H23  ' for all Windows users on this computer [Windows 2000 or later]
-Const SpecialFolder_LocalAppData = &H1C   ' for the current Windows user (non roaming), on this computer only [Windows 2000 or later]
-Const SpecialFolder_Documents = &H5       ' the Documents folder for the current Windows user
+'Const SpecialFolder_AppData = &H1A        ' for the current Windows user (roaming), on any computer on the network [Windows 98 or later]
+'Const SpecialFolder_CommonAppData = &H23  ' for all Windows users on this computer [Windows 2000 or later]
+'Const SpecialFolder_LocalAppData = &H1C   ' for the current Windows user (non roaming), on this computer only [Windows 2000 or later]
+'Const SpecialFolder_Documents = &H5       ' the Documents folder for the current Windows user
 
 ' Browse for folder
 Private Declare Function SHBrowseForFolder Lib "shell32.dll" Alias "SHBrowseForFolderA" (lpBrowseInfo As BROWSEINFO) As Long

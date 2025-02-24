@@ -113,29 +113,33 @@ If ierror Then Exit Sub
 End If
 
 ' Save string info
+If DebugMode Then
 astring1$ = astring1$ & Format$(sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%), a80$)
 astring2$ = astring2$ & Format$(Format$(sample(1).MotorNumbers%(chan%)) & ", " & sample(1).CrystalNames$(chan%), a80$)
 astring3$ = astring3$ & MiscAutoFormat$(kratios!(chan%) * 100#)
+End If
 
 ' Correct the measured (elemental) k-ratio for the boundary correction intensity (in k-ratio % units)
 kratios!(chan%) = kratios!(chan%) - sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) / 100#
 
 ' Save string info
+If DebugMode Then
 astring4$ = astring4$ & MiscAutoFormat$(sample(1).SecondaryFluorescenceBoundaryKratios!(sampleline%, chan%) / 100# * 100#)
 astring5$ = astring5$ & MiscAutoFormat$(kratios!(chan%) * 100#)
+End If
 
 End If
 Next chan%
 
 ' Debug output
-'If DebugMode Then
+If DebugMode Then
 Call IOWriteLog(vbCrLf & "SecondaryCorrection: SF k-ratios * 100, Line: " & Format$(sample(1).Linenumber&(sampleline%)) & ", Dist: " & sample(1).SecondaryFluorescenceBoundaryDistance!(sampleline%))
 Call IOWriteLog(Format$("Element:", a80$) & astring1$)
 Call IOWriteLog(Format$("Ch, Cry:", a80$) & astring2$)
 Call IOWriteLog(Format$("Elm. Kr:", a80$) & astring3$)
 Call IOWriteLog(Format$("Cal. Kr:", a80$) & astring4$)
 Call IOWriteLog(Format$("Cor. Kr:", a80$) & astring5$)
-'End If
+End If
 
 Exit Sub
 
