@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/28/25	Fix comment in misc Probewin.ini files for ForceNegativeKratiosToZero flag.
+
+		Add JeolGetFaraday3 code to obtain probe current directly from instrument (not tested yet).
+
 02/22/25	Add Bragg intensity smmoothing code to Bragg defocus correction
 v. 14.0.6
 		Add Borisova reference, fix SF boundary output in TypeResults.
