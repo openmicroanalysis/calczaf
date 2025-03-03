@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/02/25	Add pixel intensity to image cursor in FormIMAGEDISPLAY.
+
+		Fix Bragg boundary pixel coordinate calculation for all orientations
+
 02/28/25	Fix comment in misc Probewin.ini files for ForceNegativeKratiosToZero flag.
 
 		Add JeolGetFaraday3 code to obtain probe current directly from instrument (not tested yet).
