@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/04/25	Update some doc files.
+v. 14.0.7
+
 03/02/25	Add pixel intensity to image cursor in FormIMAGEDISPLAY.
 
 		Fix Bragg boundary pixel coordinate calculation for all orientations
@@ -49,7 +52,7 @@ v. 14.0.1
 		Work on Bruker get/set max energy and throughput parameters (with von der Handt).
 
 01/26/25	Add Bragg order (in Roman numerals) to on/off/net count labels in user speciied 
-v.13.9.8	output (Ruth).
+v. 13.9.8	output (Ruth).
 
 		Modify energy and throughput parameter loading from Probewin.ini and InitData.
 
@@ -105,7 +108,7 @@ v. 13.9.7
 12/09/24	Fix JEOL EDS acquisition bug (Neill and McAleer).
 
 12/05/24	Modify AcquireChangeAssignments and AcquireChangeElements code 
-v.13.9.6	in Acquire2.bas to use main GetElm and GetStd code.
+v. 13.9.6	in Acquire2.bas to use main GetElm and GetStd code.
 
 		Update user reference manual and help file for 3 sigma = 99.7% confidence (Buse).
 
