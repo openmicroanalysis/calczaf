@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/05/25	Fix Flank TDI output as intercepts and integrated intensities were swapped (Buse).
+v. 14.0.8
+		Work on MEC stage and column output.
+		
+		Add Unfreeze command to Remote (imaging) interface (Ruscitto).
+
+03/04/25	Add calls for direct read of Faraday cup, but leave commented out until tested.
+
 03/04/25	Update some doc files.
 v. 14.0.7
 
