@@ -25,6 +25,8 @@ Call InitINIHardware
 If ierror Then Exit Sub
 Call InitINIHardware2
 If ierror Then Exit Sub
+Call InitINIHardware3
+If ierror Then Exit Sub
 Call InitINIImage
 If ierror Then Exit Sub
 Call InitINICounting
@@ -3825,6 +3827,47 @@ EDSInterfaceMCSInputsPresent = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+Exit Sub
+
+' Errors
+InitINIHardware2Error:
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIHardware2"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub InitINIHardware3()
+' Open the PROBEWIN.INI file and read defaults (3rd half of InitINIHardware)
+
+ierror = False
+On Error GoTo InitINIHardware3Error
+
+Dim i As Integer
+Dim valid As Long, tValid As Long
+
+Dim lpAppName As String
+Dim lpKeyName As String
+Dim lpDefault As String
+Dim lpFileName As String
+Dim lpReturnString As String * 255
+Dim lpReturnString2 As String * 255
+
+Dim nSize As Long
+Dim nDefault As Long
+Dim astring As String, tcomment As String
+
+' Check for existing PROBEWIN.INI
+If Dir$(ProbeWinINIFile$) = vbNullString Then
+msg$ = "Unable to open file " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
+End
+End If
+
+' Use Windows API function to read PROBEWIN.INI
+lpFileName$ = ProbeWinINIFile$
+nSize& = Len(lpReturnString$)
+
 ' CL spectrometer
 lpAppName$ = "Hardware"
 lpKeyName$ = "CLSpectraInterfacePresent"
@@ -4208,11 +4251,28 @@ JEOLEDSMilliSecDelayBefore& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+lpAppName$ = "Hardware"
+lpKeyName$ = "UseMECStageColumnInterface"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+UseMECStageColumnInterfaceFlag = True
+Else
+UseMECStageColumnInterfaceFlag = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+' !!!! force false until MEC stage and column commans are implemented in the MECWrapper DLL by Scott Kemp !!!!
+UseMECStageColumnInterfaceFlag = False
+
+
+
 Exit Sub
 
 ' Errors
-InitINIHardware2Error:
-MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIHardware2"
+InitINIHardware3Error:
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINIHardware3"
 ierror = True
 Exit Sub
 

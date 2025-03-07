@@ -3156,3 +3156,4 @@ Global DynamicOxygenByStoichiometryGreaterLess(1 To MAXCRITERIA%) As Integer
 Global DynamicOxygenByStoichiometryOperator1 As Integer
 Global DynamicOxygenByStoichiometryOperator2 As Integer
 
+Global UseMECStageColumnInterfaceFlag As Boolean
