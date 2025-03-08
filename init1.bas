@@ -4261,9 +4261,14 @@ UseMECStageColumnInterfaceFlag = True
 Else
 UseMECStageColumnInterfaceFlag = False
 End If
+If UseMECStageColumnInterfaceFlag And JeolEOSInterfaceType& <> 3 Then
+msg$ = "UseMECStageColumnInterface keyword value is not valid in " & ProbeWinINIFile$ & " (only applies to JEOL 8230/8530 and iSP100/iHP200F)."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
+UseMECStageColumnInterfaceFlag = nDefault&
+End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
-' !!!! force false until MEC stage and column commans are implemented in the MECWrapper DLL by Scott Kemp !!!!
+' !!!! force false until MEC stage and column commands are implemented in the MECWrapper DLL by Scott Kemp !!!!
 UseMECStageColumnInterfaceFlag = False
 
 

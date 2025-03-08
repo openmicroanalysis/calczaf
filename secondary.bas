@@ -92,13 +92,6 @@ MsgBox Error$, vbOKOnly + vbCritical, "SecondaryLoad"
 ierror = True
 Exit Sub
 
-SecondaryLoadNoStandards:
-msg$ = "No standard compositions were found in the standard database file. please select a valid standard database."
-MsgBox msg$, vbOKOnly + vbExclamation, "SecondaryLoad"
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-
 End Sub
 
 Sub SecondarySave()

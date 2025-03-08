@@ -333,12 +333,6 @@ MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12BoundaryReadMDB"
 ierror = True
 Exit Sub
 
-Penepma12BoundaryReadMDBNoFactors:
-msg$ = "File " & BoundaryMDBFile$ & " did not contain any alpha factor records for " & Format$(tTakeoff!) & " degrees, " & Format$(tKilovolt!) & " keV, " & Symup$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & astring$
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12BoundaryReadMDB"
-ierror = True
-Exit Sub
-
 End Sub
 
 Sub Penepma12CalculateReadWriteBinaryDataBoundary(mode As Integer, tfolder As String, tfilename As String, keV As Single, nPoints As Long)
@@ -924,11 +918,11 @@ MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12BoundaryReadMDB2"
 ierror = True
 Exit Sub
 
-Penepma12BoundaryReadMDB2NoMaterialDensities:
-msg$ = "File " & BoundaryMDBFile$ & " did not contain any material density records for " & Format$(tTakeoff!) & " degrees, " & Format$(tKilovolt!) & " keV, " & Symup$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & astring$
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12BoundaryReadMDB2"
-ierror = True
-Exit Sub
+'Penepma12BoundaryReadMDB2NoMaterialDensities:
+'msg$ = "File " & BoundaryMDBFile$ & " did not contain any material density records for " & Format$(tTakeoff!) & " degrees, " & Format$(tKilovolt!) & " keV, " & Symup$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & astring$
+'MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12BoundaryReadMDB2"
+'ierror = True
+'Exit Sub
 
 Penepma12BoundaryReadMDB2NoKRatios:
 msg$ = "File " & BoundaryMDBFile$ & " did not contain any k-ratio records for " & Format$(tTakeoff!) & " degrees, " & Format$(tKilovolt!) & " keV, " & Symup$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & astring$

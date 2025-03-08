@@ -890,11 +890,5 @@ MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixUpdateMDB"
 ierror = True
 Exit Sub
 
-Penepma12MatrixUpdateMDBNoKRatios:
-msg$ = "File " & MatrixMDBFile$ & " did not contain any k-ratio records for " & Format$(tTakeoff!) & " degrees, " & Format$(tKilovolt!) & " keV, " & Symup$(tEmitter%) & " " & Xraylo$(tXray%) & " in " & Symup$(tMatrix%)
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12MatrixUpdateMDB"
-ierror = True
-Exit Sub
-
 End Sub
 
