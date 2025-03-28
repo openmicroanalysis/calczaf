@@ -1441,6 +1441,8 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 If valid& <> 0 Then
 ForceNegativeKratiosToZeroFlag = True
+msg$ = "A non-zero ForceNegativeKratiosToZero keyword should be avoided in the [software] section in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbInformation, "InitINISoftware"
 Else
 ForceNegativeKratiosToZeroFlag = False
 End If
@@ -1996,7 +1998,6 @@ Sub InitINIHardware()
 ierror = False
 On Error GoTo InitINIHardwareError
 
-Dim response As Integer
 Dim valid As Long, tValid As Long
 
 Dim lpAppName As String
@@ -2009,8 +2010,6 @@ Dim lpReturnString2 As String * 255
 Dim nSize As Long
 Dim nDefault As Long
 Dim tcomment As String
-
-Static initialized As Boolean
 
 ' Check for existing PROBEWIN.INI
 If Dir$(ProbeWinINIFile$) = vbNullString Then

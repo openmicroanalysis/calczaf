@@ -29,9 +29,6 @@ Sub SecondaryLoad(sample() As TypeSample)
 ierror = False
 On Error GoTo SecondaryLoadError
 
-Dim i As Integer, ip As Integer
-Dim tmsg As String
-
 Static initialized As Boolean
 
 ' Load passed sample

@@ -88,9 +88,15 @@ If ierror Then Exit Sub
 date2$ = Base64ReaderGetINIString$(lpFileName$, "Measured/Time", "End", FileDateTime(lpFileName$))
 If ierror Then Exit Sub
 
-' Convert to MS date
+' Remove "T" character
 date1$ = Replace$(date1$, "T", " ")
 date2$ = Replace$(date2$, "T", " ")
+
+' Check for valid dates
+If Not IsDate(date1$) Then GoTo Base64ReaderInputBadDate1
+If Not IsDate(date2$) Then GoTo Base64ReaderInputBadDate2
+
+' Convert to MS date
 var1 = CDate(date1$)
 var2 = CDate(date2$)
 timeofacq1# = CVDate(var1)
@@ -272,6 +278,20 @@ Exit Sub
 Base64ReaderInputError:
 Screen.MousePointer = vbDefault
 MsgBox Error$, vbOKOnly + vbCritical, "Base64ReaderInput"
+ierror = True
+Exit Sub
+
+Base64ReaderInputBadDate1:
+Screen.MousePointer = vbDefault
+msg$ = "Start date/time string " & date1$ & " is not valid in " & lpFileName$ & "."
+MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderInput"
+ierror = True
+Exit Sub
+
+Base64ReaderInputBadDate2:
+Screen.MousePointer = vbDefault
+msg$ = "End date/time string " & date2$ & " is not valid in " & lpFileName$ & "."
+MsgBox msg$, vbOKOnly + vbExclamation, "Base64ReaderInput"
 ierror = True
 Exit Sub
 

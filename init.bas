@@ -2391,7 +2391,7 @@ InterfaceStringImage(4) = "JEOL 8x00/8x30 Mapping"
 InterfaceStringImage(5) = "Cameca SX100/SXFive Mapping"
 InterfaceStringImage(6) = "Cameca SX100/SXFive Video"
 InterfaceStringImage(7) = "JEOL EDS API Video"
-InterfaceStringImage(8) = "Unused"
+InterfaceStringImage(8) = "JEOL MEC API Video"
 InterfaceStringImage(9) = "Bruker RTIfcCLIENT"
 InterfaceStringImage(10) = "Thermo TEPortal"
 
@@ -2745,61 +2745,65 @@ MineralStrings$(4) = "Garnet(Gro,Pyr,Alm,Sp)"
 MineralStrings$(5) = "Garnet(Gro,And,Uva)   "
 
 ' DefaultImageAnalogUnits short strings
-ImageAnalogUnitsShortStrings$(0) = "A/D Averages/Pixel"      ' demo
-ImageAnalogUnitsShortStrings$(1) = "Not Implemented"         ' Unused
-ImageAnalogUnitsShortStrings$(2) = "Not Implemented"         ' Unused
-ImageAnalogUnitsShortStrings$(3) = "Not Implemented"         ' Unused
+ImageAnalogUnitsShortStrings$(0) = "A/D Averages/Pixel"      ' Demo interface
+ImageAnalogUnitsShortStrings$(1) = ""                        ' Unused
+ImageAnalogUnitsShortStrings$(2) = ""                        ' Unused
+ImageAnalogUnitsShortStrings$(3) = ""                        ' Unused
 
 If JeolEOSInterfaceType& = 3 Then
-ImageAnalogUnitsShortStrings$(4) = "Microsecs/Pixel"         ' JEOL 8230/8530
+ImageAnalogUnitsShortStrings$(4) = "Microsecs/Pixel"         ' JEOL 8230/8530/iSP100/iHP200F
 Else
 ImageAnalogUnitsShortStrings$(4) = "A/D Averages/Pixel"      ' JEOL 8900/8200/8500
 End If
 
 ImageAnalogUnitsShortStrings$(5) = "Millisecs/Pixel"         ' SX100/SXFive mapping
 ImageAnalogUnitsShortStrings$(6) = "Scan Rate"               ' SX100/SXFive video
-ImageAnalogUnitsShortStrings$(7) = "Microsecs/Pixel"         ' JEOL EDS OEM video
-ImageAnalogUnitsShortStrings$(8) = "Not Implemented"         ' Unused
+
+ImageAnalogUnitsShortStrings$(7) = ""                        ' JEOL EDS OEM video (function EDSImageDataStartFast uses Microsecs/Pixel, but is not used)
+ImageAnalogUnitsShortStrings$(8) = ""                        ' JEOL MEC
+
 ImageAnalogUnitsShortStrings$(9) = "A/D Averages/Pixel"      ' Bruker RTIfcClient
 ImageAnalogUnitsShortStrings$(10) = "Frame Time in Secs"     ' Thermo TEPortal
 
 ' DefaultImageAnalogUnits long strings
-ImageAnalogUnitsLongStrings(0) = "A/D Averages/Pixel (1-1000)"                  ' demo
-ImageAnalogUnitsLongStrings(1) = "Not Implemented"                              ' Unused
-ImageAnalogUnitsLongStrings(2) = "Not Implemented"                              ' Unused
-ImageAnalogUnitsLongStrings(3) = "Not Implemented"                              ' Unused
+ImageAnalogUnitsLongStrings(0) = "A/D Averages/Pixel (1-1000)"            ' Demo
+ImageAnalogUnitsLongStrings(1) = ""                                       ' Unused
+ImageAnalogUnitsLongStrings(2) = ""                                       ' Unused
+ImageAnalogUnitsLongStrings(3) = ""                                       ' Unused
 
 If JeolEOSInterfaceType& = 3 Then
-ImageAnalogUnitsLongStrings(4) = "Micro-seconds per Pixel (100-30000)"          ' JEOL 8230/8530
+ImageAnalogUnitsLongStrings(4) = "Micro-seconds per Pixel (100-10000)"    ' JEOL 8230/8530 (actually 100 to 100000000?)
 Else
-ImageAnalogUnitsLongStrings(4) = "A/D Averages/Pixel (1-1000)"                  ' JEOL 8900/8200/8500
+ImageAnalogUnitsLongStrings(4) = "A/D Averages/Pixel (1-1000)"            ' JEOL 8900/8200/8500
 End If
 
-ImageAnalogUnitsLongStrings(5) = "Millisecs/Pixel (1-1000)"                     ' SX100/SXFive mapping
-ImageAnalogUnitsLongStrings(6) = "Video Scan Rate (1-7)"                        ' SX100/SXFive video
+ImageAnalogUnitsLongStrings(5) = "Millisecs/Pixel (1-1000)"               ' SX100/SXFive mapping
+ImageAnalogUnitsLongStrings(6) = "Video Scan Rate (1-7)"                  ' SX100/SXFive video
 
-ImageAnalogUnitsLongStrings(7) = "Micro-seconds per Pixel (1-10000)"            ' JEOL EDS OEM video (new version)
+ImageAnalogUnitsLongStrings(7) = ""                                       ' JEOL EDS OEM video (function EDSImageDataStartFast uses Microsecs/Pixel (1-10000), but is not used)
+ImageAnalogUnitsLongStrings(8) = ""                                       ' JEOL MEC
 
-ImageAnalogUnitsLongStrings(8) = "Not Implemented"                              ' Unused
-ImageAnalogUnitsLongStrings(9) = "A/D Averages/Pixel (2 to 1000)"               ' Bruker RTIfcClient
-ImageAnalogUnitsLongStrings(10) = "Frame Time in Secs (1-1000)"                 ' Thermo TEPortal
+ImageAnalogUnitsLongStrings(9) = "A/D Averages/Pixel (2 to 1000)"         ' Bruker RTIfcClient
+ImageAnalogUnitsLongStrings(10) = "Frame Time in Secs (1-1000)"           ' Thermo TEPortal
 
 ' DefaultImageAnalogUnits ToolTip strings
-ImageAnalogUnitsToolTipStrings(0) = "Specify the number of A-D conversions to average per pixel (range 1 - 1000)"       ' demo
-ImageAnalogUnitsToolTipStrings(1) = "Not Implemented"                                                                   ' Unused
-ImageAnalogUnitsToolTipStrings(2) = "Not Implemented"                                                                   ' Unused
-ImageAnalogUnitsToolTipStrings(3) = "Not Implemented"                                                                   ' Unused
+ImageAnalogUnitsToolTipStrings(0) = "Specify the number of A-D conversions per pixel (range 1 - 1000)"       ' Demo
+ImageAnalogUnitsToolTipStrings(1) = ""                                    ' Unused
+ImageAnalogUnitsToolTipStrings(2) = ""                                    ' Unused
+ImageAnalogUnitsToolTipStrings(3) = ""                                    ' Unused
 
 If JeolEOSInterfaceType& = 3 Then
-ImageAnalogUnitsToolTipStrings(4) = "Specify the number of micro-seconds per pixel (range 100 to 30000)"                ' JEOL 8230/8530
+ImageAnalogUnitsToolTipStrings(4) = "Specify the number of micro-seconds per pixel (range 100 to 10000)"                ' JEOL 8230/8530
 Else
 ImageAnalogUnitsToolTipStrings(4) = "Specify the number of A-D conversions to average per pixel (range 1 to 1000)"      ' JEOL 8900/8200/8500
 End If
 
 ImageAnalogUnitsToolTipStrings(5) = "Specify the image dwell time in milli-seconds per pixel (range 1 to 1000)"         ' SX100/SXFive mapping
 ImageAnalogUnitsToolTipStrings(6) = "Specify the image scan speed (range = 1 - 7)"                                      ' SX100/SXFive Video
-ImageAnalogUnitsToolTipStrings(7) = "Specify the number of micro-seconds per pixel (range 1 to 10000)"                  ' JEOL EDS OEM (new version)
-ImageAnalogUnitsToolTipStrings(8) = "Not implemented"                                                                   ' Unused
+
+ImageAnalogUnitsToolTipStrings(7) = ""                                    ' JEOL EDS OEM (function EDSImageDataStartFast uses Microsecs/Pixel (1-10000), but is not used)
+ImageAnalogUnitsToolTipStrings(8) = ""                                    ' JEOL MEC
+
 ImageAnalogUnitsToolTipStrings(9) = "Specify the number of A-D conversions to average per pixel (range 2 to 1000)"      ' Bruker RTIfcClient
 ImageAnalogUnitsToolTipStrings(10) = "Enter the imaging frame time in seconds (1 to 1000)"                              ' Thermo TEPortal
 
@@ -3172,11 +3176,11 @@ ElseIf ImageInterfaceType% = 6 Then     ' SX100/SXFive video scan speed (range 1
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
 ElseIf ImageInterfaceType% = 7 Then     ' JEOL EDS OEM
-    DefaultImageAnalogAverages% = 100   ' JEOL micro-secs (range 100 - 10000)
+    DefaultImageAnalogAverages% = 100   ' JEOL micro-secs (range 1 - 10000)  (function EDSImageDataStartFast uses Microsecs/Pixel (1-10000), but is not used)
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
-ElseIf ImageInterfaceType% = 8 Then     ' Unused
-    DefaultImageAnalogAverages% = 1
+ElseIf ImageInterfaceType% = 8 Then     ' JEOL MEC API
+    DefaultImageAnalogAverages% = 100
     DefaultImageAnalogUnits$ = ImageAnalogUnitsLongStrings$(ImageInterfaceType%)
 
 ElseIf ImageInterfaceType% = 9 Then     ' Bruker RTIFClient DCOM

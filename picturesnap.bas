@@ -1110,8 +1110,8 @@ Dim sx1 As Single, sy1 As Single, sz1 As Single
 Dim sx2 As Single, sy2 As Single, sz2 As Single
 
 Dim fractionx As Single, fractiony As Single
-Dim xmin As Single, ymin As Single, zmin As Single
-Dim xmax As Single, ymax As Single, zmax As Single
+Dim zmin As Single
+Dim zmax As Single
 
 Dim vCorner(1 To 1) As VertexType
 Dim vOrigin As VertexType
@@ -1664,12 +1664,6 @@ Dim tcolor As Long
 Dim tWidth As Integer
 
 Dim fractionx As Single, fractiony As Single
-
-Dim fractionx1 As Single, fractiony1 As Single
-Dim fractionx2 As Single, fractiony2 As Single
-Dim lowx As Single, lowy As Single
-Dim highx As Single, highy As Single
-Dim zwidth As Single, zdistance As Single                   ' just leave zero
 
 Dim stagex As Single, stagey As Single, stagez As Single        ' stage limit center in stage coordinates
 Dim centerx As Single, centery As Single, centerz As Single     ' stage limit center in form coordinates

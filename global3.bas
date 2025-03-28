@@ -50,5 +50,3 @@ Global DisplayAmphiboleCalculationFlag
 Global UseTotalCationsCalculationFlag As Integer    ' (Standard.exe only)
 
 Global TotalAcquisitionTimeString As String
-
-

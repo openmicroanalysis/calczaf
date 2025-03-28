@@ -2,7 +2,27 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/27/25	Fix query load event bug when use accidentally tries to close the program (Buse).
+
+03/22/25	Remove more unsed variables and code. Uncomment direct get keV code for testing.
+
+		Add StartWin to Maksigning22.bat code signing (somehow missing all this time!)
+
+03/19/25	Tested code for direct TCP/IP calls for 8x30 get mag and get/set keV (von der Handt).
+v. 14.1.3
+
+03/15/25	Implement new direct read of beam current code.
+v. 14.1.2
+
+03/13/25	Add check for valid date/time string in Base64ReaderInput for corrupted PrbImg files (Allaz).
+
+03/11/25	Add error trap for user not seleting either PHA or peaking scan in Peaking dialog (Boroughs).
+
 03/07/25	More work on MEC stage and column code.
+v. 14.1.1
+		Modify scan unfreeze delay code to make it more consistent between demo and JEOL 
+		EDS video (8230/8530) modes. Modify insert Faraday after image acquisition
+		to not use delay.
 
 03/06/25	Fix Unfreeze command in TestRemoteImaging.  More work on MEC stage and column commands.
 v. 14.0.9	Add UseMECStageColumnInterface keyword to Probewin.ini file (disabled for now).

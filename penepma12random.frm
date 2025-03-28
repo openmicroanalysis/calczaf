@@ -23,25 +23,25 @@ Begin VB.Form FormPenepma12Random
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FF0000&
-      Height          =   2295
+      Height          =   1575
       Left            =   11160
       TabIndex        =   75
-      Top             =   2760
+      Top             =   3600
       Width           =   3135
       Begin VB.CommandButton CommandScanPure 
          Caption         =   "Scan Input Files and Write To Pure.MDB"
-         Height          =   615
+         Height          =   495
          Left            =   240
          TabIndex        =   77
-         Top             =   1320
+         Top             =   960
          Width           =   2655
       End
       Begin VB.CommandButton CommandCreatePure 
          Caption         =   "Create New (Empty) Pure.MDB"
-         Height          =   615
+         Height          =   495
          Left            =   240
          TabIndex        =   76
-         Top             =   480
+         Top             =   360
          Width           =   2655
       End
    End
@@ -644,12 +644,12 @@ Begin VB.Form FormPenepma12Random
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   615
+      Height          =   495
       Left            =   11760
       Style           =   1  'Graphical
       TabIndex        =   17
       TabStop         =   0   'False
-      Top             =   240
+      Top             =   2880
       Width           =   1815
    End
    Begin VB.Frame Frame1 
@@ -848,7 +848,7 @@ Begin VB.Form FormPenepma12Random
       Height          =   1695
       Left            =   11160
       TabIndex        =   18
-      Top             =   1080
+      Top             =   840
       Width           =   3135
    End
 End

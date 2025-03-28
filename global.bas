@@ -1975,7 +1975,7 @@ Global macstring(1 To MAXMACTYPE%) As String
 Global macstring2(1 To MAXMACTYPE%) As String
 
 ' ZAF globals
-Global iabs As Integer, ibsc As Integer, ibks As Integer
+Global iAbs As Integer, ibsc As Integer, ibks As Integer
 Global imip As Integer, iphi As Integer, izaf As Integer
 Global istp As Integer, iflu As Integer, ielc As Integer               ' ielc% is not currently utilized
 
@@ -2225,7 +2225,7 @@ Global DoAnalysisReport As Integer
 Global JEOLVelocity(1 To MAXMOT%) As Long
 Global JEOLBacklash(1 To MAXMOT%) As Long
 
-' New variables for Monitor app
+' New variables for Monitor and GunAlign apps (also demo imaging mode)
 Global ScanComboLabels(1 To MAXMONITOR%) As String
 Global ScanComboCommands(1 To MAXMONITOR%) As String
 Global ScanComboNumberOf(1 To MAXMONITOR%) As Integer
@@ -2468,7 +2468,7 @@ Global AutomationReStandardizationOn As Boolean
 Global AutomationReStandardizationStart As Double
 Global AutomationReStandardizationInterval As Double    ' in days
 
-Global ZAFEquationMode As Integer       ' (only used in CalcZAF)
+Global ZAFEquationMode As Integer       ' (only used in CalcZAF) (ZAFPrintSmp)
 Global CalcZAFMode As Integer           ' (only used in CalcZAF (ZAFPrintStd))
 
 ' 0 = beam deflection, 1 = random point
@@ -2899,8 +2899,6 @@ Global CLAcquisitionCountTime As Single     ' not stored in MDB
 
 Global ProbeImageAcquisitionFile As String
 Global ProbeImageSampleSetupNumber As Integer
-
-Global UseConfirmDuringAutomationFlag As Boolean
 Global RunProbeImageFlag As Boolean
 
 Global EDSIntensityOption As Integer

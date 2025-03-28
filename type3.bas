@@ -682,14 +682,6 @@ Call IOWriteLog(msg$)
 End If
 End If
 
-If DebugMode Or MiscIsDifferent(sample(1).LastElm%, sample(1).BraggOrders%()) Then
-msg$ = "BRAGG:"
-For i% = ii% To jj%
-msg$ = msg$ & Format$(sample(1).BraggOrders%(i%), a80$)
-Next i%
-Call IOWriteLog(msg$)
-End If
-
 ' Type out motor
 msg$ = "SPEC: "
 For i% = ii% To jj%
@@ -713,6 +705,14 @@ Call IOWriteLog(msg$)
 msg$ = "CRYK :"
 For i% = ii% To jj%
 msg$ = msg$ & Format$(Format$(sample(1).CrystalKs!(i%), f86$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+End If
+
+If DebugMode Or MiscIsDifferent(sample(1).LastElm%, sample(1).BraggOrders%()) Or sample(1).BraggOrders%(1) > 1 Then
+msg$ = "BRAGG:"
+For i% = ii% To jj%
+msg$ = msg$ & Format$(sample(1).BraggOrders%(i%), a80$)
 Next i%
 Call IOWriteLog(msg$)
 End If

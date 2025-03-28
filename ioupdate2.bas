@@ -12,7 +12,7 @@ Option Explicit
 ' IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Dim DownloadMode As Integer
-Dim tLocalFile As String, tRemoteFile As String
+Dim tLocalFile As String
 Dim tBackupFile As String
 
 Dim tLocalFileDate As Variant, tRemoteFileDate As Variant
@@ -206,7 +206,7 @@ Sub IOUpdate2GetUpdateHTTP(mode As Integer)
 ierror = False
 On Error GoTo IOUpdate2GetUpdateHTTPError
     
-Dim tURL As String, tusername As String, tpassword As String
+Dim tURL As String
 Dim nError As Long
 
 ' Download CalcZAF
