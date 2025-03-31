@@ -2,9 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/20/25	Add check for Bragg order in UpdateChangedSample code.
+
 03/27/25	Fix query load event bug when use accidentally tries to close the program (Buse).
 
-03/22/25	Remove more unsed variables and code. Uncomment direct get keV code for testing.
+03/22/25	Remove more unused variables and code. Uncomment direct get keV code for testing.
 
 		Add StartWin to Maksigning22.bat code signing (somehow missing all this time!)
 
@@ -16,7 +18,7 @@ v. 14.1.2
 
 03/13/25	Add check for valid date/time string in Base64ReaderInput for corrupted PrbImg files (Allaz).
 
-03/11/25	Add error trap for user not seleting either PHA or peaking scan in Peaking dialog (Boroughs).
+03/11/25	Add error trap for user not selecting either PHA or peaking scan in Peaking dialog (Boroughs).
 
 03/07/25	More work on MEC stage and column code.
 v. 14.1.1
@@ -27,7 +29,7 @@ v. 14.1.1
 03/06/25	Fix Unfreeze command in TestRemoteImaging.  More work on MEC stage and column commands.
 v. 14.0.9	Add UseMECStageColumnInterface keyword to Probewin.ini file (disabled for now).
 		
-		Update Remote dcoumentation and help file.
+		Update Remote documentation and help file.
 
 03/05/25	Fix Flank TDI output as intercepts and integrated intensities were swapped (Buse).
 v. 14.0.8
@@ -48,7 +50,7 @@ v. 14.0.7
 
 		Add JeolGetFaraday3 code to obtain probe current directly from instrument (not tested yet).
 
-02/22/25	Add Bragg intensity smmoothing code to Bragg defocus correction
+02/22/25	Add Bragg intensity smoothing code to Bragg defocus correction
 v. 14.0.6
 		Add Borisova reference, fix SF boundary output in TypeResults.
 
@@ -64,10 +66,10 @@ v. 14.0.4
 		
 		Add check for EDS element in Bragg defocus correction dialog.
 
-02/15/25	Improve display of points in secondary boundary fluporescence correction forms.
+02/15/25	Improve display of points in secondary boundary fluorescence correction forms.
 v. 14.0.3
 
-02/11/25	Do not ask user whether to get net intensitis during automation if using EDS 
+02/11/25	Do not ask user whether to get net intensities during automation if using EDS 
 		simulation mode (PENEPMA).
 
 02/08/25	Remove some unused parameters and procedures.
@@ -86,7 +88,7 @@ v. 14.0.1
 
 		Work on Bruker get/set max energy and throughput parameters (with von der Handt).
 
-01/26/25	Add Bragg order (in Roman numerals) to on/off/net count labels in user speciied 
+01/26/25	Add Bragg order (in Roman numerals) to on/off/net count labels in user specified 
 v. 13.9.8	output (Ruth).
 
 		Modify energy and throughput parameter loading from Probewin.ini and InitData.
@@ -95,15 +97,15 @@ v. 13.9.8	output (Ruth).
 
 01/14/25	Fix get TC in JEOL MEC EDS (McAleer).
 
-01/11/25	Modify dead time value format from 2 to to 3 decimal places (Boesenberg).
+01/11/25	Modify dead time value format from 2 to 3 decimal places (Boesenberg).
 		
 		Add Bragg defocus parameters to TypeCounts.
 
-01-09-25	Update Probewin pdf and Helpfile.
+01-09-25	Update Probewin pdf and Help file.
 
 01/08/25	Update Remote.pdf.
 
-01/04/25	Finish dynamic oxygen by stoichiometry code. Add boundary fit coeffients for Bragg defocus 
+01/04/25	Finish dynamic oxygen by stoichiometry code. Add boundary fit coefficients for Bragg defocus 
 		correction (Moy).
 
 12/31/24	Add crude test of dynamic stoichiometric oxygen (Poirier).  Need to implement in GUI now.
