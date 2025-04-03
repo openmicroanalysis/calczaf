@@ -16,13 +16,14 @@ Global ParameterFileBStd As String              ' filename only, no path
 Global TotalNumberOfSimulations As Long
 Global CurrentSimulationsNumber As Long
 
-Global BinaryMethod As Integer                  ' need to be global for PenPFE
-Global ExtractMethod As Integer                 ' need to be global for PenPFE
-
 Global CalculateRandomTable() As Integer
 Global ExtractRandomTable() As Integer
 
 Global pAllAtomicWts(1 To MAXELM%) As Single    ' Penepma08/12 atomic weights
+
+' PAR and Fanal extraction modes
+Dim BinaryMethod As Integer
+Dim ExtractMethod As Integer
 
 ' Graph variables
 Dim UseLogScale As Boolean
@@ -3482,7 +3483,6 @@ FormPenepma12Binary.CommandClose.Enabled = False
 
 FormPenepma12Binary.CommandBinaryCalculate.Enabled = False
 FormPenepma12Binary.CommandCalculateComposition.Enabled = False
-FormPenepma12Binary.CommandCalculateRandom.Enabled = False
 
 FormPenepma12Binary.CommandExtract.Enabled = False
 FormPenepma12Binary.CommandExtractRandom.Enabled = False
@@ -3526,7 +3526,6 @@ FormPenepma12Binary.CommandClose.Enabled = True
 
 FormPenepma12Binary.CommandBinaryCalculate.Enabled = True
 FormPenepma12Binary.CommandCalculateComposition.Enabled = True
-FormPenepma12Binary.CommandCalculateRandom.Enabled = True
 
 FormPenepma12Binary.CommandExtract.Enabled = True
 FormPenepma12Binary.CommandExtractRandom.Enabled = True
@@ -4255,224 +4254,6 @@ Exit Sub
 Penepma12CalculateElementsMore:
 msg$ = "Binary matrix element 1 (" & Trim$(Symup$(BinaryElement1%)) & ") must precede binary matrix element 2 (" & Trim$(Symup$(BinaryElement2%)) & ") in the Periodic Table (don't ask why!)"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CalculateElements"
-ierror = True
-Exit Sub
-
-End Sub
-
-Sub Penepma12CalculateRandom()
-' Calculate binary or pure element composition .par files for the periodic table.
-' The binary or pure element calculation is selected randomly and existing .PAR files are skipped if they are being calculated based on a shared look up table.
-
-ierror = False
-On Error GoTo Penepma12CalculateRandomError
-
-Dim done As Boolean
-Dim i As Integer, j As Integer, k As Integer, m As Integer
-Dim im As Integer, mm As Integer
-Dim response As Integer
-Dim tBinaryElement1 As Integer, tBinaryElement2 As Integer
-Dim tfilename As String
-
-icancelauto = False
-
-' Calculating entire matrix range
-CalculateForMatrixRange = True  ' to skip user warnings
-
-' BinaryMethod = 0  Calculate binary compositions over the entire periodic table
-If BinaryMethod% = 0 Then
-
-msg$ = "This binary compositional range calculation is designed to be performed by executing many multiple applications running in parallel utilizing a shared network folder for the Penepma12_PAR_Path to facilitate calculation of all binaries for the entire periodic table. The total calculation time will be approximately 50 years divided by the number of parallel applications running simultaneously (100 applications running in parallel will take approximately 6 months)! Are you sure you want to proceed?"
-response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "Penepma12CalculateRandom")
-If response% = vbCancel Then Exit Sub
-
-' Make sure PAR share folder exists
-If Dir$(PENEPMA_PAR_Path$, vbDirectory) = vbNullString Then GoTo Penepma12CalculateRandomNoPARSharePath
-
-' Calculate number of binaries for entire periodic table
-m% = 0
-ReDim CalculateRandomTable(1 To 3, 1 To 1) As Integer
-For i% = 1 To MAXELM%
-For j% = i% To MAXELM%  ' do not duplicate binary pairs in reverse order
-If i% <> j% Then
-m% = m% + 1
-ReDim Preserve CalculateRandomTable(1 To 3, 1 To m%) As Integer
-CalculateRandomTable%(1, m%) = i%   ' BinaryElement1
-CalculateRandomTable%(2, m%) = j%   ' BinaryElement2
-CalculateRandomTable%(3, m%) = m%   ' binary number (1 to m%)
-End If
-Next j%
-Next i%
-
-' Try to create a new PAR share file
-Call Penepma12CalculateRandomCheck(Int(0), Int(3), m%, CalculateRandomTable%(), im%, mm%, done)
-If ierror Then
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-End If
-
-TotalNumberOfSimulations& = CLng(m%) * MAXBINARY%    ' specify number of PAR files to create (should be 4950 binaries)
-CurrentSimulationsNumber& = 1
-
-tBinaryElement1% = BinaryElement1%      ' save
-tBinaryElement2% = BinaryElement2%      ' save
-
-' Check if randomly selected binary is being calculated already (im is selected binary, mm is binaries calculated so far)
-Do Until done
-Call Penepma12CalculateRandomCheck(Int(1), Int(3), m%, CalculateRandomTable%(), im%, mm%, done)
-If ierror Then
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-End If
-If done Then Exit Do
-
-' Load next calculation
-i% = CalculateRandomTable%(1, im%)
-j% = CalculateRandomTable%(2, im%)
-
-msg$ = vbCrLf & vbCrLf & "Calculating binary " & Format$(mm% + 1) & " of " & Format$(m%) & ": " & Trim$(Symup$(i%)) & "-" & Trim$(Symup$(j%)) & "..."
-Call IOWriteLog(msg$)
-Call IOStatusAuto(msg$)
-DoEvents
-
-BinaryElement1% = i%                    ' load matrix 1
-BinaryElement2% = j%                    ' load matrix 2
-Call Penepma12CalculateBinaries
-BinaryElement1% = tBinaryElement1%      ' restore
-BinaryElement2% = tBinaryElement2%      ' restore
-
-' Update complete status for this calculation
-Call Penepma12CalculateRandomCheck(Int(2), Int(3), m%, CalculateRandomTable%(), im%, mm%, done)
-If ierror Then
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-End If
-
-' Copy completed PAR files to the Penepma PAR share folder (if folders are different)
-If UCase$(PENEPMA_PAR_Path$) <> UCase$(PENEPMA_Root$ & "\penfluor") Then
-For k% = 1 To MAXBINARY%
-tfilename$ = Trim$(Symup$(i%)) & "-" & Trim$(Symup$(j%)) & "_" & Format$(BinaryRanges!(k%)) & "-" & Format$(100# - BinaryRanges!(k%)) & ".par"
-If Dir$(PENEPMA_Root$ & "\penfluor" & "\" & tfilename$) <> vbNullString Then
-FileCopy PENEPMA_Root$ & "\penfluor" & "\" & tfilename$, PENEPMA_PAR_Path$ & "\" & tfilename$
-FileCopy PENEPMA_Root$ & "\penfluor" & "\" & MiscGetFileNameNoExtension$(tfilename$) & ".in", PENEPMA_PAR_Path$ & "\" & MiscGetFileNameOnly$(MiscGetFileNameNoExtension$(tfilename$)) & ".in"
-Call IOWriteLog("Copied " & tfilename$ & " PAR file to " & PENEPMA_PAR_Path$)
-End If
-Next k%
-End If
-
-DoEvents
-If icancelauto Then
-Call IOStatusAuto(vbNullString)
-Call Penepma12CheckTermination2(Int(0), MaterialInProgress)
-If ierror Then Exit Sub
-Call Penepma12CheckTermination2(Int(1), SimulationInProgress)
-If ierror Then Exit Sub
-Call IOShellTerminateTask(PenepmaTaskID&)
-If ierror Then Exit Sub
-ierror = True
-Exit Sub
-End If
-Loop
-
-msg$ = "All " & Format$(TotalNumberOfSimulations&) & " PAR file calculations are complete"
-MsgBox msg$, vbOKOnly + vbInformation, "Penepma12CalculateRandom"
-End If
-
-' BinaryMethod = 1  Calculate pure element materials over the periodic table
-If BinaryMethod% = 1 Then
-
-msg$ = "This pure element calculation is designed to be performed by executing many multiple applications running in parallel utilizing a shared network folder for the Penepma12_PAR_Path to facilitate calculation of all binaries for the entire periodic table. The total calculation time will be approximately 33 days divided by the number of parallel applications running simultaneously (10 applications running in parallel will take approximately 3.3 days)! Are you sure you want to proceed?"
-response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "Penepma12CalculateRandom")
-If response% = vbCancel Then Exit Sub
-
-m% = 0
-ReDim CalculateRandomTable(1 To 2, 1 To 1) As Integer
-For i% = 1 To MAXELM%
-m% = m% + 1
-ReDim Preserve CalculateRandomTable(1 To 2, 1 To m%) As Integer
-CalculateRandomTable%(1, m%) = i%   ' BinaryElement1 and BinaryElement2
-CalculateRandomTable%(2, m%) = m%   ' Sequence number
-Next i%
-
-' Try to create a new PAR share file
-Call Penepma12CalculateRandomCheck(Int(0), Int(2), m%, CalculateRandomTable%(), im%, mm%, done)
-If ierror Then
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-End If
-
-TotalNumberOfSimulations& = m%    ' specify number of PAR files to create
-CurrentSimulationsNumber& = 1
-
-tBinaryElement1% = BinaryElement1%      ' save
-tBinaryElement2% = BinaryElement2%      ' save
-
-' Check if randomly selected pure element is being calculated already (im is selected element, mm is elements calculated so far)
-Do Until done
-Call Penepma12CalculateRandomCheck(Int(1), Int(2), m%, CalculateRandomTable%(), im%, mm%, done)
-If ierror Then
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-End If
-If done Then Exit Do
-
-' Load next calculation
-i% = CalculateRandomTable%(1, im%)
-
-msg$ = vbCrLf & vbCrLf & "Calculating pure element " & Format$(mm%) & " of " & Format$(m%) & ": " & Trim$(Symup$(i%)) & "..."
-Call IOWriteLog(msg$)
-Call IOStatusAuto(msg$)
-DoEvents
-
-BinaryElement1% = i%    ' load same element for both
-BinaryElement2% = i%    ' load same element for both
-Call Penepma12CalculateElements
-BinaryElement1% = tBinaryElement1%      ' restore
-BinaryElement2% = tBinaryElement2%      ' restore
-
-' Update complete status for this calculation
-Call Penepma12CalculateRandomCheck(Int(2), Int(2), m%, CalculateRandomTable%(), im%, mm%, done)
-If ierror Then
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-End If
-
-DoEvents
-If icancelauto Then
-Call IOStatusAuto(vbNullString)
-Call Penepma12CheckTermination2(Int(0), MaterialInProgress)
-If ierror Then Exit Sub
-Call Penepma12CheckTermination2(Int(1), SimulationInProgress)
-If ierror Then Exit Sub
-Call IOShellTerminateTask(PenepmaTaskID&)
-If ierror Then Exit Sub
-ierror = True
-Exit Sub
-End If
-Loop
-
-msg$ = "All " & Format$(TotalNumberOfSimulations&) & " PAR file calculations are complete"
-MsgBox msg$, vbOKOnly + vbInformation, "Penepma12CalculateRandom"
-End If
-
-Call IOStatusAuto(vbNullString)
-Exit Sub
-
-' Errors
-Penepma12CalculateRandomError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma12CalculateRandom"
-ierror = True
-Exit Sub
-
-Penepma12CalculateRandomNoPARSharePath:
-msg$ = "The specified Penepma PAR Share Path " & PENEPMA_PAR_Path$ & " does not exist. Please create the specified folder and try again."
-MsgBox msg$, vbOKOnly + vbExclamation, "Penepma12CalculateRandom"
 ierror = True
 Exit Sub
 
@@ -5762,167 +5543,8 @@ Exit Sub
 
 End Sub
 
-Sub Penepma12ExtractRandom()
-' Extract boundary or matrix k-ratios for the periodic table. The boundary or matrix extraction is selected randomly
-' and existing output files are skipped if they are being extracted, based on a shared look up table.
-
-ierror = False
-On Error GoTo Penepma12ExtractRandomError
-
-Dim done As Boolean
-Dim i As Integer, j As Integer, m As Integer
-Dim im As Integer, mm As Integer
-Dim response As Integer
-Dim tExtractElement As Integer, tExtractMatrix As Integer
-Dim tMaterialMeasuredGridPoints As Integer
-
-icancelauto = False
-
-' Extracting entire matrix range
-ExtractForSpecifiedRange = True  ' to skip
-icancelauto = False
-
-' ExtractMethod = 0  Extract boundary k-ratios over the entire periodic table
-If ExtractMethod% = 0 Then
-
-msg$ = "This boundary k-ratio extraction is designed to be performed by executing many multiple applications running in parallel utilizing a shared network folder for the Penepma12_PAR_Path to facilitate calculation of all binaries for the entire periodic table. The total calculation time will be approximately 50 years divided by the number of parallel applications running simultaneously (100 applications running in parallel will take approximately 6 months)! Are you sure you want to proceed?"
-response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "Penepma12ExtractRandom")
-If response% = vbCancel Then Exit Sub
-
-' Calculate number of boundaries for entire periodic table
-m% = 0
-ReDim ExtractRandomTable(1 To 3, 1 To 1) As Integer
-For i% = 1 To MAXELM%
-For j% = i% To MAXELM%
-If i% <> j% Then
-m% = m% + 1
-ReDim Preserve ExtractRandomTable(1 To 3, 1 To m%) As Integer
-ExtractRandomTable%(1, m%) = i%   ' ExtractElement1
-ExtractRandomTable%(2, m%) = j%   ' ExtractElement2
-ExtractRandomTable%(3, m%) = m%   ' Extract number (1 to m%)
-End If
-Next j%
-Next i%
-
-' Try to create a new PAR share file
-'Call Penepma12ExtractRandomCheck(Int(0), Int(3), m%, ExtractRandomTable%(), im%, mm%, done)
-'If ierror Then Exit Sub
-
-tExtractElement% = ExtractElement%      ' save
-tExtractMatrix% = ExtractMatrix%      ' save
-
-' Check if randomly selected extraction is being calculated already (im is selected extraction, mm is extractions calculated so far)
-Do Until done
-'Call Penepma12ExtractRandomCheck(Int(1), Int(3), m%, ExtractRandomTable%(), im%, mm%, done)
-'If ierror Then Exit Sub
-If done Then Exit Do
-
-' Load next calculation
-i% = ExtractRandomTable%(1, im%)
-j% = ExtractRandomTable%(2, im%)
-
-msg$ = vbCrLf & vbCrLf & "Calculating boundary extract " & Format$(mm%) & " of " & Format$(m%) & ": " & Trim$(Symup$(i%)) & "-" & Trim$(Symup$(j%)) & "..."
-Call IOWriteLog(msg$)
-Call IOStatusAuto(msg$)
-DoEvents
-
-ExtractElement% = i%                    ' load matrix 1
-ExtractMatrix% = j%                    ' load matrix 2
-Call Penepma12ExtractBoundary
-ExtractElement% = tExtractElement%      ' restore
-ExtractMatrix% = tExtractMatrix%      ' restore
-
-' Update complete status for this calculation
-'Call Penepma12ExtractRandomCheck(Int(2), Int(3), m%, ExtractRandomTable%(), im%, mm%, done)
-'If ierror Then Exit Sub
-
-If ierror Then
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-End If
-
-Loop
-
-msg$ = "All boundary k-ratio extraction calculations are complete"
-MsgBox msg$, vbOKOnly + vbInformation, "Penepma12ExtractRandom"
-End If
-
-' ExtractMethod = 1  Extract matrix k-ratios over the periodic table
-If ExtractMethod% = 1 Then
-
-msg$ = "This matrix k-ratio extraction is designed to be performed by executing many multiple applications running in parallel utilizing a shared network folder for the Penepma12_PAR_Path to facilitate calculation of all matrix binaries for the entire periodic table. The total calculation time will be approximately several months divided by the number of parallel applications running simultaneously (10 applications running in parallel will take weeks)! Are you sure you want to proceed?"
-response% = MsgBox(msg$, vbOKCancel + vbQuestion + vbDefaultButton2, "Penepma12ExtractRandom")
-If response% = vbCancel Then Exit Sub
-
-m% = 0
-ReDim ExtractRandomTable(1 To 2, 1 To 1) As Integer
-For i% = 1 To MAXELM%
-m% = m% + 1
-ReDim Preserve ExtractRandomTable(1 To 2, 1 To m%) As Integer
-ExtractRandomTable%(1, m%) = i%   ' ExtractElement1 and ExtractElement2
-ExtractRandomTable%(2, m%) = m%   ' Sequence number
-Next i%
-
-' Try to create a new PAR share file
-'Call Penepma12ExtractRandomCheck(Int(0), Int(2), m%, ExtractRandomTable%(), im%, mm%, done)
-'If ierror Then Exit Sub
-
-tExtractElement% = ExtractElement%      ' save
-tExtractMatrix% = ExtractMatrix%      ' save
-
-' Check if randomly selected pure element is being calculated already (im is selected element, mm is elements calculated so far)
-Do Until done
-'Call Penepma12ExtractRandomCheck(Int(1), Int(2), m%, ExtractRandomTable%(), im%, mm%, done)
-'If ierror Then Exit Sub
-If done Then Exit Do
-
-' Load next calculation
-i% = ExtractRandomTable%(1, im%)
-
-msg$ = vbCrLf & vbCrLf & "Calculating matrix extract " & Format$(mm%) & " of " & Format$(m%) & ": " & Trim$(Symup$(i%)) & "..."
-Call IOWriteLog(msg$)
-Call IOStatusAuto(msg$)
-DoEvents
-
-ExtractElement% = i%
-ExtractMatrix% = i%
-tMaterialMeasuredGridPoints% = MaterialMeasuredGridPoints%      ' save
-MaterialMeasuredGridPoints% = 1     ' use a single point for matrix calculations
-Call Penepma12ExtractMatrix
-MaterialMeasuredGridPoints% = tMaterialMeasuredGridPoints%      ' restore
-ExtractElement% = tExtractElement%      ' restore
-ExtractMatrix% = tExtractMatrix%      ' restore
-
-' Update complete status for this calculation
-'Call Penepma12ExtractRandomCheck(Int(2), Int(2), m%, ExtractRandomTable%(), im%, mm%, done)
-'If ierror Then Exit Sub
-
-If ierror Then
-Call IOStatusAuto(vbNullString)
-ierror = True
-Exit Sub
-End If
-
-Loop
-
-msg$ = "All matrix k-ratio extraction file calculations are complete"
-MsgBox msg$, vbOKOnly + vbInformation, "Penepma12ExtractRandom"
-End If
-
-Call IOStatusAuto(vbNullString)
-Exit Sub
-
-' Errors
-Penepma12ExtractRandomError:
-MsgBox Error$, vbOKOnly + vbCritical, "Penepma12ExtractRandom"
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub Penepma12Random()
-' Load the Penepma12 Calculate/Extract form (used to create multiple instances of PenPFE.exe)
+' Load the Penepma12 Calculate/Extract form
 
 ierror = False
 On Error GoTo Penepma12RandomError

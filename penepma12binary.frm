@@ -16,7 +16,7 @@ Begin VB.Form FormPenepma12Binary
       Height          =   255
       Index           =   0
       Left            =   960
-      TabIndex        =   71
+      TabIndex        =   70
       TabStop         =   0   'False
       Top             =   8760
       Width           =   5415
@@ -26,7 +26,7 @@ Begin VB.Form FormPenepma12Binary
       Height          =   255
       Index           =   3
       Left            =   960
-      TabIndex        =   65
+      TabIndex        =   64
       TabStop         =   0   'False
       Top             =   9480
       Width           =   5415
@@ -36,7 +36,7 @@ Begin VB.Form FormPenepma12Binary
       Height          =   255
       Index           =   2
       Left            =   960
-      TabIndex        =   64
+      TabIndex        =   63
       TabStop         =   0   'False
       Top             =   9240
       Width           =   5415
@@ -46,7 +46,7 @@ Begin VB.Form FormPenepma12Binary
       Height          =   255
       Index           =   1
       Left            =   960
-      TabIndex        =   63
+      TabIndex        =   62
       TabStop         =   0   'False
       Top             =   9000
       Width           =   5415
@@ -57,7 +57,7 @@ Begin VB.Form FormPenepma12Binary
       Height          =   615
       Left            =   5160
       Style           =   1  'Graphical
-      TabIndex        =   62
+      TabIndex        =   61
       TabStop         =   0   'False
       ToolTipText     =   "Read binary k-ratio input .DAT file and calculate all necessary PAR files for all compositions (e.g., Pouchou2.dat)"
       Top             =   7200
@@ -68,14 +68,14 @@ Begin VB.Form FormPenepma12Binary
       ForeColor       =   &H00FF0000&
       Height          =   2415
       Left            =   5160
-      TabIndex        =   50
+      TabIndex        =   49
       Top             =   4680
       Width           =   2055
       Begin VB.CommandButton CommandCalculateDensity 
          Caption         =   "Calculate Density"
          Height          =   375
          Left            =   240
-         TabIndex        =   60
+         TabIndex        =   59
          TabStop         =   0   'False
          ToolTipText     =   "Calculate the pure element normalized density based on the above binary composition"
          Top             =   1560
@@ -84,7 +84,7 @@ Begin VB.Form FormPenepma12Binary
       Begin VB.TextBox TextDensityElementA 
          Height          =   285
          Left            =   120
-         TabIndex        =   57
+         TabIndex        =   56
          TabStop         =   0   'False
          ToolTipText     =   "Enter symbol for element A to calculate pure element normalized density"
          Top             =   600
@@ -93,7 +93,7 @@ Begin VB.Form FormPenepma12Binary
       Begin VB.TextBox TextDensityElementB 
          Height          =   285
          Left            =   1080
-         TabIndex        =   56
+         TabIndex        =   55
          TabStop         =   0   'False
          ToolTipText     =   "Enter symbol for element B to calculate pure element normalized density"
          Top             =   600
@@ -102,7 +102,7 @@ Begin VB.Form FormPenepma12Binary
       Begin VB.TextBox TextConcAA 
          Height          =   285
          Left            =   120
-         TabIndex        =   53
+         TabIndex        =   52
          TabStop         =   0   'False
          ToolTipText     =   "Enter elemental weight percent for element A to calculate pure element normalized density"
          Top             =   1200
@@ -111,7 +111,7 @@ Begin VB.Form FormPenepma12Binary
       Begin VB.TextBox TextConcBB 
          Height          =   285
          Left            =   1080
-         TabIndex        =   52
+         TabIndex        =   51
          TabStop         =   0   'False
          ToolTipText     =   "Enter elemental weight percent for element B to calculate pure element normalized density"
          Top             =   1200
@@ -122,7 +122,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "SymA"
          Height          =   255
          Left            =   120
-         TabIndex        =   59
+         TabIndex        =   58
          Top             =   360
          Width           =   855
       End
@@ -131,7 +131,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "SymB"
          Height          =   255
          Left            =   1080
-         TabIndex        =   58
+         TabIndex        =   57
          Top             =   360
          Width           =   855
       End
@@ -140,7 +140,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "ConcA"
          Height          =   255
          Left            =   120
-         TabIndex        =   55
+         TabIndex        =   54
          Top             =   960
          Width           =   855
       End
@@ -149,7 +149,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "ConcB"
          Height          =   255
          Left            =   1080
-         TabIndex        =   54
+         TabIndex        =   53
          Top             =   960
          Width           =   855
       End
@@ -158,7 +158,7 @@ Begin VB.Form FormPenepma12Binary
          BorderStyle     =   1  'Fixed Single
          Height          =   255
          Left            =   480
-         TabIndex        =   51
+         TabIndex        =   50
          Top             =   2040
          Width           =   1095
       End
@@ -168,13 +168,13 @@ Begin VB.Form FormPenepma12Binary
       ForeColor       =   &H00FF0000&
       Height          =   2775
       Left            =   5160
-      TabIndex        =   38
+      TabIndex        =   37
       Top             =   1440
       Width           =   2055
       Begin VB.TextBox TextKratB 
          Height          =   285
          Left            =   1080
-         TabIndex        =   49
+         TabIndex        =   48
          TabStop         =   0   'False
          ToolTipText     =   "Enter elemental kratio (relative to pure element intensity) for element B"
          Top             =   1800
@@ -183,7 +183,7 @@ Begin VB.Form FormPenepma12Binary
       Begin VB.TextBox TextKratA 
          Height          =   285
          Left            =   120
-         TabIndex        =   47
+         TabIndex        =   46
          TabStop         =   0   'False
          ToolTipText     =   "Enter elemental kratio (relative to pure element intensity) for element A"
          Top             =   1800
@@ -192,7 +192,7 @@ Begin VB.Form FormPenepma12Binary
       Begin VB.TextBox TextConcB 
          Height          =   285
          Left            =   1080
-         TabIndex        =   45
+         TabIndex        =   44
          TabStop         =   0   'False
          ToolTipText     =   "Enter elemental concentration for element B"
          Top             =   1200
@@ -203,7 +203,7 @@ Begin VB.Form FormPenepma12Binary
          Height          =   255
          Index           =   1
          Left            =   120
-         TabIndex        =   43
+         TabIndex        =   42
          TabStop         =   0   'False
          ToolTipText     =   "Enter elemental concentrations (and k-ratios) in weight fraction (and intensity fraction)"
          Top             =   600
@@ -214,7 +214,7 @@ Begin VB.Form FormPenepma12Binary
          Height          =   255
          Index           =   0
          Left            =   120
-         TabIndex        =   42
+         TabIndex        =   41
          TabStop         =   0   'False
          ToolTipText     =   "Enter elemental concentrations (and k-ratios) in weight percent (and intensity percent)"
          Top             =   360
@@ -223,7 +223,7 @@ Begin VB.Form FormPenepma12Binary
       Begin VB.TextBox TextConcA 
          Height          =   285
          Left            =   120
-         TabIndex        =   41
+         TabIndex        =   40
          TabStop         =   0   'False
          ToolTipText     =   "Enter elemental concentration for element A"
          Top             =   1200
@@ -233,7 +233,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Calculate Alpha Factors"
          Height          =   495
          Left            =   360
-         TabIndex        =   39
+         TabIndex        =   38
          TabStop         =   0   'False
          ToolTipText     =   "Calculate alpha factors based on composition and k-ratios"
          Top             =   2160
@@ -244,7 +244,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "KratB"
          Height          =   255
          Left            =   1080
-         TabIndex        =   48
+         TabIndex        =   47
          Top             =   1560
          Width           =   855
       End
@@ -253,7 +253,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "KratA"
          Height          =   255
          Left            =   120
-         TabIndex        =   46
+         TabIndex        =   45
          Top             =   1560
          Width           =   855
       End
@@ -262,7 +262,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "ConcB"
          Height          =   255
          Left            =   1080
-         TabIndex        =   44
+         TabIndex        =   43
          Top             =   960
          Width           =   855
       End
@@ -271,7 +271,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "ConcA"
          Height          =   255
          Left            =   120
-         TabIndex        =   40
+         TabIndex        =   39
          Top             =   960
          Width           =   855
       End
@@ -280,7 +280,7 @@ Begin VB.Form FormPenepma12Binary
       Caption         =   "Test Load Penepma Atomic Weights"
       Height          =   495
       Left            =   5160
-      TabIndex        =   33
+      TabIndex        =   32
       TabStop         =   0   'False
       ToolTipText     =   "Read Penepma atomic weights from Pendbase\pdfiles\pdcompos.p08 (for self consistency in calculations)"
       Top             =   7920
@@ -288,13 +288,13 @@ Begin VB.Form FormPenepma12Binary
    End
    Begin VB.CommandButton CommandPenPFE 
       BackColor       =   &H0080FFFF&
-      Caption         =   "Open PenPFE Control Dialog"
+      Caption         =   "Create, Read and Write Matrix and Boundary Databases"
       Height          =   495
       Left            =   360
       Style           =   1  'Graphical
-      TabIndex        =   32
+      TabIndex        =   31
       TabStop         =   0   'False
-      ToolTipText     =   "For creating multiple shared instances of PenPFE"
+      ToolTipText     =   "Create, read and write matrix and boundary database files"
       Top             =   8040
       Width           =   4335
    End
@@ -319,7 +319,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Extract Random K-Ratios Using TXT Share Folder"
          Height          =   375
          Left            =   240
-         TabIndex        =   31
+         TabIndex        =   30
          TabStop         =   0   'False
          Top             =   3240
          Width           =   4335
@@ -328,7 +328,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Check Penfluor Input Files"
          Height          =   375
          Left            =   240
-         TabIndex        =   70
+         TabIndex        =   69
          TabStop         =   0   'False
          Top             =   2880
          Width           =   2175
@@ -337,7 +337,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Extract Binary K-Ratios From Specified Composition"
          Height          =   495
          Left            =   1920
-         TabIndex        =   68
+         TabIndex        =   67
          TabStop         =   0   'False
          ToolTipText     =   "Extract all k-ratios from PAR files based on the specified formula"
          Top             =   1800
@@ -347,7 +347,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Do Not Overwrite Existing .TXT Files"
          Height          =   255
          Left            =   1800
-         TabIndex        =   61
+         TabIndex        =   60
          ToolTipText     =   "Skip extractions for existing .TXT files"
          Top             =   720
          Value           =   1  'Checked
@@ -357,7 +357,7 @@ Begin VB.Form FormPenepma12Binary
          Enabled         =   0   'False
          Height          =   315
          Left            =   240
-         TabIndex        =   35
+         TabIndex        =   34
          TabStop         =   0   'False
          ToolTipText     =   "Select the first element in the boundary binary"
          Top             =   1320
@@ -367,7 +367,7 @@ Begin VB.Form FormPenepma12Binary
          Enabled         =   0   'False
          Height          =   315
          Left            =   960
-         TabIndex        =   34
+         TabIndex        =   33
          TabStop         =   0   'False
          ToolTipText     =   "Select the second element in the boundary binary"
          Top             =   1320
@@ -469,7 +469,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Extract From Input File"
          Height          =   375
          Left            =   2400
-         TabIndex        =   72
+         TabIndex        =   71
          TabStop         =   0   'False
          ToolTipText     =   "Extract binary (alpha) element intensities using Fanal from an input file, e.g., Pouchou2.dat"
          Top             =   2880
@@ -479,7 +479,7 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Extract Pure Element Intensities"
          Height          =   495
          Left            =   2400
-         TabIndex        =   69
+         TabIndex        =   68
          TabStop         =   0   'False
          ToolTipText     =   "Extract pure element intensities using Fanal (always uses element range mode)"
          Top             =   2400
@@ -492,7 +492,7 @@ Begin VB.Form FormPenepma12Binary
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   240
-         TabIndex        =   37
+         TabIndex        =   36
          Top             =   1080
          Width           =   615
       End
@@ -503,7 +503,7 @@ Begin VB.Form FormPenepma12Binary
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   840
-         TabIndex        =   36
+         TabIndex        =   35
          Top             =   1080
          Width           =   855
       End
@@ -604,7 +604,7 @@ Begin VB.Form FormPenepma12Binary
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FF0000&
-      Height          =   3735
+      Height          =   3615
       Left            =   120
       TabIndex        =   0
       Top             =   240
@@ -613,19 +613,10 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Only Overwrite Higher Minimum Energy PAR Files"
          Height          =   255
          Left            =   840
-         TabIndex        =   67
-         Top             =   1080
+         TabIndex        =   66
+         Top             =   1200
          Value           =   1  'Checked
          Width           =   3975
-      End
-      Begin VB.CommandButton CommandCalculateRandom 
-         Caption         =   "Calculate Random Binaries Using PAR Share Folder"
-         Height          =   375
-         Left            =   240
-         TabIndex        =   30
-         TabStop         =   0   'False
-         Top             =   3240
-         Width           =   4335
       End
       Begin VB.OptionButton OptionBinaryMethod 
          Caption         =   "Binary Composition"
@@ -655,7 +646,7 @@ Begin VB.Form FormPenepma12Binary
          TabIndex        =   9
          TabStop         =   0   'False
          ToolTipText     =   "Select the ending element for binary fluorescence calculations"
-         Top             =   1800
+         Top             =   2040
          Width           =   615
       End
       Begin VB.ComboBox ComboBinaryElement1 
@@ -664,7 +655,7 @@ Begin VB.Form FormPenepma12Binary
          TabIndex        =   8
          TabStop         =   0   'False
          ToolTipText     =   "Select the starting element for binary fluorescence calculations"
-         Top             =   1440
+         Top             =   1560
          Width           =   615
       End
       Begin VB.CheckBox CheckCalculateForMatrixRange 
@@ -673,7 +664,7 @@ Begin VB.Form FormPenepma12Binary
          Left            =   1440
          TabIndex        =   7
          TabStop         =   0   'False
-         Top             =   1800
+         Top             =   2040
          Width           =   3255
       End
       Begin VB.CommandButton CommandBinaryCalculate 
@@ -685,14 +676,14 @@ Begin VB.Form FormPenepma12Binary
          TabIndex        =   5
          TabStop         =   0   'False
          ToolTipText     =   "Calculate binary or pure element  parameter (PAR) files for the selected element range"
-         Top             =   1440
+         Top             =   1560
          Width           =   3135
       End
       Begin VB.Frame Frame6 
-         Height          =   975
+         Height          =   1095
          Left            =   120
          TabIndex        =   1
-         Top             =   2160
+         Top             =   2400
          Width           =   4575
          Begin VB.OptionButton OptionFromFormula 
             Caption         =   "From Formula"
@@ -701,7 +692,7 @@ Begin VB.Form FormPenepma12Binary
             TabIndex        =   4
             TabStop         =   0   'False
             ToolTipText     =   "Calculate complete binary composition PAR files for a system specified by a formula"
-            Top             =   120
+            Top             =   240
             Width           =   1335
          End
          Begin VB.OptionButton OptionFromStandard 
@@ -711,7 +702,7 @@ Begin VB.Form FormPenepma12Binary
             TabIndex        =   3
             TabStop         =   0   'False
             ToolTipText     =   "Calculate complete binary composition PAR files for a system specified by a standard composition"
-            Top             =   120
+            Top             =   240
             Width           =   1575
          End
          Begin VB.CommandButton CommandCalculateComposition 
@@ -721,7 +712,7 @@ Begin VB.Form FormPenepma12Binary
             TabIndex        =   2
             TabStop         =   0   'False
             ToolTipText     =   "Calculate all necessary binary or pure element parameter (PAR) files based on the specified formula or standard composition"
-            Top             =   480
+            Top             =   600
             Width           =   4335
          End
       End
@@ -732,7 +723,7 @@ Begin VB.Form FormPenepma12Binary
          TabIndex        =   6
          TabStop         =   0   'False
          ToolTipText     =   "Skip calculations for existing PAR files"
-         Top             =   600
+         Top             =   720
          Value           =   1  'Checked
          Width           =   3135
       End
@@ -740,8 +731,8 @@ Begin VB.Form FormPenepma12Binary
          Caption         =   "Only Overwrite Lower Precision PAR Files"
          Height          =   255
          Left            =   840
-         TabIndex        =   66
-         Top             =   840
+         TabIndex        =   65
+         Top             =   960
          Value           =   1  'Checked
          Width           =   3615
       End
@@ -751,7 +742,7 @@ Begin VB.Form FormPenepma12Binary
          Height          =   255
          Left            =   120
          TabIndex        =   13
-         Top             =   1680
+         Top             =   2040
          Width           =   495
       End
       Begin VB.Label LabelFrom 
@@ -760,7 +751,7 @@ Begin VB.Form FormPenepma12Binary
          Height          =   255
          Left            =   120
          TabIndex        =   12
-         Top             =   1320
+         Top             =   1560
          Width           =   495
       End
    End
@@ -804,16 +795,6 @@ If ierror Then Exit Sub
 Call Penepma12BinarySave
 If ierror Then Exit Sub
 Call Penepma12CalculateKratios(FormPenepma12Binary)
-If ierror Then Exit Sub
-End Sub
-
-Private Sub CommandCalculateRandom_Click()
-If Not DebugMode Then On Error Resume Next
-Call Penepma12Save
-If ierror Then Exit Sub
-Call Penepma12BinarySave
-If ierror Then Exit Sub
-Call Penepma12CalculateRandom
 If ierror Then Exit Sub
 End Sub
 
@@ -876,16 +857,6 @@ If ierror Then Exit Sub
 Call Penepma12BinarySave
 If ierror Then Exit Sub
 Call Penepma12ExtractPure
-If ierror Then Exit Sub
-End Sub
-
-Private Sub CommandExtractRandom_Click()
-If Not DebugMode Then On Error Resume Next
-Call Penepma12Save
-If ierror Then Exit Sub
-Call Penepma12BinarySave
-If ierror Then Exit Sub
-Call Penepma12ExtractRandom
 If ierror Then Exit Sub
 End Sub
 

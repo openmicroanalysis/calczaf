@@ -1,14 +1,14 @@
 VERSION 5.00
 Begin VB.Form FormPenepma12Random 
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Perform PenPFE Calculations"
-   ClientHeight    =   9120
+   Caption         =   "Create, Read and Write Matrix and Boundary Databases"
+   ClientHeight    =   6735
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   14385
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   ScaleHeight     =   9120
+   ScaleHeight     =   6735
    ScaleWidth      =   14385
    StartUpPosition =   3  'Windows Default
    Begin VB.Frame Frame6 
@@ -25,14 +25,14 @@ Begin VB.Form FormPenepma12Random
       ForeColor       =   &H00FF0000&
       Height          =   1575
       Left            =   11160
-      TabIndex        =   75
-      Top             =   3600
+      TabIndex        =   57
+      Top             =   960
       Width           =   3135
       Begin VB.CommandButton CommandScanPure 
          Caption         =   "Scan Input Files and Write To Pure.MDB"
          Height          =   495
          Left            =   240
-         TabIndex        =   77
+         TabIndex        =   59
          Top             =   960
          Width           =   2655
       End
@@ -40,13 +40,13 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Create New (Empty) Pure.MDB"
          Height          =   495
          Left            =   240
-         TabIndex        =   76
+         TabIndex        =   58
          Top             =   360
          Width           =   2655
       End
    End
    Begin VB.Frame Frame5 
-      Caption         =   "Create, Update Or Read Boundary.MDB K-Ratio Database for Penepma Boundary Correction Calculations"
+      Caption         =   "Create, Update Or Read Boundary.MDB K-Ratio Database for Penepma Boundary Correction Calculations (obsolete)"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -59,22 +59,22 @@ Begin VB.Form FormPenepma12Random
       ForeColor       =   &H00FF0000&
       Height          =   3615
       Left            =   120
-      TabIndex        =   34
-      Top             =   5400
+      TabIndex        =   16
+      Top             =   3000
       Width           =   14175
       Begin VB.CommandButton CommandUpdateBoundary2 
          Caption         =   $"Penepma12Random.frx":0000
          Enabled         =   0   'False
          Height          =   1095
          Left            =   4320
-         TabIndex        =   74
+         TabIndex        =   56
          Top             =   2400
          Width           =   3255
       End
       Begin VB.TextBox TextBoundaryB2 
          Height          =   285
          Left            =   9120
-         TabIndex        =   73
+         TabIndex        =   55
          ToolTipText     =   "Enter concentration of boundary element B2"
          Top             =   3120
          Width           =   1215
@@ -82,7 +82,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.TextBox TextBoundaryB1 
          Height          =   285
          Left            =   7680
-         TabIndex        =   71
+         TabIndex        =   53
          ToolTipText     =   "Enter concentration of boundary element B1"
          Top             =   3120
          Width           =   1215
@@ -90,7 +90,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.TextBox TextMatrixA1 
          Height          =   285
          Left            =   7680
-         TabIndex        =   69
+         TabIndex        =   51
          ToolTipText     =   "Enter concentration of matrix element A1"
          Top             =   2520
          Width           =   1215
@@ -98,7 +98,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.TextBox TextMatrixA2 
          Height          =   285
          Left            =   9120
-         TabIndex        =   67
+         TabIndex        =   49
          ToolTipText     =   "Enter concentration of matrix element A2"
          Top             =   2520
          Width           =   1215
@@ -106,7 +106,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.ComboBox ComboBoundaryB1 
          Height          =   315
          Left            =   10920
-         TabIndex        =   61
+         TabIndex        =   43
          TabStop         =   0   'False
          ToolTipText     =   "Select the first element in the boundary binary"
          Top             =   1200
@@ -115,7 +115,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.ComboBox ComboBoundaryB2 
          Height          =   315
          Left            =   12480
-         TabIndex        =   60
+         TabIndex        =   42
          TabStop         =   0   'False
          ToolTipText     =   "Select the second element in the boundary binary"
          Top             =   1200
@@ -124,7 +124,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.ComboBox ComboMatrixA2 
          Height          =   315
          Left            =   12480
-         TabIndex        =   59
+         TabIndex        =   41
          TabStop         =   0   'False
          ToolTipText     =   "Select the second element in the boundary binary"
          Top             =   600
@@ -133,7 +133,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.ComboBox ComboMatrixA1 
          Height          =   315
          Left            =   10920
-         TabIndex        =   58
+         TabIndex        =   40
          TabStop         =   0   'False
          ToolTipText     =   "Select the first element in the boundary binary"
          Top             =   600
@@ -143,21 +143,21 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Interpolate K-Ratios Based On TakeOff, Emitting Element, Matrix Binary and Boundary Binary At Specified Mass Distance (Only)"
          Height          =   495
          Left            =   4320
-         TabIndex        =   57
+         TabIndex        =   39
          Top             =   1680
          Width           =   6135
       End
       Begin VB.TextBox TextDensityB 
          Height          =   285
          Left            =   12480
-         TabIndex        =   56
+         TabIndex        =   38
          Top             =   3120
          Width           =   1335
       End
       Begin VB.TextBox TextDensityA 
          Height          =   285
          Left            =   10920
-         TabIndex        =   54
+         TabIndex        =   36
          Top             =   3120
          Width           =   1335
       End
@@ -166,7 +166,7 @@ Begin VB.Form FormPenepma12Random
          Height          =   255
          Index           =   1
          Left            =   12600
-         TabIndex        =   52
+         TabIndex        =   34
          Top             =   1920
          Width           =   1335
       End
@@ -175,21 +175,21 @@ Begin VB.Form FormPenepma12Random
          Height          =   255
          Index           =   0
          Left            =   11040
-         TabIndex        =   51
+         TabIndex        =   33
          Top             =   1920
          Width           =   1335
       End
       Begin VB.TextBox TextDistanceMass 
          Height          =   285
          Left            =   12480
-         TabIndex        =   50
+         TabIndex        =   32
          Top             =   2520
          Width           =   1335
       End
       Begin VB.TextBox TextDistanceMicrons 
          Height          =   285
          Left            =   10920
-         TabIndex        =   48
+         TabIndex        =   30
          Top             =   2520
          Width           =   1335
       End
@@ -206,7 +206,7 @@ Begin VB.Form FormPenepma12Random
          EndProperty
          Height          =   615
          Left            =   360
-         TabIndex        =   41
+         TabIndex        =   23
          TabStop         =   0   'False
          Top             =   1200
          Width           =   3255
@@ -224,7 +224,7 @@ Begin VB.Form FormPenepma12Random
          EndProperty
          Height          =   615
          Left            =   360
-         TabIndex        =   40
+         TabIndex        =   22
          TabStop         =   0   'False
          Top             =   2040
          Width           =   3255
@@ -233,7 +233,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Read Boundary.MDB (for specified energy, emitter, x-ray and matrix/boundary binary)"
          Height          =   375
          Left            =   4320
-         TabIndex        =   39
+         TabIndex        =   21
          TabStop         =   0   'False
          Top             =   960
          Width           =   6135
@@ -241,7 +241,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.ComboBox ComboEmitterElement2 
          Height          =   315
          Left            =   7440
-         TabIndex        =   38
+         TabIndex        =   20
          TabStop         =   0   'False
          ToolTipText     =   "Select the measured element to profile fluorescence"
          Top             =   600
@@ -250,7 +250,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.ComboBox ComboEmitterXRay2 
          Height          =   315
          Left            =   8400
-         TabIndex        =   37
+         TabIndex        =   19
          TabStop         =   0   'False
          ToolTipText     =   "Select the measured x-ray to profile fluorescence"
          Top             =   600
@@ -259,7 +259,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.TextBox TextBeamTakeoff2 
          Height          =   285
          Left            =   5160
-         TabIndex        =   36
+         TabIndex        =   18
          ToolTipText     =   "Enter beam takeoff angle in degrees (40 for JEOL and Cameca)"
          Top             =   600
          Width           =   855
@@ -267,7 +267,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.TextBox TextBeamEnergy2 
          Height          =   285
          Left            =   6240
-         TabIndex        =   35
+         TabIndex        =   17
          ToolTipText     =   "Enter beam energy in electron volts (eV)"
          Top             =   600
          Width           =   735
@@ -277,7 +277,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Bound2"
          Height          =   255
          Left            =   9120
-         TabIndex        =   72
+         TabIndex        =   54
          Top             =   2880
          Width           =   1215
       End
@@ -286,7 +286,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Bound1"
          Height          =   255
          Left            =   7680
-         TabIndex        =   70
+         TabIndex        =   52
          Top             =   2880
          Width           =   1215
       End
@@ -295,7 +295,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Matrix1"
          Height          =   255
          Left            =   7680
-         TabIndex        =   68
+         TabIndex        =   50
          Top             =   2280
          Width           =   1215
       End
@@ -304,7 +304,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Matrix2"
          Height          =   255
          Left            =   9120
-         TabIndex        =   66
+         TabIndex        =   48
          Top             =   2280
          Width           =   1215
       End
@@ -315,7 +315,7 @@ Begin VB.Form FormPenepma12Random
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   10920
-         TabIndex        =   65
+         TabIndex        =   47
          Top             =   960
          Width           =   1335
       End
@@ -326,7 +326,7 @@ Begin VB.Form FormPenepma12Random
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   12480
-         TabIndex        =   64
+         TabIndex        =   46
          Top             =   960
          Width           =   1335
       End
@@ -337,7 +337,7 @@ Begin VB.Form FormPenepma12Random
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   12480
-         TabIndex        =   63
+         TabIndex        =   45
          Top             =   360
          Width           =   1335
       End
@@ -348,7 +348,7 @@ Begin VB.Form FormPenepma12Random
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   10920
-         TabIndex        =   62
+         TabIndex        =   44
          Top             =   360
          Width           =   1335
       End
@@ -357,7 +357,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Boundary Density"
          Height          =   255
          Left            =   12480
-         TabIndex        =   55
+         TabIndex        =   37
          Top             =   2880
          Width           =   1335
       End
@@ -366,7 +366,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Incident Density"
          Height          =   255
          Left            =   10920
-         TabIndex        =   53
+         TabIndex        =   35
          Top             =   2880
          Width           =   1335
       End
@@ -375,7 +375,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Distance (ug/cm2)"
          Height          =   255
          Left            =   12480
-         TabIndex        =   49
+         TabIndex        =   31
          Top             =   2280
          Width           =   1335
       End
@@ -384,7 +384,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Distance (um)"
          Height          =   255
          Left            =   10920
-         TabIndex        =   47
+         TabIndex        =   29
          Top             =   2280
          Width           =   1335
       End
@@ -395,7 +395,7 @@ Begin VB.Form FormPenepma12Random
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   7440
-         TabIndex        =   46
+         TabIndex        =   28
          Top             =   360
          Width           =   735
       End
@@ -406,7 +406,7 @@ Begin VB.Form FormPenepma12Random
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   8400
-         TabIndex        =   45
+         TabIndex        =   27
          Top             =   360
          Width           =   735
       End
@@ -415,7 +415,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "KeV"
          Height          =   255
          Left            =   6240
-         TabIndex        =   44
+         TabIndex        =   26
          Top             =   360
          Width           =   735
       End
@@ -424,7 +424,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Take-off"
          Height          =   255
          Left            =   5160
-         TabIndex        =   43
+         TabIndex        =   25
          Top             =   360
          Width           =   855
       End
@@ -433,7 +433,7 @@ Begin VB.Form FormPenepma12Random
          BorderStyle     =   1  'Fixed Single
          Height          =   255
          Left            =   4320
-         TabIndex        =   42
+         TabIndex        =   24
          Top             =   1320
          Width           =   6135
       End
@@ -452,14 +452,14 @@ Begin VB.Form FormPenepma12Random
       ForeColor       =   &H00FF0000&
       Height          =   2415
       Left            =   120
-      TabIndex        =   19
-      Top             =   2760
+      TabIndex        =   1
+      Top             =   240
       Width           =   10935
       Begin VB.CommandButton CommandAddMatrix 
          Caption         =   "Add Penepma K-Ratios To Matrix.MDB"
          Height          =   495
          Left            =   2640
-         TabIndex        =   80
+         TabIndex        =   62
          Top             =   960
          Width           =   1935
       End
@@ -467,7 +467,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Check Database Alpha Fit Deviations"
          Height          =   375
          Left            =   360
-         TabIndex        =   79
+         TabIndex        =   61
          Top             =   1920
          Width           =   4215
       End
@@ -475,14 +475,14 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Check Database Kratios Against CalcZAF"
          Height          =   375
          Left            =   360
-         TabIndex        =   78
+         TabIndex        =   60
          Top             =   1560
          Width           =   4215
       End
       Begin VB.TextBox TextBeamEnergy 
          Height          =   285
          Left            =   6240
-         TabIndex        =   30
+         TabIndex        =   12
          ToolTipText     =   "Enter beam energy in electron volts (eV)"
          Top             =   600
          Width           =   735
@@ -490,7 +490,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.TextBox TextBeamTakeoff 
          Height          =   285
          Left            =   5160
-         TabIndex        =   29
+         TabIndex        =   11
          ToolTipText     =   "Enter beam takeoff angle in degrees (40 for JEOL and Cameca)"
          Top             =   600
          Width           =   855
@@ -498,7 +498,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.ComboBox ComboMatrixElement 
          Height          =   315
          Left            =   9720
-         TabIndex        =   27
+         TabIndex        =   9
          TabStop         =   0   'False
          ToolTipText     =   "Select the boundary or matrix element"
          Top             =   600
@@ -507,7 +507,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.ComboBox ComboEmitterXRay 
          Height          =   315
          Left            =   8400
-         TabIndex        =   24
+         TabIndex        =   6
          TabStop         =   0   'False
          ToolTipText     =   "Select the measured x-ray to profile fluorescence"
          Top             =   600
@@ -516,7 +516,7 @@ Begin VB.Form FormPenepma12Random
       Begin VB.ComboBox ComboEmitterElement 
          Height          =   315
          Left            =   7440
-         TabIndex        =   23
+         TabIndex        =   5
          TabStop         =   0   'False
          ToolTipText     =   "Select the measured element to profile fluorescence"
          Top             =   600
@@ -528,7 +528,7 @@ Begin VB.Form FormPenepma12Random
          Height          =   495
          Left            =   4920
          Style           =   1  'Graphical
-         TabIndex        =   22
+         TabIndex        =   4
          TabStop         =   0   'False
          Top             =   1080
          Width           =   5655
@@ -546,7 +546,7 @@ Begin VB.Form FormPenepma12Random
          EndProperty
          Height          =   495
          Left            =   360
-         TabIndex        =   21
+         TabIndex        =   3
          TabStop         =   0   'False
          Top             =   960
          Width           =   2175
@@ -564,7 +564,7 @@ Begin VB.Form FormPenepma12Random
          EndProperty
          Height          =   495
          Left            =   360
-         TabIndex        =   20
+         TabIndex        =   2
          TabStop         =   0   'False
          Top             =   360
          Width           =   4215
@@ -574,7 +574,7 @@ Begin VB.Form FormPenepma12Random
          BorderStyle     =   1  'Fixed Single
          Height          =   495
          Left            =   4920
-         TabIndex        =   33
+         TabIndex        =   15
          Top             =   1680
          Width           =   5655
       End
@@ -583,7 +583,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "Take-off"
          Height          =   255
          Left            =   5160
-         TabIndex        =   32
+         TabIndex        =   14
          Top             =   360
          Width           =   855
       End
@@ -592,7 +592,7 @@ Begin VB.Form FormPenepma12Random
          Caption         =   "KeV"
          Height          =   255
          Left            =   6240
-         TabIndex        =   31
+         TabIndex        =   13
          Top             =   360
          Width           =   735
       End
@@ -603,7 +603,7 @@ Begin VB.Form FormPenepma12Random
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   9720
-         TabIndex        =   28
+         TabIndex        =   10
          Top             =   360
          Width           =   735
       End
@@ -614,7 +614,7 @@ Begin VB.Form FormPenepma12Random
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   8400
-         TabIndex        =   26
+         TabIndex        =   8
          Top             =   360
          Width           =   735
       End
@@ -625,7 +625,7 @@ Begin VB.Form FormPenepma12Random
          ForeColor       =   &H80000008&
          Height          =   255
          Left            =   7440
-         TabIndex        =   25
+         TabIndex        =   7
          Top             =   360
          Width           =   735
       End
@@ -647,209 +647,10 @@ Begin VB.Form FormPenepma12Random
       Height          =   495
       Left            =   11760
       Style           =   1  'Graphical
-      TabIndex        =   17
-      TabStop         =   0   'False
-      Top             =   2880
-      Width           =   1815
-   End
-   Begin VB.Frame Frame1 
-      Caption         =   "Perform Multiple Instance Penfluor/Fitall/Fanal Calculations"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00FF0000&
-      Height          =   2415
-      Left            =   120
       TabIndex        =   0
-      Top             =   120
-      Width           =   10935
-      Begin VB.TextBox TextPenPFEPath 
-         Enabled         =   0   'False
-         Height          =   285
-         Left            =   1680
-         TabIndex        =   13
-         Top             =   360
-         Width           =   7935
-      End
-      Begin VB.CommandButton CommandBrowsePenPFE 
-         Caption         =   "Browse"
-         Height          =   255
-         Left            =   9720
-         TabIndex        =   12
-         TabStop         =   0   'False
-         Top             =   360
-         Width           =   855
-      End
-      Begin VB.TextBox TextPARSharePath 
-         Enabled         =   0   'False
-         Height          =   285
-         Left            =   1680
-         TabIndex        =   11
-         Top             =   720
-         Width           =   7935
-      End
-      Begin VB.CommandButton CommandBrowsePARShare 
-         Caption         =   "Browse"
-         Height          =   255
-         Left            =   9720
-         TabIndex        =   10
-         TabStop         =   0   'False
-         Top             =   720
-         Width           =   855
-      End
-      Begin VB.TextBox TextNumberOfInstances 
-         Height          =   285
-         Left            =   3600
-         TabIndex        =   9
-         Top             =   1200
-         Width           =   735
-      End
-      Begin VB.Frame Frame2 
-         Caption         =   "PAR File Calculations"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FF0000&
-         Height          =   735
-         Left            =   120
-         TabIndex        =   5
-         Top             =   1560
-         Width           =   5175
-         Begin VB.OptionButton OptionBinaryMethod 
-            Caption         =   "Pure Elements"
-            Height          =   195
-            Index           =   1
-            Left            =   2400
-            TabIndex        =   8
-            TabStop         =   0   'False
-            ToolTipText     =   "Calculate pure element compositions over the range of elements specified"
-            Top             =   360
-            Width           =   1575
-         End
-         Begin VB.OptionButton OptionBinaryMethod 
-            Caption         =   "Binary Composition"
-            Height          =   195
-            Index           =   0
-            Left            =   240
-            TabIndex        =   7
-            TabStop         =   0   'False
-            ToolTipText     =   "Calculate a range of binary compositions for the two elements specified"
-            Top             =   360
-            Width           =   2055
-         End
-         Begin VB.CommandButton CommandCalculate 
-            Caption         =   "Calculate"
-            Height          =   375
-            Left            =   4080
-            TabIndex        =   6
-            TabStop         =   0   'False
-            Top             =   240
-            Width           =   975
-         End
-      End
-      Begin VB.Frame Frame3 
-         Caption         =   "K-Ratio Extractions"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00FF0000&
-         Height          =   735
-         Left            =   5640
-         TabIndex        =   1
-         Top             =   1560
-         Width           =   5175
-         Begin VB.OptionButton OptionExtractMethod 
-            Caption         =   "Boundary"
-            Height          =   255
-            Index           =   0
-            Left            =   240
-            TabIndex        =   4
-            TabStop         =   0   'False
-            ToolTipText     =   "Extract boundary fluorescence effects for the measured element and the matrix element"
-            Top             =   360
-            Width           =   1455
-         End
-         Begin VB.OptionButton OptionExtractMethod 
-            Caption         =   "Matrix Only"
-            Height          =   255
-            Index           =   1
-            Left            =   1680
-            TabIndex        =   3
-            TabStop         =   0   'False
-            ToolTipText     =   "Extract matrix (self) fluorescence without boundary effect"
-            Top             =   360
-            Width           =   1575
-         End
-         Begin VB.CommandButton CommandExtract 
-            Caption         =   "Extract"
-            Height          =   375
-            Left            =   4080
-            TabIndex        =   2
-            TabStop         =   0   'False
-            Top             =   240
-            Width           =   975
-         End
-      End
-      Begin VB.Label Label1 
-         Caption         =   "PenPFE Path"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   16
-         Top             =   360
-         Width           =   1335
-      End
-      Begin VB.Label Label2 
-         Caption         =   "PAR Share Path"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   15
-         Top             =   720
-         Width           =   1575
-      End
-      Begin VB.Label Label3 
-         Caption         =   "Number of Penfluor/Fanal Instances To Create"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   14
-         Top             =   1200
-         Width           =   3495
-      End
-   End
-   Begin VB.Label LabelCopying 
-      Alignment       =   2  'Center
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H000000FF&
-      Height          =   1695
-      Left            =   11160
-      TabIndex        =   18
-      Top             =   840
-      Width           =   3135
+      TabStop         =   0   'False
+      Top             =   240
+      Width           =   1815
    End
 End
 Attribute VB_Name = "FormPenepma12Random"
@@ -863,30 +664,6 @@ Option Explicit
 Private Sub CommandAddMatrix_Click()
 If Not DebugMode Then On Error Resume Next
 Call Penepma12MatrixAddPenepmaKRatios
-If ierror Then Exit Sub
-End Sub
-
-Private Sub CommandBrowsePARShare_Click()
-If Not DebugMode Then On Error Resume Next
-Call Penepma12RandomBrowseFolder(Int(2))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub CommandBrowsePenPFE_Click()
-If Not DebugMode Then On Error Resume Next
-Call Penepma12RandomBrowseFolder(Int(1))
-If ierror Then Exit Sub
-End Sub
-
-Private Sub CommandCalculate_Click()
-If Not DebugMode Then On Error Resume Next
-Call Penepma12RandomSave
-If ierror Then Exit Sub
-FormPenepma12Random.LabelCopying.Caption = "Please wait for application and Penepma12 folder copy operations to complete!"
-Call Penepma12RandomRun
-FormPenepma12Random.LabelCopying.Caption = vbNullString
-If ierror Then Exit Sub
-Call Penepma12RandomRunPenfluor
 If ierror Then Exit Sub
 End Sub
 
@@ -928,18 +705,6 @@ End Sub
 Private Sub CommandCreatePure_Click()
 If Not DebugMode Then On Error Resume Next
 Call Penepma12PureNewMDB
-If ierror Then Exit Sub
-End Sub
-
-Private Sub CommandExtract_Click()
-If Not DebugMode Then On Error Resume Next
-Call Penepma12RandomSave
-If ierror Then Exit Sub
-FormPenepma12Random.LabelCopying.Caption = "Please wait for application and Penepma12 folder copy operations to complete!"
-Call Penepma12RandomRun
-FormPenepma12Random.LabelCopying.Caption = vbNullString
-If ierror Then Exit Sub
-Call Penepma12RandomRunFanal
 If ierror Then Exit Sub
 End Sub
 
@@ -989,7 +754,7 @@ Private Sub CommandUpdateBoundary2_Click()
 If Not DebugMode Then On Error Resume Next
 Call Penepma12RandomSave
 If ierror Then Exit Sub
-
+' Not yet implemented...
 End Sub
 
 Private Sub Form_Load()
@@ -1075,17 +840,3 @@ If Not DebugMode Then On Error Resume Next
 Call MiscSelectText(Screen.ActiveForm.ActiveControl)
 End Sub
 
-Private Sub TextNumberOfInstances_GotFocus()
-If Not DebugMode Then On Error Resume Next
-Call MiscSelectText(Screen.ActiveForm.ActiveControl)
-End Sub
-
-Private Sub TextPARSharePath_GotFocus()
-If Not DebugMode Then On Error Resume Next
-Call MiscSelectText(Screen.ActiveForm.ActiveControl)
-End Sub
-
-Private Sub TextPenPFEPath_GotFocus()
-If Not DebugMode Then On Error Resume Next
-Call MiscSelectText(Screen.ActiveForm.ActiveControl)
-End Sub
