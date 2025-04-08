@@ -3290,9 +3290,6 @@ If QuickscanSpeed! = 0# Then QuickscanSpeed! = 10#          ' assume 10% default
 
 DoAnalysisOutputFlag = True         ' output analyses to log window and Analyze! form
 
-' Always force the SMTP password blank
-SMTPUserPassword$ = vbNullString
-
 WavescanXIncrementFlag = False
 PeakingXIncrementFlag = False
 UnknownXIncrementFlag = False

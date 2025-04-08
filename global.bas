@@ -2033,14 +2033,6 @@ Global ExtendedMenuFlag As Integer
 Global IgnoreZAFandAlphaFactorWarnings As Integer
 Global UseAlternatingOnAndOffPeakAcquisitionFlag As Integer
 
-' Email
-Global EmailNotificationOfErrorsFlag As Integer
-Global SMTPServerAddress As String
-Global SMTPAddressTo As String
-Global SMTPAddressFrom As String
-Global SMTPUserName As String
-Global SMTPUserPassword As String
-
 ' Image acquisition
 Global ImageInterfacePresent As Integer
 Global ImageInterfaceType As Integer
@@ -2493,10 +2485,6 @@ Global PHAFirstTimeDelay As Single      ' in seconds when PHA is first set (for 
 
 Global ROMPeakingString2(0 To 2) As String
 Global CurrentROMPeakingSet(1 To MAXSPEC%) As Integer     ' 0 = fine, 1 = coarse, 2 = 2nd fine
-
-Global AutomationProgressReportTime As Variant
-'Global Const AutomationProgressReportInterval As Variant = 0.001    ' in days (86 seconds, for testing only)
-Global Const AutomationProgressReportInterval As Variant = 0.333   ' in days (8 hours)
 
 Global ImportIncrementXIncrement As Single, ImportIncrementYIncrement As Single, ImportIncrementZIncrement As Single   ' in microns
 Global ImportIncrementXFactor As Integer, ImportIncrementYFactor As Integer, ImportIncrementZFactor As Integer

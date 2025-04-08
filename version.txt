@@ -2,7 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
-01/02/25	Remove PenPfe code and executable from source code.
+04/07/25	Remove smtp and mail mesage controls from PFE and other apps. Remove email notification 
+v. 14.1.5	code and controls from PFE and other apps. Remove smtp and mail message controls from WIX 
+		deployment code.
+		
+		Modify PFE code to only print estimated automation time if > 0.
+
+04/02/25	Remove PenPfe code and executable from source code.
 v. 14.1.4
 
 03/20/25	Add check for Bragg order in UpdateChangedSample code.

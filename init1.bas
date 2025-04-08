@@ -593,42 +593,6 @@ If Left$(lpReturnString$, valid&) <> vbNullString Then CustomText3$ = Left$(lpRe
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
 lpAppName$ = "General"
-lpKeyName$ = "SMTPServerAddress"
-lpDefault$ = vbNullString
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-If Left$(lpReturnString$, valid&) <> vbNullString Then SMTPServerAddress$ = Left$(lpReturnString$, valid&)
-If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-
-lpAppName$ = "General"
-lpKeyName$ = "SMTPAddressFrom"
-lpDefault$ = vbNullString
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-If Left$(lpReturnString$, valid&) <> vbNullString Then SMTPAddressFrom$ = Left$(lpReturnString$, valid&)
-If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-
-lpAppName$ = "General"
-lpKeyName$ = "SMTPAddressTo"
-lpDefault$ = vbNullString
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-If Left$(lpReturnString$, valid&) <> vbNullString Then SMTPAddressTo$ = Left$(lpReturnString$, valid&)
-If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-
-lpAppName$ = "General"
-lpKeyName$ = "SMTPUserName"
-lpDefault$ = vbNullString
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
-valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
-Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
-If Left$(lpReturnString$, valid&) <> vbNullString Then SMTPUserName$ = Left$(lpReturnString$, valid&)
-If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
-
-lpAppName$ = "General"
 lpKeyName$ = "UseWavFileAfterAutomationString"
 lpDefault$ = vbNullString
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
