@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/08/25	Modify warning about ForceNegativeKratiosToZero in Probewin.ini file (Carpenter).
+
+		Add trap for zero index returned for geological sort in Use Specified Output (Carpenter).
+		
+		Add call to MiscSortGeologicalInit to user specified (and JJD and Wright) output formats.
+		
+		Improve output speed to Analyze! window grid.
+
 04/07/25	Remove smtp and mail mesage controls from PFE and other apps. Remove email notification 
 v. 14.1.5	code and controls from PFE and other apps. Remove smtp and mail message controls from WIX 
 		deployment code.

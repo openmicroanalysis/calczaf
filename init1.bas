@@ -1405,8 +1405,10 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 If valid& <> 0 Then
 ForceNegativeKratiosToZeroFlag = True
-msg$ = "A non-zero ForceNegativeKratiosToZero keyword should be avoided in the [software] section in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbInformation, "InitINISoftware"
+If UCase$(app.EXEName) = UCase$("Probewin") Then
+msg$ = vbCrLf & "A non-zero ForceNegativeKratiosToZero keyword should be avoided in the [software] section in " & ProbeWinINIFile$ & vbCrLf
+Call IOWriteLog(msg$)
+End If
 Else
 ForceNegativeKratiosToZeroFlag = False
 End If
