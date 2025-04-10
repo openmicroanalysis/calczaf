@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/09/25	Modify RealTimeImageBeamDeflection code to utilize the DefaultMagnificationImaging global 
+		rather than the DefaultMagnification global.  This fixes issues with beam deflection 
+		acquisitions when acquiring data from the Acquire! and Automate! windows (Buse).
+
 04/08/25	Modify warning about ForceNegativeKratiosToZero in Probewin.ini file (Carpenter).
 
 		Add trap for zero index returned for geological sort in Use Specified Output (Carpenter).
