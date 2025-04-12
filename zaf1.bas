@@ -136,7 +136,7 @@ msg$ = "WARNING in ZAFReadMu- " & Format$(Symup$(zaf.Z%(i%)), a20$) & " " & Form
 Call IOWriteLog(msg$)
 End If
 990:   Next i3%
-1010:  Next i1%
+Next i1%
 1020:  Next i%
 
 ' zaf.z%(i%)  is atomic # of emitting element
@@ -171,7 +171,7 @@ Else
 zaf.mup!(i1%, i%) = mac!
 End If
 
-1050:  Next i1%
+Next i1%
 1060:  Next i%
 
 Exit Sub

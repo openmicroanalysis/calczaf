@@ -792,7 +792,7 @@ h1! = h1! + 0.0000003994 * yy! ^ 4 - 0.000000003468 * yy! ^ 5 + 0.00000000001128
 6650:
 If h1! <= 0# Then h1! = 0.000001
 hb!(i%) = h1!
-6670:  Next i%
+Next i%
 
 ' BSC2 / CALCULATION OF LOVE/SCOTT BACKSCATTER COEFFICIENTS FOR PURE ELEMENTS
 ElseIf ibsc% = 2 Then

@@ -1714,7 +1714,6 @@ Dim finalWtPercentValues_MnO As Single
 Dim finalWtPercentValues_Mn2O3 As Single
 Dim finalWtPercentValues_FeO As Single
 Dim finalWtPercentValues_Fe2O3 As Single
-Dim finalWtPercentValues_Total As Single
 
 ' Determine Mn channel
 ip% = IPOS2DQ%(nelements%, 25, AtomicNumbers%(), DisableQuantFlags%())
