@@ -146,10 +146,17 @@ stagez! = RealTimeMotorPositions!(ZMotor%)
 End If
 
 ' Move scroll bars on main window to this position
-temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.mIn
+If fractionx! >= 0# And fractionx! <= 1# Then
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
 FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
-temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.mIn
+DoEvents
+End If
+
+If fractionx! >= 0# And fractionx! <= 1# Then
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
 FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
+DoEvents
+End If
 
 ' Move to position clicked by user
 blankbeam = FormPICTURESNAP.menuMiscUseBeamBlankForStageMotion.Checked
@@ -189,11 +196,11 @@ Call PictureSnapConvert(Int(2), formx!, formy!, CSng(0#), stagex!, stagey!, stag
 If ierror Then Exit Sub
 
 ' Move scroll bars on main window to this position
-temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.mIn
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
 If fractionx! >= 0# And fractionx! <= 1# Then
 FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
 End If
-temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.mIn
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
 If fractiony! >= 0# And fractiony! <= 1# Then
 FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
 End If
@@ -360,3 +367,51 @@ Exit Sub
 
 End Sub
 
+Sub PictureSnapMoveScrollBarsToCurrentStagePosition()
+' Move the scroll bars of the main PictureSnap window to show the current stage position
+
+ierror = False
+On Error GoTo PictureSnapMoveScrollBarsToCurrentStagePositionError
+
+Dim fractionx As Single, fractiony As Single
+Dim formx As Single, formy As Single, formz As Single
+Dim temp As Single
+
+' Do not enter if not connected to stage
+If Not RealTimeMode Then Exit Sub
+
+' Check if image loaded
+If PictureSnapFilename$ = vbNullString Then Exit Sub
+
+' Check if calibrated
+If Not PictureSnapCalibrated Then Exit Sub
+
+' Convert stage coordinates to screen coordinates
+Call PictureSnapConvert(Int(2), formx!, formy!, formz!, RealTimeMotorPositions!(XMotor%), RealTimeMotorPositions!(YMotor%), RealTimeMotorPositions!(ZMotor%), fractionx!, fractiony!)
+If ierror Then Exit Sub
+
+' Move scroll bars on main window to this position
+If fractionx! >= 0# And fractionx! <= 1# Then
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
+FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
+DoEvents
+Else
+Call IOWriteLog("PictureSnapMoveScrollBarsToCurrentStagePosition: X stage position is outside of image extents")
+End If
+
+If fractiony! >= 0# And fractiony! <= 1# Then
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
+FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
+DoEvents
+Else
+Call IOWriteLog("PictureSnapMoveScrollBarsToCurrentStagePosition: Y stage position is outside of image extents")
+End If
+
+Exit Sub
+
+PictureSnapMoveScrollBarsToCurrentStagePositionError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapMoveScrollBarsToCurrentStagePosition"
+ierror = True
+Exit Sub
+
+End Sub

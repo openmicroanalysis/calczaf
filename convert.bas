@@ -2766,7 +2766,7 @@ sumSitoK_LE_16_Mn3overSumMn = chargeBalancePer16CationsTotalNonH_Mn3overSumMn
 
 ' Deviations
 Dim deviations(1 To 4) As Single
-Dim mIn As Single
+Dim min1 As Single
 Dim min2 As Single
 Dim min3 As Single
 
@@ -2777,19 +2777,19 @@ deviations!(4) = sumSitoK_LE_16_MaxDeviation!
 
 Call ConvertBubbleSort(deviations)
 If ierror Then Exit Sub
-mIn! = deviations!(1)
+min1! = deviations!(1)
 min2! = deviations!(2)
 min3! = deviations!(3)
 
 Dim AcceptedDeviationFromIdeal_threshold_0_0050 As Single
-If min2! - mIn! <= 0.005 Then
+If min2! - min1! <= 0.005 Then
     If min3! - min2! <= 0.005 Then
         AcceptedDeviationFromIdeal_threshold_0_0050! = min3!
     Else
         AcceptedDeviationFromIdeal_threshold_0_0050! = min2!
     End If
 Else
-    AcceptedDeviationFromIdeal_threshold_0_0050! = mIn!
+    AcceptedDeviationFromIdeal_threshold_0_0050! = min1!
 End If
 
 Dim preferedFormula_sumSitoCa_EQ_15 As Single

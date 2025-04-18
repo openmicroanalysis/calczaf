@@ -143,3 +143,20 @@ Exit Sub
 
 End Sub
 
+Sub PictureSnapMoveScrollBarsToCurrentStagePosition()
+' Dummy routine for CalcImage
+
+ierror = False
+On Error GoTo PictureSnapMoveScrollBarsToCurrentStagePositionError
+
+
+Exit Sub
+
+' Errors
+PictureSnapMoveScrollBarsToCurrentStagePositionError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapMoveScrollBarsToCurrentStagePosition"
+ierror = True
+Exit Sub
+
+End Sub
+

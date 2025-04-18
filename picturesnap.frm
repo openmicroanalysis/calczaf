@@ -5,6 +5,7 @@ Begin VB.Form FormPICTURESNAP
    ClientLeft      =   165
    ClientTop       =   810
    ClientWidth     =   12030
+   KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    ScaleHeight     =   8370
    ScaleWidth      =   12030
@@ -206,12 +207,20 @@ Dim BitMapY As Single
 Dim DisplayUseBlackScaleBar As Boolean
 Dim DisplayImageFOVs As Boolean
 
-Const NumberOfScrollIntervals% = 20
+Const NumberOfScrollIntervals% = 22
 
 Private Sub Form_Activate()
 If Not DebugMode Then On Error Resume Next
 ' Activate timer only on form activate event!
 FormPICTURESNAP.TimerPictureSnap.Enabled = True
+End Sub
+
+Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+' Display main PictureSnap window to current location (without user having to use the scroll bars manually)
+If KeyCode% = vbKeyHome Then
+Call PictureSnapMoveScrollBarsToCurrentStagePosition
+If ierror Then Exit Sub
+End If
 End Sub
 
 Private Sub Form_Load()
