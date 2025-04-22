@@ -540,7 +540,7 @@ Private Sub VScroll1_Scroll()
 If Not DebugMode Then On Error Resume Next
 Dim MyTop As Double
 MyTop = (Picture2.Height - Picture1.Height) * VScroll1.value / NumberOfScrollIntervals%
-Picture2.Top = -MyTop
+If MyTop <> 0 Then Picture2.Top = -MyTop        ' to avoid reading zero VScroll1.value upon exiting KeyDown event
 End Sub
 
 Private Sub HScroll1_Change()
@@ -553,5 +553,5 @@ Private Sub HScroll1_Scroll()
 If Not DebugMode Then On Error Resume Next
 Dim MyLeft As Double
 MyLeft = (Picture2.Width - Picture1.Width) * HScroll1.value / NumberOfScrollIntervals%
-Picture2.Left = -MyLeft
+If MyLeft <> 0 Then Picture2.Left = -MyLeft        ' to avoid reading zero HScroll1.value upon exiting KeyDown event
 End Sub

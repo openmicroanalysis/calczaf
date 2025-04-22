@@ -90,6 +90,7 @@ Begin VB.Form FormMAIN
       _ExtentX        =   7858
       _ExtentY        =   7646
       _Version        =   393217
+      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"CALCZAF.frx":59D8A
    End
@@ -462,9 +463,11 @@ Begin VB.Form FormMAIN
       End
       Begin VB.Menu menuAnalyticalModelSeco 
          Caption         =   $"CALCZAF.frx":59E0E
+         HelpContextID   =   771
       End
       Begin VB.Menu menuAnalyticalSecondary 
          Caption         =   "Correct Secondary Fluorescence Boundary Effects (correct intensities exported from PFE as ASCII file)"
+         HelpContextID   =   861
       End
       Begin VB.Menu menuAnalyticalSeparator0 
          Caption         =   "-"

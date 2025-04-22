@@ -394,7 +394,6 @@ If ierror Then Exit Sub
 If fractionx! >= 0# And fractionx! <= 1# Then
 temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
 FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
-DoEvents
 Else
 Call IOWriteLog("PictureSnapMoveScrollBarsToCurrentStagePosition: X stage position is outside of image extents")
 End If
@@ -402,7 +401,6 @@ End If
 If fractiony! >= 0# And fractiony! <= 1# Then
 temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
 FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
-DoEvents
 Else
 Call IOWriteLog("PictureSnapMoveScrollBarsToCurrentStagePosition: Y stage position is outside of image extents")
 End If
