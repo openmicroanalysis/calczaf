@@ -413,3 +413,62 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub PictureSnapMoveScrollBarsToCurrentImagePosition(BitMapX As Single, BitMapY As Single)
+' Move the scroll bars of the main PictureSnap window to the full view image location (without moving stage)
+' basd on double click using right mouse button
+
+ierror = False
+On Error GoTo PictureSnapMoveScrollBarsToCurrentImagePositionError
+
+Dim stagex As Single, stagey As Single, stagez As Single
+Dim tBitMapX As Single, tBitmapY As Single
+Dim fractionx As Single, fractiony As Single
+Dim xpix As Long, ypix As Long
+Dim temp As Single
+
+' If picture file is not loaded just exit
+If PictureSnapFilename$ = vbNullString Then Exit Sub
+
+' If not calibrated just calculate pixels and exit
+If Not PictureSnapCalibrated Then
+xpix& = BitMapX! / Screen.TwipsPerPixelX
+ypix& = BitMapY! / Screen.TwipsPerPixelY
+Exit Sub
+End If
+
+' Convert FormPICTURESNAP3 form coordinates to FormPICTURESNAP.Picture2 coordinates
+tBitMapX! = FormPICTURESNAP.Picture2.ScaleWidth * BitMapX! / FormPICTURESNAP3.ScaleWidth
+tBitmapY! = FormPICTURESNAP.Picture2.ScaleHeight * BitMapY! / FormPICTURESNAP3.ScaleHeight
+
+' Convert to stage coordinates
+Call PictureSnapConvert(Int(1), tBitMapX!, tBitmapY!, CSng(0#), stagex!, stagey!, stagez!, fractionx!, fractiony!)
+If ierror Then Exit Sub
+
+' Convert back to form coordinates and get fraction parameters
+Call PictureSnapConvert(Int(2), tBitMapX!, tBitmapY!, CSng(0#), stagex!, stagey!, stagez!, fractionx!, fractiony!)
+If ierror Then Exit Sub
+
+' Move scroll bars on main window to this position
+If fractionx! >= 0# And fractionx! <= 1# Then
+temp! = FormPICTURESNAP.HScroll1.Max - FormPICTURESNAP.HScroll1.Min
+FormPICTURESNAP.HScroll1.value = CInt(temp! * fractionx!)
+DoEvents
+End If
+
+If fractiony! >= 0# And fractiony! <= 1# Then
+temp! = FormPICTURESNAP.VScroll1.Max - FormPICTURESNAP.VScroll1.Min
+FormPICTURESNAP.VScroll1.value = CInt(temp! * fractiony!)
+DoEvents
+End If
+
+Exit Sub
+
+PictureSnapMoveScrollBarsToCurrentImagePositionError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapMoveScrollBarsToCurrentImagePosition"
+ierror = True
+Exit Sub
+
+End Sub
+
+

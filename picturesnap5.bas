@@ -160,3 +160,19 @@ Exit Sub
 
 End Sub
 
+Sub PictureSnapMoveScrollBarsToCurrentImagePosition(BitMapX As Single, BitMapY As Single)
+' Dummy routine for CalcImage
+
+ierror = False
+On Error GoTo PictureSnapMoveScrollBarsToCurrentImagePositionError
+
+
+Exit Sub
+
+' Errors
+PictureSnapMoveScrollBarsToCurrentImagePositionError:
+MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapMoveScrollBarsToCurrentImagePosition"
+ierror = True
+Exit Sub
+
+End Sub

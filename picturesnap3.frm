@@ -5,6 +5,7 @@ Begin VB.Form FormPICTURESNAP3
    ClientLeft      =   60
    ClientTop       =   345
    ClientWidth     =   5505
+   KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    ScaleHeight     =   5820
    ScaleWidth      =   5505
@@ -52,6 +53,14 @@ Dim BitMapButton As Integer
 Dim BitMapX As Single
 Dim BitMapY As Single
 
+Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+' Display main PictureSnap window to current location (without user having to use the scroll bars manually)
+If KeyCode% = vbKeyHome Then
+Call PictureSnapMoveScrollBarsToCurrentStagePosition
+If ierror Then Exit Sub
+End If
+End Sub
+
 Private Sub Form_Load()
 If Not DebugMode Then On Error Resume Next
 Call InitWindow(Int(2), MDBUserName$, Me)
@@ -74,17 +83,24 @@ End Sub
 
 Private Sub Image1_Click()
 If Not DebugMode Then On Error Resume Next
-' Digitize right clicked position to position database (if menu is checked)
+' Digitize right clicked position to position database (if menu is checked and FormAUTOMATE is visible)
 If BitMapButton% = vbRightButton And FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Checked Then
+If FormAUTOMATE.Visible Then
 Call PictureSnapDigitizePoint(Int(1), BitMapX!, BitMapY!)
 If ierror Then Exit Sub
+End If
 End If
 End Sub
 
 Private Sub Image1_DblClick()
 If Not DebugMode Then On Error Resume Next
+If BitMapButton% = vbLeftButton Then
 Call PictureSnapStageMove2(BitMapX!, BitMapY!)
 If ierror Then Exit Sub
+Else
+Call PictureSnapMoveScrollBarsToCurrentImagePosition(BitMapX, BitMapY)  ' digitizes a point if UseRightMouseClickToDigitize menu is checked!
+If ierror Then Exit Sub
+End If
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)

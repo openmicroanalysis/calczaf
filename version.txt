@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/22/25	Add Home key event to center main window image for PictureSnap based on current stage 
+		position. (Seward). Also add a right mouse double click event to center the main 
+		PictureSnap window on an arbitrary pixel in the full view window (Seward).
+
 04/21/25	Update PFE Reference manual.
 
 04/17/25	Add Home key event to PictureSnap in PFE/Stage to move main window to current stage 

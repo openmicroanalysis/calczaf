@@ -447,7 +447,7 @@ If Not DebugMode Then On Error Resume Next
 FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Checked = Not FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Checked
 UseRightMouseClickToDigitizeFlag = FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Checked
 If UseRightMouseClickToDigitizeFlag And Not FormAUTOMATE.Visible Then
-msg$ = "Please selected a position sample in the Automate! window before starting to digitize stage positions."
+msg$ = "Please select a position sample in the Automate! window before starting to digitize stage positions."
 MsgBox msg$, vbOKOnly + vbExclamation, "FORMPICTURESNAP"
 Exit Sub
 End If
@@ -472,10 +472,12 @@ If ierror Then Exit Sub
 WaitingForCalibrationClick = False
 DoEvents
 
-' Digitize right clicked position to position database (if menu is checked)
+' Digitize right clicked position to position database (if menu is checked and FormAUTOMATE is visible)
 If BitMapButton% = vbRightButton And FormPICTURESNAP.menuMiscUseRightMouseClickToDigitize.Checked Then
+If FormAUTOMATE.Visible Then
 Call PictureSnapDigitizePoint(Int(0), BitMapX!, BitMapY!)
 If ierror Then Exit Sub
+End If
 End If
 End Sub
 
