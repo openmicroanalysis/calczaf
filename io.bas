@@ -48,7 +48,7 @@ Private Const OFN_ENABLEHOOK = &H20
 'Private Const OFN_ENABLETEMPLATE = &H40
 'Private Const OFN_ENABLETEMPLATEHANDLE = &H80
 'Private Const OFN_NOVALIDATE = &H100
-'Private Const OFN_ALLOWMULTISELECT = &H200
+Private Const OFN_ALLOWMULTISELECT = &H200                  ' use for multi-selection of (PrbImg?) files
 'Private Const OFN_EXTENSIONDIFFERENT = &H400
 'Private Const OFN_PATHMUSTEXIST = &H800
 'Private Const OFN_FILEMUSTEXIST = &H1000
@@ -230,7 +230,7 @@ End If
 ' Thermo spectrum files
 ElseIf UCase$(ioextension$) = "EMSA" Then
 'FormMAIN.CMDialog1.Filter = "EMSA (Thermo) Spectrum Files (*.EMSA)|*.EMSA|All Files (*.*)|*.*|"
-FormMAIN.CMDialog1.Filter = "EMSA/MSA) Spectrum Files (*.EMSA;*.MSA)|*.EMSA;*.MSA|All Files (*.*)|*.*|"
+FormMAIN.CMDialog1.Filter = "EMSA/MSA Spectrum Files (*.EMSA;*.MSA)|*.EMSA;*.MSA|All Files (*.*)|*.*|"
 If mode% < 2 Then
 If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.emsa"
 End If
@@ -592,7 +592,7 @@ FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.filename = iofilename$
+FormMAIN.CMDialog1.Filename = iofilename$
 
 If mode% < 2 Then
 'FormMAIN.CMDialog1.ShowSave
@@ -743,9 +743,9 @@ FormMAIN.CMDialog1.DefaultExt = "MDB"
 
 ' Specify default if not blank
 If mdbfilename$ <> vbNullString Then
-FormMAIN.CMDialog1.filename = mdbfilename$
+FormMAIN.CMDialog1.Filename = mdbfilename$
 Else
-FormMAIN.CMDialog1.filename = "*.mdb"
+FormMAIN.CMDialog1.Filename = "*.mdb"
 End If
 
 ' Get COMMON DIALOG Filename
@@ -1692,4 +1692,63 @@ Exit Sub
 
 End Sub
 
+Sub IOGetFileNameMultiSelect(ioextension As String, iofilenames As String, tForm As Form)
+' This routine returns a string containing multiple (old) null delimited file names based on passed extension
+
+ierror = False
+On Error GoTo IOGetFileNameMultiSelectError
+
+' PrbImg ProbeImage image files
+If UCase$(ioextension$) <> UCase$("PrbImg") Then
+FormMAIN.CMDialog1.Filter = "ProbeImage Image Files (*.PrbImg)|*.PrbImg|All Files (*.*)|*.*|"
+FormMAIN.CMDialog1.DialogTitle = "Open File To Input ProbeImage Image From"
+End If
+
+' Specify default filter
+FormMAIN.CMDialog1.FilterIndex = 1
+
+' Specify OFN Flags
+FormMAIN.CMDialog1.flags = cdlOFNHideReadOnly Or cdlOFNFileMustExist Or cdlOFNPathMustExist
+
+' To fix Win 7 bug for long file names (need to use system call to GetOpenFileName or GetSaveFileName)
+FormMAIN.CMDialog1.flags = FormMAIN.CMDialog1.flags Or OFN_EXPLORER Or OFN_ENABLEHOOK Or OFN_ENABLESIZING
+
+' Specify multi-select flag
+FormMAIN.CMDialog1.flags = FormMAIN.CMDialog1.flags Or OFN_ALLOWMULTISELECT
+
+' Specify initial directory
+FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
+
+' Specify default extension
+FormMAIN.CMDialog1.DefaultExt = ioextension$
+
+' Common dialog action
+FormMAIN.CMDialog1.CancelError = True
+FormMAIN.CMDialog1.Filename = iofilenames$
+
+Call IOGetFileName2(Int(2), tForm.hWnd, FormMAIN.CMDialog1.DialogTitle, iofilenames$, FormMAIN.CMDialog1.Filter, FormMAIN.CMDialog1.flags, FormMAIN.CMDialog1.InitDir, FormMAIN.CMDialog1.DefaultExt)
+If ierror Then Exit Sub
+
+' Check for different extension than specified
+If FormMAIN.CMDialog1.flags And cdlOFNExtensionDifferent Then GoTo IOGetFileNameMultiSelectBadExtension    ' works with IOGetFileName2
+
+' Use this code to parse out filenames null delimited filenames in calling routine
+'Dim varTemp As Variant
+'varTemp = Split(.Filename, vbNullChar)
+
+Exit Sub
+
+' Errors
+IOGetFileNameMultiSelectError:
+If Err <> cdlCancel Then MsgBox Error$, vbOKOnly + vbCritical, "IOGetFileNameMultiSelect"
+ierror = True
+Exit Sub
+
+IOGetFileNameMultiSelectBadExtension:
+msg$ = "Missing or wrong ." & ioextension$ & " extension in data file name"
+MsgBox msg$, vbOKOnly + vbExclamation, "IOGetFileNameMultiSelect"
+ierror = True
+Exit Sub
+
+End Sub
 

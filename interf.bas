@@ -217,6 +217,9 @@ InterfTmpSample(1).LoPeaks!(i%) = pos!
 
 ' Save crystal 2d
 InterfTmpSample(1).Crystal2ds!(i%) = x2d!
+
+' Save crystal K (index of refraction)
+InterfTmpSample(1).CrystalKs!(i%) = k!
 End If
 Next i%
 
