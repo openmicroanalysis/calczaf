@@ -137,14 +137,14 @@ analysis.AtomicWeight! = analysis.AtomicWeight! + sample(1).AtomicWts!(chan%) * 
 'End If
 Next chan%
 
-' Calculate mass fraction Zbar based on backscatter model
-If ibsc% <> 5 Then
-analysis.zbar! = ConvertWeightsToZBarBSE(Int(0), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), sample(1).KilovoltsArray!(), ZFractionBackscatterExponent!)
+' Calculate Z fraction Zbar if DAM backscatter or Z fraction MAN fit (if Z fraction exponent is zero, then value is based on electron beam energy)
+If ibsc% = 5 Or UseZFractionZbarCalculationsFlag Then
+analysis.zbar! = ConvertWeightsToZBarBSE(Int(1), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), sample(1).KilovoltsArray!(), ZFractionBackscatterExponent!)
 If ierror Then Exit Sub
 
-' Calculate Z fraction Zbar based on backscatter model (if Z fraction exponent is zero, then value is based on electron beam energy)
+' Calculate mass fraction Zbar
 Else
-analysis.zbar! = ConvertWeightsToZBarBSE(Int(1), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), sample(1).KilovoltsArray!(), ZFractionBackscatterExponent!)
+analysis.zbar! = ConvertWeightsToZBarBSE(Int(0), sample(1).LastChan%, analysis.WtPercents!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), sample(1).KilovoltsArray!(), ZFractionBackscatterExponent!)
 If ierror Then Exit Sub
 End If
 
@@ -234,10 +234,12 @@ tForm.LabelAtomic.Caption = Format$(Format$(analysis.AtomicWeight!, f83), a80$)
 
 ' Output average Z based on backscatter model
 tForm.LabelZbar.Caption = Format$(Format$(analysis.zbar!, f83), a80$)
-If ibsc% <> 5 Then
-tForm.LabelZBarText.Caption = "Z-Bar (mass frac.)"
-Else
+
+' Note backscatter or MAN fit model
+If ibsc% = 5 Or UseZFractionZbarCalculationsFlag Then
 tForm.LabelZBarText.Caption = "Z-Bar (Z frac.)"
+Else
+tForm.LabelZBarText.Caption = "Z-Bar (mass frac.)"
 End If
 
 ' Special for Oxide standards
