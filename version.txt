@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/02/25	Add Save As BMP file (with annotations) to ImageDisplay form.
+
+		Automatically load FormGetQuant when creating a new project(Boroughs).
+
 04/30/25	Add stage IP address and port number for future support direct stage calls.
 v. 14.1.8	Fix MAN Z fraction bug (Buse).
 
