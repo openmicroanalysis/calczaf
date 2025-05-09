@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/08/25	Add saving of ACQ files for stage calibration with TXT files (Buse).
+
 05/02/25	Add Save As BMP file (with annotations) to ImageDisplay form.
 
 		Automatically load FormGetQuant when creating a new project(Boroughs).

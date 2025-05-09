@@ -712,10 +712,10 @@ On Error GoTo PictureSnapSaveCalibration3Error
 
 ' Assume unflipped coordinates
 cpoint1x! = tImage.ImageIx% * Screen.TwipsPerPixelX ' reference screen coordinates
-cpoint2x! = CSng(0) ' reference screen coordinates
+cpoint2x! = CSng(0)                                 ' reference screen coordinates
 
 cpoint1y! = tImage.ImageIy% * Screen.TwipsPerPixelY ' reference screen coordinates
-cpoint2y! = CSng(0)  ' reference screen coordinates
+cpoint2y! = CSng(0)                                 ' reference screen coordinates
 
 apoint1x! = tImage.ImageXmax!  ' reference stage coordinates
 apoint2x! = tImage.ImageXmin!  ' reference stage coordinates
