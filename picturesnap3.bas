@@ -410,7 +410,7 @@ Exit Sub
 
 End Sub
 
-Sub PictureSnapSaveCalibration(mode As Integer, pFileName As String, pcalibrationsaved As Boolean)
+Sub PictureSnapSaveCalibration(mode As Integer, pfilename As String, pcalibrationsaved As Boolean)
 ' Save the picture calibration to a text file of INI format (*.ACQ)
 '  mode = 0 confirm save
 '  mode = 1 do not confirm save
@@ -425,7 +425,7 @@ Dim cpoint1(1 To 3) As Single, cpoint2(1 To 3) As Single, cpoint3(1 To 3) As Sin
 Dim apoint1(1 To 3) As Single, apoint2(1 To 3) As Single, apoint3(1 To 3) As Single
 
 ' Check if picture file is loaded
-If Trim$(pFileName$) = vbNullString Then GoTo PictureSnapSaveCalibrationNoPicture
+If Trim$(pfilename$) = vbNullString Then GoTo PictureSnapSaveCalibrationNoPicture
 
 ' Check if picture is calibrated
 If Not PictureSnapCalibrated Then GoTo PictureSnapSaveCalibrationNotCalibrated
@@ -457,7 +457,7 @@ apoint2!(3) = apoint2z!  ' actual z reference
 apoint3!(3) = apoint3z!  ' actual z reference
 
 ' Write calibration points to INI style ACQ file
-tfilename$ = MiscGetFileNameNoExtension$(pFileName$) & ".ACQ"
+tfilename$ = MiscGetFileNameNoExtension$(pfilename$) & ".ACQ"
 
 ' Save parameters
 Call InitINIReadWriteScaler(Int(2), tfilename$, "stage", "PictureSnap mode", CSng(PictureSnapMode%))
@@ -1365,7 +1365,11 @@ arotation3! = tradians! * 180 / PI!
 End If
 
 ' Now check for bad rotations if two point mode
-If PictureSnapMode% = 0 And (Abs(crotation1!) > MAX_SLOPE! Or Abs(arotation1!) > MAX_SLOPE!) Then GoTo PictureSnapCalculateRotationBadSlope
+If PictureSnapMode% = 0 And (Abs(crotation1!) > MAX_SLOPE! Or Abs(arotation1!) > MAX_SLOPE!) Then
+msg$ = "The angle between the two calibration points for " & PictureSnapFilename$ & " is greater than " & Format$(MAX_SLOPE!) & " degrees." & vbCrLf & vbCrLf
+msg$ = msg$ & "If possible, you may want to consider picking calibration points with slopes closer to 45 degrees for best results."
+MsgBox msg$, vbOKOnly + vbInformation, "PictureSnapCalculateRotation"
+End If
 
 ' Calculate the change in rotation between screen and stage calibrations
 trotation1! = arotation1! - crotation1!
@@ -1422,12 +1426,6 @@ Exit Sub
 ' Errors
 PictureSnapCalculateRotationError:
 MsgBox Error$, vbOKOnly + vbCritical, "PictureSnapCalculateRotation"
-ierror = True
-Exit Sub
-
-PictureSnapCalculateRotationBadSlope:
-msg$ = "The angle between the two calibration points is insufficiently diagonal. Please pick calibration points with slopes closer to 45 degrees for best results."
-MsgBox msg$, vbOKOnly + vbExclamation, "PictureSnapCalculateRotation"
 ierror = True
 Exit Sub
 
