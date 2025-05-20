@@ -347,6 +347,10 @@ If UCase$(MiscGetFileNameExtensionOnly$(tFileFC$)) <> ".FC" Then GoTo ImageConve
 
 If Dir$(tFileCLR$) = vbNullString Then GoTo ImageConvertCLRtoFCNotFound
 
+Close #Temp1FileNumber%
+Close #Temp2FileNumber%
+DoEvents
+
 Open tFileCLR$ For Input As #Temp1FileNumber%
 Open tFileFC$ For Output As #Temp2FileNumber%
 
@@ -382,6 +386,7 @@ Print #Temp2FileNumber%, astring$
 
 Close #Temp1FileNumber%
 Close #Temp2FileNumber%
+
 Exit Sub
 
 ' Errors
@@ -405,7 +410,7 @@ ierror = True
 Exit Sub
 
 ImageConvertCLRtoFCNotCLR:
-msg$ = "File " & tFileCLR$ & " does not have the proper first line"
+msg$ = "File " & tFileCLR$ & " does not have the proper first line: " & "ColorMap 1 1"
 MsgBox msg$, vbOKOnly + vbExclamation, "ImageConvertCLRtoFC"
 ierror = True
 Exit Sub
