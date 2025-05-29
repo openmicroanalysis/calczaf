@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/28/25	New Classify Image Exporter v. 1.1.2 to handle columns with no data.
+
 05/22/25	New Classify Image Exporter (CIE) v. 1.0.8 improve export all and skip empty 
 		columns (Buse).
 
