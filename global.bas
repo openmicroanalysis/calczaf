@@ -2250,7 +2250,7 @@ Global SampleExchangePositions(1 To MAXAXES%) As Single
 Global Jeolhandle As Long
 Global JeolMonitorInterval As Long      ' JEOL monitor packet interval (in msec)
 
-Global UseQuickStandardsMode As Integer     ' 0 = normal, 1 = majors
+Global UseQuickStandardsMode As Integer       ' 0 = normal, 1 = majors only
 Global UseQuickStandardsMinimum As Single     ' weight percent
 
 ' Auto-focus INI values

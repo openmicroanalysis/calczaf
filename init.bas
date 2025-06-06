@@ -3139,8 +3139,8 @@ XrayColor2%(12) = 14            ' Mz
 Call InitINI3
 
 ' Load default quick standard mode
-UseQuickStandardsMode% = 0  ' normal
-UseQuickStandardsMinimum! = 10  ' 10 wt. %
+UseQuickStandardsMode% = 0              ' normal
+UseQuickStandardsMinimum! = 10          ' 10 wt.% minimum concentration
 
 If ImageInterfaceType% = 0 Then         ' Demo
     DefaultImageAnalogAverages% = 8
