@@ -1801,7 +1801,7 @@ Global ScalBiases(1 To MAXCRYS%, 1 To MAXSPEC%) As Single
 Global ScalInteDiffModes(1 To MAXCRYS%, 1 To MAXSPEC%) As Integer   ' new dimensions for intediff and deadtime
 Global ScalDeadTimes(1 To MAXCRYS%, 1 To MAXSPEC%) As Single
 
-Global ScalInteDeadTimes(1 To MAXSPEC%) As Integer              ' Cameca integer hardware deadtimes only
+Global ScalInteDeadTimes(1 To MAXSPEC%) As Integer              ' Cameca integer hardware "enforced" deadtimes only (micro-sec)
 Global ScalLargeArea(1 To MAXCRYS%, 1 To MAXSPEC%) As Integer   ' Cameca large area crystal flags only
 
 Global ScalEffectiveTakeOffs(1 To MAXCRYS%, 1 To MAXSPEC%) As Single   ' new parameter for spectrometer/crystals

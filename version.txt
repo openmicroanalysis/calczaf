@@ -2,6 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/25/25	Modify GetStdSetStd code to disable TDI cotrols for subsequent duplicate elements.
+
+06/22/25	Remove dead time parameter from SETPHA2 form.Add inte/diff mode graphics to Move window
+v. 14.2.2	PHA distribution plots.
+
+06/21/25	Modify get/set PHA code to not pass dead time parameter since it is not actually ever used..
+
+06/20/25	Add update PHA parameters for all elemnts based on current instrument settings (Neill).
+
 06/14/25	Update Matrix.mdb (>1M binary k-ratios!).
 
 06/08/25	Add links to Youtube videos for interfence assignments and MAN backgrounds acquisition and 
