@@ -207,7 +207,7 @@ Dim BitMapY As Single
 Dim DisplayUseBlackScaleBar As Boolean
 Dim DisplayImageFOVs As Boolean
 
-Const NumberOfScrollIntervals% = 22
+Const NumberOfScrollIntervals% = 1000
 
 Private Sub Form_Activate()
 If Not DebugMode Then On Error Resume Next
@@ -255,8 +255,8 @@ FormPICTURESNAP.Picture2.BorderStyle = 0
 ' Set large scroll change size
 FormPICTURESNAP.VScroll1.SmallChange = 1
 FormPICTURESNAP.HScroll1.SmallChange = 1
-FormPICTURESNAP.VScroll1.LargeChange = 2
-FormPICTURESNAP.HScroll1.LargeChange = 2
+FormPICTURESNAP.VScroll1.LargeChange = 50
+FormPICTURESNAP.HScroll1.LargeChange = 50
     
 FormPICTURESNAP.VScroll1.Max = NumberOfScrollIntervals%
 FormPICTURESNAP.HScroll1.Max = NumberOfScrollIntervals%

@@ -274,7 +274,7 @@ Private Type WIN32_FIND_DATA
 End Type
 
 Private Type FileInfo
-    filename As String
+    Filename As String
     Modified As Currency
 End Type
 
@@ -296,6 +296,8 @@ Private Const GDC_LOGPIXELSX As Long = 88
 
 Private Declare Function GetDC Lib "user32" (ByVal hWnd As Long) As Long
 Private Declare Function ReleaseDC Lib "user32" (ByVal hWnd As Long, ByVal hDC As Long) As Long
+
+Private Declare Function WNetGetConnection Lib "mpr.dll" Alias "WNetGetConnectionA" (ByVal lpszLocalName As String, ByVal lpszRemoteName As String, lRemoteNameLength As Long) As Long
 
 Public Function MiscGetWindowsDPI() As Double
 ' Returns the current screen DPI, *as set in Windows display settings.*  This obviously has no relationship to physical screen DPI,
@@ -1142,7 +1144,7 @@ hFind& = FindFirstFile(tpath$, WFD)
     Do
         If (WFD.dwFileAttributes And vbDirectory) = 0 Then
             ReDim Preserve tFiles(n&)
-            tFiles(n&).filename = Left$(WFD.cFileName, lstrlen(WFD.cFileName))
+            tFiles(n&).Filename = Left$(WFD.cFileName, lstrlen(WFD.cFileName))
             CopyMemory tFiles(n&).Modified, WFD.ftLastWriteTime, 8
             n& = n& + 1
         End If
@@ -1167,7 +1169,7 @@ ReDim tfilenames(1 To UBound(tFiles)) As String
 ReDim tfiledates(1 To UBound(tFiles)) As Variant
 
 For n& = 1 To UBound(tFiles)
-tfilenames$(n&) = tFiles(n&).filename$
+tfilenames$(n&) = tFiles(n&).Filename$
 tfiledates(n&) = FileDateTime(MiscGetPathOnly2$(tpath$) & "\" & tfilenames$(n&))
 Next n&
 
@@ -1234,4 +1236,39 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Function MiscIsNetworkDrive(driveLetter As String) As Boolean
+' Check if the specified drive letter is a network drive or not
+
+ierror = False
+On Error GoTo MiscIsNetworkDriveError
+
+  Dim strDrive As String
+  Dim strRemoteName As String
+  Dim lngReturn As Long
+  Dim lngBuffer As Long
+
+  strDrive$ = driveLetter$ & ":\"
+  strRemoteName$ = String(255, 0)
+  lngBuffer = Len(strRemoteName$)
+
+  lngReturn& = WNetGetConnection(strDrive$, strRemoteName$, lngBuffer)
+
+  If lngReturn& = 0 Then
+    MiscIsNetworkDrive = True       ' no error returned, buffer contains network drive information
+  Else
+    MiscIsNetworkDrive = False      ' error getting network drive information, assume not a network drive
+  End If
+
+Exit Function
+
+' Errors
+MiscIsNetworkDriveError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscIsNetworkDrive"
+ierror = True
+Exit Function
+
+End Function
+
+
 

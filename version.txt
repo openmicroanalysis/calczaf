@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/02/25	Add more information in MAN warning messages about using Update Fit button if some MAN standard
+		intensities are missing when MAN dialog is loaded.
+
+07/20/25	Modify PictureSnap scoll code to scroll better (Boroughs).
+
+07/17/25	New function (MiscIsNetworkDrive) to check if MDB file is on a network drive (Buse). Also add
+v. 14.2.4	similar code to CalcImage and Evaluate.
+
 07/09/25	New Classify Image Exporter app v. 1.2.1 to better handle maps with wide/tall aspect ratios.
 v. 14.2.3
 
