@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/05/25	Fix typo in std 259 name. Add EXSR string to 8x30 debug statements.
+
 08/02/25	Add more information in MAN warning messages about using Update Fit button if some MAN standard
 		intensities are missing when MAN dialog is loaded.
 
@@ -16,7 +18,7 @@ v. 14.2.3
 07/01/25	Modify EOS structure for 8x30 instruments to make magnification an explicit member 
 		(at byte offset 132).
 
-06/25/25	Modify GetStdSetStd code to disable TDI cotrols for subsequent duplicate elements.
+06/25/25	Modify GetStdSetStd code to disable TDI controls for subsequent duplicate elements.
 
 06/22/25	Remove dead time parameter from SETPHA2 form.Add inte/diff mode graphics to Move window
 v. 14.2.2	PHA distribution plots.
