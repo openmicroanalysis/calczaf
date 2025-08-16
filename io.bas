@@ -548,6 +548,19 @@ Else
 FormMAIN.CMDialog1.DialogTitle = "Open File To Input ACQ Calibration From"
 End If
 
+' Bruker BCF spectrum image files (CalcImage)
+ElseIf UCase$(ioextension$) = "BCF" Then
+FormMAIN.CMDialog1.Filter = "Bruker Hypermap Image Files (*.BCF)|*.BCF|All Files (*.*)|*.*|"
+If mode% < 2 Then
+If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.bcf"
+End If
+
+If mode% < 2 Then
+FormMAIN.CMDialog1.DialogTitle = "Open File To Output Hypermap Image Data To"
+Else
+FormMAIN.CMDialog1.DialogTitle = "Open File To Input Hypermap Image Data From"
+End If
+
 End If
 
 ' Specify default filter
@@ -592,7 +605,7 @@ FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.filename = iofilename$
+FormMAIN.CMDialog1.Filename = iofilename$
 
 If mode% < 2 Then
 'FormMAIN.CMDialog1.ShowSave
@@ -743,9 +756,9 @@ FormMAIN.CMDialog1.DefaultExt = "MDB"
 
 ' Specify default if not blank
 If mdbfilename$ <> vbNullString Then
-FormMAIN.CMDialog1.filename = mdbfilename$
+FormMAIN.CMDialog1.Filename = mdbfilename$
 Else
-FormMAIN.CMDialog1.filename = "*.mdb"
+FormMAIN.CMDialog1.Filename = "*.mdb"
 End If
 
 ' Get COMMON DIALOG Filename
@@ -1724,7 +1737,7 @@ FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.filename = iofilenames$
+FormMAIN.CMDialog1.Filename = iofilenames$
 
 Call IOGetFileName2(Int(2), tForm.hWnd, FormMAIN.CMDialog1.DialogTitle, iofilenames$, FormMAIN.CMDialog1.Filter, FormMAIN.CMDialog1.flags, FormMAIN.CMDialog1.InitDir, FormMAIN.CMDialog1.DefaultExt)
 If ierror Then Exit Sub

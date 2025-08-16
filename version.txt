@@ -2,12 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/15/25	Work on Bruker EDS/WDS integrated mapping quant code in CalcImage.
+
 08/05/25	Fix typo in std 259 name. Add EXSR string to 8x30 debug statements.
 
 08/02/25	Add more information in MAN warning messages about using Update Fit button if some MAN standard
 		intensities are missing when MAN dialog is loaded.
 
-07/20/25	Modify PictureSnap scoll code to scroll better (Boroughs).
+07/20/25	Modify PictureSnap scroll code to scroll better (Boroughs).
 
 07/17/25	New function (MiscIsNetworkDrive) to check if MDB file is on a network drive (Buse). Also add
 v. 14.2.4	similar code to CalcImage and Evaluate.
@@ -25,17 +27,17 @@ v. 14.2.2	PHA distribution plots.
 
 06/21/25	Modify get/set PHA code to not pass dead time parameter since it is not actually ever used..
 
-06/20/25	Add update PHA parameters for all elemnts based on current instrument settings (Neill).
+06/20/25	Add update PHA parameters for all elements based on current instrument settings (Neill).
 
 06/14/25	Update Matrix.mdb (>1M binary k-ratios!).
 
-06/08/25	Add links to Youtube videos for interfence assignments and MAN backgrounds acquisition and 
+06/08/25	Add links to Youtube videos for interference assignments and MAN backgrounds acquisition and 
 		blank corrections.
 
-06/05/25	Fix time estimate bug caused by quck std option (Locock).
+06/05/25	Fix time estimate bug caused by quick std option (Locock).
 v. 14.2.1
 
-05/29/25	Add call to RealTimeGetBeamMode to "Automation competed" model dia;log timer event to try and prevent 
+05/29/25	Add call to RealTimeGetBeamMode to "Automation competed" model dialog timer event to try and prevent 
 v. 14.2.0	JEOL get SGSP time out driver errors on 8200/8500 instruments (Carpenter and Boroughs).
 
 05/28/25	New Classify Image Exporter v. 1.1.2 to handle columns with no data.
@@ -43,9 +45,9 @@ v. 14.2.0	JEOL get SGSP time out driver errors on 8200/8500 instruments (Carpent
 05/22/25	New Classify Image Exporter (CIE) v. 1.0.8 improve export all and skip empty 
 		columns (Buse).
 
-05/19/25	Modfy GridXY*.BAS files to check if Rainbow2.CLR file is present (Buse).
+05/19/25	Modify GridXY*.BAS files to check if Rainbow2.CLR file is present (Buse).
 
-05/15/25	Fix Classify DAT output bug for analytical sentivity, detection limts, etc output.
+05/15/25	Fix Classify DAT output bug for analytical sensitivity, detection limits, etc output.
 
 05/14/25	Make PictureSnap check rotation error into a warning (Poirier).
 
@@ -94,7 +96,7 @@ v.14.1.6	to work better with zoomed wavescan and std/unk plots.
 		
 		Improve output speed to Analyze! window grid.
 
-04/07/25	Remove smtp and mail mesage controls from PFE and other apps. Remove email notification 
+04/07/25	Remove smtp and mail message controls from PFE and other apps. Remove email notification 
 v. 14.1.5	code and controls from PFE and other apps. Remove smtp and mail message controls from WIX 
 		deployment code.
 		
