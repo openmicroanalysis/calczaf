@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/03/25	Fix ConvertToPrbImg.exe version number code. Replace 10000 with PPM constant in output code.
+
 09/01/25	Fix missing MAN data display issue in Assign MAN Fits window (Boroughs).
 
 08/29/25	Fix minor log text "could not peak center" unnecessary output (Bosenberg).
