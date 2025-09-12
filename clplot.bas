@@ -2,8 +2,6 @@ Attribute VB_Name = "CodeCLPlot"
 ' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 
-Dim TotalEnergyRange As Single
-
 Dim GraphMinX As Single, GraphMinY As Single
 Dim GraphMaxX As Single, GraphMaxY As Single
 
@@ -25,6 +23,11 @@ tForm.Pesgo1.SubsetColors(0) = tForm.Pesgo1.PEargb(Int(255), Int(0), Int(0), Int
 tForm.Pesgo1.points = sample(1).CLSpectraNumberofChannels%(datarow%)
 
 ' Display options for Y axis label
+If FormCL.OptionXAxisUnits(0).value = True Then
+tForm.Pesgo1.XAxisLabel = InterfaceStringCLUnitsX$(CLSpectraInterfaceTypeStored%)
+Else
+tForm.Pesgo1.XAxisLabel = "eV"
+End If
 If CLIntensityOption% = 0 Then
 tForm.Pesgo1.YAxisLabel = "Intensity (counts)"
 ElseIf CLIntensityOption% = 1 Then
@@ -34,19 +37,28 @@ tForm.Pesgo1.YAxisLabel = "Net Intensity (cps)"
 End If
 
 ' Define axis and graph properties and X extent
-tForm.Pesgo1.ManualScaleControlX = PEMSC_MINMAX ' Manually Control X Axis max and min
-tForm.Pesgo1.ManualMinX = sample(1).CLSpectraStartEnergy!(datarow%)
+tForm.Pesgo1.ManualScaleControlX = PEMSC_MINMAX                                   ' manually control X Axis max and min
+If FormCL.OptionXAxisUnits(0).value = True Then
+tForm.Pesgo1.ManualMinX = sample(1).CLSpectraStartEnergy!(datarow%)               ' in nanometers
 tForm.Pesgo1.ManualMaxX = sample(1).CLSpectraEndEnergy!(datarow%)
-TotalEnergyRange! = (sample(1).CLSpectraEndEnergy!(datarow%) - sample(1).CLSpectraStartEnergy!(datarow%))
+Else
+tForm.Pesgo1.ManualMaxX = NMPEREV! / sample(1).CLSpectraStartEnergy!(datarow%)    ' in eV (note that min/max are inverted for eV units)
+tForm.Pesgo1.ManualMinX = NMPEREV! / sample(1).CLSpectraEndEnergy!(datarow%)
+End If
 
 ' Define Y extent
-tForm.Pesgo1.ManualScaleControlY = PEMSC_MIN ' Autoscale Control Y Axis max, Manual Control min
+tForm.Pesgo1.ManualScaleControlY = PEMSC_MIN                                      ' autoscale control Y Axis max, Manual Control min
 tForm.Pesgo1.ManualMinY = 0
 
-If VerboseMode And DebugMode Then
+If DebugMode Then
 msg$ = "CL Display: "
+If FormCL.OptionXAxisUnits(0).value = True Then
 msg$ = msg$ & "Start nm = " & Format$(sample(1).CLSpectraStartEnergy!(datarow%)) & ", "
-msg$ = msg$ & "Stop nm = " & Format$(sample(1).CLSpectraEndEnergy!(datarow%)) & ", "
+msg$ = msg$ & "End nm = " & Format$(sample(1).CLSpectraEndEnergy!(datarow%)) & ", "
+Else
+msg$ = msg$ & "Start eV = " & Format$(NMPEREV! / sample(1).CLSpectraEndEnergy!(datarow%)) & ", "
+msg$ = msg$ & "End eV = " & Format$(NMPEREV! / sample(1).CLSpectraStartEnergy!(datarow%)) & ", "
+End If
 msg$ = msg$ & "numChan= " & Format$(sample(1).CLSpectraNumberofChannels%(datarow%)) & ", "
 Call IOWriteLog(msg$)
 End If
@@ -67,26 +79,30 @@ If sample(1).CLDarkSpectraCountTimeFraction!(datarow%) = 0 Then GoTo CLDisplaySp
 temp1! = sample(1).CLSpectraIntensities&(datarow%, i%) / sample(1).CLAcquisitionCountTime!(datarow%)
 temp2! = sample(1).CLSpectraDarkIntensities(datarow%, i%) / (sample(1).CLAcquisitionCountTime!(datarow%) * sample(1).CLDarkSpectraCountTimeFraction!(datarow%))
 temp! = temp1! - temp2!
-tForm.Pesgo1.ydata(0, i% - 1) = temp!                                                                                             ' net intensities
+tForm.Pesgo1.ydata(0, i% - 1) = temp!                                                                                  ' net intensities
 End If
 
 ' Display dark spectra
 Else
 If CLIntensityOption% = 0 Then
-tForm.Pesgo1.ydata(0, i% - 1) = sample(1).CLSpectraDarkIntensities(datarow%, i%)                                                  ' raw counts
+tForm.Pesgo1.ydata(0, i% - 1) = sample(1).CLSpectraDarkIntensities(datarow%, i%)                                       ' raw counts
 Else
 If sample(1).CLAcquisitionCountTime!(datarow%) = 0 Then GoTo CLDisplaySpectra_PEZeroAcqTime
 If sample(1).CLDarkSpectraCountTimeFraction!(datarow%) = 0 Then GoTo CLDisplaySpectra_PEZeroFraction
 temp1! = sample(1).CLAcquisitionCountTime!(datarow%) * sample(1).CLDarkSpectraCountTimeFraction!(datarow%)
-tForm.Pesgo1.ydata(0, i% - 1) = sample(1).CLSpectraDarkIntensities(datarow%, i%) / temp1!                                         ' counts/sec
+tForm.Pesgo1.ydata(0, i% - 1) = sample(1).CLSpectraDarkIntensities(datarow%, i%) / temp1!                              ' counts/sec
 End If
 End If
 
 ' Load x data (see DataCLSpectraGetData for loading of .CLSpectraNanometers!())
-tForm.Pesgo1.xdata(0, i% - 1) = sample(1).CLSpectraNanometers!(datarow%, i%)                                                      ' nanometers
+If FormCL.OptionXAxisUnits(0).value = True Then
+tForm.Pesgo1.xdata(0, i% - 1) = sample(1).CLSpectraNanometers!(datarow%, i%)                                           ' nanometers
+Else
+tForm.Pesgo1.xdata(0, i% - 1) = NMPEREV! / sample(1).CLSpectraNanometers!(datarow%, i%)                                ' eV
+End If
 
 If VerboseMode And DebugMode Then
-Call IOWriteLog("CL Point" & Str$(i%) & ", " & InterfaceStringCLUnitsX$(CLSpectraInterfaceTypeStored%) & Str$(temp!) & ", " & Format$(sample(1).CLSpectraIntensities&(datarow%, i%)) & " counts")      ' raw counts
+Call IOWriteLog("CL Point" & Str$(i%) & ", " & InterfaceStringCLUnitsX$(CLSpectraInterfaceTypeStored%) & Str$(tForm.Pesgo1.xdata(0, i% - 1)) & ", " & Format$(sample(1).CLSpectraIntensities&(datarow%, i%)) & " counts")      ' raw counts
 End If
 Next i%
 
@@ -135,7 +151,11 @@ Call MiscPlotInit(tForm.Pesgo1, True)
 If ierror Then Exit Sub
 
 ' Plot type
+If FormCL.OptionXAxisUnits(0).value = True Then
 tForm.Pesgo1.PlottingMethod = SGPM_BAR&         ' bargraph subset
+Else
+tForm.Pesgo1.PlottingMethod = SGPM_POINT&       ' for some reason the bar method does not plot correctly in eV units!!!!
+End If
 tForm.Pesgo1.AdjoinBars = True                  ' bar always full width of bin
 
 ' Title Properties

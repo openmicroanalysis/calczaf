@@ -2,8 +2,6 @@ Attribute VB_Name = "CodeEDSPlot"
 ' (c) Copyright 1995-2025 by John J. Donovan
 Option Explicit
 
-Dim TotalEnergyRange As Single
-
 Dim GraphMinX As Single, GraphMinY As Single
 Dim GraphMaxX As Single, GraphMaxY As Single
 
@@ -88,8 +86,6 @@ tForm.Pesgo1.ManualMinX = sample(1).EDSSpectraStartEnergy!(datarow%)
 'tForm.Pesgo1.ManualMaxX = sample(1).EDSSpectraEndEnergy!(datarow%)
 'tForm.Pesgo1.ManualMaxX = EDSeVmaxdata!                                        ' max x axis is defined as last eV channel with Y data
 tForm.Pesgo1.ManualMaxX = sample(1).EDSSpectraAcceleratingVoltage!(datarow%)
-
-TotalEnergyRange! = (sample(1).EDSSpectraEndEnergy!(datarow%) - sample(1).EDSSpectraStartEnergy!(datarow%))
 
 ' Define Y extent
 tForm.Pesgo1.ManualScaleControlY = PEMSC_MIN                                    ' autoscale Control Y Axis max, Manual Control min

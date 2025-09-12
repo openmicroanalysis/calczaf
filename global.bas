@@ -166,6 +166,7 @@ Global Const PAPERNA# = 1000#            ' pico-amps per nano-amp
 Global Const NAPERMA# = 1000#            ' nano-amps per micro-amp
 
 Global Const ANGKEV! = 12.39854          ' angstrom per KeV (and visa versa)
+Global Const NMPEREV! = 1239.854         ' Nanometer per eV (and visa versa)
 Global Const ANGEV! = 12398.54           ' angstrom per eV (and visa versa)
 Global Const EVPERKEV# = 1000#           ' eV per keV
 Global Const MILLIVOLTPERVOLT# = 1000#   ' millivolt per volt
