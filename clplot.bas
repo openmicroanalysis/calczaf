@@ -46,6 +46,9 @@ tForm.Pesgo1.ManualMaxX = NMPEREV! / sample(1).CLSpectraStartEnergy!(datarow%)  
 tForm.Pesgo1.ManualMinX = NMPEREV! / sample(1).CLSpectraEndEnergy!(datarow%)
 End If
 
+' Set bar width to single data point (even though the spacing is not constant in eV units)
+tForm.Pesgo1.BarWidth = (tForm.Pesgo1.ManualMaxX - tForm.Pesgo1.ManualMinX) / (sample(1).CLSpectraNumberofChannels%(datarow%) - 1)
+
 ' Define Y extent
 tForm.Pesgo1.ManualScaleControlY = PEMSC_MIN                                      ' autoscale control Y Axis max, Manual Control min
 tForm.Pesgo1.ManualMinY = 0
@@ -151,12 +154,8 @@ Call MiscPlotInit(tForm.Pesgo1, True)
 If ierror Then Exit Sub
 
 ' Plot type
-If FormCL.OptionXAxisUnits(0).value = True Then
 tForm.Pesgo1.PlottingMethod = SGPM_BAR&         ' bargraph subset
-Else
-tForm.Pesgo1.PlottingMethod = SGPM_POINT&       ' for some reason the bar method does not plot correctly in eV units!!!!
-End If
-tForm.Pesgo1.AdjoinBars = True                  ' bar always full width of bin
+tForm.Pesgo1.AdjoinBars = True                  ' bar always full width of bin (won't work when switching to eV units as it is non-linear)
 
 ' Title Properties
 tForm.Pesgo1.ImageAdjustTop = 50                ' add space above title formatting
