@@ -2,10 +2,37 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/15/25	Add check for BeamCurrentChangeDelay to be at least 10 seconds if using UPCE command,
+		BeamCurrentType=2 (von der Handt).  Update Help file.
+
+11/14/25	Add debug statements to direct TCP/IP set beam current command code.
+
+11/07/25	In JEOLEDSImageStop, just exit if EDS interface handle is zero (Cortes).
+
+11/06/25	Add new video tutorial on dead time calibrations to Advanced EPMA window (Boroughs). Edit 
+		GetDead.frm to read "Spectro" instead of "Scaler". 
+				
+		Add BeamCurrentType option (2) to set beam current on 8x30 and later JEOL instruments using
+		"UPCE" direct TCP/IP command. Modify read Probewin.ini code.
+
+11/05/25	Add check for disable quant in CalcImageSaveQuant for element by different (Poirier).
+
+		More work on Bruker HyperMap net intensity extraction.
+
+11/04/25	Modify AcquireSetBeamModeMagnification to update condition globals to sample conditions
+		similar to code in AcquireConditions (CodeAcquire2).
+
+11/03/25	Add call to RealTimeUpdateBeamDeflection to update scan mode text in FormAcquire (Boroughs).
+
+11/01/25	Add new global for future 8x30 direct stage move calls (Use8x30DirectStageInterface) with new JEOL 
+v. 14.2.6	driver version which support stage IP address (192.168.0.3).
+
+		Add global reset in CalcImage for Project | Calculate Quantitative Images menu (Boro).
+
 09/12/25	Fix CL display when switching to eV x axis units. Work more on Bruker HyperMap code.
 
 09/11/25	Modify CL display to select between nm and eV units for x axis. Change warning about JEOL EDS 
-v.14.2.5	uncheck "Insert PCD After" a timed msgbox if running automation (Neill and McAleer).
+v. 14.2.5	uncheck "Insert PCD After" a timed msgbox if running automation (Neill and McAleer).
 
 		Add further explanation in FormSETSTD on the blank correction (Locock).
 

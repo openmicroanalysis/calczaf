@@ -3144,3 +3144,4 @@ Global DynamicOxygenByStoichiometryOperator1 As Integer
 Global DynamicOxygenByStoichiometryOperator2 As Integer
 
 Global UseMECStageColumnInterfaceFlag As Boolean
+Global Use8x30DirectStageInterface As Boolean

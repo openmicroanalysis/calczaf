@@ -39,7 +39,6 @@ Begin VB.Form FormMAIN
          BeginProperty Panel1 {0713E89F-850A-101B-AFC0-4210102A8DA7} 
             AutoSize        =   1
             Object.Width           =   14579
-            TextSave        =   ""
             Key             =   "status"
             Object.Tag             =   ""
             Object.ToolTipText     =   "Automation status"
@@ -90,7 +89,6 @@ Begin VB.Form FormMAIN
       _ExtentX        =   7858
       _ExtentY        =   7646
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"CALCZAF.frx":59D8A
    End
@@ -467,7 +465,7 @@ Begin VB.Form FormMAIN
       End
       Begin VB.Menu menuAnalyticalSecondary 
          Caption         =   "Correct Secondary Fluorescence Boundary Effects (correct intensities exported from PFE as ASCII file)"
-         HelpContextID   =   861
+         HelpContextID   =   864
       End
       Begin VB.Menu menuAnalyticalSeparator0 
          Caption         =   "-"

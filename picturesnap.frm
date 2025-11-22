@@ -157,7 +157,7 @@ Begin VB.Form FormPICTURESNAP
          Caption         =   "-"
       End
       Begin VB.Menu menuDisplayUseBlackScaleBar 
-         Caption         =   "Use Black Scaler Bar"
+         Caption         =   "Use Black Scale Bar"
       End
       Begin VB.Menu menuDisplayDisplayImageFOVs 
          Caption         =   "Display Acquired Image FOVs"

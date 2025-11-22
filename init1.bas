@@ -2547,18 +2547,24 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Hardware"
 lpKeyName$ = "BeamCurrentType"
-nDefault& = 0                       ' for JEOL instruments only: 0 = use software iteration, 1 = use firmware iteration (JEOL 8230/8530 only)
+nDefault& = 0       ' for JEOL instruments only: 0 = use software iteration, 1 = use EIKS interface (8230/8530/iSP100/iHP200F), 2 = use UPCE direct TCP/IP command (8230/8530/iSP100/iHP200F)
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 BeamCurrentType% = valid&
-If BeamCurrentType% < 0 Or BeamCurrentType% > 1 Then
+If BeamCurrentType% < 0 Or BeamCurrentType% > 2 Then
 msg$ = "BeamCurrentType keyword value is out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 BeamCurrentType% = nDefault&
 End If
-If BeamCurrentType% = 1 And (InterfaceType% = 5 Or JeolEOSInterfaceType& <> 3) Then
+If (BeamCurrentType% = 1 Or BeamCurrentType% = 2) And (InterfaceType% = 5 Or JeolEOSInterfaceType& <> 3) Then
 msg$ = "BeamCurrentType keyword value is invalid for Cameca or JEOL 8900/8200/8500 in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
+End
+End If
+If BeamCurrentType% = 2 And BeamCurrentChangeDelay! < 10# Then
+msg$ = "BeamCurrentType = 2 (use UPCE command) requires at least 10 seconds for BeamCurrentChangeDelay keyword in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
+End
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
@@ -4236,7 +4242,26 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 ' !!!! force false until MEC stage and column commands are implemented in the MECWrapper DLL by Scott Kemp !!!!
 UseMECStageColumnInterfaceFlag = False
 
+lpAppName$ = "Hardware"
+lpKeyName$ = "Use8x30DirectStageInterface"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+Use8x30DirectStageInterface = True
+Else
+Use8x30DirectStageInterface = False
+End If
+If Use8x30DirectStageInterface And JeolEOSInterfaceType& <> 3 Then
+msg$ = "Use8x30DirectStageInterface keyword value is not valid in " & ProbeWinINIFile$ & " (only applies to JEOL 8230/8530 and iSP100/iHP200F)."
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
+Use8x30DirectStageInterface = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+' !!!! force false until 8x30 stage commands are implemented in the JEOL driver DLL by Aurelien Moy !!!!
+Use8x30DirectStageInterface = False
+ 
 
 Exit Sub
 
