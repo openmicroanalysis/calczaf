@@ -1585,6 +1585,16 @@ shiftposition! = xpos! - xmin!
 temp! = ymin! + deltacounts! * shiftposition! / deltaposition!
 End If
 
+' Check if xpos is outside x axis data range and if so, just use end point Y value
+If xmin! < xmax! Then
+If xpos! < xmin! Then temp! = ymin!
+If xpos! > xmax! Then temp! = ymax!
+
+Else
+If xpos! < xmax! Then temp! = ymax!
+If xpos! > xmin! Then temp! = ymin!
+End If
+
 ' Return calculated y
 MathGetInterpolatedYValue! = temp!
 
@@ -1680,6 +1690,16 @@ Else
 deltacounts# = ymax# - ymin#
 shiftposition# = xpos# - xmin#
 temp# = ymin# + deltacounts# * shiftposition# / deltaposition#
+End If
+
+' Check if xpos is outside x axis data range and if so, just use end point Y value
+If xmin# < xmax# Then
+If xpos# < xmin# Then temp# = ymin#
+If xpos# > xmax# Then temp# = ymax#
+
+Else
+If xpos# < xmax# Then temp# = ymax#
+If xpos# > xmin# Then temp# = ymin#
 End If
 
 ' Return calculated y

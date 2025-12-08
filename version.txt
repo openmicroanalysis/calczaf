@@ -2,6 +2,39 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/03/25	Added code to handle the "spectrometer-element already loaded" error when the user has an
+		underscore and an element name as part of the sample name in the file name by starting 
+		the string search after the spectrometer number in the filename. And finding the 
+		spectrometer number by searching using the InStrRev function which starts at the end 
+		of the string and goes backwards. See CalcImageDetermineTFDIChannel and GetQuantLoad.
+		
+		Use InStrRev instead of InStr function in CalcImageLoadQuantImages to search for _SP or _WD
+		for similar reasons as previous comment.
+
+12/02/25	Add force load all standard and MAN intensities in CalcImageStartAnalysis to deal with bug
+		that might occur when using the Output Sample Parameters menu, then the  Calculate 
+		Quantitative Parameters menu.
+		
+		Added code to handle the "spectrometer-element already loaded" error when the user has an
+		underscore and an element name as part of the sample name in the file name by starting 
+		the string search after the spectrometer number in the filename. And finding the 
+		spectrometer number by searching using the InStrRev function which starts at the end 
+		of the string and goes backwards. See CalcImageCreatProjectLoaded.
+
+11/21/25	New Classify Image Exporter with static libraries. Ask user for export to Excel for 
+		CalcImage image statistics and check if Excel installed. (Neill).
+
+11/19/25	Modify Math.bas MathGetInterpolatedYValue and MathGetInterpolatedYValue2 functions to
+v.14.2.7	handle passed x axis positions outside of array range, to help with misplaced
+		backgrounds when using exponential fits (Boroughs).
+		
+		Modify NewUpdateSample to save Current Parameters and NewLoadLast to not load current 
+		wavescan when using UseLastUnknownAsWavescanSetupFlag. Prevents MPB positions from being 
+		overwritten (Boroughs) by current sample.
+		
+		The reason for allowing these changes is so one can adjust MPB positions on wavescans
+		in Plot! window to obtain APF peak shape factors.
+
 11/15/25	Add check for BeamCurrentChangeDelay to be at least 10 seconds if using UPCE command,
 		BeamCurrentType=2 (von der Handt).  Update Help file.
 
