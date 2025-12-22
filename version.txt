@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+12/20/25	Work with Ryan McAleer to decrease the time lag for starting the JEOL MEC EDS acquisition
+		when using TFDI for WDS elements.
+		
+		Improve debug mode statements to beter indicate calling procedure.
+
 12/03/25	Added code to handle the "spectrometer-element already loaded" error when the user has an
 		underscore and an element name as part of the sample name in the file name by starting 
 		the string search after the spectrometer number in the filename. And finding the 
