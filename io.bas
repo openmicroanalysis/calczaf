@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeIO"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -605,7 +605,7 @@ FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.Filename = iofilename$
+FormMAIN.CMDialog1.filename = iofilename$
 
 If mode% < 2 Then
 'FormMAIN.CMDialog1.ShowSave
@@ -756,9 +756,9 @@ FormMAIN.CMDialog1.DefaultExt = "MDB"
 
 ' Specify default if not blank
 If mdbfilename$ <> vbNullString Then
-FormMAIN.CMDialog1.Filename = mdbfilename$
+FormMAIN.CMDialog1.filename = mdbfilename$
 Else
-FormMAIN.CMDialog1.Filename = "*.mdb"
+FormMAIN.CMDialog1.filename = "*.mdb"
 End If
 
 ' Get COMMON DIALOG Filename
@@ -1737,7 +1737,7 @@ FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.Filename = iofilenames$
+FormMAIN.CMDialog1.filename = iofilenames$
 
 Call IOGetFileName2(Int(2), tForm.hWnd, FormMAIN.CMDialog1.DialogTitle, iofilenames$, FormMAIN.CMDialog1.Filter, FormMAIN.CMDialog1.flags, FormMAIN.CMDialog1.InitDir, FormMAIN.CMDialog1.DefaultExt)
 If ierror Then Exit Sub

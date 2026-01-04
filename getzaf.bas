@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGETZAF"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -53,7 +53,7 @@ Next i%
 
 For i% = 1 To UBound(absstring$)
 FormGETZAF.OptionAbs(i% - 1).Caption = absstring$(i%)
-If i% = iabs% Then FormGETZAF.OptionAbs(i% - 1).value = True
+If i% = iAbs% Then FormGETZAF.OptionAbs(i% - 1).value = True
 Next i%
 
 For i% = 1 To UBound(flustring$)
@@ -116,7 +116,7 @@ If FormGETZAF.OptionBks(i%).value Then ibks = i%
 Next i%
 
 For i% = 1 To UBound(absstring$)
-If FormGETZAF.OptionAbs(i% - 1).value Then iabs% = i%
+If FormGETZAF.OptionAbs(i% - 1).value Then iAbs% = i%
 Next i%
 
 For i% = 1 To UBound(flustring$)
@@ -141,7 +141,7 @@ Exit Sub
 End If
 
 ' If PAP abscor is used, check that PAP stpcor is also used
-If iabs% = 12 Or iabs% = 13 Then
+If iAbs% = 12 Or iAbs% = 13 Then
 If istp% <> 5 Then
 msg$ = absstring$(12) & " or " & absstring$(13) & " requires " & stpstring$(5) & " to be selected"
 MsgBox msg$, vbOKOnly + vbExclamation, "GetZAFSave"
@@ -150,7 +150,7 @@ End If
 End If
 
 ' If Proza abscor is used, check that PAP stpcor is also used
-If iabs% = 15 Then
+If iAbs% = 15 Then
 If istp% <> 5 Then
 msg$ = absstring$(15) & " requires " & stpstring$(5) & " to be selected"
 MsgBox msg$, vbOKOnly + vbExclamation, "GetZAFSave"

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePictureSnapStageMove"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 Dim DrawLineRectanglePositions1(1 To 2) As Single

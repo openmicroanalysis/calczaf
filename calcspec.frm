@@ -6,7 +6,7 @@ Begin VB.Form FormCALCSPEC
    ClientHeight    =   3840
    ClientLeft      =   1770
    ClientTop       =   1230
-   ClientWidth     =   11280
+   ClientWidth     =   11520
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -23,7 +23,7 @@ Begin VB.Form FormCALCSPEC
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
    ScaleHeight     =   3840
-   ScaleWidth      =   11280
+   ScaleWidth      =   11520
    Begin MSComCtl2.UpDown UpDown1 
       Height          =   375
       Left            =   6360
@@ -50,7 +50,7 @@ Begin VB.Form FormCALCSPEC
       BackColor       =   &H00FFC0C0&
       Caption         =   "Help"
       Height          =   375
-      Left            =   9240
+      Left            =   9480
       Style           =   1  'Graphical
       TabIndex        =   19
       TabStop         =   0   'False
@@ -119,7 +119,7 @@ Begin VB.Form FormCALCSPEC
       BackColor       =   &H0080FFFF&
       Caption         =   "Calculate Spectrometer Position"
       Height          =   1335
-      Left            =   6720
+      Left            =   6840
       Style           =   1  'Graphical
       TabIndex        =   14
       TabStop         =   0   'False
@@ -127,12 +127,12 @@ Begin VB.Form FormCALCSPEC
       Width           =   1815
    End
    Begin VB.TextBox TextCalcSpec 
-      Height          =   735
+      Height          =   855
       Left            =   120
       MultiLine       =   -1  'True
       TabIndex        =   13
-      Top             =   3000
-      Width           =   8415
+      Top             =   2880
+      Width           =   8655
    End
    Begin VB.ComboBox ComboCrystal 
       Height          =   315
@@ -193,13 +193,13 @@ Begin VB.Form FormCALCSPEC
       SizeMode        =   1  'Stretch
       TabIndex        =   27
       Top             =   600
-      Width           =   4395
+      Width           =   4635
    End
    Begin VB.OLE OLE1 
       BackStyle       =   0  'Transparent
       Enabled         =   0   'False
       Height          =   855
-      Left            =   8610
+      Left            =   8850
       OleObjectBlob   =   "CalcSpec.frx":12DA
       SizeMode        =   1  'Stretch
       TabIndex        =   26
@@ -210,7 +210,7 @@ Begin VB.Form FormCALCSPEC
       BackStyle       =   0  'Transparent
       Enabled         =   0   'False
       Height          =   1095
-      Left            =   8640
+      Left            =   8880
       OleObjectBlob   =   "CalcSpec.frx":22F2
       SizeMode        =   1  'Stretch
       TabIndex        =   25
@@ -308,7 +308,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 Private Sub CheckUseRefractiveIndex_Click()

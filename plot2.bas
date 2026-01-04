@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePLOT2"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 Sub PlotGetRelativeHours(i As Integer, lasttime As Double, nexttime As Double, elapsedhours As Single, sample() As TypeSample)

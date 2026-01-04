@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePlotPhiRhoZ"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -203,7 +203,7 @@ FormPlotPhiRhoZ.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
 FormPlotPhiRhoZ.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
 FormPlotPhiRhoZ.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
 FormPlotPhiRhoZ.Pesgo1.GraphAnnotationColor(acounter%) = FormPlotPhiRhoZ.Pesgo1.PEargb(225, 0, 0, 0)       ' black
-FormPlotPhiRhoZ.Pesgo1.GraphAnnotationText(acounter%) = absstring$(iabs%)
+FormPlotPhiRhoZ.Pesgo1.GraphAnnotationText(acounter%) = absstring$(iAbs%)
 
 acounter% = acounter% + 1
 yannotation! = yannotation! - ydecrement!
@@ -247,7 +247,7 @@ Call IOWriteLog(sample(1).Name$ & ", Emitted intensity area vs. depth for 60, 80
 Call IOWriteLog(corstring$(CorrectionFlag%))
 Call IOWriteLog(macstring$(MACTypeFlag%))
 If EmpTypeFlag% = 1 Then Call IOWriteLog("Using Empirical MACs if available")
-Call IOWriteLog(absstring$(iabs%))
+Call IOWriteLog(absstring$(iAbs%))
 Call IOWriteLog(vbNullString)
 
 For k% = 1 To PhiRhoZPlotSets&

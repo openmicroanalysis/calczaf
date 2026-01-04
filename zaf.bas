@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeZAF"
-' (c) Copyright 1995-2025 by John J. Donovan (credit to John Armstrong for original code)
+' (c) Copyright 1995-2026 by John J. Donovan (credit to John Armstrong for original code)
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -81,7 +81,7 @@ Static h(1 To MAXCHAN1%) As Single
 If zafinit% = 1 Then GoTo 7200
 
 ' STDABS1 / PHILIBERT ABSORPTION CORRECTION FOR STANDARDS
-If iabs% = 1 Then
+If iAbs% = 1 Then
 For i% = 1 To zaf.in0%
 f1!(i%) = 1.2 * zaf.atwts!(i%) / zaf.Z%(i%) ^ 2
 Next i%
@@ -95,7 +95,7 @@ End If
 Next i%
 
 ' STDABS2 / HEINRICH/AN. CHEM. ABSORPTION CORRECTION FOR STANDARDS
-ElseIf iabs% = 2 Then
+ElseIf iAbs% = 2 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 h!(i%) = 0.0000012 * (zaf.eO!(i%) ^ 1.65 - zaf.eC!(i%) ^ 1.65)
@@ -104,7 +104,7 @@ End If
 Next i%
 
 ' STDABS3 / HEINRICH/1989 MAS ABSORPTION CORRECTION FOR STANDARDS
-ElseIf iabs% = 3 Then
+ElseIf iAbs% = 3 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 h!(i%) = zaf.eO!(i%) ^ 1.65 - zaf.eC!(i%) ^ 1.65
@@ -115,7 +115,7 @@ End If
 Next i%
 
 ' STDABS4 / LOVE/SCOTT ABSORPTION CORRECTION FOR STANDARDS
-ElseIf iabs% = 4 Then
+ElseIf iAbs% = 4 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 ps! = (0.000007870001 * jm!(i%) ^ 0.5 * zaf.eO!(i%) ^ 1.5 + 0.000000735 * zaf.eO!(i%) * zaf.eO!(i%)) / (zaf.Z%(i%) / zaf.atwts!(i%))
@@ -127,7 +127,7 @@ End If
 Next i%
 
 ' STDABS5 / LOVE/SCOTT I ABSORPTION CORRECTION FOR STANDARDS
-ElseIf iabs% = 5 Then
+ElseIf iAbs% = 5 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 For i1% = 1 To zaf.in0%
@@ -144,7 +144,7 @@ End If
 Next i%
 
 ' STDABS6 / LOVE/SCOTT II ABSORPTION CORRECTION FOR STANDARDS
-ElseIf iabs% = 6 Then
+ElseIf iAbs% = 6 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 For i1% = 1 To zaf.in0%
@@ -175,12 +175,12 @@ End If
 Next i%
 
 ' Phi-rho-z calculations for pure elements
-ElseIf iabs% = 7 Or iabs% = 8 Or iabs% = 9 Or iabs% = 10 Or iabs% = 11 Then
+ElseIf iAbs% = 7 Or iAbs% = 8 Or iAbs% = 9 Or iAbs% = 10 Or iAbs% = 11 Then
 Call ZAFPhiCal(zafinit%)
 If ierror Then Exit Sub
 
 ' STDABS12 / POUCHOU and PICHOIR (Full) for Pure Elements
-ElseIf iabs% = 12 Then
+ElseIf iAbs% = 12 Then
 dp!(1) = 0.0000066
 pp!(1) = 0.78
 pp!(2) = 0.1
@@ -204,7 +204,7 @@ End If
 Next i%
 
 ' STDABS13 / POUCHOU and PICHOIR (Simplified) for Pure Elements
-ElseIf iabs% = 13 Then
+ElseIf iAbs% = 13 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 zz! = zaf.Z%(i%)
@@ -226,12 +226,12 @@ End If
 Next i%
 
 ' STDABS14 / Packwood (New) for Pure Elements
-ElseIf iabs% = 14 Then
+ElseIf iAbs% = 14 Then
 Call ZAFPhiCal(zafinit%)
 If ierror Then Exit Sub
   
 ' STDABS15 / Bastin Proza for Pure Elements
-ElseIf iabs% = 15 Then
+ElseIf iAbs% = 15 Then
 For i% = 1 To zaf.in1%
 For i1% = 1 To zaf.in0%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
@@ -253,7 +253,7 @@ Exit Sub
   
 ' SMPABS1 / PHILIBERT ABSORPTION CORRECTION FOR SAMPLE
 7200:
-If iabs% = 1 Then
+If iAbs% = 1 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 hh! = 0#
@@ -266,7 +266,7 @@ End If
 Next i%
 
 ' SMPABS2 / HEINRICH/AN. CHEM. ABSORPTION CORRECTION FOR SAMPLE
-ElseIf iabs% = 2 Then
+ElseIf iAbs% = 2 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 m7! = ZAFMACCal(i%, zaf)
@@ -275,7 +275,7 @@ End If
 Next i%
 
 ' SMPABS3 / HEINRICH/1989 MAS ABSORPTION CORRECTION FOR SAMPLE
-ElseIf iabs% = 3 Then
+ElseIf iAbs% = 3 Then
 ha! = 0.00000165
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
@@ -290,7 +290,7 @@ End If
 Next i%
 
 ' SMPABS4 / LOVE/SCOTT ABSORPTION CORRECTION FOR SAMPLE
-ElseIf iabs% = 4 Then
+ElseIf iAbs% = 4 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 m5! = 0#
@@ -312,7 +312,7 @@ End If
 Next i%
 
 ' SMPABS5 / LOVE/SCOTT I ABSORPTION CORRECTION FOR SAMPLE
-ElseIf iabs% = 5 Then
+ElseIf iAbs% = 5 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 ppz! = 0#
@@ -328,7 +328,7 @@ End If
 Next i%
 
 ' SMPABS6 / LOVE/SCOTT II ABSORPTION CORRECTION FOR SAMPLE
-ElseIf iabs% = 6 Then
+ElseIf iAbs% = 6 Then
 For i% = 1 To zaf.in1%
 If zaf.il%(i%) <= MAXRAY% - 1 Then
 m7! = ZAFMACCal(i%, zaf)
@@ -360,12 +360,12 @@ End If
 Next i%
 
 ' Phi-rho-z calculations for pure elements
-ElseIf iabs% = 7 Or iabs% = 8 Or iabs% = 9 Or iabs% = 10 Or iabs% = 11 Then
+ElseIf iAbs% = 7 Or iAbs% = 8 Or iAbs% = 9 Or iAbs% = 10 Or iAbs% = 11 Then
 Call ZAFPhiCal(zafinit%)
 If ierror Then Exit Sub
 
 ' SMPABS12 / POUCHOU and PICHOIR (Full) for Sample
-ElseIf iabs% = 12 Then
+ElseIf iAbs% = 12 Then
 dp!(1) = 0.0000066
 pp!(1) = 0.78
 pp!(2) = 0.1
@@ -399,7 +399,7 @@ End If
 Next i%
 
 ' SMPABS13 / POUCHOU and PICHOIR (Simplified) for Sample
-ElseIf iabs% = 13 Then
+ElseIf iAbs% = 13 Then
 zz! = 0#
 zn! = 0#
 avez! = 0#
@@ -432,12 +432,12 @@ End If
 Next i%
 
 ' SMPABS14 / Packwood (New) for Sample
-ElseIf iabs% = 14 Then
+ElseIf iAbs% = 14 Then
 Call ZAFPhiCal(zafinit%)
 If ierror Then Exit Sub
 
 ' SMPABS15 / Bastin Proza for Sample
-ElseIf iabs% = 15 Then
+ElseIf iAbs% = 15 Then
 Call ZAFPhiCal(zafinit%)
 If ierror Then Exit Sub
 End If
@@ -1175,14 +1175,14 @@ x2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * (1# /
 ' was x2! = 5# * 3.14159 * uu! / (Log(uu!) * (uu! - 1#)) * (Log(uu!) - 5# + 5# * uu! ^ (-.2))
 
 ' PACKWOOD-BROWN 1982 XRS PHI(PZ) ALPHA EXPRESSION
-If iabs% = 7 Then
+If iAbs% = 7 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
 If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 395000# * zz! ^ 0.95 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
 x3! = 0.4 * x4! * zz! ^ 0.6
 
 ' BASTIN 1984 XRS PHI(PZ) ALPHA EXPRESSION
-ElseIf iabs% = 8 Then
+ElseIf iAbs% = 8 Then
 tx4! = Log(1.166 * v0! / ww!) / v1!
 If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 175000# / (v0! ^ 1.25 * (uu! - 1#) ^ 0.55) * (tx4!) ^ 0.5
@@ -1190,14 +1190,14 @@ x2! = 0.98 * x2! * Exp(0.001 * zz!)
 x3! = 0.4 * x4! * (zz! ^ 1.7 / aa!) * (uu! - 1#) ^ 0.3
 
 ' BROWN 1981 JTA PHI(PZ) ALPHA EXPRESSION
-ElseIf iabs% = 9 Then
+ElseIf iAbs% = 9 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
 If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 297000# * zz! ^ 1.05 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
 x3! = 850000# * zz! * zz! / (aa! * v0! * v0! * (x2! - 1#))
 
 ' BASTIN 1986/SCANNING
-ElseIf iabs% = 10 Then
+ElseIf iAbs% = 10 Then
 tx4! = Log(1.166 * v0! / ww!) / v1!
 If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 175000# / (v0! ^ 1.25 * (uu! - 1#) ^ 0.55) * (tx4!) ^ 0.5
@@ -1207,7 +1207,7 @@ x3! = zz! / (0.4765 + 0.5473 * zz!)
 x3! = x4! * (zz! ^ x3!) / aa!
        
 ' RIVEROS 1987/XRS
-ElseIf iabs% = 11 Then
+ElseIf iAbs% = 11 Then
 tx4! = Log(1.166 * v0! / ww!) / (v0! - v1!)
 If tx4! < 0# Then GoTo ZAFPhiCalBadtx4
 x4! = 214000# * zz! ^ 1.16 / (aa! * v0! ^ 1.25) * (tx4!) ^ 0.5
@@ -1215,7 +1215,7 @@ x2! = (1# + hh!) * uu! * Log(uu!) / (uu! - 1#)
 x3! = 10900# * zz! ^ 1.5 / (aa! * (v0! - v1!))
         
 ' PACKWOOD EPQ-1991
-ElseIf iabs% = 14 Then
+ElseIf iAbs% = 14 Then
 x2! = 10# * 3.14159 * (uu! / (uu! - 1#)) * (1# + (10# / Log(uu!)) * ((uu! ^ -0.1) - 1))
 
 If zafinit% = 0 Then
@@ -1238,7 +1238,7 @@ x3! = 0.4 * x4! * zz! ^ 0.6
 End If
        
 ' BASTIN PROZA EPQ-1991
-ElseIf iabs% = 15 Then
+ElseIf iAbs% = 15 Then
 If zafinit% = 0 Then
 x4! = pz!(i%, i%)
 xp! = zaf.r!(i%, i%) / zaf.s!(i%, i%)
@@ -1279,7 +1279,7 @@ x5! = x5! / x2!
 End If
 
 ' Special code for Bastin PROZA
-If iabs% = 15 Then
+If iAbs% = 15 Then
 qeO! = Log(zaf.v!(i%)) / (zaf.eC!(i%) * zaf.eC!(i%) * Exp(em!(i%) * Log(zaf.v!(i%))))
 xp! = xp! / (zipi!(i%) * 66892#) * zaf.atwts!(i%)
 ff! = xp! / qeO!

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeZAF3"
-' (c) Copyright 1995-2025 by John J. Donovan (credit to John Armstrong for original code)
+' (c) Copyright 1995-2026 by John J. Donovan (credit to John Armstrong for original code)
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -756,7 +756,7 @@ Exit Sub
 
 End Sub
 
-Function ZAFFLUGetFluYield(tFluTyp As Integer, iabs As Integer, zaf As TypeZAF) As Single
+Function ZAFFLUGetFluYield(tFluTyp As Integer, iAbs As Integer, zaf As TypeZAF) As Single
 ' Return the fluorescent yield for the specified fluorescence type
 
 ierror = False
@@ -778,42 +778,42 @@ ZAFFLUGetFluYield! = 0#
 '109=Ll by Ka 110=Ll by Kb 111=Ll by La  112=Ll by Lb 113=Ll by Ma 114=Ll by Mb   115=Ll by Ln 116=Ll by Lg 117=Ll by Lv  118=Ll by Ll 119=Ll by Mg 120=Ll by Mz
 '121=Mg by Ka 122=Mg by Kb 123=Mg by La  124=Mg by Lb 125=Mg by Ma 126=Mg by Mb   127=Mg by Ln 128=Mg by Lg 129=Mg by Lv  130=Mg by Ll 131=Mg by Mg 132=Mg by Mz
 '133=Mz by Ka 134=Mz by Kb 135=Mz by La  136=Mz by Lb 137=Mz by Ma 138=Mz by Mb   139=Mz by Ln 140=Mz by Lg 141=Mz by Lv  142=Mz by Ll 143=Mz by Mg 144=Mz by Mz
-If tFluTyp% = 1 Or tFluTyp% = 13 Or tFluTyp% = 25 Or tFluTyp% = 37 Or tFluTyp% = 49 Or tFluTyp% = 61 Then ZAFFLUGetFluYield! = zaf.flu!(1, iabs%)  ' fluorescence by Ka
-If tFluTyp% = 73 Or tFluTyp% = 85 Or tFluTyp% = 97 Or tFluTyp% = 109 Or tFluTyp% = 121 Or tFluTyp% = 133 Then ZAFFLUGetFluYield! = zaf.flu!(1, iabs%)  ' fluorescence by Ka
+If tFluTyp% = 1 Or tFluTyp% = 13 Or tFluTyp% = 25 Or tFluTyp% = 37 Or tFluTyp% = 49 Or tFluTyp% = 61 Then ZAFFLUGetFluYield! = zaf.flu!(1, iAbs%)  ' fluorescence by Ka
+If tFluTyp% = 73 Or tFluTyp% = 85 Or tFluTyp% = 97 Or tFluTyp% = 109 Or tFluTyp% = 121 Or tFluTyp% = 133 Then ZAFFLUGetFluYield! = zaf.flu!(1, iAbs%)  ' fluorescence by Ka
 
-If tFluTyp% = 2 Or tFluTyp% = 14 Or tFluTyp% = 26 Or tFluTyp% = 38 Or tFluTyp% = 50 Or tFluTyp% = 62 Then ZAFFLUGetFluYield! = zaf.flu!(2, iabs%)  ' fluorescence by Kb
-If tFluTyp% = 74 Or tFluTyp% = 86 Or tFluTyp% = 98 Or tFluTyp% = 110 Or tFluTyp% = 122 Or tFluTyp% = 134 Then ZAFFLUGetFluYield! = zaf.flu!(2, iabs%)  ' fluorescence by Kb
+If tFluTyp% = 2 Or tFluTyp% = 14 Or tFluTyp% = 26 Or tFluTyp% = 38 Or tFluTyp% = 50 Or tFluTyp% = 62 Then ZAFFLUGetFluYield! = zaf.flu!(2, iAbs%)  ' fluorescence by Kb
+If tFluTyp% = 74 Or tFluTyp% = 86 Or tFluTyp% = 98 Or tFluTyp% = 110 Or tFluTyp% = 122 Or tFluTyp% = 134 Then ZAFFLUGetFluYield! = zaf.flu!(2, iAbs%)  ' fluorescence by Kb
 
-If tFluTyp% = 3 Or tFluTyp% = 15 Or tFluTyp% = 27 Or tFluTyp% = 39 Or tFluTyp% = 51 Or tFluTyp% = 63 Then ZAFFLUGetFluYield! = zaf.flu!(3, iabs%)  ' fluorescence by La
-If tFluTyp% = 75 Or tFluTyp% = 87 Or tFluTyp% = 99 Or tFluTyp% = 111 Or tFluTyp% = 123 Or tFluTyp% = 135 Then ZAFFLUGetFluYield! = zaf.flu!(3, iabs%)  ' fluorescence by La
+If tFluTyp% = 3 Or tFluTyp% = 15 Or tFluTyp% = 27 Or tFluTyp% = 39 Or tFluTyp% = 51 Or tFluTyp% = 63 Then ZAFFLUGetFluYield! = zaf.flu!(3, iAbs%)  ' fluorescence by La
+If tFluTyp% = 75 Or tFluTyp% = 87 Or tFluTyp% = 99 Or tFluTyp% = 111 Or tFluTyp% = 123 Or tFluTyp% = 135 Then ZAFFLUGetFluYield! = zaf.flu!(3, iAbs%)  ' fluorescence by La
 
-If tFluTyp% = 4 Or tFluTyp% = 16 Or tFluTyp% = 28 Or tFluTyp% = 40 Or tFluTyp% = 52 Or tFluTyp% = 64 Then ZAFFLUGetFluYield! = zaf.flu!(4, iabs%)  ' fluorescence by Lb
-If tFluTyp% = 76 Or tFluTyp% = 88 Or tFluTyp% = 100 Or tFluTyp% = 112 Or tFluTyp% = 124 Or tFluTyp% = 136 Then ZAFFLUGetFluYield! = zaf.flu!(4, iabs%)  ' fluorescence by Lb
+If tFluTyp% = 4 Or tFluTyp% = 16 Or tFluTyp% = 28 Or tFluTyp% = 40 Or tFluTyp% = 52 Or tFluTyp% = 64 Then ZAFFLUGetFluYield! = zaf.flu!(4, iAbs%)  ' fluorescence by Lb
+If tFluTyp% = 76 Or tFluTyp% = 88 Or tFluTyp% = 100 Or tFluTyp% = 112 Or tFluTyp% = 124 Or tFluTyp% = 136 Then ZAFFLUGetFluYield! = zaf.flu!(4, iAbs%)  ' fluorescence by Lb
 
-If tFluTyp% = 5 Or tFluTyp% = 17 Or tFluTyp% = 29 Or tFluTyp% = 41 Or tFluTyp% = 53 Or tFluTyp% = 65 Then ZAFFLUGetFluYield! = zaf.flu!(5, iabs%)  ' fluorescence by Ma
-If tFluTyp% = 77 Or tFluTyp% = 89 Or tFluTyp% = 101 Or tFluTyp% = 113 Or tFluTyp% = 125 Or tFluTyp% = 137 Then ZAFFLUGetFluYield! = zaf.flu!(5, iabs%)  ' fluorescence by Ma
+If tFluTyp% = 5 Or tFluTyp% = 17 Or tFluTyp% = 29 Or tFluTyp% = 41 Or tFluTyp% = 53 Or tFluTyp% = 65 Then ZAFFLUGetFluYield! = zaf.flu!(5, iAbs%)  ' fluorescence by Ma
+If tFluTyp% = 77 Or tFluTyp% = 89 Or tFluTyp% = 101 Or tFluTyp% = 113 Or tFluTyp% = 125 Or tFluTyp% = 137 Then ZAFFLUGetFluYield! = zaf.flu!(5, iAbs%)  ' fluorescence by Ma
 
-If tFluTyp% = 6 Or tFluTyp% = 18 Or tFluTyp% = 30 Or tFluTyp% = 42 Or tFluTyp% = 54 Or tFluTyp% = 66 Then ZAFFLUGetFluYield! = zaf.flu!(6, iabs%)  ' fluorescence by Mb
-If tFluTyp% = 78 Or tFluTyp% = 90 Or tFluTyp% = 102 Or tFluTyp% = 114 Or tFluTyp% = 126 Or tFluTyp% = 138 Then ZAFFLUGetFluYield! = zaf.flu!(6, iabs%)  ' fluorescence by Mb
+If tFluTyp% = 6 Or tFluTyp% = 18 Or tFluTyp% = 30 Or tFluTyp% = 42 Or tFluTyp% = 54 Or tFluTyp% = 66 Then ZAFFLUGetFluYield! = zaf.flu!(6, iAbs%)  ' fluorescence by Mb
+If tFluTyp% = 78 Or tFluTyp% = 90 Or tFluTyp% = 102 Or tFluTyp% = 114 Or tFluTyp% = 126 Or tFluTyp% = 138 Then ZAFFLUGetFluYield! = zaf.flu!(6, iAbs%)  ' fluorescence by Mb
 
 
-If tFluTyp% = 7 Or tFluTyp% = 19 Or tFluTyp% = 31 Or tFluTyp% = 43 Or tFluTyp% = 55 Or tFluTyp% = 67 Then ZAFFLUGetFluYield! = zaf.flu!(7, iabs%)  ' fluorescence by Ln
-If tFluTyp% = 79 Or tFluTyp% = 91 Or tFluTyp% = 103 Or tFluTyp% = 115 Or tFluTyp% = 127 Or tFluTyp% = 139 Then ZAFFLUGetFluYield! = zaf.flu!(7, iabs%)  ' fluorescence by Ln
+If tFluTyp% = 7 Or tFluTyp% = 19 Or tFluTyp% = 31 Or tFluTyp% = 43 Or tFluTyp% = 55 Or tFluTyp% = 67 Then ZAFFLUGetFluYield! = zaf.flu!(7, iAbs%)  ' fluorescence by Ln
+If tFluTyp% = 79 Or tFluTyp% = 91 Or tFluTyp% = 103 Or tFluTyp% = 115 Or tFluTyp% = 127 Or tFluTyp% = 139 Then ZAFFLUGetFluYield! = zaf.flu!(7, iAbs%)  ' fluorescence by Ln
 
-If tFluTyp% = 8 Or tFluTyp% = 20 Or tFluTyp% = 32 Or tFluTyp% = 44 Or tFluTyp% = 56 Or tFluTyp% = 68 Then ZAFFLUGetFluYield! = zaf.flu!(8, iabs%)  ' fluorescence by Lg
-If tFluTyp% = 80 Or tFluTyp% = 92 Or tFluTyp% = 104 Or tFluTyp% = 116 Or tFluTyp% = 128 Or tFluTyp% = 140 Then ZAFFLUGetFluYield! = zaf.flu!(8, iabs%)  ' fluorescence by Lg
+If tFluTyp% = 8 Or tFluTyp% = 20 Or tFluTyp% = 32 Or tFluTyp% = 44 Or tFluTyp% = 56 Or tFluTyp% = 68 Then ZAFFLUGetFluYield! = zaf.flu!(8, iAbs%)  ' fluorescence by Lg
+If tFluTyp% = 80 Or tFluTyp% = 92 Or tFluTyp% = 104 Or tFluTyp% = 116 Or tFluTyp% = 128 Or tFluTyp% = 140 Then ZAFFLUGetFluYield! = zaf.flu!(8, iAbs%)  ' fluorescence by Lg
 
-If tFluTyp% = 9 Or tFluTyp% = 21 Or tFluTyp% = 33 Or tFluTyp% = 45 Or tFluTyp% = 57 Or tFluTyp% = 69 Then ZAFFLUGetFluYield! = zaf.flu!(9, iabs%)  ' fluorescence by Lv
-If tFluTyp% = 81 Or tFluTyp% = 93 Or tFluTyp% = 105 Or tFluTyp% = 117 Or tFluTyp% = 129 Or tFluTyp% = 141 Then ZAFFLUGetFluYield! = zaf.flu!(9, iabs%)  ' fluorescence by Lv
+If tFluTyp% = 9 Or tFluTyp% = 21 Or tFluTyp% = 33 Or tFluTyp% = 45 Or tFluTyp% = 57 Or tFluTyp% = 69 Then ZAFFLUGetFluYield! = zaf.flu!(9, iAbs%)  ' fluorescence by Lv
+If tFluTyp% = 81 Or tFluTyp% = 93 Or tFluTyp% = 105 Or tFluTyp% = 117 Or tFluTyp% = 129 Or tFluTyp% = 141 Then ZAFFLUGetFluYield! = zaf.flu!(9, iAbs%)  ' fluorescence by Lv
 
-If tFluTyp% = 10 Or tFluTyp% = 22 Or tFluTyp% = 34 Or tFluTyp% = 46 Or tFluTyp% = 58 Or tFluTyp% = 70 Then ZAFFLUGetFluYield! = zaf.flu!(10, iabs%)  ' fluorescence by Ll
-If tFluTyp% = 82 Or tFluTyp% = 94 Or tFluTyp% = 106 Or tFluTyp% = 118 Or tFluTyp% = 130 Or tFluTyp% = 142 Then ZAFFLUGetFluYield! = zaf.flu!(10, iabs%)  ' fluorescence by Ll
+If tFluTyp% = 10 Or tFluTyp% = 22 Or tFluTyp% = 34 Or tFluTyp% = 46 Or tFluTyp% = 58 Or tFluTyp% = 70 Then ZAFFLUGetFluYield! = zaf.flu!(10, iAbs%)  ' fluorescence by Ll
+If tFluTyp% = 82 Or tFluTyp% = 94 Or tFluTyp% = 106 Or tFluTyp% = 118 Or tFluTyp% = 130 Or tFluTyp% = 142 Then ZAFFLUGetFluYield! = zaf.flu!(10, iAbs%)  ' fluorescence by Ll
 
-If tFluTyp% = 11 Or tFluTyp% = 23 Or tFluTyp% = 35 Or tFluTyp% = 47 Or tFluTyp% = 59 Or tFluTyp% = 71 Then ZAFFLUGetFluYield! = zaf.flu!(11, iabs%)  ' fluorescence by Mg
-If tFluTyp% = 83 Or tFluTyp% = 95 Or tFluTyp% = 107 Or tFluTyp% = 119 Or tFluTyp% = 131 Or tFluTyp% = 143 Then ZAFFLUGetFluYield! = zaf.flu!(11, iabs%)  ' fluorescence by Mg
+If tFluTyp% = 11 Or tFluTyp% = 23 Or tFluTyp% = 35 Or tFluTyp% = 47 Or tFluTyp% = 59 Or tFluTyp% = 71 Then ZAFFLUGetFluYield! = zaf.flu!(11, iAbs%)  ' fluorescence by Mg
+If tFluTyp% = 83 Or tFluTyp% = 95 Or tFluTyp% = 107 Or tFluTyp% = 119 Or tFluTyp% = 131 Or tFluTyp% = 143 Then ZAFFLUGetFluYield! = zaf.flu!(11, iAbs%)  ' fluorescence by Mg
 
-If tFluTyp% = 12 Or tFluTyp% = 24 Or tFluTyp% = 36 Or tFluTyp% = 48 Or tFluTyp% = 60 Or tFluTyp% = 72 Then ZAFFLUGetFluYield! = zaf.flu!(12, iabs%)  ' fluorescence by Mz
-If tFluTyp% = 84 Or tFluTyp% = 96 Or tFluTyp% = 108 Or tFluTyp% = 120 Or tFluTyp% = 132 Or tFluTyp% = 144 Then ZAFFLUGetFluYield! = zaf.flu!(12, iabs%)  ' fluorescence by Mz
+If tFluTyp% = 12 Or tFluTyp% = 24 Or tFluTyp% = 36 Or tFluTyp% = 48 Or tFluTyp% = 60 Or tFluTyp% = 72 Then ZAFFLUGetFluYield! = zaf.flu!(12, iAbs%)  ' fluorescence by Mz
+If tFluTyp% = 84 Or tFluTyp% = 96 Or tFluTyp% = 108 Or tFluTyp% = 120 Or tFluTyp% = 132 Or tFluTyp% = 144 Then ZAFFLUGetFluYield! = zaf.flu!(12, iAbs%)  ' fluorescence by Mz
 
 Exit Function
 

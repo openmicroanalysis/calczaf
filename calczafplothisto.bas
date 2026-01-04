@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeCalcZAFPlotHisto"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -463,7 +463,7 @@ FormPLOTHISTO_PE.Pesgo1.GraphAnnotationX(acounter%) = xannotation!
 FormPLOTHISTO_PE.Pesgo1.GraphAnnotationY(acounter%) = yannotation!
 FormPLOTHISTO_PE.Pesgo1.GraphAnnotationType(acounter%) = PEGAT_NOSYMBOL&
 FormPLOTHISTO_PE.Pesgo1.GraphAnnotationColor(acounter%) = FormPLOTHISTO_PE.Pesgo1.PEargb(225, 0, 0, 0)       ' black
-FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = absstring$(iabs%)
+FormPLOTHISTO_PE.Pesgo1.GraphAnnotationText(acounter%) = absstring$(iAbs%)
 
 acounter% = acounter% + 1
 yannotation! = yannotation! - ydecrement!

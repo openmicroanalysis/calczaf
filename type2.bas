@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeType2"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -63,7 +63,7 @@ End If
 msg$ = vbCrLf & "Correction Selections:"
 Call IOWriteLog(msg$)
 
-msg$ = absstring$(iabs%)
+msg$ = absstring$(iAbs%)
 Call IOWriteLog(msg$)
 
 msg$ = stpstring$(istp%)
@@ -82,7 +82,7 @@ Call IOWriteLog(msg$)
 msg$ = mipstring$(imip%)
 Call IOWriteLog(msg$)
 
-If iabs% > 6 Then
+If iAbs% > 6 Then
 msg$ = phistring$(iphi%)
 Call IOWriteLog(msg$)
 End If

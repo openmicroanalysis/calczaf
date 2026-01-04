@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePenepma12Matrix2"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 Dim PENEPMA_Analysis As TypeAnalysis

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeMiscPlot"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 Sub MiscPlotGetSymbols_PE(nsets As Integer, tPesgo As Pesgo)

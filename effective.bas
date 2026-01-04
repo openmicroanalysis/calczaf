@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeEffective"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 Dim PrimaryStandardNum As Integer, SecondaryStandardNum As Integer
@@ -406,7 +406,7 @@ msg$ = "Secondary Standard: " & Format$(SecondaryStandardNum%) & " " & Effective
 Call IOWriteLog(msg$)
 msg$ = "Emission line: " & ElementSym$ & " " & XraySym$ & " at " & Format$(BeamEnergy!) & " keV"
 Call IOWriteLog(msg$)
-msg$ = "Absorption Correction Method: " & absstring$(iabs%)
+msg$ = "Absorption Correction Method: " & absstring$(iAbs%)
 Call IOWriteLog(msg$)
 msg$ = "MAC File: " & macstring$(MACTypeFlag%) & vbCrLf
 Call IOWriteLog(msg$)

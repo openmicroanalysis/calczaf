@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeCalcSpec"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -206,9 +206,9 @@ End If
 
 ' Write to form and log window
 If tBragg% = 1 Then
-msg$ = tElement$ & " " & tXray$ & " on " & tCrystal$ & " (" & tSpecMillimeters!(tSpecType%) & " mm), is " & Format$(spos!)
+msg$ = tElement$ & " " & tXray$ & " on " & tCrystal$ & " (2d=" & Format$(x2d!) & " A) (Spc=" & tSpecMillimeters!(tSpecType%) & " mm), is " & Format$(spos!)
 Else
-msg$ = tElement$ & " " & tXray$ & " (" & Format$(Trim$(RomanNum$(tBragg%))) & ") on " & tCrystal$ & " (" & tSpecMillimeters!(tSpecType%) & " mm), is " & Format$(spos!)
+msg$ = tElement$ & " " & tXray$ & " (" & Format$(Trim$(RomanNum$(tBragg%))) & ") on " & tCrystal$ & " (2d=" & Format$(x2d!) & " A) (Spc=" & tSpecMillimeters!(tSpecType%) & " mm), is " & Format$(spos!)
 End If
 
 If FormCALCSPEC.CheckUseRefractiveIndex.Value = vbUnchecked Then

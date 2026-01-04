@@ -141,7 +141,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 Private Const clrLinkActive& = vbBlue
@@ -167,7 +167,7 @@ End If
 tmsg$ = tmsg$ & "For Windows XP/Vista/Win7/Win8/Win10" & vbCrLf
 tmsg$ = tmsg$ & vbCrLf
 tmsg$ = tmsg$ & "Written by John J. Donovan, Probe Software, Inc." & vbCrLf
-tmsg$ = tmsg$ & "(c) Copyright 1995-2025, All Rights Reserved" & vbCrLf & vbCrLf
+tmsg$ = tmsg$ & "(c) Copyright 1995-2026, All Rights Reserved" & vbCrLf & vbCrLf
 tmsg$ = tmsg$ & "Special thanks to Paul Carpenter for his tireless testing and many helpful discussions"
 FormABOUT.LabelAboutTitle.Caption = tmsg$
 

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodePENEPMA12B"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 ' Matrix database arrays

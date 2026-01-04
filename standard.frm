@@ -256,6 +256,7 @@ Begin VB.Form FormMAIN
       _ExtentX        =   18230
       _ExtentY        =   6376
       _Version        =   393217
+      Enabled         =   -1  'True
       ScrollBars      =   2
       TextRTF         =   $"STANDARD.frx":59D8A
    End
@@ -665,7 +666,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 Private Sub Form_Activate()

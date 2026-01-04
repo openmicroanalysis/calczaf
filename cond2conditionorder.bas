@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeCOND2ConditionOrder"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 
 ' Column condition arrays for ordering

@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeGETPTC"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -179,13 +179,13 @@ Exit Sub
 1200:
 
 ' Check for proper abscor options for PTC calculations
-If iabs% = 7 Then GoTo 1300
-If iabs% = 8 Then GoTo 1300
-If iabs% = 9 Then GoTo 1300
-If iabs% = 10 Then GoTo 1300
-If iabs% = 11 Then GoTo 1300
-If iabs% = 14 Then GoTo 1300
-If iabs% = 15 Then GoTo 1300
+If iAbs% = 7 Then GoTo 1300
+If iAbs% = 8 Then GoTo 1300
+If iAbs% = 9 Then GoTo 1300
+If iAbs% = 10 Then GoTo 1300
+If iAbs% = 11 Then GoTo 1300
+If iAbs% = 14 Then GoTo 1300
+If iAbs% = 15 Then GoTo 1300
 msg$ = "Only the following absorption correction options are supported for particle and thin film calculations:" & vbCrLf
 For i% = 1 To UBound(absstring$)
 If i% = 7 Then msg$ = msg$ & vbCrLf & absstring$(i%)

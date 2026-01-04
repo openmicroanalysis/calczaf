@@ -1,5 +1,5 @@
 Attribute VB_Name = "CodeINIT2"
-' (c) Copyright 1995-2025 by John J. Donovan
+' (c) Copyright 1995-2026 by John J. Donovan
 Option Explicit
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
 ' in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -884,7 +884,7 @@ ElseIf itemp% = 1 Then
 ibsc% = 2
 imip% = 1
 iphi% = 2
-iabs% = 9
+iAbs% = 9
 istp% = 4
 ibks% = 4   ' note ibks is indexed from zero
 
@@ -893,7 +893,7 @@ ElseIf itemp% = 2 Then
 ibsc% = 1
 imip% = 2
 iphi% = 5
-iabs% = 1
+iAbs% = 1
 istp% = 1
 ibks% = 1   ' note ibks is indexed from zero
 
@@ -902,7 +902,7 @@ ElseIf itemp% = 3 Then
 ibsc% = 1
 imip% = 1
 iphi% = 5
-iabs% = 1
+iAbs% = 1
 istp% = 1
 ibks% = 2   ' note ibks is indexed from zero
 
@@ -911,7 +911,7 @@ ElseIf itemp% = 4 Then
 ibsc% = 2
 imip% = 1
 iphi% = 2
-iabs% = 4
+iAbs% = 4
 istp% = 4
 ibks% = 4   ' note ibks is indexed from zero
 
@@ -920,7 +920,7 @@ ElseIf itemp% = 5 Then
 ibsc% = 2
 imip% = 1
 iphi% = 2
-iabs% = 6
+iAbs% = 6
 istp% = 4
 ibks% = 4   ' note ibks is indexed from zero
 
@@ -929,7 +929,7 @@ ElseIf itemp% = 6 Then
 ibsc% = 1
 imip% = 5
 iphi% = 7
-iabs% = 14
+iAbs% = 14
 istp% = 6
 ibks% = 0   ' note ibks is indexed from zero
 
@@ -938,7 +938,7 @@ ElseIf itemp% = 7 Then
 ibsc% = 2
 imip% = 3
 iphi% = 2
-iabs% = 10
+iAbs% = 10
 istp% = 6
 ibks% = 0
 
@@ -947,7 +947,7 @@ ElseIf itemp% = 8 Then
 ibsc% = 3
 imip% = 3
 iphi% = 4
-iabs% = 15
+iAbs% = 15
 istp% = 5
 ibks% = 7   ' note ibks is indexed from zero
 
@@ -956,7 +956,7 @@ ElseIf itemp% = 9 Then
 ibsc% = 3
 imip% = 3
 iphi% = 4
-iabs% = 12
+iAbs% = 12
 istp% = 5
 ibks% = 7   ' note ibks is indexed from zero
 
@@ -965,7 +965,7 @@ ElseIf itemp% = 10 Then
 ibsc% = 3
 imip% = 3
 iphi% = 4
-iabs% = 13
+iAbs% = 13
 istp% = 5
 ibks% = 7   ' note ibks is indexed from zero
 
@@ -974,7 +974,7 @@ ElseIf itemp% = 11 Then
 ibsc% = 5
 imip% = 1
 iphi% = 2
-iabs% = 9
+iAbs% = 9
 istp% = 4
 ibks% = 10   ' note ibks is indexed from zero
 End If
