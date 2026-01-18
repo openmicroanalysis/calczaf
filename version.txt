@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/17/26	Add %VAR output when using All Matrix Corrections flag.
+
+01/07/26	Add error trap for reading GRD files that are have X or Y dimensions smaller 
+		than 2 caused by Probe Image GRD export bug (Boesenberg).
+
 01/01/26	Improve spectrometer position calculation in CalcZAF to include 2d.
 
 12/31/25	Fix blank output bug in User Specified Output (McAleer).

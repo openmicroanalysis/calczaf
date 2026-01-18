@@ -221,6 +221,8 @@ Get #Temp1FileNumber%, , tGrid.rotation#
 Get #Temp1FileNumber%, , tGrid.BlankValue#
 
 ' Check image size
+If tGrid.nCol& < 2 Then GoTo GridFileReadWrite2TooSmall
+If tGrid.nRow& < 2 Then GoTo GridFileReadWrite2TooSmall
 If tGrid.nCol& > MAXINTEGER% Then GoTo GridFileReadWrite2TooLarge
 If tGrid.nRow& > MAXINTEGER% Then GoTo GridFileReadWrite2TooLarge
 
@@ -387,8 +389,17 @@ Close #Temp1FileNumber%
 ierror = True
 Exit Sub
 
+GridFileReadWrite2TooSmall:
+Screen.MousePointer = vbDefault
+msg$ = "GRD X or Y dimension is too small (<2). Please select another GRD file and try again."
+MsgBox msg$, vbOKOnly + vbExclamation, "GridFileReadWrite2"
+Close #Temp1FileNumber%
+ierror = True
+Exit Sub
+
 GridFileReadWrite2TooLarge:
-msg$ = "GRD image is too large. Please select a smaller size and try again."
+Screen.MousePointer = vbDefault
+msg$ = "GRD X or Y dimension is too large. Please select a smaller size GRD file and try again."
 MsgBox msg$, vbOKOnly + vbExclamation, "GridFileReadWrite2"
 Close #Temp1FileNumber%
 ierror = True

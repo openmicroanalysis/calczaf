@@ -61,7 +61,7 @@ Dim RowCurveFits(1 To MAXROW%, 1 To MAXCHAN%) As Single
 ' MAN/Interf/VolEl/APF convergence difference
 Dim convergencedifference(1 To MAXCHAN%) As Single
 
-' Standard variances
+' Standard variances (also used in AnalyzeCalculateAllAverage)
 Dim StandardPublishedValues(1 To MAXCHAN%) As Single
 Dim StandardPercentVariances(1 To MAXCHAN%) As Single
 Dim StandardAlgebraicDifferences(1 To MAXCHAN%) As Single
@@ -3122,7 +3122,7 @@ StandardPublishedValues!(i%) = stdpercent!
 End If
 Else
 msg$ = msg$ & Format$("    n.a.", a80$)
-StandardPublishedValues!(i%) = 0#
+StandardPublishedValues!(i%) = NOT_ANALYZED_VALUE_SINGLE!
 End If
 Next i%
 If Not UseAutomaticFormatForResultsFlag Then
@@ -3159,7 +3159,7 @@ StandardPercentVariances!(i%) = temp!(i%)
 End If
 Else
 msg$ = msg$ & Format$(DASHED3$, a80$)   ' if not analyzed value
-StandardPercentVariances!(i%) = 0#
+StandardPercentVariances!(i%) = NOT_ANALYZED_VALUE_SINGLE!
 End If
 Else
 msg$ = msg$ & Format$(DASHED3$, a80$)

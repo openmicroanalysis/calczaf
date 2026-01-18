@@ -17,6 +17,10 @@ Dim filenamearray() As String
 
 Dim MatrixAverages(1 To MAXCHAN% + 1, 1 To MAXZAF%) As Single       ' wt%
 Dim MatrixAverages2(1 To MAXCHAN% + 1, 1 To MAXZAF%) As Single      ' at %
+Dim MatrixAverages3(1 To MAXCHAN% + 1, 1 To MAXZAF%) As Single      ' %VAR (if sample is a standard)
+
+Dim tPublishedValues(1 To MAXCHAN%) As Single
+Dim tPercentVariances(1 To MAXCHAN%) As Single
 
 Sub AnalyzeChangeZAF(analysis As TypeAnalysis, sample() As TypeSample, stdsample() As TypeSample)
 ' Change ZAF selections for calculating all matrix corrections
@@ -204,6 +208,7 @@ ierror = False
 On Error GoTo AnalyzeCalculateAllAverageOutputError
 
 Dim j As Integer, chan As Integer
+Dim ip As Integer
 
 Dim average As TypeAverage
 
@@ -333,6 +338,114 @@ msg$ = msg$ & Format$(Format$(average.Maximums!(sample(1).LastChan% + 1), f83$),
 Call IOWriteLog(msg$)
 End If
 
+' Output %VAR averages if sample is a standard or unknown as standard
+If sample(1).Type% = 1 Or sample(1).Type% = 2 And sample(1).UnknownIsStandardNumber% > 0 Then
+msg$ = "Percent Variances:"
+Call IOWriteLog(vbCrLf & msg$)
+msg$ = "ELEM: "
+For chan% = 1 To sample(1).LastChan%
+msg$ = msg$ & Format$(sample(1).Elsyup$(chan%), a80$)
+Next chan%
+Call IOWriteLog(msg$)
+
+msg$ = "PUBL: "
+For chan% = 1 To sample(1).LastChan%
+ip% = IPOS8(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample())   ' check if duplicate element
+If tPublishedValues!(chan%) <> NOT_ANALYZED_VALUE_SINGLE! And sample(1).DisableQuantFlag%(chan%) = 0 And (Not UseAggregateIntensitiesFlag Or UseAggregateIntensitiesFlag And ip% = 0) Then
+msg$ = msg$ & Format$(Format$(tPublishedValues!(chan%), f83$), a80$)
+Else
+msg$ = msg$ & Format$("    n.a.", a80$)
+End If
+Next chan%
+Call IOWriteLog(msg$)
+
+' Type out standard assignments for each channel (unless calibration curve)
+If CorrectionFlag% <> 5 Then
+msg$ = "STDS: "
+For chan% = 1 To sample(1).LastChan%
+If sample(1).DisableQuantFlag%(chan%) = 0 And sample(1).Xrsyms$(chan%) <> vbNullString Then
+
+ip% = IPOS8(chan%, sample(1).Elsyms$(chan%), sample(1).Xrsyms$(chan%), sample())
+If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then       ' check for duplicate element
+msg$ = msg$ & Format$(Format$(sample(1).StdAssigns%(chan%), i50$), a80$)
+Else
+msg$ = msg$ & Format$(Format$(Int(0), i50$), a80$)
+End If
+
+Else
+msg$ = msg$ & Format$(DASHED3$, a80$)   ' if quant disabled
+End If
+Next chan%
+Call IOWriteLog(msg$)
+End If
+
+msg$ = vbCrLf & "ELEM: "
+For chan% = 1 To sample(1).LastChan%
+msg$ = msg$ & Format$(sample(1).Elsyup$(chan%), a80$)
+Next chan%
+Call IOWriteLog(msg$)
+
+For j% = 1 To MAXZAF%
+msg$ = Format$(j%, a60$)
+For chan% = 1 To sample(1).LastChan%
+If sample(1).DisableQuantFlag%(chan%) = 0 Then
+If MatrixAverages3!(chan%, j%) <> NOT_ANALYZED_VALUE_SINGLE! Then
+If sample(1).StdAssigns%(chan%) <> sample(1).number% Then
+msg$ = msg$ & Format$(Format$(MatrixAverages3!(chan%, j%), f82$), a80$)
+Else
+msg$ = msg$ & Format$("(" & Format$(MatrixAverages3!(chan%, j%), f82$) & ")", a80$)
+End If
+Else
+msg$ = msg$ & Format$(DASHED3$, a80$)   ' if not analyzed value
+End If
+Else
+msg$ = msg$ & Format$(DASHED3$, a80$)
+End If
+Next chan%
+msg$ = msg$ & Format$(Space$(8), a80$)
+Call IOWriteLog(msg$ & "   " & zafstring$(j%))
+Next j%
+
+' Output standard deviation and standard error
+Call MathArrayAverage3(average, MatrixAverages3!(), CLng(MAXZAF%), sample(1).LastChan%)
+If ierror Then Exit Sub
+
+msg$ = vbCrLf & "AVER: "
+For chan% = 1 To sample(1).LastChan%
+msg$ = msg$ & Format$(Format$(average.averags!(chan%), f82$), a80$)
+Next chan%
+msg$ = msg$ & Format$(Space$(8), a80$)
+Call IOWriteLog(msg$)
+
+msg$ = "SDEV: "
+For chan% = 1 To sample(1).LastChan%
+msg$ = msg$ & Format$(Format$(average.Stddevs!(chan%), f82$), a80$)
+Next chan%
+msg$ = msg$ & Format$(Space$(8), a80$)
+Call IOWriteLog(msg$)
+
+msg$ = "SERR: "
+For chan% = 1 To sample(1).LastChan%
+msg$ = msg$ & Format$(Format$(average.Stderrs!(chan%), f82$), a80$)
+Next chan%
+msg$ = msg$ & Format$(Space$(8), a80$)
+Call IOWriteLog(msg$)
+
+msg$ = vbCrLf & "MIN:  "
+For chan% = 1 To sample(1).LastChan%
+msg$ = msg$ & Format$(Format$(average.Minimums!(chan%), f82$), a80$)
+Next chan%
+msg$ = msg$ & Format$(Space$(8), a80$)
+Call IOWriteLog(msg$)
+
+msg$ = "MAX:  "
+For chan% = 1 To sample(1).LastChan%
+msg$ = msg$ & Format$(Format$(average.Maximums!(chan%), f82$), a80$)
+Next chan%
+msg$ = msg$ & Format$(Space$(8), a80$)
+Call IOWriteLog(msg$)
+End If
+
 Exit Sub
 
 ' Errors
@@ -345,7 +458,7 @@ Exit Sub
 End Sub
 
 Sub AnalyzeCalculateAllAverage(astring As String, bstring As String, analysis As TypeAnalysis, sample() As TypeSample)
-' Calculate average ZAF for file output (CalculateAllMatrixCorrections)
+' Calculate average wt% and at% for file output (CalculateAllMatrixCorrections)
 
 ierror = False
 On Error GoTo AnalyzeCalculateAllAverageError
@@ -354,6 +467,7 @@ Dim chan As Integer
 
 Dim average2 As TypeAverage     ' for weight percents
 Dim average3 As TypeAverage     ' for atomic percents
+Dim average4 As TypeAverage     ' for %VAR
 
 ' Line number
 astring$ = "AVER:"
@@ -365,6 +479,12 @@ If ierror Then Exit Sub
 
 ' Calculate atomic percent average
 Call MathArrayAverage(average3, analysis.CalData!(), sample(1).Datarows%, sample(1).LastChan% + 1, sample())
+If ierror Then Exit Sub
+
+' Get standard values from AnalyzeTypePublished
+Call AnalyzeReturnStandardValues(Int(1), tPublishedValues())
+If ierror Then Exit Sub
+Call AnalyzeReturnStandardValues(Int(2), tPercentVariances())
 If ierror Then Exit Sub
 
 ' Elemental data
@@ -383,7 +503,7 @@ bstring$ = bstring$ & vbTab & MiscAutoFormat$(average2.averags!(sample(1).LastCh
 ' Save total average
 MatrixAverages!(sample(1).LastChan% + 1, izaf%) = average2.averags!(sample(1).LastChan% + 1)
 
-' Other data
+' Atomic percent data data
 If sample(1).AtomicPercentFlag% Then
 For chan% = 1 To sample(1).LastChan%
 astring$ = astring$ & vbTab & MiscAutoFormat$(average3.averags!(chan%))
@@ -399,6 +519,15 @@ bstring$ = bstring$ & vbTab & MiscAutoFormat$(average3.averags!(sample(1).LastCh
 
 ' Save total
 MatrixAverages2!(sample(1).LastChan% + 1, izaf%) = average3.averags!(sample(1).LastChan% + 1)
+End If
+
+' Percent variance std data (do not save to strings)
+If sample(1).Type% = 1 Or sample(1).Type% = 2 And sample(1).UnknownIsStandardNumber% > 0 Then
+For chan% = 1 To sample(1).LastChan%
+
+' Save average
+MatrixAverages3!(chan%, izaf%) = tPercentVariances!(chan%)
+Next chan%
 End If
 
 Exit Sub
