@@ -998,7 +998,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Software"
 lpKeyName$ = "PositionImportExportFileType"
-nDefault& = 1
+nDefault& = 2
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 PositionImportExportFileType% = valid&

@@ -2,6 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/24/26	Modify TimeCalculate code to not include on-peak move time for disabled element 
+		channels even if they are the first element on that spectrometer (Boroughs).
+		
+		Also skip simulation calculations for disabled acquisition elements.
+
+01/19/26	Change default PositionImportExportFileType value in Probewin.ini file from 1 to 2.
+
 01/17/26	Add %VAR output when using All Matrix Corrections flag.
 
 01/07/26	Add error trap for reading GRD files that are have X or Y dimensions smaller 
