@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+01/26/26	Add Bragg order k-ratio document to Help menu.
+
 01/24/26	Modify TimeCalculate code to not include on-peak move time for disabled element 
 		channels even if they are the first element on that spectrometer (Boroughs).
 		

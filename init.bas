@@ -1481,6 +1481,7 @@ TipOfTheDayFile$ = ApplicationCommonAppData$ & "TipOfTheDay.txt"
 ProbeforEPMAQuickStartGuide$ = ProgramPath$ & "Probe for EPMA_Quick Start.pdf"
 ProbeforEPMAFAQ$ = ProgramPath$ & "Probe for EPMA Frequently Asked Questions.pdf"
 ProbeForEPMAConstantKRatios$ = ProgramPath$ & "Constant K-ratio dead time calibration.pdf"
+ProbeForEPMABraggOrderKRatios$ = ProgramPath$ & "Bragg Order K-Ratio Testing.pdf"
 
 GettingStartedManual$ = ProgramPath$ & "GettingStarted_ProbeSoftware.pdf"
 AdvancedTopicsManual$ = ProgramPath$ & "AdvancedTopics_ProbeSoftware.pdf"
