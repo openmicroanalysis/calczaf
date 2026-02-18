@@ -4253,17 +4253,21 @@ Dim sAllFiles() As String
 Dim ip As Integer
 Dim esym As String, xsym As String
 
+Dim sfilename As String, ufilename As String
+Dim sIntensity As Single, uIntensity As Single
+Dim sIntensity_var As Single, uIntensity_var As Single
 Dim pKratio As Single, pKratio_var As Single
 Dim dist_or_rad As Single
+
 Dim ptext1 As String, ptext2 As String
 
 ' Ask user for unknown folder and standard folder
-astring$ = "Browse Penepma Batch Folder For Standard Intensity (" & ExtractStdFolder$ & ")"
+astring$ = "Browse Penepma Batch Folder For Standard (primary) Intensity (" & ExtractStdFolder$ & ")"
 If ExtractStdFolder$ = vbNullString Then ExtractStdFolder$ = PENEPMA_Path$ & "\Batch"
 ExtractStdFolder$ = IOBrowseForFolderByPath(True, ExtractStdFolder$, astring$, FormPENEPMA08Batch)
 If Trim$(ExtractStdFolder$) = vbNullString Then GoTo Penepma08BatchExtractKratiosNoStdFolder
 
-astring$ = "Browse Penepma Batch Folder For Unknown Intensities (" & ExtractFolder$ & ")"
+astring$ = "Browse Penepma Batch Folder For Unknown (secondary) Intensities (" & ExtractFolder$ & ")"
 If ExtractFolder$ = vbNullString Then ExtractFolder$ = PENEPMA_Path$ & "\Batch"
 ExtractFolder$ = IOBrowseForFolderByPath(True, ExtractFolder$, astring$, FormPENEPMA08Batch)
 If Trim$(ExtractFolder$) = vbNullString Then GoTo Penepma08BatchExtractKratiosNoFolder
@@ -4299,14 +4303,17 @@ tfilename$ = ExtractStdFolder$ & "\pe-inten-01.dat"    ' check for Penepma 2008 
 If Dir$(Trim$(tfilename$)) = vbNullString Then GoTo Penepma08BatchExtractKratiosStdFileNotFound
 End If
 
-' Extract all MAXRAY emission lines from net intensity file
+' Extract from standard net intensity file
+sfilename$ = tfilename$
 BinaryElement1% = ExtractElement%
 Call Penepma08BatchBinaryExtract2(Int(1), tfilename$)
 If ierror Then Exit Sub
 
-' Store standard intensities
-std_int!(Int(1), ExtractXray%) = tot_int!(Int(1), ExtractXray%)
-If std_int!(Int(1), ExtractXray%) = 0# Then GoTo Penepma08BatchExtractKratiosStdIntZero
+' Store standard intensity and variance
+sIntensity! = tot_int!(Int(1), ExtractXray%)
+If sIntensity! = 0# Then GoTo Penepma08BatchExtractKratiosStdIntZero
+sIntensity_var! = tot_int_var!(Int(1), ExtractXray%)
+If sIntensity_var! = 0# Then GoTo Penepma08BatchExtractKratiosStdVarZero
 
 ' Open k-ratio output file
 Close #Temp2FileNumber%
@@ -4314,7 +4321,15 @@ kratiofile$ = ExtractFolder$ & "\Penepma_Kratios_" & Symlo$(ExtractElement%) & "
 Open kratiofile$ For Output As #Temp2FileNumber%
 
 ' Create column labels
-astring$ = VbDquote$ & Symup$(ExtractElement%) & " " & Xraylo$(ExtractXray%) & " in Sample" & VbDquote$ & vbTab & VbDquote$ & "Distance or Radius (um)" & VbDquote$ & vbTab & VbDquote$ & "Std.Tot.Int." & VbDquote$ & vbTab & VbDquote$ & "Unk.Tot.Int." & VbDquote$ & vbTab & VbDquote & "Unk.Tot.Int.Var." & VbDquote$ & vbTab & VbDquote$ & "K-ratio" & VbDquote$ & vbTab & VbDquote$ & "K-ratio Var." & VbDquote$
+astring$ = VbDquote$ & Symup$(ExtractElement%) & " " & Xraylo$(ExtractXray%) & " in Unknown" & VbDquote$ & vbTab
+astring$ = astring$ & VbDquote$ & "Primary Std" & VbDquote$ & vbTab
+astring$ = astring$ & VbDquote$ & "Distance or Radius (um)" & VbDquote$ & vbTab
+astring$ = astring$ & VbDquote$ & "Std.Tot.Int." & VbDquote$ & vbTab
+astring$ = astring$ & VbDquote & "Std.Tot.Int.Var." & VbDquote$ & vbTab
+astring$ = astring$ & VbDquote$ & "Unk.Tot.Int." & VbDquote$ & vbTab
+astring$ = astring$ & VbDquote & "Unk.Tot.Int.Var." & VbDquote$ & vbTab
+astring$ = astring & VbDquote$ & "K-ratio" & VbDquote$ & vbTab
+astring$ = astring$ & VbDquote$ & "K-ratio Var." & VbDquote$
 Print #Temp2FileNumber%, astring$
 Call IOWriteLog(vbCrLf & astring$)
 
@@ -4338,10 +4353,15 @@ If Trim$(tfilename$) <> vbNullString Then
 Call Penepma08BatchBinaryExtract2(Int(1), tfilename$)
 If ierror Then Exit Sub
 
+' Store unknown intensity and variance
+ufilename$ = tfilename$
+uIntensity! = tot_int!(Int(1), ExtractXray%)
+uIntensity_var! = tot_int_var!(Int(1), ExtractXray%)
+
 ' Calculate k-ratios for specified element and line
-If std_int!(Int(1), ExtractXray%) <> 0# Then
-pKratio! = tot_int!(Int(1), ExtractXray%) / std_int!(Int(1), ExtractXray%)
-pKratio_var! = tot_int_var!(Int(1), ExtractXray%) / std_int!(Int(1), ExtractXray%)
+If sIntensity! <> 0# Then
+pKratio! = uIntensity! / sIntensity!
+pKratio_var! = Penepma08BatchExtractKratiosVariance!(sIntensity!, uIntensity!, sIntensity_var!, uIntensity_var!)
 End If
 
 ' Obtain the geo file parameter to determine distance or radius
@@ -4363,12 +4383,14 @@ If InStr(ptext1$, "sphere") > 0 And InStr(ptext1$, "mic") > 0 Then
 dist_or_rad! = Val(Left$(ptext1$, InStr(ptext1$, "mic"))) / 2#      ' radius of hemisphere (in um)
 End If
 
-astring$ = vbNullString
-astring$ = astring$ & VbDquote$ & MiscGetLastFolderOnly$(tfilename$) & VbDquote$ & vbTab
+' Output data string
+astring$ = VbDquote$ & MiscGetLastFolderOnly$(ufilename$) & VbDquote$ & vbTab
+astring$ = astring$ & VbDquote$ & MiscGetLastFolderOnly$(sfilename$) & VbDquote$ & vbTab
 astring$ = astring$ & Format$(dist_or_rad!) & vbTab
-astring$ = astring$ & Format$(std_int!(1, ExtractXray%), e82$) & vbTab
-astring$ = astring$ & Format$(tot_int!(1, ExtractXray%), e82$) & vbTab
-astring$ = astring$ & Format$(tot_int_var!(1, ExtractXray%), e82$) & vbTab
+astring$ = astring$ & Format$(sIntensity!, e82$) & vbTab
+astring$ = astring$ & Format$(sIntensity_var!, e82$) & vbTab
+astring$ = astring$ & Format$(uIntensity!, e82$) & vbTab
+astring$ = astring$ & Format$(uIntensity_var!, e82$) & vbTab
 astring$ = astring$ & MiscAutoFormat$(pKratio!) & vbTab
 astring$ = astring$ & MiscAutoFormat$(pKratio_var!)
 
@@ -4436,6 +4458,13 @@ Close #Temp2FileNumber%
 ierror = True
 Exit Sub
 
+Penepma08BatchExtractKratiosStdVarZero:
+msg$ = "Standard intensity variance for " & Symup$(ExtractElement%) & " " & Xraylo$(ExtractXray%) & " in " & tfilename$ & ", is zero"
+MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchExtractKratios"
+Close #Temp2FileNumber%
+ierror = True
+Exit Sub
+
 Penepma08BatchExtractKratiosUnkFilesNotFound:
 msg$ = "No pe-intens-01.dat nor pe-inten-01.dat Penepma output files for unknowns were found"
 MsgBox msg$, vbOKOnly + vbExclamation, "Penepma08BatchExtractKratios"
@@ -4458,6 +4487,45 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Function Penepma08BatchExtractKratiosVariance(sIntensity As Single, uIntensity As Single, sIntensity_var As Single, uIntensity_var As Single) As Single
+' Calculate the variance of a k-ratio (quotient)
+
+ierror = False
+On Error GoTo Penepma08BatchExtractKratiosVarianceError
+
+Dim qMeans As Single
+Dim uRelVar As Single, sRelVar As Single
+Dim cRelVar As Single, fVar As Single
+
+Penepma08BatchExtractKratiosVariance! = 0#
+
+' Calculate quotient of the means
+qMeans! = uIntensity! / sIntensity!
+
+' Calculte relative variances
+uRelVar! = (uIntensity_var! * uIntensity_var!) / (uIntensity! * uIntensity!)
+sRelVar! = (sIntensity_var! * sIntensity_var!) / (sIntensity! * sIntensity!)
+
+' Calculate combined relative variance
+cRelVar! = uRelVar! + sRelVar!
+
+' Calculate final variance
+fVar! = cRelVar! * (qMeans! * qMeans!)
+
+' Calculate standard deviation of k-ratio (quotient)
+Penepma08BatchExtractKratiosVariance! = Sqr(fVar!)
+
+Exit Function
+
+' Errors
+Penepma08BatchExtractKratiosVarianceError:
+MsgBox Error$, vbOKOnly + vbCritical, "Penepma08BatchExtractKratiosVariance"
+Close #Temp2FileNumber%
+ierror = True
+Exit Function
+
+End Function
 
 Sub Penepma08BatchBulkPureElementCreate(tForm As Form)
 ' Create a series of bulk pure element composition input files based on the range of two elements

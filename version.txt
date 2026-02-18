@@ -2,6 +2,16 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+02/17/26	Reduce misc delays in JeolMECSpectraStart (McAleer).
+v. 14.3.1	
+		Unzoom automatically when loading another peaking or PHA scan.
+		
+		Modify GetSpec code to not load specified oxygen from a standard composition if new
+		"Do not load specified oxygen" checkbox is checked (Buse).
+
+01/26/26	Modify Penepma extract k-ratio code to output more information and calculate k-ratio
+v. 14.2.9	variance more rigorously.
+
 01/26/26	Add Bragg order k-ratio document to Help menu.
 
 01/24/26	Modify TimeCalculate code to not include on-peak move time for disabled element 
@@ -19,6 +29,7 @@ User names (in parentheses) indicate grateful attribution for the preceding bug 
 01/01/26	Improve spectrometer position calculation in CalcZAF to include 2d.
 
 12/31/25	Fix blank output bug in User Specified Output (McAleer).
+v. 14.2.8
 
 12/20/25	Work with Ryan McAleer to decrease the time lag for starting the JEOL MEC EDS acquisition
 		when using TFDI for WDS elements.
