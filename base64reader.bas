@@ -457,7 +457,7 @@ On Error GoTo Base64ReaderGetRawDataError
 Dim n As Long
 Dim ii As Integer, jj As Integer
 Dim tWidth As Integer
-Dim sRow As String, astring As String
+Dim sRow As String
 
 Dim barray() As Byte
 

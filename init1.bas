@@ -3826,7 +3826,7 @@ Dim lpReturnString2 As String * 255
 
 Dim nSize As Long
 Dim nDefault As Long
-Dim astring As String, tcomment As String
+Dim tcomment As String
 
 ' Check for existing PROBEWIN.INI
 If Dir$(ProbeWinINIFile$) = vbNullString Then

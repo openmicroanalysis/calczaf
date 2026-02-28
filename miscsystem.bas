@@ -286,10 +286,10 @@ Private Const MUTANT_ALL_ACCESS                     As Long = (STANDARD_RIGHTS_R
 'Private Const DACL_SECURITY_INFORMATION             As Long = 4
 
 Public Declare Function OpenMutex Lib "kernel32.dll" Alias "OpenMutexA" (ByVal dwDesiredAccess As Long, ByVal bInheritHandle As Boolean, ByVal lpName As String) As Long
-Public Declare Function ReleaseMutex Lib "kernel32.dll" (ByVal hMutex As Long) As Long
+'Public Declare Function ReleaseMutex Lib "kernel32.dll" (ByVal hMutex As Long) As Long
 Public Declare Sub CloseHandle Lib "kernel32" (ByVal hPass As Long)
-Public Declare Function CreateMutex Lib "kernel32.dll" Alias "CreateMutexA" (ByVal lpMutexAttributes As Any, ByVal bInitialOwner As Boolean, ByVal lpName As String) As Long
-Public Declare Function GetLastError Lib "kernel32.dll" () As Long
+'Public Declare Function CreateMutex Lib "kernel32.dll" Alias "CreateMutexA" (ByVal lpMutexAttributes As Any, ByVal bInitialOwner As Boolean, ByVal lpName As String) As Long
+'Public Declare Function GetLastError Lib "kernel32.dll" () As Long
 
 Private Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Long, ByVal nindex As Long) As Long
 Private Const GDC_LOGPIXELSX As Long = 88
