@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/03/26	Modify traverse scripts (TRAVXY.BAS, etc.) to be compatible with new version of
+		Golden Software Grapher Scripter.application (swap "firstrow" and "lastrow" lines.
+
 02/27/26	Modify custom output 17 (spectro/element wavescan output) to handle wavescans of 
 		different lengths (Ducharme).
 
