@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form FormEffective 
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Calculate K-ratios for a Range of Effective Takeoff Angles"
+   Caption         =   "Calculate Raw K-ratios for a Range of Effective Takeoff Angles or for All Matrix Corrections for the Default Takeoff Angle"
    ClientHeight    =   5265
    ClientLeft      =   750
    ClientTop       =   4290
@@ -22,17 +22,29 @@ Begin VB.Form FormEffective
    ScaleHeight     =   5265
    ScaleWidth      =   12225
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton CommandCalculateAll 
+      BackColor       =   &H0080FFFF&
+      Caption         =   "Calculate Raw K-Ratios for All Matrix Corrections"
+      Height          =   615
+      Left            =   9720
+      Style           =   1  'Graphical
+      TabIndex        =   33
+      TabStop         =   0   'False
+      ToolTipText     =   "Calculates raw k-ratios at the nominal takeoff angle for all matrix corrections"
+      Top             =   4560
+      Width           =   2295
+   End
    Begin VB.CommandButton CommandCalculate 
       BackColor       =   &H0080FFFF&
-      Caption         =   "Calculate K-Ratios"
+      Caption         =   "Calculate Raw K-Ratios for Range of Effective Take Off Angles"
       Height          =   735
-      Left            =   10200
+      Left            =   9720
       Style           =   1  'Graphical
       TabIndex        =   3
       TabStop         =   0   'False
-      ToolTipText     =   "Calculates k-ratios for a range of effective takeoff angles"
-      Top             =   4440
-      Width           =   1455
+      ToolTipText     =   "Calculates raw k-ratios for a range of effective takeoff angles"
+      Top             =   3600
+      Width           =   2295
    End
    Begin VB.Frame Frame1 
       Caption         =   "Standard Compositions"
@@ -388,22 +400,22 @@ Begin VB.Form FormEffective
       BackColor       =   &H00C0FFC0&
       Caption         =   "Close"
       Default         =   -1  'True
-      Height          =   735
+      Height          =   375
       Left            =   10200
       Style           =   1  'Graphical
       TabIndex        =   0
       TabStop         =   0   'False
-      Top             =   360
+      Top             =   240
       Width           =   1455
    End
    Begin VB.Label Label13 
       Alignment       =   2  'Center
       Caption         =   $"Effective.frx":0008
-      Height          =   3015
-      Left            =   9720
+      Height          =   2175
+      Left            =   9600
       TabIndex        =   32
-      Top             =   1320
-      Width           =   2295
+      Top             =   1200
+      Width           =   2535
    End
 End
 Attribute VB_Name = "FormEffective"
@@ -423,6 +435,14 @@ End Sub
 Private Sub ComboElement_Click()
 If Not DebugMode Then On Error Resume Next
 Call EffectiveTakeoffAngleElementUpdate
+If ierror Then Exit Sub
+End Sub
+
+Private Sub CommandCalculateAll_Click()
+If Not DebugMode Then On Error Resume Next
+Call EffectiveTakeoffAngleKRatiosSave
+If ierror Then Exit Sub
+Call EffectiveTakeoffAngleKRatiosCalculateAll
 If ierror Then Exit Sub
 End Sub
 

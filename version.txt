@@ -2,6 +2,9 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/10/26	Modify CalcZAF effective takeoff angle calculator to also calculate k-ratios for all 
+v. 14.3.3		matrix corrections at the default take off angle.
+
 03/03/26	Modify traverse scripts (TRAVXY.BAS, etc.) to be compatible with new version of
 		Golden Software Grapher Scripter.application (swap "firstrow" and "lastrow" lines.
 

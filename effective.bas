@@ -508,3 +508,211 @@ ierror = True
 Exit Sub
 
 End Sub
+
+Sub EffectiveTakeoffAngleKRatiosCalculateAll()
+' Calculate k-ratios for current takeoff for all matrix corrections
+
+ierror = False
+On Error GoTo EffectiveTakeoffAngleKRatiosCalculateAllError
+
+Dim i As Integer, j As Integer, tzaf As Integer
+Dim temp As Single, temp1 As Single, temp2 As Single
+Dim astring As String
+
+Dim EffectiveTakeOffStandardName1 As String
+Dim EffectiveTakeOffStandardName2 As String
+Dim EffectiveTakeoffKratios1() As Single
+Dim EffectiveTakeoffKratios2() As Single
+Dim EffectiveTakeoffKratios() As Single
+
+Dim average As TypeAverage
+
+' Check if particle corrections are selected with alpha factors or calibration curve (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
+If CorrectionFlag <> 0 Then
+msg$ = "Only ZAF or Phi-rho-z corrections are supported for effective takeoff angle k-ratio calculations."
+MsgBox msg$, vbOKOnly + vbExclamation, "EffectiveTakeoffAngleKRatiosCalculateAll"
+ierror = True
+Exit Sub
+End If
+
+' Init ZAF arrays
+Call ZAFInitZAF
+If ierror Then Exit Sub
+
+' Initialize arrays
+Call InitStandards(CalcZAFAnalysis)
+If ierror Then Exit Sub
+
+Call InitLine(CalcZAFAnalysis)
+If ierror Then Exit Sub
+
+' CALCZAF Calculate intensity from weight
+CalcZAFMode% = 0
+
+' Force standard sample type
+CalcZAFOldSample(1).Type% = 1
+CalcZAFOldSample(1).Datarows% = 1   ' always a single data point
+CalcZAFOldSample(1).GoodDataRows% = 1
+CalcZAFOldSample(1).LineStatus(1) = True      ' force status flag always true (good data point)
+
+' Loop on matrix corrections
+icancelauto = False
+tzaf% = izaf%           ' save current zaf/phi-rho-z method
+For j% = 1 To MAXZAF%   ' do not use 0 (individual selections)
+
+' Dimension arrays
+ReDim Preserve EffectiveTakeoffKratios1(1 To j%) As Single
+ReDim Preserve EffectiveTakeoffKratios2(1 To j%) As Single
+ReDim Preserve EffectiveTakeoffKratios(1 To j%) As Single
+
+' First calculate primary standard
+Call StandardGetMDBStandard(PrimaryStandardNum%, CalcZAFOldSample())
+If ierror Then Exit Sub
+
+' Make all elements unanalyzed except the k-ratio element
+For i% = 1 To CalcZAFOldSample(1).LastChan%
+If UCase$(ElementSym$) <> UCase$(CalcZAFOldSample(1).Elsyms$(i%)) Then
+CalcZAFOldSample(1).Xrsyms$(i%) = vbNullString
+Else
+CalcZAFOldSample(1).Xrsyms$(i%) = XraySym$
+End If
+Next i%
+
+' Re-sort standard composition for one analyzed element
+Call CalcZAFSave2(CalcZAFOldSample())
+If ierror Then Exit Sub
+
+CalcZAFOldSample(1).takeoff! = DefaultTakeOff!
+CalcZAFOldSample(1).TakeoffArray!(1) = DefaultTakeOff!
+CalcZAFOldSample(1).kilovolts! = BeamEnergy!         ' load beam energy
+CalcZAFOldSample(1).KilovoltsArray!(1) = BeamEnergy!         ' load beam energy
+
+CalcZAFOldSample(1).number% = PrimaryStandardNum%
+CalcZAFOldSample(1).StdAssigns%(1) = PrimaryStandardNum%
+NumberofStandards% = 1
+StandardNumbers%(1) = PrimaryStandardNum%
+
+' Increment matrix correction
+izaf% = j%
+Call AnalyzeChangeZAF(CalcZAFAnalysis, CalcZAFOldSample, CalcZAFTmpSample)
+If ierror Then
+izaf% = tzaf%
+Call InitGetZAFSetZAF2(izaf%)
+ierror = True
+Exit Sub
+End If
+
+' Call k-ratio calculation code
+Call EffectiveTakeoffAngleKRatiosCalculate2(CalcZAFOldSample(), CalcZAFTmpSample(), CalcZAFAnalysis)
+If ierror Then Exit Sub
+
+' Save k-ratios for primary standard
+EffectiveTakeOffStandardName1$ = CalcZAFOldSample(1).Name$
+EffectiveTakeoffKratios1!(j%) = CalcZAFAnalysis.StdAssignsKfactors!(1)
+
+' Next calculate secondary standard
+Call StandardGetMDBStandard(SecondaryStandardNum%, CalcZAFOldSample())
+If ierror Then Exit Sub
+
+' Make all elements unanalyzed except the k-ratio element
+For i% = 1 To CalcZAFOldSample(1).LastChan%
+If UCase$(ElementSym$) <> UCase$(CalcZAFOldSample(1).Elsyms$(i%)) Then
+CalcZAFOldSample(1).Xrsyms$(i%) = vbNullString
+Else
+CalcZAFOldSample(1).Xrsyms$(i%) = XraySym$
+End If
+Next i%
+
+' Re-sort standard composition for one analyzed element
+Call CalcZAFSave2(CalcZAFOldSample())
+If ierror Then Exit Sub
+
+CalcZAFOldSample(1).takeoff! = DefaultTakeOff!            ' load next takeoff angle
+CalcZAFOldSample(1).TakeoffArray!(1) = DefaultTakeOff!            ' load next takeoff angle
+CalcZAFOldSample(1).kilovolts! = BeamEnergy!         ' load beam energy
+CalcZAFOldSample(1).KilovoltsArray!(1) = BeamEnergy!         ' load beam energy
+
+CalcZAFOldSample(1).number% = SecondaryStandardNum%
+CalcZAFOldSample(1).StdAssigns%(1) = SecondaryStandardNum%
+NumberofStandards% = 1
+StandardNumbers%(1) = SecondaryStandardNum%
+
+' Call k-ratio calculation code
+Call EffectiveTakeoffAngleKRatiosCalculate2(CalcZAFOldSample(), CalcZAFTmpSample(), CalcZAFAnalysis)
+If ierror Then Exit Sub
+
+' Save k-ratios for secondary standard
+EffectiveTakeOffStandardName2$ = CalcZAFOldSample(1).Name$
+EffectiveTakeoffKratios2!(j%) = CalcZAFAnalysis.StdAssignsKfactors!(1)
+
+If icancelauto Then Exit Sub
+Next j%
+
+' Restore original ZAF
+izaf% = tzaf%
+Call InitGetZAFSetZAF2(izaf%)
+If ierror Then Exit Sub
+AllAFactorUpdateNeeded = True
+
+' Output results
+msg$ = vbCrLf & "K-Ratios for Primary Standard: " & Format$(PrimaryStandardNum%) & " " & EffectiveTakeOffStandardName1$
+Call IOWriteLog(msg$)
+msg$ = "Secondary Standard: " & Format$(SecondaryStandardNum%) & " " & EffectiveTakeOffStandardName2$
+Call IOWriteLog(msg$)
+msg$ = "Emission line: " & ElementSym$ & " " & XraySym$ & " at " & Format$(BeamEnergy!) & " keV, " & Format$(DefaultTakeOff!) & " degrees"
+Call IOWriteLog(msg$)
+msg$ = "MAC File: " & macstring$(MACTypeFlag%) & vbCrLf
+Call IOWriteLog(msg$)
+
+For i% = 1 To MAXZAF%
+EffectiveTakeoffKratios!(i%) = EffectiveTakeoffKratios2!(i%) / EffectiveTakeoffKratios1!(i%)
+msg$ = "K-Ratio: " & MiscAutoFormat$(EffectiveTakeoffKratios!(i%)) & ", Correction Method: " & zafstring$(i%)
+Call IOWriteLog(msg$)
+Next i%
+
+' Calculate k-ratio averages
+Call MathSimpleAverage(average, EffectiveTakeoffKratios!(), CLng(MAXZAF%))
+
+' Output k-ratio averages
+astring$ = vbCrLf & "AVER:    "
+For i% = 1 To CalcZAFOldSample(1).LastElm%
+astring$ = astring$ & MiscAutoFormat$(average.averags!(i%))
+Next i%
+astring$ = astring & vbCrLf
+
+astring$ = astring$ & "SDEV:    "
+For i% = 1 To CalcZAFOldSample(1).LastElm%
+astring$ = astring$ & MiscAutoFormat$(average.Stddevs!(i%))
+Next i%
+astring$ = astring & vbCrLf
+
+astring$ = astring$ & "SERR:    "
+For i% = 1 To CalcZAFOldSample(1).LastElm%
+astring$ = astring$ & MiscAutoFormat$(average.Stderrs!(i%))
+Next i%
+astring$ = astring & vbCrLf & vbCrLf
+
+astring$ = astring$ & "MIN:     "
+For i% = 1 To CalcZAFOldSample(1).LastElm%
+astring$ = astring$ & MiscAutoFormat$(average.Minimums!(i%))
+Next i%
+astring$ = astring & vbCrLf
+
+astring$ = astring$ & "MAX:     "
+For i% = 1 To CalcZAFOldSample(1).LastElm%
+astring$ = astring$ & MiscAutoFormat$(average.Maximums!(i%))
+Next i%
+astring$ = astring & vbCrLf
+
+Call IOWriteLog(astring$)
+
+Exit Sub
+
+' Errors
+EffectiveTakeoffAngleKRatiosCalculateAllError:
+MsgBox Error$, vbOKOnly + vbCritical, "EffectiveTakeoffAngleKRatiosCalculateAll"
+ierror = True
+Exit Sub
+
+End Sub
+
