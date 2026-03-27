@@ -3149,7 +3149,7 @@ Next i%
 msg$ = "%VAR: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-If analysis.StdPercents!(ip%, i%) <> NOT_ANALYZED_VALUE_SINGLE! Then
+If analysis.StdPercents!(ip%, i%) <> NOT_ANALYZED_VALUE_SINGLE! And sample(1).StdAssigns%(i%) <> 0 Then
 If sample(1).StdAssigns%(i%) <> sample(1).number% Then
 msg$ = msg$ & Format$(Format$(temp!(i%), f82$), a80$)
 StandardPercentVariances!(i%) = temp!(i%)
@@ -3186,7 +3186,7 @@ msg$ = "DIFF: "
 For i% = ii% To jj%
 ippp% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())   ' check if duplicate element
 If sample(1).DisableQuantFlag%(i%) = 0 And (Not UseAggregateIntensitiesFlag Or UseAggregateIntensitiesFlag And ippp% = 0) Then
-If analysis.StdPercents!(ip%, i%) <> NOT_ANALYZED_VALUE_SINGLE! Then
+If analysis.StdPercents!(ip%, i%) <> NOT_ANALYZED_VALUE_SINGLE! And sample(1).StdAssigns%(i%) <> 0 Then
 If Not UseAutomaticFormatForResultsFlag Then
 If sample(1).StdAssigns%(i%) <> sample(1).number% Then
 msg$ = msg$ & Format$(Format$(temp!(i%), f83$), a80$)

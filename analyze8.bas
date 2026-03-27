@@ -389,7 +389,7 @@ For j% = 1 To MAXZAF%
 msg$ = Format$(j%, a60$)
 For chan% = 1 To sample(1).LastChan%
 If sample(1).DisableQuantFlag%(chan%) = 0 Then
-If MatrixAverages3!(chan%, j%) <> NOT_ANALYZED_VALUE_SINGLE! Then
+If MatrixAverages3!(chan%, j%) <> NOT_ANALYZED_VALUE_SINGLE! And sample(1).StdAssigns%(chan%) <> 0 Then
 If sample(1).StdAssigns%(chan%) <> sample(1).number% Then
 msg$ = msg$ & Format$(Format$(MatrixAverages3!(chan%, j%), f82$), a80$)
 Else
