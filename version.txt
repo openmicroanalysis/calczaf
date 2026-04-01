@@ -2,6 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+03/31/26	Add error trapping for subsequent samples containing EDS or MPB data when combining
+v. 14.3.4	samples in the Analyze! window.
+
+		Add code to fix problem with Search for shared bgds when samples have different 
+		numbers of elements and EDS elements gets flagged as an MPB element.
+		
+		Modify MultiPointLoadSamplesChans to skip EDS elements explicitly.
+
 03/26/26	Add On Top checkbox for BasicEPMA and AdvancedEPMA forms (von der Handt).
 	
 		Modify All Matrix Corrections output for unanalyzed elements.
