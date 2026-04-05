@@ -2,6 +2,20 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/04/26	Display disabled element flags in sample setup dialog (Ruth).
+
+		Fix bug in SampleSetupSave when SetupSampleFlag = 1 (allow changes).from FormSetupSam.
+
+		Modify Bruker tStartNew and tGUI flags init.
+
+04/02/26	Modify GetOpt code when asking to interface EDS (von der Handt)
+
+04/01/26	Increase MAN/Interf maximum iterations from 100 to 300 for pathological
+		interferences (Locock).
+		
+		Ask user when removing shared MPBs whether to also delete manual flags 
+		(von der Handt).
+
 03/31/26	Add error trapping for subsequent samples containing EDS or MPB data when combining
 v. 14.3.4	samples in the Analyze! window.
 

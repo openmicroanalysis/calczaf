@@ -369,7 +369,8 @@ Next chan%
 
 ' Iterate on the MAN, interference, volatile (TDI) and APF corrections
 'MaxMANIter% = 10             ' change from 100 to 10 (12-18-2019)
-MaxMANIter% = 100            ' change back to 100 for pathological interferences (e.g., Pb La and As Ka) (11/21/2024)
+'MaxMANIter% = 100            ' change back to 100 for pathological interferences (e.g., Pb La and As Ka) (11/21/2024)
+MaxMANIter% = 300            ' change to 300 for many elements with pathological interferences (e.g., Pb La and As Ka) (04/01/2026)
 analysis.MANIter! = 1#       ' initialize number of MAN, interference, TDI and APF iterations
 analysis.zbar! = 10.8        ' assume quartz z-bar for first MAN iteration
 alldone = False
