@@ -1968,7 +1968,7 @@ For i% = ii% To jj%
 ip% = IPOS2(NumberofStandards%, sample(1).StdAssigns%(i%), StandardNumbers%())
 If ip% <> 0 Then
 msg$ = msg$ & Format$(Format$(analysis.StdAtomicWts!(ip%, i%), f83$), a80$)
-If analysis.AtomicWts!(i%) <> analysis.StdAtomicWts!(ip%, i%) Then diffwts = True
+If Not MiscDifferenceIsSmall(analysis.AtomicWts!(i%), analysis.StdAtomicWts!(ip%, i%), 0.0001) Then diffwts = True
 End If
 Next i%
 If diffwts Then Call IOWriteLog(msg$)

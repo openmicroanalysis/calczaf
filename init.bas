@@ -2261,6 +2261,7 @@ InterfaceString$(3) = "Unused"
 InterfaceString$(4) = "Unused"
 
 InterfaceString$(5) = "Cameca SX100/SXFive (TCP/IP Socket)"
+InterfaceString$(6) = "Cameca SX50/51 (DRV-11 Interface)"
 
 ' EDS interface type, 0 = Demo, 1 = JEOL MEC, 2 = Bruker, 3 = Oxford, 4 = Unused, 5 = Thermo, 6 = JEOL OEM
 InterfaceStringEDS$(0) = "EDS Demonstration"

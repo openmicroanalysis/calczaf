@@ -72,7 +72,7 @@ Global Const MAXRAY_OLD% = 6            ' maximum xray symbols (ka,kb,la,lb,ma,m
 Global Const MAXRAY% = 13               ' maximum xray symbols (ka,kb,la,lb,ma,mb,ln,lg,lv,ll,mg,mz," ") including blank for non-analyzed
 
 ' Constants for array declarations
-Global Const MAXINTERFACE% = 5          ' maximum number of instrument interfaces (0 to MAXINTERFACE%)
+Global Const MAXINTERFACE% = 6          ' maximum number of instrument interfaces (0 to MAXINTERFACE%)
 Global Const MAXINTERFACE_EDS% = 6      ' maximum number of EDS spectra interfaces (0 to MAXINTERFACE_EDS)
 Global Const MAXINTERFACE_IMAGE% = 10   ' maximum number of imaging interfaces (0 to MAXINTERFACE_IMAGE)
 Global Const MAXINTERFACE_CL% = 4       ' maximum number of CL spectra interfaces (0 to MAXINTERFACE_CL)

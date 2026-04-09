@@ -2000,7 +2000,7 @@ msg$ = "InterfaceType keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
-If InterfaceType% = 1 Or InterfaceType% = 3 Or InterfaceType% = 4 Then
+If InterfaceType% = 1 Or InterfaceType% = 3 Or InterfaceType% = 4 Or InterfaceType% = 6 Then
 msg$ = "InterfaceType keyword value is no longer supported in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End

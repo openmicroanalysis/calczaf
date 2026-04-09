@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+04/08/26	Add Ducharme, Moy and Donovan DAM backscatter supplement citation to Report output (Locock)
+
+		Add SX50/51 InterfaceType back for old SX50 MDB data files.
+
+04/05/26	Modify ATWT_S and ATWT_U output.in AnalyzeTypeResults to check with 0.0001 tolerance.
+
 04/04/26	Display disabled element flags in sample setup dialog (Ruth).
 
 		Fix bug in SampleSetupSave when SetupSampleFlag = 1 (allow changes).from FormSetupSam.
