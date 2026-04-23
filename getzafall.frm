@@ -5,13 +5,13 @@ Begin VB.Form FormGETZAFALL
    ClientHeight    =   4290
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   7680
+   ClientWidth     =   7815
    ControlBox      =   0   'False
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   4290
-   ScaleWidth      =   7680
+   ScaleWidth      =   7815
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton CommandOptions 
@@ -33,7 +33,7 @@ Begin VB.Form FormGETZAFALL
       TabStop         =   0   'False
       ToolTipText     =   "Select the ZAF or Phi-Rho-Z matrix correction procedure"
       Top             =   2280
-      Width           =   1455
+      Width           =   1575
    End
    Begin VB.CommandButton CommandMACs 
       BackColor       =   &H0080FFFF&
@@ -54,7 +54,7 @@ Begin VB.Form FormGETZAFALL
       TabStop         =   0   'False
       ToolTipText     =   "Select the mass absorption coefficient lookup table"
       Top             =   3240
-      Width           =   1455
+      Width           =   1575
    End
    Begin VB.CommandButton CommandCancel 
       Cancel          =   -1  'True
@@ -73,7 +73,7 @@ Begin VB.Form FormGETZAFALL
       TabIndex        =   8
       TabStop         =   0   'False
       Top             =   720
-      Width           =   1455
+      Width           =   1575
    End
    Begin VB.CommandButton CommandOK 
       BackColor       =   &H00C0FFC0&
@@ -94,7 +94,7 @@ Begin VB.Form FormGETZAFALL
       TabIndex        =   7
       TabStop         =   0   'False
       Top             =   120
-      Width           =   1455
+      Width           =   1575
    End
    Begin VB.Frame Frame6 
       Caption         =   "Correction Method"

@@ -2486,7 +2486,7 @@ a24$ = String$(24, 64) & "!"
 a32$ = String$(32, 64) & "!"
 a64$ = String$(64, 64) & "!"
 
-EmpiricalAlphaFlag% = 1 ' do not use empirical alpha factors
+EmpiricalAlphaFlag% = 1 ' do not use empirical alpha factors (1 = do not use, 2 = use)
 'CorrectionFlag% = 0  ' ZAF/Phi-Rho-Z default (set in PROBEWIN.INI) (0 = phi/rho/z, 1,2,3,4 = alpha fits, 5 = calilbration curve, 6 = fundamental parameters)
 'izaf% = 1   ' zaf correction (pre-selected options) (set in PROBEWIN.INI)
 
@@ -2511,7 +2511,7 @@ zafstring$(7) = "Bastin (original) (prZ)"
 zafstring$(8) = "Bastin PROZA Phi (prZ) (EPQ-91)"
 zafstring$(9) = "Pouchou and Pichoir-Full (PAP)"
 zafstring$(10) = "Pouchou and Pichoir-Simplified (XPP)"
-zafstring$(11) = "PAP/Donovan and Moy BSC/BKS (prZ)"
+zafstring$(11) = "Armstrong/Donovan and Moy BSC/BKS (prZ)"
 
 zafstring2$(0) = "Individual"
 zafstring2$(1) = "Armstrong prZ"
