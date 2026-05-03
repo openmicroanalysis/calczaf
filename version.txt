@@ -2,6 +2,18 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/02/26	Remove EDSLive call for JEOL 8230/8530 EDS in JEOLEDSSpectraStop to try and unlock 
+		JEOL stage contols because it does not unlock stage controls and sets mag tpo 4000x.
+		
+04/30/26	Improve AnalyzeTypeReport code for instrument type to use stored EOS Type parameter
+		for JEOL instruments.
+
+04/29/26	Add EDSLive call for JEOL 8230/8530 EDS in JEOLEDSSpectraStop to try and unlock 
+		JEOL stage contols (Buse).
+		
+		Fix typos in various modules from "Analysis | Acquisition Options menu" to 
+		"Analytical | Analysis Options menu" (Ducharme).
+
 04/22/26	Rename PAP/DAM to Amstrong/DAM correction (Ducharme).
 
 04/08/26	Add Ducharme, Moy and Donovan DAM backscatter supplement citation to Report output (Locock)
