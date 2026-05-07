@@ -23,7 +23,7 @@ Function FileInfoGetVersion(tfilename As String, tfiletype As String) As Single
 ierror = False
 On Error GoTo FileInfoGetVersionError
 
-Dim fileattributes As Integer, attributetest As Integer
+Dim fileattributes As Long, attributetest As Long
 
 Dim FiDb As Database
 Dim FiDt As Recordset
@@ -32,9 +32,9 @@ Dim FiDt As Recordset
 If Trim$(tfilename$) = vbNullString Then GoTo FileInfoGetVersionNoFileName
 
 ' Check for read only on passed database file
-fileattributes% = GetAttr(tfilename$)
-attributetest% = fileattributes% And vbReadOnly
-If attributetest% > 0 Then GoTo FileInfoGetVersionReadOnly
+fileattributes& = GetAttr(tfilename$)
+attributetest& = fileattributes& And vbReadOnly
+If attributetest& > 0 Then GoTo FileInfoGetVersionReadOnly
 
 ' Open the passed database for read only
 Screen.MousePointer = vbHourglass
@@ -81,7 +81,7 @@ Exit Function
 
 FileInfoGetVersionReadOnly:
 Screen.MousePointer = vbDefault
-msg$ = "File " & tfilename$ & " is a read only file (" & Format$(fileattributes%) & ") and cannot be opened for updating. Please check the Read-only file attributes in the Properties tab by right clicking on the file."
+msg$ = "File " & tfilename$ & " is a read only file (" & Format$(fileattributes&) & ") and cannot be opened for updating. Please check the Read-only file attributes in the Properties tab by right clicking on the file."
 MsgBox msg$, vbOKOnly + vbExclamation, "FileInfoGetVersion"
 ierror = True
 Exit Function

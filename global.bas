@@ -299,7 +299,7 @@ Global Const MINBEAMSIZE! = 0#           ' minimum beam size in microns
 
 Global Const MAXTAKEOFF! = 75            ' maximum takeoff in degrees
 Global Const MAXKILOVOLTS! = 40#         ' maximum beam energy in kilovolts
-Global Const MAXBEAMCURRENT! = 1000#     ' maximum beam current in nA
+Global Const MAXBEAMCURRENT! = 2000#     ' maximum beam current in nA
 Global Const MAXBEAMSIZE! = 50#          ' maximum beam size in microns
 
 Global Const MINREPLICATES% = 1          ' minimum number of replicate samples

@@ -2,8 +2,13 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/06/26	Increase maximum beam current from 1000 to 2000 nA (Buse).
+v. 14.3.5
+		Modify FileInfoGetVersion GetAttr() function to return Long integer as some
+		NTFS operating systems can return a long..
+
 05/02/26	Remove EDSLive call for JEOL 8230/8530 EDS in JEOLEDSSpectraStop to try and unlock 
-		JEOL stage contols because it does not unlock stage controls and sets mag tpo 4000x.
+		JEOL stage controls because it does not unlock stage controls and sets mag to 4000x.
 		
 04/30/26	Improve AnalyzeTypeReport code for instrument type to use stored EOS Type parameter
 		for JEOL instruments.
