@@ -409,7 +409,7 @@ Else
 FormMAIN.CMDialog1.DialogTitle = "Open File To Input ProbeImage Image From"
 End If
 
-' Thermo SI spectrum image files (CalcImage)
+' Thermo SI spectrum image files (CalcImage) (browse UserEDS folder)
 ElseIf UCase$(ioextension$) = "SI" Then
 FormMAIN.CMDialog1.Filter = "Thermo Spectrum Image Files (*.SI)|*.SI|All Files (*.*)|*.*|"
 If mode% < 2 Then
@@ -548,7 +548,7 @@ Else
 FormMAIN.CMDialog1.DialogTitle = "Open File To Input ACQ Calibration From"
 End If
 
-' Bruker BCF spectrum image files (CalcImage)
+' Bruker BCF spectrum image files (CalcImage) (browse UserEDS folder)
 ElseIf UCase$(ioextension$) = "BCF" Then
 FormMAIN.CMDialog1.Filter = "Bruker Hypermap Image Files (*.BCF)|*.BCF|All Files (*.*)|*.*|"
 If mode% < 2 Then
@@ -559,6 +559,19 @@ If mode% < 2 Then
 FormMAIN.CMDialog1.DialogTitle = "Open File To Output Hypermap Image Data To"
 Else
 FormMAIN.CMDialog1.DialogTitle = "Open File To Input Hypermap Image Data From"
+End If
+
+' JEOL EDS spectrum image files (CalcImage)
+ElseIf UCase$(ioextension$) = "PTS" Then
+FormMAIN.CMDialog1.Filter = "JEOL Spectrum Image Files (*.PTS)|*.PTS|All Files (*.*)|*.*|"
+If mode% < 2 Then
+If Trim$(iofilename$) = vbNullString Then iofilename$ = "untitled.pts"
+End If
+
+If mode% < 2 Then
+FormMAIN.CMDialog1.DialogTitle = "Open File To Output Spectrum Image Data To"
+Else
+FormMAIN.CMDialog1.DialogTitle = "Open File To Input Spectrum Image Data From"
 End If
 
 End If
@@ -599,13 +612,15 @@ If UCase$(ioextension$) = UCase$("CSV") Then FormMAIN.CMDialog1.InitDir = UserDa
 If UCase$(ioextension$) = UCase$("CND") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
 If UCase$(ioextension$) = UCase$("ImpDAT") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
 If UCase$(ioextension$) = UCase$("ACQ") Then FormMAIN.CMDialog1.InitDir = UserDataDirectory$
+If UCase$(ioextension$) = UCase$("BCF") Then FormMAIN.CMDialog1.InitDir = UserEDSDirectory$
+If UCase$(ioextension$) = UCase$("PTS") Then FormMAIN.CMDialog1.InitDir = UserImagesDirectory$
 
 ' Specify default extension
 FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.filename = iofilename$
+FormMAIN.CMDialog1.Filename = iofilename$
 
 If mode% < 2 Then
 'FormMAIN.CMDialog1.ShowSave
@@ -756,9 +771,9 @@ FormMAIN.CMDialog1.DefaultExt = "MDB"
 
 ' Specify default if not blank
 If mdbfilename$ <> vbNullString Then
-FormMAIN.CMDialog1.filename = mdbfilename$
+FormMAIN.CMDialog1.Filename = mdbfilename$
 Else
-FormMAIN.CMDialog1.filename = "*.mdb"
+FormMAIN.CMDialog1.Filename = "*.mdb"
 End If
 
 ' Get COMMON DIALOG Filename
@@ -1737,7 +1752,7 @@ FormMAIN.CMDialog1.DefaultExt = ioextension$
 
 ' Common dialog action
 FormMAIN.CMDialog1.CancelError = True
-FormMAIN.CMDialog1.filename = iofilenames$
+FormMAIN.CMDialog1.Filename = iofilenames$
 
 Call IOGetFileName2(Int(2), tForm.hWnd, FormMAIN.CMDialog1.DialogTitle, iofilenames$, FormMAIN.CMDialog1.Filter, FormMAIN.CMDialog1.flags, FormMAIN.CMDialog1.InitDir, FormMAIN.CMDialog1.DefaultExt)
 If ierror Then Exit Sub
