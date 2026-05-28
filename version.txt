@@ -2,6 +2,18 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/27/26	Add ForceStoichiometryOfElementByStoichiometryToOxygenFlag to Analysis OPtions dialog
+v. 14.3.6	to force an element (e.g., carbon) calculated by stoichiometry to calculated oxygen
+		to be the extact stoichiometric ratio specified by the user. This could cause problems
+		if the user is wrong about the assumed stoichiometry, or if the mineral has some 
+		unanticipated ferric iron (or other multi-valent cation) and the stoichiometry specified
+		by the user is not exactly what is being assumed (Locock and Allaz).
+		
+		Note that old probe runs will require this flag to be checked for each session, but 
+		new runs will store this flag for future calculations.
+
+05/22/26	Add more direct stage code for iSP100/iHP200F instruments (wait for new JEOL driver).
+
 05/20/26	Add code to load raw cps varaiables for statistics for EDS elements (Bruker, 
 		JEOL and Thermo and stored interfaces) (Allaz).
 

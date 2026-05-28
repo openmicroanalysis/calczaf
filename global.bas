@@ -3148,3 +3148,4 @@ Global Use8x30DirectStageInterface As Boolean
 
 Global ProbeForEPMABraggOrderKRatios As String
 
+Global ForceStoichiometryOfElementByStoichiometryToOxygenFlag As Boolean

@@ -2240,6 +2240,24 @@ Next i%
 ' Load return arrays with analyzed elements
 analysis.ZAFIter! = zaf.iter%
 
+' Calculate ideal element relative to stoichiometric oxygen based on final iteration (05/27/2026)
+If ForceStoichiometryOfElementByStoichiometryToOxygenFlag Then
+Dim ideal As Single, diff As Single
+If zaf.il%(zaf.in0%) = 0 Then    ' if calculating oxygen by stoichiometry
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) = 15 Then         ' if element is calculated by stoichiometry to calculated oxygen
+ideal! = (zaf.conc!(zaf.in0%) / zaf.atwts!(zaf.in0%)) * sample(1).StoichiometryRatio! * zaf.atwts!(i%)
+diff! = zaf.conc!(i%) - ideal!
+zaf.ksum! = zaf.ksum! - diff!
+If VerboseMode Then
+Call IOWriteLog(vbCrLf & "ZAFSmp: forcing stoichiometry of element by stoichiometry to calculated oxygen: calculated: " & Format$(zaf.conc!(i%)) & ", ideal: " & Format$(ideal!))
+End If
+zaf.conc!(i%) = ideal!
+End If
+Next i%
+End If
+End If
+
 ' Calculate total FeO and total Fe2O3 if ferrous/ferric calculate flag is set
 If sample(1).FerrousFerricCalculationFlag Then
 analysis.FerricToTotalIronRatio! = tFerricToTotalIronRatio!     ' ferric iron to total iron ratio
