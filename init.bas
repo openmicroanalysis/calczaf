@@ -3482,6 +3482,7 @@ UseSecondaryBoundaryFluorescenceCorrectionFlag = False
 UseSecondaryBraggDefocusCorrectionFlag = False
 
 StartAcquireBatchFile = False
+ForceStoichiometryOfElementByStoichiometryToOxygenFlag = False
 
 ' Note that all UserSpecifiedOutput flags are initialized in probewin.ini file so do not initialize here!!!!!
 
@@ -4591,7 +4592,7 @@ If tForm.WindowState = vbMinimized Then Exit Sub
 If tForm.Visible = False Then Exit Sub
 
 ' Save window position
-astring$ = Str$(tForm.Left) & ", " & Str$(tForm.Top) & ", " & Str$(tForm.Width) & ", " & Str$(tForm.Height)
+astring$ = Str$(tForm.Left) & ", " & Str$(tForm.Top) & ", " & Str$(tForm.width) & ", " & Str$(tForm.height)
 lpAppName$ = tForm.Name
 lpKeyName$ = userstring$
 lpString$ = astring$
@@ -4632,15 +4633,15 @@ End If
 tForm.Left = twindow!(1)
 tForm.Top = twindow!(2)
 If tForm.Name = "FormCALCIMAGE" Then    ' MDIForm does not have borderstyle property (but is sizable)
-tForm.Width = twindow!(3)
-tForm.Height = twindow!(4)
+tForm.width = twindow!(3)
+tForm.height = twindow!(4)
 
 ' Set window width and height
 Else
 If tForm.BorderStyle = vbSizable Or tForm.BorderStyle = vbSizableToolWindow Then
 If tForm.Name <> "FormIMAGE" Then   ' to allow form to re-size based on ImageInterfaceImageIxIy
-tForm.Width = twindow!(3)
-tForm.Height = twindow!(4)
+tForm.width = twindow!(3)
+tForm.height = twindow!(4)
 End If
 End If
 End If

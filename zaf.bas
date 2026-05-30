@@ -2250,7 +2250,7 @@ ideal! = (zaf.conc!(zaf.in0%) / zaf.atwts!(zaf.in0%)) * sample(1).StoichiometryR
 diff! = zaf.conc!(i%) - ideal!
 zaf.ksum! = zaf.ksum! - diff!
 If VerboseMode Then
-Call IOWriteLog(vbCrLf & "ZAFSmp: forcing stoichiometry of element by stoichiometry to calculated oxygen: calculated: " & Format$(zaf.conc!(i%)) & ", ideal: " & Format$(ideal!))
+Call IOWriteLog(vbCrLf & "ZAFSmp: forcing stoichiometry of element by stoichiometry to calculated oxygen. Calculated: " & Format$(zaf.conc!(i%)) & ", Ideal: " & Format$(ideal!))
 End If
 zaf.conc!(i%) = ideal!
 End If
@@ -2328,8 +2328,8 @@ End If
 Next i%
 End If
 
-' Load element by stoichiometry to oxygen
-If sample(1).StoichiometryElementFlag% And sample(1).StoichiometryElement <> vbNullString Then
+' Load element by stoichiometry to stoichiometric (calculated) oxygen
+If sample(1).StoichiometryElementFlag% And sample(1).StoichiometryElement$ <> vbNullString Then
 ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, sample(1).StoichiometryElement$, sample(1).Elsyms$())
 If ip% > sample(1).LastElm% And ip% <= sample(1).LastChan% Then
 analysis.WtPercents!(ip%) = zaf.conc!(ip%) * 100#

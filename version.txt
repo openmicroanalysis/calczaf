@@ -2,11 +2,14 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+05/29/26	Disable JEOL get map net intensities code in CalcImage because it only works for the 
+		PC-SEM video generator (Buse).
+
 05/27/26	Add ForceStoichiometryOfElementByStoichiometryToOxygenFlag to Analysis OPtions dialog
 v. 14.3.6	to force an element (e.g., carbon) calculated by stoichiometry to calculated oxygen
-		to be the extact stoichiometric ratio specified by the user. This could cause problems
+		to be the extract stoichiometric ratio specified by the user. This could cause problems
 		if the user is wrong about the assumed stoichiometry, or if the mineral has some 
-		unanticipated ferric iron (or other multi-valent cation) and the stoichiometry specified
+		unanticipated ferric iron (or other multivalent cation) and the stoichiometry specified
 		by the user is not exactly what is being assumed (Locock and Allaz).
 		
 		Note that old probe runs will require this flag to be checked for each session, but 
@@ -14,7 +17,7 @@ v. 14.3.6	to force an element (e.g., carbon) calculated by stoichiometry to calc
 
 05/22/26	Add more direct stage code for iSP100/iHP200F instruments (wait for new JEOL driver).
 
-05/20/26	Add code to load raw cps varaiables for statistics for EDS elements (Bruker, 
+05/20/26	Add code to load raw cps variables for statistics for EDS elements (Bruker, 
 		JEOL and Thermo and stored interfaces) (Allaz).
 
 05/17/26	Work on JEOL EDS SI mapping code to extract net intensities from JEOL 8x30 EDS API and 
@@ -32,18 +35,18 @@ v. 14.3.5
 		for JEOL instruments.
 
 04/29/26	Add EDSLive call for JEOL 8230/8530 EDS in JEOLEDSSpectraStop to try and unlock 
-		JEOL stage contols (Buse).
+		JEOL stage controls (Buse).
 		
 		Fix typos in various modules from "Analysis | Acquisition Options menu" to 
 		"Analytical | Analysis Options menu" (Ducharme).
 
-04/22/26	Rename PAP/DAM to Amstrong/DAM correction (Ducharme).
+04/22/26	Rename PAP/DAM to Armstrong/DAM correction (Ducharme).
 
 04/08/26	Add Ducharme, Moy and Donovan DAM backscatter supplement citation to Report output (Locock)
 
 		Add SX50/51 InterfaceType back for old SX50 MDB data files.
 
-04/05/26	Modify ATWT_S and ATWT_U output.in AnalyzeTypeResults to check with 0.0001 tolerance.
+04/05/26	Modify ATWT_S and ATWT_U output in AnalyzeTypeResults to check with 0.0001 tolerance.
 
 04/04/26	Display disabled element flags in sample setup dialog (Ruth).
 
@@ -77,7 +80,7 @@ v. 14.3.4	samples in the Analyze! window.
 v. 14.3.3		matrix corrections at the default take off angle.
 
 03/03/26	Modify traverse scripts (TRAVXY.BAS, etc.) to be compatible with new version of
-		Golden Software Grapher Scripter.application (swap "firstrow" and "lastrow" lines.
+		Golden Software Grapher Scripter.exe (swap "firstrow" and "lastrow" lines.
 
 02/27/26	Modify custom output 17 (spectro/element wavescan output) to handle wavescans of 
 		different lengths (Ducharme).
@@ -85,8 +88,8 @@ v. 14.3.3		matrix corrections at the default take off angle.
 02/26/26	Delete some unused variables and passed parameters.
 v. 14.3.2
 
-02/23/26	Add some comments for Donovan MACs and and re-order emitters for borom in the EMPMAC.DAT
-		file for emirical MACs..
+02/23/26	Add some comments for Donovan MACs and re-order emitters for boron in the EMPMAC.DAT
+		file for empirical MACs..
 
 02/17/26	Reduce misc delays in JeolMECSpectraStart (McAleer).
 v. 14.3.1	
@@ -120,7 +123,7 @@ v. 14.2.8
 12/20/25	Work with Ryan McAleer to decrease the time lag for starting the JEOL MEC EDS acquisition
 		when using TFDI for WDS elements.
 		
-		Improve debug mode statements to beter indicate calling procedure.
+		Improve debug mode statements to better indicate calling procedure.
 
 12/03/25	Added code to handle the "spectrometer-element already loaded" error when the user has an
 		underscore and an element name as part of the sample name in the file name by starting 
