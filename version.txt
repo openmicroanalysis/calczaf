@@ -2,6 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/03/26	Modify PHA simulation code to produce more realistic bias and gain scans. Update PHA 
+		tuning PDF.
+
+06/02/26	Move warning about "Do Not Insert PCD After Acquisition" for JEOL MEC EDS" to before
+		faraday cup is removed (Boroughs).
+		
+		Add Tuning PHA for High Accuracy pdf to Help menu.  Fix link to forum in Tip of 
+		the Day popup.
+
 05/29/26	Disable JEOL get map net intensities code in CalcImage because it only works for the 
 		PC-SEM video generator (Buse).
 

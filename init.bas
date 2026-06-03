@@ -1486,6 +1486,7 @@ ProbeForEPMABraggOrderKRatios$ = ProgramPath$ & "Bragg Order K-Ratio Testing.pdf
 GettingStartedManual$ = ProgramPath$ & "GettingStarted_ProbeSoftware.pdf"
 AdvancedTopicsManual$ = ProgramPath$ & "AdvancedTopics_ProbeSoftware.pdf"
 UserReferenceManual$ = ProgramPath$ & "probewin.pdf"
+PHATuningForHighAccuracy$ = ProgramPath$ & "PHA Tuning for High Accuracy.pdf"
 
 ' Load help files
 ProbewinHelpFile$ = ProgramPath$ & "Probewin.chm"
