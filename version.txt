@@ -2,6 +2,10 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/09/26	Modify blank correction error for very negative k-ratios to be just a warning (Buse).
+
+		Modify string selection text control code in Plot window (Ducharme).
+
 06/03/26	Modify PHA simulation code to produce more realistic bias and gain scans. Update PHA 
 		tuning PDF.
 

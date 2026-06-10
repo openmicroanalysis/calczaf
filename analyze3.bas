@@ -806,9 +806,12 @@ uncts!(chan%) = uncts!(chan%) - blankcts!(chan%)
 If uncts!(chan%) / analysis.StdAssignsCounts!(chan%) < MAXNEGATIVE_KRATIO! Then
 tmsg$ = "The blank correction assignment (Un " & Format$(sample(1).BlankCorrectionUnks%(chan%)) & ") is producing a very negative k-ratio (" & Format$(uncts!(chan%) / analysis.StdAssignsCounts!(chan%)) & ") for " & sample(1).Elsyms$(chan%) & " " & sample(1).Xrsyms$(chan%) & " in sample " & SampleGetString2$(sample())
 tmsg$ = tmsg$ & vbCrLf & vbCrLf & "Please check that the blank assignment and blank level in the Standard Assignments dialog are correctly specified for this sample."
-MsgBox tmsg$, vbOKOnly + vbExclamation, "AnalyzeWeightCorrect"
-ierror = True
-Exit Sub
+
+' Commented out to allow for weird situations such as using the blank correction when measuring carbon with carbon coated samples (Buse)
+'MsgBox tmsg$, vbOKOnly + vbExclamation, "AnalyzeWeightCorrect"
+'ierror = True
+'Exit Sub
+Call IOWriteLogRichText(tmsg$, vbNullString, Int(LogWindowFontSize%), vbRed, Int(FONT_REGULAR%), Int(0))
 End If
 
 End If
