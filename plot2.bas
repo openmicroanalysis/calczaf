@@ -61,6 +61,9 @@ Function PlotGetSelectedType(i As Integer, astring As String) As Integer
 '  returns 5 if raw k-ratio calculation
 '  returns 6 if detection limit calculation
 '  returns 7 if percent error calculation
+'  returns 8 if standard published values
+'  returns 9 if standard percent variances
+'  returns 10 if standard algebraic differences
 ' Also returns the list string for the axis label
 
 ierror = False
@@ -82,6 +85,10 @@ If InStr(astring$, "Formula Atoms") > 0 Then PlotGetSelectedType% = 4
 If InStr(astring$, "Raw K-Ratios") > 0 Then PlotGetSelectedType% = 5
 If InStr(astring$, "Detection Limits") > 0 Then PlotGetSelectedType% = 6
 If InStr(astring$, "Percent Errors") > 0 Then PlotGetSelectedType% = 7
+
+If InStr(astring$, "Published Values") > 0 Then PlotGetSelectedType% = 8
+If InStr(astring$, "Percent Variances") > 0 Then PlotGetSelectedType% = 9
+If InStr(astring$, "Algebraic Differences") > 0 Then PlotGetSelectedType% = 10
 
 If InStr(astring$, "Elemental Totals") > 0 Then PlotGetSelectedType% = 1
 If InStr(astring$, "Oxide Totals") > 0 Then PlotGetSelectedType% = 2
