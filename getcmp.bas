@@ -129,6 +129,11 @@ End If
 End If
 End If
 
+' Save mineral end member calculation option
+For i% = 0 To MAXMINTYPES% - 1
+If FormGETCMP.OptionMineral(i%).Value Then GetCmpTmpSample(1).MineralFlag% = i%
+Next i%
+
 If FormGETCMP.CheckFormula.Value = vbChecked Then
 GetCmpTmpSample(1).FormulaElementFlag% = True
 Else
@@ -204,6 +209,8 @@ GetCmpOldSample(1).MountNames$ = GetCmpTmpSample(1).MountNames$
 GetCmpOldSample(1).FormulaElementFlag = GetCmpTmpSample(1).FormulaElementFlag
 GetCmpOldSample(1).FormulaRatio! = GetCmpTmpSample(1).FormulaRatio!
 GetCmpOldSample(1).FormulaElement$ = GetCmpTmpSample(1).FormulaElement$
+
+GetCmpOldSample(1).MineralFlag% = GetCmpTmpSample(1).MineralFlag%
 
 GetCmpOldSample(1).takeoff! = GetCmpTmpSample(1).takeoff!
 GetCmpOldSample(1).kilovolts! = GetCmpTmpSample(1).kilovolts!
@@ -907,13 +914,6 @@ If GetCmpFlag% = 1 Then
 GetCmpTmpSample(1).number% = StandardGetNumber%()
 End If
 
-' Disable Atomic and Formula entry if modifying or duplicating a composition
-'If GetCmpFlag% = 2 Or GetCmpFlag% = 3 Then
-'FormGETCMP.CommandEnterAtomFormula.Enabled = False
-'Else
-'FormGETCMP.CommandEnterAtomFormula.Enabled = True
-'End If
-
 ' Disable number field if modifying a standard
 FormGETCMP.TextNumber.Enabled = True
 FormGETCMP.TextName.Enabled = True
@@ -948,6 +948,7 @@ For i% = 1 To GetCmpTmpSample(1).LastChan%
 FormGETCMP.ComboFormula.AddItem GetCmpTmpSample(1).Elsyms$(i%)
 Next i%
 
+' Formula and mineral options
 If GetCmpTmpSample(1).FormulaElementFlag% Then
 FormGETCMP.CheckFormula.Value = vbChecked
 FormGETCMP.TextFormula.Enabled = True
@@ -965,6 +966,11 @@ ip% = IPOS1(GetCmpTmpSample(1).LastChan%, GetCmpTmpSample(1).FormulaElement$, Ge
 If ip% > 0 Then
 FormGETCMP.ComboFormula.ListIndex = ip%
 End If
+End If
+
+' Mineral end member flag
+If GetCmpTmpSample(1).MineralFlag% >= 0 And GetCmpTmpSample(1).MineralFlag <= MAXMINTYPES% - 1 Then
+FormGETCMP.OptionMineral(GetCmpTmpSample(1).MineralFlag%).Value = True
 End If
 
 ' Initialize the Enter As option buttons (if sample has elements)

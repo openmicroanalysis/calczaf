@@ -512,3 +512,76 @@ Exit Sub
 
 End Sub
 
+Sub TypeMinerals(analysis As TypeAnalysis, sample() As TypeSample)
+' Type out mineral end members
+
+ierror = False
+On Error GoTo TypeMineralsError
+
+Dim row As Integer, cols As Integer
+Dim i As Integer
+
+Dim average As TypeAverage
+
+' Write data type to log window
+If sample(1).MineralFlag% = 1 Then msg$ = "Olivine Mineral End-Member Calculations"
+If sample(1).MineralFlag% = 2 Then msg$ = "Feldspar Mineral End-Member Calculations"
+If sample(1).MineralFlag% = 3 Then msg$ = "Pyroxene Mineral End-Member Calculations"
+If sample(1).MineralFlag% = 4 Then msg$ = "Garnet Mineral End-Member Calculations (Ca, Mg, Fe, Mn)"
+If sample(1).MineralFlag% = 5 Then msg$ = "Garnet Mineral End-Member Calculations (Al, Fe, Cr)"
+Call IOWriteLog(vbCrLf & msg$)
+
+' Type out mineral end-members column labels
+If sample(1).MineralFlag% = 1 Then msg$ = vbCrLf & a6x$ & Format$("Fo", a80$) & Format$("Fa", a80$)
+If sample(1).MineralFlag% = 2 Then msg$ = vbCrLf & a6x$ & Format$("Ab", a80$) & Format$("An", a80$) & Format$("Or", a80$)
+If sample(1).MineralFlag% = 3 Then msg$ = vbCrLf & a6x$ & Format$("Wo", a80$) & Format$("En", a80$) & Format$("Fs", a80$)
+If sample(1).MineralFlag% = 4 Then msg$ = vbCrLf & a6x$ & Format$("Gro", a80$) & Format$("Pyr", a80$) & Format$("Alm", a80$) & Format$("Sp", a80$)
+If sample(1).MineralFlag% = 5 Then msg$ = vbCrLf & a6x$ & Format$("Gro", a80$) & Format$("And", a80$) & Format$("Uva", a80$)
+Call IOWriteLog(msg$)
+
+' Determine number of columns
+If sample(1).MineralFlag% = 1 Then cols% = 2
+If sample(1).MineralFlag% = 2 Then cols% = 3
+If sample(1).MineralFlag% = 3 Then cols% = 3
+If sample(1).MineralFlag% = 4 Then cols% = 4
+If sample(1).MineralFlag% = 5 Then cols% = 3
+
+' Type out for each data line
+For row% = 1 To sample(1).Datarows
+If sample(1).LineStatus(row%) Then
+msg$ = Format$(Format$(sample(1).Linenumber&(row%), i50$), a60$)
+For i% = 1 To cols%
+msg$ = msg$ & Format$(Format$(analysis.CalData!(row%, i%), f81$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+End If
+Next row%
+
+' Type average and std deviation
+If UCase$(app.EXEName) <> UCase$("Standard") Then
+Call MathArrayAverage(average, analysis.CalData!(), sample(1).Datarows%, cols%, sample())
+If ierror Then Exit Sub
+
+msg$ = vbCrLf & "AVER: "
+For i% = 1 To cols%
+msg$ = msg$ & Format$(Format$(average.averags!(i%), f81$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+        
+msg$ = "SDEV: "
+For i% = 1 To cols%
+msg$ = msg$ & Format$(Format$(average.Stddevs!(i%), f81$), a80$)
+Next i%
+Call IOWriteLog(msg$)
+End If
+
+Exit Sub
+
+' Errors
+TypeMineralsError:
+MsgBox Error$, vbOKOnly + vbCritical, "TypeMinerals"
+ierror = True
+Exit Sub
+
+End Sub
+

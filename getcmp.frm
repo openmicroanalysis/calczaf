@@ -4,7 +4,7 @@ Begin VB.Form FormGETCMP
    Appearance      =   0  'Flat
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Standard Composition"
-   ClientHeight    =   10395
+   ClientHeight    =   10905
    ClientLeft      =   1545
    ClientTop       =   1245
    ClientWidth     =   9840
@@ -23,14 +23,78 @@ Begin VB.Form FormGETCMP
    MaxButton       =   0   'False
    MinButton       =   0   'False
    PaletteMode     =   1  'UseZOrder
-   ScaleHeight     =   10395
+   ScaleHeight     =   10905
    ScaleWidth      =   9840
+   Begin VB.OptionButton OptionMineral 
+      Caption         =   "No Mineral End-Member Calculation"
+      Height          =   255
+      Index           =   0
+      Left            =   240
+      TabIndex        =   57
+      TabStop         =   0   'False
+      ToolTipText     =   "Do not perform a mineral end-member calculation"
+      Top             =   7800
+      Width           =   3495
+   End
+   Begin VB.OptionButton OptionMineral 
+      Caption         =   "Olivine"
+      Height          =   255
+      Index           =   1
+      Left            =   240
+      TabIndex        =   56
+      TabStop         =   0   'False
+      ToolTipText     =   "Calculate olivine end-member calculations (Fe and Mg)"
+      Top             =   8160
+      Width           =   1215
+   End
+   Begin VB.OptionButton OptionMineral 
+      Caption         =   "Feldspar"
+      Height          =   255
+      Index           =   2
+      Left            =   1680
+      TabIndex        =   55
+      TabStop         =   0   'False
+      ToolTipText     =   "Calculate feldspar mineral end-member calculations (Na, K and Ca)"
+      Top             =   8160
+      Width           =   1335
+   End
+   Begin VB.OptionButton OptionMineral 
+      Caption         =   "Pyroxene"
+      Height          =   255
+      Index           =   3
+      Left            =   3120
+      TabIndex        =   54
+      TabStop         =   0   'False
+      ToolTipText     =   "Calculate pyroxene mineral end-member calculations (Fe, Mg and Ca)"
+      Top             =   8160
+      Width           =   1335
+   End
+   Begin VB.OptionButton OptionMineral 
+      Caption         =   "Garnet (Ca,Mg,Fe,Mn)"
+      Height          =   255
+      Index           =   4
+      Left            =   4560
+      TabIndex        =   53
+      TabStop         =   0   'False
+      Top             =   8160
+      Width           =   2415
+   End
+   Begin VB.OptionButton OptionMineral 
+      Caption         =   "Garnet (Al,Fe,Cr)"
+      Height          =   255
+      Index           =   5
+      Left            =   7200
+      TabIndex        =   52
+      TabStop         =   0   'False
+      Top             =   8160
+      Width           =   2055
+   End
    Begin VB.TextBox TextMountNames 
       Height          =   285
       Left            =   5040
       TabIndex        =   6
       ToolTipText     =   $"GETCMP.frx":0000
-      Top             =   8280
+      Top             =   8880
       Width           =   4695
    End
    Begin VB.CommandButton CommandMemoText 
@@ -100,7 +164,7 @@ Begin VB.Form FormGETCMP
       Left            =   120
       TabIndex        =   5
       ToolTipText     =   "Enter an optional material type description for this standard (for filtering the standard list in Add/Remove Standards)"
-      Top             =   8280
+      Top             =   8880
       Width           =   4815
    End
    Begin VB.CommandButton CommandDeleteCLSpectrum 
@@ -109,7 +173,7 @@ Begin VB.Form FormGETCMP
       Left            =   5040
       TabIndex        =   42
       TabStop         =   0   'False
-      Top             =   9720
+      Top             =   10320
       Width           =   1935
    End
    Begin VB.CommandButton CommandDeleteEDSSpectrum 
@@ -118,7 +182,7 @@ Begin VB.Form FormGETCMP
       Left            =   2880
       TabIndex        =   41
       TabStop         =   0   'False
-      Top             =   9720
+      Top             =   10320
       Width           =   2055
    End
    Begin VB.CommandButton CommandDisplayCLSpectrum 
@@ -129,7 +193,7 @@ Begin VB.Form FormGETCMP
       Style           =   1  'Graphical
       TabIndex        =   40
       TabStop         =   0   'False
-      Top             =   9240
+      Top             =   9840
       Width           =   1935
    End
    Begin VB.CommandButton CommandDisplayEDSSpectrum 
@@ -140,7 +204,7 @@ Begin VB.Form FormGETCMP
       Style           =   1  'Graphical
       TabIndex        =   39
       TabStop         =   0   'False
-      Top             =   9240
+      Top             =   9840
       Width           =   2055
    End
    Begin VB.ListBox ListCLSpectra 
@@ -148,7 +212,7 @@ Begin VB.Form FormGETCMP
       Left            =   7080
       TabIndex        =   38
       TabStop         =   0   'False
-      Top             =   8760
+      Top             =   9360
       Width           =   2655
    End
    Begin VB.ListBox ListEDSSpectra 
@@ -156,7 +220,7 @@ Begin VB.Form FormGETCMP
       Left            =   120
       TabIndex        =   37
       TabStop         =   0   'False
-      Top             =   8760
+      Top             =   9360
       Width           =   2655
    End
    Begin VB.CommandButton CommandImportCLSpectra 
@@ -165,7 +229,7 @@ Begin VB.Form FormGETCMP
       Left            =   5040
       TabIndex        =   36
       TabStop         =   0   'False
-      Top             =   8760
+      Top             =   9360
       Width           =   1935
    End
    Begin VB.CommandButton CommandImportEDSSpectra 
@@ -174,7 +238,7 @@ Begin VB.Form FormGETCMP
       Left            =   2880
       TabIndex        =   35
       TabStop         =   0   'False
-      Top             =   8760
+      Top             =   9360
       Width           =   2055
    End
    Begin VB.CommandButton CommandCalculateDensity 
@@ -383,7 +447,7 @@ Begin VB.Form FormGETCMP
       Height          =   255
       Left            =   5040
       TabIndex        =   51
-      Top             =   8040
+      Top             =   8640
       Width           =   4575
    End
    Begin VB.Line Line2 
@@ -417,14 +481,14 @@ Begin VB.Form FormGETCMP
       Height          =   255
       Left            =   120
       TabIndex        =   45
-      Top             =   8040
+      Top             =   8640
       Width           =   4815
    End
    Begin VB.Line Line1 
       X1              =   120
       X2              =   9720
-      Y1              =   8640
-      Y2              =   8640
+      Y1              =   9240
+      Y2              =   9240
    End
    Begin VB.Label Label9 
       Alignment       =   2  'Center

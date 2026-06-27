@@ -810,6 +810,24 @@ End If
 
 Loop
 
+' If mineral end member, calculate and write results to log window
+If sample(1).MineralFlag% > 0 Then
+sample(1).Datarows% = 1
+sample(1).LineStatus(1) = True
+sample(1).Linenumber&(1) = sample(1).number%
+
+' Load atomic percents
+For i% = 1 To sample(1).LastChan%
+analysis.CalData!(1, i%) = AtPercents!(i%)
+Next i%
+
+' Calculate end members
+Call ConvertMinerals(analysis, sample())
+If ierror Then Exit Sub
+Call TypeMinerals(analysis, sample())
+If ierror Then Exit Sub
+End If
+
 ' Calculate sum of cations
 If UseTotalCationsCalculationFlag Then
 If sample(1).DisplayAsOxideFlag% And sample(1).OxygenChannel% > 0 Then

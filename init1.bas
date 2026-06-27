@@ -5873,6 +5873,19 @@ LoadCalculateOxygenFromStandardDatabaseFlag = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+' New flag for loading mineral end member flag from standard database (Carpenter)
+lpAppName$ = "Standards"
+lpKeyName$ = "LoadMineralFlagsFromStandardDatabase"
+nDefault& = False
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+LoadMineralFlagsFromStandardDatabaseFlag = True
+Else
+LoadMineralFlagsFromStandardDatabaseFlag = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
 Exit Sub
 
 ' Errors

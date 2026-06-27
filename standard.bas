@@ -210,6 +210,8 @@ Dim StdMountNames As New Field
 Dim ElmAtomicChargesStd As New Field
 Dim ElmAtomicWtsStd As New Field
 
+Dim StdMineralFlags As New Field
+
 ImportDataFile$ = vbNullString
 ExportDataFile$ = vbNullString
 
@@ -562,6 +564,11 @@ StdMountNames.Type = dbText
 StdMountNames.Size = DbTextDescriptionLength%
 StdMountNames.AllowZeroLength = True
 StDb.TableDefs("Standard").Fields.Append StdMountNames
+
+' Add mineral end member flag to standard table (new code 06/26/2026)
+StdMineralFlags.Name = "MineralFlags"
+StdMineralFlags.Type = dbInteger
+StDb.TableDefs("Standard").Fields.Append StdMineralFlags
 
 Call TransactionCommit("StandardOpenNewFile", StandardDataFile$)
 If ierror Then Exit Sub

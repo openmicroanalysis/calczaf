@@ -127,12 +127,15 @@ sample(1).Name$ = Trim$(vbNullString & StDt("Names"))
 sample(1).Description$ = Trim$(vbNullString & StDt("Descriptions"))
 sample(1).DisplayAsOxideFlag% = StDt("DisplayAsOxideFlags")
 sample(1).SampleDensity! = StDt("Densities")
+
 sample(1).MaterialType$ = Trim$(vbNullString & StDt("MaterialTypes"))
 sample(1).MountNames$ = Trim$(vbNullString & StDt("MountNames"))
 
 sample(1).FormulaElementFlag = StDt("FormulaFlags")
 sample(1).FormulaRatio! = Val(StDt("FormulaRatios"))
 sample(1).FormulaElement$ = Trim$(vbNullString & StDt("FormulaElements"))
+
+sample(1).MineralFlag% = StDt("MineralFlags")
 StDt.Close
 
 ' Get standard composition data for specified standard from standard database
@@ -610,12 +613,14 @@ StDt("Descriptions") = Left$(sample(1).Description$, DbTextDescriptionLength%)
 StDt("DisplayAsOxideFlags") = sample(1).DisplayAsOxideFlag%
 StDt("Densities") = sample(1).SampleDensity!
 
+StDt("MaterialTypes") = Left$(sample(1).MaterialType$, DbTextNameLength%)
+StDt("MountNames") = Left$(sample(1).MountNames$, DbTextDescriptionLength%)
+
 StDt("FormulaFlags") = sample(1).FormulaElementFlag
 StDt("FormulaRatios") = sample(1).FormulaRatio!
 StDt("FormulaElements") = Left$(sample(1).FormulaElement$, DbTextElementStringLength%)
 
-StDt("MaterialTypes") = Left$(sample(1).MaterialType$, DbTextNameLength%)
-StDt("MountNames") = Left$(sample(1).MountNames$, DbTextDescriptionLength%)
+StDt("MineralFlags") = sample(1).MineralFlag%
 
 StDt.Update
 StDt.Close
@@ -1043,6 +1048,8 @@ Dim StdMountNames As New Field
 Dim ElmAtomicChargesStd As New Field
 Dim ElmAtomicWtsStd As New Field
 
+Dim StdMineralFlags As New Field
+
 ' Check for valid file name
 If Trim$(tfilename$) = vbNullString Then
 msg$ = "Standard data file name is blank"
@@ -1377,6 +1384,27 @@ If ip% <> 0 Then
 StRs("AtomicChargesStd") = AllAtomicCharges!(ip%)
 StRs("AtomicWtsStd") = AllAtomicWts!(ip%)
 End If
+StRs.Update
+StRs.MoveNext
+Loop
+StRs.Close
+
+updated = True
+End If
+
+' Add mineral end member flag to standard table (new code 06/26/2026)
+If versionnumber! < 14.37 Then
+StdMineralFlags.Name = "MineralFlags"
+StdMineralFlags.Type = dbInteger
+StDb.TableDefs("Standard").Fields.Append StdMineralFlags
+
+' Open standard table in standard database and add default values
+Set StRs = StDb.OpenRecordset("Standard", dbOpenTable)
+
+' Add default mineral flag fields to all records
+Do Until StRs.EOF
+StRs.Edit
+StRs("MineralFlags") = 0      ' use this for now as default
 StRs.Update
 StRs.MoveNext
 Loop
