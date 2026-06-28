@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+06/27/26	Tweak FormGetCmp enable properties for minral end member options in Standard.
+
 06/26/26	New flag (LoadMineralFlagsFromStandardDatabase) for loading mineral end member 
 v. 14.3.7	flag from standard database to a new standard (Carpenter).
 

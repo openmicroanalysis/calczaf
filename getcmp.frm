@@ -689,13 +689,25 @@ Option Explicit
 
 Private Sub CheckFormula_Click()
 If Not DebugMode Then On Error Resume Next
+Dim i As Integer
+
 If FormGETCMP.CheckFormula.Value = vbChecked Then
 FormGETCMP.TextFormula.Enabled = True
 FormGETCMP.ComboFormula.Enabled = True
+
+For i% = 0 To MAXMINTYPES% - 1
+FormGETCMP.OptionMineral(i%).Enabled = True
+Next i%
+
 Else
 FormGETCMP.TextFormula.Enabled = False
 FormGETCMP.ComboFormula.Enabled = False
+
+For i% = 0 To MAXMINTYPES% - 1
+FormGETCMP.OptionMineral(i%).Enabled = False
+Next i%
 End If
+
 End Sub
 
 Private Sub CommandAddCR_Click()

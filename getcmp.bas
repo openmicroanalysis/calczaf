@@ -949,6 +949,12 @@ FormGETCMP.ComboFormula.AddItem GetCmpTmpSample(1).Elsyms$(i%)
 Next i%
 
 ' Formula and mineral options
+FormGETCMP.OptionMineral(0).Value = True
+For i% = 0 To MAXMINTYPES% - 1
+FormGETCMP.OptionMineral(i%).Enabled = False
+Next i%
+
+' Formula and mineral options
 If GetCmpTmpSample(1).FormulaElementFlag% Then
 FormGETCMP.CheckFormula.Value = vbChecked
 FormGETCMP.TextFormula.Enabled = True
@@ -969,6 +975,11 @@ End If
 End If
 
 ' Mineral end member flag
+If FormGETCMP.CheckFormula.Value = vbChecked Then
+For i% = 0 To MAXMINTYPES% - 1
+FormGETCMP.OptionMineral(i%).Enabled = True
+Next i%
+End If
 If GetCmpTmpSample(1).MineralFlag% >= 0 And GetCmpTmpSample(1).MineralFlag <= MAXMINTYPES% - 1 Then
 FormGETCMP.OptionMineral(GetCmpTmpSample(1).MineralFlag%).Value = True
 End If
