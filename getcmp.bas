@@ -1365,4 +1365,22 @@ Exit Sub
 
 End Sub
 
+Sub GetCmpCheckMineralSub(Index As Integer)
+' Dummy procedure to pass sample
+
+ierror = False
+On Error GoTo GetCmpCheckMineralSubError
+
+Call OptionsCheckMineral(Index%, GetCmpTmpSample())
+If ierror Then Exit Sub
+
+Exit Sub
+
+' Errors
+GetCmpCheckMineralSubError:
+MsgBox Error$, vbOKOnly + vbCritical, "GetCmpCheckMineralSub"
+ierror = True
+Exit Sub
+
+End Sub
 

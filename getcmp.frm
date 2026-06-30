@@ -841,6 +841,13 @@ FormGETCMP.LabelOxygenFromCations.ForeColor = vbRed
 FormGETCMP.OptionDisplayAsOxide.Value = True
 End Sub
 
+Private Sub OptionMineral_Click(Index As Integer)
+If Not DebugMode Then On Error Resume Next
+' Check for analyzed elements
+Call GetCmpCheckMineralSub(Index%)
+If ierror Then FormGETCMP.OptionMineral(0).Value = True
+End Sub
+
 Private Sub OptionNotDisplayAsOxide_Click()
 If Not DebugMode Then On Error Resume Next
 ' Reload composition

@@ -159,6 +159,7 @@ Module=CodeDynamicElements2; DynamicElements2.bas
 Module=CodeSecondary3; Secondary3a.bas
 Form=CL2.frm
 ResFile32="Standard.RES"
+Module=CodeOPTIONS2; OPTIONS2.bas
 IconForm="FormMAIN"
 Startup="FormMAIN"
 HelpFile=""
