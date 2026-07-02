@@ -753,3 +753,118 @@ Exit Sub
 
 End Sub
 
+Sub ZAFPrintIterate(mode As Integer, zaf As TypeZAF)
+' Print out iteration parameters for Moy and Ducharme
+
+ierror = False
+On Error GoTo ZAFPrintIterateError
+
+Dim i As Integer
+
+' Before corrections
+If mode% = 1 Then
+Call IOWriteLog(vbCrLf & "ZAFPrintIterate: Iteration #" & Format$(zaf.iter%))
+
+msg$ = "ZNum Xry"
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(zaf.Z%(i%) & " " & Xraylo$(zaf.il%(i%)), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "Z_Unk:  "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(1 / zaf.stp!(i%) * zaf.bks!(i%), f86$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "1/S_Unk "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(1 / zaf.stp!(i%), f86$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "R_Unk:  "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(zaf.bks!(i%), f84$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+End If
+
+' After corrections
+If mode% = 2 Then
+msg$ = "1/Z     "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(zaf.zed!(i%), f84$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "Z       "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(1 / zaf.zed!(i%), f86$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "A_Unk   "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(1 / zaf.gensmp!(i%), f86$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "1/A     "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%), f84$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "A       "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(1 / (zaf.gensmp!(i%) / zaf.genstd!(i%)), f85$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "MACs    "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(zaf.MACs!(i%), f81$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+msg$ = "F       "
+For i% = 1 To zaf.in1%
+If zaf.il%(i%) <= MAXRAY% - 1 And zaf.krat!(i%) <> 0# Then
+msg$ = msg$ & Format$(Format$(1# + zaf.vv!(i%), f84$), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
+End If
+
+Exit Sub
+
+' Errors
+ZAFPrintIterateError:
+MsgBox Error$, vbOKOnly + vbCritical, "ZAFPrintIterate"
+ierror = True
+Exit Sub
+
+End Sub
+

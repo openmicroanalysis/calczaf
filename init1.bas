@@ -985,7 +985,7 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 
 lpAppName$ = "Software"
 lpKeyName$ = "MACTypeFlag"
-nDefault& = 1   ' LINEMU.DAT
+nDefault& = 6   ' FFAST.DAT
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 MACTypeFlag% = valid&
@@ -1341,11 +1341,11 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 ' ZAF flag
 lpAppName$ = "Software"
 lpKeyName$ = "DefaultZAFType"
-nDefault& = 1       ' assume Armstrong Phi-Rho-Z
+nDefault& = 11       ' assume Armstrong/Brown/Donovan and Moy Phi-Rho-Z
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 izaf% = valid&
-If izaf% < 1 Or izaf% > 10 Then
+If izaf% < 1 Or izaf% > MAXZAF% Then
 msg$ = "DefaultZAFType keyword value out of range in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
 izaf% = nDefault&
@@ -4262,6 +4262,19 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 ' !!!! force false until 8x30 stage commands are implemented in the JEOL driver DLL by Aurelien Moy !!!!
 Use8x30DirectStageInterface = False
  
+' Delay for JEOL MEC EDS start code (to avoid empty GUID string error when adding a point reservation)
+lpAppName$ = "Hardware"
+lpKeyName$ = "JEOLMECEDSMilliSecDelayStart"
+nDefault& = 500
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+JEOLMECEDSMilliSecDelayStart& = valid&
+If JEOLMECEDSMilliSecDelayStart& < 100 Or JEOLMECEDSMilliSecDelayStart& > 2000 Then
+msg$ = "JEOLMECEDSMilliSecDelayStart keyword value is out of range in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+JEOLMECEDSMilliSecDelayStart& = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 Exit Sub
 

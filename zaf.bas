@@ -1963,6 +1963,12 @@ End If
 End If
 Next i%
 
+' Output intermediate values
+If VerboseMode Then
+Call ZAFPrintIterate(Int(1), zaf)
+If ierror Then Exit Sub
+End If
+
 ' Calculate concentrations w/ ZAF correction, C = K*Z*A*F
 zaf.ksum! = 0#
 r0% = 0
@@ -1993,6 +1999,12 @@ End If
 zaf.ksum! = zaf.ksum! + r1!(i%)
 End If
 Next i%
+
+' Output intermediate values
+If VerboseMode Then
+Call ZAFPrintIterate(Int(2), zaf)
+If ierror Then Exit Sub
+End If
 
 ' Calculate element relative to another element (moved from below to handle if element by stoichiometry to another element is a halogen, per Locock)
 For i% = 1 To zaf.in1%
@@ -2130,14 +2142,14 @@ msg$ = msg$ & Format$("UnNorm Sum", a80$)
 Call IOWriteLog(msg$)
 msg$ = "UNKRAT: "
 For i% = 1 To sample(1).LastChan%
-msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "Conc*100"
 For i% = 1 To zaf.in0%
 msg$ = msg$ & MiscAutoFormat$(100# * zaf.conc!(i%))
 Next i%
-msg$ = msg$ & Format$(Format$(100# * zaf.ksum!, f83), a80$)
+msg$ = msg$ & Format$(Format$(100# * zaf.ksum!, f83$), a80$)
 Call IOWriteLog(msg$)
 
 Call ConvertWeightToAtomic(zaf.in0%, zaf.atwts!(), zaf.conc!(), atomfracs!())
@@ -2161,47 +2173,47 @@ Call IOWriteLog(msg$)
 msg$ = "ZAFAbs: "
 For i% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%), f84$), a80$)
 Else
-msg$ = msg$ & Format$(Format$(0#, f84), a80$)
+msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFFlu: "
 For i% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-msg$ = msg$ & Format$(Format$(1# / (1# + zaf.vv!(i%)), f84), a80$)
+msg$ = msg$ & Format$(Format$(1# / (1# + zaf.vv!(i%)), f84$), a80$)
 Else
-msg$ = msg$ & Format$(Format$(0#, f84), a80$)
+msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFZed: "
 For i% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-msg$ = msg$ & Format$(Format$(zaf.zed!(i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(zaf.zed!(i%), f84$), a80$)
 Else
-msg$ = msg$ & Format$(Format$(0#, f84), a80$)
+msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFCOR: "
 For i% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%) * zaf.zed!(i%) / (1# + zaf.vv!(i%)), f84), a80$)
+msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%) * zaf.zed!(i%) / (1# + zaf.vv!(i%)), f84$), a80$)
 Else
-msg$ = msg$ & Format$(Format$(0#, f84), a80$)
+msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "UNKRAT: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "UNCONC: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(zaf.conc!(i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(zaf.conc!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 End If
@@ -2213,7 +2225,7 @@ If ierror Then Exit Sub
 If DebugMode And VerboseMode Then
 msg$ = "UNZFRAC:"
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(zaf.zfrac!(i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(zaf.zfrac!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 End If
@@ -2376,49 +2388,49 @@ Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFAbs: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(1, i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(1, i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFFlu: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(2, i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(2, i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFZed: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(3, i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(3, i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFCOR: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(4, i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(4, i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
 msg$ = vbCrLf & "ZAFSTP: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(5, i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(5, i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFBKS: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(6, i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(6, i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
 msg$ = vbCrLf & "STDKFAC "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
 msg$ = "UNKKFAC "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkKrats!(i%), f84), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkKrats!(i%), f84$), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = vbCrLf & "UNKZBAR " & Format$(Format$(analysis.zbar!, f84), a80$)
+msg$ = vbCrLf & "UNKZBAR " & Format$(Format$(analysis.zbar!, f84$), a80$)
 Call IOWriteLog(msg$)
 
 msg$ = "ZAFITER " & Format$(Format$(analysis.ZAFIter!, f82$), a80$)
