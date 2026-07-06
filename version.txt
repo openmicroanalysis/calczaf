@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/05/26	Update Proper PHA Tuning document for Help menu.
+
 07/01/26	Modify program defaults to:
 v. 14.3.8
 		[software]
@@ -9,17 +11,17 @@ v. 14.3.8
 		DeadtimeCorrectionType=4    ; 1 = normal, 2 = high precision deadtime correction, 3 = super high precision, 4 = log expression (Moy)
 		DefaultZAFType=11        ; default ZAF/Phi-Rho-z correction (11=Armstrong/Brown/Donovan Moy)
 
-06/30/26	Add code to ensure that when acquiring an image using the Confrim Only option
-		in Acquisition Options, that the image is only acquired when confirmiung samples 
+06/30/26	Add code to ensure that when acquiring an image using the Confirm Only option
+		in Acquisition Options, that the image is only acquired when confirming samples 
 		because it was acquiring images even on normal sample acquisitions (Locock).
 		
 		Add keyword JEOLMECEDSMilliSecDelayStart& to Probewin.ini file to avoid "empty 
-		GUID string" error with JEOL MEC EDS interface when adding a point resevration.
+		GUID string" error with JEOL MEC EDS interface when adding a point reservation.
 		
 		Add JEOL EDS delay keywords to Reference manual and Help file.
 		
 		Fix JEOL EDS and JEOL MEC EDS bug when acquiring EDS spectra with a wavescan 
-		sample (McAleer amd Fellowes).
+		sample (McAleer and Fellowes).
 
 06/29/26	Fix mineral end member bug (check elements).
 
@@ -31,7 +33,7 @@ v. 14.3.7	flag from standard database to a new standard (Carpenter).
 06/22/26	Add sample name field for manual PHA acquisitions. Edit pop up help for Differential
 		mode to suggest using Integral-baseline method.
 		
-		Add standard published values, percent variances and algebriac differences to 
+		Add standard published values, percent variances and algebraic differences to 
 		Output | Unknown and Standard Plot output.
 
 06/09/26	Modify blank correction error for very negative k-ratios to be just a warning (Buse).
