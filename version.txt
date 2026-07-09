@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/07/26	Fix formatting bug in Zbar output in TypeLoadDescription.
+
 07/05/26	Update Proper PHA Tuning document for Help menu.
 
 07/01/26	Modify program defaults to:
