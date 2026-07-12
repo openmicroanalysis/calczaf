@@ -1676,6 +1676,8 @@ Dim txdata() As Single, tydata() As Single, ttdata() As Single
 Dim tldata() As Long
 Dim tedata() As Single
 
+Dim energy As Single, MANZbar As Single
+
 Dim average As TypeAverage, average2 As TypeAverage
 
 ' Check for do not output to log window flag
@@ -1715,7 +1717,7 @@ If ierror Then Exit Sub
 
 ' Type sample z-bar etc.
 If UseDetailedFlag Then
-Call TypeZbar(Int(1), analysis)
+Call TypeZbar2(analysis, sample())
 If ierror Then Exit Sub
 End If
 
@@ -1839,7 +1841,7 @@ Call IOWriteLog(msg$)
 End If
 
 ' Type out MAN absorption correction and other parameters
-If sample(1).MANBgdFlag Then
+If sample(1).MANBgdFlag And mode% = 1 Then
 If UseDetailedFlag And UseMANParametersFlag Then
 
 For j% = 1 To MAXCOEFF%
@@ -1878,23 +1880,66 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
-' Type out Z fraction exponent for continuum whether using constant or variable exponent (ZFractionZbarCalculationsExponent! = 0#)
-If UseZFractionZbarCalculationsFlag Then
-msg$ = "ZEXP: "
+' Output additional MAN parameters for MAN Z fraction with 0.0 exponent (exponent varies with emission energy)
+If UseZFractionZbarCalculationsFlag And ZFractionZbarCalculationsExponent! = 0# Then
+
+' Type out Z fraction Zbar for each MAN emitter if ZFractionZbarCalculationsExponent! = 0#
+msg$ = "MANZ: "
 For i% = ii% To jj%
-If i% <= sample(1).LastElm% And sample(1).BackgroundTypes%(i%) = 1 Then
-keV! = sample(1).LineEnergy!(i%) / EVPERKEV#
-If ZFractionZbarCalculationsExponent! = 0# Then
-texponent! = ConvertCalculateZFractionExponent(keV!)
-msg$ = msg$ & Format$(Format$(texponent!, f82$), a80$)
+If i% <= sample(1).LastElm% And sample(1).BackgroundTypes%(i%) = 1 Then     ' 0=off-peak, 1=MAN, 2=multipoint
+energy! = sample(1).LineEnergy!(i%)            ' load emission line energy in eV for variable exponent zbar calculation
+
+Call MathArrayAverage(average, analysis.WtsData!(), sample(1).Datarows%, sample(1).LastChan%, sample())
+If ierror Then Exit Sub
+
+' Calculate Z fraction Zbar (if Z fraction exponent is zero, zbar is based on emission line energy in eV)
+MANZbar! = ConvertWeightsToZBar(Int(1), sample(1).LastChan%, average.averags!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), energy!, ZFractionZbarCalculationsExponent!)
+If ierror Then Exit Sub
+
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then       ' check for duplicate element
+If sample(1).BackgroundTypes%(i%) = 1 Then
+msg$ = msg$ & Format$(Format$(MANZbar!, f83$), a80$)
 Else
-msg$ = msg$ & Format$(Format$(ZFractionZbarCalculationsExponent!, f82$), a80$)
+msg$ = msg$ & Format$(Space(8), a80$)
 End If
+
+Else
+msg$ = msg$ & Format$(Format$(0#, f82$), a80$)
+End If
+
 Else
 msg$ = msg$ & Format$(Space(8), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
+
+' Type out Z fraction exponent for MAN if ZFractionZbarCalculationsExponent! = 0# (exponent varies with emission energy)
+msg$ = "ZEXP: "
+For i% = ii% To jj%
+If i% <= sample(1).LastElm% And sample(1).BackgroundTypes%(i%) = 1 Then     ' 0=off-peak, 1=MAN, 2=multipoint
+
+keV! = sample(1).LineEnergy!(i%) / EVPERKEV#
+texponent! = ConvertCalculateZFractionExponent(keV!)
+
+ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then       ' check for duplicate element
+If sample(1).BackgroundTypes%(i%) = 1 Then
+msg$ = msg$ & Format$(Format$(texponent!, f82$), a80$)
+Else
+msg$ = msg$ & Format$(Space(8), a80$)
+End If
+
+Else
+msg$ = msg$ & Format$(Format$(0#, f82$), a80$)
+End If
+
+Else
+msg$ = msg$ & Format$(Space(8), a80$)
+End If
+Next i%
+Call IOWriteLog(msg$)
+
 End If
 
 End If
@@ -2403,7 +2448,7 @@ Next i%
 Call IOWriteLog(msg$)
 End If
 
-' Check for Z fraction backscatter variable exponent is zero
+' Check for Z fraction backscatter variable exponent is zero (exponent varies with keV)
 If (izaf% = MAXZAF% Or ibsc% = 5) And ZFractionBackscatterExponent! = 0# Then
 If MiscIsDifferent3(sample(1).LastElm%, sample(1).KilovoltsArray!()) Or DebugMode Then
 msg$ = "BEXP: "

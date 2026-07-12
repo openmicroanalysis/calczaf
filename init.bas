@@ -3436,9 +3436,10 @@ ModelPeakingFitType% = 0                                           ' model bgds 
 
 SkipOutputEDSIntensitiesDuringAutomation = False                   ' allow output of EDS net intensities during automated acquisition
 
-UseZFractionZbarCalculationsFlag = False
 UseContinuumAbsCalculationsFlag = False                            ' if true use Heinrich/Myklebust continuum absorption correction
-ZFractionZbarCalculationsExponent! = 0.7                           ' if zero, calculate Zbar exponent based on emission line energies
+
+'UseZFractionZbarCalculationsFlag = False                           ' set in Probewin.ini file
+'ZFractionZbarCalculationsExponent! = 0.7                           ' set in Probewin.ini file (if zero, calculate Zbar exponent based on emission line energies)
 
 ' MPB fit types
 MultiPointBackgroundFitTypeStrings$(0) = "Linear"

@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+07/11/26	In AnalyzeTypeResults add Zbar output if MAN and Z fraction. Add Zbar output if DAM backscatter
+		and using different beam energies.
+		
+		Add MAN Z fraction flag and exponent to probewin;ini file and set Z fraction MAN default 
+		to true and 0.7 exponent (Neill). This only affects new runs.
+
 07/07/26	Fix formatting bug in Zbar output in TypeLoadDescription.
 
 07/05/26	Update Proper PHA Tuning document for Help menu.

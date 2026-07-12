@@ -153,88 +153,6 @@ Exit Function
 
 End Function
 
-Sub TypeZbar(mode As Integer, analysis As TypeAnalysis)
-' Print zbar, etc to Log Window
-' mode = 1 print iterations (PROBEWIN)
-' mode = 2 don't print iterations (STANDARD) or halogen corrected oxygen total
-
-ierror = False
-On Error GoTo TypeZbarError
-
-msg$ = vbNullString
-Call IOWriteLog(msg$)
-
-msg$ = "Average Total Oxygen:     " & Format$(Format$(analysis.totaloxygen!, f83$), a80$)
-msg$ = msg$ & "     " & "Average Total Weight%: " & Format$(Format$(analysis.TotalPercent!, f83), a80$)
-Call IOWriteLog(msg$)
-
-' Output average atomic number based on backscatter model
-msg$ = "Average Calculated Oxygen:" & Format$(Format$(analysis.CalculatedOxygen!, f83$), a80$)
-If ibsc% <> 5 Then
-msg$ = msg$ & "     " & "Average Atomic Number: " & Format$(Format$(analysis.zbar!, f83$), a80$)
-Else
-If ZFractionBackscatterExponent! <> 0# Then
-msg$ = msg$ & "     " & "Z-Bar (Z Fraction^" & Format$(ZFractionBackscatterExponent!, "0.0") & "): " & Format$(Format$(analysis.zbar!, f83$), a70$)
-Else
-msg$ = msg$ & "     " & "Z-Bar (Z Fraction^var): " & Format$(Format$(analysis.zbar!, f83$), a70$)
-End If
-End If
-Call IOWriteLog(msg$)
-
-msg$ = "Average Excess Oxygen:    " & Format$(Format$(analysis.ExcessOxygen!, f83$), a80$)
-msg$ = msg$ & "     " & "Average Atomic Weight: " & Format$(Format$(analysis.AtomicWeight!, f83$), a80$)
-Call IOWriteLog(msg$)
-
-' Halogen analysis
-If analysis.OxygenFromHalogens! > 0# Then
-msg$ = "Oxygen Equiv. from Halogen:" & Format$(Format$(analysis.OxygenFromHalogens!, f83$), a70$)
-If mode% = 1 Then
-msg$ = msg$ & "  " & "Halogen Corrected Oxygen: " & Format$(Format$(analysis.HalogenCorrectedOxygen!, f83$), a80$)
-End If
-Call IOWriteLog(msg$)
-End If
-
-' Sulfur analysis
-If analysis.OxygenFromSulfur! > 0# Then
-msg$ = "Oxygen Equiv. from Sulfur: " & Format$(Format$(analysis.OxygenFromSulfur!, f83$), a70$)
-If mode% = 1 Then
-msg$ = msg$ & "  " & "Sulfur Corrected Oxygen:  " & Format$(Format$(analysis.SulfurCorrectedOxygen!, f83$), a80$)
-End If
-Call IOWriteLog(msg$)
-End If
-
-' Charge balance analysis
-If UseChargeBalanceCalculationFlag Then
-msg$ = "Average Charge Balance:   " & Format$(Format$(analysis.ChargeBalance!, f83$), a80$)
-If analysis.FeCharge! <> 0# Then
-msg$ = msg$ & "     " & "Fe+ Atomic Charge:     " & Format$(Format$(analysis.FeCharge!, f83$), a80$)
-Else
-msg$ = msg$ & "     " & "Fe+ Atomic Charge:         ----"
-End If
-Call IOWriteLog(msg$)
-End If
-
-' Output matrix iterations (if not calibration curve)
-If mode% = 1 And CorrectionFlag% <> 5 Then
-If CorrectionFlag% = 0 Or CorrectionFlag% = MAXCORRECTION% Then
-msg$ = "Average ZAF Iteration:    " & Format$(Format$(analysis.ZAFIter!, f82$), a80$)
-ElseIf CorrectionFlag% > 0 And CorrectionFlag% < 5 Then
-msg$ = "Average BET Iteration:    " & Format$(Format$(analysis.ZAFIter!, f82$), a80$)
-End If
-msg$ = msg$ & "     " & "Average Quant Iterate: " & Format$(Format$(analysis.MANIter!, f82$), a80$)
-Call IOWriteLog(msg$)
-End If
-
-Exit Sub
-
-' Errors
-TypeZbarError:
-MsgBox Error$, vbOKOnly + vbCritical, "TypeZbar"
-ierror = True
-Exit Sub
-
-End Sub
-
 Sub TypeGetRange(mode As Integer, i As Integer, ii As Integer, jj As Integer, sample() As TypeSample)
 ' Calculates typeout based on "ExtendedFormat" flag
 ' mode = 1 return type out range for analyzed elements only
@@ -580,6 +498,70 @@ Exit Sub
 ' Errors
 TypeMineralsError:
 MsgBox Error$, vbOKOnly + vbCritical, "TypeMinerals"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub TypeZbar(analysis As TypeAnalysis)
+' Print zbar, etc to Log Window
+' For STANDARD app
+
+ierror = False
+On Error GoTo TypeZbarError
+
+msg$ = vbNullString
+Call IOWriteLog(msg$)
+
+' Output average atomic number based on backscatter model
+msg$ = "Average Calculated Oxygen:" & Format$(Format$(analysis.CalculatedOxygen!, f83$), a80$)
+If ibsc% <> 5 Then
+msg$ = msg$ & "     " & "Average Atomic Number: " & Format$(Format$(analysis.zbar!, f83$), a80$)
+Else
+If ZFractionBackscatterExponent! <> 0# Then
+msg$ = msg$ & "     " & "Z-Bar (Z Fraction^" & Format$(ZFractionBackscatterExponent!, "0.0") & "): " & Format$(Format$(analysis.zbar!, f83$), a70$)
+Else
+msg$ = msg$ & "     " & "Z-Bar (Z Fraction^var): " & Format$(Format$(analysis.zbar!, f83$), a70$)
+End If
+End If
+Call IOWriteLog(msg$)
+
+msg$ = "Average Total Oxygen:     " & Format$(Format$(analysis.totaloxygen!, f83$), a80$)
+msg$ = msg$ & "     " & "Average Total Weight%: " & Format$(Format$(analysis.TotalPercent!, f83), a80$)
+Call IOWriteLog(msg$)
+
+msg$ = "Average Excess Oxygen:    " & Format$(Format$(analysis.ExcessOxygen!, f83$), a80$)
+msg$ = msg$ & "     " & "Average Atomic Weight: " & Format$(Format$(analysis.AtomicWeight!, f83$), a80$)
+Call IOWriteLog(msg$)
+
+' Halogen analysis
+If analysis.OxygenFromHalogens! > 0# Then
+msg$ = "Oxygen Equiv. from Halogen:" & Format$(Format$(analysis.OxygenFromHalogens!, f83$), a70$)
+Call IOWriteLog(msg$)
+End If
+
+' Sulfur analysis
+If analysis.OxygenFromSulfur! > 0# Then
+msg$ = "Oxygen Equiv. from Sulfur: " & Format$(Format$(analysis.OxygenFromSulfur!, f83$), a70$)
+Call IOWriteLog(msg$)
+End If
+
+' Charge balance analysis
+If UseChargeBalanceCalculationFlag Then
+msg$ = "Average Charge Balance:   " & Format$(Format$(analysis.ChargeBalance!, f83$), a80$)
+If analysis.FeCharge! <> 0# Then
+msg$ = msg$ & "     " & "Fe+ Atomic Charge:     " & Format$(Format$(analysis.FeCharge!, f83$), a80$)
+Else
+msg$ = msg$ & "     " & "Fe+ Atomic Charge:         ----"
+End If
+Call IOWriteLog(msg$)
+End If
+
+Exit Sub
+
+' Errors
+TypeZbarError:
+MsgBox Error$, vbOKOnly + vbCritical, "TypeZbar"
 ierror = True
 Exit Sub
 

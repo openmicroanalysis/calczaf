@@ -656,7 +656,7 @@ Call IOWriteLog(msg$)
 End If
 
 ' Write the Zbar, etc to Log window
-Call TypeZbar(Int(2), analysis)
+Call TypeZbar(analysis)
 If ierror Then Exit Sub
 
 ' Type out analyzed data for the sample

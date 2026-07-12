@@ -21,6 +21,8 @@ Call InitINIGeneral
 If ierror Then Exit Sub
 Call InitINISoftware
 If ierror Then Exit Sub
+Call InitINISoftware2
+If ierror Then Exit Sub
 Call InitINIHardware
 If ierror Then Exit Sub
 Call InitINIHardware2
@@ -1831,6 +1833,47 @@ StrataGEMVersion! = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
 
+Exit Sub
+
+' Errors
+InitINISoftwareError:
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINISoftware"
+ierror = True
+Exit Sub
+
+End Sub
+
+Sub InitINISoftware2()
+' Open the PROBEWIN.INI file and read defaults
+
+ierror = False
+On Error GoTo InitINISoftware2Error
+
+Dim i As Integer
+Dim valid As Long, tValid As Long
+
+Dim lpAppName As String
+Dim lpKeyName As String
+Dim lpDefault As String
+Dim lpFileName As String
+Dim lpReturnString As String * 255
+Dim lpReturnString2 As String * 255
+
+Dim nSize As Long
+Dim nDefault As Long
+Dim tcomment As String
+
+' Check for existing PROBEWIN.INI
+If Dir$(ProbeWinINIFile$) = vbNullString Then
+msg$ = "Unable to open file " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware2"
+End
+End If
+
+' Use Windows API function to read PROBEWIN.INI
+lpFileName$ = ProbeWinINIFile$
+nSize& = Len(lpReturnString$)
+
 lpAppName$ = "Software"
 lpKeyName$ = "UseConfirmDuringAcquisitionFlag"
 nDefault& = True
@@ -1948,11 +1991,37 @@ AllowETOAEditing = False
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
+lpAppName$ = "Software"
+lpKeyName$ = "UseZFractionZbarCalculationsFlag"
+nDefault& = True            ' use Z fraction MAN fits by default
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+If valid& <> 0 Then
+UseZFractionZbarCalculationsFlag = True
+Else
+UseZFractionZbarCalculationsFlag = False
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+lpAppName$ = "Software"
+lpKeyName$ = "ZFractionZbarCalculationsExponent"
+lpDefault$ = "0.70"         ' default MAN Z fraction exponent
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then ZFractionZbarCalculationsExponent! = Val(Left$(lpReturnString$, valid&))
+If ZFractionZbarCalculationsExponent! <> 0# And (ZFractionZbarCalculationsExponent! < 0.4 Or ZFractionZbarCalculationsExponent! > 1.6) Then
+msg$ = "ZFractionZbarCalculationsExponent keyword value is out of range in " & ProbeWinINIFile$ & ", (must be 0.0 or >= 0.4 or <= 1.6)"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINISoftware"
+ZFractionZbarCalculationsExponent! = Val(lpDefault$)
+End If
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
 Exit Sub
 
 ' Errors
-InitINISoftwareError:
-MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINISoftware"
+InitINISoftware2Error:
+MsgBox Error$ & ", reading " & lpAppName$ & ", " & lpKeyName$ & ", " & lpDefault$, vbOKOnly + vbCritical, "InitINISoftware2"
 ierror = True
 Exit Sub
 

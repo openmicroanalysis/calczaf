@@ -35,3 +35,5 @@ FormMSGBOXPASSWORD = 0, 0, 0, 0, C, 50, 50, 1263, 676, C
 CodeSAMPLE2 = 0, 0, 0, 0, C
 CodeMiscDelay = 0, 0, 0, 0, C
 CodeABSORB2 = 0, 0, 0, 0, C
+CodeCONVERT3 = 208, 208, 1190, 729, C
+CodeMW = 0, 0, 0, 0, C
