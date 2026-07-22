@@ -19,7 +19,7 @@ jobs:
       - name: Configure Python
         run: python -m pip install requests
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v6
       - name: Configure git
         run: |
           git config --global push.default simple
@@ -28,7 +28,7 @@ jobs:
           git config --global core.ignorecase true
           git remote set-url --push origin git@github.com:openmicroanalysis/calczaf.git
       - name: Synchronize
-        run: python .github/sync.py --verbose --no-push --workdir .
+        run: python .github/sync.py --verbose --no-pull --no-push --workdir .
       - name: Push
         uses: ad-m/github-push-action@master
         with:
