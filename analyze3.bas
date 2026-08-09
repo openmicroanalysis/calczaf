@@ -1676,7 +1676,7 @@ Dim txdata() As Single, tydata() As Single, ttdata() As Single
 Dim tldata() As Long
 Dim tedata() As Single
 
-Dim energy As Single, MANZbar As Single
+Dim energy As Single, MANZbar As Single, DAMZbar As Single
 
 Dim average As TypeAverage, average2 As TypeAverage
 
@@ -2451,6 +2451,32 @@ End If
 ' Check for Z fraction backscatter variable exponent is zero (exponent varies with keV)
 If (izaf% = MAXZAF% Or ibsc% = 5) And ZFractionBackscatterExponent! = 0# Then
 If MiscIsDifferent3(sample(1).LastElm%, sample(1).KilovoltsArray!()) Or DebugMode Then
+
+' Output DAM Zbars (commented out because they are the same for all elements!)
+'msg$ = "DAMZ: "
+'For i% = ii% To jj%
+'If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then
+
+'Call MathArrayAverage(average, analysis.WtsData!(), sample(1).Datarows%, sample(1).LastChan%, sample())
+'If ierror Then Exit Sub
+
+'DAMZbar! = ConvertWeightsToZBarBSE(Int(1), sample(1).LastChan%, average.averags!(), sample(1).AtomicNums%(), sample(1).AtomicWts!(), sample(1).KilovoltsArray!(), ZFractionBackscatterExponent!)
+'If ierror Then Exit Sub
+
+'ip% = IPOS8(i%, sample(1).Elsyms$(i%), sample(1).Xrsyms$(i%), sample())
+'If Not UseAggregateIntensitiesFlag Or (UseAggregateIntensitiesFlag And ip% = 0) Then       ' check for duplicate element
+'msg$ = msg$ & Format$(Format$(DAMZbar!, f83$), a80$)
+'Else
+'msg$ = msg$ & Format$(Format$(0#, f82$), a80$)
+'End If
+
+'Else
+'msg$ = msg$ & Format$(DASHED3$, a80$)   ' if quant disabled
+'End If
+'Next i%
+'Call IOWriteLog(msg$)
+
+' Output DAM exponents
 msg$ = "BEXP: "
 For i% = ii% To jj%
 If sample(1).DisableQuantFlag%(i%) = 0 And sample(1).Xrsyms$(i%) <> vbNullString Then

@@ -1523,7 +1523,7 @@ Global FaradayCupType As Integer
 Global AbsorbedCurrentPresent As Integer
 Global AbsorbedCurrentType As Integer
 
-Global BeamOnFlag As Boolean
+Global BeamOnFlag As Boolean    ' True = beam is on, False = beam is off
 Global MoveStageWithoutBeamBlank As Integer
 
 ' PHA interface
