@@ -2,6 +2,12 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/09/26	Fix Force Conditions flag in Combined Conditions form where the flag was not getting saved (Buse).
+		Also force column condition text in GridConditions grid to be left aligned so it is always visible.
+		
+		When using statistically significant formatting, output numbers less than detection limit to
+		"<" detection limit (Lowers).
+
 07/17/26	Add direct TCP/IP calls for 8x30 instruments for get Faraday state and insert/remove Faraday.
 v. 14.3.9
 

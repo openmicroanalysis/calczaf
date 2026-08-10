@@ -1155,8 +1155,8 @@ If ierror Then Exit Function
 
 bstring$ = Format$(temp!, "General Number")
 
-' Set to "n.d.", if less than detection limit
-If treal! < detectionlimit! Then bstring$ = "n.d."
+' Set to "<" detection limit, if less than detection limit
+If treal! < detectionlimit! Then bstring$ = "<" & Trim$(Format$(Format$(detectionlimit!, f83$), a80$))
 
 ' Format number
 MiscAutoFormatQ$ = Format$(bstring$, a80$)

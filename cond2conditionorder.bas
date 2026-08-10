@@ -188,6 +188,7 @@ Next i%
 
 ' Make last column very long for filename
 tForm.GridConditions.ColWidth(tForm.GridConditions.cols - 1) = 4000
+tForm.GridConditions.ColAlignment(tForm.GridConditions.cols - 1) = 1        ' align left so it is visible!
 
 ' Load fixed column labels
 tForm.GridConditions.row = 0
