@@ -36,11 +36,13 @@ On Error GoTo EDSDisplaySpectra_PEError
 
 Dim i As Integer
 Dim xtemp As Single, ytemp As Single, EDSeVmaxdata As Single
+Dim tmsg As String
 
+tmsg$ = " (DT%= " & Format$(sample(1).EDSSpectraDeadTime!(datarow%), f81$) & ")"
 If EDSIntensityOption% = 0 Then
-tForm.Pesgo1.YAxisLabel = "Intensity"           ' Axis labels
+tForm.Pesgo1.YAxisLabel = "Intensity" & tmsg$         ' Axis labels
 Else
-tForm.Pesgo1.YAxisLabel = "Intensity (cps)"     ' Axis labels
+tForm.Pesgo1.YAxisLabel = "Intensity (cps)" & tmsg$           ' Axis labels
 End If
 
 ' Define #subset and #points

@@ -241,7 +241,8 @@ If Abs(treal!) >= 10000# Then astring$ = f80$
 
 ' Positive numbers
 Else
-astring$ = f85$
+astring$ = f86$
+If treal! >= 0.1 Then astring$ = f86$
 If treal! >= 1# Then astring$ = f85$
 If treal! >= 10# Then astring$ = f84$
 If treal! >= 100# Then astring$ = f83$
