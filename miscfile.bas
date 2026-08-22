@@ -621,7 +621,7 @@ Exit Function
 
 MiscDeleteLinesNoFromFile:
 msg$ = "File to copy from (" & from_name$ & ") was not found and could not be copied"
-MsgBox Error$, vbOKOnly + vbCritical, "MiscDeleteLines"
+MsgBox msg$, vbOKOnly + vbExclamation, "MiscDeleteLines"
 ierror = True
 Exit Function
 
@@ -792,3 +792,43 @@ ierror = True
 Exit Function
 
 End Function
+
+Function MiscCheckFileDateBefore(tFilePath As String, tBeforeDate As Date) As Boolean
+' Check if passed file date is before passed date
+
+ierror = False
+On Error GoTo MiscCheckFileDateBeforeError
+    
+    Dim tFileDate As Date
+    
+    MiscCheckFileDateBefore = True  ' assume file is out of date
+    
+    ' Check file exists
+    If Dir(tFilePath) = vbNullString Then GoTo MiscCheckFileDateBeforeNotFound
+        
+    ' Get file data
+    tFileDate = FileDateTime(tFilePath)
+        
+    ' Compare dates
+    If Int(tFileDate) < Int(tBeforeDate) Then
+       MiscCheckFileDateBefore = True
+    Else
+       MiscCheckFileDateBefore = False
+    End If
+    
+Exit Function
+        
+' Errors
+MiscCheckFileDateBeforeError:
+MsgBox Error$, vbOKOnly + vbCritical, "MiscCheckFileDateBefore"
+ierror = True
+Exit Function
+
+MiscCheckFileDateBeforeNotFound:
+msg$ = "File " & tFilePath$ & " was not found"
+MsgBox msg$, vbOKOnly + vbExclamation, "MiscCheckFileDateBefore"
+ierror = True
+Exit Function
+
+End Function
+

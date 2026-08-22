@@ -566,7 +566,7 @@ For i = 0 To 7
 buffer = String(255, 0)
 strTemp = "\StringFileInfo\" & Lang_Charset_String & "\" & strVersionInfo(i)
 lRet = VerQueryValue(sBuffer(0), strTemp, lVerPointer, lBufferLen)
-If lRet = 0 Then
+If lRet = 0 Then       ' will return an error if any file information fields are missing (noted by Scott Kemp, 08/21/2026)
 ierror = True
 Exit Sub
 End If
@@ -1104,8 +1104,8 @@ Dim pwidth As Long, pheight As Long
 
 pleft& = tForm.scaleX(tForm.Left, vbTwips, vbPixels)
 ptop& = tForm.scaleX(tForm.Top, vbTwips, vbPixels)
-pwidth& = tForm.scaleX(tForm.Width, vbTwips, vbPixels)
-pheight& = tForm.scaleX(tForm.Height, vbTwips, vbPixels)
+pwidth& = tForm.scaleX(tForm.width, vbTwips, vbPixels)
+pheight& = tForm.scaleX(tForm.height, vbTwips, vbPixels)
 
 ' Turn off the TopMost attribute
 If mode% = 0 Then

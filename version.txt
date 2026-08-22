@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+08/21/26	Modify MECWRAPPER.DLL check code to use file date because original DLL has no file version info.
+
 08/20/26	Add new call to MECW_CloseEdsAnalysisData after getting net intensities which closes spectrum 
 		window in JEOL software (Kuan-Yu).
 
