@@ -187,6 +187,7 @@ Set PoRs = PoDb.OpenRecordset(SQLQ$, dbOpenSnapshot)
 ' Update grid for new number of rows
 If PoRs.BOF And PoRs.EOF Then GoTo PositionGetSampleDataOnly3NoPositions
 
+Do Until PoRs.EOF
 npts& = npts& + 1
 ReDim Preserve xdata(1 To npts&) As Single
 ReDim Preserve ydata(1 To npts&) As Single
@@ -197,7 +198,6 @@ ReDim Preserve sdata(1 To npts&) As Integer  ' sample numbers
 ReDim Preserve sndata(1 To npts&) As String  ' sample names
 
 ' Load position data
-Do Until PoRs.EOF
 xdata!(npts&) = PoRs("StageX")
 ydata!(npts&) = PoRs("StageY")
 zdata!(npts&) = PoRs("StageZ")

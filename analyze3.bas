@@ -3218,6 +3218,7 @@ End If
 temp!(i%) = 0#
 If stdpercent! <> NOT_ANALYZED_VALUE_SINGLE! And stdpercent! <> 0# And (Not UseAggregateIntensitiesFlag Or UseAggregateIntensitiesFlag And ippp% = 0) Then
 temp!(i%) = (average.averags!(i%) - stdpercent!) * 100# / stdpercent!
+'temp!(i%) = (average.averags!(i%) - stdpercent!) / (average.averags!(i%) + stdpercent!) / 2# * 100#     ' this is the form for the % difference of two arbitrary numbers!
 End If
 Next i%
 
