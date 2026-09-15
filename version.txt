@@ -2,6 +2,17 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/14/26	JEOL direct stage calls tested and working using JEOL driver v. 2.2.5 (Moy, Fellowes 
+		and Desormeau). Remove obsolete MEC stage/column code.
+
+09/11/26	In IOGetFilename remove enable hook flag to improve Win32 API compatibility (Boro).
+v. 14.4.1
+
+09/08/26	Add Closehandle Windows API call to cleanup in IOIsProcessTerminated() (Boro).
+
+		Modify JEOL code modules to just use Use8x30DirectStageInterface flag in JEOLInitInterface.
+		since new v. 2.2.5 JEOL driver from Moy checks for stage IP address and socket.
+
 09/04/26	Fix bug in AcquireDoVolatile2 for samples with multiple elements per spectrometer
 		(assigned TDI samples).
 

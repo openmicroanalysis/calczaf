@@ -4292,26 +4292,6 @@ End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 
 lpAppName$ = "Hardware"
-lpKeyName$ = "UseMECStageColumnInterface"
-nDefault& = False
-tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
-valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
-If valid& <> 0 Then
-UseMECStageColumnInterfaceFlag = True
-Else
-UseMECStageColumnInterfaceFlag = False
-End If
-If UseMECStageColumnInterfaceFlag And JeolEOSInterfaceType& <> 3 Then
-msg$ = "UseMECStageColumnInterface keyword value is not valid in " & ProbeWinINIFile$ & " (only applies to JEOL 8230/8530 and iSP100/iHP200F)."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
-UseMECStageColumnInterfaceFlag = nDefault&
-End If
-If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-' !!!! force false until MEC stage and column commands are implemented in the MECWrapper DLL by Scott Kemp !!!!
-UseMECStageColumnInterfaceFlag = False
-
-lpAppName$ = "Hardware"
 lpKeyName$ = "Use8x30DirectStageInterface"
 nDefault& = False
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
@@ -4327,9 +4307,6 @@ MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 Use8x30DirectStageInterface = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
-
-' !!!! force false until 8x30 stage commands are implemented in the JEOL driver DLL by Aurelien Moy !!!!
-Use8x30DirectStageInterface = False
  
 ' Delay for JEOL MEC EDS start code (to avoid empty GUID string error when adding a point reservation)
 lpAppName$ = "Hardware"
@@ -4338,8 +4315,8 @@ nDefault& = 500
 tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 JEOLMECEDSMilliSecDelayStart& = valid&
-If JEOLMECEDSMilliSecDelayStart& < 100 Or JEOLMECEDSMilliSecDelayStart& > 2000 Then
-msg$ = "JEOLMECEDSMilliSecDelayStart keyword value is out of range in " & ProbeWinINIFile$
+If JEOLMECEDSMilliSecDelayStart& < 100 Or JEOLMECEDSMilliSecDelayStart& > 1000 Then
+msg$ = "JEOLMECEDSMilliSecDelayStart keyword value is out of range in " & ProbeWinINIFile$ & " (must be between 100 and 1000 msec)."
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
 JEOLMECEDSMilliSecDelayStart& = nDefault&
 End If

@@ -23,6 +23,7 @@ Private Declare Function ShellExecute Lib "shell32" Alias "ShellExecuteA" _
    
 Private Declare Function OpenProcess Lib "kernel32" (ByVal dwDesiredAccess As Long, ByVal bInheritHandle As Long, ByVal dwProcessID As Long) As Long
 Private Declare Function GetExitCodeProcess Lib "kernel32" (ByVal hProcess As Long, lpExitCode As Long) As Long
+Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 
 Private Const PROCESS_QUERY_INFORMATION& = &H400&
 Private Const STILL_ACTIVE& = &H103&
@@ -110,6 +111,9 @@ ProcHnd& = OpenProcess(PROCESS_QUERY_INFORMATION&, True, currentPID)
 
 ' Check for exit code
 Call GetExitCodeProcess(ProcHnd&, CurECode&)
+
+' Close instance
+Call CloseHandle(ProcHnd&)
 
 ' Return true
 If CurECode& = STILL_ACTIVE& Then
