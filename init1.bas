@@ -2507,7 +2507,7 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 WDS_ServicePort% = valid&
 If WDS_ServicePort% = 0 Then
-msg$ = "WDS_ServicePort keyword value (TCP/IP interface) is blank in " & ProbeWinINIFile$
+msg$ = "WDS_ServicePort keyword value (TCP/IP interface) is zero in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
@@ -2537,7 +2537,7 @@ tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturn
 valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 WDS_ServicePort2% = valid&
 If WDS_ServicePort2% = 0 Then
-msg$ = "WDS_ServicePort2 keyword value (TCP/IP interface) is blank in " & ProbeWinINIFile$
+msg$ = "WDS_ServicePort2 keyword value (TCP/IP interface) is zero in " & ProbeWinINIFile$
 MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware"
 End
 End If
@@ -3929,7 +3929,7 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 CLSpectraInterfaceType% = valid&
 If CLSpectraInterfaceType% < 0 Or CLSpectraInterfaceType% > 1 Then
 msg$ = "CLSpectraInterfaceType keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 CLSpectraInterfaceType% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -3960,7 +3960,7 @@ msg$ = msg$ & "For Thermo NSS v. 3.x, specify ThermoNSSVersionNumber=3" & vbCrLf
 msg$ = msg$ & "For Thermo NSS v. 4.x, specify ThermoNSSVersionNumber=4" & vbCrLf
 msg$ = msg$ & "For Thermo Pathfinder v. 1.x, specify ThermoNSSVersionNumber=5" & vbCrLf
 msg$ = msg$ & "For Thermo Pathfinder v. 2.10 or higher, specify ThermoNSSVersionNumber=6"
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 End If
 End If
 valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
@@ -3978,7 +3978,7 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 MaxEnergyArraySize% = valid&
 If MaxEnergyArraySize% < 0 Or MaxEnergyArraySize% > MAX_ENERGY_ARRAY_SIZE% Then
 msg$ = "MaxEnergyArraySize keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 MaxEnergyArraySize% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -3993,7 +3993,7 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then MaxEnergyArrayValue!(i%) = Val(Left$(lpReturnString$, valid&))
 If MaxEnergyArrayValue!(i%) < 0# Or MaxEnergyArrayValue!(i%) > 100# Then
 msg$ = "MaxEnergyArrayValue" & Format$(i%) & " keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 MaxEnergyArrayValue!(i%) = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
@@ -4008,7 +4008,7 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 MaxThroughputArraySize% = valid&
 If MaxThroughputArraySize% < 0 Or MaxThroughputArraySize% > MAX_THROUGHPUT_ARRAY_SIZE% Then
 msg$ = "MaxThroughputArraySize keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 MaxThroughputArraySize% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -4023,7 +4023,7 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then MaxThroughputArrayValue!(i%) = Val(Left$(lpReturnString$, valid&))
 If MaxThroughputArrayValue!(i%) < 0# Or MaxThroughputArrayValue!(i%) > 10000# Then
 msg$ = "MaxThroughputArrayValue" & Format$(i%) & " keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 MaxThroughputArrayValue!(i%) = Val(lpDefault$)
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
@@ -4040,7 +4040,7 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then MoveStageToleranceX! = Val(Left$(lpReturnString$, valid&))
 If MoveStageToleranceX! < 0# Or MoveStageToleranceX! > 10# Then
 msg$ = "MoveStageToleranceX keyword value out of range (must be between 0 and 10 microns) in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 End
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
@@ -4054,7 +4054,7 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then MoveStageToleranceY! = Val(Left$(lpReturnString$, valid&))
 If MoveStageToleranceY! < 0# Or MoveStageToleranceY! > 10# Then
 msg$ = "MoveStageToleranceY keyword value out of range (must be between 0 and 10 microns) in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 End
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
@@ -4068,7 +4068,7 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then MoveStageToleranceZ! = Val(Left$(lpReturnString$, valid&))
 If MoveStageToleranceZ! < 0# Or MoveStageToleranceZ! > 10# Then
 msg$ = "MoveStageToleranceZ keyword value out of range (must be between 0 and 10 microns) in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 End
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
@@ -4099,13 +4099,13 @@ If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProf
 If LAB6FieldEmissionPresentFlag% And ThermalFieldEmissionPresentFlag% Then
 msg$ = "Both the ThermalFieldEmissionPresent keyword and the LAB6FieldEmissionPresent keywords are both set in " & ProbeWinINIFile$ & vbCrLf & vbCrLf
 msg$ = msg$ & "The program will now end."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 End
 End If
 If InterfaceType% = 2 And LAB6FieldEmissionPresentFlag% Then
 msg$ = "The LaB6 electron gun is not currently supported on JEOL EPMA instruments (but you can set the ThermalFieldEmissionPresent keyword if you want to avoid changing the gun heat/emission parameters). Please change the LAB6FieldEmissionPresent keyword in " & ProbeWinINIFile$ & vbCrLf & vbCrLf
 msg$ = msg$ & "The program will now end."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 End
 End If
 
@@ -4159,7 +4159,7 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 AutomatedImageAcquisitionMagChangeMilliSecDelay& = valid&
 If AutomatedImageAcquisitionMagChangeMilliSecDelay& < 10 Or AutomatedImageAcquisitionMagChangeMilliSecDelay& > 10000 Then
 msg$ = "AutomatedImageAcquisitionMagChangeMilliSecDelay keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 AutomatedImageAcquisitionMagChangeMilliSecDelay& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -4172,7 +4172,7 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 JEOLMoveSpectroMilliSecDelayAfter& = valid&
 If JEOLMoveSpectroMilliSecDelayAfter& < 0 Or JEOLMoveSpectroMilliSecDelayAfter& > 10000 Then
 msg$ = "JEOLMoveSpectroMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 JEOLMoveSpectroMilliSecDelayAfter& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -4189,12 +4189,12 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 AutomatedPHAParameterDialogTypeFlag% = valid&
 If AutomatedPHAParameterDialogTypeFlag% < 0 Or AutomatedPHAParameterDialogTypeFlag% > 2 Then
 msg$ = "AutomatedPHAParameterDialogTypeFlag keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 AutomatedPHAParameterDialogTypeFlag% = nDefault&
 End If
 If InterfaceType% = 2 And AutomatedPHAParameterDialogTypeFlag% = 2 Then
 msg$ = "AutomatedPHAParameterDialogTypeFlag keyword value of 2 (gain scan) is not allowed for JEOL instruments in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 AutomatedPHAParameterDialogTypeFlag% = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -4220,7 +4220,7 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 JEOLMoveStageMilliSecDelayAfter& = valid&
 If JEOLMoveStageMilliSecDelayAfter& < 30 Or JEOLMoveStageMilliSecDelayAfter& > 5000 Then
 msg$ = "JEOLMoveStageMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$ & " (must be between 30 and 5000 msec)."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 JEOLMoveStageMilliSecDelayAfter& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -4233,7 +4233,7 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 JEOLCountSpectroMilliSecDelayAfter& = valid&
 If JEOLCountSpectroMilliSecDelayAfter& < 0 Or JEOLCountSpectroMilliSecDelayAfter& > 1000 Then
 msg$ = "JEOLCountSpectroMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 JEOLCountSpectroMilliSecDelayAfter& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -4247,7 +4247,7 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 JEOLFlipCrystalMilliSecDelayAfter& = valid&
 If JEOLFlipCrystalMilliSecDelayAfter& < 0 Or JEOLFlipCrystalMilliSecDelayAfter& > 1000 Then
 msg$ = "JEOLFlipCrystalMilliSecDelayAfter keyword value is out of range in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 JEOLFlipCrystalMilliSecDelayAfter& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -4273,7 +4273,7 @@ Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
 If Left$(lpReturnString$, valid&) <> vbNullString Then EDSEffectiveTakeOff! = Val(Left$(lpReturnString$, valid&))
 If EDSEffectiveTakeOff! < MINTAKEOFF! Or EDSEffectiveTakeOff! > MAXTAKEOFF! Then
 msg$ = "EDSEffectiveTakeOff keyword value out of range (must be between " & Format$(MINTAKEOFF!) & " and " & Format$(MAXTAKEOFF!) & " degrees) in " & ProbeWinINIFile$
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 End
 End If
 If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
@@ -4286,7 +4286,7 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 JEOLEDSMilliSecDelayBefore& = valid&
 If JEOLEDSMilliSecDelayBefore& < 30 Or JEOLEDSMilliSecDelayBefore& > 5000 Then
 msg$ = "JEOLEDSMilliSecDelayBefore keyword value is out of range in " & ProbeWinINIFile$ & " (must be between 30 and 5000 msec)."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 JEOLEDSMilliSecDelayBefore& = nDefault&
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
@@ -4317,8 +4317,43 @@ valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
 JEOLMECEDSMilliSecDelayStart& = valid&
 If JEOLMECEDSMilliSecDelayStart& < 100 Or JEOLMECEDSMilliSecDelayStart& > 1000 Then
 msg$ = "JEOLMECEDSMilliSecDelayStart keyword value is out of range in " & ProbeWinINIFile$ & " (must be between 100 and 1000 msec)."
-MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware2"
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
 JEOLMECEDSMilliSecDelayStart& = nDefault&
+End If
+If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
+
+' JEOL direct stage IP address (JEOL 8230/8530/iSP100/iHP200F only)
+lpAppName$ = "Hardware"
+lpKeyName$ = "Stage_IPAddress"   ' for direct stage control (not using EIKS for stage control)
+lpDefault$ = "192.168.0.3"
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString2$, nSize&, lpFileName$)   ' check for keyword without default value
+valid& = GetPrivateProfileString(lpAppName$, lpKeyName$, lpDefault$, lpReturnString$, nSize&, lpFileName$)
+Call MiscParsePrivateProfileString(lpReturnString$, valid&, tcomment$)
+If Left$(lpReturnString$, valid&) <> vbNullString Then Stage_IPAddress$ = Left$(lpReturnString$, valid&)
+If Trim$(Stage_IPAddress$) = vbNullString Then
+msg$ = "Stage_IPAddress keyword value (TCP/IP interface) is blank in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
+End
+End If
+lpDefault$ = Stage_IPAddress$
+If Left$(lpReturnString2$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, VbDquote$ & lpDefault$ & VbDquote$ & tcomment$, lpFileName$)
+
+' JEOL direct stage socket interface
+lpAppName$ = "Hardware"
+lpKeyName$ = "Stage_ServicePort"     ' for direct stage control (not using EIKS for stage control)
+nDefault& = 22700                    ' should be 22700 for JEOL 8230/8530, 49202 for iSP100/iHP200F (not working on iSP100/iHP200F yet!)
+tValid& = GetPrivateProfileString(lpAppName$, lpKeyName$, vbNullString, lpReturnString$, nSize&, lpFileName$)
+valid& = GetPrivateProfileInt(lpAppName$, lpKeyName$, nDefault&, lpFileName$)
+Stage_ServicePort& = valid&
+If Stage_ServicePort& = 0 Then
+msg$ = "Stage_ServicePort keyword value (TCP/IP interface) is zero in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
+End
+End If
+If Stage_ServicePort& <> 22700 And Stage_ServicePort& <> 49202 Then
+msg$ = "Stage_ServicePort keyword value: " & Format$(Stage_ServicePort&) & " (TCP/IP interface) is not valid in " & ProbeWinINIFile$
+MsgBox msg$, vbOKOnly + vbExclamation, "InitINIHardware3"
+End
 End If
 If Left$(lpReturnString$, tValid&) = vbNullString Then valid& = WritePrivateProfileString(lpAppName$, lpKeyName$, Format$(nDefault&), lpFileName$)
 

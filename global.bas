@@ -3153,3 +3153,7 @@ Global PHATuningForHighAccuracy As String
 Global LoadMineralFlagsFromStandardDatabaseFlag As Boolean
 
 Global JEOLMECEDSMilliSecDelayStart As Long
+
+Global Stage_IPAddress As String
+Global Stage_ServicePort As Long
+

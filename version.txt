@@ -2,6 +2,15 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+09/25/26	Modify JEOLInitInterface code to check for stage port numbers
+v. 14.4.2
+
+09/19/26	Modify PFE full view PictureSnap code to load image from existing control (von der Handt).
+
+		Remove double menu separators in Run menu.
+
+09/17/26	Direct stage code only works for 8230/8530. Add check for direct stage port numbers.
+
 09/14/26	JEOL direct stage calls tested and working using JEOL driver v. 2.2.5 (Moy, Fellowes 
 		and Desormeau). Remove obsolete MEC stage/column code.
 

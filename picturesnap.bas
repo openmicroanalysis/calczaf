@@ -738,7 +738,7 @@ Call PictureSnapConvert(Int(2), formx!, formy!, formz!, RealTimeMotorPositions!(
 If ierror Then Exit Sub
 
 ' Calculate a radius
-tWidth! = Screen.Width
+tWidth! = Screen.width
 If tWidth! = 0# Then Exit Sub
 radius! = tWidth! / 100#
 
@@ -840,7 +840,8 @@ If PictureSnapFilename$ = vbNullString Then GoTo PictureSnapLoadFullWindowNoPict
 
 ' Load into picturebox control to perform flipping
 Screen.MousePointer = vbHourglass
-Set FormPICTURESNAP3.Image1.Picture = LoadPicture(PictureSnapFilename$)
+'Set FormPICTURESNAP3.Image1.Picture = LoadPicture(PictureSnapFilename$)
+Set FormPICTURESNAP3.Image1.Picture = FormPICTURESNAP.Picture2.Picture     ' to save memory for large images (Boro)
 
 ' Minimize and restore to re-size
 FormPICTURESNAP3.WindowState = vbMinimized
@@ -849,8 +850,8 @@ FormPICTURESNAP3.WindowState = vbNormal
 
 ' Rescale form to image aspect
 If FormPICTURESNAP3.Image1.Picture.Type > 0 Then   ' bitmap
-If FormPICTURESNAP3.Image1.Picture.Height <> 0# Then
-FormPICTURESNAP3.Width = FormPICTURESNAP3.ScaleHeight * FormPICTURESNAP3.Image1.Picture.Width / FormPICTURESNAP3.Image1.Picture.Height
+If FormPICTURESNAP3.Image1.Picture.height <> 0# Then
+FormPICTURESNAP3.width = FormPICTURESNAP3.ScaleHeight * FormPICTURESNAP3.Image1.Picture.width / FormPICTURESNAP3.Image1.Picture.height
 End If
 End If
 
@@ -918,7 +919,7 @@ oldy! = FormPICTURESNAP.ScaleHeight
 End If
 
 ' Calculate 1/8 of visible image
-xrange! = FormPICTURESNAP.Picture1.Width / 8#
+xrange! = FormPICTURESNAP.Picture1.width / 8#
 
 ' Convert to stage coordinates (z coordinates are not used)
 Call PictureSnapConvert(Int(1), CSng(0#), ymin!, zmin!, sx1!, sy1!, sz1!, fractionx!, fractiony!)
@@ -986,9 +987,9 @@ FormPICTURESNAP.Picture2.DrawWidth = 1      ' use DrawWidth = 1 for filled box a
 FormPICTURESNAP.Picture2.Line (tuleftx!, tulefty!)-(tlrightx!, tlrighty!), tcolor&, BF
    
 ' Print text of microns
-FormPICTURESNAP.Picture2.CurrentX = FormPICTURESNAP.Picture2.CurrentX - xrange! / 2#
-tcurrentx = FormPICTURESNAP.Picture2.CurrentX
-tcurrenty = FormPICTURESNAP.Picture2.CurrentY
+FormPICTURESNAP.Picture2.currentX = FormPICTURESNAP.Picture2.currentX - xrange! / 2#
+tcurrentx = FormPICTURESNAP.Picture2.currentX
+tcurrenty = FormPICTURESNAP.Picture2.currentY
 astring$ = Format$(xrange2!) & " um"
 FormPICTURESNAP.Picture2.ForeColor = tcolor& ' set foreground color
 FormPICTURESNAP.Picture2.FontSize = 13       ' set font size
@@ -997,7 +998,7 @@ FormPICTURESNAP.Picture2.FontSize = 13       ' set font size    (necessary for W
 FormPICTURESNAP.Picture2.FontBold = False
 halfwidth! = FormPICTURESNAP.Picture2.TextWidth(astring$) / 2      ' calculate one-half width
 'halfheight! = FormPICTURESNAP.Picture2.TextHeight(astring$) / 2     ' calculate one-half height
-FormPICTURESNAP.Picture2.CurrentX = FormPICTURESNAP.Picture2.CurrentX - halfwidth!   ' set X
+FormPICTURESNAP.Picture2.currentX = FormPICTURESNAP.Picture2.currentX - halfwidth!   ' set X
 'FormPICTURESNAP.Picture2.CurrentY = FormPICTURESNAP.Picture2.CurrentY + halfheight! ' set Y
 FormPICTURESNAP.Picture2.Print astring$   ' print text string to form
 
