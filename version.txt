@@ -2,6 +2,11 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/07/26	Bump version for distribution.
+v. 14.4.3
+
+11/04/26	Fix elemental H by difference bug in ZAFSmp (Seward/Boro).
+
 09/25/26	Modify JEOLInitInterface code to check for stage port numbers
 v. 14.4.2
 

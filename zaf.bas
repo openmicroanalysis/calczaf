@@ -1441,6 +1441,10 @@ On Error GoTo ZAFSmpError
 Dim i As Integer, j As Integer
 Dim ip As Integer, ipp As Integer, ippp As Integer
 Dim r0 As Integer, MaxZAFIter  As Integer
+Dim tHydrogenDifference As Boolean
+Dim tZAFStep As Single
+Dim tResidualScale As Double
+
 Dim ZAFMinTotal  As Single, ZAFMinToler As Single, ZAFToler As Single
 Dim i7 As Integer, i8 As Integer
 Dim temp As Single, oxygen As Single
@@ -1884,6 +1888,13 @@ Call SecondaryCorrection(row%, zaf.krat!(), sample())
 If ierror Then Exit Sub
 End If
 
+tHydrogenDifference = False
+For i% = 1 To zaf.in0%
+If zaf.Z%(i%) = 1 And (zaf.il%(i%) = 13 Or zaf.il%(i%) = 19) Then tHydrogenDifference = True
+Next i%
+tZAFStep = 1#
+If tHydrogenDifference Then tZAFStep = 0.5
+
 ' Calculate as Z fraction also (using ~Z^2/3) for use with Donovan and Moy massless backscatter corrections (see ZAFBsc and ZAFBks)
 Call ConvertWeightToZFractionBSE(zaf.in0%, ZFractionBackscatterExponent!, zaf.Z%(), zaf.atwts!(), zaf.conc!(), zaf.eO!(), zaf.zfrac!())
 If ierror Then Exit Sub
@@ -1963,12 +1974,6 @@ End If
 End If
 Next i%
 
-' Output intermediate values
-If VerboseMode Then
-Call ZAFPrintIterate(Int(1), zaf)
-If ierror Then Exit Sub
-End If
-
 ' Calculate concentrations w/ ZAF correction, C = K*Z*A*F
 zaf.ksum! = 0#
 r0% = 0
@@ -1999,12 +2004,6 @@ End If
 zaf.ksum! = zaf.ksum! + r1!(i%)
 End If
 Next i%
-
-' Output intermediate values
-If VerboseMode Then
-Call ZAFPrintIterate(Int(2), zaf)
-If ierror Then Exit Sub
-End If
 
 ' Calculate element relative to another element (moved from below to handle if element by stoichiometry to another element is a halogen, per Locock)
 For i% = 1 To zaf.in1%
@@ -2123,8 +2122,23 @@ If zaf.ksum! < ZAFMinTotal! Then GoTo ZAFSmpInsufficientTotal
 For i% = 1 To zaf.in0%
 r1!(i%) = r1!(i%) / zaf.ksum!
 ZAFDiff!(i%) = Abs(zaf.conc!(i%) - r1!(i%))
-If zaf.conc!(i%) > ZAFMinToler! And ZAFDiff!(i%) > zaf.conc!(i%) / ZAFToler! Then r0% = 1 ' not converged yet
+If Not tHydrogenDifference Then
+If zaf.conc!(i%) > ZAFMinToler! And ZAFDiff!(i%) > zaf.conc!(i%) / ZAFToler! Then r0% = 1
+End If
+If tHydrogenDifference Then
+tResidualScale = Abs(CDbl(zaf.conc!(i%)))
+If tResidualScale < ZAFMinToler! Then tResidualScale = ZAFMinToler!
+If ZAFDiff!(i%) > tResidualScale / ZAFToler! Then r0% = 1
+End If
+Next i%
+For i% = 1 To zaf.in0%
+If tHydrogenDifference And r0% = 0 Then
+' Keep the current evaluated state so final correction factors match it.
+ElseIf tZAFStep = 1# Then
 zaf.conc!(i%) = r1!(i%)
+Else
+zaf.conc!(i%) = zaf.conc!(i%) + tZAFStep * (r1!(i%) - zaf.conc!(i%))
+End If
 Next i%
 
 ' Print out normalized concentrations for each iteration if verbose mode
@@ -2142,14 +2156,14 @@ msg$ = msg$ & Format$("UnNorm Sum", a80$)
 Call IOWriteLog(msg$)
 msg$ = "UNKRAT: "
 For i% = 1 To sample(1).LastChan%
-msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "Conc*100"
 For i% = 1 To zaf.in0%
 msg$ = msg$ & MiscAutoFormat$(100# * zaf.conc!(i%))
 Next i%
-msg$ = msg$ & Format$(Format$(100# * zaf.ksum!, f83$), a80$)
+msg$ = msg$ & Format$(Format$(100# * zaf.ksum!, f83), a80$)
 Call IOWriteLog(msg$)
 
 Call ConvertWeightToAtomic(zaf.in0%, zaf.atwts!(), zaf.conc!(), atomfracs!())
@@ -2173,47 +2187,47 @@ Call IOWriteLog(msg$)
 msg$ = "ZAFAbs: "
 For i% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%), f84), a80$)
 Else
-msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
+msg$ = msg$ & Format$(Format$(0#, f84), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFFlu: "
 For i% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-msg$ = msg$ & Format$(Format$(1# / (1# + zaf.vv!(i%)), f84$), a80$)
+msg$ = msg$ & Format$(Format$(1# / (1# + zaf.vv!(i%)), f84), a80$)
 Else
-msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
+msg$ = msg$ & Format$(Format$(0#, f84), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFZed: "
 For i% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-msg$ = msg$ & Format$(Format$(zaf.zed!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(zaf.zed!(i%), f84), a80$)
 Else
-msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
+msg$ = msg$ & Format$(Format$(0#, f84), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFCOR: "
 For i% = 1 To sample(1).LastElm%
 If sample(1).DisableQuantFlag%(i%) = 0 Then
-msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%) * zaf.zed!(i%) / (1# + zaf.vv!(i%)), f84$), a80$)
+msg$ = msg$ & Format$(Format$(zaf.gensmp!(i%) / zaf.genstd!(i%) * zaf.zed!(i%) / (1# + zaf.vv!(i%)), f84), a80$)
 Else
-msg$ = msg$ & Format$(Format$(0#, f84$), a80$)
+msg$ = msg$ & Format$(Format$(0#, f84), a80$)
 End If
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "UNKRAT: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(zaf.krat!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "UNCONC: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(zaf.conc!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(zaf.conc!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 End If
@@ -2225,7 +2239,7 @@ If ierror Then Exit Sub
 If DebugMode And VerboseMode Then
 msg$ = "UNZFRAC:"
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(zaf.zfrac!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(zaf.zfrac!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 End If
@@ -2236,7 +2250,8 @@ If r0% = 0 Then GoTo 3400   ' iteration completed
 If zaf.iter% > MaxZAFIter% Then
 msg$ = "WARNING- ZAF not converged on line " & Str$(sample(1).Linenumber&(row%))
 Call IOWriteLog(msg$)
-GoTo 3400
+ierror = True
+Exit Sub
 End If
 
 ' Iterate again
@@ -2251,24 +2266,6 @@ Next i%
 
 ' Load return arrays with analyzed elements
 analysis.ZAFIter! = zaf.iter%
-
-' Calculate ideal element relative to stoichiometric oxygen based on final iteration (05/27/2026)
-If ForceStoichiometryOfElementByStoichiometryToOxygenFlag Then
-Dim ideal As Single, diff As Single
-If zaf.il%(zaf.in0%) = 0 Then    ' if calculating oxygen by stoichiometry
-For i% = 1 To zaf.in1%
-If zaf.il%(i%) = 15 Then         ' if element is calculated by stoichiometry to calculated oxygen
-ideal! = (zaf.conc!(zaf.in0%) / zaf.atwts!(zaf.in0%)) * sample(1).StoichiometryRatio! * zaf.atwts!(i%)
-diff! = zaf.conc!(i%) - ideal!
-zaf.ksum! = zaf.ksum! - diff!
-If VerboseMode Then
-Call IOWriteLog(vbCrLf & "ZAFSmp: forcing stoichiometry of element by stoichiometry to calculated oxygen. Calculated: " & Format$(zaf.conc!(i%)) & ", Ideal: " & Format$(ideal!))
-End If
-zaf.conc!(i%) = ideal!
-End If
-Next i%
-End If
-End If
 
 ' Calculate total FeO and total Fe2O3 if ferrous/ferric calculate flag is set
 If sample(1).FerrousFerricCalculationFlag Then
@@ -2340,8 +2337,8 @@ End If
 Next i%
 End If
 
-' Load element by stoichiometry to stoichiometric (calculated) oxygen
-If sample(1).StoichiometryElementFlag% And sample(1).StoichiometryElement$ <> vbNullString Then
+' Load element by stoichiometry to oxygen
+If sample(1).StoichiometryElementFlag% And sample(1).StoichiometryElement <> vbNullString Then
 ip% = IPOS1B(sample(1).LastElm% + 1, sample(1).LastChan%, sample(1).StoichiometryElement$, sample(1).Elsyms$())
 If ip% > sample(1).LastElm% And ip% <= sample(1).LastChan% Then
 analysis.WtPercents!(ip%) = zaf.conc!(ip%) * 100#
@@ -2388,49 +2385,49 @@ Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFAbs: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(1, i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(1, i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFFlu: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(2, i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(2, i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFZed: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(3, i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(3, i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFCOR: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(4, i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(4, i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
 msg$ = vbCrLf & "ZAFSTP: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(5, i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(5, i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 msg$ = "ZAFBKS: "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(6, i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkZAFCors!(6, i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
 msg$ = vbCrLf & "STDKFAC "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.StdAssignsKfactors!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
 msg$ = "UNKKFAC "
 For i% = 1 To sample(1).LastElm%
-msg$ = msg$ & Format$(Format$(analysis.UnkKrats!(i%), f84$), a80$)
+msg$ = msg$ & Format$(Format$(analysis.UnkKrats!(i%), f84), a80$)
 Next i%
 Call IOWriteLog(msg$)
 
-msg$ = vbCrLf & "UNKZBAR " & Format$(Format$(analysis.zbar!, f84$), a80$)
+msg$ = vbCrLf & "UNKZBAR " & Format$(Format$(analysis.zbar!, f84), a80$)
 Call IOWriteLog(msg$)
 
 msg$ = "ZAFITER " & Format$(Format$(analysis.ZAFIter!, f82$), a80$)
