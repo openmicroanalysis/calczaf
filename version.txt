@@ -2,6 +2,8 @@ PROBE for EPMA XP/Vista/Win7/Win8/Win10/Win11 Xtreme Edition Version Software Ch
 
 User names (in parentheses) indicate grateful attribution for the preceding bug report or suggestion. Users "rule"!
 
+11/09/26	Re-do Boro elemental H by diff code chnages because of source mixup.
+
 11/07/26	Bump version for distribution.
 v. 14.4.3
 
