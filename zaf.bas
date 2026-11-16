@@ -1573,34 +1573,46 @@ If sample(1).CoatingFlag% = 1 And UseConductiveCoatingCorrectionForElectronAbsor
 msg$ = vbCrLf & "Coating Correction (X-ray transmission):"
 msg$ = msg$ & vbCrLf & "UNKCOAT "
 For j% = 1 To sample(1).LastElm%
+If zaf.il%(j%) <= MAXRAY% - 1 Then
 msg$ = msg$ & Format$(Format$(zaf.coating_trans_smp!(j%), f85), a80$)   ' calculated in ZAFSetZAF
+End If
 Next j%
 Call IOWriteLog(msg$)
 msg$ = "STDCOAT "
 For j% = 1 To sample(1).LastElm%
+If zaf.il%(j%) <= MAXRAY% - 1 Then
 msg$ = msg$ & Format$(Format$(analysis.Coating_StdAssignsTrans!(j%), f85), a80$)    ' calculated in ZAFStd
+End If
 Next j%
 Call IOWriteLog(msg$)
 msg$ = "UNK/STD "
 For j% = 1 To sample(1).LastElm%
+If zaf.il%(j%) <= MAXRAY% - 1 Then
 msg$ = msg$ & Format$(Format$(zaf.coating_trans_smp!(j%) / analysis.Coating_StdAssignsTrans!(j%), f85), a80$)   ' unk/std x-ray transmission ratio
+End If
 Next j%
 Call IOWriteLog(msg$)
 
 msg$ = vbCrLf & "Coating Correction (Electron absorption):"
 msg$ = msg$ & vbCrLf & "UNKCOAT "
 For j% = 1 To sample(1).LastElm%
+If zaf.il%(j%) <= MAXRAY% - 1 Then
 msg$ = msg$ & Format$(Format$(zaf.coating_absorbs_smp!(j%), f85), a80$)   ' calculated in ZAFSetZAF
+End If
 Next j%
 Call IOWriteLog(msg$)
 msg$ = "STDCOAT "
 For j% = 1 To sample(1).LastElm%
+If zaf.il%(j%) <= MAXRAY% - 1 Then
 msg$ = msg$ & Format$(Format$(analysis.Coating_StdAssignsAbsorbs!(j%), f85), a80$)    ' calculated in ZAFStd
+End If
 Next j%
 Call IOWriteLog(msg$)
 msg$ = "UNK/STD "
 For j% = 1 To sample(1).LastElm%
+If zaf.il%(j%) <= MAXRAY% - 1 Then
 msg$ = msg$ & Format$(Format$(zaf.coating_absorbs_smp!(j%) / analysis.Coating_StdAssignsAbsorbs!(j%), f85), a80$)   ' unk/std electron absorption ratio
+End If
 Next j%
 Call IOWriteLog(msg$)
 End If
@@ -2268,7 +2280,7 @@ End If
 If r0% = 0 Then GoTo 3400   ' iteration completed
 
 If zaf.iter% > MaxZAFIter% Then
-msg$ = "WARNING- ZAF not converged on line " & Str$(sample(1).Linenumber&(row%))
+msg$ = "WARNING in ZAFSmp- ZAF not converged on line " & Str$(sample(1).Linenumber&(row%))
 Call IOWriteLog(msg$)
 If UCase$(app.EXEName) = UCase$("CalcImage") Then GoTo 3400     ' in case of bad pixels, just skip if CalcImage
 ierror = True
